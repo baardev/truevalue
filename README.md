@@ -118,6 +118,16 @@ python src/ingest/comex_scraper.py
 jupyter notebook src/analysis/
 ```
 
+### Documentation wiki (MkDocs)
+The `docs/` folder is built as a searchable wiki. To serve it locally:
+
+```bash
+pip install -r requirements-docs.txt
+mkdocs serve
+```
+
+Then open **http://127.0.0.1:8000**. To build a static site: `mkdocs build` (output in `site/`).
+
 ## Development Rules
 
 ### For AI Agents (Cursor)

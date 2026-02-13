@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shea Supply Chain – Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #c9a227 0%, #8b6914 50%, #5c4610 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #5c4610 0%, #8b6914 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header a {
+            color: #f0e6d3;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+        .header a:hover { color: white; }
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card-label { font-size: 12px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 10px; }
+        .card-value { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+        .card-bar { height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+        .card-bar-fill { height: 100%; transition: width 0.3s; }
+        .card.good .card-value { color: #28a745; }
+        .card.fair .card-value { color: #ffc107; }
+        .card.poor .card-value { color: #dc3545; }
+        .main-content { padding: 30px; }
+        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #2c3e50; }
+        .flow-chart {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        .phases {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 1000px;
+        }
+        .phase { text-align: center; cursor: pointer; padding: 10px; border-radius: 8px; transition: all 0.3s; }
+        .phase:hover { background: #f8f9fa; transform: scale(1.05); }
+        .phase-box {
+            width: 90px;
+            height: 90px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 3px solid;
+            color: white;
+        }
+        .phase-box.excellent { background: linear-gradient(135deg, #28a745, #20c997); border-color: #28a745; }
+        .phase-box.good { background: linear-gradient(135deg, #20c997, #17a2b8); border-color: #17a2b8; }
+        .phase-box.fair { background: linear-gradient(135deg, #ffc107, #fd7e14); border-color: #ffc107; }
+        .phase-box.poor { background: linear-gradient(135deg, #dc3545, #c82333); border-color: #dc3545; }
+        .phase-id { font-size: 12px; font-weight: bold; opacity: 0.9; }
+        .phase-score { font-size: 22px; font-weight: bold; }
+        .phase-name { font-size: 10px; margin-top: 5px; font-weight: 600; }
+        .phase-n { font-size: 9px; opacity: 0.8; margin-top: 3px; }
+        .flow-arrow { font-size: 28px; color: #adb5bd; padding: 0 8px; }
+        .legend { display: flex; gap: 20px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #dee2e6; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6c757d; }
+        .legend-color { width: 18px; height: 18px; border-radius: 4px; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 560px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-close { float: right; font-size: 24px; cursor: pointer; color: #6c757d; }
+        .modal-close:hover { color: #dc3545; }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🫒 Shea Supply Chain – Dashboard</h1>
+            <div>
+                <a href="project_context.html">Project context</a>
+                <a href="index.html">Home</a>
+                <a href="what_if_simulator.html">What-If Simulator</a>
+                <a href="../supply_chain/Supplychain.html">Gold Supply Chain</a>
+            </div>
+        </div>
+
+        <div class="score-cards">
+            <div class="card good" id="cardBalance">
+                <div class="card-label">System Balance</div>
+                <div class="card-value" id="sysBalance">—</div>
+                <div class="card-bar"><div class="card-bar-fill" id="sysBalanceBar" style="width:0%; background: linear-gradient(90deg, #28a745, #20c997);"></div></div>
+            </div>
+            <div class="card good">
+                <div class="card-label">Sustainability Index</div>
+                <div class="card-value" id="sysSustainability">—</div>
+                <div class="card-bar"><div class="card-bar-fill" id="sysSusBar" style="width:0%; background: #17a2b8;"></div></div>
+            </div>
+            <div class="card poor">
+                <div class="card-label">Bottleneck Count</div>
+                <div class="card-value" id="bottleneckCount">—</div>
+                <div class="card-bar"><div class="card-bar-fill" id="bottleneckBar" style="width:0%; background: #dc3545;"></div></div>
+            </div>
+            <div class="card good">
+                <div class="card-label">Phases</div>
+                <div class="card-value">7</div>
+                <div class="card-bar"><div class="card-bar-fill" style="width:78%; background: #c9a227;"></div></div>
+                <div style="font-size:12px; color:#6c757d; margin-top:5px;">Collection → Retail</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div class="section-title" style="margin-bottom: 0;">Supply chain flow (Burkina Faso / West Africa → Cleo retail)</div>
+                <a href="project_context.html" style="padding: 10px 18px; background: #5c4610; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;">📋 Senegal project context & impact</a>
+            </div>
+            <div style="background: #f0e6d3; padding: 14px 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c9a227;">
+                <strong>Project context (N-D-C):</strong> Senegal pilot 50 farmers, 100k potential participants, 31 plantation sites (EP Carbon). Barriers → D-constraints; scale → C-integration. <a href="project_context.html" style="color: #5c4610; font-weight: 600;">See full context & sources →</a>
+            </div>
+            <div class="flow-chart">
+                <div class="phases" id="phasesContainer"></div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #28a745, #20c997);"></div><span>Excellent (95–100)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #20c997, #17a2b8);"></div><span>Good (80–95)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #ffc107, #fd7e14);"></div><span>Fair (60–80)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #dc3545, #c82333);"></div><span>Poor (&lt;60)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="phaseModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Phase</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        const sheaPhaseData = {
+            0: { name: 'Collection', D: 235, C: 175, balance: 68.2, N: 178, sustainability: 0.12, notes: '94% women; 3M employed BF; seasonal May–Oct.' },
+            1: { name: 'First sale / aggregation', D: 220, C: 195, balance: 78.5, N: 192, sustainability: 0.35, notes: 'Sellers 150 US$/MT; nuts 425 US$/MT.' },
+            2: { name: 'Trading / bulking', D: 245, C: 230, balance: 88.0, N: 218, sustainability: 0.95, notes: 'Traders 250, exporters 250–800 US$/MT.' },
+            3: { name: 'Processing (nuts to butter)', D: 265, C: 255, balance: 92.5, N: 241, sustainability: 1.65, notes: 'Serious Shea: 100% renewable. 925 kg butter/woman/season.' },
+            4: { name: 'Export', D: 210, C: 165, balance: 64.0, N: 158, sustainability: 0.09, notes: '265k–445k t/year region; 90–200M US$ BF. Route OPAQUE.' },
+            5: { name: 'Manufacturing (butter to cosmetic)', D: 250, C: 238, balance: 90.2, N: 234, sustainability: 1.42, notes: 'Cleo: 95% shea, 100% renewable.' },
+            6: { name: 'Retail', D: 240, C: 265, balance: 91.8, N: 237, sustainability: 1.55, notes: 'Cleo 30/50/100 ml; 30 US$/30g. Income uplift 11.875× to women.' }
+        };
+
+        const system = { system_balance: 81.6, sustainability_index: 0.88, bottleneck_count: 2 };
+
+        function statusClass(balance) {
+            if (balance >= 95) return 'excellent';
+            if (balance >= 80) return 'good';
+            if (balance >= 60) return 'fair';
+            return 'poor';
+        }
+
+        function renderPhases() {
+            const container = document.getElementById('phasesContainer');
+            let html = '';
+            for (let i = 0; i <= 6; i++) {
+                const p = sheaPhaseData[i];
+                const cls = statusClass(p.balance);
+                html += `
+                    <div class="phase" onclick="showPhaseDetail(${i})">
+                        <div class="phase-box ${cls}">
+                            <div class="phase-id">Phase ${i}</div>
+                            <div class="phase-score">${Math.round(p.balance)}</div>
+                            <div class="phase-n">N: ${p.N}</div>
+                        </div>
+                        <div class="phase-name">${p.name.split(' ')[0]}${p.name.length > 12 ? '…' : ''}</div>
+                    </div>
+                `;
+                if (i < 6) html += '<div class="flow-arrow">→</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        function showPhaseDetail(phaseId) {
+            const p = sheaPhaseData[phaseId];
+            const imbalance = Math.abs(p.D - p.C);
+            const diagnosis = p.D > p.C ? 'D-dominant (Over-constrained)' : p.C > p.D ? 'C-dominant (Over-integrated)' : 'Balanced';
+
+            document.getElementById('modalTitle').textContent = `Phase ${phaseId}: ${p.name}`;
+            document.getElementById('modalBody').innerHTML = `
+                <div style="margin:20px 0;">
+                    <h3 style="margin-bottom:12px;">D–C Balance</h3>
+                    <div style="margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span>Definition (D)</span><strong>${p.D}</strong></div>
+                        <div style="height:28px;background:#e9ecef;border-radius:4px;overflow:hidden;">
+                            <div style="height:100%;width:${(p.D/300)*100}%;background:linear-gradient(90deg,#dc3545,#c82333);"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span>Contribution (C)</span><strong>${p.C}</strong></div>
+                        <div style="height:28px;background:#e9ecef;border-radius:4px;overflow:hidden;">
+                            <div style="height:100%;width:${(p.C/300)*100}%;background:linear-gradient(90deg,#17a2b8,#20c997);"></div>
+                        </div>
+                    </div>
+                    <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin-bottom:15px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                            <div><strong>Balance:</strong> ${p.balance.toFixed(1)}</div>
+                            <div><strong>N-State:</strong> ${p.N}</div>
+                            <div><strong>Sustainability:</strong> ${p.sustainability.toFixed(2)}</div>
+                            <div><strong>Imbalance:</strong> ${imbalance}</div>
+                        </div>
+                    </div>
+                    <p style="font-size:13px;color:#6c757d;margin-bottom:15px;">${p.notes}</p>
+                    <div style="background:${p.balance > 80 ? '#d4edda' : p.balance > 60 ? '#fff3cd' : '#f8d7da'};padding:12px;border-radius:8px;border-left:4px solid ${p.balance > 80 ? '#28a745' : p.balance > 60 ? '#ffc107' : '#dc3545'};">
+                        <strong>${diagnosis}</strong><br>
+                        <span style="font-size:13px;">${p.balance > 80 ? '✓ Healthy balance.' : p.D > p.C ? '⚠️ Increase C (integration) or reduce D (constraints).' : '⚠️ Increase D or reduce C.'}</span>
+                    </div>
+                    <div style="margin-top:20px;text-align:center;">
+                        <a href="what_if_simulator.html" style="display:inline-block;padding:12px 24px;background:#c9a227;color:white;text-decoration:none;border-radius:6px;font-weight:600;">🎛️ Optimize in Simulator</a>
+                        <button style="margin-left:10px;padding:12px 24px;background:#6c757d;color:white;border:none;border-radius:6px;cursor:pointer;" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('phaseModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('phaseModal').classList.remove('active');
+        }
+
+        function init() {
+            renderPhases();
+            document.getElementById('sysBalance').textContent = system.system_balance.toFixed(1);
+            document.getElementById('sysBalanceBar').style.width = Math.min(100, system.system_balance) + '%';
+            document.getElementById('sysSustainability').textContent = system.sustainability_index.toFixed(2);
+            document.getElementById('sysSusBar').style.width = Math.min(100, system.sustainability_index * 50) + '%';
+            document.getElementById('bottleneckCount').textContent = system.bottleneck_count;
+            document.getElementById('bottleneckBar').style.width = (system.bottleneck_count / 7 * 100) + '%';
+        }
+
+        window.onclick = function(e) {
+            if (e.target.id === 'phaseModal') closeModal();
+        };
+
+        init();
+    </script>
+</body>
+</html>

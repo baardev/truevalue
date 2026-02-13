@@ -4,14 +4,14 @@
 
 Two fully functional, interactive HTML mockups that demonstrate the visualization strategy for the Gold Supply Chain Intelligence Platform:
 
-### 1. **Dashboard** (`frontend/mockups/dashboard.html`)
+### 1. **Dashboard** (`frontend/supply_chain/dashboard.html`)
 - System health overview
 - Live phase flow visualization
 - Balance trends
 - Optimization recommendations
 - Click any phase for detailed D-C breakdown
 
-### 2. **What-If Simulator** (`frontend/mockups/what_if_simulator.html`)
+### 2. **What-If Simulator** (`frontend/supply_chain/what_if_simulator.html`)
 - Interactive D and C sliders for all 8 phases
 - Real-time metric recalculation
 - Live flow network graph
@@ -26,17 +26,17 @@ Two fully functional, interactive HTML mockups that demonstrate the visualizatio
 ### Option 1: Direct File Opening
 ```bash
 # Open in your default browser
-xdg-open /home/jw/src/tv/frontend/mockups/dashboard.html
-xdg-open /home/jw/src/tv/frontend/mockups/what_if_simulator.html
+xdg-open /home/jw/src/tv/frontend/supply_chain/dashboard.html
+xdg-open /home/jw/src/tv/frontend/supply_chain/what_if_simulator.html
 
 # Or with a specific browser
-firefox /home/jw/src/tv/frontend/mockups/dashboard.html
-google-chrome /home/jw/src/tv/frontend/mockups/what_if_simulator.html
+firefox /home/jw/src/tv/frontend/supply_chain/dashboard.html
+google-chrome /home/jw/src/tv/frontend/supply_chain/what_if_simulator.html
 ```
 
 ### Option 2: Using Python HTTP Server
 ```bash
-cd /home/jw/src/tv/frontend/mockups
+cd /home/jw/src/tv/frontend/supply_chain
 python -m http.server 8000
 
 # Then open in browser:
@@ -45,7 +45,7 @@ python -m http.server 8000
 ```
 
 ### Option 3: File Explorer
-1. Navigate to `/home/jw/src/tv/frontend/mockups/`
+1. Navigate to `/home/jw/src/tv/frontend/supply_chain/`
 2. Double-click `dashboard.html` or `what_if_simulator.html`
 
 ---

@@ -41,7 +41,7 @@
 
 ```
 docs/
-├── RULES.md                      # AI operating principles
+├── SUPPLY_CHAIN_RULES.md         # AI operating principles (supply chain layer)
 ├── FRONTEND_API.md               # API specification
 ├── THOLONIC_INTEGRATION.md       # Complete framework guide (NOW ENHANCED)
 └── NDC_VALUE_CALCULATIONS.md     # Value calculation reference (NEW)

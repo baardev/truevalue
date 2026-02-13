@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Supply Chain Intelligence Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px 50px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .hero .tagline {
+            font-size: 20px;
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .hero .version {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #e7f3ff;
+            color: #17a2b8;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .interfaces {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .interface-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .interface-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        
+        .interface-header {
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .interface-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+        
+        .interface-header .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .interface-header .status {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .interface-body {
+            padding: 30px;
+        }
+        
+        .interface-body h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .interface-body p {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .interface-body ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .interface-body li {
+            font-size: 14px;
+            color: #495057;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .interface-body li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 8px 20px rgba(108,117,125,0.4);
+        }
+        
+        .coming-soon {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .coming-soon h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .coming-soon-item {
+            padding: 30px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .coming-soon-item .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .coming-soon-item h3 {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        
+        .coming-soon-item p {
+            font-size: 12px;
+            color: #adb5bd;
+        }
+        
+        .project-info {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .project-info h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .info-section h3 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .info-section p, .info-section li {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-section li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .info-section li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge.new {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge.beta {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="hero">
+            <div class="version">v0.2 - Sarah Integration Complete ✓</div>
+            <h1>🏆 Gold Supply Chain Intelligence Platform</h1>
+            <p class="tagline">
+                Quantitative, phase-resolved, physically grounded modeling of the gold supply chain<br>
+                from geological origin to exchange-registered bullion, now with environmental sustainability metrics
+            </p>
+            
+            <div class="features">
+                <div class="feature">
+                    <div class="feature-icon">📊</div>
+                    <h3>Phase-Based Analysis</h3>
+                    <p>9 discrete phases (0-8) including circular economy recycling</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">🌱</div>
+                    <h3>Environmental Metrics</h3>
+                    <p>Water, waste, and energy tracking per Sarah's TRUE VALUE framework</p>
+                </div>
+                <div class="feature">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>N-D-C Balance</h3>
+                    <p>Tholonic framework for system sustainability and bottleneck detection</p>
+                </div>
+            </div>
+            
+            <div class="quick-stats">
+                <div class="stat-card">
+                    <div class="stat-value">9</div>
+                    <div class="stat-label">Supply Chain Phases</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">13</div>
+                    <div class="stat-label">Real Companies Mapped</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">17</div>
+                    <div class="stat-label">Environmental Metrics</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">100%</div>
+                    <div class="stat-label">Rule Compliance</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="interfaces">
+            <div class="interface-card" onclick="window.location.href='dashboard.html'">
+                <div class="interface-header">
+                    <div class="icon">📈</div>
+                    <h2>Main Dashboard</h2>
+                    <span class="status">✓ ACTIVE</span>
+                </div>
+                <div class="interface-body">
+                    <h3>System Overview & Monitoring</h3>
+                    <p>Real-time view of supply chain health, balance scores, and environmental impact across all 9 phases.</p>
+                    
+                    <ul>
+                        <li>Phase-by-phase balance visualization</li>
+                        <li>Water recycling and waste circularity metrics</li>
+                        <li>Clean energy transition tracking</li>
+                        <li>Phase 8 circular economy integration</li>
+                        <li>Entity selector (Newmont, Barrick, UK Royal Mint)</li>
+                        <li>Critical alerts and recommendations</li>
+                    </ul>
+                    
+                    <a href="dashboard.html" class="btn">Launch Dashboard →</a>
+                </div>
+            </div>
+            
+            <div class="interface-card" onclick="window.location.href='what_if_simulator.html'">
+                <div class="interface-header">
+                    <div class="icon">🎛️</div>
+                    <h2>What-If Simulator</h2>
+                    <span class="status">✓ ACTIVE</span>
+                </div>
+                <div class="interface-body">
+                    <h3>Interactive Supply Chain Modeling</h3>
+                    <p>Adjust D-C parameters in real-time and observe cascading impacts across the entire supply chain.</p>
+                    
+                    <ul>
+                        <li>Phase-by-phase parameter control</li>
+                        <li>Live impact visualization with circular flows</li>
+                        <li>Environmental metric simulation</li>
+                        <li>Auto-optimization engine</li>
+                        <li>Scenario library (shock, expansion, optimization)</li>
+                        <li>Real-time sustainability calculations</li>
+                    </ul>
+                    
+                    <a href="what_if_simulator.html" class="btn">Launch Simulator →</a>
+                </div>
+            </div>
+            
+            <div class="interface-card" onclick="window.location.href='../shea/index.html'">
+                <div class="interface-header" style="background: linear-gradient(135deg, #c9a227 0%, #8b6914 100%);">
+                    <div class="icon">🫒</div>
+                    <h2>Shea Supply Chain</h2>
+                    <span class="status">Real-world example</span>
+                </div>
+                <div class="interface-body">
+                    <h3>True Value – Burkina Faso / West Africa → Cleo</h3>
+                    <p>Phase-resolved, N-D-C integrated frontend for shea butter. Data from v2/data (Clarity Coalition True Value).</p>
+                    <ul>
+                        <li>7 phases: Collection → Retail</li>
+                        <li>Same Tholonic balance & sustainability model as gold</li>
+                        <li>Shea dashboard & what-if simulator</li>
+                        <li>Real metrics: income uplift, CO₂e, women’s share</li>
+                    </ul>
+                    <a href="../shea/index.html" class="btn">Open Shea Supply Chain →</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="coming-soon">
+            <h2>🚀 Coming Soon</h2>
+            <div class="coming-soon-grid">
+                <div class="coming-soon-item">
+                    <div class="icon">🌍</div>
+                    <h3>Environmental Dashboard</h3>
+                    <p>Detailed water/waste/energy metrics with company comparisons</p>
+                </div>
+                <div class="coming-soon-item">
+                    <div class="icon">🏢</div>
+                    <h3>Entity Deep Dive</h3>
+                    <p>Company-specific analysis (Newmont, Barrick, etc.)</p>
+                </div>
+                <div class="coming-soon-item">
+                    <div class="icon">♻️</div>
+                    <h3>Circular Economy Tracker</h3>
+                    <p>Recycling flows and waste optimization opportunities</p>
+                </div>
+                <div class="coming-soon-item">
+                    <div class="icon">📊</div>
+                    <h3>COMEX Reconciliation</h3>
+                    <p>Live data integration with exchange inventories</p>
+                </div>
+                <div class="coming-soon-item">
+                    <div class="icon">🤖</div>
+                    <h3>AI Optimization Engine</h3>
+                    <p>Machine learning for bottleneck prediction</p>
+                </div>
+                <div class="coming-soon-item">
+                    <div class="icon">📱</div>
+                    <h3>Mobile Interface</h3>
+                    <p>Responsive dashboard for on-the-go monitoring</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="project-info">
+            <h2>📚 Project Information</h2>
+            <div class="info-grid">
+                <div class="info-section">
+                    <h3>Supply Chain Phases</h3>
+                    <ul>
+                        <li>Phase 0: Geological Prospecting</li>
+                        <li>Phase 1: Mine Extraction</li>
+                        <li>Phase 2: Ore Processing & Concentration</li>
+                        <li>Phase 3: Doré Production</li>
+                        <li>Phase 4: Refining</li>
+                        <li>Phase 5: Bar Casting & Assay</li>
+                        <li>Phase 6: Logistics & Vaulting</li>
+                        <li>Phase 7: Exchange Registration (COMEX)</li>
+                        <li>Phase 8: Recycling & Recovery <span class="badge new">NEW</span></li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Environmental Metrics (Sarah Integration)</h3>
+                    <ul>
+                        <li>💧 Water consumption & recycling rates</li>
+                        <li>♻️ Waste generation & circularity</li>
+                        <li>⚡ Energy mix (clean vs. fossil)</li>
+                        <li>🏭 Phase 2 critical waste (95% tailings)</li>
+                        <li>🌍 Grid types (AC/DC/Hybrid/Off-grid)</li>
+                        <li>📱 E-waste recycling tracking</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Data Sources</h3>
+                    <ul>
+                        <li>Newmont Corporation (sustainability reports)</li>
+                        <li>Barrick Gold (TCFD-aligned disclosures)</li>
+                        <li>UK Royal Mint (e-waste recycling data)</li>
+                        <li>World Gold Council (industry benchmarks)</li>
+                        <li>COMEX daily inventories (Phase 7 anchor)</li>
+                        <li>ICMM (water & waste standards)</li>
+                    </ul>
+                </div>
+                
+                <div class="info-section">
+                    <h3>Operating Principles (9 Rule Sets)</h3>
+                    <ul>
+                        <li>Separation of Concerns (physical → value → financial)</li>
+                        <li>Phase-Based Modeling (everything maps to phases)</li>
+                        <li>Data-First Discipline (no speculation, mark opacity)</li>
+                        <li>Transparency Classification (high/medium/low)</li>
+                        <li>Custody Awareness (ownership ≠ custody ≠ control)</li>
+                        <li>Exchange Data as Anchor (COMEX = reconciliation target)</li>
+                        <li>Schema-First Development (all insights tabulated)</li>
+                        <li>Deferred Interpretation (map terrain before value)</li>
+                        <li>Reproducibility & Auditability (traceable claims)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        
+        <div class="project-info">
+            <h2>🔗 Quick Links</h2>
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; margin-top: 20px;">
+                <a href="dashboard.html" class="btn" style="display: block; text-align: center;">📈 Dashboard</a>
+                <a href="what_if_simulator.html" class="btn" style="display: block; text-align: center;">🎛️ Simulator</a>
+                <a href="../csv/" class="btn" style="display: block; text-align: center;">🗂️ CSV Catalog</a>
+                <a href="../docs/SARAH_INTEGRATION_COMPLETE.md" class="btn btn-secondary" style="display: block; text-align: center;">📄 Sarah Integration Docs</a>
+                <a href="../docs/FRONTEND_API.md" class="btn btn-secondary" style="display: block; text-align: center;">🔌 API Documentation</a>
+                <a href="../docs/WATER_WASTE_METHODOLOGY.md" class="btn btn-secondary" style="display: block; text-align: center;">🌱 Environmental Methods</a>
+                <a href="../schema/entity_registry.csv" class="btn btn-secondary" style="display: block; text-align: center;">🏢 Entity Registry</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Gold Supply Chain Intelligence Platform v0.2 • Built January 2026</p>
+            <p style="margin-top: 10px; font-size: 12px;">
+                Framework: 9 Rule Sets | Phases: 0-8 | Integration: Sarah's TRUE VALUE Metrics ✓
+            </p>
+        </div>
+    </div>
+    
+    <script>
+        // Add smooth hover effects and analytics placeholder
+        document.querySelectorAll('.interface-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Placeholder for future analytics
+        console.log('Gold Supply Chain Intelligence Platform v0.2 loaded');
+        console.log('Sarah Integration: Complete ✓');
+        console.log('Phases: 9 (0-8 including Recycling)');
+        console.log('Environmental Metrics: Active');
+    </script>
+</body>
+</html>

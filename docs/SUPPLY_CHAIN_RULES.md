@@ -1,9 +1,12 @@
-# Gold Supply Chain Intelligence Project
-## AI Operating Rules (Cursor Framework)
+# Supply Chain Rules
+## Gold Supply Chain Intelligence Project — AI Operating Rules (Supply Chain Layer)
 
 ## Core Objective
 
 Build a quantitative, phase-resolved, physically grounded model of the gold supply chain, from geological origin to exchange-registered bullion, before introducing price, value, or financial interpretation.
+
+**Scope note**: This document governs the **Supply Chain (physical)** layer only.  
+Value-chain rules live in `docs/VALUE_CHAIN_RULES.md`.
 
 ## Rule Set 1: Separation of Concerns
 

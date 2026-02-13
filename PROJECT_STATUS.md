@@ -54,7 +54,7 @@ tv/
 
 ### 6. ✅ Documentation
 - `README.md` - Project overview & principles
-- `docs/RULES.md` - AI operating rules (9 rule sets)
+- `docs/SUPPLY_CHAIN_RULES.md` - AI operating rules (9 rule sets) for supply chain layer
 - `docs/FRONTEND_API.md` - Complete API specification
 - `QUICKSTART.md` - Usage guide
 
@@ -233,7 +233,7 @@ python3 src/api/generate_frontend_data.py
 3. `requirements.txt` - Python dependencies
 4. `.gitignore` - Version control
 5-8. `schema/*.csv` - Data schemas (4 files)
-9. `docs/RULES.md` - AI operating principles
+9. `docs/SUPPLY_CHAIN_RULES.md` - AI operating principles (supply chain layer)
 10. `docs/FRONTEND_API.md` - API specification
 11. `src/ingest/comex_scraper.py` - Phase 7 scraper
 12. `src/ingest/data_importer.py` - CSV importer with validation
