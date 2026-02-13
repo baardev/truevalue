@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moved: Dashboard</title>
+  <meta http-equiv="refresh" content="0; url=../supply_chain/dashboard.html" />
+</head>
+<body>
+  <p>This moved to <a href="../supply_chain/dashboard.html">/frontend/supply_chain/dashboard.html</a>.</p>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gold Supply Chain Intelligence - Main Dashboard</title>
@@ -381,35 +393,43 @@
             </div>
             
             <div class="card good">
-                <div class="card-label">Sustainability</div>
-                <div class="card-value">1.45</div>
+                <div class="card-label">Water Recycling</div>
+                <div class="card-value">73%</div>
                 <div class="card-bar">
-                    <div class="card-bar-fill" style="width: 72.5%"></div>
+                    <div class="card-bar-fill" style="width: 73%; background: linear-gradient(90deg, #17a2b8, #20c997);"></div>
                 </div>
-                <div class="card-status">Efficient</div>
+                <div class="card-status">💧 Above Industry Avg</div>
             </div>
             
             <div class="card poor">
-                <div class="card-label">Bottlenecks</div>
-                <div class="card-value">1</div>
+                <div class="card-label">Waste Circularity</div>
+                <div class="card-value">5.2%</div>
                 <div class="card-bar">
-                    <div class="card-bar-fill" style="width: 100%; background: #dc3545;"></div>
+                    <div class="card-bar-fill" style="width: 5.2%; background: #dc3545;"></div>
                 </div>
-                <div class="card-status">⚠️ Phase 6 Critical</div>
+                <div class="card-status">⚠️ Below Target (8%)</div>
             </div>
             
-            <div class="card good">
-                <div class="card-label">System Health</div>
-                <div class="card-value">Good</div>
+            <div class="card fair">
+                <div class="card-label">Clean Energy</div>
+                <div class="card-value">42%</div>
                 <div class="card-bar">
-                    <div class="card-bar-fill" style="width: 78%"></div>
+                    <div class="card-bar-fill" style="width: 42%; background: linear-gradient(90deg, #ffc107, #28a745);"></div>
                 </div>
-                <div class="card-status">↗️ Improving</div>
+                <div class="card-status">🌱 Transitioning</div>
             </div>
         </div>
         
         <div class="main-content">
-            <div class="section-title">Supply Chain Flow (Click phase for details)</div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                <div class="section-title" style="margin-bottom: 0;">Supply Chain Flow - Now includes Recycling ♻️</div>
+                <select style="padding: 8px 15px; border: 1px solid #dee2e6; border-radius: 6px; font-size: 14px; cursor: pointer;" onchange="switchEntity(this.value)">
+                    <option value="synthetic">Synthetic Baseline</option>
+                    <option value="newmont">Newmont Corporation</option>
+                    <option value="barrick">Barrick Gold</option>
+                    <option value="royal_mint">UK Royal Mint (Recycler)</option>
+                </select>
+            </div>
             
             <div class="flow-chart">
                 <div class="phases">
@@ -500,6 +520,31 @@
                     </div>
                 </div>
                 
+                <div style="margin-top: 40px; padding: 20px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                    <h3 style="font-size: 16px; color: #2c3e50; margin-bottom: 10px;">♻️ Circular Economy: Phase 8 (Recycling)</h3>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 15px;">
+                        <div class="phase" onclick="showPhaseDetail(8)">
+                            <div class="phase-box good" style="width: 80px; height: 80px;">
+                                <div class="phase-id">Phase 8</div>
+                                <div class="phase-score">80</div>
+                                <div class="phase-n">N: 210</div>
+                            </div>
+                            <div class="phase-name">Recycling</div>
+                        </div>
+                        <div style="text-align: center; padding-top: 15px;">
+                            <div style="font-size: 36px; color: #17a2b8;">↻</div>
+                            <div style="font-size: 12px; color: #6c757d; margin-top: 5px;">Feeds back to Phase 4</div>
+                            <div style="font-size: 14px; font-weight: bold; color: #2c3e50; margin-top: 5px;">~28% of supply</div>
+                        </div>
+                        <div style="padding-top: 10px;">
+                            <div style="font-size: 11px; color: #6c757d; margin-bottom: 8px;">Sources:</div>
+                            <div style="font-size: 12px; margin-bottom: 5px;">📱 E-waste: 45%</div>
+                            <div style="font-size: 12px; margin-bottom: 5px;">💍 Jewelry: 40%</div>
+                            <div style="font-size: 12px;">🏭 Industrial: 15%</div>
+                        </div>
+                    </div>
+                </div>
+                
                 <div class="legend">
                     <div class="legend-item">
                         <div class="legend-color" style="background: linear-gradient(135deg, #28a745, #20c997);"></div>
@@ -554,27 +599,39 @@
                 </div>
                 
                 <div class="chart-container">
-                    <h3>🤖 Optimization Recommendations</h3>
-                    <ul class="recommendations">
-                        <li class="recommendation critical" onclick="showRecommendation(1)">
-                            <div class="rec-title">⚠️ CRITICAL - Phase 6 (Vaulting)</div>
-                            <div class="rec-details">D=204, C=161 (Imbalanced by 27%)</div>
-                            <div class="rec-impact">Impact: +53% capacity, Fix bottleneck</div>
-                        </li>
-                        <li class="recommendation high" onclick="showRecommendation(2)">
-                            <div class="rec-title">⚡ HIGH - Phase 3 (Doré Production)</div>
-                            <div class="rec-details">Moderate D-dominance creating ripple</div>
-                            <div class="rec-impact">Impact: +18% efficiency, Reduce cascade</div>
-                        </li>
-                        <li class="recommendation medium" onclick="showRecommendation(3)">
-                            <div class="rec-title">🔧 OPTIMIZE - Phase 0 (Prospecting)</div>
-                            <div class="rec-details">Can improve supplier diversity</div>
-                            <div class="rec-impact">Impact: +12% resilience</div>
-                        </li>
-                    </ul>
+                    <h3>🌱 Environmental Impact (Sarah's Metrics)</h3>
+                    <div style="margin-bottom: 20px;">
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
+                            <span>💧 Phase 2 Water Use</span>
+                            <span style="font-weight: bold;">8.5M L/day</span>
+                        </div>
+                        <div style="font-size: 11px; color: #17a2b8; margin-bottom: 10px;">↻ 75% recycled (closed-loop circuits)</div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
+                            <span>♻️ Phase 2 Waste Generation</span>
+                            <span style="font-weight: bold; color: #dc3545;">9,500 tonnes/day</span>
+                        </div>
+                        <div style="font-size: 11px; color: #dc3545; margin-bottom: 10px;">⚠️ 95% of ore becomes tailings (Critical!)</div>
+                        
+                        <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
+                            <span>⚡ Phase 1-2 Energy Mix</span>
+                            <span style="font-weight: bold;">42% clean</span>
+                        </div>
+                        <div style="font-size: 11px; color: #28a745;">↗️ Target: 60% by 2030 (Newmont commitment)</div>
+                    </div>
+                    
+                    <div style="padding: 15px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 15px;">
+                        <div style="font-weight: 600; margin-bottom: 5px; font-size: 13px;">💡 Circular Economy Opportunity</div>
+                        <div style="font-size: 12px; color: #856404;">
+                            Phase 2 waste: Only 5% recycled<br>
+                            <strong>Potential:</strong> Reprocess old tailings, use for mine backfill<br>
+                            <strong>Impact:</strong> +3% waste circularity = $1.2M savings
+                        </div>
+                    </div>
+                    
                     <div style="margin-top: 15px; text-align: center;">
-                        <button style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;" onclick="alert('Auto-Optimize would calculate optimal D-C balance for all phases')">
-                            ✨ Auto-Optimize All Phases
+                        <button style="padding: 10px 20px; background: #17a2b8; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600;" onclick="alert('Would show detailed environmental metrics dashboard with water/waste/energy breakdown by phase')">
+                            📊 View Environmental Dashboard
                         </button>
                     </div>
                 </div>
@@ -594,14 +651,15 @@
     
     <script>
         const phaseData = {
-            0: { name: 'Geological Prospecting', D: 227, C: 208, balance: 83.9, N: 182, sustainability: 0.25 },
-            1: { name: 'Mine Extraction', D: 270, C: 277, balance: 94.6, N: 259, sustainability: 1.44 },
-            2: { name: 'Ore Processing', D: 276, C: 271, balance: 95.96, N: 263, sustainability: 2.35 },
-            3: { name: 'Doré Production', D: 264, C: 249, balance: 89.3, N: 229, sustainability: 0.43 },
-            4: { name: 'Refining', D: 263, C: 270, balance: 95.1, N: 253, sustainability: 1.77 },
-            5: { name: 'Bar Casting & Assay', D: 253, C: 247, balance: 95.0, N: 237, sustainability: 1.95 },
-            6: { name: 'Logistics & Vaulting', D: 204, C: 161, balance: 65.5, N: 118, sustainability: 0.05 },
-            7: { name: 'Exchange Registration', D: 254, C: 265, balance: 92.2, N: 239, sustainability: 0.80 }
+            0: { name: 'Geological Prospecting', D: 227, C: 208, balance: 83.9, N: 182, sustainability: 0.25, water: 0, waste: 0, energy: 5000 },
+            1: { name: 'Mine Extraction', D: 270, C: 277, balance: 94.6, N: 259, sustainability: 1.44, water: 2000000, waste: 50000000, energy: 250000 },
+            2: { name: 'Ore Processing', D: 276, C: 271, balance: 95.96, N: 263, sustainability: 2.35, water: 8500000, waste: 9500000, energy: 180000 },
+            3: { name: 'Doré Production', D: 264, C: 249, balance: 89.3, N: 229, sustainability: 0.43, water: 300000, waste: 50000, energy: 30000 },
+            4: { name: 'Refining', D: 263, C: 270, balance: 95.1, N: 253, sustainability: 1.77, water: 1000000, waste: 10000, energy: 80000 },
+            5: { name: 'Bar Casting & Assay', D: 253, C: 247, balance: 95.0, N: 237, sustainability: 1.95, water: 30000, waste: 500, energy: 15000 },
+            6: { name: 'Logistics & Vaulting', D: 204, C: 161, balance: 65.5, N: 118, sustainability: 0.05, water: 0, waste: 0, energy: 5000 },
+            7: { name: 'Exchange Registration', D: 254, C: 265, balance: 92.2, N: 239, sustainability: 0.80, water: 0, waste: 0, energy: 2000 },
+            8: { name: 'Recycling & Recovery', D: 245, C: 250, balance: 80.0, N: 210, sustainability: 1.20, water: 1000000, waste: 800000, energy: 70000 }
         };
         
         function showPhaseDetail(phaseId) {
@@ -617,6 +675,7 @@
             title.textContent = `Phase ${phaseId}: ${phase.name}`;
             body.innerHTML = `
                 <div style="margin: 20px 0;">
+                    ${phaseId === 8 ? '<div style="background: #e7f3ff; padding: 10px; border-radius: 6px; margin-bottom: 15px; font-size: 13px;"><strong>♻️ Circular Economy Phase</strong><br>Recycled gold feeds back to Phase 4 (Refining). ~28% of annual supply.</div>' : ''}
                     <h3 style="margin-bottom: 15px;">D-C Balance</h3>
                     <div style="margin-bottom: 10px;">
                         <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
@@ -644,6 +703,16 @@
                             <div><strong>N-State:</strong> ${phase.N}</div>
                             <div><strong>Sustainability:</strong> ${phase.sustainability.toFixed(2)}</div>
                             <div><strong>Imbalance:</strong> ${imbalance}</div>
+                        </div>
+                    </div>
+                    
+                    <h3 style="margin: 20px 0 10px 0;">🌱 Environmental Metrics (Sarah Integration)</h3>
+                    <div style="background: #e7f9f5; padding: 15px; border-radius: 8px; border-left: 4px solid #17a2b8;">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; font-size: 13px;">
+                            <div><strong>💧 Water:</strong> ${phase.water > 0 ? (phase.water/1000000).toFixed(1) + 'M L/day' : 'N/A'}</div>
+                            <div><strong>♻️ Waste:</strong> ${phase.waste > 0 ? (phase.waste/1000000).toFixed(1) + 'M kg/day' : 'N/A'}</div>
+                            <div><strong>⚡ Energy:</strong> ${phase.energy > 0 ? (phase.energy/1000).toFixed(0) + 'k kWh/day' : 'N/A'}</div>
+                            <div><strong>🌍 Clean %:</strong> ${phaseId === 1 ? '25%' : phaseId === 2 ? '40%' : phaseId === 4 ? '50%' : phaseId === 8 ? '45%' : 'N/A'}</div>
                         </div>
                     </div>
                     
@@ -693,6 +762,25 @@
             if (event.target == modal) {
                 closeModal();
             }
+        }
+        
+        // Switch entity
+        function switchEntity(entity) {
+            const entityNames = {
+                'synthetic': 'Synthetic Baseline',
+                'newmont': 'Newmont Corporation (Denver, CO)',
+                'barrick': 'Barrick Gold (Toronto, Canada)',
+                'royal_mint': 'UK Royal Mint (Wales) - Recycler'
+            };
+            
+            const entityInfo = {
+                'newmont': 'World\'s largest gold miner. High-quality sustainability reporting. Operations: Ghana, Nevada, Australia.',
+                'barrick': 'Major gold producer diversifying into copper. TCFD-aligned reporting. Strong water stewardship focus.',
+                'royal_mint': 'E-waste recycling focus (phones to coins). Phase 8 specialist. Medium data quality.',
+                'synthetic': 'Generated from industry benchmarks for development and testing.'
+            };
+            
+            alert(`Switched to: ${entityNames[entity]}\n\n${entityInfo[entity]}\n\nIn production, this would:\n• Load entity-specific data from sustainability reports\n• Update all metrics with real data\n• Show entity sustainability report URL\n• Enable comparison mode`);
         }
     </script>
 </body>

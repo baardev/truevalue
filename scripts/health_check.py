@@ -117,7 +117,7 @@ class HealthChecker:
         print("📚 Documentation")
         self.check("README.md", (self.project_root / "README.md").exists())
         self.check("QUICKSTART.md", (self.project_root / "QUICKSTART.md").exists())
-        self.check("docs/RULES.md", (self.project_root / "docs/RULES.md").exists())
+        self.check("docs/SUPPLY_CHAIN_RULES.md", (self.project_root / "docs/SUPPLY_CHAIN_RULES.md").exists())
         self.check("docs/FRONTEND_API.md", (self.project_root / "docs/FRONTEND_API.md").exists())
         print()
         

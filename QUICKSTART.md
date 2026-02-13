@@ -41,7 +41,7 @@ tv/
 │       └── generate_frontend_data.py    # Generate JSON for frontend
 │
 ├── docs/
-│   ├── RULES.md                     # AI operating principles
+│   ├── SUPPLY_CHAIN_RULES.md         # AI operating principles (supply chain layer)
 │   └── FRONTEND_API.md              # API spec for interactive simulator
 │
 └── README.md                        # Project overview
@@ -235,7 +235,7 @@ fetch('http://localhost:8000/api/v1/simulation/run', {
 
 ---
 
-## Key Design Principles (From RULES.md)
+## Key Design Principles (From SUPPLY_CHAIN_RULES.md)
 
 1. **Separation of Concerns**: Supply chain (physical) → Value chain (economic) → Financial (leverage)
 2. **Phase-Based**: Everything maps to phases 0-7
@@ -270,9 +270,33 @@ pip install -r requirements.txt
 
 ---
 
+## View the frontend in a browser
+
+Serve the project from the repo root so both Gold and Shea pages (and their cross-links) work:
+
+```bash
+cd /home/jw/src/tv
+python -m http.server 8000
+```
+
+Then open:
+
+| Page | URL |
+|------|-----|
+| Gold supply chain (landing) | http://localhost:8000/frontend/supply_chain/Supplychain.html |
+| Gold dashboard | http://localhost:8000/frontend/supply_chain/dashboard.html |
+| Gold what-if simulator | http://localhost:8000/frontend/supply_chain/what_if_simulator.html |
+| **Shea supply chain (landing)** | http://localhost:8000/frontend/shea/index.html |
+| Shea dashboard | http://localhost:8000/frontend/shea/dashboard.html |
+| Shea what-if simulator | http://localhost:8000/frontend/shea/what_if_simulator.html |
+
+Stop the server with `Ctrl+C`. No install needed beyond Python.
+
+---
+
 ## Questions?
 
-- Review `docs/RULES.md` for methodology
+- Review `docs/SUPPLY_CHAIN_RULES.md` for methodology
 - Review `docs/FRONTEND_API.md` for API spec
 - Check `README.md` for project overview
 

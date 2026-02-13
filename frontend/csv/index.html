@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TV - CSV Catalog</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #0b1220 0%, #111827 100%);
+      min-height: 100vh;
+      padding: 22px;
+      color: #e5e7eb;
+    }
+    .wrap { max-width: 1150px; margin: 0 auto; }
+    .hero {
+      background: rgba(17, 24, 39, 0.75);
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+    }
+    .kicker {
+      display: inline-block;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(147, 197, 253, 0.15);
+      border: 1px solid rgba(147, 197, 253, 0.25);
+      color: #93c5fd;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    h1 { font-size: 26px; margin-bottom: 8px; }
+    p { color: #9ca3af; line-height: 1.6; }
+    code { color: #e5e7eb; }
+
+    .toplinks {
+      margin-top: 14px;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block;
+      padding: 10px 12px;
+      background: #111827;
+      border: 1px solid #374151;
+      border-radius: 12px;
+      color: #e5e7eb;
+      font-weight: 900;
+      text-decoration: none;
+      font-size: 13px;
+    }
+    .btn:hover { border-color: #60a5fa; }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+    .card {
+      background: rgba(17, 24, 39, 0.75);
+      border: 1px solid #1f2937;
+      border-radius: 14px;
+      padding: 16px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.20);
+    }
+    .card h2 {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #93c5fd;
+      margin-bottom: 10px;
+      font-weight: 900;
+    }
+    ul { list-style: none; }
+    li {
+      padding: 8px 0;
+      border-bottom: 1px solid #1f2937;
+    }
+    li:last-child { border-bottom: none; }
+    a {
+      color: #e5e7eb;
+      text-decoration: none;
+      font-weight: 800;
+    }
+    a:hover { text-decoration: underline; }
+    .hint {
+      font-size: 12px;
+      color: #9ca3af;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+    .footer {
+      margin-top: 14px;
+      text-align: center;
+      color: rgba(229,231,235,0.8);
+      font-size: 12px;
+    }
+    @media (max-width: 900px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="kicker">CSV Catalog</div>
+      <h1>CSV Inputs (Source-of-Truth)</h1>
+      <p>
+        This page links to the CSV inputs used by the <strong>Supply Chain</strong> and <strong>Value Chain</strong> layers.
+        Keeping these links here avoids overcrowding the homepages.
+      </p>
+      <p style="margin-top: 8px;">
+        These live primarily under <code>/schema/</code> and are converted into JSON outputs for the UIs.
+      </p>
+
+      <div class="toplinks">
+        <a class="btn" href="/">Server Root</a>
+        <a class="btn" href="/frontend/supply_chain/">Supply Chain UI</a>
+        <a class="btn" href="/frontend/value_chain/">Value Chain UI</a>
+        <a class="btn" href="/schema/">Browse schema/ folder</a>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>Supply chain (schema/)</h2>
+        <ul>
+          <li><a href="/schema/supply_chain_phases.csv">schema/supply_chain_phases.csv</a></li>
+          <li><a href="/schema/supply_chain_phases_ndc.csv">schema/supply_chain_phases_ndc.csv</a></li>
+          <li><a href="/schema/gold_supply_chain_metrics.csv">schema/gold_supply_chain_metrics.csv</a></li>
+          <li><a href="/schema/gold_supply_chain_metrics_ndc.csv">schema/gold_supply_chain_metrics_ndc.csv</a></li>
+          <li><a href="/schema/custody_and_flow.csv">schema/custody_and_flow.csv</a></li>
+          <li><a href="/schema/data_sources.csv">schema/data_sources.csv</a></li>
+          <li><a href="/schema/phase_interactions_ndc.csv">schema/phase_interactions_ndc.csv</a></li>
+          <li><a href="/schema/entity_registry.csv">schema/entity_registry.csv</a></li>
+        </ul>
+        <div class="hint">
+          Defines phases, metrics, entities, sources, and custody/flow for the physical layer.
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Value chain (schema/)</h2>
+        <ul>
+          <li><a href="/schema/value_chain_metrics.csv">schema/value_chain_metrics.csv</a></li>
+          <li><a href="/schema/value_chain_metrics_ndc.csv">schema/value_chain_metrics_ndc.csv</a></li>
+          <li><a href="/schema/value_chain_metric_definitions.csv">schema/value_chain_metric_definitions.csv</a></li>
+          <li><a href="/schema/value_chain_data_sources.csv">schema/value_chain_data_sources.csv</a></li>
+          <li><a href="/schema/value_chain_phases_ndc.csv">schema/value_chain_phases_ndc.csv</a></li>
+        </ul>
+        <div class="hint">
+          Value chain is strictly separate: separate datastore, separate API outputs, separate UI.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      Served from <code>/frontend/csv/index.html</code> • Intended as a stable catalog page
+    </div>
+  </div>
+</body>
+</html>

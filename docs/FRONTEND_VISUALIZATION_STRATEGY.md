@@ -357,7 +357,7 @@ The frontend includes an **"Understanding the Metrics"** help panel:
 ## Testing the Mockups
 
 **Local Testing** (no server required):
-1. Navigate to `frontend/mockups/`
+1. Navigate to `frontend/supply_chain/` (formerly `frontend/mockups/`)
 2. Open `dashboard.html` in any modern browser
 3. Click phase boxes to see details
 4. Click "What-If Simulator" button (link to `what_if_simulator.html`)
