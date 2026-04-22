@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carbon Analysis — Shea Butter Supply Chain</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #5c4610 0%, #8b6914 100%); min-height: 100vh; padding: 20px; }
+        .page { max-width: 1400px; margin: 0 auto; background: #f4f6f9; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+        .header { background: linear-gradient(135deg, #5c4610 0%, #8b6914 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+        .header-left p  { font-size: 12px; color: #f0e6d3; margin-top: 4px; }
+        .nav-link { color: #f0e6d3; text-decoration: none; margin-left: 20px; font-size: 13px; transition: color 0.2s; }
+        .nav-link:hover { color: white; }
+        #sourceBanner { background: #fff8e1; border-left: 4px solid #c9a227; padding: 10px 30px; font-size: 12px; color: #5c4610; display: flex; align-items: center; gap: 8px; }
+        .kpi-strip { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; background: #dee2e6; }
+        .kpi-card { background: white; padding: 18px; text-align: center; }
+        .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 6px; }
+        .kpi-value { font-size: 22px; font-weight: 700; }
+        .kpi-sub   { font-size: 11px; color: #6c757d; margin-top: 4px; }
+        .grade-badge { display: inline-block; padding: 5px 18px; border-radius: 20px; font-size: 26px; font-weight: 900; }
+        /* BAU vs SS hero section */
+        .bau-hero { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); color: white; padding: 28px 30px; }
+        .bau-hero h2 { font-size: 18px; font-weight: 400; margin-bottom: 6px; }
+        .bau-hero p  { font-size: 12px; color: #a5d6a7; margin-bottom: 20px; }
+        .bau-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+        .bau-card { background: rgba(255,255,255,0.12); border-radius: 10px; padding: 18px; text-align: center; }
+        .bau-card-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: rgba(255,255,255,0.7); margin-bottom: 8px; }
+        .bau-card-value { font-size: 30px; font-weight: 700; }
+        .bau-card-sub { font-size: 11px; color: rgba(255,255,255,0.7); margin-top: 6px; }
+        .bau-card.highlight { background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.4); }
+        .bau-quote { margin-top: 18px; padding: 14px 18px; background: rgba(0,0,0,0.2); border-radius: 8px; font-size: 12px; color: #c8e6c9; line-height: 1.5; font-style: italic; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .card-title { font-size: 13px; font-weight: 700; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        svg.chart { width: 100%; display: block; }
+        .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .phase-table th { background: #5c4610; color: white; padding: 9px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        .phase-table td { padding: 9px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .phase-table tr:hover td { background: #fffde7; }
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .pill-s1 { background: #fff3cd; color: #856404; }
+        .pill-s2 { background: #cce5ff; color: #004085; }
+        .pill-tot { background: #e2e3e5; color: #383d41; }
+        .pill-s3 { background: #d4edda; color: #155724; }
+        .rating-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+        .r-excellent { background: #d4edda; color: #155724; }
+        .r-good      { background: #d1ecf1; color: #0c5460; }
+        .r-moderate  { background: #fff3cd; color: #856404; }
+        .r-poor      { background: #f8d7da; color: #721c24; }
+        .r-critical  { background: #343a40; color: white; }
+        .findings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .finding-card { padding: 16px; border-radius: 8px; border-left: 4px solid; }
+        .finding-card.positive { background: #d4edda; border-color: #28a745; }
+        .finding-card.warning  { background: #fff3cd; border-color: #ffc107; }
+        .finding-card.negative { background: #f8d7da; border-color: #dc3545; }
+        .finding-card .finding-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+        .finding-card .finding-body  { font-size: 11px; line-height: 1.5; color: #495057; }
+        .footnote { padding: 16px 30px; background: #f8f9fa; border-top: 1px solid #dee2e6; font-size: 10px; color: #adb5bd; line-height: 1.6; }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div class="header-left">
+            <h1>🌡️ Carbon Emissions Analysis — Shea Butter Supply Chain</h1>
+            <p>Scope 1 · Scope 2 · Scope 3 cascade · BAU vs Serious Shea · Phase-resolved · What-If aware</p>
+        </div>
+        <div>
+            <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
+            <a href="water_analysis.html" class="nav-link">💧 Water</a>
+            <a href="energy_analysis.html" class="nav-link">⚡ Energy</a>
+            <a href="/index.html" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+    <div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading carbon data…</span></div>
+
+    <!-- BAU vs Serious Shea hero section -->
+    <div class="bau-hero">
+        <h2>🔥 Phase 3 — The Transformation: Business As Usual vs Serious Shea</h2>
+        <p>The only phase in the shea chain with real cited emissions data. Source: Clarity Coalition / Cleo Organics Value Chain Outline; Serious Shea BPlan V8 2023.</p>
+        <div class="bau-grid">
+            <div class="bau-card">
+                <div class="bau-card-label">BAU — Firewood (traditional)</div>
+                <div class="bau-card-value">10.374</div>
+                <div class="bau-card-sub">kg CO₂e per kg shea butter</div>
+                <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.6);">20 kg firewood / kg butter · Deforestation driver</div>
+            </div>
+            <div class="bau-card highlight">
+                <div class="bau-card-label">Serious Shea — 100% Renewable</div>
+                <div class="bau-card-value">&lt;0.52</div>
+                <div class="bau-card-sub">kg CO₂e per kg shea butter</div>
+                <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.6);">Electric mills · Solar/biogas · Zero firewood</div>
+            </div>
+            <div class="bau-card">
+                <div class="bau-card-label">Reduction Achieved</div>
+                <div class="bau-card-value" style="color:#69f0ae;">20×</div>
+                <div class="bau-card-sub">improvement (>95% reduction)</div>
+                <div style="margin-top:10px;font-size:11px;color:rgba(255,255,255,0.6);">At same production volume</div>
+            </div>
+        </div>
+        <div class="bau-quote">
+            "At the same level of national GDP as Business As Usual, <strong>Serious Shea practices would almost halve national carbon emissions</strong> for the entire Burkina Faso economy, even if all other industries keep the same CO₂e level." — Clarity Coalition True Value Framework
+        </div>
+    </div>
+
+    <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">Total Scope 1</div><div class="kpi-value" id="kpiS1" style="color:#856404;">—</div><div class="kpi-sub">direct combustion</div></div>
+        <div class="kpi-card"><div class="kpi-label">Total Scope 2</div><div class="kpi-value" id="kpiS2" style="color:#004085;">—</div><div class="kpi-sub">purchased electricity</div></div>
+        <div class="kpi-card"><div class="kpi-label">Chain Total S1+S2</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub">tCO₂e reference scale</div></div>
+        <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#5c4610;font-size:16px;">—</div><div class="kpi-sub">highest S1+S2</div></div>
+        <div class="kpi-card"><div class="kpi-label">Chain Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs chain S2 share</div></div>
+    </div>
+
+    <div class="main-grid">
+        <div class="card">
+            <div class="card-title">📊 Scope 1 &amp; 2 by Phase</div>
+            <svg class="chart" id="barChart" viewBox="0 0 600 300"></svg>
+        </div>
+        <div class="card">
+            <div class="card-title">📈 Scope 3 Cascade (accumulated upstream burden)</div>
+            <svg class="chart" id="cascadeChart" viewBox="0 0 600 300"></svg>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+            <table class="phase-table"><thead><tr>
+                <th>Phase</th><th>S1 (direct)</th><th>S2 (grid)</th><th>Phase Total</th>
+                <th>% of Chain</th><th>Inherited S3 ↑</th><th>S2 Share</th><th>Data Quality</th><th>Rating</th>
+            </tr></thead><tbody id="phaseTableBody"></tbody></table>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">💡 Key Findings &amp; Analysis</div>
+            <div class="findings-grid" id="findingsGrid"></div>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">🎯 Decarbonisation Opportunity Ranking (by S2 volume)</div>
+            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by Scope 2 emissions — the most actionable lever (renewable electricity procurement). Sources: Clarity/Cleo outline; Serious Shea BPlan V8 2023; inferred benchmarks.</p>
+            <div id="decarbRanking"></div>
+        </div>
+    </div>
+    <div class="footnote">
+        <strong>Data sources &amp; quality flags:</strong>
+        Phase 3 real data: Clarity Coalition — Cleo Shea Value Chain Outline; Serious Shea Business Plan V8 April 2023 (quality: Medium) ·
+        Phase 5: Cleo Organics 100% renewable manufacturing — explicitly stated in source (quality: Medium) ·
+        Phases 0–2, 4, 6: Inferred from rural West Africa logistics, agro-food processing, and retail GHG Protocol benchmarks (quality: Low) ·
+        BAU emissions represent traditional firewood-based processing — the baseline before Serious Shea intervention ·
+        Serious Shea scenario shown in all charts as the operational baseline for this chain ·
+        This page reads live what-if state from the simulator if opened via the 🌡️ Carbon button.
+    </div>
+</div>
+<script>
+const DATA_URL = '/frontend/project/shea/data/processed/shea_supply_chain_ui.json';
+
+const FALLBACK = [
+    { id:0, name:'Collection',    D:235,C:175, scope1_tco2:45000,  scope2_tco2:5000,  scope_quality:'Low',    scope_bau_co2e_per_kg:0,     scope_ss_co2e_per_kg:0 },
+    { id:1, name:'First sale',    D:220,C:195, scope1_tco2:80000,  scope2_tco2:8000,  scope_quality:'Low',    scope_bau_co2e_per_kg:0,     scope_ss_co2e_per_kg:0 },
+    { id:2, name:'Trading',       D:245,C:230, scope1_tco2:250000, scope2_tco2:30000, scope_quality:'Low',    scope_bau_co2e_per_kg:0,     scope_ss_co2e_per_kg:0 },
+    { id:3, name:'Processing',    D:265,C:255, scope1_tco2:180000, scope2_tco2:120000,scope_quality:'Medium', scope_bau_co2e_per_kg:10.374, scope_ss_co2e_per_kg:0.5187 },
+    { id:4, name:'Export',        D:210,C:165, scope1_tco2:520000, scope2_tco2:40000, scope_quality:'Low',    scope_bau_co2e_per_kg:0,     scope_ss_co2e_per_kg:0 },
+    { id:5, name:'Manufacturing', D:250,C:238, scope1_tco2:20000,  scope2_tco2:30000, scope_quality:'Medium', scope_bau_co2e_per_kg:0,     scope_ss_co2e_per_kg:0 },
+    { id:6, name:'Retail',        D:240,C:265, scope1_tco2:15000,  scope2_tco2:60000, scope_quality:'Low',    scope_bau_co2e_per_kg:0,     scope_ss_co2e_per_kg:0 },
+];
+
+function calcBalance(D,C) { return 100*Math.exp(-2*Math.abs(D-C)/Math.max(D,C,1)); }
+function iF(D,C) { return Math.abs(D-C)/Math.max(D,C,1); }
+function fmtCO2(v) {
+    if (v>=1e6) return `${(v/1e6).toFixed(1)} Mt`;
+    if (v>=1e3) return `${(v/1e3).toFixed(0)} kt`;
+    return `${v} t`;
+}
+function getRating(s2share, balance) {
+    if (balance<65)    return { label:'Bottlenecked', cls:'r-critical' };
+    if (s2share>=0.6)  return { label:'Grid-dependent', cls:'r-poor' };
+    if (s2share>=0.4)  return { label:'Moderate', cls:'r-moderate' };
+    if (s2share>=0.2)  return { label:'Good', cls:'r-good' };
+    return                    { label:'Excellent', cls:'r-excellent' };
+}
+
+function render(rawPhases, sourceLabel) {
+    document.getElementById('sourceText').textContent = sourceLabel;
+
+    const data = rawPhases.map(p => {
+        const imbalance = iF(p.D, p.C);
+        const effS1 = Math.round(p.scope1_tco2*(1+imbalance));
+        const effS2 = Math.round(p.scope2_tco2*(1+imbalance));
+        return { ...p, effS1, effS2, total: effS1+effS2, balance: calcBalance(p.D,p.C) };
+    });
+
+    const totalS1 = data.reduce((s,p)=>s+p.effS1,0);
+    const totalS2 = data.reduce((s,p)=>s+p.effS2,0);
+    const chainTotal = totalS1 + totalS2;
+    const dominant = data.reduce((a,b)=>b.total>a.total?b:a);
+
+    document.getElementById('kpiS1').textContent      = fmtCO2(totalS1);
+    document.getElementById('kpiS2').textContent      = fmtCO2(totalS2);
+    document.getElementById('kpiTotal').textContent   = fmtCO2(chainTotal);
+    document.getElementById('kpiDominant').textContent= `P${dominant.id} ${dominant.name.split(' ')[0]}`;
+    const s2share = chainTotal>0 ? totalS2/chainTotal : 0;
+    const grade = s2share>=0.6?{g:'C',l:'Grid-dependent',bg:'#f8d7da',c:'#721c24'} : s2share>=0.4?{g:'B',l:'Mixed',bg:'#fff3cd',c:'#856404'} : {g:'A',l:'Good mix',bg:'#d4edda',c:'#155724'};
+    document.getElementById('kpiGrade').innerHTML = `<span class="grade-badge" style="background:${grade.bg};color:${grade.c};">${grade.g}</span>`;
+    document.getElementById('kpiGradeSub').textContent = grade.l;
+
+    drawBarChart(data, chainTotal);
+    drawCascadeChart(data);
+    buildTable(data, chainTotal);
+    buildFindings(data, totalS1, totalS2, chainTotal);
+    buildDecarbRanking(data);
+}
+
+function drawBarChart(data, chainTotal) {
+    const W=600,H=300,mL=95,mR=100,mT=15,mB=35,plotW=W-mL-mR,plotH=H-mT-mB;
+    const maxV = Math.max(...data.map(d=>d.total),1);
+    const rowH = plotH/data.length;
+    let svg='';
+    [0,0.25,0.5,0.75,1].forEach(f=>{
+        const x=mL+f*plotW;
+        svg+=`<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg+=`<text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="#adb5bd">${fmtCO2(f*maxV)}</text>`;
+    });
+    data.forEach((p,i)=>{
+        const y=mT+i*rowH, barH=rowH*0.6, barY=y+(rowH-barH)/2;
+        const s1W=(p.effS1/maxV)*plotW, s2W=(p.effS2/maxV)*plotW;
+        svg+=`<text x="${mL-6}" y="${barY+barH/2+4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0]}</text>`;
+        if(s1W>0) svg+=`<rect x="${mL}" y="${barY}" width="${s1W}" height="${barH}" fill="#ffc107" rx="2"/>`;
+        if(s2W>0) svg+=`<rect x="${mL+s1W}" y="${barY}" width="${s2W}" height="${barH}" fill="#0d6efd" rx="2" opacity="0.8"/>`;
+        svg+=`<text x="${mL+s1W+s2W+4}" y="${barY+barH/2+4}" font-size="9" fill="#6c757d">${fmtCO2(p.total)}</text>`;
+    });
+    svg+=`<rect x="${mL}" y="${H-14}" width="10" height="10" fill="#ffc107" rx="2"/><text x="${mL+13}" y="${H-5}" font-size="10" fill="#6c757d">Scope 1</text>`;
+    svg+=`<rect x="${mL+75}" y="${H-14}" width="10" height="10" fill="#0d6efd" rx="2" opacity="0.8"/><text x="${mL+88}" y="${H-5}" font-size="10" fill="#6c757d">Scope 2</text>`;
+    document.getElementById('barChart').innerHTML=svg;
+}
+
+function drawCascadeChart(data) {
+    const W=600,H=300,mL=65,mR=20,mT=15,mB=50,plotW=W-mL-mR,plotH=H-mT-mB;
+    let cum=0;
+    const pts = data.map((p,i)=>{ const before=cum; cum+=p.total; return {x:mL+(i/(data.length-1))*plotW,before,after:cum,phase:p}; });
+    const maxY=cum||1;
+    let svg='';
+    [0,0.25,0.5,0.75,1].forEach(f=>{
+        const y=mT+plotH-f*plotH;
+        svg+=`<line x1="${mL}" y1="${y}" x2="${mL+plotW}" y2="${y}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg+=`<text x="${mL-6}" y="${y+4}" text-anchor="end" font-size="9" fill="#adb5bd">${fmtCO2(f*maxY)}</text>`;
+    });
+    let area=`M ${mL} ${mT+plotH}`, line='';
+    pts.forEach((pt,i)=>{
+        const bY=mT+plotH-(pt.before/maxY)*plotH, aY=mT+plotH-(pt.after/maxY)*plotH;
+        if(i===0){area+=` L ${pt.x} ${bY} L ${pt.x} ${aY}`;line+=`M ${pt.x} ${bY} L ${pt.x} ${aY}`;}
+        else{area+=` L ${pt.x} ${bY} L ${pt.x} ${aY}`;line+=` L ${pt.x} ${bY} L ${pt.x} ${aY}`;}
+        if(i<pts.length-1){const nx=mL+((i+1)/(data.length-1))*plotW;area+=` L ${nx} ${aY}`;line+=` L ${nx} ${aY}`;}
+    });
+    const lp=pts[pts.length-1],lastY=mT+plotH-(lp.after/maxY)*plotH;
+    area+=` L ${mL+plotW} ${lastY} L ${mL+plotW} ${mT+plotH} Z`;
+    svg+=`<defs><linearGradient id="cGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#8b6914" stop-opacity="0.3"/><stop offset="100%" stop-color="#8b6914" stop-opacity="0.05"/></linearGradient></defs>`;
+    svg+=`<path d="${area}" fill="url(#cGrad)"/>`;
+    svg+=`<path d="${line}" fill="none" stroke="#8b6914" stroke-width="2.5"/>`;
+    pts.forEach(pt=>{
+        const dotY=mT+plotH-(pt.after/maxY)*plotH;
+        svg+=`<circle cx="${pt.x}" cy="${dotY}" r="4" fill="#8b6914" stroke="white" stroke-width="1.5"/>`;
+        svg+=`<text x="${pt.x}" y="${mT+plotH+18}" text-anchor="end" font-size="9" fill="#495057" transform="rotate(-45,${pt.x},${mT+plotH+18})">P${pt.phase.id} ${pt.phase.name.split(' ')[0]}</text>`;
+        if(pt.phase.total>0) svg+=`<text x="${pt.x+5}" y="${dotY-6}" font-size="8" fill="#5c4610" font-weight="600">${fmtCO2(pt.after)}</text>`;
+    });
+    svg+=`<line x1="${mL}" y1="${mT}" x2="${mL}" y2="${mT+plotH}" stroke="#dee2e6" stroke-width="1"/>`;
+    svg+=`<line x1="${mL}" y1="${mT+plotH}" x2="${mL+plotW}" y2="${mT+plotH}" stroke="#dee2e6" stroke-width="1"/>`;
+    document.getElementById('cascadeChart').innerHTML=svg;
+}
+
+function buildTable(data, chainTotal) {
+    let cumS12=0;
+    const rows=data.map(p=>{
+        const pct = chainTotal>0?(p.total/chainTotal*100):0;
+        const s2share = p.total>0?(p.effS2/p.total):0;
+        const rating = getRating(s2share, p.balance);
+        const cascade=cumS12; cumS12+=p.total;
+        return `<tr>
+            <td><strong>P${p.id}</strong> ${p.name}${p.id===3?'<span style="margin-left:6px;background:#e8f5e9;color:#2e7d32;padding:1px 6px;border-radius:4px;font-size:10px;">Serious Shea</span>':''}</td>
+            <td><span class="pill pill-s1">${fmtCO2(p.effS1)}</span></td>
+            <td><span class="pill pill-s2">${fmtCO2(p.effS2)}</span></td>
+            <td><span class="pill pill-tot">${fmtCO2(p.total)}</span></td>
+            <td>${pct.toFixed(1)}%</td>
+            <td style="color:#5c4610;font-weight:600;font-size:11px;">${cascade>0?fmtCO2(cascade):'—'}</td>
+            <td><div style="display:flex;align-items:center;gap:4px;"><div style="width:40px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;"><div style="width:${Math.round(s2share*100)}%;height:100%;background:#0d6efd;"></div></div>${Math.round(s2share*100)}%</div></td>
+            <td style="font-size:11px;color:#6c757d;">${p.scope_quality||'Low'}</td>
+            <td><span class="rating-badge ${rating.cls}">${rating.label}</span></td>
+        </tr>`;
+    });
+    document.getElementById('phaseTableBody').innerHTML=rows.join('');
+}
+
+function buildFindings(data, totalS1, totalS2, chainTotal) {
+    const findings=[];
+    const dom=data.reduce((a,b)=>b.total>a.total?b:a);
+    const domPct=((dom.total/chainTotal)*100).toFixed(0);
+    findings.push({type:'warning',title:`Dominant Phase: P${dom.id} ${dom.name} (${domPct}% of chain)`,body:`Phase ${dom.id} contributes ${domPct}% of total chain emissions (${fmtCO2(dom.total)}). ${dom.id===4?'Export/shipping is a structural challenge — bunker fuel is hard to decarbonise before 2035.':'Targeted intervention here has the highest chain-wide impact.'}`});
+    findings.push({type:'positive',title:'Phase 3: Serious Shea = 20× less CO₂ than BAU',body:`BAU firewood processing emits 10.374 kg CO₂e/kg butter. Serious Shea with 100% renewable energy reduces this to <0.52 kg/kg (>95% reduction). At full sector scale, this nearly halves Burkina Faso national carbon intensity at the same GDP level (Clarity Coalition finding).`});
+    findings.push({type:'positive',title:'Phase 5: Cleo Manufacturing = 100% Renewable',body:`Cleo Organics uses 100% renewable energy for manufacturing — explicitly stated in source. This is best-practice for cosmetic manufacturing and reduces S2 to near-zero at this phase. It is the other real-data anchor point (Medium quality) alongside Phase 3.`});
+    const highS2 = [...data].sort((a,b)=>b.effS2-a.effS2)[0];
+    findings.push({type:'warning',title:`Highest S2 Phase: P${highS2.id} ${highS2.name} (${fmtCO2(highS2.effS2)})`,body:`Grid electricity dependency is highest at Phase ${highS2.id}. ${highS2.id===4?'Shipping grid connection at port can adopt shore power.':'Renewable electricity procurement (PPA) here is the fastest lever for Scope 2 reduction.'}`});
+    const s1Dom = data.reduce((a,b)=>b.effS1>a.effS1?b:a);
+    findings.push({type:s1Dom.id===4?'negative':'warning',title:`Highest S1 Phase: P${s1Dom.id} ${s1Dom.name} (${fmtCO2(s1Dom.effS1)})`,body:`Direct combustion (Scope 1) is highest at Phase ${s1Dom.id}. ${s1Dom.id===4?'Container ship bunker fuel is the dominant Scope 1 source in the shea chain — hard to replace before green hydrogen shipping is commercial (est. 2030–35).':'Combustion at this phase can be addressed by switching to electric or biogas process heat.'}`});
+    const totalS12=totalS1+totalS2;
+    findings.push({type:'positive',title:`Chain S1 share: ${((totalS1/totalS12)*100).toFixed(0)}% vs S2: ${((totalS2/totalS12)*100).toFixed(0)}%`,body:`A higher S1 share means direct combustion dominates (harder to eliminate). At ${((totalS1/totalS12)*100).toFixed(0)}% S1, the shea chain is ${totalS1/totalS12>0.55?'combustion-dominant — renewable fuel/electrification is the key lever':'relatively balanced — both grid greening and fuel switching matter'}. The critical difference vs gold: Phase 3 firewood vs renewable is the single highest-leverage intervention.`});
+    document.getElementById('findingsGrid').innerHTML=findings.map(f=>`<div class="finding-card ${f.type}"><div class="finding-title">${f.title}</div><div class="finding-body">${f.body}</div></div>`).join('');
+}
+
+function buildDecarbRanking(data) {
+    const ranked=[...data].sort((a,b)=>b.effS2-a.effS2);
+    const maxS2=ranked[0]?.effS2||1;
+    const html=ranked.map((p,i)=>{
+        const rating=getRating(p.total>0?p.effS2/p.total:0,p.balance);
+        const potentialS2=Math.round(p.effS2*0.5);
+        return `<div style="display:grid;grid-template-columns:30px 140px 1fr 80px 80px 90px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <div style="font-weight:700;color:#6c757d;">#${i+1}</div>
+            <div><strong>P${p.id} ${p.name.split(' ')[0]}</strong>${p.id===3?'<br><span style="font-size:9px;color:#2e7d32;">Serious Shea scenario</span>':''}</div>
+            <div><div style="height:10px;background:#e9ecef;border-radius:4px;overflow:hidden;"><div style="width:${(p.effS2/maxS2)*100}%;height:100%;background:#0d6efd;"></div></div></div>
+            <span><span class="pill pill-s2">${fmtCO2(p.effS2)}</span></span>
+            <span style="font-size:11px;color:#28a745;">-${fmtCO2(potentialS2)} possible</span>
+            <span><span class="rating-badge ${rating.cls}">${rating.label}</span></span>
+        </div>`;
+    }).join('');
+    document.getElementById('decarbRanking').innerHTML=`
+        <div style="display:grid;grid-template-columns:30px 140px 1fr 80px 80px 90px;gap:10px;padding:0 0 8px;border-bottom:2px solid #dee2e6;font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;">#<div>Phase</div><div>S2 volume</div><div>S2 tCO₂e</div><div>50% saving</div><div>Rating</div></div>${html}
+        <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#fffde7;padding:10px;border-radius:6px;">Scope 2 is the most actionable lever: renewable electricity PPAs can be signed without physical process changes. "50% saving possible" assumes shift to 50% clean energy at that phase. Phase 3 BAU saving (firewood→renewable) is 20× greater and transformative for the whole chain.</div>`;
+}
+
+async function init() {
+    try {
+        const stored=localStorage.getItem('shea_emissions_analysis');
+        if(stored){
+            const parsed=JSON.parse(stored);
+            if(parsed?.data?.length){
+                const age=parsed.timestamp?Math.round((Date.now()-new Date(parsed.timestamp))/1000):null;
+                render(parsed.data,`📡 Live what-if state from simulator${age!==null?` (${age}s ago)`:''} — click 🌡️ Carbon in simulator to refresh.`);
+                return;
+            }
+        }
+    } catch(e) {}
+    try {
+        const res=await fetch(DATA_URL,{cache:'no-store'});
+        if(res.ok){
+            const json=await res.json();
+            const phases=[];
+            for(let i=0;i<=6;i++){
+                const p=(json.phases&&json.phases[String(i)])||{}, meta=(json.phase_meta&&json.phase_meta[String(i)])||{};
+                phases.push({id:i,name:p.name||meta.name||`Phase ${i}`,D:Number(p.D)||200,C:Number(p.C)||200,scope1_tco2:Number(p.scope1_tco2)||0,scope2_tco2:Number(p.scope2_tco2)||0,scope_quality:p.scope_quality||'Unknown',scope_source:p.scope_source||'',scope_notes:p.scope_notes||'',scope_bau_co2e_per_kg:Number(p.scope_bau_co2e_per_kg)||0,scope_ss_co2e_per_kg:Number(p.scope_ss_co2e_per_kg)||0});
+            }
+            render(phases,`📁 Baseline from shea_supply_chain_ui.json (${json._meta?.generated||'unknown'}). Open via simulator for live what-if state.`);
+            return;
+        }
+    } catch(e) {}
+    render(FALLBACK,'⚠️ Using hardcoded fallback data.');
+}
+init();
+</script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

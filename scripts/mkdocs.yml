@@ -1,0 +1,89 @@
+# MkDocs config — config file lives in scripts/; paths below are relative to this file.
+# Build:  mkdocs build -f scripts/mkdocs.yml
+# Serve:  mkdocs serve  -f scripts/mkdocs.yml
+
+site_name: Supply Chain Intelligence Docs
+site_description: Gold & shea supply chain phase templates, rules, APIs, and methodology
+site_url: http://dev.tholonia.com:8000/site
+
+docs_dir: ../docs
+site_dir: ../site
+
+theme:
+  name: material
+  custom_dir: ../overrides
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: amber
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - search.suggest
+    - search.highlight
+
+plugins:
+  - search
+
+markdown_extensions:
+  - admonition
+  - tables
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+
+strict: false
+
+extra_css:
+  - stylesheets/mkdocs-site.css
+
+extra:
+  homepage: /
+  wiki_home: /site/
+
+nav:
+  - Home: index.md
+  - Supply chain phase templates:
+      - Abstract template: Repos/intra/PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE.md
+      - Shea instance: Activities/SHEA_SUPPLY_CHAIN_PHASE_INSTANCE.md
+      - Gold instance: Repos/intra/PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE_GOLD_INSTANCE.md
+      - Shea source files (integration): Research/SHEA_RAW_SOURCE_FILES_INTEGRATION_STATUS.md
+  - Value chain phase templates:
+      - Abstract value template: Repos/intra/PDI/ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE.md
+      - Shea value instance: Repos/intra/PDI/SHEA_VALUE_CHAIN_PHASE_INSTANCE.md
+      - Gold value instance: Repos/intra/PDI/GOLD_VALUE_CHAIN_PHASE_INSTANCE.md
+  - Rules:
+      - Supply chain rules: Guidelines/SUPPLY_CHAIN_RULES.md
+      - Value chain rules: Guidelines/VALUE_CHAIN_RULES.md
+  - API & frontend:
+      - Frontend API: api/FRONTEND_API.md
+      - Frontend visualization strategy: Research/FRONTEND_SIMULATOR_VISUALIZATION_STRATEGY.md
+      - Value chain API: api/VALUE_CHAIN_API.md
+  - Methodology:
+      - Water, waste & environment: Reports/WATER_WASTE_METHODOLOGY.md
+      - N-D-C value calculations: Repos/intra/PDI/NDC_D_C_N_METRICS_CALCULATION_REFERENCE.md
+  - Sarah integration:
+      - Sarah quick reference: Research/modeling/SARAH_DATA_INGESTION_QUICK_REFERENCE.md
+      - Sarah integration analysis: Activities/SARAH_INTEGRATION_ANALYSIS.md
+      - Sarah integration complete: Activities/SARAH_INTEGRATION_COMPLETE.md
+      - tv-sarah (requirements): Activities/SARAH_INTEGRATION_ANALYSIS.md
+  - Tholonic framework:
+      - Tholonic framework (supply chain): Research/modeling/THOLONIC_FRAMEWORK_SUPPLY_AND_VALUE_CHAIN_APPLICATION.md
+      - Tholonic integration: Research/modeling/THOLONIC_INTEGRATION.md
+      - TVPCI introduction: Repos/intra/TVPCI/TVPCI_INTRO.md
+      - TVPCI foundation (HTML, equations & figures): Repos/intra/TVPCI/TVPCI_FOUNDATION.html
+      - TVPCI foundation (full derivation): Repos/intra/TVPCI/TVPCI_FOUNDATION.md
+      - TVPCI specification (methodology): Repos/intra/TVPCI/TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX.md
+      - TVPCI explained (simple): Repos/intra/TVPCI/TVPCI_EXPLAINED_SIMPLY.md
+      - TVPCI explained (college level): Repos/intra/TVPCI/TVPCI_EXPLAINED_COLLEGE_LEVEL.md

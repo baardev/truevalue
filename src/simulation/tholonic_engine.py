@@ -1,16 +1,22 @@
 """
 Tholonic Simulation Engine for Gold Supply Chain
 
-Implements N-D-C (Negotiation-Definition-Contribution) dynamics
+Implements C-G-N (Constraints-Growth-Negotiation) dynamics
 based on the Tholonic Framework for complex adaptive systems.
 
 Core Concepts:
-- N (Negotiation): Emergent equilibrium state (actual operational reality)
-- D (Definition): Constraints, boundaries, specifications, limitations
-- C (Contribution): Integration, connections, flow, relationships
+- C (Constraints):   Boundaries, specifications, limitations  [formerly D]
+- G (Growth):        Integration, connections, flow, relationships  [formerly C]
+- N (Negotiation):   Emergent equilibrium state (actual operational reality)
 
-Sustainability emerges when D ≈ C (balanced system)
-Energy cost = |D - C|² (imbalance penalty)
+Sustainability emerges when C ≈ G (balanced system)
+Energy cost = |C - G|² (imbalance penalty)
+
+Balance score formula (exponential, 0-100 scale):
+    B = 100 × exp(-2 × |C - G| / max(C, G))
+
+This is consistent with the φ-score decay function used in phi_engine.py
+and matches the TVPCI specification.
 """
 
 import numpy as np
@@ -53,24 +59,29 @@ class Tholon:
     
     def _calculate_n_state(self):
         """
-        Calculate emergent N-state from D and C parameters
-        
-        N = f(D, C) where f is the negotiation operator
-        N emerges at energy minimum: argmin[E_D(N) + E_C(N) + E_interaction(D,C,N)]
+        Calculate emergent N-state from D and C parameters.
+
+        Balance score — exponential form (0-100), consistent with φ-score decay:
+            B = 100 × exp(-2 × |D - C| / max(D, C))
+            B = 100 when D == C (perfect balance)
+            B → 0 as imbalance grows
+
+        N-state — emergent operational capacity:
+            N = √(D × C) × (B / 100)
         """
-        # Balance factor (higher when D ≈ C)
         imbalance = abs(self.D_total - self.C_total)
-        self.balance = 1.0 / (1.0 + imbalance / max(self.D_total, self.C_total, 1.0))
-        
-        # Sustainability = 1 / energy_cost
-        # Energy cost minimizes when D ≈ C
-        energy_cost = imbalance**2 + self.energy_base
+        denom = max(self.D_total, self.C_total, 1.0)
+
+        # Exponential balance score (0-100); matches TVPCI spec and phi_engine.py
+        self.balance = 100.0 * np.exp(-2.0 * imbalance / denom)
+
+        # Sustainability = 1 / energy_cost; energy cost minimises when D ≈ C
+        energy_cost = imbalance ** 2 + self.energy_base
         self.sustainability = 100.0 / energy_cost
-        
-        # N-state represents achieved equilibrium
-        # Higher when D and C cooperate effectively
-        self.N = np.sqrt(self.D_total * self.C_total) * self.balance
-        
+
+        # N-state: balance scaled back to 0-1 fraction for the geometric mean
+        self.N = np.sqrt(self.D_total * self.C_total) * (self.balance / 100.0)
+
         return self.N
     
     def update_d_parameter(self, param_name: str, new_value: float):
@@ -102,9 +113,13 @@ class Tholon:
     
     def get_optimization_gradient(self) -> Tuple[float, float]:
         """
-        Calculate gradient for optimization
-        
-        Returns: (dSustainability/dD, dSustainability/dC)
+        Calculate gradient of sustainability with respect to D and C totals.
+
+        Sustainability = 100 / (|D - C|² + E_base)
+
+        Returns: (dS/dD, dS/dC) — both evaluated at current D_total, C_total.
+        Note: balance is not differentiated here; use SustainabilityMetrics
+        for balance-aware optimisation.
         """
         imbalance = self.D_total - self.C_total
         denominator = (imbalance**2 + self.energy_base)**2
@@ -334,8 +349,8 @@ class Thologram:
 
 def main():
     """Example usage"""
-    schema_file = Path("../../schema/supply_chain_phases_ndc.csv")
-    interaction_file = Path("../../schema/phase_interactions_ndc.csv")
+    schema_file = Path("../../frontend/project/gold/data/schema/supply_chain_phases_ndc.csv")
+    interaction_file = Path("../../frontend/project/gold/data/schema/phase_interactions_ndc.csv")
     
     # Create thologram (complete supply chain)
     thologram = Thologram(schema_file)

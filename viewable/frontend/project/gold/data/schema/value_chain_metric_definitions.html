@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Value Chain Metric Definitions</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Value Chain Metric Definitions</h1>
+        <p class="subtitle">CSV viewer generated from <strong>value_chain_metric_definitions.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">13</span> / 13
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>metric_name<span class="sort-indicator"></span></th>
+<th>display_name<span class="sort-indicator"></span></th>
+<th>description<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>allowed_value_phase_ids<span class="sort-indicator"></span></th>
+<th>source_priority<span class="sort-indicator"></span></th>
+<th>opacity_expected<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>revenue_usd</td><td>Revenue (USD)</td><td>Gross revenue for the period (entity-level)</td><td>USD</td><td>0,1,2,3,4,5,6,7,8</td><td>public&gt;paid&gt;private</td><td>Medium</td><td>Value-chain layer only. Do not mix with physical layer outputs.</td></tr>
+<tr><td>opex_usd</td><td>Operating Expenditure (USD)</td><td>Operating costs for the period (entity-level)</td><td>USD</td><td>0,1,2,3,4,5,6,7,8</td><td>public&gt;paid&gt;private</td><td>Medium</td><td>Often only available in aggregate financial statements.</td></tr>
+<tr><td>capex_usd</td><td>Capital Expenditure (USD)</td><td>Capital spend for the period (entity-level)</td><td>USD</td><td>0,1,2,3,4,5,6,7,8</td><td>public&gt;paid&gt;private</td><td>Medium</td><td>May be disclosed by project/segment.</td></tr>
+<tr><td>margin_gross_pct</td><td>Gross Margin (%)</td><td>Gross margin as percentage of revenue</td><td>percent</td><td>0,1,2,3,4,5,6,7,8</td><td>public&gt;paid&gt;private</td><td>Medium</td><td>Derived field if revenue + COGS available.</td></tr>
+<tr><td>refining_fee_usd_per_oz</td><td>Refining Fee (USD/oz)</td><td>Fee charged for refining per ounce processed</td><td>USD/oz</td><td>4,8</td><td>paid&gt;private&gt;public</td><td>High</td><td>Often commercially confidential.</td></tr>
+<tr><td>treatment_charge_usd_per_tonne</td><td>Treatment Charge (USD/t)</td><td>Charge for processing ore/concentrate</td><td>USD/tonne</td><td>2</td><td>paid&gt;private&gt;public</td><td>High</td><td>Commercial contract term.</td></tr>
+<tr><td>transport_cost_usd_per_kg</td><td>Transport Cost (USD/kg)</td><td>Transport cost per kg along logistics phases</td><td>USD/kg</td><td>6,7</td><td>paid&gt;private&gt;public</td><td>High</td><td>Highly variable by route/security.</td></tr>
+<tr><td>insurance_cost_usd</td><td>Insurance Cost (USD)</td><td>Insurance expense associated with custody/logistics</td><td>USD</td><td>6,7</td><td>paid&gt;private&gt;public</td><td>High</td><td>Often opaque.</td></tr>
+<tr><td>royalty_rate_pct</td><td>Royalty Rate (%)</td><td>Effective royalty rate applied</td><td>percent</td><td>1,2,3,4,5</td><td>public&gt;paid&gt;private</td><td>Medium</td><td>Depends on jurisdiction and contract.</td></tr>
+<tr><td>tax_rate_effective_pct</td><td>Effective Tax Rate (%)</td><td>Effective tax rate applied</td><td>percent</td><td>1,2,3,4,5,6,7,8</td><td>public&gt;paid&gt;private</td><td>Medium</td><td>Entity-level typically available; site-level opaque.</td></tr>
+<tr><td>realized_price_usd_per_oz</td><td>Realized Price (USD/oz)</td><td>Average realized gold price for the period</td><td>USD/oz</td><td>7</td><td>public&gt;paid&gt;private</td><td>Low</td><td>Allowed in value chain; keep separate from supply-chain analysis.</td></tr>
+<tr><td>aisc_usd_per_oz</td><td>AISC (USD/oz)</td><td>All-in sustaining cost for mining operations</td><td>USD/oz</td><td>1</td><td>public&gt;paid&gt;private</td><td>Low</td><td>Common in miner disclosures; definitions vary.</td></tr>
+<tr><td>cash_cost_usd_per_oz</td><td>Cash Cost (USD/oz)</td><td>Cash cost for mining operations</td><td>USD/oz</td><td>1</td><td>public&gt;paid&gt;private</td><td>Low</td><td>Common but inconsistent; document methodology per entity.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

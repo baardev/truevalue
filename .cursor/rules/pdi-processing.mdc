@@ -1,0 +1,109 @@
+---
+description: Rules for completing, updating, and maintaining Phase Discovery Instrument (PDI) files. Applies when working with PDI YAML instances, the master template, the HTML form, and the Markdown protocol document.
+globs: docs/PDI/**,frontend/PDI.html
+alwaysApply: false
+---
+
+# PDI Processing Rules
+
+## Scope
+
+These rules apply whenever:
+- Filling out a PDI YAML instance from source documents
+- Adding new fields to a PDI YAML instance
+- Updating `docs/PDI/PDI_TEMPLATE.yaml`
+- Updating `frontend/PDI.html`
+- Updating `docs/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md`
+
+---
+
+## 1. Completing a PDI Instance
+
+### Source document → YAML
+
+1. Name the completed instance `PDI_<material>_<date>.yaml` (ISO 8601 date).
+2. Start from `docs/PDI/PDI_TEMPLATE.yaml`. Never fill in the template itself.
+3. Fill every field. Write `UNKNOWN` (not blank) where data is genuinely absent, and add a comment explaining why.
+4. `boundary_score` must be calculated from the B-flags, not left as `0`.
+5. `B10_ownership_changes` accepts `true | false | unknown` — preserve the third state.
+6. All 10 event records must be individually completed before Module 3 is written.
+7. Sub-processes must each have a `reason` entry explaining why they did not reach boundary threshold.
+
+### New fields
+
+If source data exists that has no corresponding template field:
+- Add the field to the instance with a comment `# [NEW FIELD]`.
+- Queue a template sync (see Section 3).
+- Document every new field in the status file (see Section 2).
+
+---
+
+## 2. Status File (mandatory at end of every PDI session)
+
+Always create `PDI_<material>_STATUS.md` alongside the completed YAML instance.
+
+The status file **must** contain all four sections below. Do not omit any section even if it is empty.
+
+```markdown
+## 1. New Fields Added to PDI_TEMPLATE.yaml
+<!-- One entry per new field: field name, location, YAML syntax snippet, reason added, which chain types it applies to. -->
+
+## 2. Missing Data — High Priority
+<!-- Data needed to complete a field; field is UNKNOWN or incomplete. -->
+<!-- Table: ID | Missing item | YAML field affected | Impact if absent -->
+
+## 3. Missing Data — Medium / Low Priority
+<!-- Data desirable for completeness but not blocking. -->
+<!-- Table: ID | Missing item | YAML field affected | Notes -->
+
+## 4. Analyst Observations
+<!-- Structural anomalies, unusual process class assignments, sub-processes that may warrant Phase elevation, protocol ambiguities, or anything a domain expert should review before the instance is used as source material for the Abstract Supply Chain Phase Template. -->
+```
+
+---
+
+## 3. Template Sync (required after every new field)
+
+Whenever a `[NEW FIELD]` is added to a PDI instance, all three of the following files **must** be updated in the same session before the work is considered complete:
+
+| File | What to update |
+|------|---------------|
+| `docs/PDI/PDI_TEMPLATE.yaml` | Add the field with blank/null default value and a comment explaining its purpose and which chain types need it. Mark optional fields clearly. |
+| `frontend/PDI.html` | Add a corresponding form input (or display section) so the HTML form reflects the new field. Match the visual style of adjacent fields. |
+| `docs/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md` | Add the field to the relevant module section with the same question/description framing used throughout the document. |
+
+If time or scope does not allow all three to be updated in the same session, record each outstanding sync as a separate item in Section 1 of the status file with the label `SYNC PENDING`.
+
+---
+
+## 4. Field Constraints (enforce on every instance)
+
+| Field | Allowed values |
+|-------|---------------|
+| `B5_process_class` | `extractive` \| `aggregative` \| `chemical_thermal` \| `specification` \| `certification` \| `custodial` \| `commercial` |
+| `B10_ownership_changes` | `true` \| `false` \| `unknown` |
+| `transparency` | `high` \| `medium` \| `low` |
+| `opacity_reason` | `informal_practice` \| `commercial_secrecy` \| `physical_inaccessibility` \| `multiple` \| `n/a` |
+| `boundary_score` | integer 0–6, sum of B3+B4+B6+B9+B10+B11 flags |
+| `opacity_score` | integer 0–4, count of true answers across C1–C4 |
+| `date_completed` | ISO 8601 string e.g. `2026-04-21` |
+
+---
+
+## 5. Phase Count Guidance
+
+- Fewer than 5 confirmed phases: events may have been grouped prematurely. Review Module 2.
+- 6–9 phases: normal range for a well-documented chain.
+- 10+ phases: flag in analyst observations. Verify each boundary independently meets scoring rules before accepting the count.
+
+---
+
+## 6. File Locations
+
+| File | Path |
+|------|------|
+| Master template | `docs/PDI/PDI_TEMPLATE.yaml` |
+| HTML form | `frontend/PDI.html` |
+| Markdown protocol | `docs/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md` |
+| Completed instances | `docs/PDI/PDI_<material>_<date>.yaml` |
+| Status reports | `docs/PDI/PDI_<material>_STATUS.md` |

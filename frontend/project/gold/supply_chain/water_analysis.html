@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Analysis — Gold Supply Chain</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); min-height: 100vh; padding: 20px; }
+        .page { max-width: 1400px; margin: 0 auto; background: #f4f6f9; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+        .header { background: linear-gradient(135deg, #0d47a1 0%, #1a237e 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+        .header-left p  { font-size: 12px; color: #90caf9; margin-top: 4px; }
+        .nav-link { color: #90caf9; text-decoration: none; margin-left: 20px; font-size: 13px; transition: color 0.2s; }
+        .nav-link:hover { color: white; }
+        #sourceBanner { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 10px 30px; font-size: 12px; color: #0d47a1; display: flex; align-items: center; gap: 8px; }
+        .kpi-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: #dee2e6; }
+        .kpi-card { background: white; padding: 18px; text-align: center; }
+        .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 6px; }
+        .kpi-value { font-size: 22px; font-weight: 700; }
+        .kpi-sub   { font-size: 11px; color: #6c757d; margin-top: 4px; }
+        .grade-badge { display: inline-block; padding: 5px 18px; border-radius: 20px; font-size: 26px; font-weight: 900; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .card-title { font-size: 13px; font-weight: 700; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; display: flex; align-items: center; gap: 8px; }
+        .chart-wrap { width: 100%; overflow-x: auto; }
+        svg.chart { width: 100%; display: block; }
+        .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .phase-table th { background: #0d47a1; color: white; padding: 9px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .phase-table td { padding: 9px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .phase-table tr:hover td { background: #f8f9fa; }
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .pill-consumed  { background: #e3f2fd; color: #0d47a1; }
+        .pill-recycled  { background: #e8f5e9; color: #2e7d32; }
+        .pill-net       { background: #fff3e0; color: #e65100; }
+        .rating-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .r-excellent  { background: #d4edda; color: #155724; }
+        .r-good       { background: #d1ecf1; color: #0c5460; }
+        .r-moderate   { background: #fff3cd; color: #856404; }
+        .r-poor       { background: #f8d7da; color: #721c24; }
+        .r-critical   { background: #343a40; color: white; }
+        .findings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .finding-card { padding: 16px; border-radius: 8px; border-left: 4px solid; }
+        .finding-card.positive { background: #d4edda; border-color: #28a745; }
+        .finding-card.warning  { background: #fff3cd; border-color: #ffc107; }
+        .finding-card.negative { background: #f8d7da; border-color: #dc3545; }
+        .finding-card .finding-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+        .finding-card .finding-body  { font-size: 11px; line-height: 1.5; color: #495057; }
+        .footnote { padding: 16px 30px; background: #f8f9fa; border-top: 1px solid #dee2e6; font-size: 10px; color: #adb5bd; line-height: 1.6; }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div class="header-left">
+            <h1>💧 Water Consumption Analysis — Gold Supply Chain</h1>
+            <p>Consumption · Recycling · Net withdrawal · Phase-resolved · What-If aware</p>
+        </div>
+        <div>
+            <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
+            <a href="emissions_analysis.html" class="nav-link">🌡️ Carbon</a>
+            <a href="energy_analysis.html" class="nav-link">⚡ Energy</a>
+            <a href="/index.html" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+    <div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading water data…</span></div>
+    <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">Total Consumed</div><div class="kpi-value" id="kpiTotal" style="color:#0d47a1;">—</div><div class="kpi-sub">litres (reference scale)</div></div>
+        <div class="kpi-card"><div class="kpi-label">Total Recycled</div><div class="kpi-value" id="kpiRecycled" style="color:#2e7d32;">—</div><div class="kpi-sub">closed-loop return</div></div>
+        <div class="kpi-card"><div class="kpi-label">Net Withdrawal</div><div class="kpi-value" id="kpiNet" style="color:#e65100;">—</div><div class="kpi-sub">freshwater consumed</div></div>
+        <div class="kpi-card"><div class="kpi-label">Chain Recycling Rate</div><div class="kpi-value" id="kpiRate" style="color:#1565c0;">—</div><div class="kpi-sub">% returned to process</div></div>
+        <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest water use</div></div>
+        <div class="kpi-card"><div class="kpi-label">Efficiency Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs WGC/ICMM benchmarks</div></div>
+    </div>
+    <div class="main-grid">
+        <div class="card">
+            <div class="card-title">📊 Consumed vs Recycled by Phase</div>
+            <div class="chart-wrap"><svg class="chart" id="barChart" viewBox="0 0 600 320"></svg></div>
+        </div>
+        <div class="card">
+            <div class="card-title">📈 Net Water Burden Cascade</div>
+            <div class="chart-wrap"><svg class="chart" id="cascadeChart" viewBox="0 0 600 320"></svg></div>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+            <table class="phase-table"><thead><tr>
+                <th>Phase</th><th>Consumed</th><th>Recycled</th><th>Recycling Rate</th><th>Net Withdrawal</th>
+                <th>% of Chain Net</th><th>Cascade Burden ↑</th><th>Data Quality</th><th>Rating</th>
+            </tr></thead><tbody id="phaseTableBody"></tbody></table>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">💡 Key Findings &amp; Analysis</div>
+            <div class="findings-grid" id="findingsGrid"></div>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">♻️ Recycling Improvement Opportunity Ranking</div>
+            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by net freshwater withdrawal. Higher recycling rates would reduce these numbers. Sources: Newmont 2024 SR, ICMM Water Reporting Guidelines.</p>
+            <div id="recyclingRanking"></div>
+        </div>
+    </div>
+    <div class="footnote">
+        <strong>Data sources &amp; quality flags:</strong>
+        Phase 2: Newmont 2024 Sustainability Report (75% recycling — actual 71%; quality: High) ·
+        Phase 1: Newmont/Barrick reports; ICMM Water Reporting Guidelines (quality: Medium) ·
+        Phases 0, 3–8: Inferred from smelting, LBMA refinery, and WATER_WASTE_METHODOLOGY.md benchmarks (quality: Low) ·
+        Values shown are reference-scale daily rates (not global annual totals). Per-phase recycling rates from ICMM/WGC benchmarks.
+        WGC 2030 water target: 75% recycling industry-wide (Phase 2 already meets this). This page reads live state from the What-If Simulator if opened via the 💧 Water button.
+    </div>
+</div>
+<script>
+const DATA_URL = '/frontend/project/gold/data/processed/gold_supply_chain_ui.json';
+
+const FALLBACK = [
+    { id:0, name:'Prospecting',  D:227, C:208, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'Negligible use.' },
+    { id:1, name:'Mining',       D:270, C:277, water:2000000, water_recycling_pct:20, water_quality:'Medium', water_notes:'Dust suppression, ore washing, cooling.' },
+    { id:2, name:'Ore Processing',D:276,C:271, water:8500000, water_recycling_pct:75, water_quality:'High',   water_notes:'Cyanide leaching, flotation. Closed-loop circuits.' },
+    { id:3, name:'Doré',         D:264, C:249, water: 300000, water_recycling_pct:80, water_quality:'Low',    water_notes:'Furnace cooling, slag granulation.' },
+    { id:4, name:'Refining',     D:263, C:270, water:1000000, water_recycling_pct:65, water_quality:'Low',    water_notes:'Electrolytic baths; ultra-pure water needed.' },
+    { id:5, name:'Bar Casting',  D:253, C:247, water:  30000, water_recycling_pct:30, water_quality:'Low',    water_notes:'Cooling water only.' },
+    { id:6, name:'Logistics',    D:204, C:161, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'HVAC condensate only.' },
+    { id:7, name:'Exchange',     D:254, C:265, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'Office use only.' },
+    { id:8, name:'Recycling ♻️', D:245, C:250, water:1000000, water_recycling_pct:70, water_quality:'Low',    water_notes:'Similar to Phase 4 with variable input.' },
+];
+
+function calcBalance(D, C) { const i = Math.abs(D-C); return 100 * Math.exp(-2 * i / Math.max(D,C,1)); }
+
+function fmtL(v) {
+    if (v >= 1e9) return `${(v/1e9).toFixed(2)} GL`;
+    if (v >= 1e6) return `${(v/1e6).toFixed(2)} ML`;
+    if (v >= 1e3) return `${(v/1e3).toFixed(0)} kL`;
+    return `${v} L`;
+}
+
+function getGrade(recyclingRate) {
+    if (recyclingRate >= 75) return { grade:'A+', label:'Excellent',  bg:'#d4edda', color:'#155724' };
+    if (recyclingRate >= 60) return { grade:'A',  label:'Good',       bg:'#d1ecf1', color:'#0c5460' };
+    if (recyclingRate >= 45) return { grade:'B',  label:'Moderate',   bg:'#fff3cd', color:'#856404' };
+    if (recyclingRate >= 30) return { grade:'C',  label:'Poor',       bg:'#f8d7da', color:'#721c24' };
+    return                          { grade:'D',  label:'Critical',   bg:'#dee2e6', color:'#343a40' };
+}
+
+function getPhaseRating(recyclingPct, balance) {
+    if (balance < 65) return { label:'Bottlenecked', cls:'r-critical' };
+    if (recyclingPct >= 75) return { label:'Excellent', cls:'r-excellent' };
+    if (recyclingPct >= 60) return { label:'Good',      cls:'r-good' };
+    if (recyclingPct >= 40) return { label:'Moderate',  cls:'r-moderate' };
+    if (recyclingPct >   0) return { label:'Poor',      cls:'r-poor' };
+    return                         { label:'N/A',       cls:'r-good' };
+}
+
+function render(rawPhases, sourceLabel) {
+    document.getElementById('sourceText').textContent = sourceLabel;
+
+    const data = rawPhases.map(p => {
+        const recycled = Math.round(p.water * p.water_recycling_pct / 100);
+        const net      = p.water - recycled;
+        const balance  = calcBalance(p.D, p.C);
+        return { ...p, recycled, net, balance };
+    });
+
+    const totalConsumed = data.reduce((s,p) => s + p.water, 0);
+    const totalRecycled = data.reduce((s,p) => s + p.recycled, 0);
+    const totalNet      = data.reduce((s,p) => s + p.net, 0);
+    const chainRate     = totalConsumed > 0 ? ((totalRecycled / totalConsumed) * 100) : 0;
+    const dominant      = data.reduce((a,b) => b.water > a.water ? b : a);
+    const grade         = getGrade(chainRate);
+
+    document.getElementById('kpiTotal').textContent    = fmtL(totalConsumed);
+    document.getElementById('kpiRecycled').textContent = fmtL(totalRecycled);
+    document.getElementById('kpiNet').textContent      = fmtL(totalNet);
+    document.getElementById('kpiRate').textContent     = chainRate.toFixed(1) + '%';
+    document.getElementById('kpiDominant').textContent = `P${dominant.id} ${dominant.name.split(' ')[0]}`;
+    document.getElementById('kpiGrade').innerHTML      = `<span class="grade-badge" style="background:${grade.bg};color:${grade.color};">${grade.grade}</span>`;
+    document.getElementById('kpiGradeSub').textContent = grade.label;
+
+    drawBarChart(data, totalConsumed);
+    drawCascadeChart(data);
+    buildTable(data, totalNet);
+    buildFindings(data, totalConsumed, totalRecycled, totalNet, chainRate, grade);
+    buildRanking(data);
+}
+
+function drawBarChart(data, totalConsumed) {
+    const W=600,H=320, mL=100,mR=80,mT=20,mB=40, plotW=W-mL-mR, plotH=H-mT-mB;
+    const maxW = Math.max(...data.map(d => d.water), 1);
+    const rowH = plotH / data.length;
+    let svg = '';
+    [0,0.25,0.5,0.75,1].forEach(f => {
+        const x = mL + f*plotW;
+        svg += `<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg += `<text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="#adb5bd">${fmtL(f*maxW)}</text>`;
+    });
+    data.forEach((p,i) => {
+        const y = mT + i*rowH, barH = rowH*0.6, barY = y+(rowH-barH)/2;
+        const cW = (p.water/maxW)*plotW, rW = (p.recycled/maxW)*plotW, nW = (p.net/maxW)*plotW;
+        svg += `<text x="${mL-6}" y="${barY+barH/2+4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</text>`;
+        if (cW > 0) svg += `<rect x="${mL}" y="${barY}" width="${cW}" height="${barH}" fill="#bbdefb" rx="2" opacity="0.7"/>`;
+        if (rW > 0) svg += `<rect x="${mL}" y="${barY}" width="${rW}" height="${barH}" fill="#2e7d32" rx="2"/>`;
+        if (p.water > 0) svg += `<text x="${mL+cW+4}" y="${barY+barH/2+4}" font-size="9" fill="#6c757d">${fmtL(p.water)} (${p.water_recycling_pct}% recycled)</text>`;
+    });
+    svg += `<rect x="${mL}" y="${H-16}" width="10" height="10" fill="#bbdefb" rx="2"/>`;
+    svg += `<text x="${mL+13}" y="${H-7}" font-size="10" fill="#6c757d">Total consumed</text>`;
+    svg += `<rect x="${mL+120}" y="${H-16}" width="10" height="10" fill="#2e7d32" rx="2"/>`;
+    svg += `<text x="${mL+133}" y="${H-7}" font-size="10" fill="#6c757d">Recycled portion</text>`;
+    document.getElementById('barChart').innerHTML = svg;
+}
+
+function drawCascadeChart(data) {
+    const W=600,H=320, mL=65,mR=20,mT=20,mB=50, plotW=W-mL-mR, plotH=H-mT-mB;
+    let cumNet = 0;
+    const points = data.map((p,i) => { const x=mL+(i/(data.length-1))*plotW; const before=cumNet; cumNet+=p.net; return {x,before,net:p.net,after:cumNet,phase:p}; });
+    const maxY = cumNet || 1;
+    let svg = '';
+    [0,0.25,0.5,0.75,1].forEach(f => {
+        const y = mT+plotH-f*plotH;
+        svg += `<line x1="${mL}" y1="${y}" x2="${mL+plotW}" y2="${y}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg += `<text x="${mL-6}" y="${y+4}" text-anchor="end" font-size="9" fill="#adb5bd">${fmtL(f*maxY)}</text>`;
+    });
+    let areaPath = `M ${mL} ${mT+plotH}`, linePath = '';
+    points.forEach((pt,i) => {
+        const afterY = mT+plotH-(pt.after/maxY)*plotH, beforeY = mT+plotH-(pt.before/maxY)*plotH;
+        if (i===0) { areaPath+=` L ${pt.x} ${beforeY} L ${pt.x} ${afterY}`; linePath+=`M ${pt.x} ${beforeY} L ${pt.x} ${afterY}`; }
+        else        { areaPath+=` L ${pt.x} ${beforeY} L ${pt.x} ${afterY}`; linePath+=` L ${pt.x} ${beforeY} L ${pt.x} ${afterY}`; }
+        if (i<points.length-1) { const nx=mL+((i+1)/(data.length-1))*plotW; areaPath+=` L ${nx} ${afterY}`; linePath+=` L ${nx} ${afterY}`; }
+    });
+    const lp=points[points.length-1], lastY=mT+plotH-(lp.after/maxY)*plotH;
+    areaPath+=` L ${mL+plotW} ${lastY} L ${mL+plotW} ${mT+plotH} Z`;
+    svg += `<defs><linearGradient id="wGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1976d2" stop-opacity="0.3"/><stop offset="100%" stop-color="#1976d2" stop-opacity="0.05"/></linearGradient></defs>`;
+    svg += `<path d="${areaPath}" fill="url(#wGrad)"/>`;
+    svg += `<path d="${linePath}" fill="none" stroke="#1976d2" stroke-width="2.5"/>`;
+    points.forEach(pt => {
+        const dotY = mT+plotH-(pt.after/maxY)*plotH;
+        svg += `<circle cx="${pt.x}" cy="${dotY}" r="4" fill="#1976d2" stroke="white" stroke-width="1.5"/>`;
+        svg += `<text x="${pt.x}" y="${mT+plotH+18}" text-anchor="end" font-size="9" fill="#495057" transform="rotate(-45,${pt.x},${mT+plotH+18})">P${pt.phase.id} ${pt.phase.name.split(' ')[0].replace('♻️','')}</text>`;
+        if (pt.net > 0) svg += `<text x="${pt.x+5}" y="${dotY-6}" font-size="8" fill="#0d47a1" font-weight="600">${fmtL(pt.after)}</text>`;
+    });
+    svg += `<line x1="${mL}" y1="${mT}" x2="${mL}" y2="${mT+plotH}" stroke="#dee2e6" stroke-width="1"/>`;
+    svg += `<line x1="${mL}" y1="${mT+plotH}" x2="${mL+plotW}" y2="${mT+plotH}" stroke="#dee2e6" stroke-width="1"/>`;
+    svg += `<text x="${mL+plotW/2}" y="${H-4}" text-anchor="middle" font-size="10" fill="#6c757d">← Cumulative net water burden ↑</text>`;
+    document.getElementById('cascadeChart').innerHTML = svg;
+}
+
+function buildTable(data, totalNet) {
+    let cumNet = 0;
+    const rows = data.map(p => {
+        const netPct = totalNet > 0 ? (p.net / totalNet * 100) : 0;
+        const rating = getPhaseRating(p.water_recycling_pct, p.balance);
+        const cascade = cumNet; cumNet += p.net;
+        return `<tr>
+            <td><strong>P${p.id}</strong> ${p.name}</td>
+            <td><span class="pill pill-consumed">${fmtL(p.water)}</span></td>
+            <td><span class="pill pill-recycled">${fmtL(p.recycled)}</span></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:50px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${p.water_recycling_pct}%;height:100%;background:#2e7d32;"></div>
+                    </div>
+                    ${p.water_recycling_pct}%
+                </div>
+            </td>
+            <td><span class="pill pill-net">${fmtL(p.net)}</span></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:50px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${Math.min(100,netPct*2)}%;height:100%;background:#1976d2;"></div>
+                    </div>
+                    ${netPct.toFixed(1)}%
+                </div>
+            </td>
+            <td style="font-size:11px;color:#1976d2;font-weight:600;">${cascade>0?fmtL(cascade):'—'}</td>
+            <td style="font-size:11px;color:#6c757d;">${p.water_quality}</td>
+            <td><span class="rating-badge ${rating.cls}">${rating.label}</span></td>
+        </tr>`;
+    });
+    document.getElementById('phaseTableBody').innerHTML = rows.join('');
+}
+
+function buildFindings(data, totalConsumed, totalRecycled, totalNet, chainRate, grade) {
+    const findings = [];
+    const gradeDesc = {'A+':'Chain recycling rate ≥75% meets WGC 2030 target. Best-in-class water stewardship.','A':'Above 60% recycling — well-managed chain. Improvement in Phase 1-2 would push to A+.','B':'45-60% recycling — near industry average. Targeted improvements in dominant phases are achievable.','C':'Below 45% — significant freshwater exposure. Regulatory and operational risk is elevated.','D':'Below 30% — critically inefficient. Immediate intervention needed.'};
+    findings.push({ type: chainRate>=60?'positive':'warning', title:`Overall Rating: ${grade.grade} — ${grade.label}`, body: gradeDesc[grade.grade] || `Chain recycling rate: ${chainRate.toFixed(1)}%` });
+
+    const dom = data.reduce((a,b) => b.water>a.water?b:a);
+    const domPct = ((dom.water/totalConsumed)*100).toFixed(0);
+    findings.push({ type: Number(domPct)>70?'warning':'positive', title:`Dominant Phase: P${dom.id} ${dom.name}`, body:`Phase ${dom.id} accounts for ${domPct}% of total water consumed (${fmtL(dom.water)}). It has a recycling rate of ${dom.water_recycling_pct}%. ${dom.water_recycling_pct>=75?'This meets the WGC 2030 target.':'Improving recycling here has the greatest system-wide impact.'}` });
+
+    const highRecyclers = data.filter(p=>p.water>0&&p.water_recycling_pct>=70);
+    findings.push({ type:'positive', title:`High Recyclers: ${highRecyclers.length} phase(s) ≥70%`, body:`Phases ${highRecyclers.map(p=>`P${p.id}`).join(', ')||'none'} achieve ≥70% water recycling. These closed-loop operations (${highRecyclers.map(p=>p.name.split(' ')[0]).join(', ')}) represent best practice for their process type.` });
+
+    const lowRecyclers = data.filter(p=>p.water>1000&&p.water_recycling_pct<40);
+    findings.push({ type: lowRecyclers.length>0?'negative':'positive', title: lowRecyclers.length>0?`Improvement Needed: ${lowRecyclers.length} phase(s) <40%`:'All active phases above 40% recycling', body: lowRecyclers.length>0?`Phases ${lowRecyclers.map(p=>`P${p.id} ${p.name.split(' ')[0]}`).join(', ')} have recycling rates below 40%. Improving these to industry benchmark (60%+) would reduce net withdrawal by ~${fmtL(lowRecyclers.reduce((s,p)=>s+p.water*0.25,0))}.`:'Strong recycling performance across all water-intensive phases.' });
+
+    const phase2 = data.find(p=>p.id===2);
+    findings.push({ type:'positive', title:'Phase 2 Real Data Point: Newmont 71% (2024)', body:`Ore processing recycling is grounded in real data. Newmont achieved 71% water recycling in 2024, up from 65% in 2018. The 75% model rate reflects the ICMM benchmark target. This is the only High-quality data point in the chain.` });
+
+    const phase8 = data.find(p=>p.id===8);
+    const cumulativeToP8 = data.filter(p=>p.id<8).reduce((s,p)=>s+p.net,0);
+    findings.push({ type:'warning', title:`Accumulated Burden at Recycling Phase: ${fmtL(cumulativeToP8)}`, body:`By Phase 8 (Recycling), the accumulated net water withdrawn upstream is ${fmtL(cumulativeToP8)}. Recycling gold replaces primary production and avoids this entire upstream water burden — a key argument for secondary supply.` });
+
+    document.getElementById('findingsGrid').innerHTML = findings.map(f=>`<div class="finding-card ${f.type}"><div class="finding-title">${f.title}</div><div class="finding-body">${f.body}</div></div>`).join('');
+}
+
+function buildRanking(data) {
+    const ranked = [...data].filter(p=>p.water>0).sort((a,b)=>b.net-a.net);
+    const maxNet = ranked[0]?.net || 1;
+    const html = ranked.map((p,i) => {
+        const rating = getPhaseRating(p.water_recycling_pct, p.balance);
+        const potential = Math.round(p.water * Math.max(0, 0.75 - p.water_recycling_pct/100));
+        return `<div style="display:grid;grid-template-columns:30px 140px 1fr 90px 90px 70px 90px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <div style="font-weight:700;color:#6c757d;">#${i+1}</div>
+            <div><strong>P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</strong></div>
+            <div>
+                <div style="display:flex;gap:1px;height:12px;border-radius:3px;overflow:hidden;background:#e9ecef;">
+                    <div style="width:${p.water_recycling_pct}%;background:#2e7d32;" title="Recycled ${p.water_recycling_pct}%"></div>
+                    <div style="flex:1;background:#e65100;" title="Net ${100-p.water_recycling_pct}%"></div>
+                </div>
+            </div>
+            <td><span class="pill pill-consumed">${fmtL(p.water)}</span></td>
+            <td><span class="pill pill-net">${fmtL(p.net)}</span></td>
+            <div style="font-size:11px;color:#2e7d32;">${p.water_recycling_pct}% recycled</div>
+            <div><span class="rating-badge ${rating.cls}">${rating.label}</span></div>
+        </div>`;
+    }).join('');
+    document.getElementById('recyclingRanking').innerHTML = `
+        <div style="display:grid;grid-template-columns:30px 140px 1fr 90px 90px 70px 90px;gap:10px;padding:0 0 8px;border-bottom:2px solid #dee2e6;font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;">
+            <div>#</div><div>Phase</div><div>Recycled / Net split</div><div>Consumed</div><div>Net withdrawal</div><div>Recycle rate</div><div>Rating</div>
+        </div>${html}
+        <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#f8f9fa;padding:10px;border-radius:6px;">
+            <strong>Green bar</strong> = recycled proportion · <strong>Orange bar</strong> = net freshwater withdrawal · WGC 2030 target: 75% recycling rate chain-wide.
+        </div>`;
+}
+
+async function init() {
+    try {
+        const stored = localStorage.getItem('gold_water_analysis');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed?.data?.length) {
+                const age = parsed.timestamp ? Math.round((Date.now()-new Date(parsed.timestamp))/1000) : null;
+                render(parsed.data, `📡 Live what-if state from simulator${age!==null?` (${age}s ago)`:''} — click 💧 Water in simulator to refresh.`);
+                return;
+            }
+        }
+    } catch(e) {}
+    try {
+        const res = await fetch(DATA_URL, { cache:'no-store' });
+        if (res.ok) {
+            const json = await res.json();
+            const syn = (json.phases&&json.phases.synthetic)||{};
+            const phases = [];
+            for (let i=0;i<=8;i++) {
+                const p=syn[String(i)]||{}, meta=(json.phase_meta&&json.phase_meta[String(i)])||{};
+                phases.push({ id:i, name:p.name||meta.name||`Phase ${i}`, D:Number(p.D)||200, C:Number(p.C)||200, water:Number(p.water)||0, water_recycling_pct:Number(p.water_recycling_pct)||0, water_quality:p.water_quality||'Unknown', water_notes:p.water_notes||'' });
+            }
+            render(phases, `📁 Baseline from gold_supply_chain_ui.json (${json._meta?.generated||'unknown'}). Open via simulator for live what-if state.`);
+            return;
+        }
+    } catch(e) {}
+    render(FALLBACK, '⚠️ Using hardcoded fallback data.');
+}
+init();
+</script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

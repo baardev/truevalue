@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gold Value Chain Ui</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Gold Value Chain Ui</h1>
+        <p class="subtitle">Generated from <strong>gold_value_chain_ui.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated_at&quot;: &quot;2026-04-08T18:39:38&quot;,
+    &quot;version&quot;: &quot;1.0&quot;,
+    &quot;description&quot;: &quot;Gold value chain environmental cost layer. Physical quantities sourced from gold_supply_chain_ui.json (supply chain layer, unchanged). Costs derived by applying reference unit-cost parameters.&quot;,
+    &quot;sources&quot;: [
+      &quot;gold_supply_chain_ui.json (physical quantities — supply chain layer)&quot;
+    ],
+    &quot;parameters&quot;: {
+      &quot;carbon_price_usd_per_tco2&quot;: 65.0,
+      &quot;energy_tariff_usd_per_kwh&quot;: 0.12,
+      &quot;water_rate_usd_per_litre&quot;: 0.002,
+      &quot;ref_production_oz_per_year&quot;: 106100000,
+      &quot;baseline_aisc_usd_per_oz&quot;: 1385.0
+    },
+    &quot;chain_totals&quot;: {
+      &quot;total_scope1_tco2&quot;: 22060000.0,
+      &quot;total_scope2_tco2&quot;: 54725000.0,
+      &quot;total_chain_tco2&quot;: 76785000,
+      &quot;total_env_cost_usd&quot;: 4991127100,
+      &quot;total_env_cost_per_oz&quot;: 47.0417,
+      &quot;env_pct_of_aisc&quot;: 3.397
+    },
+    &quot;note&quot;: &quot;Re-run generate_ui_data.py to refresh. Carbon price, energy tariff, and water rate are reference parameters — use the value chain simulators to vary them dynamically.&quot;
+  },
+  &quot;phases&quot;: {
+    &quot;0&quot;: {
+      &quot;name&quot;: &quot;Exploration &amp; Geology&quot;,
+      &quot;scope1_tco2&quot;: 120000.0,
+      &quot;scope2_tco2&quot;: 25000.0,
+      &quot;scope3_upstream_tco2&quot;: 0,
+      &quot;energy_kwh&quot;: 5000.0,
+      &quot;water_litres&quot;: 0.0,
+      &quot;energy_clean_pct&quot;: 20,
+      &quot;water_recycling_pct&quot;: 0,
+      &quot;d_value&quot;: 227,
+      &quot;c_value&quot;: 208,
+      &quot;balance&quot;: 83.9,
+      &quot;carbon_cost_usd&quot;: 9425000,
+      &quot;energy_cost_usd&quot;: 600,
+      &quot;water_cost_usd&quot;: 0,
+      &quot;total_env_cost_usd&quot;: 9425600,
+      &quot;scope3_liability_usd&quot;: 0,
+      &quot;carbon_cost_per_oz&quot;: 0.0888,
+      &quot;energy_cost_per_oz&quot;: 6e-06,
+      &quot;water_cost_per_oz&quot;: 0.0,
+      &quot;total_env_cost_per_oz&quot;: 0.0888,
+      &quot;env_pct_of_aisc&quot;: 0.006
+    },
+    &quot;1&quot;: {
+      &quot;name&quot;: &quot;Mine Extraction&quot;,
+      &quot;scope1_tco2&quot;: 8200000.0,
+      &quot;scope2_tco2&quot;: 27800000.0,
+      &quot;scope3_upstream_tco2&quot;: 145000,
+      &quot;energy_kwh&quot;: 250000.0,
+      &quot;water_litres&quot;: 2000000.0,
+      &quot;energy_clean_pct&quot;: 25,
+      &quot;water_recycling_pct&quot;: 20,
+      &quot;d_value&quot;: 270,
+      &quot;c_value&quot;: 277,
+      &quot;balance&quot;: 94.6,
+      &quot;carbon_cost_usd&quot;: 2340000000,
+      &quot;energy_cost_usd&quot;: 30000,
+      &quot;water_cost_usd&quot;: 4000,
+      &quot;total_env_cost_usd&quot;: 2340034000,
+      &quot;scope3_liability_usd&quot;: 9425000,
+      &quot;carbon_cost_per_oz&quot;: 22.0547,
+      &quot;energy_cost_per_oz&quot;: 0.000283,
+      &quot;water_cost_per_oz&quot;: 3.8e-05,
+      &quot;total_env_cost_per_oz&quot;: 22.055,
+      &quot;env_pct_of_aisc&quot;: 1.592
+    },
+    &quot;2&quot;: {
+      &quot;name&quot;: &quot;Ore Processing&quot;,
+      &quot;scope1_tco2&quot;: 3000000.0,
+      &quot;scope2_tco2&quot;: 17000000.0,
+      &quot;scope3_upstream_tco2&quot;: 36145000,
+      &quot;energy_kwh&quot;: 180000.0,
+      &quot;water_litres&quot;: 8500000.0,
+      &quot;energy_clean_pct&quot;: 40,
+      &quot;water_recycling_pct&quot;: 75,
+      &quot;d_value&quot;: 276,
+      &quot;c_value&quot;: 271,
+      &quot;balance&quot;: 95.96,
+      &quot;carbon_cost_usd&quot;: 1300000000,
+      &quot;energy_cost_usd&quot;: 21600,
+      &quot;water_cost_usd&quot;: 17000,
+      &quot;total_env_cost_usd&quot;: 1300038600,
+      &quot;scope3_liability_usd&quot;: 2349425000,
+      &quot;carbon_cost_per_oz&quot;: 12.2526,
+      &quot;energy_cost_per_oz&quot;: 0.000204,
+      &quot;water_cost_per_oz&quot;: 0.00016,
+      &quot;total_env_cost_per_oz&quot;: 12.253,
+      &quot;env_pct_of_aisc&quot;: 0.885
+    },
+    &quot;3&quot;: {
+      &quot;name&quot;: &quot;Smelting &amp; Doré&quot;,
+      &quot;scope1_tco2&quot;: 3800000.0,
+      &quot;scope2_tco2&quot;: 2600000.0,
+      &quot;scope3_upstream_tco2&quot;: 56145000,
+      &quot;energy_kwh&quot;: 30000.0,
+      &quot;water_litres&quot;: 300000.0,
+      &quot;energy_clean_pct&quot;: 35,
+      &quot;water_recycling_pct&quot;: 80,
+      &quot;d_value&quot;: 264,
+      &quot;c_value&quot;: 249,
+      &quot;balance&quot;: 89.3,
+      &quot;carbon_cost_usd&quot;: 416000000,
+      &quot;energy_cost_usd&quot;: 3600,
+      &quot;water_cost_usd&quot;: 600,
+      &quot;total_env_cost_usd&quot;: 416004200,
+      &quot;scope3_liability_usd&quot;: 3649425000,
+      &quot;carbon_cost_per_oz&quot;: 3.9208,
+      &quot;energy_cost_per_oz&quot;: 3.4e-05,
+      &quot;water_cost_per_oz&quot;: 6e-06,
+      &quot;total_env_cost_per_oz&quot;: 3.9209,
+      &quot;env_pct_of_aisc&quot;: 0.283
+    },
+    &quot;4&quot;: {
+      &quot;name&quot;: &quot;Refining&quot;,
+      &quot;scope1_tco2&quot;: 2000000.0,
+      &quot;scope2_tco2&quot;: 3600000.0,
+      &quot;scope3_upstream_tco2&quot;: 62545000,
+      &quot;energy_kwh&quot;: 80000.0,
+      &quot;water_litres&quot;: 1000000.0,
+      &quot;energy_clean_pct&quot;: 50,
+      &quot;water_recycling_pct&quot;: 65,
+      &quot;d_value&quot;: 263,
+      &quot;c_value&quot;: 270,
+      &quot;balance&quot;: 95.1,
+      &quot;carbon_cost_usd&quot;: 364000000,
+      &quot;energy_cost_usd&quot;: 9600,
+      &quot;water_cost_usd&quot;: 2000,
+      &quot;total_env_cost_usd&quot;: 364011600,
+      &quot;scope3_liability_usd&quot;: 4065425000,
+      &quot;carbon_cost_per_oz&quot;: 3.4307,
+      &quot;energy_cost_per_oz&quot;: 9e-05,
+      &quot;water_cost_per_oz&quot;: 1.9e-05,
+      &quot;total_env_cost_per_oz&quot;: 3.4308,
+      &quot;env_pct_of_aisc&quot;: 0.248
+    },
+    &quot;5&quot;: {
+      &quot;name&quot;: &quot;Assay &amp; Certification&quot;,
+      &quot;scope1_tco2&quot;: 500000.0,
+      &quot;scope2_tco2&quot;: 700000.0,
+      &quot;scope3_upstream_tco2&quot;: 68145000,
+      &quot;energy_kwh&quot;: 15000.0,
+      &quot;water_litres&quot;: 30000.0,
+      &quot;energy_clean_pct&quot;: 50,
+      &quot;water_recycling_pct&quot;: 30,
+      &quot;d_value&quot;: 253,
+      &quot;c_value&quot;: 247,
+      &quot;balance&quot;: 95.0,
+      &quot;carbon_cost_usd&quot;: 78000000,
+      &quot;energy_cost_usd&quot;: 1800,
+      &quot;water_cost_usd&quot;: 60,
+      &quot;total_env_cost_usd&quot;: 78001860,
+      &quot;scope3_liability_usd&quot;: 4429425000,
+      &quot;carbon_cost_per_oz&quot;: 0.7352,
+      &quot;energy_cost_per_oz&quot;: 1.7e-05,
+      &quot;water_cost_per_oz&quot;: 1e-06,
+      &quot;total_env_cost_per_oz&quot;: 0.7352,
+      &quot;env_pct_of_aisc&quot;: 0.053
+    },
+    &quot;6&quot;: {
+      &quot;name&quot;: &quot;Logistics &amp; Transport&quot;,
+      &quot;scope1_tco2&quot;: 3200000.0,
+      &quot;scope2_tco2&quot;: 800000.0,
+      &quot;scope3_upstream_tco2&quot;: 69345000,
+      &quot;energy_kwh&quot;: 5000.0,
+      &quot;water_litres&quot;: 0.0,
+      &quot;energy_clean_pct&quot;: 55,
+      &quot;water_recycling_pct&quot;: 0,
+      &quot;d_value&quot;: 204,
+      &quot;c_value&quot;: 161,
+      &quot;balance&quot;: 65.5,
+      &quot;carbon_cost_usd&quot;: 260000000,
+      &quot;energy_cost_usd&quot;: 600,
+      &quot;water_cost_usd&quot;: 0,
+      &quot;total_env_cost_usd&quot;: 260000600,
+      &quot;scope3_liability_usd&quot;: 4507425000,
+      &quot;carbon_cost_per_oz&quot;: 2.4505,
+      &quot;energy_cost_per_oz&quot;: 6e-06,
+      &quot;water_cost_per_oz&quot;: 0.0,
+      &quot;total_env_cost_per_oz&quot;: 2.4505,
+      &quot;env_pct_of_aisc&quot;: 0.177
+    },
+    &quot;7&quot;: {
+      &quot;name&quot;: &quot;Exchange Registration&quot;,
+      &quot;scope1_tco2&quot;: 40000.0,
+      &quot;scope2_tco2&quot;: 200000.0,
+      &quot;scope3_upstream_tco2&quot;: 73345000,
+      &quot;energy_kwh&quot;: 2000.0,
+      &quot;water_litres&quot;: 0.0,
+      &quot;energy_clean_pct&quot;: 60,
+      &quot;water_recycling_pct&quot;: 0,
+      &quot;d_value&quot;: 254,
+      &quot;c_value&quot;: 265,
+      &quot;balance&quot;: 92.2,
+      &quot;carbon_cost_usd&quot;: 15600000,
+      &quot;energy_cost_usd&quot;: 240,
+      &quot;water_cost_usd&quot;: 0,
+      &quot;total_env_cost_usd&quot;: 15600240,
+      &quot;scope3_liability_usd&quot;: 4767425000,
+      &quot;carbon_cost_per_oz&quot;: 0.147,
+      &quot;energy_cost_per_oz&quot;: 2e-06,
+      &quot;water_cost_per_oz&quot;: 0.0,
+      &quot;total_env_cost_per_oz&quot;: 0.147,
+      &quot;env_pct_of_aisc&quot;: 0.011
+    },
+    &quot;8&quot;: {
+      &quot;name&quot;: &quot;End Use &amp; Fabrication&quot;,
+      &quot;scope1_tco2&quot;: 1200000.0,
+      &quot;scope2_tco2&quot;: 2000000.0,
+      &quot;scope3_upstream_tco2&quot;: 73585000,
+      &quot;energy_kwh&quot;: 70000.0,
+      &quot;water_litres&quot;: 1000000.0,
+      &quot;energy_clean_pct&quot;: 45,
+      &quot;water_recycling_pct&quot;: 70,
+      &quot;d_value&quot;: 245,
+      &quot;c_value&quot;: 250,
+      &quot;balance&quot;: 80.0,
+      &quot;carbon_cost_usd&quot;: 208000000,
+      &quot;energy_cost_usd&quot;: 8400,
+      &quot;water_cost_usd&quot;: 2000,
+      &quot;total_env_cost_usd&quot;: 208010400,
+      &quot;scope3_liability_usd&quot;: 4783025000,
+      &quot;carbon_cost_per_oz&quot;: 1.9604,
+      &quot;energy_cost_per_oz&quot;: 7.9e-05,
+      &quot;water_cost_per_oz&quot;: 1.9e-05,
+      &quot;total_env_cost_per_oz&quot;: 1.9605,
+      &quot;env_pct_of_aisc&quot;: 0.142
+    }
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

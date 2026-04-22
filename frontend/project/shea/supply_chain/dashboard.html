@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shea Supply Chain – Dashboard</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #c9a227 0%, #8b6914 50%, #5c4610 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #5c4610 0%, #8b6914 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header a {
+            color: #f0e6d3;
+            text-decoration: none;
+            margin-left: 15px;
+            font-size: 14px;
+        }
+        .header a:hover { color: white; }
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 30px;
+            background: #f8f9fa;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .card-label { font-size: 12px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 10px; }
+        .card-value { font-size: 28px; font-weight: bold; margin-bottom: 8px; }
+        .card-bar { height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+        .card-bar-fill { height: 100%; transition: width 0.3s; }
+        .card.good .card-value { color: #28a745; }
+        .card.fair .card-value { color: #ffc107; }
+        .card.poor .card-value { color: #dc3545; }
+        .main-content { padding: 30px; }
+        .section-title { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: #2c3e50; }
+        .flow-chart {
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow-x: auto;
+        }
+        .phases {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 1000px;
+        }
+        .phase { text-align: center; cursor: pointer; padding: 10px; border-radius: 8px; transition: all 0.3s; }
+        .phase:hover { background: #f8f9fa; transform: scale(1.05); }
+        .phase-box {
+            width: 90px;
+            height: 90px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            border: 3px solid;
+            color: white;
+        }
+        .phase-box.excellent { background: linear-gradient(135deg, #28a745, #20c997); border-color: #28a745; }
+        .phase-box.good { background: linear-gradient(135deg, #20c997, #17a2b8); border-color: #17a2b8; }
+        .phase-box.fair { background: linear-gradient(135deg, #ffc107, #fd7e14); border-color: #ffc107; }
+        .phase-box.poor { background: linear-gradient(135deg, #dc3545, #c82333); border-color: #dc3545; }
+        .phase-id { font-size: 12px; font-weight: bold; opacity: 0.9; }
+        .phase-score { font-size: 22px; font-weight: bold; }
+        .phase-name { font-size: 10px; margin-top: 5px; font-weight: 600; }
+        .phase-n { font-size: 9px; opacity: 0.8; margin-top: 3px; }
+        .flow-arrow { font-size: 28px; color: #adb5bd; padding: 0 8px; }
+        .legend { display: flex; gap: 20px; margin-top: 25px; padding-top: 20px; border-top: 1px solid #dee2e6; flex-wrap: wrap; }
+        .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #6c757d; }
+        .legend-color { width: 18px; height: 18px; border-radius: 4px; }
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal.active { display: flex; }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 560px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        .modal-close { float: right; font-size: 24px; cursor: pointer; color: #6c757d; }
+        .modal-close:hover { color: #dc3545; }
+
+        /* Model strip + scenario bar */
+        .model-strip {
+            display: flex; background: #1a1a1a; overflow-x: auto;
+        }
+        .model-tab {
+            padding: 10px 20px; font-size: 13px; font-weight: 600;
+            border-right: 1px solid #333; color: #888;
+            text-decoration: none; display: block; white-space: nowrap;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active { background: #2d6a4f; color: #d8f3dc; cursor: default; }
+        .model-tab.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
+        .scenario-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; background: #0d1f15;
+            border-bottom: 2px solid #2d6a4f; flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #95d5b2; white-space: nowrap; flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            border: 1px solid #1a3a24; background: #0d2018; color: #95d5b2;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #2d6a4f; color: #d8f3dc; }
+        .scen-btn.active { background: #2d6a4f; border-color: #2d6a4f; color: white; }
+        .scen-btn.shock  { border-color: #dc3545; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #dc3545; border-color: #dc3545; color: white; }
+        .scen-btn.expand { border-color: #28a745; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #28a745; border-color: #28a745; color: white; }
+        .scen-btn.sshea  { border-color: #17a2b8; }
+        .scen-btn.sshea:hover, .scen-btn.sshea.active  { background: #17a2b8; border-color: #17a2b8; color: white; }
+        .scenario-desc {
+            font-size: 11px; color: #4a8a5a; font-style: italic; flex: 1; min-width: 180px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>🫒 Shea Supply Chain – π Dashboard</h1>
+            <div>
+                <a href="phi_dashboard.html" style="color:#95d5b2;font-weight:700;">φ Proportional →</a>
+                <a href="project_context.html">Project context</a>
+                <a href="index.html">Home</a>
+                <a href="/index.html">Main Homepage</a>
+                <a href="what_if_simulator.html">What-If Simulator</a>
+                </div>
+        </div>
+
+        <!-- Model layer strip -->
+        <div class="model-strip">
+            <span class="model-tab active">π Operational ← current</span>
+            <a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
+            <a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+            <a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
+            <a class="model-tab" href="e_dashboard.html">e Abstract</a>
+        </div>
+
+        <!-- Scenario selector -->
+        <div class="scenario-bar">
+            <span class="scenario-label">Scenario:</span>
+            <div class="scenario-btns" id="scenario-btns-container"></div>
+            <span class="scenario-desc" id="scenario-desc"></span>
+        </div>
+
+        <div class="score-cards">
+            <div class="card good" id="cardBalance">
+                <div class="card-label">System Balance</div>
+                <div class="card-value" id="sysBalance">—</div>
+                <div class="card-bar"><div class="card-bar-fill" id="sysBalanceBar" style="width:0%; background: linear-gradient(90deg, #28a745, #20c997);"></div></div>
+            </div>
+            <div class="card good">
+                <div class="card-label">Sustainability Index</div>
+                <div class="card-value" id="sysSustainability">—</div>
+                <div class="card-bar"><div class="card-bar-fill" id="sysSusBar" style="width:0%; background: #17a2b8;"></div></div>
+            </div>
+            <div class="card poor">
+                <div class="card-label">Bottleneck Count</div>
+                <div class="card-value" id="bottleneckCount">—</div>
+                <div class="card-bar"><div class="card-bar-fill" id="bottleneckBar" style="width:0%; background: #dc3545;"></div></div>
+            </div>
+            <div class="card good">
+                <div class="card-label">Phases</div>
+                <div class="card-value">7</div>
+                <div class="card-bar"><div class="card-bar-fill" style="width:78%; background: #c9a227;"></div></div>
+                <div style="font-size:12px; color:#6c757d; margin-top:5px;">Collection → Retail</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+                <div class="section-title" style="margin-bottom: 0;">Supply chain flow (Burkina Faso / West Africa → Cleo retail)</div>
+                <a href="project_context.html" style="padding: 10px 18px; background: #5c4610; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;">📋 Senegal project context & impact</a>
+            </div>
+            <div style="background: #f0e6d3; padding: 14px 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c9a227;">
+                <strong>Project context (N-D-C):</strong> Senegal pilot 50 farmers, 100k potential participants, 31 plantation sites (EP Carbon). Barriers → D-constraints; scale → C-integration. <a href="project_context.html" style="color: #5c4610; font-weight: 600;">See full context & sources →</a>
+            </div>
+            <div class="flow-chart">
+                <div class="phases" id="phasesContainer"></div>
+                <div class="legend">
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #28a745, #20c997);"></div><span>Excellent (95–100)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #20c997, #17a2b8);"></div><span>Good (80–95)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #ffc107, #fd7e14);"></div><span>Fair (60–80)</span></div>
+                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #dc3545, #c82333);"></div><span>Poor (&lt;60)</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="phaseModal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeModal()">&times;</span>
+            <h2 id="modalTitle">Phase</h2>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        // ── Data-driven: all phase data loaded from JSON at startup ──
+        const DATA_URL = '/frontend/project/shea/data/processed/shea_supply_chain_ui.json';
+        let UI_DATA    = null;
+        let sheaPhaseData = {};
+        let system = { system_balance: 81.6, sustainability_index: 0.88, bottleneck_count: 2 };
+
+        function statusClass(balance) {
+            if (balance >= 95) return 'excellent';
+            if (balance >= 80) return 'good';
+            if (balance >= 60) return 'fair';
+            return 'poor';
+        }
+
+        function metricsTableHTML(metrics) {
+            if (!metrics || Object.keys(metrics).length === 0) return '';
+            let rows = '';
+            for (const [k, v] of Object.entries(metrics)) {
+                if (typeof v === 'object' && v !== null) {
+                    const val  = v.value !== undefined ? v.value : '—';
+                    const unit = v.unit  ? ` <span style="color:#adb5bd;">${v.unit}</span>` : '';
+                    const note = v.note  ? `<div style="font-size:10px;color:#6c757d;">${v.note}</div>` : '';
+                    rows += `<tr>
+                        <td style="padding:4px 8px;border-bottom:1px solid #e9ecef;font-size:12px;">${k.replace(/_/g,' ')}</td>
+                        <td style="padding:4px 8px;border-bottom:1px solid #e9ecef;font-size:12px;font-weight:600;">${val}${unit}${note}</td>
+                    </tr>`;
+                }
+            }
+            return `<table style="width:100%;border-collapse:collapse;margin-top:6px;"><tbody>${rows}</tbody></table>`;
+        }
+
+        function renderPhases() {
+            const container = document.getElementById('phasesContainer');
+            if (!container) return;
+            let html = '';
+            const phaseCount = Object.keys(sheaPhaseData).length;
+            const maxId = phaseCount > 0 ? Math.max(...Object.keys(sheaPhaseData).map(Number)) : 6;
+            for (let i = 0; i <= maxId; i++) {
+                const p = sheaPhaseData[i];
+                if (!p) continue;
+                const cls = statusClass(p.balance || 0);
+                html += `
+                    <div class="phase" onclick="showPhaseDetail(${i})">
+                        <div class="phase-box ${cls}">
+                            <div class="phase-id">Phase ${i}</div>
+                            <div class="phase-score">${Math.round(p.balance || 0)}</div>
+                            <div class="phase-n">N: ${p.N || '—'}</div>
+                        </div>
+                        <div class="phase-name">${(p.name||'').split(' ')[0]}${(p.name||'').length > 12 ? '…' : ''}</div>
+                    </div>
+                `;
+                if (i < maxId) html += '<div class="flow-arrow">→</div>';
+            }
+            container.innerHTML = html;
+        }
+
+        function showPhaseDetail(phaseId) {
+            const p = sheaPhaseData[phaseId];
+            if (!p) return;
+            const imbalance = Math.abs((p.D||0) - (p.C||0));
+            const diagnosis = (p.D||0) > (p.C||0) ? 'D-dominant (Over-constrained)' : (p.C||0) > (p.D||0) ? 'C-dominant (Over-integrated)' : 'Balanced';
+
+            document.getElementById('modalTitle').textContent = `Phase ${phaseId}: ${p.name||''}`;
+            document.getElementById('modalBody').innerHTML = `
+                <div style="margin:20px 0;">
+                    <h3 style="margin-bottom:12px;">D–C Balance</h3>
+                    <div style="margin-bottom:10px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span>Definition (D)</span><strong>${p.D||0}</strong></div>
+                        <div style="height:28px;background:#e9ecef;border-radius:4px;overflow:hidden;">
+                            <div style="height:100%;width:${((p.D||0)/300)*100}%;background:linear-gradient(90deg,#dc3545,#c82333);"></div>
+                        </div>
+                    </div>
+                    <div style="margin-bottom:20px;">
+                        <div style="display:flex;justify-content:space-between;margin-bottom:5px;"><span>Contribution (C)</span><strong>${p.C||0}</strong></div>
+                        <div style="height:28px;background:#e9ecef;border-radius:4px;overflow:hidden;">
+                            <div style="height:100%;width:${((p.C||0)/300)*100}%;background:linear-gradient(90deg,#17a2b8,#20c997);"></div>
+                        </div>
+                    </div>
+                    <div style="background:#f8f9fa;padding:15px;border-radius:8px;margin-bottom:15px;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                            <div><strong>Balance:</strong> ${(p.balance||0).toFixed(1)}</div>
+                            <div><strong>N-State:</strong> ${p.N||'—'}</div>
+                            <div><strong>Sustainability:</strong> ${(p.sustainability||0).toFixed(2)}</div>
+                            <div><strong>Imbalance:</strong> ${imbalance}</div>
+                        </div>
+                    </div>
+                    ${p.notes ? `<p style="font-size:13px;color:#6c757d;margin-bottom:15px;">${p.notes}</p>` : ''}
+                    ${p.metrics ? `<h3 style="margin:15px 0 6px;">📊 Source Metrics</h3><div style="background:#f0f9f4;padding:12px;border-radius:8px;border-left:3px solid #c9a227;">${metricsTableHTML(p.metrics)}</div>` : ''}
+                    <div style="background:${(p.balance||0) > 80 ? '#d4edda' : (p.balance||0) > 60 ? '#fff3cd' : '#f8d7da'};padding:12px;border-radius:8px;border-left:4px solid ${(p.balance||0) > 80 ? '#28a745' : (p.balance||0) > 60 ? '#ffc107' : '#dc3545'};margin-top:15px;">
+                        <strong>${diagnosis}</strong><br>
+                        <span style="font-size:13px;">${(p.balance||0) > 80 ? '✓ Healthy balance.' : (p.D||0) > (p.C||0) ? '⚠️ Increase C (integration) or reduce D (constraints).' : '⚠️ Increase D or reduce C.'}</span>
+                    </div>
+                    <div style="margin-top:20px;text-align:center;">
+                        <a href="what_if_simulator.html" style="display:inline-block;padding:12px 24px;background:#c9a227;color:white;text-decoration:none;border-radius:6px;font-weight:600;">🎛️ Optimize in Simulator</a>
+                        <button style="margin-left:10px;padding:12px 24px;background:#6c757d;color:white;border:none;border-radius:6px;cursor:pointer;" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById('phaseModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('phaseModal').classList.remove('active');
+        }
+
+        function renderSystem() {
+            const sb = document.getElementById('sysBalance');
+            const sbb = document.getElementById('sysBalanceBar');
+            const ss = document.getElementById('sysSustainability');
+            const ssb = document.getElementById('sysSusBar');
+            const bc = document.getElementById('bottleneckCount');
+            const bb = document.getElementById('bottleneckBar');
+            if (sb)  sb.textContent  = (system.system_balance||0).toFixed(1);
+            if (sbb) sbb.style.width = Math.min(100, system.system_balance||0) + '%';
+            if (ss)  ss.textContent  = (system.sustainability_index||0).toFixed(2);
+            if (ssb) ssb.style.width = Math.min(100, (system.sustainability_index||0)*50) + '%';
+            if (bc)  bc.textContent  = String(system.bottleneck_count||0);
+            if (bb)  bb.style.width  = ((system.bottleneck_count||0) / 7 * 100) + '%';
+        }
+
+        window.onclick = function(e) {
+            if (e.target.id === 'phaseModal') closeModal();
+        };
+
+        // ── Bootstrap: fetch JSON then render ──
+        async function init() {
+            try {
+                const [uiRes, scenRes] = await Promise.all([
+                    fetch(DATA_URL, { cache: 'no-store' }),
+                    fetch('scenarios.json', { cache: 'no-store' })
+                ]);
+                if (!uiRes.ok) throw new Error(`HTTP ${uiRes.status} loading ${DATA_URL}`);
+                UI_DATA = await uiRes.json();
+                // Map phases object (string keys) to numeric-keyed dict
+                sheaPhaseData = {};
+                for (const [k, v] of Object.entries(UI_DATA.phases || {})) {
+                    sheaPhaseData[Number(k)] = v;
+                }
+                // Override system summary if present
+                if (UI_DATA.system) {
+                    system = {
+                        system_balance:      UI_DATA.system.balance            || system.system_balance,
+                        sustainability_index: UI_DATA.system.sustainability_index || system.sustainability_index,
+                        bottleneck_count:    UI_DATA.system.bottleneck_count   || system.bottleneck_count
+                    };
+                }
+                console.info(`[shea-sc] Loaded UI data (generated: ${UI_DATA._meta && UI_DATA._meta.generated})`);
+                if (scenRes.ok) {
+                    const scenData = await scenRes.json();
+                    PI_SCENARIOS = scenData.pi.scenarios;
+                    buildScenarioButtons(PI_SCENARIOS);
+                } else {
+                    console.warn('[shea-sc] scenarios.json not found — scenario bar will be empty');
+                }
+            } catch (err) {
+                console.error('[shea-sc] Failed to load UI data, using empty fallback:', err);
+                UI_DATA = {};
+            }
+            renderPhases();
+            renderSystem();
+        }
+
+        // ── Scenario system ───────────────────────────────────────────────────────
+        // Scenarios adjust per-phase balance values relative to baseline.
+        // Keys map to phase IDs; values are {balance} overrides.
+        let PI_SCENARIOS = {};
+
+        function buildScenarioButtons(scenarios) {
+            const btnCls = key => {
+                if (key === 'current' || key === 'optimum') return '';
+                if (key === 'expansion') return 'expand';
+                if (key === 'regulatory') return 'regul';
+                if (key === 'serious_shea') return 'sshea';
+                return 'shock';
+            };
+            const container = document.getElementById('scenario-btns-container');
+            if (!container) return;
+            container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+                `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+            ).join('');
+        }
+
+        function setScenario(key) {
+            const scen = PI_SCENARIOS[key];
+            if (!scen || !UI_DATA) return;
+            document.querySelectorAll('.scen-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+            const descEl = document.getElementById('scenario-desc');
+            if (descEl) descEl.textContent = scen.description;
+
+            // Rebuild sheaPhaseData from base, applying adjustments
+            sheaPhaseData = {};
+            for (const [k, v] of Object.entries(UI_DATA.phases || {})) {
+                sheaPhaseData[Number(k)] = { ...v };
+            }
+            const adj = scen.adjustments;
+            if (adj === 'scale+15') {
+                for (const id of Object.keys(sheaPhaseData)) {
+                    const p = sheaPhaseData[id];
+                    if (p.balance !== undefined) p.balance = Math.min(100, p.balance * 1.15);
+                }
+            } else if (adj && typeof adj === 'object') {
+                for (const [id, bal] of Object.entries(adj)) {
+                    if (sheaPhaseData[Number(id)]) sheaPhaseData[Number(id)].balance = bal;
+                    else sheaPhaseData[Number(id)] = { balance: bal };
+                }
+            }
+            renderPhases();
+        }
+
+        init();
+    </script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

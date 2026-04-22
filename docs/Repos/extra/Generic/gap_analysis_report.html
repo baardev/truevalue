@@ -1,0 +1,915 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrueValue Framework — Gap Analysis &amp; Research Agenda</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a2744;
+      --navy2:  #243358;
+      --gold:   #c8a84b;
+      --gold2:  #e8c96b;
+      --offwhite: #f8f7f4;
+      --cream:  #f0ece3;
+      --rule:   #ddd8cc;
+      --text:   #2c2c2c;
+      --muted:  #666;
+      --red:    #b03030;
+      --amber:  #c87020;
+      --green:  #2e7d4f;
+      --page-width: 860px;
+    }
+    html { font-size: 16px; }
+    body { font-family: Georgia, 'Times New Roman', serif; font-size: 0.9375rem; line-height: 1.7; color: var(--text); background: #e8e4dc; }
+
+    .page { max-width: var(--page-width); margin: 2rem auto; background: #fff; box-shadow: 0 4px 40px rgba(0,0,0,0.18); }
+
+    /* ── Cover ── */
+    .cover { background: var(--navy); color: #fff; padding: 5rem 5rem 4rem; position: relative; overflow: hidden; }
+    .cover::before { content: ''; position: absolute; top: 0; right: 0; width: 320px; height: 320px; background: radial-gradient(circle at 80% 20%, rgba(200,168,75,0.18) 0%, transparent 70%); pointer-events: none; }
+    .cover-eyebrow { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold); margin-bottom: 1.8rem; }
+    .cover h1 { font-family: Georgia, serif; font-size: 2.4rem; font-weight: normal; line-height: 1.2; color: #fff; margin-bottom: 1rem; max-width: 600px; }
+    .cover h1 em { color: var(--gold); font-style: normal; }
+    .cover-subtitle { font-size: 1.05rem; color: rgba(255,255,255,0.72); margin-bottom: 3.5rem; max-width: 530px; font-style: italic; }
+    .cover-meta { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.78rem; color: rgba(255,255,255,0.5); border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .cover-meta span { display: block; }
+    .cover-meta strong { color: rgba(255,255,255,0.8); display: block; margin-bottom: 0.15rem; }
+    .cover-disclaimer { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 2rem; max-width: 620px; line-height: 1.5; }
+
+    /* ── Layout ── */
+    .content { padding: 0; }
+    section { padding: 3.5rem 5rem; border-bottom: 1px solid var(--rule); }
+    section:last-child { border-bottom: none; }
+    .section-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    h2 { font-family: Georgia, serif; font-size: 1.75rem; font-weight: normal; color: var(--navy); margin-bottom: 1.6rem; line-height: 1.25; }
+    h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); margin: 2rem 0 0.75rem; }
+    h4 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; font-weight: 700; color: var(--navy); margin: 1.2rem 0 0.5rem; }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Status badges ── */
+    .status-pill { display: inline-flex; align-items: center; gap: 0.3rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.68rem; font-weight: 700; padding: 0.15rem 0.55rem; border-radius: 3px; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+    .s-real     { background: rgba(46,125,79,0.13);   color: var(--green); }
+    .s-estimated{ background: rgba(200,112,32,0.13);  color: var(--amber); }
+    .s-synthetic{ background: rgba(176,48,48,0.14);   color: var(--red);   }
+    .s-structural{ background: rgba(26,39,68,0.10);   color: var(--navy);  }
+    .s-critical  { background: rgba(176,48,48,0.22);  color: var(--red); font-size: 0.65rem; }
+
+    /* ── Exec summary ── */
+    .exec-summary { background: var(--offwhite); }
+    .status-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .status-card { background: #fff; border: 1px solid var(--rule); padding: 1.1rem 1.2rem; text-align: center; }
+    .status-card .sc-num { font-size: 2.2rem; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; line-height: 1; margin-bottom: 0.3rem; }
+    .status-card .sc-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem; }
+    .status-card p { font-size: 0.76rem; color: var(--muted); }
+    .sc-num.green { color: var(--green); }
+    .sc-num.amber { color: var(--amber); }
+    .sc-num.red   { color: var(--red);   }
+    .sc-num.navy  { color: var(--navy);  }
+
+    /* ── Finding boxes ── */
+    .finding { border-left: 3px solid var(--gold); padding: 0.9rem 1.2rem; background: var(--offwhite); margin: 1.5rem 0; font-size: 0.9rem; }
+    .finding strong { color: var(--navy); }
+    .finding.alert { border-left-color: var(--red); background: rgba(176,48,48,0.04); }
+    .finding.positive { border-left-color: var(--green); }
+
+    /* ── Status legend ── */
+    .legend { display: flex; gap: 1rem; margin: 1rem 0 1.5rem; flex-wrap: wrap; align-items: center; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.75rem; color: var(--muted); }
+    .legend-label { font-weight: 700; margin-right: 0.3rem; }
+
+    /* ── Section inventory table ── */
+    .inv-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 1.5rem 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .inv-table th { background: var(--navy); color: #fff; padding: 0.6rem 0.8rem; text-align: left; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .inv-table td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--rule); vertical-align: top; line-height: 1.4; }
+    .inv-table tr:nth-child(even) td { background: var(--offwhite); }
+    .inv-table .section-ref { color: var(--muted); font-size: 0.72rem; font-style: italic; }
+
+    /* ── Question list ── */
+    .q-list { list-style: none; margin: 0.5rem 0 1.5rem; }
+    .q-list li { display: flex; gap: 0.9rem; align-items: baseline; padding: 0.8rem 1rem; border: 1px solid var(--rule); margin-bottom: 0.5rem; background: #fff; }
+    .q-list li:hover { background: var(--cream); }
+    .q-num { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; font-weight: 700; color: var(--gold); min-width: 28px; }
+    .q-text { font-size: 0.88rem; line-height: 1.5; flex: 1; }
+    .q-text strong { color: var(--navy); }
+    .q-meta { font-size: 0.75rem; color: var(--muted); margin-top: 0.25rem; font-style: italic; }
+    .q-tag { display: inline-block; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.65rem; font-weight: 700; padding: 0.1rem 0.4rem; border-radius: 2px; margin-right: 0.3rem; text-transform: uppercase; }
+    .q-tag.data { background: rgba(176,48,48,0.12); color: var(--red); }
+    .q-tag.policy { background: rgba(26,39,68,0.10); color: var(--navy); }
+    .q-tag.validation { background: rgba(200,112,32,0.12); color: var(--amber); }
+    .q-tag.shea { background: rgba(46,125,79,0.12); color: var(--green); }
+
+    /* ── Technical requirements ── */
+    .tech-block { border: 1px solid var(--rule); margin-bottom: 1.2rem; }
+    .tech-block-header { background: var(--navy); color: #fff; padding: 0.6rem 1rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.75rem; font-weight: 700; display: flex; justify-content: space-between; align-items: center; }
+    .tech-block-body { padding: 1rem; }
+    .tech-item { display: grid; grid-template-columns: 200px 1fr auto; gap: 0.8rem; align-items: baseline; padding: 0.45rem 0; border-bottom: 1px solid var(--rule); font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; }
+    .tech-item:last-child { border-bottom: none; }
+    .tech-field { font-weight: 700; color: var(--navy); font-family: 'Courier New', monospace; font-size: 0.77rem; }
+    .tech-note { color: var(--muted); font-size: 0.77rem; line-height: 1.4; }
+
+    /* ── Priority matrix ── */
+    .priority-section { background: var(--offwhite); }
+    .priority-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .priority-col { }
+    .priority-col h4 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; padding: 0.5rem 0.8rem; margin-bottom: 0; }
+    .priority-col.p1 h4 { background: rgba(176,48,48,0.12); color: var(--red); border-top: 3px solid var(--red); }
+    .priority-col.p2 h4 { background: rgba(200,112,32,0.12); color: var(--amber); border-top: 3px solid var(--amber); }
+    .priority-col.p3 h4 { background: rgba(46,125,79,0.12); color: var(--green); border-top: 3px solid var(--green); }
+    .priority-item { border: 1px solid var(--rule); border-top: none; padding: 0.6rem 0.8rem; font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.78rem; line-height: 1.4; background: #fff; margin-bottom: 0.4rem; }
+    .priority-item strong { display: block; color: var(--navy); margin-bottom: 0.2rem; }
+    .priority-item span { color: var(--muted); }
+
+    /* ── Dark projection section ── */
+    .dark-section { background: var(--navy); color: #fff; }
+    .dark-section .section-label { color: var(--gold2); }
+    .dark-section h2 { color: #fff; }
+    .dark-section h3 { color: rgba(255,255,255,0.9); }
+    .dark-section p { color: rgba(255,255,255,0.8); }
+    .dark-section .finding { background: rgba(255,255,255,0.06); border-left-color: var(--gold); }
+    .dark-section .finding strong { color: var(--gold2); }
+    .action-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1.5rem 0; }
+    .action-card { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem; }
+    .action-card h4 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: var(--gold2); margin-bottom: 0.8rem; }
+    .action-card ul { padding-left: 1.1rem; }
+    .action-card li { font-size: 0.83rem; color: rgba(255,255,255,0.8); margin-bottom: 0.4rem; line-height: 1.4; }
+
+    /* ── Appendix ── */
+    .appendix { background: var(--offwhite); }
+    .appendix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+    .appendix-block h3 { font-size: 0.78rem; margin-top: 0; margin-bottom: 0.6rem; }
+    .appendix-block p, .appendix-block li { font-size: 0.8rem; color: var(--muted); }
+    .appendix-block ul { padding-left: 1.2rem; }
+    .appendix-block li { margin-bottom: 0.3rem; }
+
+    /* ── Footer ── */
+    .report-footer { background: var(--navy); padding: 1.2rem 5rem; display: flex; justify-content: space-between; align-items: center; }
+    .report-footer span { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+    .report-footer .footer-brand { color: var(--gold); font-weight: 700; font-size: 0.8rem; }
+
+    /* ── Utility ── */
+    .gold-rule { border: none; border-top: 2px solid var(--gold); margin: 2rem 0; opacity: 0.4; }
+    .footnote { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+    .mt-2 { margin-top: 2rem; }
+    code { font-family: 'Courier New', monospace; font-size: 0.82em; background: rgba(26,39,68,0.07); padding: 0.1rem 0.3rem; border-radius: 2px; color: var(--navy); }
+
+    @media print {
+      body { background: #fff; }
+      .page { box-shadow: none; margin: 0; max-width: 100%; }
+      section { padding: 2.5rem 4rem; }
+      .cover { page-break-after: always; background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .dark-section { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .inv-table th { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .report-footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div class="cover-eyebrow">TrueValue Analytics &nbsp;·&nbsp; Internal Working Document</div>
+    <h1>From Illustrative to <em>Investor-Ready</em>:<br>What We Still Need to Know</h1>
+    <p class="cover-subtitle">A gap analysis and research agenda identifying every claim, score, projection, and assumption in the Investor Report that requires real data, validation, or policy research before the report can be presented without qualification to institutional investors.</p>
+    <div class="cover-meta">
+      <div><strong>Document Type</strong><span>Gap Analysis / Research Agenda</span></div>
+      <div><strong>Subject Report</strong><span>investor_report.html (March 2026)</span></div>
+      <div><strong>Audiences</strong><span>Non-technical &amp; Technical</span></div>
+      <div><strong>Status</strong><span>Working Draft — Internal Only</span></div>
+    </div>
+    <p class="cover-disclaimer">This document is a frank internal assessment of what is currently synthetic, estimated, or unvalidated in the Investor Report. It is not for external distribution. Its purpose is to create a clear research agenda for moving the report from a structural demonstration to an evidenced institutional document.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ HOW TO READ ══ -->
+    <section class="exec-summary">
+      <div class="section-label">How to Read This Document</div>
+      <h2>Two Audiences, One Document</h2>
+
+      <p>This report is written for two readers simultaneously. <strong>The non-technical reader</strong> — a business associate, a potential partner, or a stakeholder who needs to understand what questions remain unanswered — will find plain-language questions in Section 2, organised by theme. No technical background is required to understand or act on them.</p>
+
+      <p><strong>The technical reader</strong> — the analyst or developer who needs to know exactly which data fields are synthetic, which formulas are incomplete, and which calculations contain internal inconsistencies — will find a precise field-level audit in Section 3. This section references specific variables, file paths, and formula definitions by name.</p>
+
+      <p>Both audiences share the same goal: understanding what needs to be done before the Investor Report can be presented to a sophisticated institutional investor who will ask hard questions.</p>
+
+      <div class="legend">
+        <span class="legend-label">Status codes used throughout:</span>
+        <span class="status-pill s-real">✓ Real / Cited</span>
+        <span class="status-pill s-structural">◆ Structurally Derived</span>
+        <span class="status-pill s-estimated">~ Estimated / Modelled</span>
+        <span class="status-pill s-synthetic">✗ Synthetic</span>
+        <span class="status-pill s-critical">⚠ Internal Inconsistency</span>
+      </div>
+
+      <div class="status-grid">
+        <div class="status-card">
+          <div class="sc-num green">4</div>
+          <div class="sc-label">Real / Cited</div>
+          <p>Claims grounded in publicly verifiable, sourced data (LBMA structure, COMEX, Foran 2005 TBL benchmarks, Shea programme documentation)</p>
+        </div>
+        <div class="status-card">
+          <div class="sc-num navy">6</div>
+          <div class="sc-label">Structurally Derived</div>
+          <p>Claims about industry structure that are factually accurate but lack a specific citation that would survive formal due diligence</p>
+        </div>
+        <div class="status-card">
+          <div class="sc-num amber">5</div>
+          <div class="sc-label">Estimated / Modelled</div>
+          <p>Numbers derived from a logical model or analogy — defensible in principle but not measured from real supply chain data</p>
+        </div>
+        <div class="status-card">
+          <div class="sc-num red">12</div>
+          <div class="sc-label">Synthetic</div>
+          <p>Numbers explicitly generated from a structural model using assumed parameters. The report's Appendix discloses this, but it limits the report's evidential weight.</p>
+        </div>
+      </div>
+
+      <div class="finding alert">
+        <strong>⚠ One internal inconsistency identified:</strong> The balance scores displayed in the Investor Report do not match the formula stated in its own Appendix (<code>Balance Score = min(C,G) / max(C,G) × 100</code>). For example, Phase 6 Logistics shows C=380, G=175, which by the stated formula gives 46.1% — but the report displays 37%. This discrepancy appears across all nine phases and needs to be resolved before the report circulates to any technically sophisticated reader. See Section 3, Item T-1 for full detail.
+      </div>
+    </section>
+
+    <!-- ══ SECTION-BY-SECTION STATUS ══ -->
+    <section>
+      <div class="section-label">Current State Audit</div>
+      <h2>What Each Section of the Investor Report Is Actually Based On</h2>
+
+      <p>The table below maps every substantive section of the Investor Report to its current evidential status. This is the master reference from which both the non-technical questions and the technical requirements below are derived.</p>
+
+      <table class="inv-table">
+        <thead>
+          <tr>
+            <th>Report Section</th>
+            <th>Key Claims / Data Used</th>
+            <th>Current Status</th>
+            <th>What Changes It</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Executive Summary</strong><br><span class="section-ref">KPI cards: 37%, 3/9, +71%, 91%</span></td>
+            <td>All four headline KPI figures are derived from the synthetic phase dataset</td>
+            <td><span class="status-pill s-synthetic">✗ Synthetic</span></td>
+            <td>Real C/G component data from at least one pilot participant in each critical phase</td>
+          </tr>
+          <tr>
+            <td><strong>Section 1 — Transparency Table</strong><br><span class="section-ref">Phase opacity descriptions</span></td>
+            <td>Phase names, transparency ratings, and opacity reasons are derived from LBMA and COMEX structure — factually accurate descriptions of industry design</td>
+            <td><span class="status-pill s-structural">◆ Structural</span></td>
+            <td>Add specific citations (LBMA Responsible Gold Guidance, OECD Due Diligence) to each row</td>
+          </tr>
+          <tr>
+            <td><strong>Section 2 — C/G/N Formula</strong><br><span class="section-ref">Balance Score formula; Net Performance; Sustainability Index</span></td>
+            <td>Balance Score formula disclosed. However: (a) "Balance Factor" in Net Performance is undefined; (b) Sustainability Index formula is described verbally but not mathematically; (c) C and G sub-components are not disclosed anywhere in the report</td>
+            <td><span class="status-pill s-estimated">~ Partial</span></td>
+            <td>Define Balance Factor precisely; publish complete Sustainability Index formula; disclose at least the category-level C/G sub-components</td>
+          </tr>
+          <tr>
+            <td><strong>Section 3 — Gold Phase Scores</strong><br><span class="section-ref">All 9 phase C, G, balanceScore values</span></td>
+            <td>All 27 values (9 phases × C, G, score) are synthetic integers seeded from structural reasoning, not measured from real data</td>
+            <td><span class="status-pill s-synthetic">✗ Synthetic</span></td>
+            <td>Real data from even one LBMA mining company (Phase 1) and one COMEX report (Phase 7) would allow partial replacement; Phases 3, 4, 6 require partner negotiation</td>
+          </tr>
+          <tr>
+            <td><strong>Section 3 — "90% of gold refined by 5 facilities"</strong></td>
+            <td>Widely cited industry fact but requires a current citation; the LBMA Good Delivery list has evolved</td>
+            <td><span class="status-pill s-structural">◆ Structural</span></td>
+            <td>Verify current LBMA accredited refiner market share data; cite WGC Gold Supply report year</td>
+          </tr>
+          <tr>
+            <td><strong>Section 4 — Shea Phase Scores</strong><br><span class="section-ref">SHEA.constraints=215, SHEA.growth=205, balanceScore=91</span></td>
+            <td>These values are attributed to "Serious Shea / Acorn programme operational data" in the Appendix, but are not confirmed as actual measurements from those programmes. Also: applying the stated formula to C=215 / G=205 gives 95.3%, not 91%.</td>
+            <td><span class="status-pill s-critical">⚠ Inconsistency</span></td>
+            <td>Confirm C and G values directly with Serious Shea or Acorn; reconcile the stated formula with the displayed score</td>
+          </tr>
+          <tr>
+            <td><strong>Section 4 — "Women's Gold" &amp; Shea narrative</strong></td>
+            <td>The "Women's Gold" characterisation and cooperative structure descriptions are consistent with Mirova and Serious Shea documentation</td>
+            <td><span class="status-pill s-real">✓ Real</span></td>
+            <td>Add specific citation to Mirova feasibility report or Acorn programme documentation</td>
+          </tr>
+          <tr>
+            <td><strong>Section 5 — TBL Optimization Scores</strong><br><span class="section-ref">11 indicator current/optimised balance score estimates</span></td>
+            <td>All 22 balance score values (11 current + 11 optimised) are analytical estimates based on the Foran 2005 TBL data and TrueValue framework logic — they are not measured</td>
+            <td><span class="status-pill s-estimated">~ Estimated</span></td>
+            <td>These are the most defensible estimates in the report because they derive from peer-reviewed Foran data; they need framing as "analytical estimates" rather than measurements</td>
+          </tr>
+          <tr>
+            <td><strong>Section 5 — Water/biodiversity credit estimates</strong><br><span class="section-ref">"$20–50M/yr" and "$5–30M/yr"</span></td>
+            <td>These dollar ranges are estimated from knowledge of water trading and biodiversity credit markets but are not cited to specific transactions or market rate schedules</td>
+            <td><span class="status-pill s-estimated">~ Estimated</span></td>
+            <td>Cite specific water market rates (Australian Water Register, Murray-Darling Basin Authority) and biodiversity credit scheme documentation</td>
+          </tr>
+          <tr>
+            <td><strong>Section 6 — 10-Year Projection (+71%)</strong><br><span class="section-ref">Extractive and TrueValue growth rate series</span></td>
+            <td>Growth rates (7%→4%→1.5% extractive; 6.5%→9%→11.5% TrueValue) are "derived from structural efficiency model" — which means they are assumed. No empirical grounding exists.</td>
+            <td><span class="status-pill s-synthetic">✗ Synthetic</span></td>
+            <td>Anchor growth rate differentials to at least one empirical analogy: a supply chain reform that produced measurable financial improvement (Fairtrade premium data; CDP disclosure adoption studies; LBMA RGG adoption outcomes)</td>
+          </tr>
+          <tr>
+            <td><strong>Section 7 — Regulatory alignment value</strong><br><span class="section-ref">"Future disclosure requirements will force balance..."</span></td>
+            <td>Factually well-grounded (EU CSRD, SEC climate rule, OECD DDG are all moving in this direction) but no specific regulation is named</td>
+            <td><span class="status-pill s-structural">◆ Structural</span></td>
+            <td>Name EU CSRD Article 29a, SEC Climate Disclosure Rule 33-11275, and OECD DDG 5th Edition specifically</td>
+          </tr>
+          <tr>
+            <td><strong>Appendix — Data Transparency Notice</strong></td>
+            <td>The disclosure that data is synthetic is clear and honest. However "national accounts" is cited as a source basis without specifying which national accounts (Foran 2005 is the clear reference).</td>
+            <td><span class="status-pill s-structural">◆ Structural</span></td>
+            <td>Replace generic "national accounts" with specific Foran et al. 2005 citation (already in the Phase Architecture Sources list — should be cross-referenced here)</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- ══ NON-TECHNICAL QUESTIONS ══ -->
+    <section>
+      <div class="section-label">Section 2 — For the Non-Technical Reader</div>
+      <h2>The Plain-Language Questions We Need Answered</h2>
+
+      <p>These are the questions a well-informed non-technical associate — or a non-specialist investor — would ask if they read the Investor Report carefully. They are organised by theme. Each question identifies a gap that, once resolved, directly strengthens a specific claim in the report.</p>
+
+      <!-- Theme A -->
+      <h3>Theme A: The Core Scores — Where Do the Numbers Come From?</h3>
+      <ul class="q-list">
+        <li>
+          <span class="q-num">A1</span>
+          <div class="q-text">
+            <strong>The balance scores (37%, 54%, 61%) are the centrepiece of the investor argument. Are they real measurements, or are they calculated from a model?</strong>
+            <div class="q-meta"><span class="q-tag data">data</span> Currently synthetic. The Appendix discloses this honestly. To make them real, we need C and G component data from at least one participant in each phase. What would we need to ask a mining company, refinery, or logistics operator for?</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">A2</span>
+          <div class="q-text">
+            <strong>The report defines Constraints and Growth Capacity but never lists exactly what goes into them. What are the specific factors that make up, say, the Logistics phase Constraints score of 380? Could we explain this to an investor?</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> This is the most important question for investor credibility. If we cannot show the sub-components, a sophisticated investor cannot validate the scores independently — which is a red flag.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">A3</span>
+          <div class="q-text">
+            <strong>We compare Shea's Phase 6 (91% balance) to Gold's Phase 6 (37%). Is the 91% score measured from actual Serious Shea or Acorn data, or is it also modelled?</strong>
+            <div class="q-meta"><span class="q-tag data">data</span><span class="q-tag shea">shea</span> This comparison is the emotional heart of the Shea section. If both scores are synthetic, the comparison loses its force. Do we have a contact at Serious Shea or Acorn who could validate or provide the underlying numbers?</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">A4</span>
+          <div class="q-text">
+            <strong>We have set target balance scores for each phase (e.g., 85% for Mining, 50% for Logistics). How were these targets decided? Is there a reference for what a "good" target looks like in each phase?</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> These targets shape how the whole scoring system is interpreted. If they were set by judgment alone, they need at minimum a documented rationale. At best, an analogy from another framework (Fairtrade certification standards, LBMA responsible sourcing thresholds) would validate them.</div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Theme B -->
+      <h3>Theme B: The Gold Chain — What Do We Actually Know?</h3>
+      <ul class="q-list">
+        <li>
+          <span class="q-num">B1</span>
+          <div class="q-text">
+            <strong>We state that approximately 90% of the world's newly mined gold is processed by five LBMA-accredited refineries. Is this number current? The LBMA Good Delivery list has more than five refineries on it — do we mean five specific dominant ones?</strong>
+            <div class="q-meta"><span class="q-tag data">data</span> The WGC Gold Demand Trends report and LBMA Annual Report should have current refinery throughput data. We need a year-stamped citation.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">B2</span>
+          <div class="q-text">
+            <strong>We describe refinery fee schedules as "private" and "secret." Do we know even a ballpark range? Even a broad range ($2–8/oz?) would make the "hidden cost" claim more concrete without requiring disclosure of confidential data.</strong>
+            <div class="q-meta"><span class="q-tag data">data</span> Publicly disclosed mining company financial reports sometimes contain treatment charge ranges. Court cases involving refinery disputes occasionally reveal fee structures. Industry analysts (Wood Mackenzie, Metals Focus) sometimes publish estimated ranges.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">B3</span>
+          <div class="q-text">
+            <strong>We describe the Logistics &amp; Vaulting phase as "structurally architected for opacity." Has anyone on the team spoken directly with a vault operator, security logistics professional, or insurance broker who can confirm this characterisation from the inside?</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> A single attributed or anonymised firsthand account from a logistics professional would transform this from a structural inference into a validated finding. Former Brink's or G4S employees, Lloyd's of London precious metals underwriters, or bullion banking risk officers are accessible sources.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">B4</span>
+          <div class="q-text">
+            <strong>What volume of gold actually flows through each of the nine phases annually? We describe the phases qualitatively but give no physical tonnage data. Could we add approximate volumes (using WGC supply statistics) to make the scale of each phase tangible?</strong>
+            <div class="q-meta"><span class="q-tag data">data</span> The WGC publishes annual mine production (~3,600 t), recycling (~1,200 t), and COMEX/LBMA volumes. These would make the transparency table and phase descriptions significantly more concrete.</div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Theme C -->
+      <h3>Theme C: The Shea Story — Do We Have the Data?</h3>
+      <ul class="q-list">
+        <li>
+          <span class="q-num">C1</span>
+          <div class="q-text">
+            <strong>We cite "Serious Shea / Acorn programme operational data" as a source for the Shea balance scores. Have we actually received data from them, or are these scores estimated based on their published documentation?</strong>
+            <div class="q-meta"><span class="q-tag shea">shea</span><span class="q-tag data">data</span> This is the most important Shea question. If the data came directly from Serious Shea or Acorn, the comparison to gold gains enormous credibility. If it was estimated from their public documents, that should be stated and a direct data request made.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">C2</span>
+          <div class="q-text">
+            <strong>We describe the Shea phase 6 structure as: "Cooperative network, traceable custody, multiple buyers." Approximately how many buyers does a typical Serious Shea cooperative have access to? And how many farmers are in the cooperative network today?</strong>
+            <div class="q-meta"><span class="q-tag shea">shea</span> Specific numbers (e.g., "cooperatives in Burkina Faso and Senegal with ~85,000 enrolled women farmers across 12 buyer relationships") would make the Shea comparison dramatically more powerful and credible.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">C3</span>
+          <div class="q-text">
+            <strong>We list "Burkina Faso / Senegal value chain studies" in the Appendix. Do we have those specific studies filed, and can we name them precisely (title, author, year)?</strong>
+            <div class="q-meta"><span class="q-tag shea">shea</span><span class="q-tag validation">validation</span> Generic citations like "value chain studies" weaken the Appendix credibility. The Mirova Senegal Feasibility Report and the Acorn MRV documentation are likely the specific sources — they should be named.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">C4</span>
+          <div class="q-text">
+            <strong>The report says shea farmers receive below-average income compared to the supply chain value they generate. Do we have a specific figure — what does a shea picker earn per day or per season, and what is the value of the shea butter at the point of sale to end buyers?</strong>
+            <div class="q-meta"><span class="q-tag shea">shea</span><span class="q-tag data">data</span> The income inequality across the shea chain is a powerful investor story. A specific data point (e.g., "collector earns $0.40/kg; retail shea butter sells for $12/kg") would make it concrete. Mirova and GIZ both publish this kind of data.</div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Theme D -->
+      <h3>Theme D: The 10-Year Projection — Is +71% Defensible?</h3>
+      <ul class="q-list">
+        <li>
+          <span class="q-num">D1</span>
+          <div class="q-text">
+            <strong>The projection showing a +71% cumulative TrueValue advantage at Year 10 is the most compelling number in the report. The Appendix honestly discloses that the growth rates come from a structural model, not from historical data. Is there any real-world supply chain case we can point to where a transparency-driven reform produced a measurable financial improvement?</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> Fairtrade adoption data, CDP score improvements correlated with cost of capital, LBMA RGG adoption and subsequent gold price premium, FSC certification and timber price premiums — any of these could serve as an empirical anchor for the projection's direction, even if not the exact magnitude.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">D2</span>
+          <div class="q-text">
+            <strong>The model assumes the extractive path grows at 7% initially but declines to 1.5% by Years 7–10. What is the reasoning for this specific deceleration? Would an investor's economist accept this without a documented rationale?</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> The deceleration story is actually very plausible (accumulating constraint costs) but needs a narrative justification with named mechanisms, not just assumed rates. What specific events trigger the slowdown — regulatory action, supply disruption, reputational event? These should be written out explicitly.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">D3</span>
+          <div class="q-text">
+            <strong>The projection uses a single base index of 100 for both paths. Investors will ask: 100 of what? Is this revenue? EBITDA? Asset value? Equity returns? The report doesn't specify, which makes the +71% figure harder to interpret.</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> Defining the base metric (even as "illustrative value index") and explaining whether it represents total return, equity return, or supply chain operational value would make the projection more interpretable without requiring real financial data.</div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Theme E -->
+      <h3>Theme E: The Framework Itself — Can It Be Challenged?</h3>
+      <ul class="q-list">
+        <li>
+          <span class="q-num">E1</span>
+          <div class="q-text">
+            <strong>Has anyone outside our team reviewed the TrueValue methodology? An expert validation — even a letter of review from a university supply chain professor or a sustainability research institute — would significantly raise the report's credibility for institutional investors who perform due diligence.</strong>
+            <div class="q-meta"><span class="q-tag validation">validation</span> Suggested reviewers: CSIRO Sustainable Ecosystems (the Foran et al. institution); the University of Sydney Business School; the World Resources Institute; Chatham House Resource Trade Earth programme.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">E2</span>
+          <div class="q-text">
+            <strong>Are there other supply chain balance or transparency scoring frameworks in the market that we should acknowledge, differentiate from, or potentially partner with? Investors will ask whether TrueValue is unique.</strong>
+            <div class="q-meta"><span class="q-tag policy">policy</span> Known potential comparators: EcoVadis supply chain scoring; CDP supply chain programme; Thomson Reuters Supply Chain Risk scores; Sourcemap traceability platform; the forthcoming EU CSRD supply chain due diligence metrics. A brief competitive landscape paragraph in the Appendix would address this.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">E3</span>
+          <div class="q-text">
+            <strong>Is the TrueValue methodology IP-protected? Before this report circulates more widely, should we register a trademark, file a methodology patent, or at minimum establish a clear terms-of-use for the framework's use by third parties?</strong>
+            <div class="q-meta"><span class="q-tag policy">policy</span> The current report is copyright TrueValue Analytics 2026, but the methodology itself (the C/G balance formula, the phase architecture) is not yet IP-protected as far as this document indicates. This should be a legal consultation item before any broad distribution.</div>
+          </div>
+        </li>
+      </ul>
+
+      <!-- Theme F -->
+      <h3>Theme F: Regulatory &amp; Market Claims — Can We Be Specific?</h3>
+      <ul class="q-list">
+        <li>
+          <span class="q-num">F1</span>
+          <div class="q-text">
+            <strong>We say "future disclosure requirements will force balance towards TrueValue targets." Which regulations specifically? Naming them — EU CSRD, SEC climate rule, OECD Due Diligence Guidance — turns a vague prediction into a documented regulatory trajectory.</strong>
+            <div class="q-meta"><span class="q-tag policy">policy</span> The EU Corporate Sustainability Reporting Directive (CSRD), effective 2024–2026 rollout, requires supply chain due diligence. The SEC's climate disclosure rule (33-11275) requires scope 3 emissions disclosure. OECD's DDG 5th Edition specifically covers mineral supply chains. All three directly mandate the kind of phase-level data TrueValue provides.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">F2</span>
+          <div class="q-text">
+            <strong>We claim "ESG-driven capital reallocation increasingly targets chains with undisclosed custody arrangements." What is the actual scale of ESG assets currently avoiding or underweighting opaque gold supply chains? A number here — even an approximate one — makes the claim investable rather than rhetorical.</strong>
+            <div class="q-meta"><span class="q-tag data">data</span> The GFANZ (Glasgow Financial Alliance for Net Zero) tracks commodity ESG commitments. BloombergNEF and Morningstar publish ESG fund flow data. A search for "gold supply chain ESG exclusion" in institutional investor ESG policy disclosures would find specific fund exclusion criteria.</div>
+          </div>
+        </li>
+        <li>
+          <span class="q-num">F3</span>
+          <div class="q-text">
+            <strong>The Optimization Analysis section estimates water credits worth $20–50M/year and biodiversity credits worth $5–30M/year for Australian gold mining. Are there actual transactions in these markets for mining-adjacent land that we can cite, or are these purely theoretical market-rate estimates?</strong>
+            <div class="q-meta"><span class="q-tag data">data</span> The Australian Carbon Credit Unit (ACCU) scheme and the emerging Australian Biodiversity Offset Programme (ABOP) have published transaction data. Any confirmed transaction where a mining company received water or biodiversity credit income would validate the range.</div>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- ══ TECHNICAL REQUIREMENTS ══ -->
+    <section style="background:var(--offwhite)">
+      <div class="section-label">Section 3 — For the Technical Reader</div>
+      <h2>Field-Level Data Requirements and Formula Gaps</h2>
+
+      <p>This section catalogues every specific variable, formula, and data object in <code>investor_report.html</code> that is currently synthetic, undefined, or internally inconsistent. Each item includes the variable name as it appears in the source code, its current value, the gap, and what resolution looks like.</p>
+
+      <!-- T-1: Critical inconsistency -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-1 &nbsp;·&nbsp; CRITICAL: Balance Score Formula vs. Displayed Values</span>
+          <span class="status-pill s-critical">⚠ Internal Inconsistency</span>
+        </div>
+        <div class="tech-block-body">
+          <p style="font-size:0.85rem;margin-bottom:1rem">The Appendix states: <code>Balance Score = min(C, G) / max(C, G) × 100</code>. Applying this formula to the phase data objects reveals that the displayed balance scores are <em>systematically lower</em> than the formula would produce. This is not a rounding issue — the gap is 6–13 percentage points across all phases. Either the formula in the Appendix is incomplete (there is an additional factor not disclosed), or the balance scores and C/G values were set independently of each other.</p>
+          <div class="tech-item" style="grid-template-columns: 80px 160px 100px 100px 1fr;">
+            <span class="tech-field">Phase</span>
+            <span class="tech-field">C / G values</span>
+            <span class="tech-field">Formula gives</span>
+            <span class="tech-field">Report shows</span>
+            <span class="tech-note">Gap</span>
+          </div>
+          <div class="tech-item" style="grid-template-columns: 80px 160px 100px 100px 1fr;">
+            <span class="tech-field">Ph.0</span><span>C=195, G=148</span><span>75.9%</span><span style="color:var(--red)">68%</span><span class="tech-note">−7.9pp</span>
+          </div>
+          <div class="tech-item" style="grid-template-columns: 80px 160px 100px 100px 1fr;">
+            <span class="tech-field">Ph.1</span><span>C=330, G=316</span><span>95.8%</span><span style="color:var(--red)">90%</span><span class="tech-note">−5.8pp</span>
+          </div>
+          <div class="tech-item" style="grid-template-columns: 80px 160px 100px 100px 1fr;">
+            <span class="tech-field">Ph.4</span><span>C=340, G=210</span><span>61.8%</span><span style="color:var(--red)">54%</span><span class="tech-note">−7.8pp</span>
+          </div>
+          <div class="tech-item" style="grid-template-columns: 80px 160px 100px 100px 1fr;">
+            <span class="tech-field">Ph.6</span><span>C=380, G=175</span><span>46.1%</span><span style="color:var(--red)">37%</span><span class="tech-note">−9.1pp — largest gap</span>
+          </div>
+          <div class="tech-item" style="grid-template-columns: 80px 160px 100px 100px 1fr;">
+            <span class="tech-field">SHEA</span><span>C=215, G=205</span><span>95.3%</span><span style="color:var(--red)">91%</span><span class="tech-note">−4.3pp</span>
+          </div>
+          <p style="font-size:0.82rem;color:var(--muted);margin-top:1rem"><strong>Resolution:</strong> Either (a) define the complete Balance Score formula including the hidden factor, update the Appendix formula accordingly, and verify all displayed scores are recalculated consistently; or (b) recalculate all balance scores using the stated formula and update the phase data object and all downstream displays.</p>
+        </div>
+      </div>
+
+      <!-- T-2: C/G sub-components -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-2 &nbsp;·&nbsp; C and G Sub-Component Definitions</span>
+          <span class="status-pill s-synthetic">✗ Undefined</span>
+        </div>
+        <div class="tech-block-body">
+          <p style="font-size:0.85rem;margin-bottom:1rem">The <code>PHASES[]</code> array stores <code>constraints</code> and <code>growth</code> as single integers (e.g., <code>constraints:380</code> for Phase 6). No sub-component definition exists anywhere in the codebase or documentation. Before the report can withstand investor due diligence, the following must be defined for each phase:</p>
+          <div class="tech-item"><span class="tech-field">C_sub[]</span><span class="tech-note">What specific factors constitute the Constraints score? (regulatory burden, contract rigidity, counterparty concentration, jurisdictional exposure, capital lockup, opacity premium) — minimum 4–6 named factors per phase with individual weights</span><span class="status-pill s-synthetic">✗ Missing</span></div>
+          <div class="tech-item"><span class="tech-field">G_sub[]</span><span class="tech-note">What specific factors constitute the Growth Capacity score? (market access, alternative counterparties, traceability capability, innovation pathway, pricing discovery) — minimum 4–6 named factors per phase with individual weights</span><span class="status-pill s-synthetic">✗ Missing</span></div>
+          <div class="tech-item"><span class="tech-field">balanceTarget</span><span class="tech-note">Values [75, 85, 85, 80, 80, 85, 50, 85, 80] have no documented basis. Need explicit rationale for each, or derivation from an analogous framework threshold</span><span class="status-pill s-synthetic">✗ Undocumented</span></div>
+        </div>
+      </div>
+
+      <!-- T-3: Net Performance formula -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-3 &nbsp;·&nbsp; Net Performance Formula — Undefined Balance Factor</span>
+          <span class="status-pill s-estimated">~ Incomplete</span>
+        </div>
+        <div class="tech-block-body">
+          <p style="font-size:0.85rem;margin-bottom:0.8rem">The Appendix states: <code>Net Performance = √(Constraints × Growth Capacity) × Balance Factor</code>. The term "Balance Factor" is not defined anywhere in the report, codebase, or data files.</p>
+          <div class="tech-item"><span class="tech-field">Balance Factor</span><span class="tech-note">Is this equal to (Balance Score / 100)? Or is it a separate normalisation term? Its definition determines whether N is simply the geometric mean scaled by the balance score, or something more complex. This must be formalised before the methodology can be presented as complete.</span><span class="status-pill s-synthetic">✗ Undefined</span></div>
+          <div class="tech-item"><span class="tech-field">Sustainability Index</span><span class="tech-note">Described as "inverse of the squared imbalance plus a phase-specific energy base cost." This is not a complete mathematical expression. What is the exact formula? What is "phase-specific energy base cost"? How is it measured? The value 0.91 for Shea and 0.05 for Gold Ph.6 need to be reproducible from a stated formula.</span><span class="status-pill s-synthetic">✗ Incomplete</span></div>
+        </div>
+      </div>
+
+      <!-- T-4: Shea data -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-4 &nbsp;·&nbsp; SHEA Object — Source and Consistency</span>
+          <span class="status-pill s-critical">⚠ Needs Verification</span>
+        </div>
+        <div class="tech-block-body">
+          <div class="tech-item"><span class="tech-field">SHEA.constraints</span><span class="tech-note">Value: 215. Source attributed to "Serious Shea / Acorn operational data" but no specific document or data request confirmed. Verify: is this from Acorn MRV data, Mirova feasibility model, or estimated by the TrueValue team?</span><span class="status-pill s-synthetic">✗ Unconfirmed</span></div>
+          <div class="tech-item"><span class="tech-field">SHEA.growth</span><span class="tech-note">Value: 205. Same verification need as above.</span><span class="status-pill s-synthetic">✗ Unconfirmed</span></div>
+          <div class="tech-item"><span class="tech-field">SHEA.balanceScore</span><span class="tech-note">Value: 91. Does not match min(215,205)/max(215,205) × 100 = 95.3%. Same formula inconsistency as T-1. Needs reconciliation.</span><span class="status-pill s-critical">⚠ Inconsistency</span></div>
+          <div class="tech-item"><span class="tech-field">SHEA_PH6.transparency</span><span class="tech-note">Radar chart normalised value: 68 (out of 100). Basis for this normalisation is not documented. How was "Medium-High" transparency converted to the value 68?</span><span class="status-pill s-synthetic">✗ Undocumented</span></div>
+          <div class="tech-item"><span class="tech-field">SHEA_PH6.growthIdx</span><span class="tech-note">Radar chart value: 95. Not derived from the SHEA.growth score of 205. What normalisation or scaling was applied?</span><span class="status-pill s-synthetic">✗ Undocumented</span></div>
+          <div class="tech-item"><span class="tech-field">SHEA_PH6.stability</span><span class="tech-note">Radar chart value: 87. This metric does not appear elsewhere in the framework definition. What is "Phase Stability" and how is it calculated?</span><span class="status-pill s-synthetic">✗ Undefined metric</span></div>
+        </div>
+      </div>
+
+      <!-- T-5: Projection rates -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-5 &nbsp;·&nbsp; Projection Growth Rates — Assumed, Not Modelled</span>
+          <span class="status-pill s-synthetic">✗ Assumed</span>
+        </div>
+        <div class="tech-block-body">
+          <p style="font-size:0.85rem;margin-bottom:0.8rem">The projection chart uses two hardcoded rate arrays. Neither has a documented derivation.</p>
+          <div class="tech-item"><span class="tech-field">extractiveRates[]</span><span class="tech-note">Values: [0, 0.07, 0.07, 0.07, 0.04, 0.04, 0.04, 0.015, 0.015, 0.015, 0.015]. The deceleration from 7% to 4% to 1.5% reflects accumulating constraint costs — the direction is logical, but the specific values need: (a) a documented rationale, or (b) anchoring to an empirical case of supply chain degradation (e.g., cost escalation in an opaque mining chain)</span><span class="status-pill s-synthetic">✗ Assumed</span></div>
+          <div class="tech-item"><span class="tech-field">truevalueRates[]</span><span class="tech-note">Values: [0, 0.065, 0.065, 0.065, 0.09, 0.09, 0.09, 0.115, 0.115, 0.115, 0.115]. The acceleration from 6.5% to 9% to 11.5% represents the TrueValue compounding advantage — also logical directionally, but needs empirical anchoring (e.g., Fairtrade premium adoption data, CDP study showing disclosure → lower cost of capital)</span><span class="status-pill s-synthetic">✗ Assumed</span></div>
+          <div class="tech-item"><span class="tech-field">Base index definition</span><span class="tech-note">The "base index = 100" is not defined as representing a specific financial metric (revenue, EBITDA, equity return, asset value). This must be specified before the projection can be formally interpreted.</span><span class="status-pill s-synthetic">✗ Undefined</span></div>
+        </div>
+      </div>
+
+      <!-- T-6: Optimization estimates -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-6 &nbsp;·&nbsp; Section 5 Optimization Balance Scores</span>
+          <span class="status-pill s-estimated">~ Estimated</span>
+        </div>
+        <div class="tech-block-body">
+          <p style="font-size:0.85rem;margin-bottom:0.8rem">The 11 "current" and 11 "optimised" balance scores in <code>OPTIM_DATA[]</code> are analytical estimates grounded in the Foran 2005 TBL data. They are the most defensible estimates in the report (because they derive from peer-reviewed data) but need explicit framing as estimates, and the optimised scores need engineering or economic validation.</p>
+          <div class="tech-item"><span class="tech-field">current scores (11)</span><span class="tech-note">Values [45,50,55,68,72,70,40,50,50,65,42]. These are analytical estimates applying TrueValue C/G logic to TBL intensity ratios. Each score needs a documented derivation showing how the TBL intensities map to C/G component weights.</span><span class="status-pill s-estimated">~ Estimated</span></div>
+          <div class="tech-item"><span class="tech-field">optimised scores (11)</span><span class="tech-note">Values [78,82,80,88,91,90,65,78,75,88,70]. The optimised GHG score (88%) implies 44% electricity source reduced to ~15%. Needs engineering validation: what renewable energy penetration rate, at what cost, achieves this? This is the most likely score to be challenged.</span><span class="status-pill s-estimated">~ Needs validation</span></div>
+          <div class="tech-item"><span class="tech-field">water credit estimate</span><span class="tech-note">"$20–50M/yr uncaptured." Needs specific citation to Australian water trading market rates applied to a stated hectare-equivalent or ML-equivalent water efficiency baseline.</span><span class="status-pill s-estimated">~ Needs citation</span></div>
+        </div>
+      </div>
+
+      <!-- T-7: Missing citations -->
+      <div class="tech-block">
+        <div class="tech-block-header">
+          <span>T-7 &nbsp;·&nbsp; Claims Requiring Specific Citations</span>
+          <span class="status-pill s-structural">◆ Structural — Needs Citations</span>
+        </div>
+        <div class="tech-block-body">
+          <div class="tech-item"><span class="tech-field">"~90% refined by 5 facilities"</span><span class="tech-note">Add: WGC Gold Supply report year; LBMA Good Delivery List current accredited refiner market share data</span><span class="status-pill s-structural">◆ Add citation</span></div>
+          <div class="tech-item"><span class="tech-field">EU/SEC/OECD regulation</span><span class="tech-note">Section 7: name EU CSRD Article 29a (supply chain due diligence), SEC Rule 33-11275 (Scope 3 disclosure), OECD DDG 5th Edition (mineral supply chains)</span><span class="status-pill s-structural">◆ Add citation</span></div>
+          <div class="tech-item"><span class="tech-field">Foran 2005 cross-reference</span><span class="tech-note">Appendix Data Transparency Notice cites "national accounts" generically — should cross-reference to the Foran et al. (2005) entry already in the Phase Architecture Sources list</span><span class="status-pill s-structural">◆ Add cross-ref</span></div>
+          <div class="tech-item"><span class="tech-field">Shea Mirova citation</span><span class="tech-note">Appendix lists "Mirova feasibility research" — should be: Mirova Natural Capital (2021), "Shea Agroforestry: Feasibility Assessment, Senegal" (or equivalent full title)</span><span class="status-pill s-structural">◆ Specify</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ PRIORITY MATRIX ══ -->
+    <section class="priority-section">
+      <div class="section-label">Section 4 — Priority Matrix</div>
+      <h2>What to Tackle First: Three Tiers of Urgency</h2>
+
+      <p>Not all gaps are equal. The priority matrix below separates the items that would immediately undermine the report's credibility with a sophisticated investor (Tier 1) from those that significantly strengthen it (Tier 2) and those that represent longer-term quality improvements (Tier 3). Tier 1 items should be resolved before the report leaves this team.</p>
+
+      <div class="priority-grid">
+        <div class="priority-col p1">
+          <h4>Tier 1 — Fix Before External Distribution</h4>
+          <div class="priority-item"><strong>T-1: Balance Score Formula</strong><span>The formula in the Appendix does not produce the displayed scores. A technically literate investor will spot this immediately. Resolve the discrepancy or explain the full formula.</span></div>
+          <div class="priority-item"><strong>T-2: C/G Sub-Components</strong><span>Without a sub-component definition, the scores cannot be independently verified. Prepare at least a one-page methodology annex defining the factors.</span></div>
+          <div class="priority-item"><strong>A3/T-4: Shea Data Source</strong><span>Confirm whether the Shea C/G scores (215/205) came from Serious Shea or were estimated. If estimated, acknowledge this in the report.</span></div>
+          <div class="priority-item"><strong>D3/T-5: Define the Base Index</strong><span>Specify what the projection's "Value Index = 100" represents (revenue, equity, asset value) so the +71% has an interpretable meaning.</span></div>
+          <div class="priority-item"><strong>E3: IP Status</strong><span>Before broader distribution, confirm the methodology has appropriate legal protection or an explicit open-source licence.</span></div>
+        </div>
+        <div class="priority-col p2">
+          <h4>Tier 2 — Significantly Strengthens Credibility</h4>
+          <div class="priority-item"><strong>T-3: Complete the Formulas</strong><span>Define Balance Factor precisely; formalise the Sustainability Index as a mathematical expression.</span></div>
+          <div class="priority-item"><strong>B1: Verify 90% Refinery Claim</strong><span>Get a current WGC citation for LBMA refinery market concentration.</span></div>
+          <div class="priority-item"><strong>D1: Empirical Projection Anchor</strong><span>Find one real-world case (Fairtrade, CDP, LBMA RGG) where structural reform produced measurable financial improvement.</span></div>
+          <div class="priority-item"><strong>F1: Name Specific Regulations</strong><span>Replace the vague "future disclosure requirements" with EU CSRD, SEC 33-11275, and OECD DDG 5th Edition.</span></div>
+          <div class="priority-item"><strong>C3: Specify Shea Citations</strong><span>Replace generic "Burkina Faso / Senegal value chain studies" with full Mirova and Acorn document titles.</span></div>
+          <div class="priority-item"><strong>E1: Expert Review</strong><span>Seek a letter of methodological review from CSIRO, University of Sydney, or World Resources Institute.</span></div>
+        </div>
+        <div class="priority-col p3">
+          <h4>Tier 3 — Long-Term Quality</h4>
+          <div class="priority-item"><strong>B2: Refinery Fee Ranges</strong><span>Obtain even approximate treatment charge ranges from industry analysts or court records to make the "hidden cost" claim concrete.</span></div>
+          <div class="priority-item"><strong>B4: Physical Volume Data</strong><span>Add annual tonnage flowing through each phase using WGC supply statistics.</span></div>
+          <div class="priority-item"><strong>C2/C4: Shea Farmer Data</strong><span>Obtain specific cooperative size, buyer count, and farmer income data from Serious Shea or GIZ.</span></div>
+          <div class="priority-item"><strong>F2: ESG Capital Flow Data</strong><span>Quantify the scale of ESG assets currently excluding or underweighting opaque gold supply chains.</span></div>
+          <div class="priority-item"><strong>F3: Credit Market Citations</strong><span>Cite specific Australian water and biodiversity credit market transactions to validate the $25–80M/yr estimate.</span></div>
+          <div class="priority-item"><strong>E2: Competitive Landscape</strong><span>Add a brief paragraph to the Appendix acknowledging comparable frameworks (EcoVadis, CDP supply chain, Sourcemap) and distinguishing TrueValue from each.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ NEXT STEPS ══ -->
+    <section class="dark-section">
+      <div class="section-label">Section 5 — Suggested Next Steps</div>
+      <h2>A Practical Action Plan</h2>
+
+      <p>The gaps identified in this document are not an indictment of the Investor Report — they are the normal condition of a first-generation analytical framework that has been built rigorously from the structural logic of its subject matter. The report is intellectually honest (the Appendix clearly discloses the synthetic data basis) and structurally sound. What it now needs is a targeted evidence-gathering effort to replace synthetic values with real ones, confirm its formulas are internally consistent, and anchor its projections in at least one empirical analogy.</p>
+
+      <div class="finding">
+        <strong>Estimated effort to reach Tier 1 resolution:</strong> Most Tier 1 items can be resolved by one analyst in 4–6 weeks without requiring external data access. The formula inconsistency (T-1), sub-component definitions (T-2), and projection base index (D3/T-5) are all internal documentation tasks. The Shea data confirmation (A3/T-4) requires one outreach email to Serious Shea or Acorn. IP status (E3) requires one legal consultation.
+      </div>
+
+      <div class="action-grid">
+        <div class="action-card">
+          <h4>Immediate Actions (Weeks 1–4)</h4>
+          <ul>
+            <li>Resolve the Balance Score formula discrepancy (T-1) — either fix the displayed scores or document the complete formula</li>
+            <li>Write a one-page C/G sub-component definition document for at least Phases 3, 4, and 6 (the three critical phases)</li>
+            <li>Contact Serious Shea / Acorn to confirm the status of the Shea C/G data</li>
+            <li>Define the Sustainability Index mathematically and add it to the Appendix</li>
+            <li>Define the projection base index metric (revenue, equity return, or operational value)</li>
+          </ul>
+        </div>
+        <div class="action-card">
+          <h4>Short-Term Research (Weeks 4–12)</h4>
+          <ul>
+            <li>Verify LBMA refinery market concentration data with a WGC citation</li>
+            <li>Name specific EU CSRD, SEC, and OECD regulations in Section 7</li>
+            <li>Identify one empirical analogy for the projection (Fairtrade premium data or CDP cost-of-capital study)</li>
+            <li>Obtain full citations for Mirova and Acorn source documents</li>
+            <li>Draft a brief competitive landscape paragraph for the Appendix</li>
+            <li>Consult on IP protection for the TrueValue methodology</li>
+          </ul>
+        </div>
+        <div class="action-card">
+          <h4>Medium-Term Validation (Months 3–6)</h4>
+          <ul>
+            <li>Approach CSIRO or University of Sydney Supply Chain Research for a methodology review letter</li>
+            <li>Engage one major mining company as a pilot data participant (Phase 1 data)</li>
+            <li>Develop contact at Brink's, G4S, or a Lloyd's bullion underwriter for Phase 6 qualitative validation</li>
+            <li>Quantify the ESG capital flow claim with a Bloomberg or Morningstar data point</li>
+          </ul>
+        </div>
+        <div class="action-card">
+          <h4>Data Collection Targets (Months 3–12)</h4>
+          <ul>
+            <li>WGC Gold Supply annual report — Phase 1 production volumes and LBMA refiner market share</li>
+            <li>Acorn MRV documentation — Shea C/G input data confirmation</li>
+            <li>Metals Focus or Wood Mackenzie — estimated treatment charge ranges for doré refining</li>
+            <li>Australian Water Register — water trading market rates for mining-adjacent land</li>
+            <li>GIZ or CIFOR — Shea farmer income data (collector price vs end-buyer price)</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ APPENDIX ══ -->
+    <section class="appendix">
+      <div class="section-label">Appendix</div>
+      <h2>Reference: Current Data Status by Variable</h2>
+      <div class="appendix-grid">
+        <div class="appendix-block">
+          <h3>Variables Confirmed as Real / Cited</h3>
+          <ul>
+            <li>Phase names and sequence (0–8): standard industry structure per LBMA and WGC</li>
+            <li>GHG source split (44% electricity, 13% direct, etc.): Foran et al. 2005, Sector 13140010+13170010</li>
+            <li>All Foran 2005 TBL intensity ratios (water, land, employment, surplus): peer-reviewed, cited</li>
+            <li>Australian gold production (260 t/yr), reserves (5,165 t): Foran 2005, USGS-consistent</li>
+            <li>Phase transparency descriptions: structurally derived from LBMA, COMEX regulatory architecture</li>
+            <li>Shea "Women's Gold" characterisation: consistent with Mirova and Acorn documentation</li>
+          </ul>
+        </div>
+        <div class="appendix-block">
+          <h3>Variables Confirmed as Synthetic</h3>
+          <ul>
+            <li>All PHASES[0–8].constraints values (195–380)</li>
+            <li>All PHASES[0–8].growth values (148–316)</li>
+            <li>All PHASES[0–8].balanceScore values (37–90)</li>
+            <li>SHEA.constraints (215), SHEA.growth (205), SHEA.balanceScore (91)</li>
+            <li>Radar chart: GOLD_PH6 and SHEA_PH6 transparency/stability/growthIdx values</li>
+            <li>extractiveRates[] and truevalueRates[] projection arrays</li>
+            <li>All OPTIM_DATA[].current and .optimised balance score estimates</li>
+          </ul>
+        </div>
+        <div class="appendix-block">
+          <h3>Formulas with Outstanding Gaps</h3>
+          <ul>
+            <li><code>Balance Score</code> — stated formula does not reproduce displayed values</li>
+            <li><code>Balance Factor</code> in Net Performance — undefined term</li>
+            <li><code>Sustainability Index</code> — verbal description only; no mathematical expression</li>
+            <li><code>SHEA_PH6.stability</code> — metric not defined anywhere in the framework</li>
+            <li><code>balanceTarget[]</code> — values undocumented; no derivation stated</li>
+          </ul>
+        </div>
+        <div class="appendix-block">
+          <h3>External Organisations to Contact</h3>
+          <ul>
+            <li><strong>Serious Shea / Acorn</strong>: Shea C/G data confirmation (Priority: Tier 1)</li>
+            <li><strong>WGC</strong>: current LBMA refiner market share; annual supply data</li>
+            <li><strong>CSIRO / Univ. Sydney</strong>: methodology peer review</li>
+            <li><strong>Mirova Natural Capital</strong>: full Shea feasibility report citation</li>
+            <li><strong>Metals Focus / Wood Mackenzie</strong>: doré refining treatment charge ranges</li>
+            <li><strong>Australian Water Register / ABOP</strong>: water and biodiversity credit rates</li>
+            <li><strong>GIZ / CIFOR</strong>: Shea farmer income data</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footnote mt-2">TrueValue Analytics — Internal Working Document. This gap analysis is intended to support the evidence-strengthening process for the Investor Report. It is not for external distribution. All references to "synthetic" data reflect the Investor Report's own Appendix disclosure. © 2026 TrueValue Analytics.</p>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- ══ FOOTER ══ -->
+  <div class="report-footer">
+    <span class="footer-brand">TrueValue Analytics</span>
+    <span>Internal Working Document — Gap Analysis &amp; Research Agenda</span>
+    <span>March 2026 &nbsp;·&nbsp; Internal Only</span>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+
+</body>
+</html>

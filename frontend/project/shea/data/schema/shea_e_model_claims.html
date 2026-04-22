@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shea E Model Claims</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Shea E Model Claims</h1>
+        <p class="subtitle">CSV viewer generated from <strong>shea_e_model_claims.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">7</span> / 7
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>claim_type<span class="sort-indicator"></span></th>
+<th>physical_volume<span class="sort-indicator"></span></th>
+<th>physical_unit<span class="sort-indicator"></span></th>
+<th>physical_value_usd_billions<span class="sort-indicator"></span></th>
+<th>abstract_quantity<span class="sort-indicator"></span></th>
+<th>abstract_unit<span class="sort-indicator"></span></th>
+<th>abstract_value_usd_billions<span class="sort-indicator"></span></th>
+<th>coupling_ratio<span class="sort-indicator"></span></th>
+<th>coupling_ratio_status<span class="sort-indicator"></span></th>
+<th>e_score<span class="sort-indicator"></span></th>
+<th>claim_counterparty<span class="sort-indicator"></span></th>
+<th>maturity_or_vintage<span class="sort-indicator"></span></th>
+<th>is_rehypothecated<span class="sort-indicator"></span></th>
+<th>rehypothecation_mechanism<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>Wild Harvest &amp; Collection</td><td>2024-01-01</td><td>carbon_credit</td><td>2.7</td><td>million_tCO2e_verified</td><td>0.054</td><td>4.2</td><td>million_tCO2e_issued</td><td>0.084</td><td>0.65</td><td>ESTIMATED</td><td>65</td><td>EP Carbon / Acorn; Gold Standard; Verra VCS; Henkel (buyer); L&#x27;Oréal (buyer); IKEA (buyer)</td><td>Annual vintage (Acorn Season 1–3)</td><td>false</td><td>none</td><td>public; estimated</td><td>Acorn EP Carbon Season 1–3 project documentation; Gold Standard VCU registry; RONGEAD 2019 Shea Value Chain Report</td><td>Shea parkland carbon credits are issued against verified CO2 sequestration by shea trees. Physical backing: ~2.7M tCO2e verified in Acorn S1-S3. Abstract issued: 4.2M tCO2e (Acorn alone). Coupling risk: additionality concerns (shea trees were there before the project), permanence risk (climate stress, land clearing), leakage. Coupling estimated at 0.65 reflecting ~35% discount for permanence and additionality uncertainty. Not rehypothecated but same credit may be counted in multiple corporate Scope 3 registries.</td></tr>
+<tr><td>2</td><td>1</td><td>First Sale &amp; Collection</td><td>2024-01-01</td><td>fair_trade_certification</td><td>15000</td><td>tonnes_actual_premium_eligible</td><td>0.001</td><td>120000</td><td>tonnes_certified</td><td>0.006</td><td>0.18</td><td>ESTIMATED</td><td>18</td><td>Fairtrade International; Cooperative network (WAGRIB Burkina Faso; Savannah Fruits Ghana; AON Ghana; ADAF Ghana); cosmetic/food buyers</td><td>Annual certification (renewable)</td><td>false</td><td>none</td><td>public; estimated</td><td>RONGEAD 2019 Shea Value Chain Analysis; KPMG 2018 Sector Review; Fairtrade International annual reports; Rainforest Alliance sourcing reports</td><td>PRIMARY DECOUPLING. Research consistently shows only 10–30% of Fair Trade certified shea volumes actually receives the farmgate premium. Estimated: ~120,000t certified globally; ~15,000t receives documented premium. Brand buyers report 100% of volume in sustainability disclosures as &#x27;Fair Trade certified&#x27;. Collectors receive standard market price for remainder. This is the shea chain&#x27;s equivalent of gold&#x27;s unallocated account problem: abstract certification claims vastly exceed verified premium delivery. Not financial rehypothecation — structural certification gap.</td></tr>
+<tr><td>3</td><td>3</td><td>Processing</td><td>2024-01-01</td><td>organic_certification</td><td>50000</td><td>tonnes_certified_butter</td><td>0.200</td><td>64000</td><td>tonnes_organic_claimed</td><td>0.256</td><td>0.78</td><td>ESTIMATED</td><td>78</td><td>ECOCERT; Soil Association; USDA NOP; certified processors in Ghana/Burkina Faso/Mali (Savannah Fruits; KARITE PLUS; Olvea)</td><td>Annual certification (renewal required)</td><td>false</td><td>none</td><td>public</td><td>ECOCERT Africa certification registry; processor annual reports; Export Promotion Authority Ghana</td><td>Organic certification requires physical field inspection and chain-of-custody documentation. Coupling is relatively high (0.78) compared to Fair Trade because third-party auditors conduct real site visits. Gap reflects: some double-counting with Fair Trade certification; minor yield estimation errors; small volumes included without full traceability back to specific farms. Most reliable certification layer in the shea chain.</td></tr>
+<tr><td>4</td><td>4</td><td>Export</td><td>2024-01-01</td><td>letter_of_credit</td><td>400000</td><td>tonnes_export_annual</td><td>0.400</td><td>400000</td><td>tonnes_equivalent</td><td>0.400</td><td>0.95</td><td>ESTIMATED</td><td>95</td><td>Standard Chartered; Ecobank; Stanbic IBTC; IFC commodity finance programs; PROPARCO</td><td>Per-shipment (30–90 day tenor)</td><td>false</td><td>none</td><td>public</td><td>IFC commodity finance documentation; Standard Chartered trade finance reports; Ghana Export Promotion Authority statistics</td><td>Letters of credit are backed by bills of lading and warehouse receipts. High coupling — financial instrument is cancelled by physical delivery. Standard documentary trade finance structure. Minor 0.05 slippage from renegotiated terms, partial shipments, and credit note adjustments. Not rehypothecated.</td></tr>
+<tr><td>5</td><td>4</td><td>Export</td><td>2024-01-01</td><td>otc_forward_contract</td><td>100000</td><td>tonnes_committed</td><td>0.100</td><td>130000</td><td>tonnes_notional</td><td>0.130</td><td>0.75</td><td>ESTIMATED</td><td>75</td><td>AAK; IOI Loders Croklaan; Fuji Oil; Cargill; Wilmar International</td><td>3–12 months</td><td>false</td><td>none</td><td>public; estimated</td><td>Commodity trade desk filings; AAK annual report; IOI Group sourcing disclosures; UNCTAD commodity finance review 2022</td><td>Larger buyers lock in supply price via bilateral OTC forward contracts. No central clearing or exchange registration. Coupling below 1.0 due to: contract re-negotiation when market moves sharply (common in soft commodity markets), partial delivery acceptance, and some speculative positioning by commodity traders. Volume estimate from UNCTAD and buyer disclosure analysis.</td></tr>
+<tr><td>6</td><td>5</td><td>Industrial Manufacturing</td><td>2024-01-01</td><td>sustainability_brand_claim</td><td>800000000</td><td>USD_verifiable_sourcing</td><td>0.800</td><td>1900000000</td><td>USD_sustainable_shea_marketed</td><td>1.900</td><td>0.42</td><td>ESTIMATED</td><td>42</td><td>L&#x27;Oréal (Shea Butter Sourcing Program); Unilever (Sustainable Living Plan); BASF; Evonik; AAK; Johnson &amp; Johnson; Clarins; The Body Shop</td><td>Ongoing marketing claim (no fixed maturity)</td><td>false</td><td>none</td><td>public; estimated</td><td>L&#x27;Oréal Sustainability Report 2023; Unilever Sustainable Living Plan 2022; BASF Beauty Ingredients sourcing policy; Global Shea Alliance membership disclosures</td><td>SECOND MAJOR DECOUPLING POINT. Companies market approximately $1.9B worth of &#x27;sustainable shea&#x27; cosmetics and food products annually. Traceability typically extends only to tier-1 aggregator — not to specific cooperatives or collectors. Physical backing is the proportion of volume with verified chain-of-custody documentation back to farm level (estimated $800M, sourced via verified GSA-compliant schemes). Coupling 0.42 reflects the structural gap between brand-level sustainability claims and farm-level verification. Analogous to gold&#x27;s ETF market but with an authenticity rather than financial coupling problem.</td></tr>
+<tr><td>7</td><td>6</td><td>Retail Distribution</td><td>2024-01-01</td><td>consumer_label_claim</td><td>1200000000</td><td>USD_verified_label_compliant</td><td>1.200</td><td>2700000000</td><td>USD_products_with_claims</td><td>2.700</td><td>0.45</td><td>ESTIMATED</td><td>45</td><td>Retail brands (LVMH; Estée Lauder; H&amp;M Beauty; Boots; Sephora; Target; Walmart); private label manufacturers</td><td>Product lifecycle (typically 12–36 months)</td><td>false</td><td>none</td><td>public; estimated</td><td>EU Cosmetics Regulation 1223/2009 enforcement reports; EU Green Claims Directive 2024 impact assessment; Nielsen sustainable consumer survey 2023; Mintel natural cosmetics market data</td><td>Consumer-facing &#x27;natural&#x27;, &#x27;organic&#x27;, &#x27;100% shea butter&#x27;, &#x27;fair trade certified&#x27;, &#x27;ethically sourced&#x27; labels on retail cosmetics and food products. EU Cosmetics Regulation requires safety dossier but does not mandate supply chain claim verification. Coupling 0.45 reflects: verified organic/FT claims (high coupling ~0.80) are minority; majority of &#x27;natural&#x27; and &#x27;sustainable&#x27; claims are marketing language with weak regulatory backing. EU Green Claims Directive (2024) expected to force substantiation — significant compliance exposure for brands. Physical backing estimated as products with independently verified sourcing claims.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

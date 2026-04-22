@@ -1,0 +1,717 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gold Supply Chain — Tholonic Game Theory Simulator</title>
+  <style>
+    :root {
+      --bg:      #0b0e14;
+      --panel:   #13181f;
+      --border:  #252d38;
+      --text:    #d9e1ea;
+      --muted:   #7a8799;
+      --accent:  #1a6efa;
+      --std:     #4fa3ff;
+      --tho:     #f0c040;
+      --gold:    #ffd700;
+      --std-dim: #1e3a5f;
+      --tho-dim: #5a4410;
+      --radius:  10px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    nav {
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      padding: 8px 24px;
+      display: flex;
+      gap: 18px;
+      font-size: 0.82rem;
+      align-items: center;
+    }
+    nav a { color: var(--muted); text-decoration: none; }
+    nav a:hover { color: var(--text); }
+    nav .highlight { color: var(--tho); font-weight: 600; }
+    nav .sep { color: var(--border); }
+
+    header {
+      padding: 18px 28px 14px;
+      border-bottom: 1px solid var(--border);
+    }
+    header h1 { font-size: 1.25rem; font-weight: 700; }
+    header h1 .gold-badge {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #b8860b, #ffd700);
+      color: #0b0e14;
+      padding: 2px 8px;
+      border-radius: 999px;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+    header p  { font-size: 0.88rem; color: var(--muted); margin-top: 4px; }
+
+    .page {
+      display: grid;
+      grid-template-columns: 320px 1fr;
+      gap: 0;
+      height: calc(100vh - 108px);
+    }
+    aside {
+      background: var(--panel);
+      border-right: 1px solid var(--border);
+      padding: 16px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    main {
+      padding: 18px 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .group-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 0 4px;
+      border-bottom: 1px solid var(--border);
+    }
+    .slider-row { display: grid; grid-template-columns: 1fr; gap: 2px; }
+    .slider-header { display: flex; justify-content: space-between; align-items: baseline; }
+    .slider-label { font-size: 0.88rem; }
+    .slider-val {
+      font-size: 0.88rem; font-weight: 700; font-variant-numeric: tabular-nums;
+      color: var(--text); min-width: 52px; text-align: right;
+    }
+    input[type="range"] {
+      width: 100%; height: 4px; accent-color: var(--accent);
+      cursor: pointer; margin-top: 4px;
+    }
+    .slider-bounds { display: flex; justify-content: space-between; font-size: 0.72rem; color: var(--muted); }
+
+    /* phase seed table */
+    .phase-table {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.76rem;
+    }
+    .phase-table .pt-row {
+      display: grid;
+      grid-template-columns: 120px 1fr 50px;
+      gap: 4px;
+      padding: 3px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+      align-items: center;
+    }
+    .phase-table .pt-row:last-child { border-bottom: none; }
+    .pt-name { color: var(--text); }
+    .pt-bar-wrap { background: rgba(255,255,255,0.06); border-radius: 2px; height: 5px; }
+    .pt-bar { height: 5px; border-radius: 2px; }
+    .pt-val { color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+
+    .btn-row { display: flex; gap: 8px; padding-top: 10px; }
+    button {
+      flex: 1; padding: 9px 0; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 0.88rem; font-weight: 600; cursor: pointer;
+    }
+    .btn-run  { background: var(--accent); color: #fff; border-color: var(--accent); }
+    .btn-reset { background: transparent; color: var(--muted); }
+
+    .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+    .stat-card {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 12px 14px;
+    }
+    .stat-card.std { border-top: 3px solid var(--std); }
+    .stat-card.tho { border-top: 3px solid var(--tho); }
+    .stat-card h4 { font-size: 0.76rem; color: var(--muted); font-weight: 500; margin-bottom: 6px; }
+    .stat-card .val { font-size: 1.5rem; font-weight: 700; font-variant-numeric: tabular-nums; }
+    .stat-card.std .val { color: var(--std); }
+    .stat-card.tho .val { color: var(--tho); }
+    .stat-card .delta { font-size: 0.78rem; color: var(--muted); margin-top: 3px; }
+    .delta.pos { color: #3fb950; }
+    .delta.neg { color: #f85149; }
+
+    .chart-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .chart-box {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px;
+    }
+    .chart-box h3 { font-size: 0.9rem; margin-bottom: 10px; color: var(--text); }
+    canvas { display: block; width: 100%; }
+    .legend {
+      display: flex; gap: 16px; margin-top: 8px;
+      font-size: 0.82rem; color: var(--muted);
+    }
+    .dot {
+      display: inline-block; width: 9px; height: 9px;
+      border-radius: 50%; margin-right: 5px; vertical-align: middle;
+    }
+
+    .explain-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .explain-box {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px;
+    }
+    .explain-box h4 { font-size: 0.82rem; font-weight: 700; margin-bottom: 6px; }
+    .explain-box.std h4 { color: var(--std); }
+    .explain-box.tho h4 { color: var(--tho); }
+    .explain-box p { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+
+    .slider-glossary {
+      background: var(--panel); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 14px 16px;
+    }
+    .slider-glossary h3 { font-size: 0.9rem; margin-bottom: 10px; color: var(--text); }
+    .slider-glossary p { font-size: 0.8rem; color: var(--muted); margin-bottom: 10px; line-height: 1.5; }
+    .glossary-grid { display: grid; grid-template-columns: 200px 1fr; gap: 8px 14px; align-items: start; }
+    .g-name { font-size: 0.8rem; font-weight: 700; color: var(--text); }
+    .g-desc { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+    @media (max-width: 1050px) {
+      .page { grid-template-columns: 1fr; height: auto; }
+      aside { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-grid { grid-template-columns: repeat(2,1fr); }
+      .chart-pair, .explain-row { grid-template-columns: 1fr; }
+      .glossary-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../../../index.html">🏠 Homepage</a>
+  <span class="sep">|</span>
+  <a href="../../../frontend/project/gold/index.html">🏆 Gold Hub</a>
+  <span class="sep">|</span>
+  <a href="../../../frontend/project/gold/supply_chain/index.html">⛏️ Supply Chain</a>
+  <span class="sep">|</span>
+  <a href="index.html" class="highlight">⚗️ Generic Template</a>
+</nav>
+
+<header>
+  <h1><span class="gold-badge">Gold</span> Supply Chain — Tholonic Game Theory Simulator</h1>
+  <p>9 supply chain phases as agents · Standard local-optimisation (A) vs. Tholonic system-aware learning (B) · Seeded from real N-D-C data</p>
+</header>
+
+<div class="page">
+
+  <!-- ── CONTROLS ── -->
+  <aside>
+
+    <div class="group-title">Phase Seed Data (real D/C/Balance)</div>
+    <div class="phase-table" id="phase-seed-table">
+      <!-- populated by JS -->
+    </div>
+
+    <div class="group-title">Simulation</div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Rounds (market cycles)</span>
+        <span class="slider-val" id="v-rounds">200</span>
+      </div>
+      <input type="range" id="s-rounds" min="20" max="1000" step="10" value="200">
+      <div class="slider-bounds"><span>20</span><span>1000</span></div>
+    </div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Seed</span>
+        <span class="slider-val" id="v-seed">0</span>
+      </div>
+      <input type="range" id="s-seed" min="0" max="99" step="1" value="0">
+      <div class="slider-bounds"><span>0</span><span>99</span></div>
+    </div>
+
+    <div class="group-title">Payoff Structure</div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">D-constraint overhead (cost)</span>
+        <span class="slider-val" id="v-cost">1.00</span>
+      </div>
+      <input type="range" id="s-cost" min="0.1" max="3.0" step="0.05" value="1.0">
+      <div class="slider-bounds"><span>0.1 (low)</span><span>3.0 (high)</span></div>
+    </div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Downstream N-state multiplier</span>
+        <span class="slider-val" id="v-benefit">0.12</span>
+      </div>
+      <input type="range" id="s-benefit" min="0.01" max="0.5" step="0.01" value="0.12">
+      <div class="slider-bounds"><span>0.01</span><span>0.50</span></div>
+    </div>
+
+    <div class="group-title">Chain Integrity Dynamics</div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Regen per balanced phase</span>
+        <span class="slider-val" id="v-regen">0.020</span>
+      </div>
+      <input type="range" id="s-regen" min="0.001" max="0.1" step="0.001" value="0.02">
+      <div class="slider-bounds"><span>0.001</span><span>0.1</span></div>
+    </div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Decay per imbalanced phase</span>
+        <span class="slider-val" id="v-decay">0.010</span>
+      </div>
+      <input type="range" id="s-decay" min="0.001" max="0.1" step="0.001" value="0.01">
+      <div class="slider-bounds"><span>0.001</span><span>0.1</span></div>
+    </div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Initial chain integrity (N)</span>
+        <span class="slider-val" id="v-initres">0.74</span>
+      </div>
+      <input type="range" id="s-initres" min="0.1" max="1.0" step="0.05" value="0.74">
+      <div class="slider-bounds"><span>0.1 (degraded)</span><span>1.0 (pristine)</span></div>
+    </div>
+
+    <div class="group-title">Learning</div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Phase adaptation rate</span>
+        <span class="slider-val" id="v-lr">0.050</span>
+      </div>
+      <input type="range" id="s-lr" min="0.005" max="0.3" step="0.005" value="0.05">
+      <div class="slider-bounds"><span>0.005 (slow)</span><span>0.3 (fast)</span></div>
+    </div>
+
+    <div class="group-title">Tholonic Parameter</div>
+
+    <div class="slider-row">
+      <div class="slider-header">
+        <span class="slider-label">Tholonic lambda (λ)</span>
+        <span class="slider-val" id="v-lambda">1.50</span>
+      </div>
+      <input type="range" id="s-lambda" min="0.0" max="5.0" step="0.05" value="1.5">
+      <div class="slider-bounds"><span>0 (disabled)</span><span>5.0</span></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-run"   id="btn-run">Run</button>
+      <button class="btn-reset" id="btn-reset">Reset</button>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <main>
+
+    <div class="stat-grid">
+      <div class="stat-card std">
+        <h4>Final Chain Balance — Standard (A)</h4>
+        <div class="val" id="fc-a">—</div>
+        <div class="delta" id="fc-a-d"></div>
+      </div>
+      <div class="stat-card tho">
+        <h4>Final Chain Balance — Tholonic (B)</h4>
+        <div class="val" id="fc-b">—</div>
+        <div class="delta" id="fc-b-d"></div>
+      </div>
+      <div class="stat-card std">
+        <h4>Final N-State Integrity — Standard (A)</h4>
+        <div class="val" id="fr-a">—</div>
+        <div class="delta" id="fr-a-d"></div>
+      </div>
+      <div class="stat-card tho">
+        <h4>Final N-State Integrity — Tholonic (B)</h4>
+        <div class="val" id="fr-b">—</div>
+        <div class="delta" id="fr-b-d"></div>
+      </div>
+    </div>
+
+    <div class="chart-pair">
+      <div class="chart-box">
+        <h3>Chain Balance Over Time</h3>
+        <canvas id="c-coop" height="220"></canvas>
+        <div class="legend">
+          <span><span class="dot" style="background:var(--std)"></span>System A — Standard</span>
+          <span><span class="dot" style="background:var(--tho)"></span>System B — Tholonic</span>
+        </div>
+      </div>
+      <div class="chart-box">
+        <h3>System N-State Integrity Over Time</h3>
+        <canvas id="c-res" height="220"></canvas>
+        <div class="legend">
+          <span><span class="dot" style="background:var(--std)"></span>System A — Standard</span>
+          <span><span class="dot" style="background:var(--tho)"></span>System B — Tholonic</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-box">
+      <h3>Per-Phase Balance — Final Round Snapshot</h3>
+      <canvas id="c-players" height="180"></canvas>
+      <div class="legend">
+        <span><span class="dot" style="background:var(--std)"></span>System A — Standard</span>
+        <span><span class="dot" style="background:var(--tho)"></span>System B — Tholonic</span>
+      </div>
+    </div>
+
+    <div class="explain-row">
+      <div class="explain-box std">
+        <h4>System A — Standard Game Theory</h4>
+        <p>
+          Each supply chain phase optimises its own D/C balance purely in response to local payoff.
+          If tightening Definition (D) constraints improved phase-level returns, the phase increases
+          D regardless of downstream impact. No signal from the shared chain exists.
+          This mirrors classical reinforcement learning where the Nash-optimal strategy can cascade
+          toward a <strong>tragedy-of-the-commons collapse</strong> — Vaulting (Phase 6, balance 65.5%)
+          is the likely failure point that drags down the whole chain.
+        </p>
+      </div>
+      <div class="explain-box tho">
+        <h4>System B — Tholonic Learning</h4>
+        <p>
+          Identical payoff rules, but each phase also receives a
+          <em>system N-state signal</em>: when overall chain integrity is threatened,
+          phases that maintain balance get a bonus and imbalanced phases get a penalty
+          proportional to <strong>λ</strong>. This models the Tholonic principle that
+          Contribution to the parent context (the chain as a whole) matters — not just
+          local D/C balance. When λ is sufficient the system converges to a coherent
+          N-state, demonstrating how Tholonic selection pressure resists cascade failure
+          at the Vaulting and Recycling bottlenecks.
+        </p>
+      </div>
+    </div>
+
+    <div class="slider-glossary">
+      <h3>Parameter explanations — Gold Supply Chain context</h3>
+      <p>
+        Each slider changes one aspect of how the 9 phases interact. Phases are seeded with real N-D-C balance
+        data. The weakest phase (Phase 6: Vaulting, 65.5% balance) is particularly sensitive to cost and decay pressure.
+      </p>
+      <div class="glossary-grid">
+        <div class="g-name">Rounds (market cycles)</div>
+        <div class="g-desc">Number of simulated market cycles. More rounds reveal which phases stabilise or collapse under sustained pressure.</div>
+
+        <div class="g-name">Seed</div>
+        <div class="g-desc">Random seed for reproducibility. Same seed + same settings gives the same simulation path every time.</div>
+
+        <div class="g-name">D-constraint overhead</div>
+        <div class="g-desc">Cost a phase pays each round to maintain its Definition (D) constraints — regulatory, physical, permitting burden. Higher values stress all phases, especially those with high D (Mining D=270, Processing D=276).</div>
+
+        <div class="g-name">Downstream N-state multiplier</div>
+        <div class="g-desc">How strongly a phase's balanced Contribution (C) amplifies the shared chain integrity signal. Higher values reward phases that actively generate positive N-state for downstream phases.</div>
+
+        <div class="g-name">Regen per balanced phase</div>
+        <div class="g-desc">How much each in-balance phase restores overall chain integrity (N) each round. Models how a well-functioning phase (e.g., Refining, 95.1%) contributes to chain health.</div>
+
+        <div class="g-name">Decay per imbalanced phase</div>
+        <div class="g-desc">How much each out-of-balance phase degrades chain integrity. Vaulting (65.5%) and Recycling (80%) are primary sources of decay in real data.</div>
+
+        <div class="g-name">Initial chain integrity (N)</div>
+        <div class="g-desc">Starting system N-state. Default 0.74 reflects the normalised average N across all 9 phases (avg N ≈ 221 / max N ≈ 300). Lowering this simulates a supply chain already under stress.</div>
+
+        <div class="g-name">Phase adaptation rate</div>
+        <div class="g-desc">Speed at which phases learn and adjust their balance behaviour. High values can cause instability; low values model slow institutional change.</div>
+
+        <div class="g-name">Tholonic lambda (λ)</div>
+        <div class="g-desc">Strength of the system-wide N-state signal in System B. At λ=0, Tholonic effects are off (identical to A). Increasing λ progressively rewards phases for maintaining chain integrity rather than just local D/C balance.</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+/* ── Phase seed data from real gold supply chain N-D-C values ── */
+const PHASES = [
+  { id: 0, name: 'P0: Prospecting',  short: 'Prosp.',    initCoop: 0.839, N: 182, D: 227, C: 208 },
+  { id: 1, name: 'P1: Mining',       short: 'Mining',    initCoop: 0.946, N: 259, D: 270, C: 277 },
+  { id: 2, name: 'P2: Processing',   short: 'Process.',  initCoop: 0.960, N: 263, D: 276, C: 271 },
+  { id: 3, name: 'P3: Doré',         short: 'Doré',      initCoop: 0.893, N: 229, D: 264, C: 249 },
+  { id: 4, name: 'P4: Refining',     short: 'Refining',  initCoop: 0.951, N: 253, D: 263, C: 270 },
+  { id: 5, name: 'P5: Casting',      short: 'Casting',   initCoop: 0.950, N: 237, D: 253, C: 247 },
+  { id: 6, name: 'P6: Vaulting',     short: 'Vaulting',  initCoop: 0.655, N: 118, D: 204, C: 161 },
+  { id: 7, name: 'P7: Exchange',     short: 'Exchange',  initCoop: 0.922, N: 239, D: 254, C: 265 },
+  { id: 8, name: 'P8: Recycling',    short: 'Recycl.',   initCoop: 0.800, N: 210, D: 245, C: 250 },
+];
+
+/* ── Populate the phase seed table ── */
+(function buildTable() {
+  const el = document.getElementById('phase-seed-table');
+  el.innerHTML = PHASES.map(ph => {
+    const pct = Math.round(ph.initCoop * 100);
+    const col = pct >= 90 ? '#3fb950' : pct >= 75 ? '#f0c040' : '#f85149';
+    return `<div class="pt-row">
+      <span class="pt-name">${ph.name}</span>
+      <div class="pt-bar-wrap"><div class="pt-bar" style="width:${pct}%;background:${col};"></div></div>
+      <span class="pt-val">${pct}%</span>
+    </div>`;
+  }).join('');
+})();
+
+/* ── PRNG (Mulberry32) ── */
+function prng(seed) {
+  let t = (seed ^ 0xDEADBEEF) >>> 0;
+  return () => {
+    t += 0x6D2B79F5;
+    let r = Math.imul(t ^ (t >>> 15), 1 | t);
+    r ^= r + Math.imul(r ^ (r >>> 7), 61 | r);
+    return ((r ^ (r >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+function clamp(x, lo = 0, hi = 1) { return Math.max(lo, Math.min(hi, x)); }
+
+/* ── Simulation ── */
+function simulate(p) {
+  const rand    = prng(p.seed);
+  const nPhases = PHASES.length;
+
+  // Each phase starts with its real balance score as cooperation probability
+  const pA = PHASES.map(ph => ph.initCoop);
+  const pB = PHASES.map(ph => ph.initCoop);
+  let rA = p.initRes, rB = p.initRes;
+
+  const coopA = [], coopB = [], resA = [], resB = [];
+  let finalPA, finalPB;
+
+  for (let t = 0; t < p.rounds; t++) {
+    const actA = pA.map(q => rand() < q ? 1 : 0);
+    const actB = pB.map(q => rand() < q ? 1 : 0);
+    const cA = actA.reduce((a, b) => a + b, 0);
+    const cB = actB.reduce((a, b) => a + b, 0);
+    const dA = nPhases - cA;
+    const dB = nPhases - cB;
+
+    // Payoffs — balanced phases contribute to shared chain N-state
+    const pgA = p.benefit * cA * rA;
+    const pgB = p.benefit * cB * rB;
+    const pyA = actA.map(a => pgA - (a ? p.cost : 0));
+    const pyB = actB.map(a => pgB - (a ? p.cost : 0));
+
+    // Chain N-state integrity dynamics
+    rA = clamp(rA + p.regen * (cA / nPhases) - p.decay * (dA / nPhases));
+    rB = clamp(rB + p.regen * (cB / nPhases) - p.decay * (dB / nPhases));
+
+    // System A: local payoff only
+    for (let i = 0; i < nPhases; i++) {
+      pA[i] = clamp(pA[i] + p.lr * (actA[i] ? (pyA[i] > 0 ? 1 : -1) : (pyA[i] > 0 ? -1 : 1)));
+    }
+
+    // System B: local payoff + Tholonic N-state sustainability signal
+    for (let i = 0; i < nPhases; i++) {
+      const sus   = (1 - rB) * p.lambda;
+      const score = actB[i] ? pyB[i] + sus : pyB[i] - sus;
+      pB[i] = clamp(pB[i] + p.lr * (actB[i] ? (score > 0 ? 1 : -1) : (score > 0 ? -1 : 1)));
+    }
+
+    coopA.push(cA / nPhases);
+    coopB.push(cB / nPhases);
+    resA.push(rA);
+    resB.push(rB);
+
+    if (t === p.rounds - 1) { finalPA = [...pA]; finalPB = [...pB]; }
+  }
+  return { coopA, coopB, resA, resB, finalPA, finalPB };
+}
+
+/* ── Canvas helpers ── */
+const PAD = { l: 38, r: 12, t: 10, b: 28 };
+
+function clearCanvas(cv) {
+  cv.width = cv.offsetWidth || cv.clientWidth || 600;
+  const ctx = cv.getContext('2d');
+  ctx.clearRect(0, 0, cv.width, cv.height);
+  return ctx;
+}
+
+function drawLineChart(id, seriesArr, colors, yMin = 0, yMax = 1) {
+  const cv  = document.getElementById(id);
+  const ctx = clearCanvas(cv);
+  const W = cv.width, H = cv.height;
+  const pw = W - PAD.l - PAD.r, ph = H - PAD.t - PAD.b;
+  const n  = seriesArr[0].length;
+
+  ctx.strokeStyle = '#1e2630'; ctx.lineWidth = 1;
+  const ticks = 5;
+  for (let i = 0; i <= ticks; i++) {
+    const y = PAD.t + (i / ticks) * ph;
+    ctx.beginPath(); ctx.moveTo(PAD.l, y); ctx.lineTo(W - PAD.r, y); ctx.stroke();
+    const label = (yMax - (i / ticks) * (yMax - yMin)).toFixed(2);
+    ctx.fillStyle = '#5a6878'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(label, PAD.l - 3, y + 3);
+  }
+  for (let i = 0; i <= 5; i++) {
+    const x = PAD.l + (i / 5) * pw;
+    ctx.beginPath(); ctx.moveTo(x, PAD.t); ctx.lineTo(x, H - PAD.b); ctx.stroke();
+    ctx.fillStyle = '#5a6878'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(Math.round((i / 5) * (n - 1)), x, H - 6);
+  }
+
+  seriesArr.forEach((series, si) => {
+    ctx.strokeStyle = colors[si]; ctx.lineWidth = 2; ctx.lineJoin = 'round';
+    ctx.beginPath();
+    series.forEach((v, i) => {
+      const x = PAD.l + (i / (n - 1)) * pw;
+      const y = PAD.t + (1 - (v - yMin) / (yMax - yMin)) * ph;
+      i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+  });
+}
+
+function drawPhaseBarChart(id, seriesArr, colors) {
+  const cv  = document.getElementById(id);
+  const ctx = clearCanvas(cv);
+  const W = cv.width, H = cv.height;
+  const pw = W - PAD.l - PAD.r, ph = H - PAD.t - PAD.b;
+  const n       = seriesArr[0].length;   // 9 phases
+  const nSeries = seriesArr.length;
+  const groupW  = pw / n;
+  const barW    = Math.max(1, groupW / nSeries - 1);
+
+  ctx.strokeStyle = '#1e2630'; ctx.lineWidth = 1;
+  [0, 0.25, 0.5, 0.75, 1].forEach(frac => {
+    const y = PAD.t + (1 - frac) * ph;
+    ctx.beginPath(); ctx.moveTo(PAD.l, y); ctx.lineTo(W - PAD.r, y); ctx.stroke();
+    ctx.fillStyle = '#5a6878'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(frac.toFixed(2), PAD.l - 3, y + 3);
+  });
+
+  // Draw bars
+  seriesArr.forEach((series, si) => {
+    ctx.fillStyle = colors[si];
+    series.forEach((v, i) => {
+      const x    = PAD.l + i * groupW + si * (barW + 1);
+      const barH = v * ph;
+      ctx.fillRect(x, PAD.t + ph - barH, barW, barH);
+    });
+  });
+
+  // Phase name labels on x-axis
+  const labelBottom = H - PAD.b + 14;
+  ctx.fillStyle = '#7a8799'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+  PHASES.forEach((ph_obj, i) => {
+    const cx = PAD.l + i * groupW + groupW / 2;
+    ctx.fillText(ph_obj.short, cx, labelBottom);
+  });
+}
+
+/* ── Slider wiring ── */
+const sliders = [
+  { id: 's-rounds',  valId: 'v-rounds',  fmt: v => String(v) },
+  { id: 's-seed',    valId: 'v-seed',    fmt: v => String(v) },
+  { id: 's-cost',    valId: 'v-cost',    fmt: v => Number(v).toFixed(2) },
+  { id: 's-benefit', valId: 'v-benefit', fmt: v => Number(v).toFixed(2) },
+  { id: 's-regen',   valId: 'v-regen',   fmt: v => Number(v).toFixed(3) },
+  { id: 's-decay',   valId: 'v-decay',   fmt: v => Number(v).toFixed(3) },
+  { id: 's-initres', valId: 'v-initres', fmt: v => Number(v).toFixed(2) },
+  { id: 's-lr',      valId: 'v-lr',      fmt: v => Number(v).toFixed(3) },
+  { id: 's-lambda',  valId: 'v-lambda',  fmt: v => Number(v).toFixed(2) },
+];
+
+sliders.forEach(({ id, valId, fmt }) => {
+  const el  = document.getElementById(id);
+  const vEl = document.getElementById(valId);
+  el.addEventListener('input', () => { vEl.textContent = fmt(el.value); run(); });
+});
+
+function readParams() {
+  const g = id => document.getElementById(id).value;
+  return {
+    rounds:  parseInt(g('s-rounds')),
+    seed:    parseInt(g('s-seed')),
+    cost:    parseFloat(g('s-cost')),
+    benefit: parseFloat(g('s-benefit')),
+    regen:   parseFloat(g('s-regen')),
+    decay:   parseFloat(g('s-decay')),
+    initRes: parseFloat(g('s-initres')),
+    lr:      parseFloat(g('s-lr')),
+    lambda:  parseFloat(g('s-lambda')),
+  };
+}
+
+const defaults = {
+  's-rounds': 200, 's-seed': 0, 's-cost': 1.0,
+  's-benefit': 0.12, 's-regen': 0.02, 's-decay': 0.01, 's-initres': 0.74,
+  's-lr': 0.05, 's-lambda': 1.5
+};
+
+document.getElementById('btn-reset').addEventListener('click', () => {
+  sliders.forEach(({ id, valId, fmt }) => {
+    const el = document.getElementById(id);
+    el.value = defaults[id];
+    document.getElementById(valId).textContent = fmt(defaults[id]);
+  });
+  run();
+});
+
+/* ── Stats ── */
+function setStats(h) {
+  const last  = a => a[a.length - 1];
+  const fmt   = v => (v * 100).toFixed(1) + '%';
+  const fmtR  = v => v.toFixed(3);
+  const fca = last(h.coopA), fcb = last(h.coopB);
+  const fra = last(h.resA),  frb = last(h.resB);
+
+  document.getElementById('fc-a').textContent = fmt(fca);
+  document.getElementById('fc-b').textContent = fmt(fcb);
+  document.getElementById('fr-a').textContent = fmtR(fra);
+  document.getElementById('fr-b').textContent = fmtR(frb);
+
+  const diff_coop = fcb - fca;
+  const diff_res  = frb - fra;
+  const dEl = (id, val, suffix = '') => {
+    const el   = document.getElementById(id);
+    const sign = val >= 0 ? '+' : '';
+    el.textContent = sign + (suffix === '%' ? (val * 100).toFixed(1) + '%' : val.toFixed(3));
+    el.className   = 'delta ' + (val >= 0 ? 'pos' : 'neg');
+  };
+  dEl('fc-a-d', 0);
+  dEl('fc-b-d', diff_coop, '%');
+  dEl('fr-a-d', 0);
+  dEl('fr-b-d', diff_res);
+}
+
+/* ── Main run ── */
+const COLOR_STD = '#4fa3ff';
+const COLOR_THO = '#f0c040';
+
+function run() {
+  const p = readParams();
+  const h = simulate(p);
+  setStats(h);
+  drawLineChart('c-coop', [h.coopA, h.coopB], [COLOR_STD, COLOR_THO]);
+  drawLineChart('c-res',  [h.resA,  h.resB],  [COLOR_STD, COLOR_THO]);
+  drawPhaseBarChart('c-players', [h.finalPA, h.finalPB], [COLOR_STD, COLOR_THO]);
+}
+
+let resizeTimer;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(run, 80);
+});
+
+run();
+</script>
+</body>
+</html>

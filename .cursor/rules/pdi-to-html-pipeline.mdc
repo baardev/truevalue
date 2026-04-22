@@ -1,0 +1,360 @@
+---
+description: Pipeline for converting a completed PDI YAML instance into a full set of project data files and HTML pages matching the gold/shea structure. Apply when generating a new commodity project from a PDI file.
+globs: docs/PDI/PDI_*.yaml,frontend/project/**
+alwaysApply: false
+---
+
+# PDI → HTML Pipeline
+
+Converts a completed `PDI_<material>_<date>.yaml` into a full commodity project
+under `frontend/project/<material>/` with all supporting data files.
+
+---
+
+## 0. Prerequisites
+
+- A completed and validated PDI YAML instance exists at `docs/PDI/PDI_<material>_<date>.yaml`.
+- All required PDI fields are filled (no `null` boundary scores; all phases have names).
+- A `<material>` slug is chosen: lowercase, no spaces, matches the folder name
+  (e.g. `gold`, `shea`, `mangrove`, `olive_oil`).
+- A colour theme is chosen: two hex values — `PRIMARY` (headers/accents) and `DARK` (backgrounds).
+
+---
+
+## 1. Folder and data file naming rules
+
+All files that are unique to a commodity **must** carry the commodity slug as a prefix.
+
+| Type | Pattern | Example |
+|------|---------|---------|
+| Supply chain UI JSON | `data/frontend/<m>_supply_chain_ui.json` | `mangrove_supply_chain_ui.json` |
+| Value chain UI JSON | `data/frontend/<m>_value_chain_ui.json` | `mangrove_value_chain_ui.json` |
+| Supply chain scenarios | `frontend/project/<m>/supply_chain/scenarios.json` | lives inside project folder — implicitly scoped |
+| Value chain metrics | `data/value_chain/processed/<m>_value_metrics.json` | `mangrove_value_metrics.json` |
+| Value chain NDC metrics | `data/value_chain/processed/<m>_value_ndc_metrics.json` | `mangrove_value_ndc_metrics.json` |
+| Phase summaries | `data/value_chain/processed/<m>_value_phase<N>_summary.json` | `mangrove_value_phase0_summary.json` |
+| Scenario CSVs | `data/processed/<m>_scenario_<name>.csv` | `mangrove_scenario_baseline.csv` |
+
+Files shared across all commodities (no prefix needed): `data/processed/simulation_defaults.json`.
+
+---
+
+## 2. D/C/N derivation from PDI data
+
+For each confirmed phase, derive synthetic D, C, N, and balance values from the PDI
+event record that marks the phase boundary.
+
+```
+D_flags  = B3 + B4 + B6  (count of true — definition/constraint signals)
+C_flags  = B9 + B11       (count of true — contribution/integration signals)
+opacity  = module_4_opacity[phase].opacity_score  (0–4)
+
+D        = 200 + (D_flags × 20) + (boundary_score × 4)
+C        = 200 + (C_flags × 20) + (opacity × 8)
+balance  = transparency-based midpoint:
+             high   → 88–97  (use 90 + random ±4)
+             medium → 78–87  (use 83 + random ±4)
+             low    → 65–75  (use 70 + random ±4)
+N        = round((D + C) / 2 × (balance / 100))
+```
+
+For Phase 0 (pre-commercial, no bounding event):
+- Use the phase 0 opacity_score and transparency from Module 4.
+- `D = 220`, `C = 180 + opacity × 5`, balance per transparency tier above.
+
+---
+
+## 3. Data files to generate
+
+Run `src/tools/generate_project_data.py --pdi docs/PDI/PDI_<m>_<date>.yaml --material <m>`
+
+The script produces:
+
+### 3a. `data/frontend/<m>_supply_chain_ui.json`
+
+```json
+{
+  "_meta": { "generated": "<ISO date>", "material": "<m>", "sources": ["PDI YAML"], "note": "Synthetic baseline from PDI." },
+  "entities": { "synthetic": { "label": "Synthetic Baseline", "description": "..." } },
+  "phase_meta": { "<N>": { "name": "<phase_name>", "transparency": "<high|medium|low>", "recycling": false } },
+  "phases": {
+    "synthetic": {
+      "<N>": {
+        "D": <int>, "C": <int>, "balance": <float>, "N": <int>,
+        "sustainability": <float>,
+        "notes": "<physical_state_in> → <physical_state_out>",
+        "data_quality": "<high|medium|low>",
+        "scope1_tco2": null, "scope2_tco2": null,
+        "scope_source": "Not provided — requires separate data input",
+        "scope_quality": "No data",
+        "water": null, "energy": null,
+        "water_recycling_pct": null, "energy_clean_pct": null
+      }
+    }
+  },
+  "system": {
+    "synthetic": { "balance": <chain_avg_balance>, "water_recycling_pct": null,
+                   "waste_circularity_pct": null, "clean_energy_pct": null }
+  }
+}
+```
+
+### 3b. `frontend/project/<m>/supply_chain/scenarios.json`
+
+Six named scenarios per mathematical model (pi, phi, sqrt2, ln2, e):
+- `current`: base N-value array from derivation above
+- `optimum`: each N × 1.08 (capped at 290)
+- `shock_1`: phase 3 N × 0.65, others × 0.92
+- `shock_2`: phases 5–6 N × 0.60, others × 0.90
+- `expansion`: all N × 1.05
+- `regulatory`: phase 4 N × 1.15, phase 6 N × 0.80, others unchanged
+
+### 3c. `data/frontend/<m>_value_chain_ui.json`
+
+Populate from PDI `pricing_reference` fields (Phase 5) and `multi_value_outputs` (Phase 10).
+Set `scope1_tco2`, `scope2_tco2`, `energy_kwh`, `water_litres` to `null` where not in PDI.
+Set `d_value`/`c_value` from the same derivation as 3a.
+
+### 3d. `data/processed/<m>_scenario_baseline.csv`
+
+Generate 365 days × phase_count rows with columns:
+`record_id, phase_id, entity, country, date, metric_type, metric_category, d_value, c_value, n_value, balance_score, sustainability_index, unit, source_type, source_name, url, notes`
+
+Use the derived D/C/N values as daily means with ±8% Gaussian noise.
+`source_type = "simulated"`, `source_name = "PDI Synthetic Generator"`.
+
+---
+
+## 4. HTML page generation
+
+Copy the full gold template tree and apply substitutions:
+
+```
+cp -r frontend/project/gold/ frontend/project/<m>/
+```
+
+Then run `src/tools/adapt_html.py --material <m> --primary <PRIMARY_HEX> --dark <DARK_HEX>`
+
+The script applies these substitutions across all copied HTML files:
+
+| Find | Replace |
+|------|---------|
+| `gold_supply_chain_ui.json` | `<m>_supply_chain_ui.json` |
+| `gold_value_chain_ui.json` | `<m>_value_chain_ui.json` |
+| `gold_value_metrics.json` | `<m>_value_metrics.json` |
+| `gold_value_ndc_metrics.json` | `<m>_value_ndc_metrics.json` |
+| `Gold Supply Chain` | `<Material> Supply Chain` |
+| `Gold Value Chain` | `<Material> Value Chain` |
+| `Gold –` | `<Material> –` |
+| `🏅` | `<commodity_emoji>` |
+| `#c9922a` (gold primary) | `<PRIMARY_HEX>` |
+| `#2c3e50` (gold dark) | `<DARK_HEX>` |
+| `#1a2535` (gold darkest) | `<DARK_HEX_DEEPENED>` |
+| Cross-links to `../../gold/` | Update to point at gold correctly |
+| Cross-links to `../../shea/` | Remove or replace with `../../<m>/` |
+
+**Then manually rewrite `project_context.html`** from the PDI data:
+- Header KPIs: from `programme_scale` and `geographic_scope`
+- Phases flow: from `module_3.phase_map`
+- Actor list: from `module_1.A7_actor_classes`
+- Sources list: from `sources_overview`
+- Notes: from `summary.analyst_notes`
+
+---
+
+## 5. Value chain pages — deferred data note
+
+If `pricing_reference` and financial data are absent from the PDI:
+- Scaffold value chain HTML pages with empty data placeholders.
+- Add a banner to `value_chain/index.html`:
+  `"Value chain financial data not yet available — supply <m>_value_metrics.json to activate."`
+- Do not display broken charts.
+
+---
+
+## 5a. Value chain dashboard — commodity-specific metrics (REQUIRED)
+
+The gold value chain dashboard uses gold-specific KPIs (`aisc_usd_per_oz`, `cash_cost_usd_per_oz`,
+entity selectors for Newmont/Barrick, etc.).  **These MUST be replaced for every non-gold project.**
+
+### Step 1 — Identify the commodity's value metrics
+
+Before generating data files or adapting HTML, determine the correct metric names from the PDI:
+
+| PDI field | Metric to derive |
+|-----------|-----------------|
+| `pricing_reference.price_floor` | primary price metric name and unit |
+| `pricing_reference.price_ceiling` | secondary price metric (if applicable) |
+| `multi_value_outputs` | any per-unit or per-area derived value metrics |
+| `programme_scale` | denominator for per-unit calculations (oz, ha, tCO₂e, kg, etc.) |
+
+Assign each metric a `metric_name` slug: lowercase, underscored, ending in `_<unit>`.
+Examples:
+- Gold: `aisc_usd_per_oz`, `cash_cost_usd_per_oz`
+- Shea: `farm_gate_usd_per_kg`, `processing_margin_usd_per_kg`
+- AUBEB (mangrove carbon): `carbon_credit_price_usd_tco2`, `corsia_floor_usd_tco2`, `ecosystem_service_value_usd_ha`
+
+### Step 2 — Generate `<m>_value_metrics.json` with the correct metric names
+
+Records in the file must use the commodity-specific `metric_name` values identified above.
+**Do not copy `aisc_usd_per_oz` or `cash_cost_usd_per_oz` into non-gold projects.**
+
+The `entity_id` field should reflect the project's actual implementing entity (from PDI
+`A7_actor_classes`) — not gold-mine company codes like `E001/Newmont`.
+
+### Step 3 — Adapt `value_chain/dashboard.html`
+
+Replace these gold-specific elements in the copied HTML:
+
+| Gold element | Replace with |
+|-------------|--------------|
+| Entity selector (`Newmont E001`, `Barrick E002`) | Phase selector (phases 1–N from PDI) OR project-specific entity from PDI actor list |
+| KPI card: `AISC (Phase 1)` | Primary price metric for this commodity |
+| KPI card: `Cash Cost (Phase 1)` | Secondary price metric, or cost metric from PDI |
+| KPI card: `Spread (AISC − Cash)` | Margin/spread relevant to this commodity, or omit |
+| `latestMetric(rows, "aisc_usd_per_oz")` | `latestMetric(rows, "<primary_metric_slug>")` |
+| `latestMetric(rows, "cash_cost_usd_per_oz")` | `latestMetric(rows, "<secondary_metric_slug>")` |
+| Dashboard subtitle referencing "costs/fees/margins" | Subtitle appropriate to the commodity value model |
+
+### Step 4 — Post-adaptation check
+
+After adapting the dashboard, verify:
+- [ ] The entity/phase selector returns records (count > 0)
+- [ ] All three KPI cards display numeric values, not `—`
+- [ ] The Phase Time Series table contains rows for at least one phase
+- [ ] The N-D-C panel populates with data
+
+If any card still shows `—`, the `metric_name` slugs in the JSON do not match what
+the JavaScript is filtering for — reconcile them before proceeding.
+
+---
+
+## 5b. Value chain what-if simulator — commodity-specific adaptation (REQUIRED)
+
+The gold value chain what-if simulator (`value_chain/what_if_simulator.html`) is built around
+gold-specific controls and calculations.  **Every non-gold project must replace these entirely.**
+
+### Controls to replace
+
+| Gold element | Replace with (example for AUBEB) |
+|---|---|
+| AISC slider (`min=900 max=2200`) | Primary price slider for this commodity (e.g. carbon credit price $5–$80) |
+| Cash cost slider | Secondary cost/floor control relevant to the commodity |
+| Spot price slider | Market price or contract price relevant to this commodity |
+| Entity selector (`Newmont E001`, `Barrick E002`) | Project-specific entities from PDI `A7_actor_classes`, or Phase selector |
+| `ref_production_oz_per_year` parameter | Equivalent production unit from PDI `programme_scale` (ha, tCO₂e/yr, kg/yr, etc.) |
+| `carbon_cost_per_oz` / `energy_cost_per_oz` | Costs denominated in the commodity's native unit |
+| `stabilityIndex(price, aisc, cash)` function | Stability function using the commodity's margin structure |
+
+### Derived outputs to recalculate
+
+Replace gold financial outputs with outputs meaningful for the commodity:
+
+| Gold output | AUBEB equivalent | Shea equivalent |
+|---|---|---|
+| Margin vs AISC | Net carbon revenue (price × tCO₂e/yr − costs) | Net value to women (retail − farm-gate) |
+| Breakeven price | Carbon floor to cover project costs | Farm-gate breakeven |
+| Spread (AISC − Cash) | CORSIA floor − VCM floor spread | Margin per MT |
+| Stability index | Programme financial resilience score | Value chain equity score |
+
+### Data source
+
+The simulator should load from the same files as the dashboard:
+- `<m>_value_metrics.json` for price/cost baseline values
+- `<m>_value_ndc_metrics.json` for D/C/N initial slider positions
+
+### Reference implementations
+
+- **Gold**: `frontend/project/gold/value_chain/what_if_simulator.html` — AISC/cash-cost model
+- **Shea**: `frontend/project/shea/value_chain/what_if_simulator.html` — price-to-women + carbon credit model
+- Use the shea implementation as a closer template for non-extractive / nature-based projects.
+
+---
+
+## 5c. Value chain financial report — commodity-specific adaptation (REQUIRED)
+
+The gold financial report (`value_chain/financial_report.html`) uses a mining income-statement
+structure: AISC sub-components, Newmont/Barrick entities, realized price per troy oz, Phase 1
+cash costs, royalties, sustaining capex, etc.  **All of this must be replaced per commodity.**
+
+### Income statement structure by commodity type
+
+| Commodity type | Revenue lines | Cost lines | Key ratio |
+|---|---|---|---|
+| Extractive (gold) | Realized price × oz produced | Cash cost/oz, AISC/oz, royalties | AISC margin |
+| Agricultural (shea) | Farm-gate price × kg, retail uplift | Processing margin/kg, logistics | Value-to-women ratio |
+| Nature-based / carbon (AUBEB) | VCM price × tCO₂e/yr, CORSIA premium | Restoration cost/ha, MRV fees, certification | Net programme surplus |
+| Other commodities | Derive from PDI `pricing_reference` and `multi_value_outputs` | Derive from PDI `phase_cost_estimates` | Margin relative to breakeven price |
+
+### Entity selector
+
+Replace gold company entities with entities appropriate to the commodity:
+- **Carbon projects**: Phase selector or single programme entity from PDI `A7_actor_classes`
+- **Agricultural**: buyer/aggregator entities from PDI, or cooperative vs. market scenarios
+
+### Key lines to replace in the copied HTML
+
+| Gold element | Replace with |
+|---|---|
+| `Realized Mangrove/Gold Price ($/oz)` | Primary revenue metric for this commodity ($/tCO₂e, $/kg, etc.) |
+| `Annual Production (oz/yr)` | Programme throughput unit from PDI (`tCO₂e/yr`, `ha`, `kg/yr`) |
+| `AISC` and `Cash Cost` sub-components | Cost structure relevant to this commodity's PDI phases |
+| `Royalties & Production Taxes` | Applicable levies (e.g. carbon registry fees, government sharing) |
+| `Sustaining Capital Expenditure` | Ongoing investment type (e.g. monitoring equipment, replanting) |
+| `Reclamation & Closure Accrual` | Programme-end obligations (if applicable) |
+| `Phase 2–8 costs` headers | Rename to match actual PDI phase names |
+| Carbon price slider ($/tCO₂e) | Keep if commodity has a carbon co-benefit; remove if not applicable |
+| `t/oz` emissions intensity metric | Replace with commodity-native denominator (t/ha, kg CO₂/kg, etc.) |
+
+### Supply chain pages — data source citations
+
+When copying supply chain pages (dashboard, emissions analysis, energy analysis, water analysis,
+what-if simulator), they may carry incidental references to the source commodity's benchmark data
+(e.g. "Newmont 2024 SR", "WGC 2023", "t/oz", "ICMM Water Reporting Guidelines").
+
+These must be updated to cite sources appropriate to the new commodity:
+- Replace corporate benchmark citations (Newmont, Barrick, WGC) with sources from PDI
+  `sources_overview` and `module_4_opacity`.
+- Replace `t/oz` intensity denominators with the commodity-native unit.
+- Where no real data exists, mark as `"benchmark estimate — not project-specific"`.
+
+---
+
+## 6. Commodity hub and homepage
+
+### `frontend/project/<m>/index.html`
+Adapt from `gold/index.html`. Keep only Supply Chain and Value Chain cards.
+Remove Game Theory card (moved to Research section).
+
+### `index2.html`
+Add a new card to the **Projects** section:
+
+```html
+<a href="frontend/project/<m>/index.html" class="card <m>">
+  <div class="card-icon"><emoji></div>
+  <div class="card-title"><Material></div>
+  <div class="card-desc"><one-line description from PDI A2_market_state></div>
+  <span class="card-tag"><Material> – Supply & Value Chain Hub</span>
+</a>
+```
+
+Add CSS: `.card.<m> { border-left: 4px solid <PRIMARY_HEX>; }`
+
+---
+
+## 7. Post-generation checklist
+
+- [ ] `data/frontend/<m>_supply_chain_ui.json` exists and is valid JSON
+- [ ] `frontend/project/<m>/supply_chain/scenarios.json` exists
+- [ ] All DATA_URL paths in copied HTML files resolve to existing files
+- [ ] `project_context.html` contains material-specific content (not gold boilerplate)
+- [ ] `index.html` has the new project card
+- [ ] No `null` fields in `phase_meta` or `phases.synthetic` for D/C/balance/N
+- [ ] Emissions/energy/water fields that are `null` display gracefully (not as errors)
+- [ ] `value_chain/dashboard.html` uses commodity-specific metric slugs (not `aisc_usd_per_oz`)
+- [ ] `<m>_value_metrics.json` metric_name values match what the dashboard JS filters for
+- [ ] `value_chain/what_if_simulator.html` uses commodity-specific sliders and outputs (not AISC/oz)
+- [ ] What-if simulator loads data from `<m>_value_metrics.json` and shows non-zero baseline values
+- [ ] `value_chain/financial_report.html` uses commodity-specific income statement structure (not AISC/oz)
+- [ ] Supply chain pages cite commodity-appropriate data sources (not Newmont/WGC/ICMM by default)
+- [ ] Emissions intensity denominator matches commodity unit (not t/oz)

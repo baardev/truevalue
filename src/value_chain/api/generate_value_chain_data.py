@@ -102,7 +102,7 @@ class ValueChainDataGenerator:
             },
         }
 
-        out = self.output_dir / "value_ndc_metrics.json"
+        out = self.output_dir / "gold_value_ndc_metrics.json"
         out.write_text(json.dumps(payload, indent=2, allow_nan=False))
         logger.info(f"✓ Generated {out}")
         return payload
@@ -148,7 +148,7 @@ class ValueChainDataGenerator:
             },
         }
 
-        out = self.output_dir / "value_metrics.json"
+        out = self.output_dir / "gold_value_metrics.json"
         out.write_text(json.dumps(payload, indent=2, allow_nan=False))
         logger.info(f"✓ Generated {out}")
         return payload
