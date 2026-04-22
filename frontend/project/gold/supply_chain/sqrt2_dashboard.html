@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Supply Chain – √2 Structural Transfer Coherence Model</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header-nav a {
+            color: #a5d6a7;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 13px;
+        }
+        .header-nav a:hover { color: white; }
+
+        .model-strip {
+            display: flex; align-items: center; gap: 0;
+            background: #1a1a1a; overflow-x: auto;
+        }
+        .model-tab {
+            padding: 9px 20px; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.5px; white-space: nowrap; cursor: pointer;
+            border-right: 1px solid #333; color: #888;
+            text-decoration: none; display: block;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active { background: #2e7d32; color: white; cursor: default; }
+        .model-tab.disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Scenario selector bar */
+        .scenario-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; background: #111a12;
+            border-bottom: 2px solid #2e7d32; flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #a5d6a7; white-space: nowrap; flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            border: 1px solid #2d4a30; background: #1a2e1c; color: #a5d6a7;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #2e7d32; color: #e8f5e9; }
+        .scen-btn.active { background: #2e7d32; border-color: #2e7d32; color: white; }
+        .scen-btn.shock  { border-color: #c62828; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #c62828; border-color: #c62828; color: white; }
+        .scen-btn.expand { border-color: #1565c0; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #1565c0; border-color: #1565c0; color: white; }
+        .scen-btn.regul  { border-color: #6c757d; }
+        .scen-btn.regul:hover, .scen-btn.regul.active  { background: #546e7a; border-color: #546e7a; color: white; }
+        .scenario-desc {
+            font-size: 11px; color: #668866; font-style: italic; flex: 1; min-width: 180px;
+        }
+
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 28px 30px;
+            background: #f1f8e9;
+        }
+        .card {
+            background: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #e0e0e0;
+        }
+        .card.green-border { border-top-color: #2e7d32; }
+        .card.good-border  { border-top-color: #43a047; }
+        .card.warn-border  { border-top-color: #fbc02d; }
+        .card.poor-border  { border-top-color: #c62828; }
+        .card-label { font-size: 11px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 34px; font-weight: bold; color: #2c3e50; margin-bottom: 6px; }
+        .card-value.green { color: #2e7d32; }
+        .card-value.warn  { color: #f57f17; }
+        .card-value.red   { color: #c62828; }
+        .card-sub { font-size: 12px; color: #6c757d; }
+
+        .main { padding: 28px 30px; }
+        .section-title { font-size: 17px; font-weight: 600; color: #2c3e50; margin-bottom: 6px; }
+        .section-sub { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+
+        /* Chain flow */
+        .chain-flow {
+            background: #f1f8e9; border-radius: 10px;
+            padding: 30px 20px; margin-bottom: 28px; overflow-x: auto;
+        }
+        .phases-row { display: flex; align-items: center; min-width: 1000px; }
+        .phase-node { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        .phase-box {
+            width: 88px; height: 88px; border-radius: 10px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+            border: 2px solid transparent;
+            transition: transform 0.2s; cursor: default;
+        }
+        .phase-box:hover { transform: scale(1.07); }
+        .phase-box .pid { font-size: 11px; font-weight: 700; opacity: 0.85; }
+        .phase-box .pn  { font-size: 20px; font-weight: 900; }
+        .phase-box .plabel { font-size: 10px; opacity: 0.8; margin-top: 2px; }
+        .phase-label { font-size: 10px; color: #555; margin-top: 7px; text-align: center; max-width: 90px; }
+
+        .phase-box.excellent { background: linear-gradient(135deg,#1b5e20,#2e7d32); color:white; border-color:#1b5e20; }
+        .phase-box.good      { background: linear-gradient(135deg,#388e3c,#43a047); color:white; border-color:#388e3c; }
+        .phase-box.fair      { background: linear-gradient(135deg,#f57f17,#fbc02d); color:white; border-color:#f57f17; }
+        .phase-box.poor      { background: linear-gradient(135deg,#c62828,#e53935); color:white; border-color:#c62828; }
+
+        .boundary-connector {
+            display: flex; flex-direction: column;
+            align-items: center; padding: 0 4px; flex-shrink: 0;
+        }
+        .boundary-arrow { font-size: 22px; line-height: 1; }
+        .boundary-pill {
+            padding: 3px 8px; border-radius: 10px;
+            font-size: 10px; font-weight: 700; margin-top: 3px;
+            color: white;
+        }
+        .bp-excellent { background: #2e7d32; }
+        .bp-good      { background: #43a047; }
+        .bp-fair      { background: #f57f17; }
+        .bp-poor      { background: #c62828; }
+
+        /* Symmetry reference scale */
+        .sym-reference {
+            background: white; border-radius: 8px;
+            padding: 18px; margin-top: 16px;
+            border: 1px solid #e8f5e9;
+        }
+        .sym-reference h4 { font-size: 13px; color: #2c3e50; margin-bottom: 12px; }
+        .sym-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+        .sym-row-label { font-size: 11px; color: #666; width: 120px; flex-shrink: 0; }
+        .sym-bar-outer {
+            flex: 1; height: 16px; background: #f0f0f0;
+            border-radius: 8px; position: relative; overflow: visible;
+        }
+        .sym-bar-fill { height: 100%; border-radius: 8px; }
+        .sym-target-line {
+            position: absolute; top: -4px; bottom: -4px;
+            width: 2px; background: #2e7d32; z-index: 5;
+        }
+        .sym-target-label {
+            position: absolute; top: -18px; left: -20px;
+            font-size: 9px; color: #2e7d32; font-weight: 700; white-space: nowrap;
+        }
+        .sym-score-badge {
+            width: 44px; text-align: right; font-size: 12px; font-weight: 700; flex-shrink: 0;
+        }
+
+        /* Boundary table */
+        .boundary-table { width: 100%; border-collapse: collapse; margin-bottom: 28px; }
+        .boundary-table th {
+            background: #1b5e20; color: white;
+            padding: 10px 14px; text-align: left;
+            font-size: 12px; font-weight: 600;
+        }
+        .boundary-table td { padding: 12px 14px; border-bottom: 1px solid #e8f5e9; font-size: 13px; }
+        .boundary-table tr:hover td { background: #f1f8e9; }
+        .status-badge {
+            padding: 3px 10px; border-radius: 12px;
+            font-size: 11px; font-weight: 700; white-space: nowrap;
+        }
+        .st-excellent { background: #e8f5e9; color: #1b5e20; }
+        .st-good      { background: #dcedc8; color: #33691e; }
+        .st-fair      { background: #fff8e1; color: #f57f17; }
+        .st-warn      { background: #fff3e0; color: #e65100; }
+        .st-poor      { background: #ffebee; color: #c62828; }
+        .opaque-tag {
+            padding: 2px 7px; background: #e0e0e0; color: #666;
+            border-radius: 6px; font-size: 10px; margin-left: 6px;
+        }
+        .d-bar { display: inline-block; height: 8px; background: #c62828; border-radius: 3px; }
+        .c-bar { display: inline-block; height: 8px; background: #2e7d32; border-radius: 3px; }
+
+        /* What-if simulator */
+        .simulator {
+            background: #f9fbe7; border-radius: 10px;
+            padding: 24px; margin-bottom: 28px;
+            border: 1px solid #dcedc8;
+        }
+        .sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+        .sim-card {
+            background: white; border-radius: 8px;
+            padding: 16px; border: 1px solid #e8f5e9;
+        }
+        .sim-card h4 { font-size: 13px; font-weight: 700; color: #2c3e50; margin-bottom: 10px; }
+        .sim-slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .sim-slider-row label { font-size: 11px; color: #555; width: 80px; }
+        .sim-slider-row input[type=range] { flex: 1; accent-color: #2e7d32; }
+        .sim-slider-row .sim-val { font-size: 12px; font-weight: 700; width: 30px; text-align: right; }
+        .sim-result {
+            margin-top: 10px; padding: 8px 10px;
+            background: #f1f8e9; border-radius: 6px;
+            font-size: 12px; color: #2c3e50;
+        }
+        .sim-score { font-size: 20px; font-weight: 900; color: #2e7d32; }
+
+        /* Data note */
+        .data-note {
+            background: #fff8e1; border-radius: 8px;
+            padding: 18px; margin-bottom: 28px;
+            border-left: 4px solid #fbc02d;
+        }
+        .data-note h4 { font-size: 13px; color: #e65100; margin-bottom: 6px; }
+        .data-note p  { font-size: 13px; color: #6c757d; line-height: 1.6; }
+
+        .footer {
+            padding: 16px 30px; background: #f1f8e9;
+            text-align: center; font-size: 12px; color: #888;
+        }
+        .footer a { color: #2e7d32; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .score-cards { grid-template-columns: repeat(2, 1fr); }
+            .header { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🏆 Gold Supply Chain — √2 Structural Transfer Coherence Model</h1>
+        <div class="header-nav">
+            <a href="dashboard.html">π Dashboard</a>
+            <a href="phi_dashboard.html">φ Proportional</a>
+            <a href="/frontend/project/five_model_coherence.html">🕸️ Five-Model</a>
+            <a href="/index.html">🏠 Home</a>
+        </div>
+    </div>
+
+    <!-- Model layer strip -->
+    <div class="model-strip">
+        <a class="model-tab" href="dashboard.html">π Operational</a>
+        <a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
+        <span class="model-tab active">√2 Structural ← current</span>
+        <a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
+        <a class="model-tab" href="e_dashboard.html">e Abstract</a>
+    </div>
+
+    <!-- Scenario selector -->
+    <div class="scenario-bar">
+        <span class="scenario-label">Scenario:</span>
+        <div class="scenario-btns" id="scenario-btns-container"></div>
+        <span class="scenario-desc" id="scenario-desc"></span>
+    </div>
+
+    <!-- Score cards -->
+    <div class="score-cards">
+        <div class="card green-border" id="sc-coherence">
+            <div class="card-label">System √2 Structural Coherence</div>
+            <div class="card-value green" id="sc-coherence-val">72.1</div>
+            <div class="card-sub" id="sc-coherence-sub">Moderate symmetry — isolated<br>boundary asymmetries</div>
+        </div>
+        <div class="card poor-border" id="sc-worst">
+            <div class="card-label">Worst Boundary</div>
+            <div class="card-value red" id="sc-worst-val">P0→P1</div>
+            <div class="card-sub" id="sc-worst-sub">Score: 28.7 — Geological opacity<br>D=8, C=3 (ratio 0.375)</div>
+        </div>
+        <div class="card good-border" id="sc-best">
+            <div class="card-label">Best Boundary</div>
+            <div class="card-value green" id="sc-best-val">P3→P4 &amp; P5→P6</div>
+            <div class="card-sub" id="sc-best-sub">Score: 100.0 — Perfect symmetry<br>LBMA standards &amp; COMEX registration</div>
+        </div>
+        <div class="card warn-border" id="sc-sym">
+            <div class="card-label">Symmetric Boundaries (≥80)</div>
+            <div class="card-value warn" id="sc-sym-val">3 / 7</div>
+            <div class="card-sub" id="sc-sym-sub">P3→P4, P5→P6, P4→P5<br>Downstream chain is well-structured</div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- Chain flow visualization -->
+        <div class="section-title">Boundary Structural Symmetry — Chain View</div>
+        <div class="section-sub">Each arrow shows the √2 structural coherence score for that boundary. The √2 model scores BOUNDARY TRANSITIONS — not phase interiors. Color indicates symmetry between D (requirements) and C (deliverables).</div>
+
+        <div class="chain-flow">
+            <div class="phases-row" id="phases-row"><!-- Rendered by JS --></div>
+
+            <!-- Symmetry reference scale -->
+            <div class="sym-reference">
+                <h4>Structural Symmetry Scale — D vs C Ratios (C/D, target = 1.0)</h4>
+                <div id="sym-scale-rows"><!-- Rendered by JS --></div>
+                <div style="display:flex; justify-content:space-between; font-size:10px; color:#aaa; padding:0 4px; margin-top:4px;">
+                    <span>0×</span><span>0.5×</span><span>1.0×</span><span>1.5×</span><span>2.0×</span><span>2.5×</span><span>3.0×</span>
+                </div>
+                <div style="margin-top:10px; font-size:11px; color:#888;">
+                    <strong style="color:#2e7d32;">Target (1.0):</strong> D = C — structural requirements match structural deliverables exactly. Only natural √2 overhead applies. &nbsp;|&nbsp;
+                    <strong style="color:#c62828;">D &gt; C:</strong> boundary demands more than it delivers (extraction risk). &nbsp;|&nbsp;
+                    <strong style="color:#f57f17;">D &lt; C:</strong> boundary under-specified, over-delivered (informal flow risk).
+                </div>
+            </div>
+        </div>
+
+        <!-- Boundary table -->
+        <div class="section-title">Structural Symmetry — Boundary Detail</div>
+        <div class="section-sub">D structural = requirement burden (0–10). C structural = delivery completeness (0–10). Ratio = C/D. Target: 1.0 (symmetric). Score uses exp(-2×|ratio−1|).</div>
+        <table class="boundary-table" id="boundary-table">
+            <thead>
+                <tr>
+                    <th>Boundary</th>
+                    <th>D Structural</th>
+                    <th>C Structural</th>
+                    <th>D/C Bar</th>
+                    <th>C/D Ratio</th>
+                    <th>√2 Score</th>
+                    <th>Status</th>
+                    <th>Opacity</th>
+                </tr>
+            </thead>
+            <tbody id="table-body"><!-- Rendered by JS --></tbody>
+        </table>
+
+        <!-- What-if simulator -->
+        <div class="section-title">Structural What-If Simulator</div>
+        <div class="section-sub">Adjust D (requirements) and C (deliverables) for any boundary. See how structural symmetry score changes. Use to model impact of reducing documentation burden or improving delivery completeness.</div>
+        <div class="simulator">
+            <div class="sim-grid" id="sim-grid"><!-- Rendered by JS --></div>
+        </div>
+
+        <!-- Data note -->
+        <div class="data-note">
+            <h4>⚠️ Data Note — Structural Transfer Data for Gold</h4>
+            <p>
+                The D and C values in this model are <strong>inferred from public sources</strong> — LBMA Good Delivery standards, COMEX warehouse receipt requirements, and publicly known industry practices. The underlying raw data (actual custody transfer records, private assay certificates, proprietary vault inventories) is <strong>not publicly available</strong>. The P0→P1 boundary (Geological → Mining) is the most structurally asymmetric: geological survey data, exploration results, and permit documentation exist in private corporate databases that are not disclosed to the public. The <code>custody_and_flow.csv</code> schema is currently empty — populating it with actual transfer records would allow these scores to be computed from data rather than inferred.
+            </p>
+        </div>
+
+        <!-- Interpretation panel -->
+        <div style="background:#e8f5e9; border-radius:10px; padding:22px; margin-bottom:28px; border-left:5px solid #2e7d32;">
+            <div style="font-size:15px; font-weight:700; color:#1b5e20; margin-bottom:10px;">What the √2 Score Tells You</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; font-size:13px; color:#555;">
+                <div>
+                    <strong style="color:#1b5e20;">Score 80–100: Symmetric</strong><br>
+                    D requirements match C deliverables. The boundary is a neutral conduit — it imposes only the natural √2 overhead (41.4%) and nothing more. Gold achieves this at P3→P4 (LBMA) and P5→P6 (COMEX).
+                </div>
+                <div>
+                    <strong style="color:#f57f17;">Score 40–80: Asymmetric</strong><br>
+                    Either D > C (requirements exceed deliverables — potential extraction point) or D < C (deliverables exceed requirements — informal bypass). Both indicate structural imbalance at the boundary.
+                </div>
+                <div>
+                    <strong style="color:#c62828;">Score 0–40: Critical asymmetry</strong><br>
+                    The boundary has failed the √2 structural test significantly. P0→P1 (score 28.7) reflects geological opacity: high formal requirements, low public data delivery. This is the structural basis for exploration opacity.
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /main -->
+
+    <div class="footer">
+        √2 Structural Model — Layer 3 of 5 | D=2, C=2 | Natural boundary overhead: 41.4% |
+        <a href="/frontend/project/five_model_coherence.html">Five-Model Coherence →</a>
+    </div>
+
+</div><!-- /dashboard -->
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+const BOUNDARIES_BASE = [
+    { id:"P0→P1", from:"Prospecting", to:"Mining",    d:8, c:3, opacity:"high",   note:"Geological data private; permit requirements formal but data confidential." },
+    { id:"P1→P2", from:"Mining",      to:"Processing", d:6, c:5, opacity:"medium", note:"Internal ore grade tracking; some symmetry via run-of-mine documentation." },
+    { id:"P2→P3", from:"Processing",  to:"Doré",       d:7, c:6, opacity:"medium", note:"LBMA assay standards — assay certs provide C-side. Slight D surplus from proprietary smelter specs." },
+    { id:"P3→P4", from:"Doré",        to:"Refining",   d:7, c:7, opacity:"low",    note:"LBMA Good Delivery: every requirement matches a specific deliverable. Near-perfect symmetry." },
+    { id:"P4→P5", from:"Refining",    to:"Vaulting",   d:8, c:7, opacity:"medium", note:"Vault entry requires bar registration, insurance, COMEX eligibility. Slight D surplus from eligibility requirements." },
+    { id:"P5→P6", from:"Vaulting",    to:"COMEX",      d:8, c:8, opacity:"low",    note:"COMEX warehouse receipts — highest structural symmetry: every bar documented, weighted, registered." },
+    { id:"P6→P7", from:"COMEX",       to:"Retail",     d:6, c:4, opacity:"medium", note:"OTC market: unallocated accounts and paper claims create C-side deficiency." },
+];
+
+// ── Scenarios ─────────────────────────────────────────────────────────────────
+// Each scenario redefines the d/c values for every boundary. Other fields (id, from, to, opacity, note) are preserved.
+let SQRT2_SCENARIOS = {};
+let currentBoundaries = [];
+
+function buildBoundaries(dc) {
+    return BOUNDARIES_BASE.map((b, i) => ({ ...b, d: dc[i].d, c: dc[i].c }));
+}
+
+function buildScenarioButtons(scenarios) {
+    const btnCls = key => {
+        if (key === 'current' || key === 'optimum') return '';
+        if (key === 'expansion') return 'expand';
+        if (key === 'regulatory') return 'regul';
+        if (key === 'serious_shea') return 'sshea';
+        return 'shock';
+    };
+    const container = document.getElementById('scenario-btns-container');
+    container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+        `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+    ).join('');
+}
+
+function setScenario(key) {
+    const scen = SQRT2_SCENARIOS[key];
+    if (!scen) return;
+    currentBoundaries = buildBoundaries(scen.dc);
+    document.querySelectorAll('.scen-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+    document.getElementById('scenario-desc').textContent = scen.description;
+    renderAll(currentBoundaries);
+}
+
+fetch('scenarios.json')
+    .then(r => r.json())
+    .then(data => {
+        SQRT2_SCENARIOS = data.sqrt2.scenarios;
+        buildScenarioButtons(SQRT2_SCENARIOS);
+        currentBoundaries = buildBoundaries(SQRT2_SCENARIOS.current.dc);
+        setScenario('current');
+    })
+    .catch(err => console.error('Failed to load scenarios.json:', err));
+
+const SQRT2 = Math.sqrt(2);
+
+function sqrt2Score(d, c) {
+    if (d <= 0) return 0;
+    const ratio = c / d;
+    return +(100 * Math.exp(-2 * Math.abs(ratio - 1.0))).toFixed(1);
+}
+
+function scoreClass(s) {
+    if (s >= 80) return "excellent";
+    if (s >= 60) return "good";
+    if (s >= 40) return "fair";
+    return "poor";
+}
+
+function statusLabel(d, c, s) {
+    const ratio = c/d;
+    if (s >= 80) return { label:"Symmetric",        cls:"st-excellent" };
+    if (s >= 60) return { label:"Near-symmetric",    cls:"st-good" };
+    if (ratio < 0.5) return { label:"Extraction risk", cls:"st-poor" };
+    if (ratio > 2.0) return { label:"Under-specified",  cls:"st-warn" };
+    return { label:"Asymmetric",         cls:"st-fair" };
+}
+
+// ── Chain flow ────────────────────────────────────────────────────────────────
+function renderChainFlow(bs) {
+    const row = document.getElementById("phases-row");
+    row.innerHTML = '';
+    const nodes = ["Prospecting","Mining","Processing","Doré","Refining","Vaulting","COMEX","Retail"];
+    const nodeIds = [0,1,2,3,4,5,6,7];
+    const scored = bs.map(b => ({ ...b, score: sqrt2Score(b.d, b.c) }));
+
+    nodes.forEach((name, i) => {
+        const adj = scored.filter(b => b.from === name || b.to === name);
+        const avgScore = adj.length ? adj.reduce((s,b) => s+b.score, 0)/adj.length : 60;
+        const cls = scoreClass(avgScore);
+
+        const node = document.createElement("div");
+        node.className = "phase-node";
+        node.innerHTML = `
+            <div class="phase-box ${cls}">
+                <span class="pid">P${nodeIds[i]}</span>
+                <span class="pn">${nodeIds[i]}</span>
+                <span class="plabel">${(avgScore).toFixed(0)}</span>
+            </div>
+            <div class="phase-label">${name}</div>`;
+        row.appendChild(node);
+
+        if (i < bs.length) {
+            const b = scored[i];
+            const cls2 = scoreClass(b.score);
+            const ratio = (b.c/b.d).toFixed(2);
+            const connector = document.createElement("div");
+            connector.className = "boundary-connector";
+            connector.innerHTML = `
+                <div style="font-size:10px;color:#888;margin-bottom:2px;">${b.id}</div>
+                <div class="boundary-arrow" style="color:${cls2==='excellent'?'#2e7d32':cls2==='good'?'#43a047':cls2==='fair'?'#f57f17':'#c62828'}">→</div>
+                <div class="boundary-pill bp-${cls2}">${b.score}</div>
+                <div style="font-size:10px;color:#777;margin-top:2px;">${ratio}×</div>`;
+            row.appendChild(connector);
+        }
+    });
+}
+
+// ── Symmetry scale rows ───────────────────────────────────────────────────────
+function renderSymScale(bs) {
+    const container = document.getElementById("sym-scale-rows");
+    container.innerHTML = '';
+    bs.forEach(b => {
+        const score = sqrt2Score(b.d, b.c);
+        const ratio = b.c / b.d;
+        const dPct = (b.d / 10) * 100;
+        const cPct = (b.c / 10) * 100;
+
+        const row = document.createElement("div");
+        row.className = "sym-row";
+        row.innerHTML = `
+            <div class="sym-row-label" style="font-size:11px;">${b.id}</div>
+            <div style="flex:1; display:flex; flex-direction:column; gap:3px;">
+                <div style="display:flex;align-items:center;gap:4px;">
+                    <span style="font-size:9px;width:12px;color:#c62828;">D</span>
+                    <div style="flex:1;height:10px;background:#f0f0f0;border-radius:4px;overflow:hidden;">
+                        <div style="width:${dPct}%;height:100%;background:#ef9a9a;border-radius:4px;"></div>
+                    </div>
+                    <span style="font-size:10px;color:#c62828;width:16px;">${b.d}</span>
+                </div>
+                <div style="display:flex;align-items:center;gap:4px;">
+                    <span style="font-size:9px;width:12px;color:#2e7d32;">C</span>
+                    <div style="flex:1;height:10px;background:#f0f0f0;border-radius:4px;overflow:hidden;">
+                        <div style="width:${cPct}%;height:100%;background:#a5d6a7;border-radius:4px;"></div>
+                    </div>
+                    <span style="font-size:10px;color:#2e7d32;width:16px;">${b.c}</span>
+                </div>
+            </div>
+            <div class="sym-score-badge" style="color:${score>=80?'#2e7d32':score>=60?'#43a047':score>=40?'#f57f17':'#c62828'};">${score.toFixed(0)}</div>`;
+        container.appendChild(row);
+    });
+}
+
+// ── Boundary table ────────────────────────────────────────────────────────────
+function renderTable(bs) {
+    const tbody = document.getElementById("table-body");
+    tbody.innerHTML = '';
+    bs.forEach(b => {
+        const score = sqrt2Score(b.d, b.c);
+        const ratio = (b.c / b.d).toFixed(3);
+        const st = statusLabel(b.d, b.c, score);
+        const cls = scoreClass(score);
+        const dW = (b.d/10)*100;
+        const cW = (b.c/10)*100;
+        const opacityStyle = b.opacity === "high" ? "color:#c62828;" : b.opacity === "low" ? "color:#2e7d32;" : "";
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+            <td><strong>${b.id}</strong><br><span style="font-size:11px;color:#888;">${b.from} → ${b.to}</span></td>
+            <td>${b.d} <div class="d-bar" style="width:${dW}px;"></div></td>
+            <td>${b.c} <div class="c-bar" style="width:${cW}px;"></div></td>
+            <td>
+                <div style="display:flex;gap:3px;align-items:center;">
+                    <div style="width:${dW}px;height:8px;background:#ef9a9a;border-radius:2px;"></div>
+                    <div style="width:${cW}px;height:8px;background:#a5d6a7;border-radius:2px;"></div>
+                </div>
+            </td>
+            <td style="font-weight:700;color:${parseFloat(ratio)>=0.9&&parseFloat(ratio)<=1.1?'#2e7d32':parseFloat(ratio)<0.5?'#c62828':'#f57f17'};">${ratio}</td>
+            <td><strong style="color:${cls==='excellent'?'#2e7d32':cls==='good'?'#43a047':cls==='fair'?'#f57f17':'#c62828'};">${score}</strong></td>
+            <td><span class="status-badge ${st.cls}">${st.label}</span></td>
+            <td><span style="font-size:11px;${opacityStyle}">${b.opacity.toUpperCase()}</span></td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+// ── Simulator ─────────────────────────────────────────────────────────────────
+// ── Summary cards (live) ──────────────────────────────────────────────────────
+function renderSummaryCards(bs) {
+    const scores  = bs.map(b => sqrt2Score(b.d, b.c));
+    const avgScore = (scores.reduce((a,v)=>a+v,0) / scores.length).toFixed(1);
+    const minScore = Math.min(...scores);
+    const maxScore = Math.max(...scores);
+    const worstIdx = scores.indexOf(minScore);
+    const bestIdx  = scores.indexOf(maxScore);
+    const symCount = scores.filter(s => s >= 80).length;
+
+    const setEl  = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    const setCls = (id, cls)  => { const el = document.getElementById(id); if (el) el.className = 'card-value ' + cls; };
+
+    const avgCls = avgScore >= 80 ? 'green' : avgScore >= 50 ? 'warn' : 'red';
+    setEl('sc-coherence-val', avgScore);
+    setCls('sc-coherence-val', avgCls);
+    setEl('sc-coherence-sub', avgScore >= 80 ? 'Strong structural symmetry across boundaries'
+                            : avgScore >= 50 ? 'Moderate symmetry — isolated boundary asymmetries'
+                                             : 'Low symmetry — systemic boundary distortion');
+
+    setEl('sc-worst-val', `${bs[worstIdx].id}`);
+    setEl('sc-worst-sub', `Score: ${minScore.toFixed(1)} — D=${bs[worstIdx].d}, C=${bs[worstIdx].c} (ratio ${(bs[worstIdx].c/bs[worstIdx].d).toFixed(3)})`);
+
+    setEl('sc-best-val', `${bs[bestIdx].id}`);
+    setCls('sc-best-val', maxScore >= 80 ? 'green' : 'warn');
+    setEl('sc-best-sub', `Score: ${maxScore.toFixed(1)} — D=${bs[bestIdx].d}, C=${bs[bestIdx].c} (ratio ${(bs[bestIdx].c/bs[bestIdx].d).toFixed(3)})`);
+
+    setEl('sc-sym-val', `${symCount} / ${bs.length}`);
+    setCls('sc-sym-val', symCount >= bs.length*0.6 ? 'green' : symCount > 0 ? 'warn' : 'red');
+    setEl('sc-sym-sub', symCount === 0 ? 'No boundary achieves symmetry — chain-wide distortion'
+                      : `${symCount} of ${bs.length} boundaries achieve structural symmetry`);
+}
+
+// ── Live refresh (called by sliders — skips simulator to avoid resetting) ─────
+function renderLive(bs) {
+    renderChainFlow(bs);
+    renderSymScale(bs);
+    renderTable(bs);
+    renderSummaryCards(bs);
+}
+
+function renderSim(bs) {
+    const grid = document.getElementById("sim-grid");
+    grid.innerHTML = '';
+    bs.forEach((b, idx) => {
+        const card = document.createElement("div");
+        card.className = "sim-card";
+        card.innerHTML = `
+            <h4>${b.id}: ${b.from} → ${b.to}</h4>
+            <div class="sim-slider-row">
+                <label>D (req)</label>
+                <input type="range" min="1" max="10" step="0.5" value="${b.d}" id="sim-d-${idx}">
+                <span class="sim-val" id="sim-dv-${idx}">${b.d}</span>
+            </div>
+            <div class="sim-slider-row">
+                <label>C (del)</label>
+                <input type="range" min="1" max="10" step="0.5" value="${b.c}" id="sim-c-${idx}">
+                <span class="sim-val" id="sim-cv-${idx}">${b.c}</span>
+            </div>
+            <div class="sim-result">
+                Ratio: <span id="sim-ratio-${idx}">${(b.c/b.d).toFixed(2)}</span> &nbsp;|&nbsp;
+                Score: <span class="sim-score" id="sim-score-${idx}">${sqrt2Score(b.d, b.c)}</span>
+                <div style="font-size:11px;color:#888;margin-top:4px;">${b.note}</div>
+            </div>`;
+        grid.appendChild(card);
+
+        function update() {
+            const d = parseFloat(document.getElementById(`sim-d-${idx}`).value);
+            const c = parseFloat(document.getElementById(`sim-c-${idx}`).value);
+            document.getElementById(`sim-dv-${idx}`).textContent = d;
+            document.getElementById(`sim-cv-${idx}`).textContent = c;
+            document.getElementById(`sim-ratio-${idx}`).textContent = (c/d).toFixed(2);
+            const s = sqrt2Score(d, c);
+            const el = document.getElementById(`sim-score-${idx}`);
+            el.textContent = s;
+            el.style.color = s>=80?'#2e7d32':s>=60?'#43a047':s>=40?'#f57f17':'#c62828';
+            // propagate to live sections
+            currentBoundaries[idx].d = d;
+            currentBoundaries[idx].c = c;
+            renderLive(currentBoundaries);
+        }
+        document.getElementById(`sim-d-${idx}`).addEventListener("input", update);
+        document.getElementById(`sim-c-${idx}`).addEventListener("input", update);
+    });
+}
+
+function renderAll(bs) {
+    renderChainFlow(bs);
+    renderSymScale(bs);
+    renderTable(bs);
+    renderSim(bs);
+}
+</script>
+
+<script>
+/* ── Auto-breadcrumb ──────────────────────────────────────────────────────── */
+(function(){
+  var LABELS={
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'sqrt2_dashboard.html':'√2 Structural',
+    'index.html':null,'frontend':null
+  };
+  var css='#tv-bc{background:rgba(0,0,0,0.35);padding:6px 22px;font-size:11.5px;'+
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}'+
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}'+
+    '#tv-bc .bc-sep{opacity:.45;}#tv-bc .bc-cur{color:#a5d6a7;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var parts=window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs=[{label:'Home',href:'/index.html'}];
+  var built='';
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i],lbl=LABELS[p];
+    if(lbl===null||lbl===undefined)continue;
+    built+='/'+p;
+    var isLast=(i===parts.length-1);
+    crumbs.push({label:lbl,href:isLast?null:(built+'/index.html')});
+  }
+  var html=crumbs.map(function(c,i){
+    var sep=i>0?'<span class="bc-sep">›</span>':'';
+    return sep+(c.href?'<a href="'+c.href+'">'+c.label+'</a>':'<span class="bc-cur">'+c.label+'</span>');
+  }).join('');
+  var nav=document.createElement('div');nav.id='tv-bc';nav.innerHTML=html;
+  function inject(){if(!document.getElementById('tv-bc'))document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

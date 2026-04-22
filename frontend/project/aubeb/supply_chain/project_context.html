@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🌿 AUBEB – Project Context &amp; Supply Chain</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: #f0f7f6; color: #1c1c1c; }
+
+    .header {
+      background: linear-gradient(135deg, #0d4f47, #1a8a7a);
+      color: #fff; padding: 1.5rem 2rem;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+    }
+    .header h1 { font-size: 1.5rem; font-weight: 700; }
+    .header nav a {
+      color: #b3ede8; text-decoration: none; margin-left: 1rem;
+      font-size: 0.85rem; font-weight: 500;
+    }
+    .header nav a:hover { color: #fff; }
+
+    .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+
+    /* KPI bar */
+    .kpi-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
+    .kpi {
+      flex: 1 1 180px; background: #fff; border-radius: 10px;
+      border-left: 4px solid #1a8a7a; padding: 1rem 1.2rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08);
+    }
+    .kpi-val { font-size: 1.7rem; font-weight: 800; color: #0d4f47; }
+    .kpi-lbl { font-size: 0.75rem; color: #666; margin-top: 0.2rem; text-transform: uppercase; letter-spacing: .04em; }
+
+    /* Sections */
+    h2 { font-size: 1.15rem; color: #0d4f47; margin: 2rem 0 0.8rem; font-weight: 700; border-bottom: 2px solid #b3ede8; padding-bottom: 0.3rem; }
+
+    /* Overview card */
+    .overview {
+      background: #fff; border-radius: 10px; padding: 1.2rem 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,.08); line-height: 1.65; font-size: 0.93rem;
+    }
+
+    /* Phase flow */
+    .phase-flow { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+    .phase-card {
+      background: #fff; border-radius: 8px; padding: 0.75rem 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07); flex: 1 1 260px;
+      border-top: 3px solid #1a8a7a; font-size: 0.85rem;
+    }
+    .phase-card.phase-low  { border-top-color: #e07b39; }
+    .phase-card.phase-med  { border-top-color: #c9a02a; }
+    .phase-card.phase-high { border-top-color: #1a8a7a; }
+    .phase-num  { font-size: 0.7rem; color: #888; font-weight: 600; text-transform: uppercase; margin-bottom: 0.2rem; }
+    .phase-name { font-weight: 700; color: #0d4f47; margin-bottom: 0.3rem; }
+    .phase-actor { font-style: italic; color: #555; margin-bottom: 0.25rem; }
+    .phase-note { color: #333; line-height: 1.45; }
+    .badge {
+      display: inline-block; font-size: 0.65rem; font-weight: 600;
+      padding: 0.15rem 0.5rem; border-radius: 20px; margin-bottom: 0.4rem;
+    }
+    .badge.high   { background: #d4f5f0; color: #0d4f47; }
+    .badge.medium { background: #fff2d0; color: #7a5500; }
+    .badge.low    { background: #ffe0d0; color: #7a2000; }
+
+    /* Actors */
+    .actor-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 0.7rem; }
+    .actor-card {
+      background: #fff; border-radius: 8px; padding: 0.7rem 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,.07); font-size: 0.82rem;
+    }
+    .actor-type { font-size: 0.65rem; text-transform: uppercase; color: #888; font-weight: 600; margin-bottom: 0.2rem; }
+    .actor-name { font-weight: 700; color: #0d4f47; margin-bottom: 0.15rem; }
+
+    /* Data status */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .data-table th { background: #1a8a7a; color: #fff; text-align: left; padding: 0.5rem 0.75rem; font-size: 0.78rem; }
+    .data-table td { padding: 0.45rem 0.75rem; border-bottom: 1px solid #e3f0ee; }
+    .data-table tr:hover td { background: #f0f7f6; }
+    .status-ok  { color: #0d7a6e; font-weight: 600; }
+    .status-na  { color: #e07b39; font-weight: 600; }
+    .status-no  { color: #c0392b; font-weight: 600; }
+
+    footer { margin-top: 3rem; font-size: 0.75rem; color: #888; text-align: center; padding-bottom: 2rem; }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🌿 AUBEB – Project Context &amp; Supply Chain</h1>
+  <nav>
+    <a href="index.html">Supply Chain</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="what_if_simulator.html">Simulator</a>
+    <a href="../value_chain/index.html">Value Chain</a>
+    <a href="../index.html">Hub</a>
+    <a href="/index.html">Home</a>
+  </nav>
+</div>
+
+<div class="page">
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">150,000</div><div class="kpi-lbl">Hectares (programme area)</div></div>
+    <div class="kpi"><div class="kpi-val">7</div><div class="kpi-lbl">AU Member States</div></div>
+    <div class="kpi"><div class="kpi-val">5.64M</div><div class="kpi-lbl">Net tCO₂e / year</div></div>
+    <div class="kpi"><div class="kpi-val">USD 84.6M+</div><div class="kpi-lbl">Annual carbon reserve capacity</div></div>
+    <div class="kpi"><div class="kpi-val">1.5M+</div><div class="kpi-lbl">Livelihoods protected</div></div>
+    <div class="kpi"><div class="kpi-val">11</div><div class="kpi-lbl">Supply chain phases (0–10)</div></div>
+  </div>
+
+  <!-- Overview -->
+  <h2>Programme Overview</h2>
+  <div class="overview">
+    <p>The <strong>African Union Blue Economy Bond (AUBEB)</strong> is a large-scale coastal ecosystem restoration
+    programme targeting <strong>150,000 ha of mangrove forest</strong> across seven AU member states.
+    The programme is led by the <strong>African Union Commission (AUC)</strong> in partnership with
+    <strong>Global Underwater Diagnostics (GUD)</strong>, using the <strong>ODIN dMRV platform</strong>
+    for satellite-based measurement, reporting, and verification.</p>
+    <br/>
+    <p>The supply chain spans <strong>11 phases (Phase 0–10)</strong>, from pre-commercial degraded ecosystem baseline
+    through active Community-Based Ecological Mangrove Restoration (CBEMR) to a verified, sustained blue-economy
+    asset. The programme monetises through <strong>voluntary carbon markets (VCM)</strong>,
+    <strong>CORSIA-compliant credits</strong>, <strong>fisheries royalties</strong>, and an
+    <strong>AUBEB-labelled bond</strong> structured for institutional investors.</p>
+    <br/>
+    <p><em>Material class:</em> Ecosystem services (blue carbon) &nbsp;|&nbsp;
+    <em>Standard:</em> Flexible (Verra / Gold Standard / Plan Vivo / ICR / ACR) &nbsp;|&nbsp;
+    <em>Article 6.2 authorisation:</em> Anticipated &nbsp;|&nbsp;
+    <em>Crediting period:</em> 30 years &nbsp;|&nbsp;
+    <em>Programme scale:</em> USD 84.6M+ annual capacity</p>
+  </div>
+
+  <!-- Phase map -->
+  <h2>Phase Map (0–10)</h2>
+  <div class="phase-flow">
+
+    <div class="phase-card phase-low">
+      <div class="phase-num">Phase 0</div>
+      <span class="badge low">Low transparency</span>
+      <div class="phase-name">Pre-commercial: degraded ecosystem</div>
+      <div class="phase-actor">Coastal communities / national governments</div>
+      <div class="phase-note">Baseline documented retrospectively across 7 countries. No measurement framework. 150,000 ha under informal stewardship.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 1</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Custodial formalisation</div>
+      <div class="phase-actor">AUC; national governments</div>
+      <div class="phase-note">Sovereign commitment letters formalise 150,000 ha programme boundary. Custodial obligations legally mandated.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 2</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Data extraction — baseline remote sensing</div>
+      <div class="phase-actor">GUD (ODIN dMRV); independent field teams</div>
+      <div class="phase-note">ODIN satellite archive 2001–2024 plus field survey. Outputs: carbon stock, biodiversity indices, livelihood baselines.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 3</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Specification — carbon quantification</div>
+      <div class="phase-actor">AUC MRV specialists; GUD</div>
+      <div class="phase-note">7.05M gross / 5.64M net tCO₂e/yr after 20% non-permanence buffer. Landscape-class stratified credit framework.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 4</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Certification — verification &amp; registration</div>
+      <div class="phase-actor">Third-party verifier; standards body; TrueValue Analytics</div>
+      <div class="phase-note">Verified and registered credit pool. Article 6.2 authorisation anticipated. TVPCI baseline established.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 5</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Commercialisation outward</div>
+      <div class="phase-actor">Carbon buyers; institutional investors; DFI (AfDB / AFC)</div>
+      <div class="phase-note">Floor: USD 15/tCO₂e VCM; USD 20/tCO₂e CORSIA. AUBEB bond issued. Fisheries royalties activated. Annual reserve USD 84.6M+.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 6</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Capital return — Conservation Fund deployment</div>
+      <div class="phase-actor">Trust Fund administrator; AUC; GUD</div>
+      <div class="phase-note">Bond proceeds + carbon revenues + fisheries royalties deployed via Conservation Trust Fund to community-led CBEMR.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 7</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Restoration specification — CBEMR design</div>
+      <div class="phase-actor">Community restoration champions; GUD; AUC field coordinators</div>
+      <div class="phase-note">Community-Based Ecological Mangrove Restoration plans. 17+ mangrove species. Seed provenance protocols. Employment plans.</div>
+    </div>
+
+    <div class="phase-card phase-med">
+      <div class="phase-num">Phase 10</div>
+      <span class="badge medium">Medium transparency</span>
+      <div class="phase-name">Community custodial co-management</div>
+      <div class="phase-actor">Community co-management organisations</div>
+      <div class="phase-note">FPIC confirmed. Benefit-sharing agreements vest legal entitlement. Medium transparency — community governance data varies by site.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 9</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Physical recovery — active regeneration</div>
+      <div class="phase-actor">Communities; AUC; GUD ODIN (monitoring)</div>
+      <div class="phase-note">Years 3–7: 15–20 tCO₂e/ha/yr early sequestration. Steady state: 5–10 tCO₂e/ha/yr. ODIN continuous monitoring.</div>
+    </div>
+
+    <div class="phase-card phase-high">
+      <div class="phase-num">Phase 10</div>
+      <span class="badge high">High transparency</span>
+      <div class="phase-name">Verified restoration — sustained blue economy asset</div>
+      <div class="phase-actor">Independent verifier; TrueValue Analytics / MSCI; communities</div>
+      <div class="phase-note">5.64M net tCO₂e/yr; 150,000 ha protected; 1.5M+ livelihoods; TVPCI milestone asset class verified.</div>
+    </div>
+
+  </div>
+
+  <!-- Actors -->
+  <h2>Key Actors</h2>
+  <div class="actor-grid">
+    <div class="actor-card"><div class="actor-type">Programme Lead</div><div class="actor-name">African Union Commission (AUC)</div>Sovereign programme oversight, MoUs with 7 member states, carbon registry coordination.</div>
+    <div class="actor-card"><div class="actor-type">MRV &amp; Technology</div><div class="actor-name">Global Underwater Diagnostics (GUD)</div>ODIN dMRV platform — satellite monitoring, species identification, carbon quantification.</div>
+    <div class="actor-card"><div class="actor-type">Analytics &amp; Valuation</div><div class="actor-name">TrueValue Analytics</div>TVPCI baseline, N-D-C valuation framework, multi-value asset reporting.</div>
+    <div class="actor-card"><div class="actor-type">Finance</div><div class="actor-name">AfDB / AFC (DFI)</div>Bond structuring, institutional investor placement, green bond certification.</div>
+    <div class="actor-card"><div class="actor-type">Verification</div><div class="actor-name">Third-party verifier (TBD)</div>Verra / Gold Standard / Plan Vivo / ICR / ACR — flexible standard selection.</div>
+    <div class="actor-card"><div class="actor-type">Restoration</div><div class="actor-name">Community co-management organisations</div>CBEMR implementation, custodial co-management, benefit-sharing recipients.</div>
+    <div class="actor-card"><div class="actor-type">Carbon Buyers</div><div class="actor-name">Corporates / CORSIA buyers</div>VCM offtake; CORSIA aviation compliance; voluntary ESG mandates.</div>
+    <div class="actor-card"><div class="actor-type">Fisheries</div><div class="actor-name">Coastal fisheries operators</div>Royalty payers feeding Conservation Trust Fund. Co-beneficiaries of restoration.</div>
+  </div>
+
+  <!-- Data status -->
+  <h2>Data Availability</h2>
+  <table class="data-table">
+    <thead>
+      <tr><th>Field</th><th>Status</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Programme area (ha)</td><td class="status-ok">✓ Available</td><td>150,000 ha confirmed; 7 countries</td></tr>
+      <tr><td>Carbon quantification (tCO₂e/yr)</td><td class="status-ok">✓ Available</td><td>7.05M gross; 5.64M net after 20% buffer</td></tr>
+      <tr><td>Carbon pricing floor</td><td class="status-ok">✓ Available</td><td>USD 15/tCO₂e VCM; USD 20/tCO₂e CORSIA</td></tr>
+      <tr><td>Annual reserve capacity</td><td class="status-ok">✓ Available</td><td>USD 84.6M+ per year</td></tr>
+      <tr><td>Phase boundaries (PDI)</td><td class="status-ok">✓ Available</td><td>11 phases; boundary scores 0–5</td></tr>
+      <tr><td>N-D-C scores</td><td class="status-ok">✓ Synthetic baseline</td><td>Derived from PDI boundary and opacity scores</td></tr>
+      <tr><td>Scope 1 / Scope 2 emissions</td><td class="status-no">✗ Not available</td><td>Not included in PDI AUBEB v1</td></tr>
+      <tr><td>Energy data (kWh/phase)</td><td class="status-no">✗ Not available</td><td>Not included in PDI AUBEB v1</td></tr>
+      <tr><td>Water data (litres/phase)</td><td class="status-no">✗ Not available</td><td>Not included in PDI AUBEB v1</td></tr>
+      <tr><td>Phase-level cost breakdown</td><td class="status-na">⚠ Partial</td><td>Phase 5 only (carbon floor); other phases require separate input</td></tr>
+      <tr><td>Country allocation by phase</td><td class="status-na">⚠ Partial</td><td>7 countries identified; per-country phase split not in PDI v1</td></tr>
+      <tr><td>Verifier identity</td><td class="status-na">⚠ TBD</td><td>Standard flexible (Verra / Gold Standard / Plan Vivo / ICR / ACR)</td></tr>
+      <tr><td>Fisheries royalty value (USD)</td><td class="status-no">✗ Not available</td><td>Structure described; quantum not specified in PDI v1</td></tr>
+    </tbody>
+  </table>
+
+  <h2>Sources</h2>
+  <div class="overview" style="font-size:0.85rem;">
+    <ul style="padding-left:1.2rem;line-height:2;">
+      <li>DRAFT_AUBEB_PDI_v1 response.docx — primary source document</li>
+      <li>docs/PDI/PDI_AUBEB_2026-04-21.yaml — completed PDI YAML instance</li>
+      <li>docs/PDI/PDI_AUBEB_STATUS.md — field audit and analyst notes</li>
+      <li>ODIN dMRV platform (Global Underwater Diagnostics) — satellite archive data described in PDI</li>
+      <li>African Union Commission — programme mandate documentation (referenced in PDI)</li>
+    </ul>
+  </div>
+
+</div>
+
+<footer>TrueValue Analytics · AUBEB Mangrove Project · PDI v1 Synthetic Baseline · 2026-04-21</footer>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

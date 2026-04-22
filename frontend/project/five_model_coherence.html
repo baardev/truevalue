@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Five-Model N-D-C Coherence — Supply Chain Analysis</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        .page { max-width: 1400px; margin: 0 auto; }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #0a0a1a 0%, #1a1a3e 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 28px 36px;
+            margin-bottom: 24px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+        .header h1 { font-size: 26px; font-weight: 300; margin-bottom: 6px; }
+        .header .sub { font-size: 14px; opacity: 0.7; line-height: 1.5; }
+        .header-nav { margin-top: 14px; display: flex; gap: 12px; flex-wrap: wrap; }
+        .header-nav a {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            text-decoration: none; border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.8);
+        }
+        .header-nav a:hover { background: rgba(255,255,255,0.1); color: white; }
+
+        /* Model strip */
+        .model-strip {
+            display: flex; gap: 0; background: #1a1a1a;
+            border-radius: 8px; overflow: hidden; margin-bottom: 24px;
+        }
+        .model-pill {
+            flex: 1; padding: 10px 8px; text-align: center;
+            font-size: 12px; font-weight: 700; color: #888;
+            border-right: 1px solid #333; cursor: default;
+        }
+        .model-pill.active { color: white; }
+        .model-pill.pi-active    { background: #4a4a8a; color: white; }
+        .model-pill.phi-active   { background: #6b4800; color: #f5d97a; }
+        .model-pill.s2-active    { background: #1a3a2a; color: #95d5b2; }
+        .model-pill.ln2-active   { background: #3a1a1a; color: #f5a0a0; }
+        .model-pill.e-active     { background: #2a1a3a; color: #c0a0f5; }
+        .model-pill.disabled     { opacity: 0.35; }
+
+        /* Chain selector */
+        .chain-selector {
+            display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;
+        }
+        .chain-btn {
+            padding: 10px 24px; border-radius: 8px; font-size: 14px; font-weight: 700;
+            border: 2px solid transparent; cursor: pointer; transition: all 0.2s;
+            background: white;
+        }
+        .chain-btn.gold  { border-color: #b8860b; color: #b8860b; }
+        .chain-btn.shea  { border-color: #2d6a4f; color: #2d6a4f; }
+        .chain-btn.both  { border-color: #667eea; color: #667eea; }
+        .chain-btn.active.gold  { background: #b8860b; color: white; }
+        .chain-btn.active.shea  { background: #2d6a4f; color: white; }
+        .chain-btn.active.both  { background: #667eea; color: white; }
+
+        /* Scenario buttons */
+        .scen-btn {
+            padding: 4px 13px; border-radius: 13px; font-size: 11px; font-weight: 600;
+            border: 1px solid #3a3a6a; background: #1c1c3a; color: #9090c0;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover  { border-color: #667eea; color: #c0c0f0; }
+        .scen-btn.active { background: #4a4a8a; border-color: #667eea; color: white; }
+        .scen-btn.shock  { border-color: #7f0000; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #7f0000; border-color: #c62828; color: white; }
+        .scen-btn.expand { border-color: #1565c0; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #1565c0; color: white; }
+        .scen-btn.regul  { border-color: #37474f; }
+        .scen-btn.regul:hover, .scen-btn.regul.active  { background: #37474f; color: white; }
+
+        /* Main layout */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            margin-bottom: 24px;
+        }
+        @media (max-width: 900px) { .main-grid { grid-template-columns: 1fr; } }
+
+        .chart-panel {
+            background: white; border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            padding: 28px; display: flex; flex-direction: column; align-items: center;
+        }
+        .chart-panel h2 { font-size: 16px; color: #2c3e50; margin-bottom: 4px; align-self: flex-start; }
+        .chart-panel .chain-label {
+            font-size: 12px; color: #6c757d; margin-bottom: 20px; align-self: flex-start;
+        }
+
+        /* Score badges below chart */
+        .score-row {
+            display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; justify-content: center;
+        }
+        .score-badge {
+            padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700;
+            text-align: center; min-width: 70px;
+        }
+        .sb-pi   { background:#e8eaf6; color:#3949ab; }
+        .sb-phi  { background:#fff8e1; color:#f57f17; }
+        .sb-s2   { background:#e8f5e9; color:#2e7d32; }
+        .sb-ln2  { background:#fce4ec; color:#c62828; }
+        .sb-e    { background:#f3e5f5; color:#6a1b9a; }
+        .sb-zero { opacity: 0.45; }
+
+        /* Model description cards */
+        .descriptions {
+            background: white; border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow: hidden; margin-bottom: 24px;
+        }
+        .desc-header {
+            padding: 20px 28px;
+            background: linear-gradient(135deg, #0a0a1a, #1a1a3e);
+            color: white;
+        }
+        .desc-header h2 { font-size: 17px; font-weight: 400; }
+        .desc-header p  { font-size: 13px; opacity: 0.7; margin-top: 4px; }
+        .desc-grid {
+            display: grid; grid-template-columns: repeat(5, 1fr);
+        }
+        @media (max-width: 1100px) { .desc-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 700px)  { .desc-grid { grid-template-columns: 1fr; } }
+
+        .desc-card {
+            padding: 22px 18px;
+            border-right: 1px solid #f0f0f0;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        .desc-card:last-child { border-right: none; }
+        .desc-icon  { font-size: 28px; margin-bottom: 8px; }
+        .desc-name  { font-size: 18px; font-weight: 900; margin-bottom: 4px; }
+        .desc-layer { font-size: 10px; font-weight: 700; text-transform: uppercase;
+                      letter-spacing: 1px; opacity: 0.6; margin-bottom: 10px; }
+        .desc-config {
+            font-size: 11px; padding: 4px 8px; border-radius: 6px;
+            display: inline-block; margin-bottom: 12px; font-weight: 600;
+        }
+        .desc-card h4 { font-size: 12px; color: #2c3e50; margin-bottom: 5px; font-weight: 700; }
+        .desc-card p  { font-size: 12px; color: #6c757d; line-height: 1.55; margin-bottom: 10px; }
+        .desc-card ul { list-style: none; padding: 0; }
+        .desc-card li { font-size: 11px; color: #6c757d; padding: 3px 0; padding-left: 14px; position: relative; }
+        .desc-card li::before { content:"•"; position:absolute; left:0; font-weight:700; }
+        .failure-box {
+            margin-top: 8px; padding: 8px 10px; border-radius: 6px;
+            font-size: 11px; border-left: 3px solid;
+        }
+
+        /* Data note */
+        .data-note-panel {
+            background: white; border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            padding: 20px 28px; margin-bottom: 24px;
+            border-left: 5px solid #ffc107;
+        }
+        .data-note-panel h3 { font-size: 14px; color: #856404; margin-bottom: 8px; }
+        .data-note-panel p  { font-size: 13px; color: #6c757d; line-height: 1.6; }
+
+        .footer {
+            text-align: center; color: rgba(255,255,255,0.5);
+            font-size: 12px; padding: 16px;
+        }
+        .footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="page">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>Five-Model N-D-C Coherence Analysis</h1>
+        <p class="sub">
+            Each supply chain is simultaneously analyzed across five orthogonal dimensions derived from the Tholonic N-D-C framework.<br>
+            Together they form a coherence signature — a 5D vector whose shape reveals the nature and location of systemic failure.
+        </p>
+        <div class="header-nav">
+            <a href="/frontend/project/gold/supply_chain/index.html">🏅 Gold Supply Chain</a>
+            <a href="/frontend/project/gold/supply_chain/dashboard.html">π Gold</a>
+            <a href="/frontend/project/gold/supply_chain/phi_dashboard.html">φ Gold</a>
+            <a href="/frontend/project/gold/supply_chain/sqrt2_dashboard.html">√2 Gold</a>
+            <a href="/frontend/project/gold/supply_chain/ln2_dashboard.html">ln(2) Gold</a>
+            <a href="/frontend/project/gold/supply_chain/e_dashboard.html">e Gold</a>
+            <a href="/frontend/project/shea/supply_chain/index.html">🫒 Shea Supply Chain</a>
+            <a href="/frontend/project/shea/supply_chain/sqrt2_dashboard.html">√2 Shea</a>
+            <a href="/frontend/project/shea/supply_chain/ln2_dashboard.html">ln(2) Shea</a>
+            <a href="/frontend/project/aubeb/supply_chain/index.html">🌿 AUBEB Supply Chain</a>
+            <a href="/index.html">🏠 Home</a>
+        </div>
+    </div>
+
+    <!-- Model layer strip -->
+    <div class="model-strip">
+        <div class="model-pill pi-active">π<br><span style="font-size:10px;font-weight:400;">Operational</span></div>
+        <div class="model-pill phi-active">φ<br><span style="font-size:10px;font-weight:400;">Proportional</span></div>
+        <div class="model-pill s2-active">√2<br><span style="font-size:10px;font-weight:400;">Structural</span></div>
+        <div class="model-pill ln2-active">ln(2)<br><span style="font-size:10px;font-weight:400;">Growth</span></div>
+        <div class="model-pill disabled" style="cursor:pointer;" onclick="window.location='/frontend/project/gold/supply_chain/e_dashboard.html'">e<br><span style="font-size:10px;font-weight:400;">Abstract</span></div>
+        <div class="model-pill active" style="background:#2a2a4a;color:#aaa;font-weight:400;font-size:11px;">All 5 models computed · Select scenario below to update charts</div>
+    </div>
+
+    <!-- Chain + Scenario selectors -->
+    <div style="background:#12122a; border-bottom:2px solid #4a4a8a; padding:10px 20px; display:flex; flex-wrap:wrap; align-items:center; gap:16px;">
+        <div class="chain-selector" style="margin:0; padding:0; background:none; border:none;">
+            <button class="chain-btn gold active" onclick="setChain('gold')">🏅 Gold Supply Chain</button>
+            <button class="chain-btn shea" onclick="setChain('shea')">🫒 Shea Supply Chain</button>
+            <button class="chain-btn" style="border-color:#1a8a7a;color:#1a8a7a;" onclick="setChain('aubeb')">🌿 AUBEB</button>
+            <button class="chain-btn both" onclick="setChain('both')">⚖️ Compare All</button>
+        </div>
+        <div style="width:1px; height:28px; background:#333; flex-shrink:0;"></div>
+        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+            <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#9090c0; white-space:nowrap;">Scenario:</span>
+            <div style="display:flex; gap:6px; flex-wrap:wrap;" id="scenario-btns"></div>
+            <span id="scenario-desc" style="font-size:11px; color:#606088; font-style:italic;"></span>
+        </div>
+    </div>
+
+    <!-- Spider charts -->
+    <div class="main-grid" id="charts-grid">
+        <!-- Rendered by JS -->
+    </div>
+
+    <!-- Data note -->
+    <div class="data-note-panel">
+        <h3>⚠️ Note on Pending Data — e (Abstract) Model</h3>
+        <p>
+            All five models are now computed: <strong>π, φ, √2, ln(2), and e</strong> all have scored dashboards with interactive simulators for both gold and shea.
+            The <strong>e (Abstract)</strong> axis remains at <strong>0</strong> because the data required — a claims register tracking paper claims vs. physical holdings (rehypothecation ratios, unallocated account ratios, derivatives leverage) — does not yet exist in the project schema.
+            <br><br>
+            For gold: relevant data would include LBMA unallocated account volumes, COMEX open interest vs. registered inventory, ETF holdings vs. allocated backing.
+            For shea: Acorn carbon credit issuance (4.2M tCO2e) vs. verified physical sequestration — but a schema to track this is not yet built.
+            A score of 0 on the e axis means <em>"unmeasured"</em>, not <em>"failed"</em>. The current pentagon shape (four axes computed, one at zero) reflects actual data availability.
+        </p>
+    </div>
+
+    <!-- Model descriptions -->
+    <div class="descriptions">
+        <div class="desc-header">
+            <h2>What Each Model Measures — and Why It Matters</h2>
+            <p>Five orthogonal perspectives on the same supply chain. Each reveals a different class of failure that the others cannot see.</p>
+        </div>
+        <div class="desc-grid">
+
+            <div class="desc-card" style="border-top: 4px solid #3949ab;">
+                <div class="desc-icon">π</div>
+                <div class="desc-name" style="color:#3949ab;">π Model</div>
+                <div class="desc-layer" style="color:#3949ab;">Layer 1 — Operational</div>
+                <div class="desc-config" style="background:#e8eaf6;color:#3949ab;">D=3, C=5 → π (3.14159…)</div>
+
+                <h4>What it measures</h4>
+                <p>The D-C balance within each individual phase. Is this phase over-constrained or under-integrated? Are the specific operational requirements (D) matched by the available connections and outputs (C)?</p>
+
+                <h4>Why it matters</h4>
+                <p>This is the most physically grounded layer — it measures operational sustainability. A phase with D >> C is choking; one with C >> D is unstable. The π constant emerges because the Leibniz series (1 − 1/3 + 1/5 − …) embeds the exact same 3 and 5 values as D and C.</p>
+
+                <h4>What a high score means</h4>
+                <ul>
+                    <li>Phase operates near peak sustainability</li>
+                    <li>Constraints matched by integration capacity</li>
+                    <li>Minimal energy cost to maintain equilibrium</li>
+                </ul>
+
+                <div class="failure-box" style="background:#ede7f6;border-color:#3949ab;">
+                    <strong>Failure mode:</strong> D-C imbalance at phase level — over-constrained (D >> C) or over-integrated (C >> D). The physical operation is stressed.
+                </div>
+            </div>
+
+            <div class="desc-card" style="border-top: 4px solid #f57f17;">
+                <div class="desc-icon">φ</div>
+                <div class="desc-name" style="color:#f57f17;">φ Model</div>
+                <div class="desc-layer" style="color:#f57f17;">Layer 2 — Proportional</div>
+                <div class="desc-config" style="background:#fff8e1;color:#f57f17;">D=2, C=3 → φ (1.61803…)</div>
+
+                <h4>What it measures</h4>
+                <p>The ratio of N-values between adjacent phases. Does value grow at the natural golden-ratio rate as it moves through the chain? Are phase-to-phase transitions proportionally harmonious?</p>
+
+                <h4>Why it matters</h4>
+                <p>A chain can be operationally healthy at every phase (π coherent) while one phase still systematically extracts disproportionate value from its neighbors. The φ model catches exactly this. φ emerges because D+C = 2+3 = 5, the next Fibonacci term — the structural link to the golden ratio's recursive self-similarity.</p>
+
+                <h4>What a high score means</h4>
+                <ul>
+                    <li>Value flows naturally through phase boundaries</li>
+                    <li>No phase captures more than its structural role warrants</li>
+                    <li>Chain scales harmoniously — Fibonacci-like growth</li>
+                </ul>
+
+                <div class="failure-box" style="background:#fff8e1;border-color:#f57f17;">
+                    <strong>Failure mode:</strong> Disproportional value capture. One phase's N-value collapses or surges relative to neighbors — the signature of extraction, bottleneck, or monopoly power.
+                </div>
+            </div>
+
+            <div class="desc-card" style="border-top: 4px solid #2e7d32;">
+                <div class="desc-icon">√2</div>
+                <div class="desc-name" style="color:#2e7d32;">√2 Model</div>
+                <div class="desc-layer" style="color:#2e7d32;">Layer 3 — Structural</div>
+                <div class="desc-config" style="background:#e8f5e9;color:#2e7d32;">D=2, C=2 → √2 (1.41421…)</div>
+
+                <h4>What it measures</h4>
+                <p>Whether custody transfer phases (logistics, assay, vaulting) preserve structural balance. What enters a transfer phase should exit in equivalent form — the irreducible overhead of crossing a balanced boundary is √2 (~41% above input).</p>
+
+                <h4>Why it matters</h4>
+                <p>√2 is the diagonal of a unit square — the most physically realizable irrational, constructible with compass and straightedge. Any boundary crossing imposes this overhead naturally. When a transfer phase imposes more, it has become an extraction point masquerading as a pass-through.</p>
+
+                <h4>What a high score means</h4>
+                <ul>
+                    <li>Transfer phases are symmetric — input equals output in kind</li>
+                    <li>Custody handoffs, logistics, and assay phases impose only natural overhead</li>
+                    <li>No intermediary rent-extraction at phase boundaries</li>
+                </ul>
+
+                <div class="failure-box" style="background:#e8f5e9;border-color:#2e7d32;">
+                    <strong>Failure mode:</strong> Transfer asymmetry — a phase that should be a neutral conduit imposes overhead far exceeding √2. The boundary has become a toll gate.
+                </div>
+            </div>
+
+            <div class="desc-card" style="border-top: 4px solid #c62828;">
+                <div class="desc-icon" style="font-size:22px;margin-top:4px;">ln(2)</div>
+                <div class="desc-name" style="color:#c62828;">ln(2) Model</div>
+                <div class="desc-layer" style="color:#c62828;">Layer 4 — Growth</div>
+                <div class="desc-config" style="background:#fce4ec;color:#c62828;">D=1, C=2 → ln(2) (0.69315…)</div>
+
+                <h4>What it measures</h4>
+                <p>Whether transformation phases (processing, refining) double value at the natural rate. ln(2) is the doubling constant — how many natural steps it takes for a continuously compounding process to double. Its series oscillates toward equilibrium: 1 − 1/2 + 1/3 − 1/4 + …</p>
+
+                <h4>Why it matters</h4>
+                <p>Processing phases are the natural growth conduits of a supply chain — raw material enters and a transformed, more valuable product exits. When artificial D-institutional constraints are imposed on these phases, they suppress natural doubling and convert a growth engine into a rent-extraction bottleneck.</p>
+
+                <h4>What a high score means</h4>
+                <ul>
+                    <li>Transformation phases multiply value at the natural rate</li>
+                    <li>Minimal artificial constraints imposed on growth conduits</li>
+                    <li>Processing phases function as intended — value engines, not toll gates</li>
+                </ul>
+
+                <div class="failure-box" style="background:#fce4ec;border-color:#c62828;">
+                    <strong>Failure mode:</strong> Conduit capture — artificial constraints (firewood cost, lack of buyer commitment, certification barriers) imposed on phases that should double value naturally. Each constraint damps the oscillatory convergence.
+                </div>
+            </div>
+
+            <div class="desc-card" style="border-top: 4px solid #6a1b9a; border-right: none;">
+                <div class="desc-icon">e</div>
+                <div class="desc-name" style="color:#6a1b9a;">e Model</div>
+                <div class="desc-layer" style="color:#6a1b9a;">Layer 5 — Abstract</div>
+                <div class="desc-config" style="background:#f3e5f5;color:#6a1b9a;">D=1, C=1 → e (2.71828…)</div>
+
+                <h4>What it measures</h4>
+                <p>Whether abstract and financial claims on the supply chain remain coupled to physical reality. Paper gold, carbon credits, sustainability certifications, and financial derivatives all represent abstract claims. The e model measures the ratio of physical holdings to abstract claims — the coupling coefficient.</p>
+
+                <h4>Why it matters</h4>
+                <p>e is the base of natural logarithm — the constant of continuous compounding. The abstract layer compounds independently of physical constraints. When it decouples (paper claims grow faster than physical holdings), the abstract system has escaped physical reality. This is the most dangerous failure mode: the financial architecture appears healthy while the physical foundation it claims to represent is failing.</p>
+
+                <h4>What a high score means</h4>
+                <ul>
+                    <li>Paper claims backed by physical holdings in correct proportion</li>
+                    <li>Financial instruments remain tethered to supply chain reality</li>
+                    <li>Abstract compounding and physical growth move together</li>
+                </ul>
+
+                <div class="failure-box" style="background:#f3e5f5;border-color:#6a1b9a;">
+                    <strong>Failure mode:</strong> Decoupling — rehypothecation, unallocated gold accounts, uncertified carbon credits, and paper claims multiply beyond what the physical chain supports. The abstract system floats free.
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Five-Model N-D-C Coherence — Tholonic Framework &nbsp;|&nbsp;
+        <a href="/frontend/project/gold/supply_chain/index.html">Gold Hub</a> &nbsp;|&nbsp;
+        <a href="/frontend/project/shea/supply_chain/index.html">Shea Hub</a> &nbsp;|&nbsp;
+        <a href="/docs/Repos/intra/PDI/NDC_QUALITATIVE_D_AND_C_MAPPING_BY_PHASE.md">Framework Docs</a></p>
+    </div>
+
+</div><!-- /page -->
+
+<script>
+// ── Data ────────────────────────────────────────────────────────────────────
+const CHAIN_DATA = {
+    gold: {
+        label: "Gold Supply Chain",
+        color: "#b8860b",
+        fill:  "rgba(184,134,11,0.18)",
+        stroke:"rgba(184,134,11,0.85)",
+        scores: { pi: 82.5, phi: 49.5, sqrt2: 72.1, ln2: 40.4, e: 37 },
+        notes: {
+            pi:    "System balance from π operational model (synthetic baseline)",
+            phi:   "System φ-coherence: 49.5 — 7 boundaries, worst P5→P6 (25.0)",
+            sqrt2: "System √2-coherence: 72.1 — P3→P4 & P5→P6 perfect (100); P0→P1 geological opacity worst (28.7)",
+            ln2:   "System ln(2)-coherence: 40.4 — 5 phases, avg 51% institutional load; inferred data",
+            e:     "System e-coherence: 37 — severe decoupling at P6 LBMA unallocated (score 5, OPAQUE) and P7 COMEX futures (score 13, coupling 0.133). Metal lease rehypothecation (Phase 4): coupling 0.40. Total quantified abstract claims: $1.06T excl. OPAQUE unallocated."
+        }
+    },
+    shea: {
+        label: "Shea Supply Chain",
+        color: "#2d6a4f",
+        fill:  "rgba(45,106,79,0.18)",
+        stroke:"rgba(45,106,79,0.85)",
+        scores: { pi: 81.6, phi: 53.6, sqrt2: 38.2, ln2: 39.7, e: 54 },
+        notes: {
+            pi:    "System balance from π operational model (frontend/project/shea/data/shea_ndc_data.json)",
+            phi:   "System φ-coherence: 53.6 — 6 boundaries, worst P3→P4 (30.4)",
+            sqrt2: "System √2-coherence: 38.2 — two failure modes: under-specified early chain, extractive late chain",
+            ln2:   "System ln(2)-coherence: 39.7 — REAL data: $150→$4,000→$47,500/MT; 317× total amplification",
+            e:     "System e-coherence: 54 — certification gap model. Fair Trade (score 18): only 10–30% of certified volume receives farmgate premium. Sustainability brand claims (42): traceability rarely beyond tier-1 aggregator. EU Green Claims Directive exposure significant."
+        }
+    },
+    aubeb: {
+        label: "AUBEB",
+        color: "#1a8a7a",
+        fill:  "rgba(26,138,122,0.18)",
+        stroke:"rgba(26,138,122,0.85)",
+        scores: { pi: 87, phi: 54, sqrt2: 58, ln2: 62, e: 0 },
+        notes: {
+            pi:    "π score: 87 — PDI synthetic baseline; average chain balance 87%; 11 phases (0–10)",
+            phi:   "φ score: 54 — Phase 0→1 jump (N 142→207); Phase 7→8 drop (medium-transparency community co-management dip at Phase 8)",
+            sqrt2: "√2 score: 58 — Phase 8 (community custodial, medium transparency) creates structural asymmetry at the custody boundary; otherwise symmetric chain",
+            ln2:   "ln(2) score: 62 — strong transformation phases: Phase 3 (carbon quantification) and Phase 10 (verified blue economy asset); unimpeded by artificial constraints in current design",
+            e:     "e score: 0 (unmeasured) — carbon credits are abstract claims against physical ecosystem. ODIN dMRV provides strong coupling design, but a claims register (credits issued vs. verified physical holdings) does not yet exist in the project schema."
+        }
+    }
+};
+
+const AXES = [
+    { key: "pi",    label: "π",    sublabel: "Operational",  angle: 0   },
+    { key: "phi",   label: "φ",    sublabel: "Proportional", angle: 72  },
+    { key: "sqrt2", label: "√2",   sublabel: "Structural",   angle: 144 },
+    { key: "ln2",   label: "ln(2)","Structural": "sublabel", sublabel: "Growth",    angle: 216 },
+    { key: "e",     label: "e",    sublabel: "Abstract",     angle: 288 },
+];
+
+// ── Chart rendering ──────────────────────────────────────────────────────────
+const CX = 200, CY = 200, R = 160;
+
+function toRad(deg) { return (deg - 90) * Math.PI / 180; }
+
+function pt(cx, cy, r, angle) {
+    const rad = toRad(angle);
+    return { x: cx + r * Math.cos(rad), y: cy + r * Math.sin(rad) };
+}
+
+function pentagonPath(r, scale) {
+    const pts = AXES.map(a => pt(CX, CY, r * scale, a.angle));
+    return pts.map((p, i) => `${i===0?'M':'L'}${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ') + 'Z';
+}
+
+// Build data path only through axes where the score is non-zero.
+// Zero-score axes are skipped entirely — the polygon jumps over them.
+function dataPath(scores) {
+    const plotted = AXES.filter(a => scores[a.key] > 0);
+    if (!plotted.length) return '';
+    const pts = plotted.map(a => {
+        const pct = Math.max(0, Math.min(100, scores[a.key])) / 100;
+        return pt(CX, CY, R * pct, a.angle);
+    });
+    return pts.map((p, i) => `${i===0?'M':'L'}${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ') + 'Z';
+}
+
+function buildSVG(chains) {
+    const W = 400, H = 420;
+    let svg = `<svg viewBox="-55 -35 510 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;overflow:visible;">`;
+
+    // Background color zones — drawn as explicit rings using evenodd fill rule.
+    // Outer ring (70–100%): very light cyan
+    svg += `<path d="${pentagonPath(R, 1.0)} ${pentagonPath(R, 0.70)}" fill="#e0f7fa" fill-rule="evenodd" stroke="none"/>`;
+    // Middle ring (40–70%): medium cyan
+    svg += `<path d="${pentagonPath(R, 0.70)} ${pentagonPath(R, 0.40)}" fill="#80deea" fill-rule="evenodd" stroke="none"/>`;
+    // Inner zone (0–40%): dark cyan
+    svg += `<path d="${pentagonPath(R, 0.40)}" fill="#00838f" stroke="none"/>`;
+
+    // Grid rings (concentric pentagons at 25, 50, 75, 100)
+    [0.25, 0.50, 0.75, 1.0].forEach(s => {
+        svg += `<path d="${pentagonPath(R, s)}" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="${s===1?1.5:0.8}"/>`;
+    });
+
+    // Zone boundary lines (40% and 70%)
+    svg += `<path d="${pentagonPath(R, 0.40)}" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+    svg += `<path d="${pentagonPath(R, 0.70)}" fill="none" stroke="rgba(0,96,100,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+
+    // Axis lines — all five always shown; zero-score axes rendered dimmer
+    AXES.forEach(a => {
+        const hasData = chains.some(k => CHAIN_DATA[k].scores[a.key] > 0);
+        const tip = pt(CX, CY, R, a.angle);
+        svg += `<line x1="${CX}" y1="${CY}" x2="${tip.x.toFixed(2)}" y2="${tip.y.toFixed(2)}"
+            stroke="${hasData ? 'rgba(0,0,0,0.18)' : 'rgba(0,0,0,0.07)'}" stroke-width="1"
+            ${hasData ? '' : 'stroke-dasharray="3,4"'}/>`;
+    });
+
+    // Data polygons — each chain only connects axes where its score is non-zero
+    chains.forEach(key => {
+        const d = CHAIN_DATA[key];
+        const dp = dataPath(d.scores);
+        if (dp) svg += `<path d="${dp}" fill="${d.fill}" stroke="${d.stroke}" stroke-width="2.5" stroke-linejoin="round"/>`;
+        // Dots only on non-zero axes
+        AXES.forEach(a => {
+            if (d.scores[a.key] <= 0) return;
+            const pct = Math.min(100, d.scores[a.key]) / 100;
+            const p = pt(CX, CY, R * pct, a.angle);
+            svg += `<circle cx="${p.x.toFixed(2)}" cy="${p.y.toFixed(2)}" r="5" fill="${d.color}" stroke="white" stroke-width="1.5"/>`;
+        });
+    });
+
+    // Axis labels — symbol at tip, sublabel directly below in screen space
+    AXES.forEach(a => {
+        const hasData = chains.some(k => CHAIN_DATA[k].scores[a.key] > 0);
+        const labelColor = hasData ? '#2c3e50' : '#bbb';
+        const subColor   = hasData ? '#888' : '#ccc';
+        const labelR = R + 22;
+        const p = pt(CX, CY, labelR, a.angle);
+        // Symbol — always centered horizontally on the tip point
+        svg += `<text x="${p.x.toFixed(2)}" y="${p.y.toFixed(1)}" text-anchor="middle" dominant-baseline="middle" font-size="16" font-weight="900" fill="${labelColor}">${a.label}</text>`;
+        // Sublabel — same x, fixed 16px below the symbol in screen coordinates
+        const subLabel = hasData ? a.sublabel : `${a.sublabel}`;
+        svg += `<text x="${p.x.toFixed(2)}" y="${(parseFloat(p.y) + 16).toFixed(1)}" text-anchor="middle" dominant-baseline="hanging" font-size="9" fill="${subColor}">${subLabel}</text>`;
+    });
+
+    // Ring labels (right side, along 0° axis)
+    [25, 50, 75].forEach(v => {
+        const p = pt(CX, CY, R * v/100, 0);
+        svg += `<text x="${(p.x+4).toFixed(1)}" y="${p.y.toFixed(1)}" font-size="8" fill="#aaa" dominant-baseline="middle">${v}</text>`;
+    });
+
+    // Zone legend inside chart — hidden
+
+    // Legend for chains
+    let ly = 380;
+    chains.forEach(key => {
+        const d = CHAIN_DATA[key];
+        svg += `<rect x="${CX-60}" y="${ly}" width="12" height="12" fill="${d.color}" rx="2"/>`;
+        svg += `<text x="${CX-44}" y="${ly+9}" font-size="10" fill="#555">${d.label}</text>`;
+        ly += 16;
+    });
+
+    svg += `</svg>`;
+    return svg;
+}
+
+// ── Panel builder ─────────────────────────────────────────────────────────
+const SCORE_CLASSES = { pi:'sb-pi', phi:'sb-phi', sqrt2:'sb-sb-s2', ln2:'sb-ln2', e:'sb-e' };
+const SC = { pi:'sb-pi', phi:'sb-phi', sqrt2:'sb-s2', ln2:'sb-ln2', e:'sb-e' };
+
+function buildPanel(chainKey) {
+    const d = CHAIN_DATA[chainKey];
+    const svg = buildSVG([chainKey]);
+    const badges = AXES.map(a => {
+        const v = d.scores[a.key];
+        const isZero = v === 0;
+        return `<div class="score-badge ${SC[a.key]} ${isZero?'sb-zero':''}">
+            <div style="font-size:14px;font-weight:900;">${a.label}</div>
+            <div style="font-size:16px;">${v > 0 ? v.toFixed(1) : '—'}</div>
+            <div style="font-size:9px;opacity:0.7;">${isZero?'no data':''}</div>
+        </div>`;
+    }).join('');
+
+    return `
+        <div class="chart-panel">
+            <h2>${d.label}</h2>
+            <div class="chain-label" style="color:${d.color};">${d.label} — Five-Model Coherence Profile</div>
+            ${svg}
+            <div class="score-row">${badges}</div>
+            <div style="margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px;font-size:11px;color:#6c757d;line-height:1.6;width:100%;">
+                ${AXES.map(a=>`<strong>${a.label}:</strong> ${d.notes[a.key]}`).join('<br>')}
+            </div>
+        </div>`;
+}
+
+function buildComparePanel() {
+    const svg = buildSVG(['gold','shea']);
+    const goldBadges = AXES.map(a => {
+        const v = CHAIN_DATA.gold.scores[a.key];
+        return `<div class="score-badge ${SC[a.key]} ${v===0?'sb-zero':''}">
+            <div style="font-size:11px;font-weight:900;">${a.label}</div>
+            <div style="font-size:14px;">${v>0?v.toFixed(1):'—'}</div>
+        </div>`;
+    }).join('');
+    const sheaBadges = AXES.map(a => {
+        const v = CHAIN_DATA.shea.scores[a.key];
+        return `<div class="score-badge ${SC[a.key]} ${v===0?'sb-zero':''}">
+            <div style="font-size:11px;font-weight:900;">${a.label}</div>
+            <div style="font-size:14px;">${v>0?v.toFixed(1):'—'}</div>
+        </div>`;
+    }).join('');
+
+    return `
+        <div class="chart-panel" style="grid-column: span 2;">
+            <h2>Comparative View — Gold vs Shea</h2>
+            <div class="chain-label">Both chains plotted together. <span style="color:#b8860b;font-weight:700;">Gold</span> and <span style="color:#2d6a4f;font-weight:700;">Shea</span> share similar π and φ scores, reflecting the same underlying data quality (synthetic N-values for π; computed boundaries for φ).</div>
+            <div style="display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start;width:100%;">
+                <div style="flex:0 0 auto;">${svg}</div>
+                <div style="flex:1;min-width:200px;">
+                    <div style="font-size:12px;font-weight:700;color:#b8860b;margin-bottom:8px;">🏆 Gold scores</div>
+                    <div class="score-row" style="justify-content:flex-start;">${goldBadges}</div>
+                    <div style="font-size:12px;font-weight:700;color:#2d6a4f;margin:16px 0 8px;">🫒 Shea scores</div>
+                    <div class="score-row" style="justify-content:flex-start;">${sheaBadges}</div>
+                    <div style="margin-top:16px;padding:12px;background:#f8f9fa;border-radius:8px;font-size:12px;color:#6c757d;line-height:1.7;" id="compare-notes">
+                        <strong>Key differences:</strong><br>
+                        π: Gold ${CHAIN_DATA.gold.scores.pi} vs Shea ${CHAIN_DATA.shea.scores.pi}<br>
+                        φ: Gold ${CHAIN_DATA.gold.scores.phi} vs Shea ${CHAIN_DATA.shea.scores.phi}<br>
+                        √2: Gold ${CHAIN_DATA.gold.scores.sqrt2} vs Shea ${CHAIN_DATA.shea.scores.sqrt2}<br>
+                        ln(2): Gold ${CHAIN_DATA.gold.scores.ln2} vs Shea ${CHAIN_DATA.shea.scores.ln2}<br>
+                        e: Gold ${CHAIN_DATA.gold.scores.e} vs Shea ${CHAIN_DATA.shea.scores.e || '—'}
+                    </div>
+                </div>
+            </div>
+        </div>`;
+}
+
+// ── Scenario management ──────────────────────────────────────────────────────
+let GOLD_SCENARIOS = {};
+let SHEA_SCENARIOS = {};
+let AUBEB_SCENARIOS = {};
+let currentScenario = 'current';
+
+// Base notes per model (updated dynamically)
+const BASE_NOTES = {
+    gold: {
+        pi:    "System balance from π operational model",
+        phi:   "System φ-coherence: 7 boundaries scored",
+        sqrt2: "System √2-coherence: 7 custody-transfer boundaries",
+        ln2:   "System ln(2)-coherence: 5 transformation phases",
+        e:     "System e-coherence: physical–abstract coupling across all claim types"
+    },
+    shea: {
+        pi:    "System balance from π operational model",
+        phi:   "System φ-coherence: 6 boundaries scored",
+        sqrt2: "System √2-coherence: 6 custody-transfer boundaries",
+        ln2:   "System ln(2)-coherence: real data $150→$4,000→$47,500/MT",
+        e:     "e-model schema not yet built for shea chain"
+    },
+    aubeb: {
+        pi:    "System balance from π operational model (PDI AUBEB v1 synthetic baseline)",
+        phi:   "System φ-coherence: 10 boundaries scored — Phase 0→1 and 7→8 are weakest",
+        sqrt2: "System √2-coherence: Phase 8 (community custodial, medium transparency) is the primary structural asymmetry",
+        ln2:   "System ln(2)-coherence: Phases 3 & 10 are natural transformation conduits; no artificial constraints currently modelled",
+        e:     "e-model: carbon credits are abstract claims vs physical ecosystem. Claims register not yet in schema. Score=0 means unmeasured."
+    }
+};
+
+function scen_btnCls(key) {
+    if (key === 'current' || key === 'optimum') return '';
+    if (key === 'expansion') return 'expand';
+    if (key === 'regulatory') return 'regul';
+    return 'shock';
+}
+
+function buildScenarioButtons() {
+    const allKeys = [...new Set([...Object.keys(GOLD_SCENARIOS), ...Object.keys(SHEA_SCENARIOS), ...Object.keys(AUBEB_SCENARIOS)])];
+    const container = document.getElementById('scenario-btns');
+    if (!container) return;
+    container.innerHTML = allKeys.map(key => {
+        const scen = GOLD_SCENARIOS[key] || SHEA_SCENARIOS[key] || AUBEB_SCENARIOS[key];
+        return `<button class="scen-btn ${scen_btnCls(key)}" data-key="${key}"
+            onclick="setScenario('${key}')">${scen.label}</button>`;
+    }).join('');
+}
+
+function setScenario(key) {
+    currentScenario = key;
+    document.querySelectorAll('.scen-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.key === key));
+
+    const goldScen     = GOLD_SCENARIOS[key]     || GOLD_SCENARIOS['current'];
+    const sheaScen     = SHEA_SCENARIOS[key]     || SHEA_SCENARIOS['current'];
+    const mangroveScen = AUBEB_SCENARIOS[key] || AUBEB_SCENARIOS['current'];
+
+    CHAIN_DATA.gold.scores = {
+        pi:    goldScen.pi    ?? CHAIN_DATA.gold.scores.pi,
+        phi:   goldScen.phi   ?? CHAIN_DATA.gold.scores.phi,
+        sqrt2: goldScen.sqrt2 ?? CHAIN_DATA.gold.scores.sqrt2,
+        ln2:   goldScen.ln2   ?? CHAIN_DATA.gold.scores.ln2,
+        e:     goldScen.e     ?? CHAIN_DATA.gold.scores.e
+    };
+    CHAIN_DATA.shea.scores = {
+        pi:    sheaScen.pi    ?? CHAIN_DATA.shea.scores.pi,
+        phi:   sheaScen.phi   ?? CHAIN_DATA.shea.scores.phi,
+        sqrt2: sheaScen.sqrt2 ?? CHAIN_DATA.shea.scores.sqrt2,
+        ln2:   sheaScen.ln2   ?? CHAIN_DATA.shea.scores.ln2,
+        e:     sheaScen.e     ?? 0
+    };
+    CHAIN_DATA.aubeb.scores = {
+        pi:    mangroveScen.pi    ?? CHAIN_DATA.aubeb.scores.pi,
+        phi:   mangroveScen.phi   ?? CHAIN_DATA.aubeb.scores.phi,
+        sqrt2: mangroveScen.sqrt2 ?? CHAIN_DATA.aubeb.scores.sqrt2,
+        ln2:   mangroveScen.ln2   ?? CHAIN_DATA.aubeb.scores.ln2,
+        e:     mangroveScen.e     ?? 0
+    };
+
+    ['gold','shea','mangrove'].forEach(k => {
+        const scen = {gold:goldScen,shea:sheaScen,mangrove:mangroveScen}[k];
+        CHAIN_DATA[k].notes = { ...BASE_NOTES[k],
+            pi:    `π score: ${CHAIN_DATA[k].scores.pi} — ${scen.label}`,
+            phi:   `φ score: ${CHAIN_DATA[k].scores.phi} — ${scen.label}`,
+            sqrt2: `√2 score: ${CHAIN_DATA[k].scores.sqrt2} — ${scen.label}`,
+            ln2:   `ln(2) score: ${CHAIN_DATA[k].scores.ln2} — ${scen.label}`,
+            e:     `e score: ${CHAIN_DATA[k].scores.e || '—'} — ${scen.label}`
+        };
+    });
+
+    const desc = document.getElementById('scenario-desc');
+    if (desc) desc.textContent = goldScen.label || key;
+    render();
+}
+
+// ── State and rendering ───────────────────────────────────────────────────
+let currentChain = 'gold';
+
+function setChain(chain) {
+    currentChain = chain;
+    document.querySelectorAll('.chain-btn').forEach(b => {
+        b.classList.toggle('active', b.classList.contains(chain));
+    });
+    render();
+}
+
+function render() {
+    const grid = document.getElementById('charts-grid');
+    if (currentChain === 'both') {
+        grid.style.gridTemplateColumns = '1fr';
+        grid.innerHTML = buildComparePanel();
+    } else if (currentChain === 'gold') {
+        grid.style.gridTemplateColumns = '1fr 1fr';
+        grid.innerHTML = buildPanel('gold') + buildPanel('shea');
+    } else if (currentChain === 'shea') {
+        grid.style.gridTemplateColumns = '1fr 1fr';
+        grid.innerHTML = buildPanel('shea') + buildPanel('gold');
+    } else if (currentChain === 'aubeb') {
+        grid.style.gridTemplateColumns = '1fr 1fr';
+        grid.innerHTML = buildPanel('mangrove') + buildPanel('gold');
+    } else {
+        grid.style.gridTemplateColumns = '1fr 1fr';
+        grid.innerHTML = buildPanel('gold') + buildPanel('shea');
+    }
+}
+
+// ── Load scenarios from JSON files ───────────────────────────────────────────
+Promise.all([
+    fetch('/frontend/project/gold/supply_chain/scenarios.json').then(r => r.json()),
+    fetch('/frontend/project/shea/supply_chain/scenarios.json').then(r => r.json()),
+    fetch('/frontend/project/aubeb/supply_chain/scenarios.json').then(r => r.json()),
+]).then(([goldData, sheaData, mangroveData]) => {
+    GOLD_SCENARIOS    = goldData.coherence_scores.scenarios;
+    SHEA_SCENARIOS    = sheaData.coherence_scores.scenarios;
+    AUBEB_SCENARIOS = mangroveData.coherence_scores.scenarios;
+    buildScenarioButtons();
+    setScenario('current');
+}).catch(err => {
+    console.error('Failed to load scenarios:', err);
+    GOLD_SCENARIOS     = { current: CHAIN_DATA.gold.scores };
+    SHEA_SCENARIOS     = { current: CHAIN_DATA.shea.scores };
+    AUBEB_SCENARIOS = { current: CHAIN_DATA.aubeb.scores };
+    buildScenarioButtons();
+    render();
+});
+</script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS={
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'five_model_coherence.html':'Five-Model Coherence',
+    'index.html':null,'frontend':null
+  };
+  var HUBS={
+    'gold':'/frontend/project/gold/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'/frontend/project/gold/supply_chain/index.html'
+  };
+  var css='#tv-bc{background:rgba(0,0,0,0.35);padding:6px 22px;font-size:11.5px;'+
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;'+
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}'+
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}'+
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}'+
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}'+
+    '#tv-bc .bc-cur{color:#a0c4ff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var parts=window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs=[{label:'Home',href:'/index.html'}];
+  var built='';
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i],lbl=LABELS[p];
+    if(lbl===null||lbl===undefined)continue;
+    built+='/'+p;
+    var isLast=(i===parts.length-1);
+    var href=isLast?null:(HUBS[p]?HUBS[p]:built+'/index.html');
+    crumbs.push({label:lbl,href:isLast?null:href});
+  }
+  var html=crumbs.map(function(c,i){
+    var sep=i>0?'<span class="bc-sep">›</span>':'';
+    var node=c.href?'<a href="'+c.href+'">'+c.label+'</a>':'<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+  var nav=document.createElement('div');nav.id='tv-bc';nav.innerHTML=html;
+  function inject(){
+    if(document.getElementById('tv-bc'))return;
+    document.body.insertAdjacentElement('afterbegin',nav);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+
+</body>
+</html>

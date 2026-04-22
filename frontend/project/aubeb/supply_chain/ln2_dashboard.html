@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUBEB Supply Chain – ln(2) Growth Conduit Efficiency Model</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #7f0000 0%, #b71c1c 50%, #c62828 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #7f0000 0%, #b71c1c 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header-nav a { color: #ef9a9a; text-decoration: none; margin-left: 18px; font-size: 13px; }
+        .header-nav a:hover { color: white; }
+
+        .model-strip {
+            display: flex; align-items: center; gap: 0;
+            background: #1a1a1a; overflow-x: auto;
+        }
+        .model-tab {
+            padding: 9px 20px; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.5px; white-space: nowrap; cursor: pointer;
+            border-right: 1px solid #333; color: #888;
+            text-decoration: none; display: block;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active { background: #b71c1c; color: white; cursor: default; }
+        .model-tab.disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Scenario selector bar */
+        .scenario-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; background: #1a0808;
+            border-bottom: 2px solid #b71c1c; flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #ef9a9a; white-space: nowrap; flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            border: 1px solid #3a1010; background: #2a0a0a; color: #ef9a9a;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #b71c1c; color: #ffcdd2; }
+        .scen-btn.active { background: #b71c1c; border-color: #b71c1c; color: white; }
+        .scen-btn.shock  { border-color: #e65100; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #e65100; border-color: #e65100; color: white; }
+        .scen-btn.expand { border-color: #1565c0; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #1565c0; border-color: #1565c0; color: white; }
+        .scen-btn.regul  { border-color: #6c757d; }
+        .scen-btn.regul:hover, .scen-btn.regul.active  { background: #546e7a; border-color: #546e7a; color: white; }
+        .scenario-desc {
+            font-size: 11px; color: #8a4a4a; font-style: italic; flex: 1; min-width: 180px;
+        }
+
+        .score-cards {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 20px; padding: 28px 30px; background: #ffebee;
+        }
+        .card {
+            background: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #e0e0e0;
+        }
+        .card.red-border    { border-top-color: #b71c1c; }
+        .card.good-border   { border-top-color: #43a047; }
+        .card.warn-border   { border-top-color: #fbc02d; }
+        .card.poor-border   { border-top-color: #c62828; }
+        .card-label { font-size: 11px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 34px; font-weight: bold; color: #0d4f47; margin-bottom: 6px; }
+        .card-value.red   { color: #b71c1c; }
+        .card-value.warn  { color: #f57f17; }
+        .card-value.green { color: #2e7d32; }
+        .card-sub { font-size: 12px; color: #6c757d; }
+
+        .main { padding: 28px 30px; }
+        .section-title { font-size: 17px; font-weight: 600; color: #0d4f47; margin-bottom: 6px; }
+        .section-sub { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+
+        /* Phase flow — horizontal (transformation phases only) */
+        .chain-flow {
+            background: #ffebee; border-radius: 10px;
+            padding: 30px 20px; margin-bottom: 28px; overflow-x: auto;
+        }
+        .phases-row { display: flex; align-items: center; min-width: 700px; }
+        .phase-node { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        .phase-box {
+            width: 100px; height: 100px; border-radius: 10px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+            border: 2px solid transparent; transition: transform 0.2s; cursor: default;
+        }
+        .phase-box:hover { transform: scale(1.07); }
+        .phase-box .pid    { font-size: 11px; font-weight: 700; opacity: 0.85; }
+        .phase-box .pname  { font-size: 12px; font-weight: 700; text-align: center; margin-top: 3px; }
+        .phase-box .pscore { font-size: 22px; font-weight: 900; margin-top: 2px; }
+        .phase-label { font-size: 10px; color: #555; margin-top: 7px; text-align: center; max-width: 110px; }
+
+        .phase-box.excellent { background: linear-gradient(135deg,#1b5e20,#2e7d32); color:white; border-color:#1b5e20; }
+        .phase-box.good      { background: linear-gradient(135deg,#388e3c,#43a047); color:white; border-color:#388e3c; }
+        .phase-box.fair      { background: linear-gradient(135deg,#e65100,#f57f17); color:white; border-color:#e65100; }
+        .phase-box.poor      { background: linear-gradient(135deg,#7f0000,#b71c1c); color:white; border-color:#7f0000; }
+
+        .phase-connector {
+            display: flex; flex-direction: column;
+            align-items: center; padding: 0 8px; flex-shrink: 0;
+        }
+        .conn-arrow { font-size: 24px; color: #aaa; }
+
+        /* D/C decomposition bars */
+        .dc-bars { display: flex; flex-direction: column; gap: 4px; margin-top: 6px; }
+        .dc-row { display: flex; align-items: center; gap: 4px; }
+        .dc-label { font-size: 10px; width: 20px; flex-shrink: 0; }
+        .dc-bar-outer { width: 180px; height: 12px; background: #f0f0f0; border-radius: 6px; overflow: hidden; }
+        .dc-bar-fill  { height: 100%; border-radius: 6px; }
+        .dc-val { font-size: 10px; width: 24px; text-align: right; flex-shrink: 0; }
+
+        /* Phase detail cards */
+        .phase-detail-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px; margin-bottom: 28px;
+        }
+        .phase-detail-card {
+            background: white; border-radius: 8px;
+            border: 1px solid #e0e0e0; border-top: 4px solid #b71c1c;
+            padding: 16px; overflow: hidden;
+        }
+        .phase-detail-card.excellent { border-top-color: #2e7d32; }
+        .phase-detail-card.good      { border-top-color: #43a047; }
+        .phase-detail-card.fair      { border-top-color: #f57f17; }
+        .phase-detail-card.poor      { border-top-color: #b71c1c; }
+
+        .pdc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .pdc-title  { font-size: 13px; font-weight: 700; color: #0d4f47; }
+        .pdc-score  { font-size: 24px; font-weight: 900; }
+        .pdc-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .pdc-stat   { background: #f9f9f9; border-radius: 6px; padding: 8px; }
+        .pdc-stat-label { font-size: 10px; color: #999; text-transform: uppercase; }
+        .pdc-stat-val   { font-size: 16px; font-weight: 700; color: #0d4f47; }
+        .inst-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+        .inst-bar-nat  { background: #ef9a9a; }
+        .inst-bar-inst { background: #b71c1c; }
+        .inst-legend   { display: flex; gap: 10px; font-size: 10px; color: #888; }
+        .pdc-note { font-size: 11px; color: #777; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+
+        /* Conduit reference scale */
+        .conduit-reference {
+            background: #fff8e1; border-radius: 8px; padding: 18px;
+            margin-bottom: 28px; border: 1px solid #ffe082;
+        }
+        .conduit-reference h4 { font-size: 13px; color: #0d4f47; margin-bottom: 12px; }
+        .cond-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .cond-label { font-size: 11px; width: 160px; flex-shrink: 0; color: #555; }
+        .cond-scale { flex: 1; height: 20px; background: #f0f0f0; border-radius: 6px; position: relative; overflow: visible; }
+        .cond-fill  { height: 100%; border-radius: 6px; }
+        .cond-target { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #b71c1c; }
+        .cond-target-label { position: absolute; top: -16px; left: -12px; font-size: 9px; color: #b71c1c; font-weight: 700; white-space: nowrap; }
+        .cond-score { width: 42px; text-align: right; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+        .cond-val   { width: 36px; font-size: 11px; color: #888; flex-shrink: 0; }
+
+        /* Simulator */
+        .simulator {
+            background: #fff3e0; border-radius: 10px; padding: 24px; margin-bottom: 28px;
+            border: 1px solid #ffe082;
+        }
+        .sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+        .sim-card { background: white; border-radius: 8px; padding: 16px; border: 1px solid #ffccbc; }
+        .sim-card h4 { font-size: 13px; font-weight: 700; color: #0d4f47; margin-bottom: 10px; }
+        .sim-slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .sim-slider-row label { font-size: 11px; color: #555; width: 100px; }
+        .sim-slider-row input[type=range] { flex: 1; accent-color: #b71c1c; }
+        .sim-slider-row .sim-val { font-size: 12px; font-weight: 700; width: 30px; text-align: right; }
+        .sim-result { margin-top: 10px; padding: 8px 10px; background: #ffebee; border-radius: 6px; font-size: 12px; }
+        .sim-score { font-size: 20px; font-weight: 900; color: #b71c1c; }
+
+        .data-note { background: #fff8e1; border-radius: 8px; padding: 18px; margin-bottom: 28px; border-left: 4px solid #fbc02d; }
+        .data-note h4 { font-size: 13px; color: #e65100; margin-bottom: 6px; }
+        .data-note p  { font-size: 13px; color: #6c757d; line-height: 1.6; }
+
+        .footer { padding: 16px 30px; background: #ffebee; text-align: center; font-size: 12px; color: #888; }
+        .footer a { color: #b71c1c; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .score-cards { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🌿 AUBEB Supply Chain — ln(2) Growth Conduit Efficiency Model</h1>
+        <div class="header-nav">
+            <a href="dashboard.html">π Dashboard</a>
+            <a href="phi_dashboard.html">φ Proportional</a>
+            <a href="sqrt2_dashboard.html">√2 Structural</a>
+            <a href="/frontend/project/five_model_coherence.html">🕸️ Five-Model</a>
+            <a href="/index.html">🏠 Home</a>
+        </div>
+    </div>
+
+    <!-- Model layer strip -->
+    <div class="model-strip">
+        <a class="model-tab" href="dashboard.html">π Operational</a>
+        <a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
+        <a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+        <span class="model-tab active">ln(2) Growth ← current</span>
+        <a class="model-tab" href="e_dashboard.html">e Abstract</a>
+    </div>
+
+    <!-- Scenario selector -->
+    <div class="scenario-bar">
+        <span class="scenario-label">Scenario:</span>
+        <div class="scenario-btns" id="scenario-btns-container"></div>
+        <span class="scenario-desc" id="scenario-desc"></span>
+    </div>
+
+    <!-- Score cards -->
+    <div class="score-cards">
+        <div class="card red-border" id="sc-efficiency">
+            <div class="card-label">System ln(2) Conduit Efficiency</div>
+            <div class="card-value red" id="sc-efficiency-val">40.4</div>
+            <div class="card-sub" id="sc-efficiency-sub">Low efficiency — systematic<br>institutional conduit capture</div>
+        </div>
+        <div class="card poor-border" id="sc-worst">
+            <div class="card-label">Worst Phase</div>
+            <div class="card-value red" id="sc-worst-val">P1 Mining &amp; P7 Fab</div>
+            <div class="card-sub" id="sc-worst-sub">Score: 33.8 — C/D ratio 0.56<br>Institutional load >55% of total D</div>
+        </div>
+        <div class="card warn-border" id="sc-best">
+            <div class="card-label">Best Phase</div>
+            <div class="card-value warn" id="sc-best-val">P3 Smelting &amp; P4 Refining</div>
+            <div class="card-sub" id="sc-best-sub">Score: 47.2 — C/D ratio 1.0<br>Natural + institutional near-balanced</div>
+        </div>
+        <div class="card poor-border" id="sc-instload">
+            <div class="card-label">Avg Institutional Load</div>
+            <div class="card-value red" id="sc-instload-val">51%</div>
+            <div class="card-sub" id="sc-instload-sub">Over half of total D in gold's<br>transformation phases is institutional</div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- Transformation phases flow -->
+        <div class="section-title">Growth Conduit Analysis — Transformation Phases Only</div>
+        <div class="section-sub">
+            The ln(2) model examines TRANSFORMATION phases only — phases where a thing changes its fundamental nature and multiplies in value. Transfer/custody phases are governed by √2. Target: C/D ratio ≈ 2.0 (minimal D, doubled C).
+        </div>
+
+        <div class="chain-flow">
+            <div class="phases-row" id="phases-row"><!-- Rendered by JS --></div>
+            <div style="font-size:11px; color:#888; margin-top:16px; padding:0 8px;">
+                ↑ Score represents growth conduit efficiency. D = total constraint burden (red = institutional, pink = natural). C = contribution output. Target C/D = 2.0.
+            </div>
+        </div>
+
+        <!-- C/D ratio reference scale -->
+        <div class="section-title">C/D Ratio Reference Scale</div>
+        <div class="section-sub">Target C/D = 2.0 (natural doubling: one unit of D constraint produces two units of C contribution). Score = 100 × exp(-1.5 × |C/D − 2| / 2).</div>
+        <div class="conduit-reference">
+            <h4>Growth Conduit Efficiency by Phase — C/D Ratio (scale 0→4, target = 2.0)</h4>
+            <div id="conduit-scale"><!-- Rendered by JS --></div>
+            <div style="display:flex; justify-content:space-between; font-size:10px; color:#aaa; padding:0 4px; margin-top:4px;">
+                <span>0×</span><span>0.5×</span><span>1.0×</span><span>1.5×</span><span>2.0×</span><span>2.5×</span><span>3.0×</span><span>3.5×</span><span>4.0×</span>
+            </div>
+            <div style="margin-top:10px;font-size:11px;color:#888;">
+                <strong style="color:#b71c1c;">Below 2.0:</strong> phase contributes less than double its constraint burden — conduit is suppressed by institutional overhead. &nbsp;|&nbsp;
+                <strong style="color:#2e7d32;">At 2.0:</strong> natural doubling — minimal gate, maximal throughput. &nbsp;|&nbsp;
+                <strong style="color:#f57f17;">Above 2.0:</strong> over-amplifying — value concentrated; investigate who captures the surplus.
+            </div>
+        </div>
+
+        <!-- Phase detail cards -->
+        <div class="section-title">Phase-Level Conduit Analysis</div>
+        <div class="section-sub">D_natural = physics/chemistry constraints (irreducible). D_institutional = regulation, licensing, market structure (movable). C = contribution output. All values on 0–10 scale.</div>
+        <div class="phase-detail-grid" id="phase-cards"><!-- Rendered by JS --></div>
+
+        <!-- What-if simulator -->
+        <div class="section-title">Conduit What-If Simulator</div>
+        <div class="section-sub">
+            Model the effect of reducing D-institutional burden. Key question: <em>What score does gold mining reach if royalty structures are reduced or streamlined?</em> Adjust D_institutional and C independently.
+        </div>
+        <div class="simulator">
+            <div class="sim-grid" id="sim-grid"><!-- Rendered by JS --></div>
+        </div>
+
+        <!-- Data note -->
+        <div class="data-note">
+            <h4>⚠️ Data Note — Mangrove Transformation Phase Data</h4>
+            <p>
+                The D and C values for gold transformation phases are <strong>synthetic estimates</strong> based on publicly known cost structures and industry documentation. Real data (actual royalty rates, processing costs, refining margins) exists in corporate annual reports, mining jurisdiction tariff schedules, and LBMA/COMEX filings, but is scattered and not yet integrated into the project schema. The <strong>monetary multipliers</strong> (value of ore vs. refined bar) are proprietary — refinery margins and mine-to-market cost structures are not publicly disclosed in detail. Populating a <code>value_chain_transformation.csv</code> with actual per-phase revenue and cost data would allow these scores to be computed from real data.
+            </p>
+        </div>
+
+        <!-- Interpretation -->
+        <div style="background:#ffebee;border-radius:10px;padding:22px;margin-bottom:28px;border-left:5px solid #b71c1c;">
+            <div style="font-size:15px;font-weight:700;color:#7f0000;margin-bottom:10px;">What the ln(2) Score Reveals About Mangrove</div>
+            <div style="font-size:13px;color:#555;line-height:1.7;">
+                All five of gold's transformation phases score below 50. The system score of 40.4 places the gold chain in the <strong>"systematic institutional conduit capture"</strong> zone. This means: across every phase where gold's physical nature changes and value should naturally multiply, over half of the constraint burden is institutional rather than natural.
+                <br><br>
+                This is not surprising. Mangrove is one of the most heavily regulated commodities globally — every transformation step is surrounded by AML/KYC requirements, jurisdiction-specific tax structures, LBMA certification costs, and export/import licensing. The natural doubling process (ore becomes bars, bars become jewelry) is physically efficient but institutionally loaded.
+                <br><br>
+                <strong>The ln(2) model makes the invisible visible:</strong> it separates the physical necessity of transformation constraints (D-natural) from the contingent institutional overhead that has been layered on top (D-institutional). When D-institutional exceeds D-natural, the phase has been captured — not in the sense of a conspiracy, but in the structural sense that artificial gates are suppressing natural growth conduits.
+            </div>
+        </div>
+
+    </div><!-- /main -->
+
+    <div class="footer">
+        ln(2) Growth Model — Layer 4 of 5 | D=1, C=2 | Natural doubling rate: 1 − 1/2 + 1/3 − 1/4 + … = ln(2) |
+        <a href="/frontend/project/five_model_coherence.html">Five-Model Coherence →</a>
+    </div>
+
+</div><!-- /dashboard -->
+
+<script>
+// ── Data ─────────────────────────────────────────────────────────────────────
+const PHASES_BASE = [
+    { id:1, name:"Mining",        d_nat:4, d_inst:5, c:5,  inst_examples:"State royalties (3–6%), corporate income tax, environmental bond, community agreements", note:"Mining is the most institutionally captured phase by D-institutional share. The ore grade and extraction method are physically determined; the royalty and tax structure is politically determined.", suggestion:"Try: reduce D_inst to 2 (streamlined royalty/tax structure) → score rises to ~47" },
+    { id:2, name:"Processing",    d_nat:5, d_inst:4, c:7,  inst_examples:"Tailings management permits, water use licenses, cyanide discharge standards", note:"Processing has the highest D-natural (the ore chemistry is complex) but moderate D-institutional. The higher C (7) reflects the significant value upgrade from ore to concentrate.", suggestion:"Try: reduce D_inst to 2 (simplified env compliance) → score rises to ~57" },
+    { id:3, name:"Smelting/Doré", d_nat:3, d_inst:3, c:6,  inst_examples:"Trade regulations, environmental permits for SO₂, AML documentation", note:"The most balanced phase: D-natural and D-institutional are equal, C is double D-natural. If institutional load were zero, C/D = 2.0 — perfect ln(2) conduit.", suggestion:"Try: reduce D_inst to 1 (AML streamlined) → score rises to ~57 approaching natural" },
+    { id:4, name:"Refining",      d_nat:4, d_inst:3, c:7,  inst_examples:"LBMA Good Delivery accreditation, correspondent banking requirements, AML/KYC", note:"LBMA standards are close to natural requirements — accreditation costs are the main institutional burden. C=7 reflects the high-quality, fully documented output.", suggestion:"Try: reduce D_inst to 1 (LBMA costs reduced) → C/D approaches 1.75 → ~58" },
+    { id:7, name:"Fabrication",   d_nat:3, d_inst:6, c:5,  inst_examples:"Import duties (0–12% by jurisdiction), hallmarking requirements, VAT, luxury tax", note:"Fabrication has the highest D-institutional to D-natural ratio. Import duties and VAT create major institutional load that does not correspond to physical transformation cost.", suggestion:"Try: reduce D_inst to 2 (import duty harmonization) → significant score improvement" },
+];
+
+// ── Scenarios ─────────────────────────────────────────────────────────────────
+let LN2_SCENARIOS = {};
+let currentPhases = [];
+
+function buildPhases(scenPhases) {
+    return PHASES_BASE.map((p, i) => ({ ...p, ...scenPhases[i] }));
+}
+
+function buildScenarioButtons(scenarios) {
+    const btnCls = key => {
+        if (key === 'current' || key === 'optimum') return '';
+        if (key === 'expansion') return 'expand';
+        if (key === 'regulatory') return 'regul';
+        if (key === 'serious_shea') return 'sshea';
+        return 'shock';
+    };
+    const container = document.getElementById('scenario-btns-container');
+    container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+        `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+    ).join('');
+}
+
+function setScenario(key) {
+    const scen = LN2_SCENARIOS[key];
+    if (!scen) return;
+    currentPhases = buildPhases(scen.phases);
+    document.querySelectorAll('.scen-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+    document.getElementById('scenario-desc').textContent = scen.description;
+    renderAll(currentPhases);
+}
+
+fetch('scenarios.json')
+    .then(r => r.json())
+    .then(data => {
+        LN2_SCENARIOS = data.ln2.scenarios;
+        buildScenarioButtons(LN2_SCENARIOS);
+        currentPhases = buildPhases(LN2_SCENARIOS.current.phases);
+        setScenario('current');
+    })
+    .catch(err => console.error('Failed to load scenarios.json:', err));
+
+const LN2 = Math.log(2);
+
+function ln2Score(d_nat, d_inst, c) {
+    const d_total = d_nat + d_inst;
+    if (d_total <= 0) return 0;
+    const ratio = c / d_total;
+    return +(100 * Math.exp(-1.5 * Math.abs(ratio - 2.0) / 2.0)).toFixed(1);
+}
+function scoreClass(s) {
+    if (s >= 70) return "excellent";
+    if (s >= 50) return "good";
+    if (s >= 30) return "fair";
+    return "poor";
+}
+function scoreColor(s) {
+    return s >= 70 ? "#2e7d32" : s >= 50 ? "#43a047" : s >= 30 ? "#f57f17" : "#b71c1c";
+}
+
+// ── Chain flow ────────────────────────────────────────────────────────────────
+function renderChainFlow(ps) {
+    const row = document.getElementById("phases-row");
+    row.innerHTML = '';
+    ps.forEach((p, i) => {
+        const score = ln2Score(p.d_nat, p.d_inst, p.c);
+        const cls   = scoreClass(score);
+        const d_total = p.d_nat + p.d_inst;
+        const ratio = (p.c / d_total).toFixed(2);
+        const node = document.createElement("div");
+        node.className = "phase-node";
+        node.innerHTML = `
+            <div class="phase-box ${cls}">
+                <span class="pid">P${p.id}</span>
+                <span class="pname" style="font-size:11px;">${p.name}</span>
+                <span class="pscore">${score}</span>
+            </div>
+            <div style="font-size:10px;color:#555;margin-top:7px;text-align:center;max-width:110px;">
+                D=${d_total} C=${p.c}<br>C/D=${ratio}</div>`;
+        row.appendChild(node);
+        if (i < ps.length - 1) {
+            const conn = document.createElement("div");
+            conn.className = "phase-connector";
+            conn.innerHTML = `<div class="conn-arrow">→</div>`;
+            row.appendChild(conn);
+        }
+    });
+}
+
+// ── Conduit scale ─────────────────────────────────────────────────────────────
+function renderConduitScale(ps) {
+    const container = document.getElementById("conduit-scale");
+    container.innerHTML = '';
+    const maxRatio  = 4.0;
+    const targetPct = (2.0 / maxRatio) * 100;
+    ps.forEach(p => {
+        const d_total = p.d_nat + p.d_inst;
+        const ratio   = p.c / d_total;
+        const pct     = Math.min(100, (ratio / maxRatio) * 100);
+        const score   = ln2Score(p.d_nat, p.d_inst, p.c);
+        const col     = scoreColor(score);
+        const row = document.createElement("div");
+        row.className = "cond-row";
+        row.innerHTML = `
+            <div class="cond-label">P${p.id} ${p.name}</div>
+            <div class="cond-scale">
+                <div class="cond-fill" style="width:${pct}%;background:${col};"></div>
+                <div class="cond-target" style="left:${targetPct}%;">
+                    <div class="cond-target-label">target 2.0</div>
+                </div>
+            </div>
+            <div class="cond-val">${ratio.toFixed(2)}×</div>
+            <div class="cond-score" style="color:${col};">${score}</div>`;
+        container.appendChild(row);
+    });
+}
+
+// ── Phase detail cards ────────────────────────────────────────────────────────
+function renderPhaseCards(ps) {
+    const grid = document.getElementById("phase-cards");
+    grid.innerHTML = '';
+    ps.forEach(p => {
+        const d_total  = p.d_nat + p.d_inst;
+        const score    = ln2Score(p.d_nat, p.d_inst, p.c);
+        const cls      = scoreClass(score);
+        const ratio    = (p.c / d_total).toFixed(2);
+        const inst_pct = ((p.d_inst / d_total) * 100).toFixed(0);
+        const nat_pct  = ((p.d_nat  / d_total) * 100).toFixed(0);
+        const card = document.createElement("div");
+        card.className = `phase-detail-card ${cls}`;
+        card.innerHTML = `
+            <div class="pdc-header">
+                <div>
+                    <div class="pdc-title">P${p.id} — ${p.name}</div>
+                    <div style="font-size:11px;color:#888;">Transformation phase</div>
+                </div>
+                <div class="pdc-score" style="color:${scoreColor(score)};">${score}</div>
+            </div>
+            <div class="pdc-grid">
+                <div class="pdc-stat"><div class="pdc-stat-label">D Natural</div><div class="pdc-stat-val" style="color:#ef9a9a;">${p.d_nat}</div></div>
+                <div class="pdc-stat"><div class="pdc-stat-label">D Institutional</div><div class="pdc-stat-val" style="color:#b71c1c;">${p.d_inst}</div></div>
+                <div class="pdc-stat"><div class="pdc-stat-label">C Contribution</div><div class="pdc-stat-val" style="color:#2e7d32;">${p.c}</div></div>
+                <div class="pdc-stat"><div class="pdc-stat-label">C/D Ratio</div><div class="pdc-stat-val" style="color:${scoreColor(score)};">${ratio}×</div></div>
+            </div>
+            <div style="font-size:11px;color:#777;margin-bottom:4px;">D breakdown: ${nat_pct}% natural / ${inst_pct}% institutional</div>
+            <div class="inst-bar">
+                <div class="inst-bar-nat"  style="width:${nat_pct}%;"></div>
+                <div class="inst-bar-inst" style="width:${inst_pct}%;"></div>
+            </div>
+            <div class="inst-legend">
+                <span>■ Natural (${p.d_nat})</span>
+                <span style="color:#b71c1c;">■ Institutional (${p.d_inst})</span>
+            </div>
+            <div class="pdc-note">${p.note}<br><em style="color:#b71c1c;">Institutional examples: ${p.inst_examples}</em></div>`;
+        grid.appendChild(card);
+    });
+}
+
+// ── Summary cards (live) ──────────────────────────────────────────────────────
+function renderSummaryCards(ps) {
+    const scores    = ps.map(p => ln2Score(p.d_nat, p.d_inst, p.c));
+    const ratios    = ps.map(p => p.c / (p.d_nat + p.d_inst));
+    const instLoads = ps.map(p => p.d_inst / (p.d_nat + p.d_inst));
+    const avgScore  = (scores.reduce((a,b)=>a+b,0) / scores.length).toFixed(1);
+    const minScore  = Math.min(...scores);
+    const maxScore  = Math.max(...scores);
+    const worstIdx  = scores.indexOf(minScore);
+    const bestIdx   = scores.indexOf(maxScore);
+    const avgInst   = ((instLoads.reduce((a,b)=>a+b,0) / instLoads.length) * 100).toFixed(0);
+
+    const effColor  = avgScore >= 60 ? 'warn' : 'red';
+    const bestColor = maxScore >= 60 ? 'warn' : 'red';
+
+    const setEl = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    const setCls = (id, cls) => { const el = document.getElementById(id); if (el) { el.className = 'card-value ' + cls; } };
+
+    setEl('sc-efficiency-val', avgScore);
+    setCls('sc-efficiency-val', effColor);
+    setEl('sc-efficiency-sub', avgScore >= 60 ? 'Moderate — some phases near conduit target'
+                                               : 'Low efficiency — institutional conduit capture');
+
+    setEl('sc-worst-val', `P${ps[worstIdx].id} ${ps[worstIdx].name}`);
+    setEl('sc-worst-sub', `Score: ${minScore.toFixed(1)} — C/D ratio ${ratios[worstIdx].toFixed(2)}\nInstitutional load ${(instLoads[worstIdx]*100).toFixed(0)}% of total D`);
+
+    setEl('sc-best-val', `P${ps[bestIdx].id} ${ps[bestIdx].name}`);
+    setCls('sc-best-val', bestColor);
+    setEl('sc-best-sub', `Score: ${maxScore.toFixed(1)} — C/D ratio ${ratios[bestIdx].toFixed(2)}\nBest conduit efficiency in chain`);
+
+    setEl('sc-instload-val', avgInst + '%');
+    setCls('sc-instload-val', avgInst > 50 ? 'red' : avgInst > 35 ? 'warn' : 'green');
+    setEl('sc-instload-sub', avgInst > 50 ? 'Over half of total D is institutional'
+                           : avgInst > 35 ? 'Substantial institutional load — reform possible'
+                                          : 'Institutional load mostly contained');
+}
+
+// ── Live refresh (called by sliders — skips simulator to avoid resetting) ─────
+function renderLive(ps) {
+    renderChainFlow(ps);
+    renderConduitScale(ps);
+    renderSummaryCards(ps);
+}
+
+// ── Simulator ─────────────────────────────────────────────────────────────────
+function renderSim(ps) {
+    const grid = document.getElementById("sim-grid");
+    grid.innerHTML = '';
+    ps.forEach((p, idx) => {
+        const card = document.createElement("div");
+        card.className = "sim-card";
+        card.innerHTML = `
+            <h4>P${p.id} — ${p.name}</h4>
+            <div style="font-size:11px;color:#b71c1c;margin-bottom:8px;">💡 ${p.suggestion||''}</div>
+            <div class="sim-slider-row">
+                <label>D Natural</label>
+                <input type="range" min="1" max="10" step="0.5" value="${p.d_nat}" id="dn-${idx}">
+                <span class="sim-val" id="dnv-${idx}">${p.d_nat}</span>
+            </div>
+            <div class="sim-slider-row">
+                <label>D Institutional</label>
+                <input type="range" min="0" max="10" step="0.5" value="${p.d_inst}" id="di-${idx}">
+                <span class="sim-val" id="div-${idx}">${p.d_inst}</span>
+            </div>
+            <div class="sim-slider-row">
+                <label>C Contribution</label>
+                <input type="range" min="1" max="10" step="0.5" value="${p.c}" id="c-${idx}">
+                <span class="sim-val" id="cv-${idx}">${p.c}</span>
+            </div>
+            <div class="sim-result">
+                C/D: <span id="ratio-${idx}">${(p.c/(p.d_nat+p.d_inst)).toFixed(2)}</span>× &nbsp;|&nbsp;
+                Score: <span class="sim-score" id="score-${idx}">${ln2Score(p.d_nat, p.d_inst, p.c)}</span>
+                <div style="font-size:10px;color:#888;margin-top:4px;" id="inst-pct-${idx}">
+                    Institutional share: ${((p.d_inst/(p.d_nat+p.d_inst))*100).toFixed(0)}%
+                </div>
+            </div>`;
+        grid.appendChild(card);
+        function update() {
+            const dn = +document.getElementById(`dn-${idx}`).value;
+            const di = +document.getElementById(`di-${idx}`).value;
+            const c  = +document.getElementById(`c-${idx}`).value;
+            document.getElementById(`dnv-${idx}`).textContent = dn;
+            document.getElementById(`div-${idx}`).textContent = di;
+            document.getElementById(`cv-${idx}`).textContent  = c;
+            document.getElementById(`ratio-${idx}`).textContent = (c/(dn+di)).toFixed(2);
+            const s = ln2Score(dn, di, c);
+            const el = document.getElementById(`score-${idx}`);
+            el.textContent = s; el.style.color = scoreColor(s);
+            document.getElementById(`inst-pct-${idx}`).textContent =
+                `Institutional share: ${((di/(dn+di))*100).toFixed(0)}%`;
+            // propagate to live sections
+            currentPhases[idx].d_nat  = dn;
+            currentPhases[idx].d_inst = di;
+            currentPhases[idx].c      = c;
+            renderLive(currentPhases);
+        }
+        [`dn-${idx}`,`di-${idx}`,`c-${idx}`].forEach(id =>
+            document.getElementById(id).addEventListener("input", update));
+    });
+}
+
+function renderAll(ps) {
+    renderChainFlow(ps);
+    renderConduitScale(ps);
+    renderPhaseCards(ps);
+    renderSim(ps);
+}
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.35);padding:6px 22px;font-size:11.5px;'+
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}'+
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}'+
+    '#tv-bc .bc-sep{opacity:.45;}#tv-bc .bc-cur{color:#ef9a9a;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="/frontend/project/aubeb/index.html">Mangrove</a><span class="bc-sep">›</span><a href="index.html">Supply Chain</a><span class="bc-sep">›</span><span class="bc-cur">ln(2) Growth</span>';
+  function inject(){if(!document.getElementById('tv-bc'))document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+{
+  "_meta": {
+    "generated": "2026-04-08T18:36:36",
+    "generator": "src/api/generate_ui_data.py",
+    "sources": [
+      "frontend/project/shea/data/shea_phase_metrics.csv",
+      "frontend/project/shea/data/shea_supply_chain_phases.csv",
+      "frontend/project/shea/data/shea_data_sources.csv",
+      "SHEA_SCOPE_EMISSIONS constant (see generator — Clarity/Cleo outline, Serious Shea BPlan V8 2023)",
+      "SHEA_WATER_DATA constant (see generator — food science benchmarks, Olawale et al. 2020)",
+      "SHEA_ENERGY_DATA constant (see generator — Clarity/Cleo outline, Serious Shea BPlan V8 2023)",
+      "Africa Blue Carbon Initiative Stakeholder Brief, Feb 2026 (Green United Development / African Union Commission) — carbon pricing benchmarks"
+    ],
+    "note": "Auto-generated. Re-run src/api/generate_ui_data.py to refresh. Fields under 'overrides' are never modified."
+  },
+  "carbon_market_reference": {
+    "_note": "Carbon pricing benchmarks from Africa Blue Carbon Initiative Stakeholder Brief, Feb 2026 (GUD / African Union Commission). Applicable as reference tiers for any carbon credit valuation attached to Serious Shea scope emissions reductions.",
+    "_context": "Shea parklands are part of the Sahel agroforestry corridor — the same landscape as the Great Green Wall (GGW). Carbon sequestration from shea tree preservation and restoration shares the same voluntary and compliance markets as the blue carbon and GGW programmes. The Africa Blue Carbon Initiative explicitly integrates blue carbon into National Development Contributions (NDCs) across its 7 member states, several of which overlap with the shea belt (Guinea, West Africa generally).",
+    "vcm_baseline": {
+      "value_low": 10,
+      "value_high": 15,
+      "value_reference": 15,
+      "unit": "USD/tCO2e",
+      "source": "Africa Blue Carbon Initiative Stakeholder Brief, Feb 2026",
+      "note": "Voluntary Carbon Market baseline price. Conservative assumption used in Africa Blue Carbon financial modelling."
+    },
+    "compliance_article6": {
+      "value_low": 20,
+      "value_high": 35,
+      "unit": "USD/tCO2e",
+      "source": "Africa Blue Carbon Initiative Stakeholder Brief, Feb 2026",
+      "note": "Article 6.2 bilateral compliance and CORSIA premium pricing. Commands 2–3× VCM baseline due to high-integrity verification requirements."
+    },
+    "shea_processing_credit_potential": {
+      "_note": "Indicative only. Based on Phase 3 (Processing) BAU vs Serious Shea CO2e reduction applied to Senegal throughput. Requires verified MRV to be credited.",
+      "co2e_reduction_per_kg_butter": {
+        "value": 9.855,
+        "unit": "kg CO2e/kg butter",
+        "derivation": "BAU 10.374 kg CO2e/kg minus Serious Shea max 0.5187 kg CO2e/kg (Clarity/Cleo outline)"
+      },
+      "senegal_throughput_MT_per_year": {
+        "value": 3774,
+        "unit": "MT/year",
+        "source": "Serious Shea BPlan V8 2023"
+      },
+      "annual_co2e_reduction_tCO2e": {
+        "value": 37192,
+        "unit": "tCO2e/year",
+        "derivation": "3,774,000 kg × 9.855 kg CO2e/kg = 37,192,470 kg CO2e ≈ 37,192 tCO2e"
+      },
+      "annual_credit_value_vcm_low": {
+        "value": 371920,
+        "unit": "USD/year",
+        "derivation": "37,192 tCO2e × USD 10/tCO2e"
+      },
+      "annual_credit_value_vcm_reference": {
+        "value": 557880,
+        "unit": "USD/year",
+        "derivation": "37,192 tCO2e × USD 15/tCO2e"
+      },
+      "annual_credit_value_compliance_low": {
+        "value": 743840,
+        "unit": "USD/year",
+        "derivation": "37,192 tCO2e × USD 20/tCO2e"
+      },
+      "annual_credit_value_compliance_high": {
+        "value": 1301720,
+        "unit": "USD/year",
+        "derivation": "37,192 tCO2e × USD 35/tCO2e"
+      }
+    }
+  },
+  "phases": {
+    "0": {
+      "name": "Collection",
+      "D": 235,
+      "C": 175,
+      "balance": 68.2,
+      "N": 178,
+      "sustainability": 0.12,
+      "notes": "94% women; 3M employed in Burkina Faso; seasonal May–Oct. D-dominant: land tenure, no market access, no finance (D-institutional barriers).",
+      "metrics": {
+        "employment_burkina_faso": {
+          "value": 3000000,
+          "unit": "persons",
+          "source": "FAO 2017 Chen",
+          "note": "Shea industry; full sector."
+        },
+        "share_women_collection_only": {
+          "value": 0.94,
+          "unit": "ratio",
+          "source": "FAO 2017 Chen",
+          "note": "94% women in collection only."
+        },
+        "season_duration_months": {
+          "value": 5,
+          "unit": "months",
+          "note": "May to October",
+          "source": "US AID 2013 Lovett"
+        },
+        "pilot_farmers_senegal": {
+          "value": 50,
+          "unit": "persons",
+          "note": "Koul pilot",
+          "source": "Acorn Project Summary 080523"
+        },
+        "potential_participants_senegal": {
+          "value": 100000,
+          "unit": "persons",
+          "note": "Next 10 years",
+          "source": "Acorn Project Summary 080523"
+        },
+        "season_start": {
+          "unit": "",
+          "source": "",
+          "value": null,
+          "note": "Month/week; not specified."
+        },
+        "season_end": {
+          "unit": "",
+          "source": "",
+          "value": null,
+          "note": "Month/week; not specified."
+        },
+        "volume_collected_per_actor": {
+          "unit": "MT or kg",
+          "source": "",
+          "value": null,
+          "note": "Per collector per season: not in source."
+        },
+        "pilot_farmers_koul_senegal": {
+          "unit": "persons",
+          "source": "Acorn Project Summary 080523",
+          "value": 50.0,
+          "note": "Existing farmer participants in Koul pilot (Senegal)."
+        },
+        "potential_participants_senegal_10y": {
+          "unit": "persons",
+          "source": "Acorn Project Summary 080523",
+          "value": 100000.0,
+          "note": "Potential additional participants in next 10 years (Senegal)."
+        },
+        "additionality_barrier_finance": {
+          "unit": "",
+          "source": "Serious Shea Additionality Assessment",
+          "value": null,
+          "note": "Barrier: limited access to financial resources (phase 0/1)."
+        },
+        "additionality_barrier_expertise": {
+          "unit": "",
+          "source": "Serious Shea Additionality Assessment",
+          "value": null,
+          "note": "Barrier: limited technical expertise for agroforestry."
+        },
+        "additionality_barrier_land": {
+          "unit": "",
+          "source": "Serious Shea Additionality Assessment",
+          "value": null,
+          "note": "Barrier: degraded soils, erosion, land tenure."
+        },
+        "additionality_barrier_markets": {
+          "unit": "",
+          "source": "Serious Shea Additionality Assessment",
+          "value": null,
+          "note": "Barrier: lack of market opportunities."
+        }
+      },
+      "scope1_tco2": 45000,
+      "scope2_tco2": 5000,
+      "scope_source": "Inferred — manual collection, negligible motorised equipment",
+      "scope_quality": "Low",
+      "scope_notes": "Hand collection of shea nuts; seasonal May–Oct. Walking/donkey transport. Minimal combustion.",
+      "scope_bau_note": "BAU = same; no mechanical intervention in either scenario at this phase.",
+      "water": 0,
+      "water_recycling_pct": 0,
+      "water_quality": "Low",
+      "water_source": "Negligible — rain-fed shea parkland, manual nut collection",
+      "water_notes": "Shea trees are entirely rain-fed. Nut collection is manual. No process water.",
+      "energy": 200,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 5,
+      "energy_quality": "Low",
+      "energy_source": "Inferred — manual collection, negligible motorised energy",
+      "energy_notes": "Essentially human and animal energy. No mechanised collection in BAU or Serious Shea scenario."
+    },
+    "1": {
+      "name": "First sale / aggregation",
+      "D": 220,
+      "C": 195,
+      "balance": 78.5,
+      "N": 192,
+      "sustainability": 0.35,
+      "notes": "Sellers 150 US$/MT; nuts 425 US$/MT. Low C: aggregators capture spread with limited competition.",
+      "metrics": {
+        "income_sellers_per_MT_dry_kernel": {
+          "value": 150,
+          "unit": "US$/MT",
+          "source": "US AID 2013 Lovett",
+          "note": "Dry kernel equivalent."
+        },
+        "price_nuts_per_MT": {
+          "value": 425,
+          "unit": "US$/MT",
+          "source": "Rousseau et al. 2015",
+          "note": "250 CFA/kg; 0.0017 CFA:1 US$; 2013."
+        },
+        "price_nuts_per_kg_cfa": {
+          "value": 250,
+          "unit": "CFA/kg",
+          "note": "End 2013",
+          "source": "Rousseau et al. 2015"
+        },
+        "price_nuts_per_kg": {
+          "unit": "CFA/kg",
+          "source": "Rousseau et al. 2015",
+          "value": 250.0,
+          "note": "End 2013."
+        }
+      },
+      "scope1_tco2": 80000,
+      "scope2_tco2": 8000,
+      "scope_source": "Inferred — rural West Africa transport benchmarks",
+      "scope_quality": "Low",
+      "scope_notes": "Motorcycle/donkey transport of bagged nuts to village aggregation points. Diesel S1 dominant.",
+      "scope_bau_note": "BAU comparable; transport mode unchanged between scenarios.",
+      "water": 500,
+      "water_recycling_pct": 0,
+      "water_quality": "Low",
+      "water_source": "Inferred — negligible; potable and washing use only",
+      "water_notes": "Aggregation point sanitation and potable supply only. No process water.",
+      "energy": 2000,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 5,
+      "energy_quality": "Low",
+      "energy_source": "Inferred — rural West Africa transport; motorcycle and donkey cart",
+      "energy_notes": "Motorcycle and donkey cart transport to aggregation points. ~95% diesel/animal energy."
+    },
+    "2": {
+      "name": "Trading / bulking",
+      "D": 245,
+      "C": 230,
+      "balance": 88.0,
+      "N": 218,
+      "sustainability": 0.95,
+      "notes": "Traders 250 US$/MT; large exporters 250–800 US$/MT. Wide exporter range signals opacity and market fragmentation.",
+      "metrics": {
+        "income_traders_per_MT": {
+          "value": 250,
+          "unit": "US$/MT",
+          "source": "US AID 2013 Lovett",
+          "note": "Dry kernel equivalent."
+        },
+        "income_large_exporters_per_MT_min": {
+          "value": 250,
+          "unit": "US$/MT",
+          "source": "US AID 2013 Lovett",
+          "note": "Range 250-800."
+        },
+        "income_large_exporters_per_MT_max": {
+          "value": 800,
+          "unit": "US$/MT",
+          "source": "US AID 2013 Lovett",
+          "note": "Range 250-800."
+        }
+      },
+      "scope1_tco2": 250000,
+      "scope2_tco2": 30000,
+      "scope_source": "Inferred — West Africa truck transport benchmarks; IPCC transport emission factors",
+      "scope_quality": "Low",
+      "scope_notes": "Truck haulage from village to regional bulking depot and port/processing facility. Diesel trucks.",
+      "scope_bau_note": "BAU comparable; bulk logistics mode unchanged.",
+      "water": 2000,
+      "water_recycling_pct": 0,
+      "water_quality": "Low",
+      "water_source": "Inferred — bulk storage depot operations",
+      "water_notes": "Storage depot sanitation and dust control. Minimal process water.",
+      "energy": 15000,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 10,
+      "energy_quality": "Low",
+      "energy_source": "Inferred — diesel truck haulage West Africa; bulking depot generators",
+      "energy_notes": "Diesel truck haulage between villages and depots. Small generators. Rural grid access ~38% nationally (Senegal)."
+    },
+    "3": {
+      "name": "Processing (nuts to butter)",
+      "D": 265,
+      "C": 255,
+      "balance": 92.5,
+      "N": 241,
+      "sustainability": 1.65,
+      "notes": "Serious Shea: 100% renewable energy. 925 kg butter/woman/season. BAU uses 20 kg firewood/kg butter — driving deforestation. CO₂e reduction: >95% vs BAU.",
+      "metrics": {
+        "butter_per_woman_per_season_kg": {
+          "value": 925,
+          "unit": "kg/season",
+          "source": "US AID 2013 Lovett",
+          "note": "5 months x 187 kg."
+        },
+        "firewood_kg_per_kg_butter_BAU": {
+          "value": 20,
+          "unit": "kg wood/kg butter",
+          "note": "BAU deforestation driver",
+          "source": "Serious Shea BPlan V8 2023"
+        },
+        "energy_source_serious_shea": {
+          "value": "100% renewable",
+          "unit": "text",
+          "source": "Clarity/Cleo outline"
+        },
+        "CO2e_per_kg_butter_BAU": {
+          "value": 10.374,
+          "unit": "kg CO2e/kg",
+          "source": "Clarity/Cleo outline",
+          "note": "Formation and transport."
+        },
+        "CO2e_per_kg_butter_serious_shea_max": {
+          "value": 0.5187,
+          "unit": "kg CO2e/kg",
+          "note": "<5% of BAU",
+          "source": "Clarity/Cleo outline"
+        },
+        "processing_throughput_senegal_MT": {
+          "value": 3774,
+          "unit": "MT/year",
+          "note": "26 facilities, agro-food total",
+          "source": "Serious Shea BPlan V8 2023"
+        },
+        "conversion_bags_per_MT": {
+          "unit": "bags/MT",
+          "source": "US AID 2013 Lovett",
+          "value": 12.0,
+          "note": "Whole fruits or kernels; ambiguity in source."
+        },
+        "processing_bags_per_woman_per_month": {
+          "unit": "bags/month",
+          "source": "US AID 2013 Lovett",
+          "value": 7.0
+        },
+        "processing_MT_butter_per_woman_per_month": {
+          "unit": "MT/month",
+          "source": "US AID 2013 Lovett",
+          "value": 0.53,
+          "note": "From 7 bags."
+        },
+        "butter_from_7_bags_kg": {
+          "unit": "kg",
+          "source": "US AID 2013 Lovett",
+          "value": 187.0
+        },
+        "energy_source_BAU": {
+          "unit": "",
+          "source": "",
+          "value": null,
+          "note": "Firewood implied; not quantified."
+        },
+        "energy_source_Serious_Shea": {
+          "unit": "",
+          "source": "Clarity/Cleo outline",
+          "value": "100% renewable",
+          "note": "No firewood."
+        },
+        "CO2e_per_kg_butter_Serious_Shea_max": {
+          "unit": "kg CO2e/kg",
+          "source": "Clarity/Cleo outline",
+          "value": 0.5187,
+          "note": "<5% of BAU."
+        },
+        "processing_throughput_serious_shea_senegal_agrofood": {
+          "unit": "MT/year",
+          "source": "Serious Shea BPlan V8 2023",
+          "value": 3774.0,
+          "note": "Total agro-food processed p.a. (shea, mango, moringa, baobab) at 26 facilities."
+        }
+      },
+      "scope1_tco2": 180000,
+      "scope2_tco2": 120000,
+      "scope_source": "Clarity/Cleo Value Chain Outline; Serious Shea BPlan V8 2023 — Serious Shea scenario (baseline)",
+      "scope_quality": "Medium",
+      "scope_notes": "Serious Shea scenario: 100% renewable processing. Residual S1 from generator backup and delivery transport.",
+      "scope_bau_note": "BAU: 10.374 kg CO₂e/kg butter (firewood combustion). Serious Shea: <0.5187 kg CO₂e/kg (>95% reduction). Source: Clarity/Cleo outline.",
+      "scope_bau_co2e_per_kg": 10.374,
+      "scope_ss_co2e_per_kg": 0.5187,
+      "water": 450000,
+      "water_recycling_pct": 20,
+      "water_quality": "Medium",
+      "water_source": "Inferred — shea processing food science benchmarks; Olawale et al. (2020) ~5-10 L/kg butter",
+      "water_notes": "Boiling, washing, and phase separation in butter rendering. Traditional ~10 L/kg; Serious Shea mechanical ~5 L/kg. Limited recycling in field operations.",
+      "energy": 95000,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 80,
+      "energy_quality": "Medium",
+      "energy_source": "Serious Shea BPlan V8 2023; Clarity/Cleo outline — Serious Shea scenario (100% renewable target)",
+      "energy_notes": "Serious Shea: 100% renewable mechanical processing (electric mills, solar/biogas). BAU: firewood = 88 kWh/kg butter, 0% clean. 80% reflects near-target Serious Shea operational state.",
+      "energy_bau_kwh_per_kg": 88.0,
+        "energy_ss_kwh_per_kg": 4.5,
+        "carbon_credit_potential_tCO2e_per_year": {
+          "value": 37192,
+          "unit": "tCO2e/year",
+          "note": "Indicative Serious Shea vs BAU reduction at Senegal throughput (3,774 MT/year). At VCM USD 15/tCO2e = ~USD 558k/year; at Article 6.2 USD 20–35/tCO2e = USD 744k–1.3M/year. Source: Africa Blue Carbon Initiative pricing benchmarks, Feb 2026.",
+          "source": "Africa Blue Carbon Initiative Stakeholder Brief Feb 2026 (pricing); Clarity/Cleo outline + Serious Shea BPlan V8 2023 (CO2e reduction and throughput)"
+        }
+    },
+    "4": {
+      "name": "Export",
+      "D": 210,
+      "C": 165,
+      "balance": 64.0,
+      "N": 158,
+      "sustainability": 0.09,
+      "notes": "BOTTLENECK. 265k–445k t/year region. 90% of exported shea ends up in chocolate (C-concentration risk — single buyer-segment dependency). EU import standards now require clean-energy processing (D-institutional barrier — excludes BAU firewood processors). Export route OPAQUE. €50B Sahel ingredients market potential by 2030.",
+      "metrics": {
+        "export_volume_min_t": {
+          "value": 265000,
+          "unit": "t/year",
+          "source": "Yinug & Fetzer 2008"
+        },
+        "export_volume_max_t": {
+          "value": 445000,
+          "unit": "t/year",
+          "source": "Yinug & Fetzer 2008"
+        },
+        "export_value_bf_usd_min": {
+          "value": 90000000,
+          "unit": "US$/year",
+          "source": "FAO 2017 Chen"
+        },
+        "export_value_bf_usd_max": {
+          "value": 200000000,
+          "unit": "US$/year",
+          "source": "FAO 2017 Chen"
+        },
+        "share_consumed_in_region": {
+          "value": 0.5,
+          "unit": "ratio",
+          "note": "Range 41–57%",
+          "source": "Lovett 2004b; US Aid 2010"
+        },
+        "chocolate_application_pct": {
+          "value": 90,
+          "unit": "percent",
+          "note": "C-concentration: single buyer-segment dependency",
+          "source": "Clarity Coalition EP 2023"
+        },
+        "eu_import_standards_clean_energy": {
+          "value": 1,
+          "unit": "binary",
+          "note": "D-institutional: EU mandates clean-energy processing. BAU firewood excluded.",
+          "source": "Clarity Coalition EP 2023"
+        },
+        "sahel_market_potential_2030_eur_billion": {
+          "value": 50,
+          "unit": "EUR billion",
+          "note": "Total Sahel agricultural ingredients market by 2030",
+          "source": "Clarity Coalition EP 2023"
+        },
+        "export_volume_region_tonnes_min": {
+          "unit": "t/year",
+          "source": "Yinug & Fetzer 2008",
+          "value": 265000.0,
+          "note": "West Africa total."
+        },
+        "export_volume_region_tonnes_max": {
+          "unit": "t/year",
+          "source": "Yinug & Fetzer 2008",
+          "value": 445000.0,
+          "note": "West Africa total."
+        },
+        "export_value_burkina_faso_min": {
+          "unit": "US$/annum",
+          "source": "FAO 2017 Chen",
+          "value": 90000000.0,
+          "note": "90-200M range."
+        },
+        "export_value_burkina_faso_max": {
+          "unit": "US$/annum",
+          "source": "FAO 2017 Chen",
+          "value": 200000000.0,
+          "note": "90-200M range."
+        },
+        "export_route": {
+          "unit": "",
+          "source": "",
+          "value": null,
+          "note": "Origin-destination legs not in source."
+        },
+        "shea_export_application_chocolate_pct": {
+          "unit": "percent",
+          "source": "Clarity Coalition EP 2023",
+          "value": 90.0,
+          "note": "90% of all exported shea butter ends up in chocolate products; exposes C-concentration risk — near-total dependency on a"
+        },
+        "eu_import_standards_renewable_energy_required": {
+          "unit": "binary",
+          "source": "Clarity Coalition EP 2023",
+          "value": 1.0,
+          "note": "D-institutional: EU import standards mandate clean/renewable-energy processing for compliant shea. Adds compliance burde"
+        },
+        "sahel_ingredients_market_potential_2030_eur_billion": {
+          "unit": "EUR billion",
+          "source": "Clarity Coalition EP 2023",
+          "value": 50.0,
+          "note": "Projected total Sahel agricultural ingredients market value by 2030. Represents the macro C-contribution ceiling for the"
+        }
+      },
+      "scope1_tco2": 520000,
+      "scope2_tco2": 40000,
+      "scope_source": "Inferred — ICCT freight transport benchmarks; IMO sea freight emission factors",
+      "scope_quality": "Low",
+      "scope_notes": "Container shipping (Dakar/Abidjan → EU ports) + inland truck. S1 from bunker fuel. EU CBAM adds cost from 2026.",
+      "scope_bau_note": "BAU comparable; shipping route unchanged. EU Carbon Border Adjustment Mechanism adds cost from 2026.",
+      "water": 1000,
+      "water_recycling_pct": 0,
+      "water_quality": "Low",
+      "water_source": "Inferred — export logistics operations",
+      "water_notes": "Container depot and port operations. No process water; potable and cleaning only.",
+      "energy": 180000,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 15,
+      "energy_quality": "Low",
+      "energy_source": "Inferred — ICCT sea freight; IMO 2023 emission factors",
+      "energy_notes": "Container ship bunker fuel dominates. Port operations partially grid-powered. EU mandates clean-energy processing at destination."
+    },
+    "5": {
+      "name": "Manufacturing (butter to cosmetic)",
+      "D": 250,
+      "C": 238,
+      "balance": 90.2,
+      "N": 234,
+      "sustainability": 1.42,
+      "notes": "Cleo: 95% shea content. 100% renewable energy in manufacturing. Location OPAQUE.",
+      "metrics": {
+        "shea_content_cleo_pct": {
+          "value": 0.95,
+          "unit": "ratio",
+          "source": "Clarity/Cleo outline"
+        },
+        "energy_cleo": {
+          "value": "100% renewable",
+          "unit": "text",
+          "source": "Clarity/Cleo outline"
+        },
+        "manufacturing_location": {
+          "value": null,
+          "unit": "OPAQUE",
+          "source": null,
+          "note": "Not stated."
+        },
+        "shea_content_cleo_body_cream": {
+          "unit": "ratio",
+          "source": "Clarity/Cleo outline",
+          "value": 0.95,
+          "note": "95% shea per jar."
+        },
+        "throughput_volume": {
+          "unit": "MT or units/year",
+          "source": "",
+          "value": null,
+          "note": "Not in source."
+        }
+      },
+      "scope1_tco2": 20000,
+      "scope2_tco2": 30000,
+      "scope_source": "Clarity/Cleo Value Chain Outline — Cleo Organics 100% renewable manufacturing",
+      "scope_quality": "Medium",
+      "scope_notes": "Cleo manufacturing 100% renewable. Minimal S1 (packaging, delivery). S2 near-zero (renewable electricity).",
+      "scope_bau_note": "BAU conventional cosmetic manufacturer: ~5–8× higher emissions. Cleo is the best-practice benchmark.",
+      "water": 80000,
+      "water_recycling_pct": 50,
+      "water_quality": "Low",
+      "water_source": "Inferred — EU cosmetic manufacturing benchmarks (~3-8 L/kg product)",
+      "water_notes": "Emulsification, blending, filling line CIP cleaning. 50% recycling via closed-loop clean-in-place systems.",
+      "energy": 35000,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 100,
+      "energy_quality": "Medium",
+      "energy_source": "Clarity/Cleo Value Chain Outline — Cleo Organics 100% renewable manufacturing",
+      "energy_notes": "Cleo Organics 100% renewable energy for manufacturing. Explicitly stated in source. Best-practice benchmark for cosmetic manufacturing."
+    },
+    "6": {
+      "name": "Retail",
+      "D": 240,
+      "C": 265,
+      "balance": 91.8,
+      "N": 237,
+      "sustainability": 1.55,
+      "notes": "Cleo 30/50/100 ml. 30 US$/30g = 1 US$/g. Income uplift to women: 11.875× (Serious Shea baseline → Cleo 10% share).",
+      "metrics": {
+        "retail_sku_sizes_ml": {
+          "value": "30,50,100",
+          "unit": "ml",
+          "source": "Clarity/Cleo outline",
+          "note": "Cleo body butter."
+        },
+        "retail_price_30g_usd": {
+          "value": 30,
+          "unit": "US$/30g",
+          "source": "Clarity/Cleo outline"
+        },
+        "retail_price_per_g_usd": {
+          "value": 1,
+          "unit": "US$/g",
+          "source": "Clarity/Cleo outline"
+        },
+        "price_to_women_per_MT_usd": {
+          "value": 4000,
+          "unit": "US$/MT",
+          "source": "Clarity/Cleo outline"
+        },
+        "cleo_value_to_women_10pct_per_MT_usd": {
+          "value": 47500,
+          "unit": "US$/MT",
+          "source": "Clarity/Cleo outline"
+        },
+        "income_uplift_ratio": {
+          "value": 11.875,
+          "unit": "x",
+          "note": "10% share of Cleo retail vs Serious Shea baseline",
+          "source": "Clarity/Cleo outline"
+        },
+        "retail_price_30g": {
+          "unit": "US$/30g",
+          "source": "Clarity/Cleo outline",
+          "value": 30.0,
+          "note": "Cleo."
+        },
+        "retail_price_per_g": {
+          "unit": "US$/g",
+          "source": "Clarity/Cleo outline",
+          "value": 1.0,
+          "note": "30 US$/30g."
+        },
+        "Serious_Shea_price_to_women_groups_per_MT": {
+          "unit": "US$/MT",
+          "source": "Clarity/Cleo outline",
+          "value": 4000.0,
+          "note": "Current."
+        },
+        "Cleo_value_to_women_per_MT_10pct_share": {
+          "unit": "US$/MT",
+          "source": "Clarity/Cleo outline",
+          "value": 47500.0,
+          "note": "10% share of retail value."
+        }
+      },
+      "scope1_tco2": 15000,
+      "scope2_tco2": 60000,
+      "scope_source": "Inferred — retail sector GHG Protocol benchmarks; European retail energy data",
+      "scope_quality": "Low",
+      "scope_notes": "Retail shelf, HVAC, lighting, point-of-sale. Urban European retail S2 dominant.",
+      "scope_bau_note": "BAU conventional retail. Cleo online-heavy distribution reduces retail-floor footprint.",
+      "water": 500,
+      "water_recycling_pct": 0,
+      "water_quality": "Low",
+      "water_source": "Negligible — retail/office use only",
+      "water_notes": "Retail store sanitation only. No process water.",
+      "energy": 8000,
+      "energy_unit": "kWh",
+      "energy_clean_pct": 65,
+      "energy_quality": "Low",
+      "energy_source": "Inferred — European retail sector energy benchmarks",
+      "energy_notes": "European retail store HVAC and lighting. EU grid clean mix 40-65% by country. Cleo online-heavy model reduces store energy footprint."
+    }
+  },
+  "system": {
+    "balance": 81.6,
+    "sustainability_index": 0.88,
+    "bottleneck_count": 2,
+    "phases_count": 7,
+    "description": "Collection (Burkina Faso / West Africa) → Retail (Cleo)"
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Collection",
+      "transparency": "OPAQUE",
+      "transformation": "Harvest"
+    },
+    "1": {
+      "name": "First sale / aggregation",
+      "transparency": "OPAQUE",
+      "transformation": "Custody transfer to seller"
+    },
+    "2": {
+      "name": "Trading / bulking",
+      "transparency": "OPAQUE",
+      "transformation": "Custody transfer; possible storage"
+    },
+    "3": {
+      "name": "Processing (nuts/kernels to butter)",
+      "transparency": "OPAQUE",
+      "transformation": "Mechanical/thermal (rendering)"
+    },
+    "4": {
+      "name": "Export",
+      "transparency": "OPAQUE",
+      "transformation": "Logistics; custody transfer to buyer"
+    },
+    "5": {
+      "name": "Manufacturing (butter to cosmetic)",
+      "transparency": "OPAQUE",
+      "transformation": "Formulation; packaging"
+    },
+    "6": {
+      "name": "Retail",
+      "transparency": "OPAQUE",
+      "transformation": "Sale; custody to consumer"
+    }
+  },
+  "_source_index": {
+    "1": "FAO 2017 Chen – Shea women empowerment Burkina Faso",
+    "2": "US AID 2013 Lovett – Global Shea NYC conference",
+    "3": "Agritech Group 2016 – Serious Shea scoping BAU",
+    "4": "Rousseau et al. 2015 – Shea nut price",
+    "5": "Yinug & Fetzer 2008 – West Africa exports",
+    "6": "Lovett 2004b – Share consumed in region",
+    "7": "US Aid 2010 – Share consumed in region",
+    "8": "Clarity Coalition – Cleo Shea True Value page",
+    "9": "Clarity Coalition – Serious Shea Senegal (BF adapted)",
+    "10": "Mirova Shea Senegal Feasibility Report v1.1",
+    "11": "Serious Shea Senegal Business Plan V8 April 2023",
+    "12": "Acorn (Rabobank) Local Partner Onboarding Process",
+    "13": "Acorn Project Summary Completed 080523",
+    "14": "George Comments SS Senegal BP April 2023",
+    "15": "EP Carbon new Requirements (plantation sites)",
+    "16": "Serious Shea Additionality Assessment Acorn",
+    "17": "Serious Shea Global Indicator Framework SDG 2023 refinement",
+    "18": "Serious Shea Financial Model v1.1",
+    "19": "Clarity Coalition – Serious Shea True Value Leads African Private Sector in Europe (EP 2023)",
+    "20": "Africa Blue Carbon Initiative Stakeholder Brief, Feb 2026 – Green United Development (GUD) / African Union Commission – carbon pricing benchmarks (VCM USD 10–15/tCO2e; Article 6.2 USD 20–35/tCO2e)"
+  }
+}

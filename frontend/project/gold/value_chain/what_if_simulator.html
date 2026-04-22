@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Value Chain What‑If Simulator</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #111827 0%, #334155 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: #0f172a;
+    }
+    .app {
+      max-width: 1600px;
+      margin: 0 auto;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+      overflow: hidden;
+    }
+    .header {
+      background: linear-gradient(135deg, #0f172a 0%, #1f2937 100%);
+      color: #fff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .header h1 { font-size: 18px; font-weight: 900; }
+    .nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 800; margin-left: 14px; }
+    .nav a:hover { color: #fff; text-decoration: underline; }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 360px 1fr 380px;
+      min-height: calc(100vh - 120px);
+    }
+    .left, .right {
+      background: #f8fafc;
+      padding: 18px;
+      overflow: auto;
+    }
+    .center {
+      padding: 18px;
+      overflow: auto;
+      border-left: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
+    }
+
+    .title {
+      font-size: 14px;
+      font-weight: 900;
+      margin-bottom: 12px;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    select {
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      font-weight: 800;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .box {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      margin-bottom: 12px;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+    .metric {
+      background: #0f172a;
+      color: #fff;
+      border-radius: 14px;
+      padding: 14px;
+    }
+    .metric .label {
+      font-size: 11px;
+      opacity: 0.8;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+      margin-bottom: 8px;
+    }
+    .metric .value { font-size: 24px; font-weight: 900; }
+    .metric .delta { margin-top: 6px; font-size: 12px; font-weight: 800; opacity: 0.9; }
+
+    .control {
+      margin-bottom: 14px;
+    }
+    .control .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+      font-size: 12px;
+      color: #475569;
+      font-weight: 800;
+    }
+    input[type="range"] { width: 100%; }
+    .hint { font-size: 12px; color: #64748b; line-height: 1.4; }
+
+    .btns { display: flex; gap: 10px; margin-top: 10px; }
+    button {
+      flex: 1;
+      border: none;
+      border-radius: 12px;
+      padding: 12px 12px;
+      font-weight: 900;
+      cursor: pointer;
+    }
+    .btn-reset { background: #64748b; color: #fff; }
+    .btn-apply { background: #16a34a; color: #fff; }
+
+    .list { list-style: none; }
+    .list li {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #38bdf8;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    }
+    .list .bad { border-left-color: #f97316; }
+    .list .good { border-left-color: #22c55e; }
+    .list .title { margin: 0; font-size: 12px; }
+    .list .desc { margin-top: 6px; font-size: 12px; color: #64748b; line-height: 1.4; font-weight: 700; }
+
+    .footer {
+      padding: 12px 18px;
+      background: #0f172a;
+      color: rgba(255,255,255,0.85);
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer a { color: #93c5fd; text-decoration: none; font-weight: 900; }
+    .footer a:hover { text-decoration: underline; }
+
+    .env-bar-row {
+      display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 12px;
+    }
+    .env-bar-label { width: 140px; flex-shrink: 0; font-weight: 800; color: #334155; }
+    .env-bar-track {
+      flex: 1; height: 12px; background: #e2e8f0; border-radius: 6px; overflow: hidden;
+    }
+    .env-bar-fill { height: 100%; border-radius: 6px; transition: width 0.3s; }
+    .env-bar-val { width: 64px; text-align: right; font-weight: 900; color: #0f172a; flex-shrink: 0; }
+    .env-badge {
+      display: inline-block; padding: 2px 8px; border-radius: 6px;
+      font-size: 11px; font-weight: 900; margin: 2px;
+    }
+    .env-carbon { background: #fef3c7; color: #92400e; }
+    .env-energy { background: #dbeafe; color: #1e40af; }
+    .env-water  { background: #dcfce7; color: #166534; }
+    .env-total  { background: #f1f5f9; color: #0f172a; }
+    @media (max-width: 1200px) {
+      .layout { grid-template-columns: 1fr; }
+      .metric-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <div class="header">
+      <div>
+        <h1>Value Chain What‑If Simulator</h1>
+        <div style="font-size:12px; opacity:0.85; margin-top:4px;">Value-only scenario exploration • separate from supply-chain logic</div>
+      </div>
+      <div class="nav">
+        <a href="./dashboard.html">Dashboard</a>
+        <a href="./financial_report.html">📊 Financial Report</a>
+        <a href="./">Value Home</a>
+        <a href="/frontend/project/shea/value_chain/">Shea Value</a>
+        <a href="/index.html">Server Root</a>
+      </div>
+    </div>
+
+    <div class="layout">
+      <div class="left">
+        <div class="title">
+          <span>Controls (Phase 1)</span>
+          <select id="entitySelect"></select>
+        </div>
+
+        <div class="box">
+          <div class="control">
+            <div class="row"><span>AISC (USD/oz)</span><span id="aiscLabel">—</span></div>
+            <input id="aiscSlider" type="range" min="900" max="2200" step="5" />
+            <div class="hint">All‑in sustaining cost. Lower is better for margin resilience.</div>
+          </div>
+
+          <div class="control">
+            <div class="row"><span>Cash Cost (USD/oz)</span><span id="cashLabel">—</span></div>
+            <input id="cashSlider" type="range" min="600" max="1800" step="5" />
+            <div class="hint">Direct cash cost. Typically below AISC.</div>
+          </div>
+
+          <div class="control">
+            <div class="row"><span>Realized Price (USD/oz)</span><span id="priceLabel">—</span></div>
+            <input id="priceSlider" type="range" min="1200" max="6500" step="5" />
+            <div class="hint">Value-layer price input (do not mix into supply-chain layer).</div>
+          </div>
+
+          <div style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+            <div class="title" style="margin-bottom: 10px;"><span>Tholonic N‑D‑C Controls (Value)</span></div>
+            <div class="control">
+              <div class="row"><span>D (Definition)</span><span id="dLabel">—</span></div>
+              <input id="dSlider" type="range" min="150" max="450" step="1" />
+              <div class="hint">Value constraints (rigidity, obligations, cost burden).</div>
+            </div>
+            <div class="control">
+              <div class="row"><span>C (Contribution)</span><span id="cLabel">—</span></div>
+              <input id="cSlider" type="range" min="150" max="450" step="1" />
+              <div class="hint">Value integration (optionality, counterparties, flexibility).</div>
+            </div>
+          </div>
+
+          <div class="btns">
+            <button class="btn-reset" id="resetBtn">Reset</button>
+            <button class="btn-apply" id="applyBtn">Apply</button>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="title"><span>Period</span><select id="periodSelect"><option value="quarterly">Quarterly</option><option value="annual">Annual</option></select></div>
+          <div class="hint">This simulator initializes from the latest value-chain record for the selected entity + period.</div>
+        </div>
+
+        <div class="box">
+          <div class="title">Environmental Cost Scenario</div>
+          <div class="control">
+            <div class="row"><span>Carbon Price (USD/tCO₂e)</span><span id="carbonPriceLabel">$65</span></div>
+            <input id="carbonPriceSlider" type="range" min="0" max="200" step="5" value="65" />
+            <div class="hint">Adjust to see how carbon pricing affects per-oz cost and % of AISC. Reference: EU ETS ~$65/tCO₂e (2024).</div>
+          </div>
+          <div style="margin-top: 8px;">
+            <span class="env-badge env-carbon" id="carbonPerOzBadge">—</span>
+            <span class="env-badge env-total" id="envPctAiscBadge">—</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="center">
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="label">Gross Margin Proxy</div>
+            <div class="value" id="marginValue">—</div>
+            <div class="delta" id="marginDelta">—</div>
+          </div>
+          <div class="metric">
+            <div class="label">Breakeven Price (AISC)</div>
+            <div class="value" id="breakevenValue">—</div>
+            <div class="delta" id="breakevenDelta">—</div>
+          </div>
+          <div class="metric">
+            <div class="label">Cost Spread (AISC−Cash)</div>
+            <div class="value" id="spreadValue">—</div>
+            <div class="delta" id="spreadDelta">—</div>
+          </div>
+          <div class="metric">
+            <div class="label">Stability Index</div>
+            <div class="value" id="stabilityValue">—</div>
+            <div class="delta" id="stabilityDelta">—</div>
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="title">Tholonic N‑D‑C Outputs (Value)</div>
+          <div class="metric-grid" style="margin-bottom:0;">
+            <div class="metric" style="background:#1f2937;">
+              <div class="label">N (Negotiation)</div>
+              <div class="value" id="ndcNValue">—</div>
+              <div class="delta" id="ndcNDelta">—</div>
+            </div>
+            <div class="metric" style="background:#1f2937;">
+              <div class="label">Balance Score</div>
+              <div class="value" id="ndcBalanceValue">—</div>
+              <div class="delta" id="ndcBalanceDelta">—</div>
+            </div>
+            <div class="metric" style="background:#1f2937;">
+              <div class="label">Sustainability</div>
+              <div class="value" id="ndcSustainValue">—</div>
+              <div class="delta" id="ndcSustainDelta">—</div>
+            </div>
+            <div class="metric" style="background:#1f2937;">
+              <div class="label">Imbalance |D−C|</div>
+              <div class="value" id="ndcImbalanceValue">—</div>
+              <div class="delta" id="ndcImbalanceDelta">—</div>
+            </div>
+          </div>
+          <div class="hint" style="margin-top:10px;">
+            Computed using the same equations as the supply-chain N‑D‑C framework, but applied strictly within the value layer.
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="title">Interpretation (Value Layer)</div>
+          <div class="hint">
+            This page is educational: it shows how value-chain parameters interact. It does not make claims about physical production,
+            custody, or flow. Any missing/opaque commercial data should be recorded as OPAQUE in the value-chain store.
+          </div>
+        </div>
+
+        <div class="box">
+          <div class="title">Environmental Cost Breakdown — Per Phase (at selected carbon price)</div>
+          <div class="hint" style="margin-bottom:10px;">
+            Carbon cost per troy oz by supply chain phase, derived from Scope 1+2 emissions in the supply chain layer.
+            Energy and water costs use reference tariff rates. Scope 3 shows inherited upstream liability.
+          </div>
+          <div id="envPhaseBreakdown"></div>
+          <div style="margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0;">
+            <div style="font-size:12px; font-weight:900; margin-bottom:6px;">Chain Totals</div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <span class="env-badge env-carbon" id="totalCarbonCost">—</span>
+              <span class="env-badge env-energy" id="totalEnergyCost">—</span>
+              <span class="env-badge env-water" id="totalWaterCost">—</span>
+              <span class="env-badge env-total" id="totalEnvPerOz">—</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="right">
+        <div class="title">Impact Analysis</div>
+        <ul class="list" id="impactList"></ul>
+        <div class="box">
+          <div class="title">Data Source</div>
+          <div class="hint">
+            Loaded from <code>/frontend/project/gold/data/processed/gold_value_metrics.json</code>. Current sample rows are marked <strong>simulated</strong>.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div>Value chain simulator • separate by design</div>
+      <div><a href="../../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
+    </div>
+  </div>
+
+  <script>
+    const ENTITIES = [
+      { entity_id: "E001", label: "Newmont (E001)" },
+      { entity_id: "E002", label: "Barrick (E002)" }
+    ];
+
+    // Hardcoded fallback if JSON fetch fails (e.g. file:// protocol)
+    const FALLBACK_VC_DATA = {
+      phases: {
+        "0": { name: "Exploration", scope1_tco2: 120000, scope2_tco2: 25000, energy_kwh: 5000, water_litres: 0,
+                carbon_cost_per_oz: 0.0888, energy_cost_per_oz: 0.0000057, water_cost_per_oz: 0, total_env_cost_per_oz: 0.0888, env_pct_of_aisc: 0.006 },
+        "1": { name: "Mine Extraction", scope1_tco2: 8200000, scope2_tco2: 27800000, energy_kwh: 250000, water_litres: 2000000,
+                carbon_cost_per_oz: 22.07, energy_cost_per_oz: 0.000283, water_cost_per_oz: 0.0000377, total_env_cost_per_oz: 22.07, env_pct_of_aisc: 1.594 },
+        "2": { name: "Ore Processing", scope1_tco2: 3000000, scope2_tco2: 17000000, energy_kwh: 180000, water_litres: 8500000,
+                carbon_cost_per_oz: 12.26, energy_cost_per_oz: 0.000204, water_cost_per_oz: 0.0001604, total_env_cost_per_oz: 12.26, env_pct_of_aisc: 0.885 },
+        "3": { name: "Smelting & Doré", scope1_tco2: 3800000, scope2_tco2: 2600000, energy_kwh: 30000, water_litres: 300000,
+                carbon_cost_per_oz: 4.05, energy_cost_per_oz: 0.0000339, water_cost_per_oz: 0.00000566, total_env_cost_per_oz: 4.05, env_pct_of_aisc: 0.293 },
+        "4": { name: "Refining", scope1_tco2: 2000000, scope2_tco2: 3600000, energy_kwh: 80000, water_litres: 1000000,
+                carbon_cost_per_oz: 3.58, energy_cost_per_oz: 0.0000905, water_cost_per_oz: 0.0000189, total_env_cost_per_oz: 3.58, env_pct_of_aisc: 0.258 },
+        "5": { name: "Assay & Certification", scope1_tco2: 500000, scope2_tco2: 700000, energy_kwh: 15000, water_litres: 30000,
+                carbon_cost_per_oz: 0.778, energy_cost_per_oz: 0.0000170, water_cost_per_oz: 0.00000057, total_env_cost_per_oz: 0.778, env_pct_of_aisc: 0.056 },
+        "6": { name: "Logistics & Transport", scope1_tco2: 3200000, scope2_tco2: 800000, energy_kwh: 5000, water_litres: 0,
+                carbon_cost_per_oz: 2.46, energy_cost_per_oz: 0.00000566, water_cost_per_oz: 0, total_env_cost_per_oz: 2.46, env_pct_of_aisc: 0.177 },
+        "7": { name: "Exchange Registration", scope1_tco2: 40000, scope2_tco2: 200000, energy_kwh: 2000, water_litres: 0,
+                carbon_cost_per_oz: 0.146, energy_cost_per_oz: 0.00000226, water_cost_per_oz: 0, total_env_cost_per_oz: 0.146, env_pct_of_aisc: 0.011 },
+        "8": { name: "End Use & Fabrication", scope1_tco2: 1200000, scope2_tco2: 2000000, energy_kwh: 70000, water_litres: 1000000,
+                carbon_cost_per_oz: 2.07, energy_cost_per_oz: 0.0000792, water_cost_per_oz: 0.0000189, total_env_cost_per_oz: 2.07, env_pct_of_aisc: 0.149 }
+      },
+      _meta: { parameters: { carbon_price_usd_per_tco2: 65, energy_tariff_usd_per_kwh: 0.12, water_rate_usd_per_litre: 0.002, ref_production_oz_per_year: 106100000, baseline_aisc_usd_per_oz: 1385 } }
+    };
+
+    let vcData = null; // loaded from gold_value_chain_ui.json
+
+    function el(id) { return document.getElementById(id); }
+    function fmtUSD(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "—";
+      return "$" + new Intl.NumberFormat(undefined, { maximumFractionDigits: 0 }).format(num);
+    }
+    function fmtPct(num) {
+      if (num === null || num === undefined || Number.isNaN(num)) return "—";
+      return (num * 100).toFixed(1) + "%";
+    }
+
+    async function loadMetrics() {
+      const res = await fetch("/frontend/project/gold/data/processed/gold_value_metrics.json", { cache: "no-store" });
+      if (!res.ok) throw new Error("Failed to load value_metrics.json");
+      return await res.json();
+    }
+
+    async function loadVcData() {
+      try {
+        const res = await fetch("/frontend/project/gold/data/processed/gold_value_chain_ui.json", { cache: "no-store" });
+        if (res.ok) return await res.json();
+      } catch(e) { /* fall through */ }
+      return FALLBACK_VC_DATA;
+    }
+
+    function renderEnvBreakdown(carbonPrice) {
+      if (!vcData) return;
+      const refOz = vcData._meta.parameters.ref_production_oz_per_year || 106_100_000;
+      const baseCarbon = vcData._meta.parameters.carbon_price_usd_per_tco2 || 65;
+      const energyTariff = vcData._meta.parameters.energy_tariff_usd_per_kwh || 0.12;
+      const waterRate = vcData._meta.parameters.water_rate_usd_per_litre || 0.002;
+      const aisc = vcData._meta.parameters.baseline_aisc_usd_per_oz || 1385;
+      const scale = carbonPrice / baseCarbon; // scale carbon component only
+
+      const container = el("envPhaseBreakdown");
+      if (!container) return;
+
+      const phases = vcData.phases || {};
+      const pids = Object.keys(phases).sort((a, b) => parseInt(a) - parseInt(b));
+
+      // Compute max for bar scaling
+      let maxPerOz = 0;
+      for (const pid of pids) {
+        const p = phases[pid];
+        const s1 = p.scope1_tco2 || 0, s2 = p.scope2_tco2 || 0;
+        const carbCost = (s1 + s2) * carbonPrice / refOz;
+        const enCost = (p.energy_kwh || 0) * energyTariff / refOz;
+        const wCost = (p.water_litres || 0) * waterRate / refOz;
+        const tot = carbCost + enCost + wCost;
+        if (tot > maxPerOz) maxPerOz = tot;
+      }
+      if (maxPerOz < 0.01) maxPerOz = 0.01;
+
+      let html = "";
+      let totalCarbonUsd = 0, totalEnergyUsd = 0, totalWaterUsd = 0, totalEnvOz = 0;
+
+      for (const pid of pids) {
+        const p = phases[pid];
+        const s1 = p.scope1_tco2 || 0, s2 = p.scope2_tco2 || 0;
+        const carbCost = (s1 + s2) * carbonPrice / refOz;
+        const enCost = (p.energy_kwh || 0) * energyTariff / refOz;
+        const wCost = (p.water_litres || 0) * waterRate / refOz;
+        const tot = carbCost + enCost + wCost;
+        const barPct = Math.min(100, (tot / maxPerOz) * 100);
+
+        totalCarbonUsd += (s1 + s2) * carbonPrice;
+        totalEnergyUsd += (p.energy_kwh || 0) * energyTariff;
+        totalWaterUsd += (p.water_litres || 0) * waterRate;
+        totalEnvOz += tot;
+
+        const envPct = (tot / aisc * 100).toFixed(2);
+        html += `<div class="env-bar-row">
+          <div class="env-bar-label" title="P${pid}: ${p.name}">P${pid} ${(p.name||"").substring(0,14)}</div>
+          <div class="env-bar-track">
+            <div class="env-bar-fill" style="width:${barPct.toFixed(1)}%;background:linear-gradient(90deg,#f59e0b,#f97316);"></div>
+          </div>
+          <div class="env-bar-val">$${tot.toFixed(2)}/oz</div>
+          <span class="env-badge env-total" style="font-size:10px; white-space:nowrap;">${envPct}% AISC</span>
+        </div>`;
+      }
+      container.innerHTML = html;
+
+      // Update chain total badges
+      const totalPctAisc = totalEnvOz / aisc * 100;
+      if (el("totalCarbonCost")) el("totalCarbonCost").textContent = `Carbon: $${(totalCarbonUsd/1e9).toFixed(2)}B/yr`;
+      if (el("totalEnergyCost")) el("totalEnergyCost").textContent = `Energy: $${(totalEnergyUsd/1e6).toFixed(1)}M/yr`;
+      if (el("totalWaterCost")) el("totalWaterCost").textContent = `Water: $${(totalWaterUsd/1e6).toFixed(1)}M/yr`;
+      if (el("totalEnvPerOz")) el("totalEnvPerOz").textContent = `Total: $${totalEnvOz.toFixed(2)}/oz (${totalPctAisc.toFixed(2)}% AISC)`;
+
+      // Update left panel badges
+      const p1 = phases["1"];
+      if (p1) {
+        const s1 = p1.scope1_tco2 || 0, s2 = p1.scope2_tco2 || 0;
+        const p1CarbonOz = (s1 + s2) * carbonPrice / refOz;
+        const p1EnOz = (p1.energy_kwh || 0) * energyTariff / refOz;
+        const p1WOz = (p1.water_litres || 0) * waterRate / refOz;
+        const p1Tot = p1CarbonOz + p1EnOz + p1WOz;
+        if (el("carbonPerOzBadge")) el("carbonPerOzBadge").textContent = `P1 Carbon: $${p1CarbonOz.toFixed(2)}/oz`;
+        if (el("envPctAiscBadge")) el("envPctAiscBadge").textContent = `P1 env cost: ${(p1Tot/aisc*100).toFixed(2)}% AISC`;
+      }
+    }
+
+    function filterLatest(records, entityId, periodType) {
+      const rows = records
+        .filter(r => String(r.value_phase_id) === "1" && String(r.entity_id) === String(entityId) && String(r.period_type) === String(periodType))
+        .sort((a, b) => String(a.date).localeCompare(String(b.date)));
+      if (!rows.length) return { aisc: null, cash: null };
+      const latestDate = rows[rows.length - 1].date;
+      const latestRows = rows.filter(r => r.date === latestDate);
+      const aisc = latestRows.find(r => r.metric_name === "aisc_usd_per_oz");
+      const cash = latestRows.find(r => r.metric_name === "cash_cost_usd_per_oz");
+      return { aisc: aisc ? Number(aisc.metric_value) : null, cash: cash ? Number(cash.metric_value) : null };
+    }
+
+    function stabilityIndex(price, aisc, cash) {
+      // Educational metric: combines margin buffer and internal spread.
+      // Range ~0..1 (higher is better). Not a financial forecast.
+      const margin = price - aisc;
+      const buffer = Math.max(0, Math.min(1, margin / 800)); // normalize with 800 USD/oz buffer
+      const spread = aisc - cash;
+      const spreadPenalty = Math.max(0, Math.min(1, spread / 800)); // larger spread → more sustaining burden
+      return Math.max(0, Math.min(1, buffer * (1 - 0.5 * spreadPenalty)));
+    }
+
+    function compute(price, aisc, cash) {
+      const margin = (price !== null && aisc !== null) ? (price - aisc) : null;
+      const breakeven = aisc;
+      const spread = (aisc !== null && cash !== null) ? (aisc - cash) : null;
+      const stability = (price !== null && aisc !== null && cash !== null) ? stabilityIndex(price, aisc, cash) : null;
+      return { margin, breakeven, spread, stability };
+    }
+
+    function computeNdc(D, C) {
+      const imbalance = Math.abs(D - C);
+      const maxVal = Math.max(D, C, 1);
+      const balance = 100 * Math.exp(-2 * imbalance / maxVal);
+      const energyCost = Math.pow(imbalance, 2) + 10;
+      const sustainability = 100 / energyCost;
+      const N = Math.sqrt(D * C) * (balance / 100);
+      return { N, balance, sustainability, imbalance };
+    }
+
+    function renderImpact({ price, aisc, cash, margin, spread, stability }) {
+      const list = el("impactList");
+      list.innerHTML = "";
+
+      const items = [];
+      if (margin !== null) {
+        if (margin < 0) items.push({ kind: "bad", t: "Negative margin vs AISC", d: `Price ${fmtUSD(price)} is below AISC ${fmtUSD(aisc)}. This configuration is not resilient.` });
+        else if (margin < 150) items.push({ kind: "bad", t: "Thin margin buffer", d: `Margin proxy is ${fmtUSD(margin)}. Small shocks could erase the buffer.` });
+        else items.push({ kind: "good", t: "Healthy margin buffer", d: `Margin proxy is ${fmtUSD(margin)}. More resilient to cost/price swings.` });
+      }
+
+      if (spread !== null) {
+        if (spread > 450) items.push({ kind: "bad", t: "High sustaining burden", d: `AISC−Cash spread is ${fmtUSD(spread)}. Indicates significant sustaining overhead/capex.` });
+        else items.push({ kind: "good", t: "Moderate sustaining burden", d: `AISC−Cash spread is ${fmtUSD(spread)}.` });
+      }
+
+      if (stability !== null) {
+        if (stability < 0.35) items.push({ kind: "bad", t: "Low stability index", d: `Stability is ${fmtPct(stability)}. Consider reducing AISC or increasing buffer.` });
+        else if (stability < 0.65) items.push({ kind: "bad", t: "Moderate stability index", d: `Stability is ${fmtPct(stability)}. Improvements are possible.` });
+        else items.push({ kind: "good", t: "High stability index", d: `Stability is ${fmtPct(stability)}.` });
+      }
+
+      for (const it of items) {
+        const li = document.createElement("li");
+        li.className = it.kind;
+        li.innerHTML = `<div class="title">${it.t}</div><div class="desc">${it.d}</div>`;
+        list.appendChild(li);
+      }
+      if (!items.length) {
+        const li = document.createElement("li");
+        li.innerHTML = `<div class="title">No data</div><div class="desc">No records found for this selection.</div>`;
+        list.appendChild(li);
+      }
+    }
+
+    function updateUI(baseline, current) {
+      el("aiscLabel").textContent = fmtUSD(current.aisc);
+      el("cashLabel").textContent = fmtUSD(current.cash);
+      el("priceLabel").textContent = fmtUSD(current.price);
+
+      el("marginValue").textContent = fmtUSD(current.margin);
+      el("breakevenValue").textContent = fmtUSD(current.breakeven);
+      el("spreadValue").textContent = fmtUSD(current.spread);
+      el("stabilityValue").textContent = fmtPct(current.stability);
+
+      const dMargin = (baseline.margin !== null && current.margin !== null) ? current.margin - baseline.margin : null;
+      const dBreak = (baseline.breakeven !== null && current.breakeven !== null) ? current.breakeven - baseline.breakeven : null;
+      const dSpread = (baseline.spread !== null && current.spread !== null) ? current.spread - baseline.spread : null;
+      const dStab = (baseline.stability !== null && current.stability !== null) ? current.stability - baseline.stability : null;
+
+      el("marginDelta").textContent = dMargin !== null ? `Δ ${fmtUSD(dMargin)}` : "—";
+      el("breakevenDelta").textContent = dBreak !== null ? `Δ ${fmtUSD(dBreak)}` : "—";
+      el("spreadDelta").textContent = dSpread !== null ? `Δ ${fmtUSD(dSpread)}` : "—";
+      el("stabilityDelta").textContent = dStab !== null ? `Δ ${(dStab*100).toFixed(1)}%` : "—";
+
+      // NDC outputs (value layer)
+      const ndc = computeNdc(current.D, current.C);
+      const ndcBase = computeNdc(baseline.D, baseline.C);
+
+      el("ndcNValue").textContent = ndc.N !== null ? ndc.N.toFixed(1) : "—";
+      el("ndcBalanceValue").textContent = ndc.balance !== null ? ndc.balance.toFixed(1) : "—";
+      el("ndcSustainValue").textContent = ndc.sustainability !== null ? ndc.sustainability.toFixed(3) : "—";
+      el("ndcImbalanceValue").textContent = ndc.imbalance !== null ? ndc.imbalance.toFixed(0) : "—";
+
+      el("ndcNDelta").textContent = `Δ ${(ndc.N - ndcBase.N).toFixed(1)}`;
+      el("ndcBalanceDelta").textContent = `Δ ${(ndc.balance - ndcBase.balance).toFixed(1)}`;
+      el("ndcSustainDelta").textContent = `Δ ${(ndc.sustainability - ndcBase.sustainability).toFixed(3)}`;
+      el("ndcImbalanceDelta").textContent = `Δ ${(ndc.imbalance - ndcBase.imbalance).toFixed(0)}`;
+
+      renderImpact(current);
+    }
+
+    function setEntityOptions() {
+      const sel = el("entitySelect");
+      sel.innerHTML = "";
+      for (const e of ENTITIES) {
+        const opt = document.createElement("option");
+        opt.value = e.entity_id;
+        opt.textContent = e.label;
+        sel.appendChild(opt);
+      }
+    }
+
+    async function main() {
+      setEntityOptions();
+      el("entitySelect").value = "E001";
+      el("periodSelect").value = "quarterly";
+
+      const [payload, vcPayload] = await Promise.all([
+        loadMetrics(),
+        loadVcData()
+      ]);
+      const records = payload.records || [];
+      vcData = vcPayload;
+
+      // Initial env breakdown render
+      renderEnvBreakdown(65);
+
+      el("carbonPriceSlider").addEventListener("input", () => {
+        const cp = Number(el("carbonPriceSlider").value);
+        el("carbonPriceLabel").textContent = "$" + cp;
+        renderEnvBreakdown(cp);
+      });
+
+      const defaultPrice = 5000; // Current reference ~Apr 2026; not from supply-chain layer
+      let baseline = null;
+
+      function initFromStore() {
+        const entityId = el("entitySelect").value;
+        const periodType = el("periodSelect").value;
+        const latest = filterLatest(records, entityId, periodType);
+
+        const aisc = latest.aisc ?? 1400;
+        const cash = latest.cash ?? 980;
+
+        el("aiscSlider").value = aisc;
+        el("cashSlider").value = cash;
+        el("priceSlider").value = defaultPrice;
+
+        // Initialize NDC sliders from value-chain NDC store if available; else use a sensible baseline
+        // For now: set D/C in a plausible range and keep them close for balance.
+        const D0 = 330;
+        const C0 = 315;
+        el("dSlider").value = D0;
+        el("cSlider").value = C0;
+
+        baseline = compute(defaultPrice, aisc, cash);
+        baseline.D = Number(D0);
+        baseline.C = Number(C0);
+        refresh();
+      }
+
+      function refresh() {
+        const aisc = Number(el("aiscSlider").value);
+        const cash = Number(el("cashSlider").value);
+        const price = Number(el("priceSlider").value);
+        const D = Number(el("dSlider").value);
+        const C = Number(el("cSlider").value);
+
+        const current = compute(price, aisc, cash);
+        current.price = price;
+        current.aisc = aisc;
+        current.cash = cash;
+        current.D = D;
+        current.C = C;
+
+        el("dLabel").textContent = String(D);
+        el("cLabel").textContent = String(C);
+
+        updateUI({ ...baseline, price: defaultPrice, aisc: Number(el("aiscSlider").defaultValue || aisc), cash: Number(el("cashSlider").defaultValue || cash), D: baseline.D, C: baseline.C }, current);
+      }
+
+      el("entitySelect").addEventListener("change", initFromStore);
+      el("periodSelect").addEventListener("change", initFromStore);
+      el("aiscSlider").addEventListener("input", refresh);
+      el("cashSlider").addEventListener("input", refresh);
+      el("priceSlider").addEventListener("input", refresh);
+      el("dSlider").addEventListener("input", refresh);
+      el("cSlider").addEventListener("input", refresh);
+
+      el("resetBtn").addEventListener("click", initFromStore);
+      el("applyBtn").addEventListener("click", () => {
+        alert("Applied (mock): In a production value-chain system this would write scenario outputs to a separate store/log.");
+      });
+
+      initFromStore();
+    }
+
+    main().catch(err => {
+      console.error(err);
+      // Still attempt env breakdown with fallback data
+      vcData = FALLBACK_VC_DATA;
+      renderEnvBreakdown(65);
+    });
+  </script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

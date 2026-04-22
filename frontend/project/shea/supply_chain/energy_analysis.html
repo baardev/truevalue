@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Energy Analysis — Shea Butter Supply Chain</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); min-height: 100vh; padding: 20px; }
+        .page { max-width: 1400px; margin: 0 auto; background: #f4f6f9; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+        .header { background: linear-gradient(135deg, #1b5e20 0%, #33691e 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+        .header-left p  { font-size: 12px; color: #a5d6a7; margin-top: 4px; }
+        .nav-link { color: #a5d6a7; text-decoration: none; margin-left: 20px; font-size: 13px; }
+        .nav-link:hover { color: white; }
+        #sourceBanner { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 10px 30px; font-size: 12px; color: #1b5e20; display: flex; align-items: center; gap: 8px; }
+        /* BAU vs SS energy hero */
+        .bau-hero { background: linear-gradient(135deg, #e65100 0%, #bf360c 100%); color: white; padding: 24px 30px; }
+        .bau-hero h2 { font-size: 17px; font-weight: 400; margin-bottom: 6px; }
+        .bau-hero p  { font-size: 12px; color: rgba(255,255,255,0.75); margin-bottom: 18px; }
+        .bau-grid { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 14px; }
+        .bau-card { background: rgba(255,255,255,0.12); border-radius: 8px; padding: 14px; text-align: center; }
+        .bau-card-label { font-size: 10px; font-weight: 600; text-transform: uppercase; color: rgba(255,255,255,0.7); margin-bottom: 6px; }
+        .bau-card-value { font-size: 24px; font-weight: 700; }
+        .bau-card-sub { font-size: 10px; color: rgba(255,255,255,0.65); margin-top: 5px; }
+        .bau-card.highlight { background: rgba(255,255,255,0.22); border: 1px solid rgba(255,255,255,0.4); }
+        .kpi-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: #dee2e6; }
+        .kpi-card { background: white; padding: 18px; text-align: center; }
+        .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 6px; }
+        .kpi-value { font-size: 22px; font-weight: 700; }
+        .kpi-sub   { font-size: 11px; color: #6c757d; margin-top: 4px; }
+        .grade-badge { display: inline-block; padding: 5px 18px; border-radius: 20px; font-size: 26px; font-weight: 900; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .card-title { font-size: 13px; font-weight: 700; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; }
+        svg.chart { width: 100%; display: block; }
+        .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .phase-table th { background: #2e7d32; color: white; padding: 9px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; }
+        .phase-table td { padding: 9px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .phase-table tr:hover td { background: #f1f8e9; }
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .pill-total  { background: #f3e5f5; color: #6a1b9a; }
+        .pill-clean  { background: #e8f5e9; color: #2e7d32; }
+        .pill-fossil { background: #fff3e0; color: #bf360c; }
+        .rating-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; }
+        .r-excellent { background: #d4edda; color: #155724; }
+        .r-good      { background: #d1ecf1; color: #0c5460; }
+        .r-moderate  { background: #fff3cd; color: #856404; }
+        .r-poor      { background: #f8d7da; color: #721c24; }
+        .r-critical  { background: #343a40; color: white; }
+        .findings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .finding-card { padding: 16px; border-radius: 8px; border-left: 4px solid; }
+        .finding-card.positive { background: #d4edda; border-color: #28a745; }
+        .finding-card.warning  { background: #fff3cd; border-color: #ffc107; }
+        .finding-card.negative { background: #f8d7da; border-color: #dc3545; }
+        .finding-card .finding-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+        .finding-card .finding-body  { font-size: 11px; line-height: 1.5; color: #495057; }
+        .footnote { padding: 16px 30px; background: #f8f9fa; border-top: 1px solid #dee2e6; font-size: 10px; color: #adb5bd; line-height: 1.6; }
+    </style>
+</head>
+<body>
+<div class="page">
+    <div class="header">
+        <div class="header-left">
+            <h1>⚡ Energy Consumption Analysis — Shea Butter Supply Chain</h1>
+            <p>Total · Clean vs fossil · BAU vs Serious Shea · WGC 2030 target · Phase-resolved</p>
+        </div>
+        <div>
+            <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
+            <a href="emissions_analysis.html" class="nav-link">🌡️ Carbon</a>
+            <a href="water_analysis.html" class="nav-link">💧 Water</a>
+            <a href="/index.html" class="nav-link">🏠 Home</a>
+        </div>
+    </div>
+    <div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading energy data…</span></div>
+
+    <!-- BAU vs SS energy hero -->
+    <div class="bau-hero">
+        <h2>🔥 Phase 3 — Energy: Firewood vs Renewable (BAU vs Serious Shea)</h2>
+        <p>The only phase with real cited energy data. Source: Serious Shea BPlan V8 April 2023; Clarity/Cleo Value Chain Outline.</p>
+        <div class="bau-grid">
+            <div class="bau-card">
+                <div class="bau-card-label">BAU — Firewood</div>
+                <div class="bau-card-value">88</div>
+                <div class="bau-card-sub">kWh thermal / kg butter</div>
+                <div style="margin-top:6px;font-size:10px;color:rgba(255,255,255,0.55);">20 kg wood × 4.4 kWh/kg · 0% clean</div>
+            </div>
+            <div class="bau-card highlight">
+                <div class="bau-card-label">Serious Shea — Renewable</div>
+                <div class="bau-card-value">~4.5</div>
+                <div class="bau-card-sub">kWh electric / kg butter</div>
+                <div style="margin-top:6px;font-size:10px;color:rgba(255,255,255,0.55);">Electric mills · Solar/biogas · 100% clean</div>
+            </div>
+            <div class="bau-card">
+                <div class="bau-card-label">Energy Saving</div>
+                <div class="bau-card-value" style="color:#ffcc80;">~20×</div>
+                <div class="bau-card-sub">less energy per kg</div>
+                <div style="margin-top:6px;font-size:10px;color:rgba(255,255,255,0.55);">Plus 100% clean vs 0% clean</div>
+            </div>
+            <div class="bau-card">
+                <div class="bau-card-label">Phase 5 — Cleo Mfg</div>
+                <div class="bau-card-value" style="color:#a5d6a7;">100%</div>
+                <div class="bau-card-sub">renewable energy</div>
+                <div style="margin-top:6px;font-size:10px;color:rgba(255,255,255,0.55);">Explicitly stated · Best practice</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="kpi-strip">
+        <div class="kpi-card"><div class="kpi-label">Total Energy</div><div class="kpi-value" id="kpiTotal" style="color:#6a1b9a;">—</div><div class="kpi-sub">kWh (reference scale)</div></div>
+        <div class="kpi-card"><div class="kpi-label">Clean Energy</div><div class="kpi-value" id="kpiClean" style="color:#2e7d32;">—</div><div class="kpi-sub">renewables / solar / biogas</div></div>
+        <div class="kpi-card"><div class="kpi-label">Fossil Energy</div><div class="kpi-value" id="kpiFossil" style="color:#bf360c;">—</div><div class="kpi-sub">diesel / bunker / firewood</div></div>
+        <div class="kpi-card"><div class="kpi-label">Clean Mix</div><div class="kpi-value" id="kpiMix" style="color:#1565c0;">—</div><div class="kpi-sub" id="kpiMixSub">vs 60% WGC 2030 target</div></div>
+        <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest energy use</div></div>
+        <div class="kpi-card"><div class="kpi-label">Chain Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs 60% target</div></div>
+    </div>
+
+    <div class="main-grid">
+        <div class="card">
+            <div class="card-title">📊 Clean vs Fossil Energy by Phase</div>
+            <svg class="chart" id="barChart" viewBox="0 0 600 280"></svg>
+        </div>
+        <div class="card">
+            <div class="card-title">🎯 Clean Energy % vs WGC 2030 Target (60%)</div>
+            <svg class="chart" id="targetChart" viewBox="0 0 600 280"></svg>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+            <table class="phase-table"><thead><tr>
+                <th>Phase</th><th>Total Energy</th><th>Clean</th><th>Fossil</th>
+                <th>Clean %</th><th>% of Chain</th><th>2030 Gap</th><th>Data Quality</th><th>Rating</th>
+            </tr></thead><tbody id="phaseTableBody"></tbody></table>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">💡 Key Findings &amp; Analysis</div>
+            <div class="findings-grid" id="findingsGrid"></div>
+        </div>
+        <div class="card full-width">
+            <div class="card-title">🔋 Fossil Energy Reduction Opportunity Ranking</div>
+            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by fossil energy. Sources: Serious Shea BPlan V8 2023; Clarity/Cleo outline; ICCT shipping benchmarks; inferred from process descriptions. WGC 2030 target: 60% clean energy across agri-food operations.</p>
+            <div id="fossilRanking"></div>
+        </div>
+    </div>
+    <div class="footnote">
+        <strong>Data sources &amp; quality flags:</strong>
+        Phase 3 BAU: Serious Shea BPlan V8 2023 — 20 kg firewood/kg butter → 88 kWh thermal/kg butter (quality: Medium) ·
+        Phase 3 Serious Shea: Clarity/Cleo outline — 100% renewable target; ~4.5 kWh electric/kg butter (quality: Medium) ·
+        Phase 5 (Cleo Manufacturing): Clarity/Cleo outline — 100% renewable explicitly stated (quality: Medium) ·
+        Phase 4 (Export): EU mandates clean-energy processing at destination — binary flag in source data ·
+        Phases 0–2, 6: Inferred from rural West Africa logistics, retail benchmarks (quality: Low) ·
+        This page reads live what-if state from the simulator if opened via the ⚡ Energy button.
+    </div>
+</div>
+<script>
+const DATA_URL = '/frontend/project/shea/data/processed/shea_supply_chain_ui.json';
+const WGC_TARGET = 60;
+
+const FALLBACK = [
+    { id:0, name:'Collection',    D:235,C:175, energy:200,   energy_unit:'kWh', energy_clean_pct:5,   energy_quality:'Low',    energy_bau_kwh_per_kg:0 },
+    { id:1, name:'First sale',    D:220,C:195, energy:2000,  energy_unit:'kWh', energy_clean_pct:5,   energy_quality:'Low',    energy_bau_kwh_per_kg:0 },
+    { id:2, name:'Trading',       D:245,C:230, energy:15000, energy_unit:'kWh', energy_clean_pct:10,  energy_quality:'Low',    energy_bau_kwh_per_kg:0 },
+    { id:3, name:'Processing',    D:265,C:255, energy:95000, energy_unit:'kWh', energy_clean_pct:80,  energy_quality:'Medium', energy_bau_kwh_per_kg:88 },
+    { id:4, name:'Export',        D:210,C:165, energy:180000,energy_unit:'kWh', energy_clean_pct:15,  energy_quality:'Low',    energy_bau_kwh_per_kg:0 },
+    { id:5, name:'Manufacturing', D:250,C:238, energy:35000, energy_unit:'kWh', energy_clean_pct:100, energy_quality:'Medium', energy_bau_kwh_per_kg:0 },
+    { id:6, name:'Retail',        D:240,C:265, energy:8000,  energy_unit:'kWh', energy_clean_pct:65,  energy_quality:'Low',    energy_bau_kwh_per_kg:0 },
+];
+
+function calcBalance(D,C){ return 100*Math.exp(-2*Math.abs(D-C)/Math.max(D,C,1)); }
+function fmtE(v){
+    if(v>=1e12) return `${(v/1e12).toFixed(2)} TWh`;
+    if(v>=1e9)  return `${(v/1e9).toFixed(2)} GWh`;
+    if(v>=1e6)  return `${(v/1e6).toFixed(2)} MWh`;
+    if(v>=1e3)  return `${(v/1e3).toFixed(0)} kWh`;
+    return `${v} Wh`;
+}
+function getGrade(pct){ if(pct>=60)return{g:'A+',l:'Meets 2030 Target',bg:'#d4edda',c:'#155724'}; if(pct>=50)return{g:'A',l:'Near Target',bg:'#d1ecf1',c:'#0c5460'}; if(pct>=35)return{g:'B',l:'Progressing',bg:'#fff3cd',c:'#856404'}; if(pct>=15)return{g:'C',l:'Lagging',bg:'#f8d7da',c:'#721c24'}; return{g:'D',l:'Critical',bg:'#343a40',c:'white'}; }
+function getPhaseRating(pct,balance){ if(balance<65)return{label:'Bottlenecked',cls:'r-critical'}; if(pct>=60)return{label:'On target',cls:'r-excellent'}; if(pct>=50)return{label:'Good',cls:'r-good'}; if(pct>=30)return{label:'Moderate',cls:'r-moderate'}; return{label:'Lagging',cls:'r-poor'}; }
+
+function render(rawPhases, sourceLabel) {
+    document.getElementById('sourceText').textContent=sourceLabel;
+    const data=rawPhases.map(p=>({...p, clean:Math.round(p.energy*p.energy_clean_pct/100), fossil:p.energy-Math.round(p.energy*p.energy_clean_pct/100), balance:calcBalance(p.D,p.C)}));
+    const totalEnergy=data.reduce((s,p)=>s+p.energy,0);
+    const totalClean=data.reduce((s,p)=>s+p.clean,0);
+    const totalFossil=data.reduce((s,p)=>s+p.fossil,0);
+    const chainClean=totalEnergy>0?((totalClean/totalEnergy)*100):0;
+    const dominant=data.reduce((a,b)=>b.energy>a.energy?b:a);
+    const grade=getGrade(chainClean);
+
+    document.getElementById('kpiTotal').textContent=fmtE(totalEnergy);
+    document.getElementById('kpiClean').textContent=fmtE(totalClean);
+    document.getElementById('kpiFossil').textContent=fmtE(totalFossil);
+    document.getElementById('kpiMix').textContent=chainClean.toFixed(1)+'%';
+    document.getElementById('kpiMixSub').textContent=chainClean>=WGC_TARGET?`✅ Meets ${WGC_TARGET}% target`:`Gap: ${(WGC_TARGET-chainClean).toFixed(1)}pp to ${WGC_TARGET}% target`;
+    document.getElementById('kpiDominant').textContent=`P${dominant.id} ${dominant.name.split(' ')[0]}`;
+    document.getElementById('kpiGrade').innerHTML=`<span class="grade-badge" style="background:${grade.bg};color:${grade.c};">${grade.g}</span>`;
+    document.getElementById('kpiGradeSub').textContent=grade.l;
+
+    drawBarChart(data);
+    drawTargetChart(data);
+    buildTable(data, totalEnergy);
+    buildFindings(data, totalEnergy, totalClean, totalFossil, chainClean, grade);
+    buildRanking(data);
+}
+
+function drawBarChart(data){
+    const W=600,H=280,mL=95,mR=120,mT=15,mB=35,plotW=W-mL-mR,plotH=H-mT-mB;
+    const maxV=Math.max(...data.map(d=>d.energy),1);
+    const rowH=plotH/data.length;
+    let svg='';
+    [0,0.25,0.5,0.75,1].forEach(f=>{const x=mL+f*plotW;svg+=`<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="#e9ecef" stroke-width="1"/><text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="#adb5bd">${fmtE(f*maxV)}</text>`;});
+    data.forEach((p,i)=>{
+        const y=mT+i*rowH,barH=rowH*0.6,barY=y+(rowH-barH)/2;
+        const totW=(p.energy/maxV)*plotW,cW=(p.clean/maxV)*plotW,fW=(p.fossil/maxV)*plotW;
+        const isBau = p.id===3&&p.energy_bau_kwh_per_kg>0;
+        svg+=`<text x="${mL-6}" y="${barY+barH/2+4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0]}</text>`;
+        if(cW>0) svg+=`<rect x="${mL}" y="${barY}" width="${cW}" height="${barH}" fill="#2e7d32" rx="2"/>`;
+        if(fW>0) svg+=`<rect x="${mL+cW}" y="${barY}" width="${fW}" height="${barH}" fill="#bf360c" rx="2" opacity="0.75"/>`;
+        svg+=`<text x="${mL+totW+4}" y="${barY+barH/2+4}" font-size="9" fill="#6c757d">${fmtE(p.energy)} (${p.energy_clean_pct}%)${isBau?' 🔥':''}</text>`;
+    });
+    svg+=`<rect x="${mL}" y="${H-14}" width="10" height="10" fill="#2e7d32" rx="2"/><text x="${mL+13}" y="${H-5}" font-size="10" fill="#6c757d">Clean</text>`;
+    svg+=`<rect x="${mL+55}" y="${H-14}" width="10" height="10" fill="#bf360c" rx="2" opacity="0.75"/><text x="${mL+68}" y="${H-5}" font-size="10" fill="#6c757d">Fossil</text>`;
+    document.getElementById('barChart').innerHTML=svg;
+}
+
+function drawTargetChart(data){
+    const W=600,H=280,mL=95,mR=30,mT=15,mB=50,plotW=W-mL-mR,plotH=H-mT-mB;
+    const rowH=plotH/data.length;
+    let svg='';
+    [0,20,40,60,80,100].forEach(f=>{
+        const x=mL+(f/100)*plotW;
+        const isT=f===60;
+        svg+=`<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="${isT?'#f44336':'#e9ecef'}" stroke-width="${isT?1.5:1}" stroke-dasharray="${isT?'4,3':'none'}"/>`;
+        svg+=`<text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="${isT?'#f44336':'#adb5bd'}">${f}%</text>`;
+    });
+    svg+=`<text x="${mL+(60/100)*plotW}" y="${mT-4}" text-anchor="middle" font-size="9" fill="#f44336" font-weight="600">WGC 2030</text>`;
+    data.forEach((p,i)=>{
+        const y=mT+i*rowH,barH=rowH*0.6,barY=y+(rowH-barH)/2;
+        const fw=(p.energy_clean_pct/100)*plotW;
+        const color=p.energy_clean_pct>=60?'#2e7d32':p.energy_clean_pct>=40?'#1976d2':p.energy_clean_pct>=20?'#f9a825':'#d32f2f';
+        svg+=`<rect x="${mL}" y="${barY}" width="${plotW}" height="${barH}" fill="#e9ecef" rx="2"/>`;
+        if(fw>0) svg+=`<rect x="${mL}" y="${barY}" width="${fw}" height="${barH}" fill="${color}" rx="2"/>`;
+        svg+=`<text x="${mL-6}" y="${barY+barH/2+4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0]}</text>`;
+        svg+=`<text x="${mL+fw+4}" y="${barY+barH/2+4}" font-size="9" fill="${color}" font-weight="600">${p.energy_clean_pct}%${p.id===5?' ✅':''}</text>`;
+    });
+    const tx=mL+(60/100)*plotW;
+    svg+=`<line x1="${tx}" y1="${mT}" x2="${tx}" y2="${mT+plotH}" stroke="#f44336" stroke-dasharray="4,3" stroke-width="1.5"/>`;
+    document.getElementById('targetChart').innerHTML=svg;
+}
+
+function buildTable(data, totalEnergy){
+    const rows=data.map(p=>{
+        const chainPct=totalEnergy>0?(p.energy/totalEnergy*100):0;
+        const gap=Math.max(0,WGC_TARGET-p.energy_clean_pct);
+        const rating=getPhaseRating(p.energy_clean_pct,p.balance);
+        const bauNote=p.id===3&&p.energy_bau_kwh_per_kg>0?`<span style="margin-left:6px;background:#fce4ec;color:#880e4f;padding:1px 6px;border-radius:4px;font-size:10px;">BAU 88 kWh/kg</span>`:'';
+        return `<tr>
+            <td><strong>P${p.id}</strong> ${p.name}${bauNote}${p.id===5?'<span style="margin-left:6px;background:#e8f5e9;color:#2e7d32;padding:1px 6px;border-radius:4px;font-size:10px;">100% renewable</span>':''}</td>
+            <td><span class="pill pill-total">${fmtE(p.energy)}</span></td>
+            <td><span class="pill pill-clean">${fmtE(p.clean)}</span></td>
+            <td><span class="pill pill-fossil">${fmtE(p.fossil)}</span></td>
+            <td><div style="display:flex;align-items:center;gap:4px;"><div style="width:50px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;"><div style="width:${p.energy_clean_pct}%;height:100%;background:${p.energy_clean_pct>=60?'#2e7d32':p.energy_clean_pct>=40?'#1976d2':'#d32f2f'};"></div></div><span style="font-weight:600;color:${p.energy_clean_pct>=60?'#2e7d32':p.energy_clean_pct>=40?'#1976d2':'#d32f2f'};">${p.energy_clean_pct}%</span></div></td>
+            <td><div style="display:flex;align-items:center;gap:4px;"><div style="width:40px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;"><div style="width:${Math.min(100,chainPct*2)}%;height:100%;background:#6a1b9a;"></div></div>${chainPct.toFixed(1)}%</div></td>
+            <td style="color:${gap>0?'#d32f2f':'#2e7d32'};font-weight:600;font-size:11px;">${gap>0?`-${gap.toFixed(0)}pp`:'✅ Met'}</td>
+            <td style="font-size:11px;color:#6c757d;">${p.energy_quality}</td>
+            <td><span class="rating-badge ${rating.cls}">${rating.label}</span></td>
+        </tr>`;
+    });
+    document.getElementById('phaseTableBody').innerHTML=rows.join('');
+}
+
+function buildFindings(data, totalEnergy, totalClean, totalFossil, chainClean, grade){
+    const findings=[];
+    const gradeMsg={'A+':'Meets WGC 2030 target. Clean energy mix ≥60%.','A':'Near 60% target. Targeted improvement in dominant phases closes the gap.','B':'35-50% clean — progressing. Phase 3 and 4 are the key leverage points.','C':'15-35% clean — lagging. Shipping and upstream logistics drive the fossil dependency.','D':'<15% clean — critical fossil dependency.'};
+    findings.push({type:chainClean>=50?'positive':'warning',title:`Chain Rating: ${grade.g} — ${grade.l}`,body:gradeMsg[grade.g]||`Chain clean: ${chainClean.toFixed(1)}%`});
+    findings.push({type:'positive',title:'Phase 3: Serious Shea Achieves ~20× Energy Reduction vs BAU',body:`BAU firewood processing requires ~88 kWh thermal per kg butter (20 kg wood × 4.4 kWh/kg). Serious Shea electric mills require ~4.5 kWh electric/kg butter — a 20× reduction, plus 100% clean vs 0% clean. This is the single most transformative energy intervention in the chain.`});
+    findings.push({type:'positive',title:'Phase 5: Cleo Manufacturing = 100% Renewable (Real Data)',body:`Cleo Organics uses 100% renewable energy for manufacturing. This is explicitly stated in the Clarity/Cleo Value Chain Outline and represents the highest-quality data point (Medium) in the energy dataset alongside Phase 3. It demonstrates the 60% WGC target is achievable.`});
+    const dom=data.reduce((a,b)=>b.energy>a.energy?b:a);
+    findings.push({type: dom.energy_clean_pct<30?'negative':'warning',title:`Dominant Phase P${dom.id} (${dom.name}): ${dom.energy_clean_pct}% clean`,body:`Phase ${dom.id} uses ${((dom.energy/totalEnergy)*100).toFixed(0)}% of total chain energy (${fmtE(dom.energy)}). ${dom.id===4?'Container shipping is currently locked into bunker fuel — green ammonia/hydrogen shipping is 2030+ commercially. Shore power at ports is the near-term lever.':'Increasing clean energy at this phase has the highest system-wide impact.'}`});
+    const onTarget=data.filter(p=>p.energy_clean_pct>=WGC_TARGET);
+    findings.push({type:onTarget.length>=2?'positive':'warning',title:`${onTarget.length} of 7 phases meet the 60% target`,body:`Phases ${onTarget.length>0?onTarget.map(p=>`P${p.id} (${p.energy_clean_pct}%)`).join(', '):'none'} already achieve ≥60% clean energy. ${onTarget.length<3?'Scaling these procurement strategies — especially renewable electricity for Phase 3 — to remaining phases can close the gap.':''}`});
+    findings.push({type:'warning',title:'Upstream Chain (P0–P2) Is Diesel/Fossil by Necessity',body:`Phases 0-2 (collection, first sale, trading) are diesel-dependent by the nature of rural West African logistics. At 5-10% clean energy, these phases are currently hard to decarbonise before rural electrification and EV adoption reach the Sahel. However, their absolute energy consumption is very low (${fmtE(data.filter(p=>p.id<=2).reduce((s,p)=>s+p.energy,0))} combined).`});
+    document.getElementById('findingsGrid').innerHTML=findings.map(f=>`<div class="finding-card ${f.type}"><div class="finding-title">${f.title}</div><div class="finding-body">${f.body}</div></div>`).join('');
+}
+
+function buildRanking(data){
+    const ranked=[...data].filter(p=>p.energy>0).sort((a,b)=>b.fossil-a.fossil);
+    const html=ranked.map((p,i)=>{
+        const rating=getPhaseRating(p.energy_clean_pct,p.balance);
+        const gap=Math.max(0,WGC_TARGET-p.energy_clean_pct);
+        return `<div style="display:grid;grid-template-columns:30px 140px 1fr 80px 80px 70px 90px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <div style="font-weight:700;color:#6c757d;">#${i+1}</div>
+            <div><strong>P${p.id} ${p.name.split(' ')[0]}</strong>${p.id===3?'<br><span style="font-size:9px;color:#2e7d32;">Serious Shea</span>':''}</div>
+            <div><div style="display:flex;gap:1px;height:12px;border-radius:3px;overflow:hidden;background:#e9ecef;"><div style="width:${p.energy_clean_pct}%;background:#2e7d32;"></div><div style="flex:1;background:#bf360c;opacity:0.75;"></div></div></div>
+            <span><span class="pill pill-total">${fmtE(p.energy)}</span></span>
+            <span><span class="pill pill-fossil">${fmtE(p.fossil)}</span></span>
+            <span style="font-size:11px;color:${gap>0?'#d32f2f':'#2e7d32'};font-weight:600;">${gap>0?`-${gap}pp`:'✅ Met'}</span>
+            <span><span class="rating-badge ${rating.cls}">${rating.label}</span></span>
+        </div>`;
+    }).join('');
+    document.getElementById('fossilRanking').innerHTML=`
+        <div style="display:grid;grid-template-columns:30px 140px 1fr 80px 80px 70px 90px;gap:10px;padding:0 0 8px;border-bottom:2px solid #dee2e6;font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;">#<div>Phase</div><div>Clean/Fossil split</div><div>Total</div><div>Fossil</div><div>Gap</div><div>Rating</div></div>${html}
+        <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#f8f9fa;padding:10px;border-radius:6px;"><strong>Green bar</strong> = clean energy · <strong>Red bar</strong> = fossil · WGC 2030 target: 60% clean across operations. Phase 3 BAU (firewood) would reverse the entire chain's clean energy progress if the Serious Shea scenario is not maintained.</div>`;
+}
+
+async function init(){
+    try{const stored=localStorage.getItem('shea_energy_analysis');if(stored){const parsed=JSON.parse(stored);if(parsed?.data?.length){const age=parsed.timestamp?Math.round((Date.now()-new Date(parsed.timestamp))/1000):null;render(parsed.data,`📡 Live what-if state${age!==null?` (${age}s ago)`:''} — click ⚡ Energy in simulator to refresh.`);return;}}}catch(e){}
+    try{const res=await fetch(DATA_URL,{cache:'no-store'});if(res.ok){const json=await res.json();const phases=[];for(let i=0;i<=6;i++){const p=(json.phases&&json.phases[String(i)])||{},meta=(json.phase_meta&&json.phase_meta[String(i)])||{};phases.push({id:i,name:p.name||meta.name||`Phase ${i}`,D:Number(p.D)||200,C:Number(p.C)||200,energy:Number(p.energy)||0,energy_unit:p.energy_unit||'kWh',energy_clean_pct:Number(p.energy_clean_pct)||0,energy_quality:p.energy_quality||'Unknown',energy_bau_kwh_per_kg:Number(p.energy_bau_kwh_per_kg)||0});}render(phases,`📁 Baseline from shea_supply_chain_ui.json (${json._meta?.generated||'unknown'}).`);return;}}catch(e){}
+    render(FALLBACK,'⚠️ Using hardcoded fallback data.');
+}
+init();
+</script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

@@ -3,274 +3,345 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TV - Project Home</title>
+  <title>TrueValue Analytics</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji",
-        "Segoe UI Emoji";
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: #0d1117;
+      color: #e6edf3;
       min-height: 100vh;
-      padding: 24px;
-      color: #2c3e50;
+      padding: 32px 24px 64px;
     }
 
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
+    /* ── breadcrumb ── */
+    .breadcrumb {
+      font-size: 13px;
+      color: #8b949e;
+      margin-bottom: 48px;
     }
+    .breadcrumb span { color: #e6edf3; font-weight: 600; }
 
-    .hero {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.28);
-      padding: 40px;
-      margin-bottom: 22px;
+    /* ── page header ── */
+    .page-header {
+      margin-bottom: 48px;
+      max-width: 760px;
     }
-
-    .kicker {
-      display: inline-block;
-      font-size: 12px;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      color: #17a2b8;
-      background: #e7f3ff;
-      padding: 6px 12px;
-      border-radius: 999px;
-      margin-bottom: 14px;
-    }
-
-    h1 {
-      font-size: 34px;
+    .page-header h1 {
+      font-size: 32px;
       font-weight: 300;
+      letter-spacing: -0.5px;
+      color: #e6edf3;
       margin-bottom: 10px;
-      line-height: 1.2;
     }
-
-    .subtitle {
+    .page-header p {
       font-size: 15px;
-      color: #6c757d;
+      color: #8b949e;
       line-height: 1.6;
-      max-width: 1000px;
     }
 
-    .grid {
+    /* ── section labels ── */
+    .section-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #6e7681;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #21262d;
+    }
+
+    /* ── card grid ── */
+    .card-grid {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-      margin-top: 18px;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+      max-width: 960px;
+      margin-bottom: 48px;
     }
 
     .card {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-      overflow: hidden;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: block;
+      text-decoration: none;
+      background: #161b22;
+      border: 1px solid #21262d;
+      border-radius: 10px;
+      padding: 24px;
+      transition: border-color .15s, background .15s, transform .12s;
     }
-
     .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 44px rgba(0, 0, 0, 0.24);
+      background: #1c2128;
+      border-color: #388bfd;
+      transform: translateY(-2px);
     }
 
-    .card-header {
-      padding: 22px 22px 16px;
-      color: #fff;
-      background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    .card-icon {
+      font-size: 28px;
+      margin-bottom: 12px;
+      line-height: 1;
     }
-
     .card-title {
-      font-size: 18px;
+      font-size: 17px;
       font-weight: 600;
+      color: #e6edf3;
       margin-bottom: 6px;
     }
-
     .card-desc {
       font-size: 13px;
-      opacity: 0.9;
-      line-height: 1.5;
+      color: #8b949e;
+      line-height: 1.55;
     }
-
-    .card-body {
-      padding: 18px 22px 22px;
-    }
-
-    .btn {
+    .card-tag {
       display: inline-block;
-      padding: 10px 14px;
-      border-radius: 10px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 13px;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: #fff;
-      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      margin-top: 14px;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 20px;
+      background: #21262d;
+      color: #8b949e;
     }
 
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(102, 126, 234, 0.35);
+    /* accent colours per card */
+    .card.gold     { border-left: 4px solid #c9922a; }
+    .card.shea     { border-left: 4px solid #8b6914; }
+    .card.aubeb { border-left: 4px solid #1a8a7a; }
+    .card.docs     { border-left: 4px solid #388bfd; }
+    .card.research { border-left: 4px solid #f0c040; }
+
+    /* ── footer row (match project hub pages) ── */
+    .nav {
+      text-align: center;
+      margin-top: 40px;
+      padding-top: 28px;
+      border-top: 1px solid #21262d;
+      max-width: 960px;
     }
-
-    .section {
-      background: #fff;
-      border-radius: 14px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
-      padding: 22px;
-      margin-top: 18px;
-    }
-
-    .section h2 {
-      font-size: 18px;
-      margin-bottom: 12px;
-    }
-
-    .doc-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .doc-group {
-      background: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 12px;
-      padding: 14px;
-    }
-
-    .doc-group h3 {
-      font-size: 13px;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: #6c757d;
-      margin-bottom: 10px;
-    }
-
-    ul { list-style: none; }
-
-    li { padding: 6px 0; }
-
-    a.link {
-      color: #2c3e50;
+    .nav a {
+      display: inline-block;
+      color: #8b949e;
       text-decoration: none;
       font-size: 14px;
       font-weight: 600;
+      margin: 0 10px 8px;
     }
-
-    a.link:hover { text-decoration: underline; }
-
-    .hint {
-      font-size: 12px;
-      color: #6c757d;
-      margin-top: 10px;
-      line-height: 1.5;
-    }
-
+    .nav a:hover { color: #58a6ff; text-decoration: underline; }
     .footer {
       text-align: center;
-      color: rgba(255, 255, 255, 0.85);
+      color: #6e7681;
       font-size: 13px;
-      margin-top: 18px;
-      padding: 8px 0;
-    }
-
-    @media (max-width: 900px) {
-      .grid { grid-template-columns: 1fr; }
-      .doc-grid { grid-template-columns: 1fr; }
-      .hero { padding: 26px; }
+      margin-top: 14px;
+      padding: 6px 0 8px;
+      max-width: 960px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="hero">
-      <div class="kicker">TV Project</div>
-      <h1>Gold Supply Chain Intelligence</h1>
-      <p class="subtitle">
-        Server root landing page. Use this as the stable entry point for links as new interfaces are added.
-      </p>
 
-      <div class="grid">
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Supply Chain</div>
-            <div class="card-desc">UI entry point (mockups). Dashboard and What-If Simulator live here.</div>
-          </div>
-          <div class="card-body">
-            <a class="btn" href="frontend/supply_chain/Supplychain.html">Open Supply Chain UI</a>
-            <div class="hint">Direct links: <a class="link" href="frontend/supply_chain/dashboard.html">Dashboard</a> · <a class="link" href="frontend/supply_chain/what_if_simulator.html">What-If</a> · <a class="link" href="frontend/supply_chain/Supplychain.html">Supplychain</a></div>
-            <div class="hint">Rules: <a class="link" href="docs/SUPPLY_CHAIN_RULES.md">SUPPLY_CHAIN_RULES.md</a></div>
-            <div class="hint">CSV inputs: <a class="link" href="frontend/csv/">CSV Catalog</a></div>
-          </div>
-        </div>
+  <nav class="breadcrumb">
+    <span>Home</span>
+  </nav>
 
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Documentation</div>
-            <div class="card-desc">Project docs in both repo root and the <code>docs/</code> folder.</div>
-          </div>
-          <div class="card-body">
-            <a class="btn" href="#documentation">Browse Documentation Links</a>
-            <div class="hint">Folder index: <a class="link" href="docs/">docs/</a></div>
-          </div>
-        </div>
+  <header class="page-header">
+    <h1>TrueValue Analytics</h1>
+    <p>Select a project to open its supply &amp; value chain hub, or open the documentation wiki.</p>
+  </header>
 
-        <div class="card">
-          <div class="card-header">
-            <div class="card-title">Value Chain</div>
-            <div class="card-desc">Separate datastore + logic + UI (value layer only).</div>
-          </div>
-          <div class="card-body">
-            <a class="btn" href="frontend/value_chain/">Open Value Chain Area</a>
-            <div class="hint">Direct links: <a class="link" href="frontend/value_chain/dashboard.html">Dashboard</a> · <a class="link" href="frontend/value_chain/what_if_simulator.html">What-If</a> · <a class="link" href="frontend/value_chain/">Value Home</a></div>
-            <div class="hint">Rules: <a class="link" href="docs/VALUE_CHAIN_RULES.md">VALUE_CHAIN_RULES.md</a></div>
-            <div class="hint">CSV inputs: <a class="link" href="frontend/csv/">CSV Catalog</a></div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Projects -->
+  <div class="section-label">Projects</div>
+  <div class="card-grid">
 
-    <div class="section" id="documentation">
-      <h2>Documentation</h2>
-      <div class="doc-grid">
-        <div class="doc-group">
-          <h3>Repo root</h3>
-          <ul>
-            <li><a class="link" href="README.md">README.md</a></li>
-            <li><a class="link" href="PROJECT_STATUS.md">PROJECT_STATUS.md</a></li>
-            <li><a class="link" href="THOLONIC_IMPLEMENTATION_COMPLETE.md">THOLONIC_IMPLEMENTATION_COMPLETE.md</a></li>
-            <li><a class="link" href="NOTES.txt">NOTES.txt</a></li>
-            <li><a class="link" href="requirements.txt">requirements.txt</a></li>
-          </ul>
-          <div class="hint">These are served directly from the project root.</div>
-        </div>
+    <a href="frontend/project/gold/index.html" class="card gold">
+      <div class="card-icon">🏅</div>
+      <div class="card-title">Gold</div>
+      <div class="card-desc">Supply chain &amp; value chain models for gold — from geological occurrence through refining, fabrication, retail, and recycling.</div>
+      <span class="card-tag">Gold – Supply &amp; Value Chain Hub</span>
+    </a>
 
-        <div class="doc-group">
-          <h3>docs/ directory</h3>
-          <ul>
-            <li><a class="link" href="docs/SUPPLY_CHAIN_RULES.md">docs/SUPPLY_CHAIN_RULES.md</a></li>
-            <li><a class="link" href="docs/VALUE_CHAIN_RULES.md">docs/VALUE_CHAIN_RULES.md</a></li>
-            <li><a class="link" href="docs/VALUE_CHAIN_API.md">docs/VALUE_CHAIN_API.md</a></li>
-            <li><a class="link" href="docs/FRONTEND_API.md">docs/FRONTEND_API.md</a></li>
-            <li><a class="link" href="docs/WATER_WASTE_METHODOLOGY.md">docs/WATER_WASTE_METHODOLOGY.md</a></li>
-            <li><a class="link" href="docs/THOLONIC_INTEGRATION.md">docs/THOLONIC_INTEGRATION.md</a></li>
-            <li><a class="link" href="docs/NDC_VALUE_CALCULATIONS.md">docs/NDC_VALUE_CALCULATIONS.md</a></li>
-            <li><a class="link" href="docs/SARAH_INTEGRATION_COMPLETE.md">docs/SARAH_INTEGRATION_COMPLETE.md</a></li>
-            <li><a class="link" href="docs/SARAH_INTEGRATION_ANALYSIS.md">docs/SARAH_INTEGRATION_ANALYSIS.md</a></li>
-            <li><a class="link" href="docs/SARAH_QUICK_REFERENCE.md">docs/SARAH_QUICK_REFERENCE.md</a></li>
-            <li><a class="link" href="docs/tv-sarah.txt">docs/tv-sarah.txt</a></li>
-          </ul>
-          <div class="hint">This list can be extended as new docs are added.</div>
-        </div>
-      </div>
-    </div>
+    <a href="frontend/project/shea/index.html" class="card shea">
+      <div class="card-icon">🫒</div>
+      <div class="card-title">Shea</div>
+      <div class="card-desc">Supply chain &amp; value chain models for shea butter — Burkina Faso / West Africa to end market, with SDG impact framework.</div>
+      <span class="card-tag">Shea – Supply &amp; Value Chain Hub</span>
+    </a>
 
-    <div class="footer">
-      <div>Server root: <code>/home/jw/src/tv</code> · Port: <code>8765</code></div>
-    </div>
+    <a href="frontend/project/aubeb/index.html" class="card aubeb">
+      <div class="card-icon">🌿</div>
+      <div class="card-title">AUBEB</div>
+      <div class="card-desc">Africa Union Blue Economy Bond — 150,000 ha coastal aubeb restoration across 7 AU member states. Carbon credit commercialisation, CBEMR, and multi-value blue economy asset creation.</div>
+      <span class="card-tag">Mangrove – Supply &amp; Value Chain Hub</span>
+    </a>
+
   </div>
+
+  <!-- Research -->
+  <div class="section-label">Research</div>
+  <div class="card-grid">
+
+    <a href="frontend/research/gametheory/index.html" class="card research">
+      <div class="card-icon">⚗️</div>
+      <div class="card-title">Game Theory Simulator</div>
+      <div class="card-desc">N-D-C agent simulation — standard (local-only) vs. Tholonic (system-aware) learning dynamics, with a gold supply chain instance and a generic template.</div>
+      <span class="card-tag">Tholonic N-D-C · Agent Simulation</span>
+    </a>
+
+    <a href="frontend/research/tvpci/index.html" class="card research">
+      <div class="card-icon">📈</div>
+      <div class="card-title">TVPCI</div>
+      <div class="card-desc">TrueValue Pricing Convergence Index — foundation derivation, spec, and plain-language explanations (standalone HTML, images embedded).</div>
+      <span class="card-tag">frontend/research/tvpci</span>
+    </a>
+
+  </div>
+
+  <!-- Documentation -->
+  <div class="section-label">Documentation</div>
+  <div class="card-grid">
+
+    <a href="site/index.html" class="card docs">
+      <div class="card-icon">📚</div>
+      <div class="card-title">Documentation wiki</div>
+      <div class="card-desc">Full methodology documentation — N-D-C framework, phase templates, TVPCI derivation, supply &amp; value chain rules, and API reference.</div>
+      <span class="card-tag">Supply Chain Intelligence Docs</span>
+    </a>
+
+    <a href="/docs/Repos/index.html" class="card docs">
+      <div class="card-icon">🗂️</div>
+      <div class="card-title">Repository tree (intra &amp; extra)</div>
+      <div class="card-desc">Map of docs/Repos: intra (PDI, TVPCI, game theory) and extra (Generic, UBS, Deutsche, and other partner deliverables) with entry links to HTML, PDF, and the wiki.</div>
+      <span class="card-tag">docs/Repos</span>
+    </a>
+
+  </div>
+
+  <div class="nav">
+    <a href="/site/index.html">📚 Documentation</a>
+    <a href="/frontend/csv/index.html">🗂️ Data catalog</a>
+    <a href="/frontend/research/index.html">🔬 Research</a>
+  </div>
+
+  <div class="footer">
+    TrueValue Analytics · Supply Chain Intelligence Platform · v0.2
+  </div>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+
 </body>
 </html>

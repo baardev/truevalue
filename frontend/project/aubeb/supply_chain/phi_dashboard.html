@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AUBEB Supply Chain – φ Proportional Coherence Model</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #b8860b 0%, #8b6508 50%, #5c3d00 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #3d2b00 0%, #6b4800 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header-nav a {
+            color: #f5d97a;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 13px;
+        }
+        .header-nav a:hover { color: white; }
+
+        /* Model layer strip */
+        .model-strip {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #1a1a1a;
+            overflow-x: auto;
+        }
+        .model-tab {
+            padding: 9px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            border-right: 1px solid #333;
+            color: #888;
+            text-decoration: none;
+            display: block;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active {
+            background: #b8860b;
+            color: white;
+            cursor: default;
+        }
+        .model-tab.disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* Score cards */
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 28px 30px;
+            background: #faf7f0;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #e0e0e0;
+        }
+        .card.gold-border { border-top-color: #b8860b; }
+        .card.good-border { border-top-color: #28a745; }
+        .card.warn-border { border-top-color: #ffc107; }
+        .card.poor-border { border-top-color: #dc3545; }
+        .card-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #6c757d;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+        }
+        .card-value {
+            font-size: 34px;
+            font-weight: bold;
+            color: #0d4f47;
+            margin-bottom: 6px;
+        }
+        .card-value.gold { color: #b8860b; }
+        .card-value.green { color: #28a745; }
+        .card-value.red { color: #dc3545; }
+        .card-sub { font-size: 12px; color: #6c757d; }
+
+        .main { padding: 28px 30px; }
+        .section-title {
+            font-size: 17px;
+            font-weight: 600;
+            color: #0d4f47;
+            margin-bottom: 6px;
+        }
+        .section-sub {
+            font-size: 13px;
+            color: #6c757d;
+            margin-bottom: 20px;
+        }
+
+        /* Chain flow */
+        .chain-flow {
+            background: #faf7f0;
+            border-radius: 10px;
+            padding: 30px 20px;
+            margin-bottom: 28px;
+            overflow-x: auto;
+        }
+        .phases-row {
+            display: flex;
+            align-items: center;
+            min-width: 1100px;
+        }
+        .phase-node {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+        .phase-box {
+            width: 88px;
+            height: 88px;
+            border-radius: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+            border: 2px solid transparent;
+            transition: transform 0.2s;
+            cursor: default;
+        }
+        .phase-box:hover { transform: scale(1.07); }
+        .phase-box .pid { font-size: 11px; font-weight: 700; opacity: 0.85; }
+        .phase-box .pn  { font-size: 22px; font-weight: 900; }
+        .phase-box .plabel { font-size: 10px; opacity: 0.8; margin-top: 2px; }
+        .phase-label { font-size: 10px; color: #555; margin-top: 7px; text-align: center; max-width: 90px; }
+
+        .phase-box.excellent { background: linear-gradient(135deg,#28a745,#20c997); color:white; border-color:#28a745; }
+        .phase-box.good      { background: linear-gradient(135deg,#20c997,#17a2b8); color:white; border-color:#17a2b8; }
+        .phase-box.fair      { background: linear-gradient(135deg,#ffc107,#fd7e14); color:white; border-color:#ffc107; }
+        .phase-box.poor      { background: linear-gradient(135deg,#dc3545,#c82333); color:white; border-color:#dc3545; }
+
+        /* Boundary connector */
+        .boundary-connector {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 0 4px;
+            flex-shrink: 0;
+        }
+        .boundary-arrow {
+            font-size: 22px;
+            line-height: 1;
+        }
+        .boundary-pill {
+            padding: 3px 8px;
+            border-radius: 10px;
+            font-size: 10px;
+            font-weight: 700;
+            margin-top: 4px;
+            white-space: nowrap;
+        }
+        .boundary-score-bar {
+            width: 48px;
+            height: 5px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin-top: 3px;
+            overflow: hidden;
+        }
+        .boundary-score-fill { height: 100%; border-radius: 3px; }
+        .pill-good   { background:#d4edda; color:#155724; }
+        .pill-fair   { background:#fff3cd; color:#856404; }
+        .pill-poor   { background:#f8d7da; color:#721c24; }
+        .pill-warn   { background:#ffe5d0; color:#7d3c00; }
+        .arrow-good  { color: #28a745; }
+        .arrow-fair  { color: #ffc107; }
+        .arrow-poor  { color: #dc3545; }
+        .arrow-warn  { color: #fd7e14; }
+
+        /* φ reference bar */
+        .phi-reference {
+            margin-top: 20px;
+            padding: 16px 20px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #b8860b;
+        }
+        .phi-reference h4 { font-size: 13px; color: #3d2b00; margin-bottom: 12px; font-weight: 700; }
+        .phi-scale-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .phi-scale-label { font-size: 11px; color: #6c757d; width: 80px; flex-shrink: 0; }
+        .phi-scale-bar {
+            flex: 1;
+            height: 18px;
+            background: #f0f0f0;
+            border-radius: 9px;
+            position: relative;
+            overflow: visible;
+        }
+        .phi-target-line {
+            position: absolute;
+            top: -4px;
+            width: 2px;
+            height: 26px;
+            background: #b8860b;
+            border-radius: 1px;
+            z-index: 2;
+        }
+        .phi-target-label {
+            position: absolute;
+            top: -20px;
+            font-size: 10px;
+            color: #b8860b;
+            font-weight: 700;
+            white-space: nowrap;
+            transform: translateX(-50%);
+        }
+        .ratio-dot {
+            position: absolute;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 3;
+            cursor: default;
+        }
+        .ratio-dot:hover::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 16px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            color: white;
+            font-size: 10px;
+            padding: 3px 7px;
+            border-radius: 4px;
+            white-space: nowrap;
+            z-index: 10;
+        }
+
+        /* Boundary table */
+        .boundary-table-wrap {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            overflow: hidden;
+            margin-bottom: 28px;
+        }
+        .boundary-table-wrap h3 {
+            padding: 16px 20px 0;
+            font-size: 15px;
+            color: #0d4f47;
+        }
+        table.bt { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table.bt th {
+            background: #faf7f0;
+            padding: 10px 14px;
+            text-align: left;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #6c757d;
+            border-bottom: 2px solid #e9ecef;
+        }
+        table.bt td { padding: 11px 14px; border-bottom: 1px solid #f0f0f0; }
+        table.bt tr:last-child td { border-bottom: none; }
+        table.bt tr:hover td { background: #faf7f0; }
+        .score-chip {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 12px;
+        }
+        .sc-good { background:#d4edda; color:#155724; }
+        .sc-fair { background:#fff3cd; color:#856404; }
+        .sc-poor { background:#f8d7da; color:#721c24; }
+        .sc-warn { background:#ffe5d0; color:#7d3c00; }
+
+        /* What-if panel */
+        .whatif-panel {
+            background: #faf7f0;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 28px;
+            border: 1px solid #e8d9b0;
+        }
+        .whatif-panel h3 { font-size: 15px; color: #3d2b00; margin-bottom: 6px; }
+        .whatif-panel p  { font-size: 13px; color: #6c757d; margin-bottom: 18px; }
+        .sliders-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+        .slider-item label {
+            display: block;
+            font-size: 11px;
+            color: #555;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
+        .slider-item input[type=range] {
+            width: 100%;
+            accent-color: #b8860b;
+        }
+        .slider-value {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #3d2b00;
+            margin-top: 3px;
+        }
+        .whatif-results {
+            background: white;
+            border-radius: 8px;
+            padding: 16px;
+            border: 1px solid #e9ecef;
+        }
+        .whatif-results h4 { font-size: 13px; color: #0d4f47; margin-bottom: 12px; }
+        .result-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            font-size: 12px;
+        }
+        .result-label { width: 120px; color: #6c757d; flex-shrink: 0; }
+        .result-bar { flex: 1; height: 14px; background: #e9ecef; border-radius: 7px; overflow: hidden; }
+        .result-bar-fill { height: 100%; border-radius: 7px; transition: width 0.3s; }
+        .result-score { width: 40px; text-align: right; font-weight: 700; color: #0d4f47; }
+
+        /* Model explanation */
+        .model-explainer {
+            background: linear-gradient(135deg, #3d2b00, #6b4800);
+            color: white;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+        .model-explainer h3 { font-size: 16px; margin-bottom: 12px; }
+        .explainer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .explainer-col p, .explainer-col li { font-size: 13px; line-height: 1.6; opacity: 0.9; }
+        .explainer-col ul { list-style: none; padding: 0; }
+        .explainer-col li { padding: 4px 0; padding-left: 18px; position: relative; }
+        .explainer-col li::before { content: "φ"; position: absolute; left: 0; color: #f5d97a; font-weight: 700; font-size: 11px; }
+        .phi-big { font-size: 64px; font-weight: 900; color: #f5d97a; line-height: 1; margin-bottom: 5px; }
+        .phi-desc { font-size: 12px; opacity: 0.7; }
+
+        .footer {
+            background: #1a1a1a;
+            color: #888;
+            padding: 16px 30px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+        }
+        .footer a { color: #b8860b; text-decoration: none; }
+
+        /* Scenario selector bar */
+        .scenario-bar {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 20px;
+            background: #1e1e1e;
+            border-bottom: 2px solid #b8860b;
+            flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #f5d97a;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px;
+            border-radius: 14px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid #444;
+            background: #2a2a2a;
+            color: #aaa;
+            cursor: pointer;
+            transition: all 0.15s;
+            white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #b8860b; color: #f5d97a; background: #332200; }
+        .scen-btn.active { background: #b8860b; border-color: #b8860b; color: white; }
+        .scen-btn.shock  { border-color: #dc3545; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #dc3545; border-color: #dc3545; color: white; }
+        .scen-btn.expand { border-color: #28a745; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #28a745; border-color: #28a745; color: white; }
+        .scen-btn.regul  { border-color: #6c757d; }
+        .scenario-desc {
+            font-size: 11px;
+            color: #888;
+            font-style: italic;
+            flex: 1;
+            min-width: 180px;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+
+    <!-- Header -->
+    <div class="header">
+        <h1>🌿 AUBEB Supply Chain — φ Proportional Coherence Model</h1>
+        <div class="header-nav">
+            <a href="dashboard.html">π Dashboard</a>
+            <a href="/frontend/project/five_model_coherence.html">🕸️ Five-Model Coherence</a>
+            <a href="/index.html">🏠 Home</a>
+        </div>
+    </div>
+
+    <!-- Model layer strip -->
+    <div class="model-strip">
+        <a class="model-tab" href="dashboard.html">π Operational</a>
+        <span class="model-tab active">φ Proportional ← current</span>
+        <a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+        <a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
+        <a class="model-tab" href="e_dashboard.html">e Abstract</a>
+    </div>
+
+    <!-- Scenario selector -->
+    <div class="scenario-bar">
+        <span class="scenario-label">Scenario:</span>
+        <div class="scenario-btns" id="scenario-btns-container"></div>
+        <span class="scenario-desc" id="scenario-desc"></span>
+    </div>
+
+    <!-- Score cards -->
+    <div class="score-cards">
+        <div class="card gold-border">
+            <div class="card-label">System φ-Coherence</div>
+            <div class="card-value gold" id="sys-score">49.5</div>
+            <div class="card-sub">Low coherence — systemic<br>proportionality breakdown</div>
+        </div>
+        <div class="card poor-border">
+            <div class="card-label">Worst Boundary</div>
+            <div class="card-value red">P5→P6</div>
+            <div class="card-sub">Score: 25.0 — Vaulting collapse<br>ratio 0.498× (target 1.618)</div>
+        </div>
+        <div class="card good-border">
+            <div class="card-label">Best Boundary</div>
+            <div class="card-value green">P0→P1</div>
+            <div class="card-sub">Score: 77.8 — Mining ramp<br>ratio 1.415× (near φ)</div>
+        </div>
+        <div class="card warn-border">
+            <div class="card-label">Boundaries at Target</div>
+            <div class="card-value" style="color:#ffc107;">0 / 7</div>
+            <div class="card-sub">No boundary achieves φ-proportion.<br>Best is P0→P1 at 77.8</div>
+        </div>
+    </div>
+
+    <div class="main">
+
+        <!-- Chain flow -->
+        <div class="section-title">Chain-Wide Proportional Flow</div>
+        <div class="section-sub">Each arrow shows the N-value ratio between adjacent phases. Target: φ = 1.618. Color indicates proximity to target.</div>
+
+        <div class="chain-flow">
+            <div class="phases-row" id="phases-row">
+                <!-- Rendered by JS -->
+            </div>
+
+            <!-- φ reference scale -->
+            <div class="phi-reference">
+                <h4>φ Reference Scale — Boundary Ratios (0 → 3.0)</h4>
+                <div class="phi-scale-row">
+                    <div class="phi-scale-label">All 7 boundaries</div>
+                    <div class="phi-scale-bar" id="phi-scale">
+                        <!-- φ target line at 1.618/3.0 = 53.9% -->
+                        <div class="phi-target-line" style="left:53.9%;">
+                            <div class="phi-target-label">φ = 1.618</div>
+                        </div>
+                        <!-- ratio dots rendered by JS -->
+                    </div>
+                </div>
+                <div style="display:flex; justify-content:space-between; font-size:10px; color:#aaa; padding:0 4px;">
+                    <span>0</span><span>0.5</span><span>1.0</span><span>1.5</span><span>2.0</span><span>2.5</span><span>3.0</span>
+                </div>
+                <div style="margin-top:10px; font-size:11px; color:#888;">
+                    Dots clustered left of φ-line = upstream value retention | Dots right of φ-line = rapid downstream recovery after bottleneck
+                </div>
+            </div>
+        </div>
+
+        <!-- Boundary detail table -->
+        <div class="boundary-table-wrap">
+            <h3 style="padding:16px 20px 0;">Boundary Detail — All 7 Phase Transitions</h3>
+            <table class="bt">
+                <thead>
+                    <tr>
+                        <th>Boundary</th>
+                        <th>N From</th>
+                        <th>N To</th>
+                        <th>Ratio</th>
+                        <th>φ Target</th>
+                        <th>Distance</th>
+                        <th>φ Score</th>
+                        <th>Status</th>
+                        <th>Intervention</th>
+                    </tr>
+                </thead>
+                <tbody id="boundary-tbody">
+                    <!-- Rendered by JS -->
+                </tbody>
+            </table>
+        </div>
+
+        <!-- What-if panel -->
+        <div class="whatif-panel">
+            <h3>What-If Simulator — Adjust Phase N-Values</h3>
+            <p>Drag sliders to change any phase's operational N-value. All boundary ratios and φ-scores update live. This shows which phase changes most improve overall proportional coherence.</p>
+            <div class="sliders-grid" id="sliders-grid">
+                <!-- Rendered by JS -->
+            </div>
+            <div class="whatif-results">
+                <h4>Live Boundary Scores</h4>
+                <div id="live-results">
+                    <!-- Rendered by JS -->
+                </div>
+                <div style="margin-top:12px; padding-top:12px; border-top:1px solid #e9ecef; display:flex; align-items:center; gap:20px;">
+                    <span style="font-size:13px; color:#6c757d;">System φ-coherence:</span>
+                    <span style="font-size:22px; font-weight:900; color:#b8860b;" id="live-sys-score">49.5</span>
+                    <span style="font-size:12px; color:#aaa;" id="live-sys-status">Low coherence — systemic proportionality breakdown</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model explanation -->
+        <div class="model-explainer">
+            <h3>About the φ (Proportional Coherence) Model</h3>
+            <div class="explainer-grid">
+                <div class="explainer-col">
+                    <div class="phi-big">φ</div>
+                    <div class="phi-desc">= 1.61803398... = (1 + √5) / 2</div>
+                    <p style="margin-top:12px;">
+                        The φ model asks: <em>does value flow between phases in natural proportion?</em>
+                        In a harmonically coherent supply chain, each phase's operational N-value
+                        should be approximately φ times the preceding phase's N-value —
+                        the same ratio that governs biological growth, Fibonacci sequences, and
+                        the geometry of living systems.
+                    </p>
+                </div>
+                <div class="explainer-col">
+                    <ul>
+                        <li>Configuration: inst=2, D=2, C=3</li>
+                        <li>Child N (D+C = first Fibonacci sum) = 5 — the same value as C in the π model. This is the structural link between π and φ</li>
+                        <li>Score 100 = ratio exactly equals φ (1.618)</li>
+                        <li>Score &lt;40 = ratio critically far from φ — value extraction or suppression</li>
+                        <li>Unlike π (phase-local), φ is chain-global — a single phase cannot be evaluated alone</li>
+                        <li>Mangrove finding: P5→P6 (Vaulting) collapses to 0.498× — the most severe φ failure in the chain, followed by a disproportionate recovery at P6→P7 (Exchange)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div><!-- /main -->
+
+    <div class="footer">
+        <span>AUBEB Supply Chain φ Model — Tholonic N-D-C Framework</span>
+        <span>
+            <a href="dashboard.html">← π Operational</a> &nbsp;|&nbsp;
+            <a href="index.html">Supply Chain Hub</a> &nbsp;|&nbsp;
+            <a href="/docs/Repos/intra/PDI/NDC_QUALITATIVE_D_AND_C_MAPPING_BY_PHASE.md">Framework Docs</a>
+        </span>
+    </div>
+</div><!-- /dashboard -->
+
+<script>
+const PHI = 1.6180339887;
+
+const PHASES = [
+    { id:0, name:"Prospecting", N:183 },
+    { id:1, name:"Mining",      N:259 },
+    { id:2, name:"Processing",  N:263 },
+    { id:3, name:"Doré",        N:229 },
+    { id:4, name:"Refining",    N:253 },
+    { id:5, name:"Casting",     N:237 },
+    { id:6, name:"Vaulting",    N:118 },
+    { id:7, name:"Exchange",    N:239 },
+];
+
+// ── Scenarios (loaded from scenarios.json) ───────────────────────────────────
+let SCENARIOS = {};
+let currentScenario = 'current';
+let nValues = [];
+
+function buildScenarioButtons(scenarios) {
+    const btnCls = key => {
+        if (key === 'current' || key === 'optimum') return '';
+        if (key === 'expansion') return 'expand';
+        if (key === 'regulatory') return 'regul';
+        if (key === 'serious_shea') return 'sshea';
+        return 'shock';
+    };
+    const container = document.getElementById('scenario-btns-container');
+    container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+        `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+    ).join('');
+}
+
+function setScenario(key) {
+    const scen = SCENARIOS[key];
+    if (!scen) return;
+    currentScenario = key;
+    nValues = [...scen.values];
+
+    // Update slider values and labels
+    PHASES.forEach((p, i) => {
+        const slider = document.getElementById('slider-' + i);
+        if (slider) slider.value = nValues[i];
+        const sv = document.getElementById('sv-' + i);
+        if (sv) sv.textContent = 'N = ' + nValues[i];
+    });
+
+    // Update scenario selector UI
+    document.querySelectorAll('.scen-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.key === key);
+    });
+    document.getElementById('scenario-desc').textContent = scen.description;
+
+    renderAll();
+}
+
+fetch('scenarios.json')
+    .then(r => r.json())
+    .then(data => {
+        SCENARIOS = data.phi.scenarios;
+        buildScenarioButtons(SCENARIOS);
+        nValues = [...SCENARIOS.current.values];
+        setScenario('current');
+    })
+    .catch(err => console.error('Failed to load scenarios.json:', err));
+
+function phiScore(ratio) {
+    if (ratio <= 0) return 0;
+    return 100 * Math.exp(-2 * Math.abs(ratio - PHI) / PHI);
+}
+
+function scoreClass(score) {
+    if (score >= 80) return 'good';
+    if (score >= 55) return 'fair';
+    if (score >= 35) return 'warn';
+    return 'poor';
+}
+
+function phaseBoxClass(score) {
+    if (score >= 80) return 'excellent';
+    if (score >= 60) return 'good';
+    if (score >= 40) return 'fair';
+    return 'poor';
+}
+
+function diagnosis(ratio, score) {
+    if (score >= 80) return 'φ-proportional';
+    if (score >= 55) return 'Near-proportional';
+    if (ratio < 1.0) return 'Value suppressed';
+    if (ratio > PHI * 1.5) return 'Disproportionate recovery';
+    return 'Under-proportional';
+}
+
+function intervention(ratio, score) {
+    if (score >= 80) return '—';
+    if (ratio < 0.7) return 'Investigate: D-institutional barriers, custody transfer overhead, intermediary extraction';
+    if (ratio > 2.5) return 'Sharp recovery after bottleneck — examine preceding collapse phase';
+    if (ratio < 1.0) return 'Strengthen downstream C parameters or reduce upstream D constraints';
+    return 'Monitor and investigate gradual value compression between phases';
+}
+
+function computeBoundaries(ns) {
+    return ns.slice(0, -1).map((n, i) => {
+        const ratio = n > 0 ? ns[i + 1] / n : 0;
+        const score = phiScore(ratio);
+        return { fromId:i, toId:i+1, nFrom:n, nTo:ns[i+1], ratio, score };
+    });
+}
+
+function systemScore(boundaries) {
+    if (!boundaries.length) return 0;
+    return boundaries.reduce((s, b) => s + b.score, 0) / boundaries.length;
+}
+
+function sysStatus(score) {
+    if (score >= 75) return 'Harmonically coherent';
+    if (score >= 55) return 'Moderate coherence — isolated boundary failures';
+    if (score >= 35) return 'Low coherence — systemic proportionality breakdown';
+    return 'Critical — chain-wide proportionality failure';
+}
+
+function renderPhaseRow(ns) {
+    const boundaries = computeBoundaries(ns);
+    const row = document.getElementById('phases-row');
+    row.innerHTML = '';
+
+    PHASES.forEach((p, i) => {
+        // Compute average score of adjacent boundaries for phase color
+        const adj = boundaries.filter(b => b.fromId === i || b.toId === i);
+        const avgScore = adj.length ? adj.reduce((s, b) => s + b.score, 0) / adj.length : 50;
+        const cls = phaseBoxClass(avgScore);
+
+        const node = document.createElement('div');
+        node.className = 'phase-node';
+        node.innerHTML = `
+            <div class="phase-box ${cls}">
+                <div class="pid">Phase ${p.id}</div>
+                <div class="pn">${ns[i]}</div>
+                <div class="plabel">N-value</div>
+            </div>
+            <div class="phase-label">${p.name}</div>
+        `;
+        row.appendChild(node);
+
+        if (i < PHASES.length - 1) {
+            const b = boundaries[i];
+            const sc = scoreClass(b.score);
+            const arrowCls = 'arrow-' + sc;
+            const pillCls  = 'pill-' + sc;
+            const conn = document.createElement('div');
+            conn.className = 'boundary-connector';
+            conn.innerHTML = `
+                <div class="boundary-arrow ${arrowCls}">→</div>
+                <div class="boundary-pill ${pillCls}">${b.ratio.toFixed(3)}×</div>
+                <div class="boundary-score-bar">
+                    <div class="boundary-score-fill" style="width:${b.score}%;background:${sc==='good'?'#28a745':sc==='fair'?'#ffc107':sc==='warn'?'#fd7e14':'#dc3545'}"></div>
+                </div>
+                <div style="font-size:9px;color:#999;margin-top:2px;">${b.score.toFixed(0)}</div>
+            `;
+            row.appendChild(conn);
+        }
+    });
+}
+
+function renderPhiScale(ns) {
+    const boundaries = computeBoundaries(ns);
+    const scale = document.getElementById('phi-scale');
+    // Remove old dots
+    scale.querySelectorAll('.ratio-dot').forEach(d => d.remove());
+
+    const SCALE_MAX = 3.0;
+    const COLORS = {good:'#28a745', fair:'#ffc107', warn:'#fd7e14', poor:'#dc3545'};
+
+    boundaries.forEach((b, i) => {
+        const pct = Math.min((b.ratio / SCALE_MAX) * 100, 100);
+        const sc = scoreClass(b.score);
+        const dot = document.createElement('div');
+        dot.className = 'ratio-dot';
+        dot.style.left = pct + '%';
+        dot.style.background = COLORS[sc];
+        dot.style.border = '2px solid white';
+        dot.setAttribute('title', `P${b.fromId}→P${b.toId}: ${b.ratio.toFixed(3)}× (score ${b.score.toFixed(0)})`);
+        scale.appendChild(dot);
+    });
+}
+
+function renderBoundaryTable(ns) {
+    const boundaries = computeBoundaries(ns);
+    const tbody = document.getElementById('boundary-tbody');
+    tbody.innerHTML = '';
+
+    boundaries.forEach(b => {
+        const sc = scoreClass(b.score);
+        const scClass = 'sc-' + sc;
+        const dist = Math.abs(b.ratio - PHI).toFixed(4);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>P${b.fromId}→P${b.toId}</strong><br><span style="font-size:11px;color:#999;">${PHASES[b.fromId].name} → ${PHASES[b.toId].name}</span></td>
+            <td>${b.nFrom}</td>
+            <td>${b.nTo}</td>
+            <td><strong>${b.ratio.toFixed(4)}</strong></td>
+            <td style="color:#b8860b;font-weight:700;">${PHI.toFixed(5)}</td>
+            <td>${dist}</td>
+            <td><span class="score-chip ${scClass}">${b.score.toFixed(1)}</span></td>
+            <td>${diagnosis(b.ratio, b.score)}</td>
+            <td style="font-size:11px;color:#6c757d;max-width:220px;">${intervention(b.ratio, b.score)}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderSliders(ns) {
+    const grid = document.getElementById('sliders-grid');
+    grid.innerHTML = '';
+    PHASES.forEach((p, i) => {
+        const item = document.createElement('div');
+        item.className = 'slider-item';
+        item.innerHTML = `
+            <label>Phase ${p.id}: ${p.name}</label>
+            <input type="range" min="5" max="400" value="${ns[i]}" 
+                   oninput="updateN(${i}, this.value)" id="slider-${i}">
+            <div class="slider-value" id="sv-${i}">N = ${ns[i]}</div>
+        `;
+        grid.appendChild(item);
+    });
+}
+
+function renderLiveResults(ns) {
+    const boundaries = computeBoundaries(ns);
+    const div = document.getElementById('live-results');
+    div.innerHTML = '';
+    const COLORS = {good:'#28a745', fair:'#ffc107', warn:'#fd7e14', poor:'#dc3545'};
+
+    boundaries.forEach(b => {
+        const sc = scoreClass(b.score);
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML = `
+            <div class="result-label">P${b.fromId}→P${b.toId} (${b.ratio.toFixed(3)}×)</div>
+            <div class="result-bar">
+                <div class="result-bar-fill" style="width:${b.score}%;background:${COLORS[sc]}"></div>
+            </div>
+            <div class="result-score">${b.score.toFixed(0)}</div>
+        `;
+        div.appendChild(row);
+    });
+
+    const sys = systemScore(boundaries);
+    document.getElementById('live-sys-score').textContent = sys.toFixed(1);
+    document.getElementById('live-sys-status').textContent = sysStatus(sys);
+    document.getElementById('sys-score').textContent = sys.toFixed(1);
+}
+
+function updateN(idx, val) {
+    nValues[idx] = parseInt(val);
+    document.getElementById('sv-' + idx).textContent = 'N = ' + val;
+    renderAll();
+}
+
+function renderAll() {
+    renderPhaseRow(nValues);
+    renderPhiScale(nValues);
+    renderBoundaryTable(nValues);
+    renderLiveResults(nValues);
+}
+
+// Initial render
+renderSliders(nValues);
+renderAll();
+</script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Mangrove','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'π Dashboard',
+    'phi_dashboard.html':'φ Proportional',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/aubeb/index.html',
+    'shea':'/frontend/project/shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.28);padding:6px 22px;font-size:11.5px;'+
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;'+
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}'+
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}'+
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}'+
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}'+
+    '#tv-bc .bc-cur{color:#f5d97a;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var parts=window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs=[{label:'Home',href:'/index.html'}];
+  var built='';
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i],lbl=LABELS[p];
+    if(lbl===null||lbl===undefined) continue;
+    built+='/'+p;
+    var isLast=(i===parts.length-1);
+    var href=isLast?null:(HUBS[p]?HUBS[p]:built+'/index.html');
+    crumbs.push({label:lbl,href:isLast?null:href});
+  }
+  var html=crumbs.map(function(c,i){
+    var sep=i>0?'<span class="bc-sep">›</span>':'';
+    var node=c.href?'<a href="'+c.href+'">'+c.label+'</a>':'<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+  var nav=document.createElement('div');nav.id='tv-bc';nav.innerHTML=html;
+  function inject(){
+    if(document.getElementById('tv-bc'))return;
+    var hdr=document.querySelector('.header');
+    if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr.nextSibling);
+    else document.body.insertAdjacentElement('afterbegin',nav);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Phase Discovery Instrument — Supply Chain Phase Mapping</title>
+<style>
+/* ─── Reset & Base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --navy: #1a3a5c;
+  --teal: #0d9488;
+  --teal-light: #ccfbf1;
+  --bg: #f1f5f9;
+  --white: #ffffff;
+  --border: #e2e8f0;
+  --text: #1e293b;
+  --muted: #64748b;
+  --green: #059669;
+  --green-bg: #d1fae5;
+  --amber: #d97706;
+  --amber-bg: #fef3c7;
+  --red: #dc2626;
+  --red-bg: #fee2e2;
+  --radius: 10px;
+  --shadow: 0 1px 4px rgba(0,0,0,0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+/* ─── Top Nav ─────────────────────────────────── */
+#topnav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--navy);
+  display: flex; align-items: center; gap: 0; padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  flex-wrap: wrap;
+}
+#topnav .nav-brand {
+  padding: 0 1.25rem;
+  font-weight: 700; font-size: 0.95rem; color: #fff;
+  letter-spacing: 0.02em; white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  height: 48px; display: flex; align-items: center;
+}
+#topnav a.nav-link {
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  padding: 0 1rem; height: 48px; display: flex; align-items: center;
+  font-size: 0.875rem; font-weight: 500; white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+  border-bottom: 3px solid transparent;
+}
+#topnav a.nav-link:hover { background: rgba(255,255,255,0.08); color: #fff; }
+#topnav a.nav-link.active { color: #5eead4; border-bottom-color: #5eead4; }
+.nav-actions {
+  margin-left: auto; display: flex; gap: 0.5rem;
+  padding: 0 1rem; align-items: center;
+}
+.btn {
+  padding: 0.35rem 0.875rem; border-radius: 6px; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; border: none; transition: all 0.15s;
+  white-space: nowrap;
+}
+.btn-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.85); }
+.btn-outline:hover { background: rgba(255,255,255,0.12); border-color: rgba(255,255,255,0.6); }
+.btn-teal { background: var(--teal); color: white; }
+.btn-teal:hover { background: #0f766e; }
+.btn-navy { background: var(--navy); color: white; border: 1.5px solid #2d6a9f; }
+.btn-navy:hover { background: #14304f; }
+.btn-red { background: #ef4444; color: white; font-size: 0.75rem; padding: 0.25rem 0.625rem; border-radius: 4px; }
+.btn-red:hover { background: #dc2626; }
+
+/* ─── Main Layout ─────────────────────────────── */
+.main { max-width: 880px; margin: 0 auto; padding: 1.75rem 1.25rem 4rem; }
+
+/* ─── Hero / Material Header ─────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--navy) 0%, #1f5f8b 100%);
+  border-radius: var(--radius); padding: 2rem 2rem 1.75rem; margin-bottom: 1.75rem;
+  color: white; box-shadow: 0 4px 16px rgba(26,58,92,0.3);
+}
+.hero h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+.hero p { color: rgba(255,255,255,0.7); font-size: 0.875rem; margin-bottom: 1.5rem; }
+.material-field-label { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); margin-bottom: 0.4rem; }
+.material-input {
+  font-size: 1.25rem; font-weight: 600; color: white;
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 8px; padding: 0.625rem 1rem; width: 100%;
+  transition: border-color 0.2s;
+}
+.material-input::placeholder { color: rgba(255,255,255,0.35); }
+.material-input:focus { outline: none; border-color: #5eead4; background: rgba(255,255,255,0.15); }
+.hero-meta { display: flex; gap: 1rem; margin-top: 1rem; flex-wrap: wrap; }
+.hero-meta input {
+  background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 6px; padding: 0.375rem 0.75rem; color: white; font-size: 0.875rem; flex: 1; min-width: 160px;
+}
+.hero-meta input::placeholder { color: rgba(255,255,255,0.35); }
+.hero-meta input:focus { outline: none; border-color: #5eead4; }
+
+/* ─── Section Cards ───────────────────────────── */
+.card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 1.75rem 2rem; margin-bottom: 1.5rem;
+  box-shadow: var(--shadow); border: 1px solid var(--border);
+}
+.section-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; }
+.module-badge {
+  background: var(--navy); color: white; font-size: 0.7rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.25rem 0.625rem; border-radius: 20px; white-space: nowrap;
+  margin-top: 0.25rem;
+}
+.section-header h2 { font-size: 1.2rem; font-weight: 700; color: var(--navy); }
+.section-header p { font-size: 0.875rem; color: var(--muted); margin-top: 0.125rem; }
+
+/* ─── Instructions Box ───────────────────────── */
+.instructions {
+  background: #f0fdf9; border-left: 4px solid var(--teal);
+  padding: 0.875rem 1.125rem; border-radius: 0 8px 8px 0;
+  margin-bottom: 1.5rem; font-size: 0.875rem; color: #134e4a;
+}
+.instructions strong { color: var(--teal); }
+.instructions ul { margin-top: 0.5rem; padding-left: 1.25rem; }
+.instructions li { margin-bottom: 0.25rem; }
+
+/* ─── Example Box ────────────────────────────── */
+.example-toggle {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.8rem; font-weight: 600; color: var(--teal);
+  cursor: pointer; margin-bottom: 0.75rem; user-select: none;
+}
+.example-toggle:hover { color: #0f766e; }
+.example-box {
+  background: #fffbeb; border: 1px dashed #fbbf24; border-radius: 8px;
+  padding: 0.875rem 1rem; margin-bottom: 1.25rem;
+  font-size: 0.825rem; color: #78350f; display: none;
+}
+.example-box.open { display: block; }
+.example-box .ex-label { font-weight: 700; color: #92400e; margin-bottom: 0.25rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ─── Form Elements ──────────────────────────── */
+.form-group { margin-bottom: 1.125rem; }
+.form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.form-row .form-group { flex: 1; min-width: 200px; }
+label.field-label {
+  display: block; font-weight: 600; font-size: 0.85rem;
+  color: var(--navy); margin-bottom: 0.35rem;
+}
+label.field-label span.req { color: var(--red); margin-left: 2px; }
+.field-desc { font-size: 0.775rem; color: var(--muted); margin-bottom: 0.375rem; line-height: 1.45; }
+input[type="text"], textarea, select {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--border); border-radius: 6px;
+  font-size: 0.9rem; font-family: inherit; color: var(--text);
+  transition: border-color 0.15s; background: #fafafa;
+}
+input[type="text"]:focus, textarea:focus, select:focus {
+  outline: none; border-color: var(--teal); background: white;
+}
+textarea { resize: vertical; min-height: 70px; }
+
+/* ─── Radio Groups ───────────────────────────── */
+.radio-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+.radio-pill {
+  display: flex; align-items: center; gap: 0.35rem;
+  padding: 0.3rem 0.75rem; border: 1.5px solid var(--border);
+  border-radius: 20px; cursor: pointer; font-size: 0.85rem;
+  transition: all 0.15s; user-select: none; background: #fafafa;
+}
+.radio-pill:hover { border-color: var(--teal); background: var(--teal-light); }
+.radio-pill input[type="radio"] { display: none; }
+.radio-pill.selected { border-color: var(--teal); background: var(--teal-light); color: #0f766e; font-weight: 600; }
+.radio-pill.flag-positive.selected { border-color: var(--green); background: var(--green-bg); color: #065f46; }
+.radio-pill.flag-negative.selected { border-color: var(--muted); background: #f1f5f9; color: var(--muted); }
+
+.process-options { display: flex; flex-direction: column; gap: 0.4rem; margin-top: 0.25rem; }
+.process-option {
+  display: flex; align-items: flex-start; gap: 0.75rem;
+  padding: 0.5rem 0.875rem; border: 1.5px solid var(--border);
+  border-radius: 8px; cursor: pointer; font-size: 0.875rem;
+  transition: all 0.15s; background: #fafafa;
+}
+.process-option:hover { border-color: var(--teal); background: var(--teal-light); }
+.process-option input[type="radio"] { margin-top: 0.15rem; accent-color: var(--teal); }
+.process-option.selected { border-color: var(--teal); background: var(--teal-light); }
+.process-option .po-name { font-weight: 600; color: var(--navy); }
+.process-option .po-desc { font-size: 0.775rem; color: var(--muted); }
+
+/* ─── Event Records ──────────────────────────── */
+.events-container { display: flex; flex-direction: column; gap: 0.875rem; }
+.event-record {
+  border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.event-record.confirmed { border-color: #a7f3d0; }
+.event-record.subprocess { border-color: #fca5a5; }
+.event-header {
+  display: flex; align-items: center; gap: 0.875rem;
+  background: #f8fafc; padding: 0.875rem 1.125rem; cursor: pointer;
+  border-bottom: 1px solid transparent; transition: background 0.15s;
+  user-select: none;
+}
+.event-header:hover { background: #f1f5f9; }
+.event-record.open .event-header { border-bottom-color: var(--border); }
+.event-num {
+  background: var(--navy); color: white; font-size: 0.7rem; font-weight: 700;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.event-name-input {
+  flex: 1; background: transparent; border: none; font-size: 0.9rem;
+  font-weight: 600; color: var(--navy); cursor: text; padding: 0;
+}
+.event-name-input:focus { outline: none; }
+.event-name-input::placeholder { font-weight: 400; color: var(--muted); }
+.score-pill {
+  padding: 0.2rem 0.625rem; border-radius: 20px; font-size: 0.75rem;
+  font-weight: 700; white-space: nowrap; flex-shrink: 0;
+}
+.score-pill.pending { background: #f1f5f9; color: var(--muted); }
+.score-pill.confirmed-boundary { background: var(--green-bg); color: #065f46; }
+.score-pill.sub-process { background: var(--red-bg); color: #991b1b; }
+.score-pill.candidate { background: var(--amber-bg); color: #92400e; }
+.chevron { color: var(--muted); font-size: 0.75rem; flex-shrink: 0; transition: transform 0.2s; }
+.event-record.open .chevron { transform: rotate(180deg); }
+
+.event-body { padding: 1.5rem; display: none; }
+.event-record.open .event-body { display: block; }
+
+/* ─── Score Table ─────────────────────────────── */
+.score-table { width: 100%; border-collapse: collapse; margin-top: 0.75rem; }
+.score-table th, .score-table td { padding: 0.5rem 0.75rem; text-align: left; border: 1px solid var(--border); font-size: 0.85rem; }
+.score-table th { background: #f8fafc; font-weight: 600; color: var(--navy); }
+.score-table .score-check { text-align: center; }
+.score-total td { font-weight: 700; background: #f8fafc; }
+.score-display {
+  margin-top: 1rem; padding: 1rem 1.25rem; border-radius: 8px;
+  display: flex; align-items: center; gap: 1rem;
+}
+.score-display.confirmed-boundary { background: var(--green-bg); border: 1px solid #a7f3d0; }
+.score-display.sub-process { background: var(--red-bg); border: 1px solid #fca5a5; }
+.score-display.candidate { background: var(--amber-bg); border: 1px solid #fcd34d; }
+.score-display.pending { background: #f8fafc; border: 1px solid var(--border); }
+.score-display .score-num { font-size: 2rem; font-weight: 800; }
+.confirmed-boundary .score-num { color: var(--green); }
+.sub-process .score-num { color: var(--red); }
+.candidate .score-num { color: var(--amber); }
+.pending .score-num { color: var(--muted); }
+.score-display .score-label { font-weight: 700; font-size: 0.95rem; }
+.score-display .score-rule { font-size: 0.8rem; color: var(--muted); margin-top: 0.125rem; }
+
+/* ─── Module 3 ───────────────────────────────── */
+.m3-table, .opacity-table, .summary-table {
+  width: 100%; border-collapse: collapse; margin-top: 0.75rem; font-size: 0.875rem;
+}
+.m3-table th, .opacity-table th, .summary-table th {
+  background: var(--navy); color: white; padding: 0.625rem 0.875rem; text-align: left; font-size: 0.8rem;
+}
+.m3-table td, .opacity-table td, .summary-table td {
+  padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.m3-table tr:nth-child(even), .summary-table tr:nth-child(even) { background: #f8fafc; }
+.m3-table input, .opacity-table input, .summary-table input, .m3-table select, .m3-table textarea, .summary-table textarea {
+  width: 100%; padding: 0.3rem 0.5rem; border: 1px solid var(--border); border-radius: 4px;
+  font-size: 0.8rem; background: white; font-family: inherit;
+}
+.m3-table select { cursor: pointer; }
+.tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
+.tag-confirmed { background: var(--green-bg); color: #065f46; }
+.tag-subprocess { background: var(--red-bg); color: #991b1b; }
+.tag-candidate { background: var(--amber-bg); color: #92400e; }
+
+/* ─── Opacity Records ─────────────────────────── */
+.opacity-record {
+  border: 1.5px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 1rem; overflow: hidden;
+}
+.opacity-header {
+  background: #f8fafc; padding: 0.875rem 1.125rem;
+  display: flex; align-items: center; gap: 1rem; cursor: pointer;
+}
+.opacity-header:hover { background: #f1f5f9; }
+.phase-num-badge {
+  background: var(--teal); color: white; font-size: 0.7rem; font-weight: 700;
+  padding: 0.2rem 0.6rem; border-radius: 20px; white-space: nowrap;
+}
+.opacity-body { padding: 1.5rem; display: none; border-top: 1px solid var(--border); }
+.opacity-record.open .opacity-body { display: block; }
+.yes-no-row {
+  display: flex; align-items: flex-start; gap: 1rem;
+  padding: 0.875rem 0; border-bottom: 1px solid var(--border);
+}
+.yes-no-row:last-child { border-bottom: none; }
+.yes-no-q { flex: 1; font-size: 0.875rem; }
+.yes-no-q .q-label { font-weight: 600; color: var(--navy); margin-bottom: 0.2rem; }
+.yes-no-q .q-desc { font-size: 0.8rem; color: var(--muted); }
+.yes-no-answer { flex-shrink: 0; width: 200px; }
+.yes-no-answer .radio-group { margin-top: 0; }
+.source-field { margin-top: 0.5rem; }
+.source-field input { width: 100%; padding: 0.3rem 0.625rem; border: 1px solid var(--border); border-radius: 5px; font-size: 0.8rem; }
+.opacity-score-box {
+  margin-top: 1.25rem; padding: 1rem 1.25rem; border-radius: 8px;
+  border: 1px solid var(--border); background: #f8fafc;
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.transparency-badge {
+  padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.8rem; font-weight: 700;
+}
+.trans-high { background: var(--green-bg); color: #065f46; }
+.trans-medium { background: var(--amber-bg); color: #92400e; }
+.trans-low { background: var(--red-bg); color: #991b1b; }
+
+/* ─── Stats Bar ───────────────────────────────── */
+.stats-bar {
+  display: flex; gap: 1rem; flex-wrap: wrap; margin: 1.25rem 0;
+}
+.stat-box {
+  background: white; border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.75rem 1.125rem; flex: 1; min-width: 110px; text-align: center;
+}
+.stat-box .stat-n { font-size: 1.75rem; font-weight: 800; color: var(--navy); }
+.stat-box .stat-label { font-size: 0.75rem; color: var(--muted); margin-top: -0.1rem; }
+
+/* ─── Dividers / Misc ─────────────────────────── */
+.section-divider { border: none; border-top: 1.5px solid var(--border); margin: 1.5rem 0; }
+.add-btn {
+  display: flex; align-items: center; gap: 0.5rem; justify-content: center;
+  width: 100%; padding: 0.75rem; border: 2px dashed var(--teal);
+  border-radius: 8px; background: transparent; color: var(--teal);
+  font-size: 0.875rem; font-weight: 600; cursor: pointer; transition: all 0.15s;
+}
+.add-btn:hover { background: var(--teal-light); }
+.checklist { list-style: none; padding: 0; }
+.checklist li { display: flex; align-items: center; gap: 0.625rem; padding: 0.35rem 0; font-size: 0.875rem; }
+.checklist li input[type="checkbox"] { accent-color: var(--teal); width: 16px; height: 16px; cursor: pointer; }
+.tip-box {
+  background: #eff6ff; border: 1px solid #bfdbfe; border-radius: 8px;
+  padding: 0.75rem 1rem; font-size: 0.825rem; color: #1e40af; margin-top: 1rem;
+}
+
+@media print {
+  #topnav, .nav-actions, .add-btn, .btn, .event-header .chevron { display: none !important; }
+  .event-body { display: block !important; }
+  .opacity-body { display: block !important; }
+  .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+  body { background: white; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══ TOP NAV ════════════════════════════════ -->
+<nav id="topnav">
+  <span class="nav-brand">Phase Discovery Instrument</span>
+  <a href="#module1" class="nav-link active">Module 1</a>
+  <a href="#module2" class="nav-link">Module 2</a>
+  <a href="#module3" class="nav-link">Module 3</a>
+  <a href="#module4" class="nav-link">Module 4</a>
+  <a href="#summary" class="nav-link">Summary</a>
+  <div class="nav-actions">
+    <button class="btn btn-outline" onclick="loadWaterExample()">⚗ Load Example</button>
+    <button class="btn btn-outline" onclick="window.print()">⎙ Print</button>
+  </div>
+</nav>
+
+<!-- ═══ MAIN ═══════════════════════════════════ -->
+<div class="main">
+
+<!-- ─── HERO ──────────────────────────────────── -->
+<div class="hero">
+  <h1>Phase Discovery Instrument</h1>
+  <p>A material-agnostic supply chain phase mapping protocol — the phases are outputs, not inputs.</p>
+  <div class="material-field-label">Material / Product Being Analyzed</div>
+  <input id="materialName" class="material-input" type="text"
+    placeholder="e.g. Olive oil, Gold, Wheat, Cotton, Tap water…" autocomplete="off">
+  <div class="hero-meta">
+    <input id="analystName" type="text" placeholder="Analyst name(s)">
+    <input id="dateField" type="text" placeholder="Date">
+    <input id="sourcesField" type="text" placeholder="Primary sources consulted">
+  </div>
+</div>
+
+<!-- ═══ MODULE 1 ═══════════════════════════════ -->
+<div class="card" id="module1">
+  <div class="section-header">
+    <div>
+      <div class="module-badge">Module 1</div>
+    </div>
+    <div>
+      <h2>Anchor the Chain</h2>
+      <p>Answer these seven questions once, before identifying any events.</p>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <strong>When to use:</strong> Once, at the start — before listing events.<br>
+    <strong>What it does:</strong> Establishes the two fixed endpoints of the chain (origin and market), identifies units at each end, and produces your first-pass list of physical forms and actor classes.<br>
+    <strong>How:</strong> Answer precisely. Resist the urge to describe processes — that happens in Module 2. This module is only about naming states and actors.
+  </div>
+
+  <div class="example-toggle" onclick="toggleExample('ex1')">▶ Show example answers (Drinking water)</div>
+  <div class="example-box" id="ex1">
+    <div class="ex-label">Example — Drinking water (municipal supply)</div>
+    <strong>A1:</strong> Rainwater accumulated in a river or aquifer — untreated, unallocated, chemically variable.<br>
+    <strong>A2:</strong> Treated potable water delivered under pressure at the consumer's tap, meeting legal drinking water standards.<br>
+    <strong>A3:</strong> Megalitres (ML) of available flow in source water body. &nbsp;<strong>A4:</strong> Cubic metres (m³) of potable water meeting Drinking Water Standard.<br>
+    <strong>A5:</strong> No — unit gains a specification dimension at the treatment phase.<br>
+    <strong>A6:</strong> Natural source water → abstracted raw water → pre-filtered water → treated potable water → pressurised network water → tap water.<br>
+    <strong>A7:</strong> Environment agency (regulator) → Water utility → Distribution operator → Consumer.
+  </div>
+
+  <div class="form-group">
+    <label class="field-label">A1. What is the material in its pre-commercial state — before any human intervention? <span class="req">*</span></label>
+    <div class="field-desc">Describe the physical form, location, and condition of the material as it exists in nature or at origin, before extraction, harvest, or collection.</div>
+    <textarea id="a1" placeholder="e.g. For olive oil: Ripe olives on trees in the grove, containing 15–25% oil by weight…"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label class="field-label">A2. What is the material at the point of final market delivery? <span class="req">*</span></label>
+    <div class="field-desc">Describe the physical form, specification, and condition of the material as transferred to the final purchaser or registered for market use.</div>
+    <textarea id="a2" placeholder="e.g. For olive oil: Bottled extra-virgin olive oil, labelled, sealed, meeting IOC grading standard, at distributor delivery point…"></textarea>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label class="field-label">A3. Unit of measurement at origin (A1)? <span class="req">*</span></label>
+      <div class="field-desc">e.g. tonnes of ore, hectares of crop area, kg raw material</div>
+      <input type="text" id="a3" placeholder="Unit at origin…">
+    </div>
+    <div class="form-group">
+      <label class="field-label">A4. Unit of measurement at market (A2)? <span class="req">*</span></label>
+      <div class="field-desc">e.g. troy ounces, litres of certified product, standardised units</div>
+      <input type="text" id="a4" placeholder="Unit at market…">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="field-label">A5. Are the units in A3 and A4 the same?</label>
+    <div class="field-desc">If No, note where the unit change likely occurs — you will confirm this in Module 2.</div>
+    <div class="radio-group" id="a5-group">
+      <label class="radio-pill" onclick="selectRadio(this,'a5','yes')"><input type="radio" name="a5" value="yes"> Yes — unit unchanged</label>
+      <label class="radio-pill" onclick="selectRadio(this,'a5','no')"><input type="radio" name="a5" value="no"> No — unit changes at least once</label>
+    </div>
+    <div style="margin-top:0.5rem;">
+      <input type="text" id="a5note" placeholder="If No: where does the unit change likely occur? (e.g. 'At the refining stage')">
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="field-label">A6. List every distinct physical form the material passes through (origin → market)</label>
+    <div class="field-desc">Work from memory or documentation. Completeness is not required here — refine in Module 2. One form per line.</div>
+    <textarea id="a6" rows="5" placeholder="1. [Form 1 — earliest in chain]&#10;2. [Form 2]&#10;3. [Form 3]&#10;4. [Form 4]&#10;…"></textarea>
+  </div>
+
+  <div class="form-group">
+    <label class="field-label">A7. List every distinct actor class that holds or handles the material at any point</label>
+    <div class="field-desc">e.g. farmer, collector, trader, processor, refiner, certifier, logistics company, exchange, end buyer</div>
+    <textarea id="a7" rows="4" placeholder="1. [Actor class — earliest point]&#10;2. [Actor class]&#10;3. [Actor class]&#10;…"></textarea>
+  </div>
+
+  <hr class="section-divider">
+  <strong style="font-size:0.85rem; color:var(--navy);">Module 1 Completion Check</strong>
+  <ul class="checklist" style="margin-top:0.625rem;">
+    <li><input type="checkbox"> A1 and A2 filled in with specific physical descriptions (not general statements)</li>
+    <li><input type="checkbox"> A3 and A4 have explicit units of measurement</li>
+    <li><input type="checkbox"> A6 has at least three distinct physical forms listed</li>
+    <li><input type="checkbox"> A7 has at least three distinct actor classes listed</li>
+  </ul>
+</div>
+
+
+<!-- ═══ MODULE 2 ═══════════════════════════════ -->
+<div class="card" id="module2">
+  <div class="section-header">
+    <div><div class="module-badge">Module 2</div></div>
+    <div>
+      <h2>Event Inventory</h2>
+      <p>One record per candidate event. Repeat until all events are documented.</p>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <strong>What is an event?</strong> Anything that changes: the physical form, who holds the material, where it is, what process is applied, or who owns it. When in doubt — record it. Module 3 determines whether it becomes a phase boundary.<br><br>
+    <strong>How to identify events:</strong> Use the physical forms (A6) and actor classes (A7) from Module 1. Each transition between forms is an event. Each transition between actor classes is an event.<br><br>
+    <strong>Scoring:</strong> The boundary score calculates automatically as you answer B3–B11. The interpretation appears at the bottom of each event record.
+  </div>
+
+  <div class="example-toggle" onclick="toggleExample('ex2')">▶ Show example event (Drinking water — Event 4: Chemical treatment)</div>
+  <div class="example-box" id="ex2">
+    <div class="ex-label">Example — Event 4: Chemical treatment (chlorination, pH correction, fluoride)</div>
+    <strong>B1:</strong> Pre-treated raw water — filtered but not potable; does not meet drinking water standards.<br>
+    <strong>B2:</strong> Treated potable water — dosed with chlorine, pH adjusted; now meets legal drinking water standard.<br>
+    <strong>B3:</strong> No — state changes (non-potable → potable; different legal product) → <strong>+1</strong><br>
+    <strong>B4:</strong> Yes — unit shifts from "raw m³" to "treated m³ meeting DWS specification" → <strong>+1</strong><br>
+    <strong>B5:</strong> Chemical/Thermal — chlorine dosing, pH chemicals<br>
+    <strong>B6:</strong> No — prior event (filtration) was also Chemical/Thermal → <strong>0</strong><br>
+    <strong>B9:</strong> Yes — same water utility throughout → <strong>0</strong><br>
+    <strong>B10:</strong> No → <strong>0</strong>&nbsp;&nbsp;
+    <strong>B11:</strong> Yes — ML/day treated water at DWI-audited outlet → <strong>+1</strong><br>
+    <strong>Score: 3 → Candidate, B11=Yes → Confirmed boundary ✓</strong>
+  </div>
+
+  <div class="events-container" id="eventsContainer"></div>
+
+  <button class="add-btn" onclick="addEvent()">+ Add Event</button>
+</div>
+
+
+<!-- ═══ MODULE 3 ═══════════════════════════════ -->
+<div class="card" id="module3">
+  <div class="section-header">
+    <div><div class="module-badge">Module 3</div></div>
+    <div>
+      <h2>Boundary Scoring and Phase Map</h2>
+      <p>Apply scoring rules to all events; produce the confirmed phase map.</p>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <strong>When to use:</strong> After all Event Records in Module 2 are complete.<br>
+    <strong>Scoring rules:</strong>
+    <ul>
+      <li><strong>Score 0–1:</strong> Sub-process regardless of B11.</li>
+      <li><strong>Score 2–3 + B11=Yes:</strong> Confirmed phase boundary.</li>
+      <li><strong>Score 2–3 + B11=No:</strong> Sub-process — a boundary without a definable output is structurally incomplete.</li>
+      <li><strong>Score 4–6:</strong> Confirmed boundary regardless of B11 (but note B11=No as opacity flag).</li>
+    </ul>
+  </div>
+
+  <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:0.75rem;">
+    <strong style="font-size:0.875rem; color:var(--navy);">Step 3.1 — Master Event Score Table</strong>
+    <button class="btn btn-teal" style="font-size:0.78rem; padding:0.3rem 0.75rem;" onclick="refreshModule3()">↺ Refresh from Module 2</button>
+  </div>
+
+  <table class="m3-table" id="m3ScoreTable">
+    <thead>
+      <tr>
+        <th>#</th><th>Event name</th><th>Score</th><th>B11 output?</th><th>Interpretation</th>
+      </tr>
+    </thead>
+    <tbody id="m3ScoreBody">
+      <tr><td colspan="5" style="color:var(--muted); font-style:italic; text-align:center; padding:1.5rem;">
+        Complete Module 2, then click ↺ Refresh to populate this table.
+      </td></tr>
+    </tbody>
+  </table>
+
+  <hr class="section-divider">
+  <strong style="font-size:0.875rem; color:var(--navy);">Step 3.2 — Confirmed Phase Map</strong>
+  <p style="font-size:0.8rem; color:var(--muted); margin:0.25rem 0 0.75rem;">List only confirmed phase boundaries in sequence. Phase 0 = origin/pre-commercial state.</p>
+
+  <div class="tip-box">Most supply chains resolve to 6–9 phases. Fewer than 5 suggests events have been grouped prematurely. More than 10 suggests sub-processes have been elevated to phase status.</div>
+
+  <div id="phaseMapRows" style="margin-top:1rem; display:flex; flex-direction:column; gap:0.625rem;"></div>
+  <button class="add-btn" style="margin-top:0.625rem;" onclick="addPhaseRow()">+ Add Phase to Map</button>
+
+  <hr class="section-divider">
+  <strong style="font-size:0.875rem; color:var(--navy);">Step 3.3 — Sub-process Register</strong>
+  <p style="font-size:0.8rem; color:var(--muted); margin:0.25rem 0 0.75rem;">For each event classified as a sub-process, record which phase it belongs to.</p>
+
+  <div id="subprocessRows" style="display:flex; flex-direction:column; gap:0.625rem;"></div>
+  <button class="add-btn" style="margin-top:0.625rem;" onclick="addSubprocessRow()">+ Add Sub-process</button>
+</div>
+
+
+<!-- ═══ MODULE 4 ═══════════════════════════════ -->
+<div class="card" id="module4">
+  <div class="section-header">
+    <div><div class="module-badge">Module 4</div></div>
+    <div>
+      <h2>Opacity Tagging</h2>
+      <p>Four measurability tests per confirmed phase. One record per phase.</p>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <strong>When to use:</strong> After the Phase Map in Module 3 is confirmed.<br>
+    <strong>What it does:</strong> Assigns a High / Medium / Low transparency classification to each phase. This is a structural assessment of measurability — not a judgment about the industry.<br>
+    <strong>Scoring:</strong> 4 Yes = High transparency. 2–3 Yes = Medium. 0–1 Yes = Low.
+  </div>
+
+  <div class="example-toggle" onclick="toggleExample('ex4')">▶ Show example (Drinking water — Phase 2: Water treatment)</div>
+  <div class="example-box" id="ex4">
+    <div class="ex-label">Example — Phase 2: Water treatment</div>
+    <strong>C1:</strong> Yes — DWI annual reports publish treatment works compliance data. &nbsp;<strong>C2:</strong> Yes — water utilities are publicly registered companies.<br>
+    <strong>C3:</strong> Yes — DWI inspectors have statutory right of access; annual reports published. &nbsp;<strong>C4:</strong> Yes — treated water quality at outlet is a legally mandated monitoring point.<br>
+    <strong>Opacity score: 4 → High transparency.</strong> Water treatment is the most externally regulated phase in the chain.
+  </div>
+
+  <div id="opacityContainer" style="margin-top:1rem;"></div>
+  <button class="add-btn" onclick="addOpacityRecord()">+ Add Phase Opacity Record</button>
+</div>
+
+
+<!-- ═══ SUMMARY ════════════════════════════════ -->
+<div class="card" id="summary">
+  <div class="section-header">
+    <div><div class="module-badge">Summary</div></div>
+    <div>
+      <h2>Completed Phase Map</h2>
+      <p>The deliverable — complete this table after all four modules are finished.</p>
+    </div>
+  </div>
+
+  <div id="summaryMeta" style="display:flex; gap:1.5rem; flex-wrap:wrap; margin-bottom:1.25rem; font-size:0.875rem;">
+    <div><strong>Material:</strong> <span id="sumMaterial" style="color:var(--muted);">—</span></div>
+    <div><strong>Analyst:</strong> <span id="sumAnalyst" style="color:var(--muted);">—</span></div>
+    <div><strong>Date:</strong> <span id="sumDate" style="color:var(--muted);">—</span></div>
+  </div>
+
+  <table class="summary-table">
+    <thead>
+      <tr>
+        <th>#</th><th>Phase name</th><th>Physical state (in → out)</th><th>Child N output</th><th>Custodian class</th><th>Transparency</th>
+      </tr>
+    </thead>
+    <tbody id="summaryBody"></tbody>
+  </table>
+  <button class="add-btn" style="margin-top:0.625rem;" onclick="addSummaryRow()">+ Add Phase to Summary</button>
+
+  <hr class="section-divider">
+
+  <div class="stats-bar" id="statsBar">
+    <div class="stat-box"><div class="stat-n" id="statTotal">—</div><div class="stat-label">Total phases</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--green);" id="statHigh">—</div><div class="stat-label">High transparency</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--amber);" id="statMed">—</div><div class="stat-label">Medium transparency</div></div>
+    <div class="stat-box"><div class="stat-n" style="color:var(--red);" id="statLow">—</div><div class="stat-label">Low transparency</div></div>
+    <div class="stat-box"><div class="stat-n" id="statSub">—</div><div class="stat-label">Sub-processes</div></div>
+  </div>
+
+  <div class="form-group" style="margin-top:1.5rem;">
+    <label class="field-label">Analyst Notes</label>
+    <div class="field-desc">Anomalies, contradictions between sources, events that could not be confidently classified, or areas requiring further research.</div>
+    <textarea id="analystNotes" rows="6" placeholder="Record any anomalies, ambiguous classifications, contradictions between sources, or areas flagged for further investigation…"></textarea>
+  </div>
+
+  <div style="margin-top:0.5rem; font-size:0.75rem; color:var(--muted); text-align:right;">
+    Phase Discovery Instrument v1.0 — True Value Analytics — Aligned with: Abstract Supply Chain Phase Template | N-D-C Tholonic Framework
+  </div>
+</div>
+
+</div><!-- /main -->
+
+<script>
+// ─── State ─────────────────────────────────────
+let eventCount = 0;
+let phaseRowCount = 0;
+let subprocessRowCount = 0;
+let opacityCount = 0;
+let summaryRowCount = 0;
+
+// ─── Navigation highlight on scroll ───────────
+const sections = ['module1','module2','module3','module4','summary'];
+window.addEventListener('scroll', () => {
+  let current = sections[0];
+  sections.forEach(id => {
+    const el = document.getElementById(id);
+    if (el && el.getBoundingClientRect().top < 80) current = id;
+  });
+  document.querySelectorAll('#topnav .nav-link').forEach(a => {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+  });
+  // update summary meta
+  document.getElementById('sumMaterial').textContent = document.getElementById('materialName').value || '—';
+  document.getElementById('sumAnalyst').textContent = document.getElementById('analystName').value || '—';
+  document.getElementById('sumDate').textContent = document.getElementById('dateField').value || '—';
+});
+
+// ─── Radio pill selection ──────────────────────
+function selectRadio(label, name, value) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(r => {
+    r.closest('.radio-pill')?.classList.remove('selected','flag-positive','flag-negative');
+    r.closest('.process-option')?.classList.remove('selected');
+  });
+  label.classList.add('selected');
+  // colour feedback for flag criteria
+  if ((name.endsWith('b3') && value === 'no') ||
+      (name.endsWith('b4') && value === 'yes') ||
+      (name.endsWith('b6') && value === 'yes') ||
+      (name.endsWith('b9') && value === 'no') ||
+      (name.endsWith('b10') && value === 'yes') ||
+      (name.endsWith('b11') && value === 'yes')) {
+    label.classList.add('flag-positive');
+  } else {
+    label.classList.add('flag-negative');
+  }
+  updateScore(name.split('-')[0]);
+  toggleB12(name);
+}
+
+function selectProcess(label, eventId) {
+  document.querySelectorAll(`#event-${eventId} .process-option`).forEach(o => o.classList.remove('selected'));
+  label.classList.add('selected');
+  updateScore(eventId);
+}
+
+function toggleB12(name) {
+  if (!name.includes('b11')) return;
+  const id = name.split('-')[0];
+  const val = document.querySelector(`[name="${name}"]:checked`)?.value;
+  const b12 = document.getElementById(`${id}-b12-section`);
+  const b11detail = document.getElementById(`${id}-b11-detail`);
+  if (b12) b12.style.display = (val === 'no') ? 'block' : 'none';
+  if (b11detail) b11detail.style.display = (val === 'yes') ? 'block' : 'none';
+}
+
+// ─── Score calculation ─────────────────────────
+function getVal(id, name) {
+  return document.querySelector(`#event-${id} [name="${id}-${name}"]:checked`)?.value;
+}
+
+function calculateEventScore(id) {
+  let score = 0;
+  if (getVal(id,'b3') === 'no') score++;
+  if (getVal(id,'b4') === 'yes') score++;
+  if (getVal(id,'b6') === 'yes') score++;
+  if (getVal(id,'b9') === 'no') score++;
+  if (getVal(id,'b10') === 'yes') score++;
+  const b11 = getVal(id,'b11');
+  if (b11 === 'yes') score++;
+  return { score, b11: b11 === 'yes', b11answered: !!b11 };
+}
+
+function interpretScore(score, b11, b11answered) {
+  if (!b11answered && score === 0) return { label: '— not scored', cls: 'pending', rule: 'Answer B3–B11 to calculate.' };
+  if (score <= 1) return { label: 'Sub-process', cls: 'sub-process', rule: 'Score 0–1 → sub-process regardless of B11.' };
+  if (score <= 3 && !b11) return { label: 'Sub-process (no measurable output)', cls: 'sub-process', rule: 'Score 2–3 with B11=No → sub-process. A boundary without a definable output is structurally incomplete.' };
+  if (score <= 3 && b11) return { label: 'Confirmed boundary', cls: 'confirmed-boundary', rule: 'Score 2–3 with B11=Yes → confirmed phase boundary.' };
+  return { label: 'Confirmed boundary', cls: 'confirmed-boundary', rule: 'Score 4–6 → confirmed regardless of B11.' };
+}
+
+function updateScore(id) {
+  const { score, b11, b11answered } = calculateEventScore(id);
+  const { label, cls, rule } = interpretScore(score, b11, b11answered);
+
+  // score table rows
+  const rows = document.querySelectorAll(`#score-table-${id} .score-row`);
+  const checks = [
+    getVal(id,'b3') === 'no',
+    getVal(id,'b4') === 'yes',
+    getVal(id,'b6') === 'yes',
+    getVal(id,'b9') === 'no',
+    getVal(id,'b10') === 'yes',
+    getVal(id,'b11') === 'yes'
+  ];
+  rows.forEach((row, i) => {
+    const cell = row.querySelector('.score-check');
+    if (cell) cell.textContent = checks[i] ? '✓  +1' : '✗  0';
+  });
+  const totalCell = document.getElementById(`score-total-${id}`);
+  if (totalCell) totalCell.textContent = score;
+
+  // score display
+  const disp = document.getElementById(`score-display-${id}`);
+  if (disp) {
+    disp.className = `score-display ${cls}`;
+    disp.innerHTML = `
+      <div class="score-num">${score}</div>
+      <div>
+        <div class="score-label">${label}</div>
+        <div class="score-rule">${rule}</div>
+      </div>`;
+  }
+
+  // pill on header
+  const pill = document.getElementById(`score-pill-${id}`);
+  if (pill) {
+    pill.className = `score-pill ${cls}`;
+    pill.textContent = label;
+  }
+
+  // event record border colour
+  const record = document.getElementById(`event-${id}`);
+  if (record) {
+    record.classList.remove('confirmed','subprocess');
+    if (cls === 'confirmed-boundary') record.classList.add('confirmed');
+    if (cls === 'sub-process') record.classList.add('subprocess');
+  }
+}
+
+// ─── Add / Remove Events ───────────────────────
+function addEvent(data) {
+  eventCount++;
+  const id = eventCount;
+  const container = document.getElementById('eventsContainer');
+  const div = document.createElement('div');
+  div.id = `event-${id}`;
+  div.className = 'event-record open';
+  div.innerHTML = buildEventHTML(id, data || {});
+  container.appendChild(div);
+  if (data) populateEventData(id, data);
+}
+
+function buildEventHTML(id, data) {
+  return `
+  <div class="event-header" onclick="toggleEvent(${id})">
+    <div class="event-num">${id}</div>
+    <input class="event-name-input" type="text" id="ename-${id}"
+      placeholder="Event name / short description…"
+      onclick="event.stopPropagation()" value="${data.name||''}">
+    <span class="score-pill pending" id="score-pill-${id}">— not scored</span>
+    <button class="btn-red" onclick="removeEvent(${id},event)" title="Remove event">✕</button>
+    <span class="chevron">▼</span>
+  </div>
+
+  <div class="event-body">
+    <div class="form-group">
+      <label class="field-label">Sources consulted for this event</label>
+      <input type="text" id="${id}-sources" placeholder="Data sources, references, or documentation consulted…" value="${data.sources||''}">
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">B1. Physical form of material <em>entering</em> this event</label>
+        <textarea id="${id}-b1" placeholder="What form, state, or condition is the material in before this event begins?">${data.b1||''}</textarea>
+      </div>
+      <div class="form-group">
+        <label class="field-label">B2. Physical form of material <em>leaving</em> this event</label>
+        <textarea id="${id}-b2" placeholder="What form, state, or condition is the material in after this event ends?">${data.b2||''}</textarea>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B3. Are B1 and B2 the same physical form?</label>
+      <div class="field-desc">If No → physical state changed → +1 toward boundary score</div>
+      <div class="radio-group" id="${id}-b3-group">
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b3','yes')"><input type="radio" name="${id}-b3" value="yes"> Yes — unchanged</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b3','no')"><input type="radio" name="${id}-b3" value="no"> No — state changes (+1)</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B4. Does the unit of measurement change across this event?</label>
+      <div class="field-desc">If Yes → unit changed → +1 toward boundary score</div>
+      <div class="form-row" style="margin-bottom:0.5rem;">
+        <div class="form-group" style="margin-bottom:0;">
+          <input type="text" id="${id}-unit-in" placeholder="Unit entering…" value="${data.unitIn||''}">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <input type="text" id="${id}-unit-out" placeholder="Unit leaving…" value="${data.unitOut||''}">
+        </div>
+      </div>
+      <div class="radio-group">
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b4','yes')"><input type="radio" name="${id}-b4" value="yes"> Yes — unit changes (+1)</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b4','no')"><input type="radio" name="${id}-b4" value="no"> No — same unit</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B5. What class of process is applied during this event?</label>
+      <div class="process-options">
+        ${buildProcessOption(id,'extractive','Extractive','Material separated from origin — mining, harvesting, collection')}
+        ${buildProcessOption(id,'aggregative','Aggregative','Material gathered, sorted, bulked, or first-traded — no chemical change')}
+        ${buildProcessOption(id,'chemical','Chemical / Thermal','Chemical or thermal transformation — smelting, pressing, cracking, refining')}
+        ${buildProcessOption(id,'specification','Specification','Material brought to a defined standard or grade — no fundamental form change')}
+        ${buildProcessOption(id,'certification','Certification','Material tested, assayed, audited, or approved against a standard')}
+        ${buildProcessOption(id,'custodial','Custodial','Stored or transported — no change in form, specification, or ownership')}
+        ${buildProcessOption(id,'commercial','Commercial','Sold, registered, or delivered — change in legal status or market access')}
+      </div>
+      <div style="margin-top:0.5rem;">
+        <input type="text" id="${id}-b5note" placeholder="Notes on classification if ambiguous…" value="${data.b5note||''}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B6. Does the process class differ from the <em>immediately preceding</em> event?</label>
+      <div class="field-desc">If Yes → process class changed → +1 toward boundary score</div>
+      <div class="field-desc">Process class of preceding event: <input type="text" id="${id}-prior-class" style="width:auto;display:inline;" placeholder="prior class…" value="${data.priorClass||''}"></div>
+      <div class="radio-group">
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b6','yes')"><input type="radio" name="${id}-b6" value="yes"> Yes — class changes (+1)</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b6','no')"><input type="radio" name="${id}-b6" value="no"> No — same class</label>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">B7. Who physically holds the material <em>before</em> this event?</label>
+        <input type="text" id="${id}-b7class" placeholder="Actor class…" value="${data.b7class||''}">
+        <input type="text" id="${id}-b7name" placeholder="Specific name (if known)…" style="margin-top:0.35rem;" value="${data.b7name||''}">
+      </div>
+      <div class="form-group">
+        <label class="field-label">B8. Who physically holds the material <em>after</em> this event?</label>
+        <input type="text" id="${id}-b8class" placeholder="Actor class…" value="${data.b8class||''}">
+        <input type="text" id="${id}-b8name" placeholder="Specific name (if known)…" style="margin-top:0.35rem;" value="${data.b8name||''}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B9. Are B7 and B8 the same entity?</label>
+      <div class="field-desc">If No → physical custody transfers → +1 toward boundary score</div>
+      <div class="radio-group">
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b9','yes')"><input type="radio" name="${id}-b9" value="yes"> Yes — same entity</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b9','no')"><input type="radio" name="${id}-b9" value="no"> No — custody transfers (+1)</label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B10. Does legal ownership change across this event?</label>
+      <div class="field-desc">If Yes → ownership changes → +1 toward boundary score</div>
+      <div class="radio-group">
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b10','yes')"><input type="radio" name="${id}-b10" value="yes"> Yes — ownership transfers (+1)</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b10','no')"><input type="radio" name="${id}-b10" value="no"> No — same owner</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b10','unknown')"><input type="radio" name="${id}-b10" value="unknown"> Unknown / unverifiable</label>
+      </div>
+      <input type="text" id="${id}-b10note" placeholder="Note reason if Unknown…" style="margin-top:0.5rem;" value="${data.b10note||''}">
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">B11. Can you name a specific, measurable quantity that leaves this event?</label>
+      <div class="field-desc">Must include a unit, an approximate volume, and a named recipient. "Approximately X tonnes" is acceptable. "It varies informally" is not. If Yes → +1 toward boundary score.</div>
+      <div class="radio-group">
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b11','yes')"><input type="radio" name="${id}-b11" value="yes"> Yes — output is definable (+1)</label>
+        <label class="radio-pill" onclick="selectRadio(this,'${id}-b11','no')"><input type="radio" name="${id}-b11" value="no"> No — proceed to B12</label>
+      </div>
+      <div id="${id}-b11-detail" style="display:none; margin-top:0.75rem;">
+        <input type="text" id="${id}-qty" placeholder="Quantity and unit…" style="margin-bottom:0.375rem;" value="${data.qty||''}">
+        <input type="text" id="${id}-vol" placeholder="Approximate volume (per year/season/cycle)…" style="margin-bottom:0.375rem;" value="${data.vol||''}">
+        <input type="text" id="${id}-recip" placeholder="Named recipient (actor class or specific entity)…" value="${data.recip||''}">
+      </div>
+    </div>
+
+    <div id="${id}-b12-section" style="display:none;">
+      <div class="form-group">
+        <label class="field-label">B12. Why can the output not be measured?</label>
+        <div class="process-options">
+          ${buildProcessOption(id,'b12a','(a) Informal practice','Transactions occur but are not recorded in any accessible form')}
+          ${buildProcessOption(id,'b12b','(b) Commercial secrecy','Data exists but is withheld for competitive or legal reasons')}
+          ${buildProcessOption(id,'b12c','(c) Physical inaccessibility','Material or transaction is structurally unobservable (sub-surface, off-market, etc.)')}
+        </div>
+      </div>
+    </div>
+
+    <hr class="section-divider">
+    <strong style="font-size:0.85rem; color:var(--navy);">Boundary Score</strong>
+    <table class="score-table" id="score-table-${id}" style="margin-top:0.625rem;">
+      <thead><tr><th>Criterion</th><th>Condition</th><th class="score-check">Score</th></tr></thead>
+      <tbody>
+        <tr class="score-row"><td>Physical state changed</td><td>B3 = No</td><td class="score-check">—</td></tr>
+        <tr class="score-row"><td>Unit of measurement changed</td><td>B4 = Yes</td><td class="score-check">—</td></tr>
+        <tr class="score-row"><td>Process class changed</td><td>B6 = Yes</td><td class="score-check">—</td></tr>
+        <tr class="score-row"><td>Physical custody changed</td><td>B9 = No</td><td class="score-check">—</td></tr>
+        <tr class="score-row"><td>Legal ownership changed</td><td>B10 = Yes</td><td class="score-check">—</td></tr>
+        <tr class="score-row"><td>Measurable output exists</td><td>B11 = Yes</td><td class="score-check">—</td></tr>
+        <tr class="score-total"><td colspan="2"><strong>Raw boundary score (0–6)</strong></td><td class="score-check" id="score-total-${id}">—</td></tr>
+      </tbody>
+    </table>
+    <div class="score-display pending" id="score-display-${id}">
+      <div class="score-num">—</div>
+      <div><div class="score-label">Not yet scored</div><div class="score-rule">Answer B3–B11 to calculate.</div></div>
+    </div>
+  </div>`;
+}
+
+function buildProcessOption(id, val, name, desc) {
+  return `<label class="process-option" onclick="selectProcess(this,${/^b12/.test(val)?id:id})" style="cursor:pointer;">
+    <input type="radio" name="${id}-${/^b12/.test(val)?'b12':'b5'}" value="${val}">
+    <div><div class="po-name">${name}</div><div class="po-desc">${desc}</div></div>
+  </label>`;
+}
+
+function toggleEvent(id) {
+  const rec = document.getElementById(`event-${id}`);
+  rec.classList.toggle('open');
+}
+
+function removeEvent(id, e) {
+  e.stopPropagation();
+  if (confirm('Remove this event record?')) {
+    document.getElementById(`event-${id}`).remove();
+  }
+}
+
+function populateEventData(id, data) {
+  if (data.b3) { const el = document.querySelector(`#event-${id} [name="${id}-b3"][value="${data.b3}"]`); if(el) selectRadio(el.closest('.radio-pill'), `${id}-b3`, data.b3); }
+  if (data.b4) { const el = document.querySelector(`#event-${id} [name="${id}-b4"][value="${data.b4}"]`); if(el) selectRadio(el.closest('.radio-pill'), `${id}-b4`, data.b4); }
+  if (data.b5) { const el = document.querySelector(`#event-${id} [name="${id}-b5"][value="${data.b5}"]`); if(el) selectProcess(el.closest('.process-option'), id); }
+  if (data.b6) { const el = document.querySelector(`#event-${id} [name="${id}-b6"][value="${data.b6}"]`); if(el) selectRadio(el.closest('.radio-pill'), `${id}-b6`, data.b6); }
+  if (data.b9) { const el = document.querySelector(`#event-${id} [name="${id}-b9"][value="${data.b9}"]`); if(el) selectRadio(el.closest('.radio-pill'), `${id}-b9`, data.b9); }
+  if (data.b10) { const el = document.querySelector(`#event-${id} [name="${id}-b10"][value="${data.b10}"]`); if(el) selectRadio(el.closest('.radio-pill'), `${id}-b10`, data.b10); }
+  if (data.b11) { const el = document.querySelector(`#event-${id} [name="${id}-b11"][value="${data.b11}"]`); if(el) selectRadio(el.closest('.radio-pill'), `${id}-b11`, data.b11); }
+  if (data.b12) { const el = document.querySelector(`#event-${id} [name="${id}-b12"][value="${data.b12}"]`); if(el) selectProcess(el.closest('.process-option'), id); }
+}
+
+// ─── Module 3 ──────────────────────────────────
+function refreshModule3() {
+  const tbody = document.getElementById('m3ScoreBody');
+  tbody.innerHTML = '';
+  let hasEvents = false;
+  for (let i = 1; i <= eventCount; i++) {
+    const rec = document.getElementById(`event-${i}`);
+    if (!rec) continue;
+    hasEvents = true;
+    const name = document.getElementById(`ename-${i}`)?.value || `Event ${i}`;
+    const { score, b11, b11answered } = calculateEventScore(i);
+    const { label, cls } = interpretScore(score, b11, b11answered);
+    const tagClass = cls === 'confirmed-boundary' ? 'tag-confirmed' : cls === 'sub-process' ? 'tag-subprocess' : 'tag-candidate';
+    tbody.innerHTML += `<tr>
+      <td>${i}</td>
+      <td>${name}</td>
+      <td style="text-align:center; font-weight:700;">${b11answered ? score : '—'}</td>
+      <td style="text-align:center;">${b11answered ? (b11?'Yes':'No') : '—'}</td>
+      <td><span class="tag ${tagClass}">${label}</span></td>
+    </tr>`;
+  }
+  if (!hasEvents) tbody.innerHTML = '<tr><td colspan="5" style="color:var(--muted);font-style:italic;text-align:center;padding:1rem;">No events found. Add events in Module 2 first.</td></tr>';
+}
+
+function addPhaseRow() {
+  phaseRowCount++;
+  const id = phaseRowCount;
+  const container = document.getElementById('phaseMapRows');
+  const div = document.createElement('div');
+  div.id = `phase-row-${id}`;
+  div.style.cssText = 'display:grid;grid-template-columns:40px 1fr 1fr 1fr;gap:0.5rem;align-items:start;';
+  div.innerHTML = `
+    <input type="text" placeholder="Ph #" style="text-align:center; font-weight:700;">
+    <input type="text" placeholder="Phase name…">
+    <input type="text" placeholder="Begins at event #…">
+    <div style="display:flex;gap:0.375rem;">
+      <input type="text" placeholder="Child N output…" style="flex:1;">
+      <button class="btn-red" onclick="document.getElementById('phase-row-${id}').remove()">✕</button>
+    </div>`;
+  container.appendChild(div);
+}
+
+function addSubprocessRow() {
+  subprocessRowCount++;
+  const id = subprocessRowCount;
+  const container = document.getElementById('subprocessRows');
+  const div = document.createElement('div');
+  div.id = `sp-row-${id}`;
+  div.style.cssText = 'display:grid;grid-template-columns:40px 1fr 80px 2fr;gap:0.5rem;align-items:start;';
+  div.innerHTML = `
+    <input type="text" placeholder="Ev #" style="text-align:center;">
+    <input type="text" placeholder="Event name…">
+    <input type="text" placeholder="Phase #" style="text-align:center;">
+    <div style="display:flex;gap:0.375rem;">
+      <input type="text" placeholder="Reason for sub-process classification…" style="flex:1;">
+      <button class="btn-red" onclick="document.getElementById('sp-row-${id}').remove()">✕</button>
+    </div>`;
+  container.appendChild(div);
+}
+
+// ─── Module 4 ──────────────────────────────────
+function addOpacityRecord() {
+  opacityCount++;
+  const id = opacityCount;
+  const container = document.getElementById('opacityContainer');
+  const div = document.createElement('div');
+  div.id = `opacity-${id}`;
+  div.className = 'opacity-record open';
+  div.innerHTML = `
+    <div class="opacity-header" onclick="toggleOpacity(${id})">
+      <span class="phase-num-badge">Phase <input type="text" id="oPhaseNum-${id}" placeholder="#" style="width:40px;background:transparent;border:none;color:white;font-weight:700;text-align:center;" onclick="event.stopPropagation()"></span>
+      <input type="text" id="oPhaseName-${id}" placeholder="Phase name…" style="flex:1;background:transparent;border:none;font-size:0.9rem;font-weight:600;color:var(--navy);" onclick="event.stopPropagation()">
+      <span class="transparency-badge" id="trans-badge-${id}">— not scored</span>
+      <button class="btn-red" onclick="document.getElementById('opacity-${id}').remove();event.stopPropagation()">✕</button>
+      <span class="chevron">▼</span>
+    </div>
+    <div class="opacity-body">
+      ${buildOpacityQuestion(id,1,'C1','Can the volume throughput of this phase be measured from public sources?',
+        'Is there a publicly accessible data source that gives an approximate quantity of material passing through this phase per year?')}
+      ${buildOpacityQuestion(id,2,'C2','Can the identity of custodians in this phase be publicly established?',
+        'Can you name, or access a public list of, the specific organisations or actor classes that physically hold the material during this phase?')}
+      ${buildOpacityQuestion(id,3,'C3','Can the transformation process in this phase be physically verified by an outside party?',
+        'Could an independent analyst, auditor, or regulator observe or confirm that the stated transformation is occurring and producing the stated output?')}
+      ${buildOpacityQuestion(id,4,'C4','Can the child-N output of this phase — the handoff to the next phase — be independently confirmed?',
+        'Is there a way to verify from outside this phase that the output is the actual quantity and form being transferred?')}
+      <div class="opacity-score-box">
+        <div>
+          <div style="font-size:0.8rem;color:var(--muted);">Yes count (0–4)</div>
+          <div style="font-size:1.75rem;font-weight:800;color:var(--navy);" id="oscore-${id}">—</div>
+        </div>
+        <div>
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.25rem;">Transparency classification</div>
+          <span class="transparency-badge" id="oscore-label-${id}">—</span>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:0.8rem;color:var(--muted);margin-bottom:0.25rem;">Primary reason for opacity (if Medium/Low)</div>
+          <select id="opacity-reason-${id}" style="width:100%;padding:0.3rem 0.5rem;border:1px solid var(--border);border-radius:5px;font-size:0.8rem;">
+            <option value="">— select if applicable —</option>
+            <option>(a) Informal practice</option>
+            <option>(b) Commercial secrecy</option>
+            <option>(c) Physical inaccessibility</option>
+            <option>Multiple factors</option>
+          </select>
+        </div>
+      </div>
+    </div>`;
+  container.appendChild(div);
+}
+
+function buildOpacityQuestion(opId, qNum, code, question, desc) {
+  return `<div class="yes-no-row">
+    <div class="yes-no-q">
+      <div class="q-label">${code}. ${question}</div>
+      <div class="q-desc">${desc}</div>
+      <div class="source-field">
+        <input type="text" id="o${code}-source-${opId}" placeholder="Source or mechanism (if Yes)…">
+      </div>
+    </div>
+    <div class="yes-no-answer">
+      <div class="radio-group">
+        <label class="radio-pill" onclick="selectOpacityRadio(this,${opId},${qNum},'yes')">
+          <input type="radio" name="o${opId}-c${qNum}" value="yes"> Yes</label>
+        <label class="radio-pill" onclick="selectOpacityRadio(this,${opId},${qNum},'no')">
+          <input type="radio" name="o${opId}-c${qNum}" value="no"> No</label>
+      </div>
+    </div>
+  </div>`;
+}
+
+function selectOpacityRadio(label, opId, qNum, value) {
+  document.querySelectorAll(`[name="o${opId}-c${qNum}"]`).forEach(r => {
+    r.closest('.radio-pill')?.classList.remove('selected','flag-positive','flag-negative');
+  });
+  label.classList.add('selected');
+  label.classList.add(value === 'yes' ? 'flag-positive' : 'flag-negative');
+  updateOpacityScore(opId);
+}
+
+function updateOpacityScore(opId) {
+  let score = 0;
+  for (let q = 1; q <= 4; q++) {
+    if (document.querySelector(`[name="o${opId}-c${q}"]:checked`)?.value === 'yes') score++;
+  }
+  const scoreEl = document.getElementById(`oscore-${opId}`);
+  const labelEl = document.getElementById(`oscore-label-${opId}`);
+  const badgeEl = document.getElementById(`trans-badge-${opId}`);
+  if (scoreEl) scoreEl.textContent = score;
+  let label = score === 4 ? 'High' : score >= 2 ? 'Medium' : 'Low';
+  let cls = score === 4 ? 'trans-high' : score >= 2 ? 'trans-medium' : 'trans-low';
+  if (labelEl) { labelEl.textContent = label; labelEl.className = `transparency-badge ${cls}`; }
+  if (badgeEl) { badgeEl.textContent = label; badgeEl.className = `transparency-badge ${cls}`; }
+}
+
+function toggleOpacity(id) {
+  document.getElementById(`opacity-${id}`).classList.toggle('open');
+}
+
+// ─── Summary ───────────────────────────────────
+function addSummaryRow() {
+  summaryRowCount++;
+  const id = summaryRowCount;
+  const tbody = document.getElementById('summaryBody');
+  const tr = document.createElement('tr');
+  tr.id = `sum-row-${id}`;
+  tr.innerHTML = `
+    <td><input type="text" placeholder="#" style="width:40px;text-align:center;font-weight:700;"></td>
+    <td><input type="text" placeholder="Phase name…"></td>
+    <td><textarea placeholder="In → Out…" rows="2" style="font-size:0.78rem;"></textarea></td>
+    <td><input type="text" placeholder="Child N output…"></td>
+    <td><input type="text" placeholder="Custodian class…"></td>
+    <td>
+      <select onchange="updateSummaryStats()" style="font-size:0.78rem;padding:0.25rem;">
+        <option value="">—</option>
+        <option value="high">High</option>
+        <option value="medium">Medium</option>
+        <option value="low">Low</option>
+      </select>
+      <button class="btn-red" style="margin-top:0.25rem;display:block;" onclick="document.getElementById('sum-row-${id}').remove();updateSummaryStats()">✕</button>
+    </td>`;
+  tbody.appendChild(tr);
+}
+
+function updateSummaryStats() {
+  const rows = document.querySelectorAll('#summaryBody tr');
+  let total = rows.length, high = 0, med = 0, low = 0;
+  rows.forEach(r => {
+    const v = r.querySelector('select')?.value;
+    if (v === 'high') high++;
+    if (v === 'medium') med++;
+    if (v === 'low') low++;
+  });
+  const spRows = document.querySelectorAll('#subprocessRows > div');
+  document.getElementById('statTotal').textContent = total || '—';
+  document.getElementById('statHigh').textContent = high || (total ? 0 : '—');
+  document.getElementById('statMed').textContent = med || (total ? 0 : '—');
+  document.getElementById('statLow').textContent = low || (total ? 0 : '—');
+  document.getElementById('statSub').textContent = spRows.length || '—';
+}
+
+// ─── Example toggle ────────────────────────────
+function toggleExample(id) {
+  const box = document.getElementById(id);
+  const toggle = box.previousElementSibling;
+  if (box.classList.toggle('open')) {
+    toggle.textContent = toggle.textContent.replace('▶','▼');
+  } else {
+    toggle.textContent = toggle.textContent.replace('▼','▶');
+  }
+}
+
+// ─── Load Drinking Water Example ──────────────
+function loadWaterExample() {
+  if (!confirm('Load the drinking water (municipal supply) example? This will add example events to Module 2.')) return;
+
+  document.getElementById('materialName').value = 'Drinking water (municipal tap water supply)';
+  document.getElementById('analystName').value = 'Worked example — True Value Analytics';
+  document.getElementById('dateField').value = 'April 2026';
+  document.getElementById('sourcesField').value = 'DWI Annual Reports; Environment Agency; Ofwat; WHO Guidelines';
+
+  document.getElementById('a1').value = 'Rainwater and surface water naturally accumulated in a river, lake, or underground aquifer. Untreated, unquantified in terms of licensed allocation, chemically variable — dissolved minerals, organic matter, sediment, and microorganisms at concentrations determined by the natural catchment. No abstraction right exists yet.';
+  document.getElementById('a2').value = 'Treated potable water delivered under pressure at the consumer\'s tap — meets legal Drinking Water Standards (residual chlorine ≥0.1 mg/L; turbidity <1 NTU; pH 6.5–9.5; coliforms = 0/100mL). Metered, billed, continuously pressurised delivery.';
+  document.getElementById('a3').value = 'Megalitres (ML) of available flow in source water body';
+  document.getElementById('a4').value = 'Cubic metres (m³) of potable water meeting Drinking Water Standard';
+  document.getElementById('a6').value = '1. Natural source water (river/lake/aquifer) — untreated, unallocated\n2. Abstracted raw water — in intake channel / raw water main\n3. Pre-treated water — coarsely filtered, not yet potable\n4. Treated potable water — dosed, meeting DWS\n5. Pressurised network water — in service reservoir and trunk mains\n6. Delivered tap water — at consumer connection';
+  document.getElementById('a7').value = '1. Environment agency / regulator (issues abstraction licence)\n2. Water utility / water company (abstracts, treats, distributes)\n3. Distribution network operator (may be same as water utility)\n4. Consumer / end user';
+
+  const events = [
+    { name: 'Source identification and abstraction licence grant', sources: 'Environment Agency licence register (public); CAMS documents; Water Resource Management Plans', b1: 'Undifferentiated natural water body with no assigned allocation or abstraction right.', b2: 'Named, measured water source with a legally defined abstraction licence — permitted volume (ML/day), intake point, and licence holder identified. Water remains in source.', b3:'yes', b4:'yes', unitIn:'None (no assigned quantity)', unitOut:'ML/year licensed abstraction volume', b5:'aggregative', priorClass:'None — first event', b6:'yes', b7class:'Natural commons / no holder', b7name:'State/Crown (mineral rights)', b8class:'Water utility (licence holder)', b8name:'Named in Environment Agency register', b9:'no', b10:'yes', b11:'yes', qty:'Licensed abstraction volume', vol:'e.g. 50 ML/day from [River X]', recip:'Named water utility (licence holder)' },
+    { name: 'Water abstraction — raw water enters the supply system', sources: 'Water company operational reports; DWI reports; Ofwat annual performance reviews', b1:'Natural water in river/lake/aquifer — in natural environment.', b2:'Raw water physically pumped through intake structure into raw water main. Water has left the natural environment and is confined within engineered infrastructure.', b3:'no', b4:'yes', unitIn:'ML available in source water body', unitOut:'ML/day abstracted flow at intake meter', b5:'extractive', priorClass:'Aggregative (Event 1)', b6:'yes', b7class:'Natural water body', b7name:'—', b8class:'Water utility (intake infrastructure)', b8name:'Same water utility', b9:'no', b10:'yes', b11:'yes', qty:'ML/day raw water at intake meter', vol:'e.g. 50 ML/day (continuously metered)', recip:'Water utility (self-held; raw water main)' },
+    { name: 'Primary filtration — screens, sedimentation, coarse sand filters', sources: 'Water treatment plant engineering manuals; DWI inspection records; environmental permits', b1:'Raw water in raw water main — contains suspended solids, biological material, dissolved organics.', b2:'Pre-treated raw water — gross particles removed by screens and sedimentation. Still not potable; still classified as raw water under drinking water regulations.', b3:'yes', b4:'no', unitIn:'m³ raw water flow', unitOut:'m³ raw water flow (same)', b5:'chemical', priorClass:'Extractive (Event 2)', b6:'yes', b7class:'Water utility', b7name:'Same entity', b8class:'Water utility', b8name:'Same entity', b9:'yes', b10:'no', b11:'no', b12:'b12c' },
+    { name: 'Chemical treatment — chlorination, pH correction, fluoridation', sources: 'DWI Annual Report; UK Water Supply (Water Quality) Regulations 2016; WHO Guidelines for Drinking-water Quality', b1:'Pre-treated raw water — filtered but not potable. Does not meet drinking water standard. Cannot lawfully be supplied to consumers.', b2:'Treated potable water — chemically dosed to achieve residual disinfection (chlorine ≥0.1 mg/L), pH corrected, fluoridated where required. Now meets the legal drinking water standard.', b3:'no', b4:'yes', unitIn:'m³ raw water', unitOut:'m³ potable water meeting DWS', b5:'chemical', priorClass:'Chemical/Thermal (Event 3)', b6:'no', b7class:'Water utility (treatment works)', b7name:'Same entity', b8class:'Water utility (contact tank / service reservoir inlet)', b8name:'Same entity', b9:'yes', b10:'no', b11:'yes', qty:'ML/day treated potable water at stated residual chlorine, pH, turbidity', vol:'e.g. 48 ML/day (treatment losses ~4%)', recip:'Water utility (self-held; service reservoir)' },
+    { name: 'Transfer to service reservoir and pressurised storage', sources: 'Ofwat service reservoir monitoring; DWI reservoir inspection guidelines; water utility asset registers', b1:'Treated potable water at treatment works outlet — meeting DWS; ready for distribution.', b2:'Treated potable water held in service reservoir — stored at hydraulic pressure to maintain distribution network. Now a pressurised, instantly-available supply.', b3:'yes', b4:'no', unitIn:'m³ potable water', unitOut:'m³ potable water (same)', b5:'custodial', priorClass:'Chemical/Thermal (Event 4)', b6:'yes', b7class:'Water utility (treatment works outlet)', b7name:'Same entity', b8class:'Water utility / distribution network operator (service reservoir)', b8name:'Same entity (typically)', b9:'yes', b10:'no', b11:'yes', qty:'m³ potable water in service reservoir; level sensor measurement', vol:'e.g. 12 ML storage capacity; inflow/outflow metered daily', recip:'Distribution network (self-held; immediately downstream)' },
+    { name: 'Distribution through pipe network and delivery to consumer tap', sources: 'Ofwat billing guidelines; DWI zonal compliance monitoring; water company consumer meter reading data', b1:'Potable water held in service reservoir under hydraulic pressure.', b2:'Potable water delivered at consumer tap — physically received at consumer premises via the pressurised distribution network; metered and billed.', b3:'yes', b4:'yes', unitIn:'m³ in service reservoir (bulk supply)', unitOut:'m³ metered to individual consumer', b5:'commercial', priorClass:'Custodial (Event 5)', b6:'yes', b7class:'Water utility (service reservoir)', b7name:'Water utility', b8class:'Consumer', b8name:'Named consumer at metered address', b9:'no', b10:'yes', b11:'yes', qty:'m³ metered to consumer premises', vol:'e.g. 45 ML/day delivered across distribution zone', recip:'Named consumer at metered address; billing account holder' }
+  ];
+
+  document.getElementById('eventsContainer').innerHTML = '';
+  eventCount = 0;
+  events.forEach(e => addEvent(e));
+
+  // scroll to module 2
+  document.getElementById('module2').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ─── Init ──────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  // Start with one empty event
+  addEvent();
+  // One empty phase row, subprocess row, opacity record, summary row
+  addPhaseRow();
+  addSubprocessRow();
+  addOpacityRecord();
+  addSummaryRow();
+});
+</script>
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+
+</body>
+</html>
