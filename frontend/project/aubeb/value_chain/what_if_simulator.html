@@ -364,7 +364,7 @@
 
     <div class="footer">
       <div>AUBEB value chain simulator • value layer only • separate from supply-chain logic</div>
-      <div><a href="../../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
+      <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
     </div>
   </div>
 
@@ -645,7 +645,7 @@
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'aubeb':'AUBEB','shea':'Shea','gold':'Gold',
+    'aubeb':'AUBEB','shea':'Shea','aubeb':'AUBEB',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'Dashboard',
     'what_if_simulator.html':'What-If Simulator',
@@ -710,7 +710,7 @@
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -729,8 +729,8 @@
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -741,17 +741,17 @@
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

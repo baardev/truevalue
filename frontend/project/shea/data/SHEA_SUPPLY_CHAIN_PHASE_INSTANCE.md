@@ -1,3 +1,23 @@
+---
+doc_id: shea_supply_chain_phase_instance
+title: Shea Butter — Supply Chain Phase Instance
+type: phase_instance
+status: active
+domain: shea_supply_chain
+layer: supply_chain
+projects:
+  - shea
+tags:
+  - phase_mapping
+  - shea
+  - shea_supply_chain
+  - supply_chain
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Shea Butter — Supply Chain Phase Instance
 
 **Template reference:** This instance follows the [Abstract Supply Chain Phase Template](../Repos/intra/PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE.md). Each category is filled with current project data where we have it, marked **MISSING** where we do not, with example metrics for measurement. **Value chain** (income, prices, margins): [Shea value chain instance](../Repos/intra/PDI/SHEA_VALUE_CHAIN_PHASE_INSTANCE.md).

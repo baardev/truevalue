@@ -1,3 +1,21 @@
+---
+doc_id: tree
+title: HTML Page Tree
+type: documentation
+status: active
+domain: project_documentation
+layer: methodology
+projects:
+  []
+tags:
+  - methodology
+  - project_documentation
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # HTML Page Tree
 
 All HTML pages in the project, organised by the new commodity-first hierarchy.
@@ -8,22 +26,66 @@ Arrows (→) show outbound navigation links. `/index.html` is the root landing p
 ## Structure overview
 
 ```
-index.html                          Root — 2×2 grid
+index.html                          Root — project grid
 ├── frontend/project/gold/index.html        Gold commodity hub
 │   ├── supply_chain/index.html     Gold Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── system_lifecycle.html
 │   │   ├── dashboard.html
 │   │   └── what_if_simulator.html
 │   └── value_chain/index.html      Gold Value Chain hub
 │       ├── dashboard.html
 │       └── what_if_simulator.html
-└── frontend/project/shea/index.html        Shea commodity hub
-    ├── supply_chain/index.html     Shea Supply Chain hub
-    │   ├── project_context.html
-    │   ├── dashboard.html
-    │   └── what_if_simulator.html
-    └── value_chain/index.html      Shea Value Chain hub
-        ├── dashboard.html
-        └── what_if_simulator.html
+├── frontend/project/shea/index.html        Shea commodity hub
+│   ├── supply_chain/index.html     Shea Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── system_lifecycle.html
+│   │   ├── dashboard.html
+│   │   └── what_if_simulator.html
+│   └── value_chain/index.html      Shea Value Chain hub
+│       ├── dashboard.html
+│       └── what_if_simulator.html
+├── frontend/project/aubeb/index.html       AUBEB commodity hub
+│   ├── supply_chain/index.html     AUBEB Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── system_lifecycle.html
+│   │   ├── dashboard.html
+│   │   └── what_if_simulator.html
+│   └── value_chain/index.html      AUBEB Value Chain hub
+│       ├── dashboard.html
+│       ├── what_if_simulator.html
+│       └── financial_report.html
+├── frontend/project/water_newwater/index.html   Singapore NEWater hub
+│   ├── supply_chain/index.html     NEWater Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── dashboard.html
+│   │   └── what_if_simulator.html
+│   └── value_chain/index.html      NEWater Value Chain hub
+│       ├── dashboard.html
+│       ├── what_if_simulator.html
+│       └── financial_report.html
+├── frontend/project/water_ocwd/index.html   Orange County GWRS hub
+│   ├── supply_chain/index.html     OCWD Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── dashboard.html
+│   │   └── what_if_simulator.html
+│   └── value_chain/index.html      OCWD Value Chain hub
+│       ├── dashboard.html
+│       ├── what_if_simulator.html
+│       └── financial_report.html
+├── frontend/project/water_jackson_ms/index.html   Jackson MS Water broken-system hub
+│   ├── supply_chain/index.html     Jackson Water Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── system_lifecycle.html
+│   │   └── dashboard.html
+│   └── value_chain/index.html      Jackson Water deferred value layer
+├── frontend/project/grid_ercot_uri/index.html     ERCOT Uri broken-grid hub
+│   ├── supply_chain/index.html     ERCOT Uri Supply Chain hub
+│   │   ├── project_context.html
+│   │   ├── system_lifecycle.html
+│   │   └── dashboard.html
+│   └── value_chain/index.html      ERCOT Uri deferred value layer
+└── frontend/project/water_compare/index.html   NEWater vs. OCWD comparative analysis
 ```
 
 Every page follows a uniform depth: **Root → Commodity hub → Layer hub → View**.
@@ -38,6 +100,9 @@ index.html  ·  TV Project Home — True Value Analytics
 ├── → frontend/project/gold/value_chain/index.html
 ├── → frontend/project/shea/supply_chain/index.html
 ├── → frontend/project/shea/value_chain/index.html
+├── → frontend/project/aubeb/index.html
+├── → frontend/project/water_jackson_ms/index.html
+├── → frontend/project/grid_ercot_uri/index.html
 ├── → frontend/project/gold/index.html     (Gold Hub shortcut)
 ├── → frontend/project/shea/index.html     (Shea Hub shortcut)
 └── → frontend/csv/index.html
@@ -47,11 +112,13 @@ index.html  ·  TV Project Home — True Value Analytics
 
 ## frontend/gold/
 
-Gold commodity hub and its two layers.
+Gold commodity hub and its supply, lifecycle, and value layers.
 
 ```
 index.html  ·  Gold – Supply & Value Chain Hub
 ├── → supply_chain/index.html
+├── → supply_chain/project_context.html
+├── → supply_chain/system_lifecycle.html
 ├── → supply_chain/dashboard.html
 ├── → supply_chain/what_if_simulator.html
 ├── → value_chain/index.html
@@ -65,10 +132,25 @@ index.html  ·  Gold – Supply & Value Chain Hub
 
 ```
 index.html  ·  Gold Supply Chain – Intelligence Platform
+├── → project_context.html
+├── → system_lifecycle.html
 ├── → dashboard.html
 ├── → what_if_simulator.html
 ├── → ../index.html            (Gold Hub)
 ├── → ../../shea/supply_chain/index.html
+└── → /index.html
+
+project_context.html  ·  Gold – Project Context & Supply Chain
+├── → index.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → what_if_simulator.html
+└── → /index.html
+
+system_lifecycle.html  ·  Gold System Lifecycle N-D-C
+├── → index.html
+├── → project_context.html
+├── → ../index.html            (Gold Hub)
 └── → /index.html
 
 dashboard.html  ·  Gold Supply Chain Intelligence – Main Dashboard
@@ -105,12 +187,13 @@ what_if_simulator.html  ·  Value Chain What-If Simulator
 
 ## frontend/shea/
 
-Shea commodity hub and its two layers.
+Shea commodity hub and its supply, lifecycle, and value layers.
 
 ```
 index.html  ·  Shea – Supply & Value Chain Hub
 ├── → supply_chain/index.html
 ├── → supply_chain/project_context.html
+├── → supply_chain/system_lifecycle.html
 ├── → supply_chain/dashboard.html
 ├── → supply_chain/what_if_simulator.html
 ├── → value_chain/index.html
@@ -125,6 +208,7 @@ index.html  ·  Shea – Supply & Value Chain Hub
 ```
 index.html  ·  Shea Supply Chain – True Value (Real-World Example)
 ├── → project_context.html
+├── → system_lifecycle.html
 ├── → dashboard.html
 ├── → what_if_simulator.html
 ├── → ../index.html            (Shea Hub)
@@ -133,9 +217,16 @@ index.html  ·  Shea Supply Chain – True Value (Real-World Example)
 
 project_context.html  ·  Shea – Project Context & Impact
 ├── → index.html
+├── → system_lifecycle.html
 ├── → dashboard.html
 ├── → what_if_simulator.html
 ├── → ../../gold/supply_chain/index.html
+└── → /index.html
+
+system_lifecycle.html  ·  Shea System Lifecycle N-D-C
+├── → index.html
+├── → project_context.html
+├── → ../index.html            (Shea Hub)
 └── → /index.html
 
 dashboard.html  ·  Shea Supply Chain – Dashboard
@@ -168,6 +259,170 @@ dashboard.html  ·  Shea Value Chain Dashboard
 
 what_if_simulator.html  ·  Shea Value What-If Simulator
 ├── → dashboard.html
+└── → /index.html
+```
+
+---
+
+## frontend/project/aubeb/
+
+AUBEB commodity hub and its supply, lifecycle, and value layers.
+
+```
+index.html  ·  AUBEB – Supply & Value Chain Hub
+├── → supply_chain/index.html
+├── → supply_chain/project_context.html
+├── → supply_chain/system_lifecycle.html
+├── → supply_chain/dashboard.html
+├── → supply_chain/what_if_simulator.html
+├── → value_chain/index.html
+├── → value_chain/dashboard.html
+├── → value_chain/what_if_simulator.html
+└── → /index.html
+```
+
+### frontend/project/aubeb/supply_chain/
+
+```
+index.html  ·  AUBEB Supply Chain – Intelligence Platform
+├── → project_context.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → what_if_simulator.html
+├── → ../index.html            (AUBEB Hub)
+└── → /index.html
+
+project_context.html  ·  AUBEB – Project Context & Supply Chain
+├── → index.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → what_if_simulator.html
+├── → ../index.html
+└── → /index.html
+
+system_lifecycle.html  ·  AUBEB System Lifecycle N-D-C
+├── → index.html
+├── → project_context.html
+├── → ../index.html            (AUBEB Hub)
+└── → /index.html
+```
+
+### frontend/project/aubeb/value_chain/
+
+```
+index.html  ·  AUBEB Value Chain – Intelligence Platform
+├── → dashboard.html
+├── → what_if_simulator.html
+├── → financial_report.html
+├── → ../index.html            (AUBEB Hub)
+└── → /index.html
+```
+
+---
+
+## frontend/project/water_jackson_ms/
+
+Jackson, Mississippi municipal water broken-system case, with physical supply-chain and lifecycle maintenance layers.
+
+```
+index.html  ·  Jackson MS Water System - Broken System Case
+├── → supply_chain/index.html
+├── → supply_chain/project_context.html
+├── → supply_chain/system_lifecycle.html
+├── → supply_chain/dashboard.html
+├── → value_chain/index.html
+└── → /index.html
+```
+
+### frontend/project/water_jackson_ms/supply_chain/
+
+```
+index.html  ·  Jackson MS Water Supply Chain
+├── → project_context.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → ../index.html            (Jackson Hub)
+└── → /index.html
+
+project_context.html  ·  Jackson Water Project Context
+├── → index.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → ../index.html
+└── → /index.html
+
+system_lifecycle.html  ·  Jackson Water Lifecycle
+├── → index.html
+├── → dashboard.html
+├── → ../index.html            (Jackson Hub)
+└── → /index.html
+
+dashboard.html  ·  Jackson Water Dashboard
+├── → index.html
+├── → system_lifecycle.html
+├── → ../index.html
+└── → /index.html
+```
+
+### frontend/project/water_jackson_ms/value_chain/
+
+```
+index.html  ·  Jackson Water Value Chain Placeholder
+├── → ../index.html            (Jackson Hub)
+└── → /index.html
+```
+
+---
+
+## frontend/project/grid_ercot_uri/
+
+Texas ERCOT Winter Storm Uri broken-grid case, with physical grid chain and lifecycle winterization layers.
+
+```
+index.html  ·  ERCOT Winter Storm Uri Grid - Broken System Case
+├── → supply_chain/index.html
+├── → supply_chain/project_context.html
+├── → supply_chain/system_lifecycle.html
+├── → supply_chain/dashboard.html
+├── → value_chain/index.html
+└── → /index.html
+```
+
+### frontend/project/grid_ercot_uri/supply_chain/
+
+```
+index.html  ·  ERCOT Uri Supply Chain
+├── → project_context.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → ../index.html            (ERCOT Hub)
+└── → /index.html
+
+project_context.html  ·  ERCOT Uri Project Context
+├── → index.html
+├── → system_lifecycle.html
+├── → dashboard.html
+├── → ../index.html
+└── → /index.html
+
+system_lifecycle.html  ·  ERCOT Uri Lifecycle
+├── → index.html
+├── → dashboard.html
+├── → ../index.html            (ERCOT Hub)
+└── → /index.html
+
+dashboard.html  ·  ERCOT Uri Dashboard
+├── → index.html
+├── → system_lifecycle.html
+├── → ../index.html
+└── → /index.html
+```
+
+### frontend/project/grid_ercot_uri/value_chain/
+
+```
+index.html  ·  ERCOT Uri Value Chain Placeholder
+├── → ../index.html            (ERCOT Hub)
 └── → /index.html
 ```
 
@@ -220,8 +475,8 @@ All old paths now auto-redirect. Existing bookmarks and links continue to work.
 
 ```
 gametheory/gametheory_tholonic_sliders.html  ·  Tholonic Game Theory Simulator
-docs/next_weeks_news.html                    ·  Next Week's News
-docs/next_weeks_poly.html                    ·  Next Week's News (alternate)
+frontend/docs/next_weeks_news.html            ·  Next Week's News
+frontend/docs/next_weeks_poly.html            ·  Next Week's News (alternate)
 ```
 
 ---

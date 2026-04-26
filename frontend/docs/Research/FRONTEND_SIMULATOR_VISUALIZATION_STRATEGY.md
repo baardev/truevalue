@@ -1,0 +1,1 @@
+../../project/gold/data/FRONTEND_SIMULATOR_VISUALIZATION_STRATEGY.md

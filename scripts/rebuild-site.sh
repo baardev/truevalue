@@ -44,16 +44,17 @@
 #   Note: also converts mkdocs.yml → viewable/mkdocs.html (harmless artifact;
 #   cleaned up automatically by CLEAN_ARTIFACT below).
 #
-# [mkdocs]       mkdocs build
-#   Converts docs/*.md (and embedded HTML like docs/Reports/index.html) into
+# [mkdocs]       mkdocs build -f scripts/mkdocs.yml
+#   Converts frontend/docs/*.md (and embedded HTML like …/Reports/index.html) into
 #   the static wiki under site/.
-#   Config: mkdocs.yml (repo root).
+#   Config: scripts/mkdocs.yml
 #   Theme overrides: overrides/partials/header.html, nav.html
-#   Styles:          docs/stylesheets/mkdocs-site.css
-#   Run this after any change under docs/, mkdocs.yml, or overrides/.
+#   Styles:          frontend/docs/stylesheets/mkdocs-site.css
+#   Run this after any change under frontend/docs/, mkdocs.yml, or overrides/.
 #
 # [restart_server] (optional, off by default)
-#   Kills any running python http.server on port 8000 and restarts it.
+#   Kills any running python http.server on the backend port and restarts it
+#   bound to localhost. Public traffic should reach it through Nginx on 8000.
 #   Also notes the mkdocs serve command if you want the live wiki preview.
 #   Only useful when running a local dev server.
 #
@@ -64,7 +65,7 @@
 #  Scenario                                         | Steps needed
 # --------------------------------------------------|-----------------------------
 #  Added / renamed / moved a CSV, JSON, or YAML     | viewable
-#  Edited a doc under docs/ or mkdocs.yml           | mkdocs
+#  Edited a doc under frontend/docs/ or mkdocs.yml   | mkdocs
 #  Edited gold/shea source CSVs for the simulators  | generate_ui  →  viewable
 #  Edited a frontend/ HTML page                     | nothing (static; edit live)
 #  Moved source files (e.g. shea data to shea/data) | viewable  +  fix hrefs
@@ -133,8 +134,8 @@ fi
 # ── mkdocs wiki ───────────────────────────────────────────────────────────────
 sep
 if (( RUN_MKDOCS )); then
-  echo "==> MkDocs build  (docs/ → site/)"
-  mkdocs build
+  echo "==> MkDocs build  (frontend/docs/ → site/)"
+  mkdocs build -f "$SCRIPT_DIR/mkdocs.yml"
 else
   skip "mkdocs build" "RUN_MKDOCS"
 fi
@@ -142,9 +143,9 @@ fi
 # ── optional: restart local dev server ───────────────────────────────────────
 sep
 if (( RUN_RESTART_SERVER )); then
-  echo "==> Restarting http.server on port 8000"
+  echo "==> Restarting http.server on 127.0.0.1:8000"
   pkill -f "http.server 8000" 2>/dev/null || true
-  nohup python3 -m http.server 8000 > /tmp/tv-http.log 2>&1 &
+  nohup python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/tv-http.log 2>&1 &
   echo "    started (pid $!); log: /tmp/tv-http.log"
   echo
   echo "    For the MkDocs live wiki preview (port 8001), run separately:"

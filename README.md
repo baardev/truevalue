@@ -1,3 +1,22 @@
+---
+doc_id: readme
+title: Gold Supply Chain Intelligence Platform
+type: readme
+status: active
+domain: gold_supply_chain
+layer: supply_chain
+projects:
+  []
+tags:
+  - gold
+  - gold_supply_chain
+  - supply_chain
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Gold Supply Chain Intelligence Platform
 
 ## Project Objective
@@ -24,8 +43,7 @@ tv/
 │   ├── analysis/     # Jupyter notebooks for phase analysis
 │   ├── validation/   # Data quality and reconciliation
 │   └── api/          # Future: API layer for frontend
-├── docs/             # Documentation and methodology
-└── frontend/         # Future: Interactive visualization layer
+└── frontend/         # Web UI, static assets, and documentation (`frontend/docs/`)
 ```
 
 ## Operating Principles
@@ -119,14 +137,26 @@ jupyter notebook src/analysis/
 ```
 
 ### Documentation wiki (MkDocs)
-The `docs/` folder is built as a searchable wiki. To serve it locally:
+The `frontend/docs/` folder is built as a searchable wiki. To serve it locally:
 
 ```bash
 pip install -r requirements-docs.txt
-mkdocs serve
+mkdocs serve -f scripts/mkdocs.yml
 ```
 
-Then open **http://127.0.0.1:8000**. To build a static site: `mkdocs build` (output in `site/`).
+Then open the URL MkDocs prints (port **8001** if you use `scripts/RUN_MKWIKI`). To build a static site: `mkdocs build -f scripts/mkdocs.yml` (output in `site/`).
+
+### Static web server and AUBEB access control
+
+For public serving, put Nginx on `tvf.tholonia.com:80` and run the Python static
+server behind it on localhost:
+
+```bash
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+The AUBEB password gate is configured in `deploy/nginx-tv-aubeb.conf.template`.
+Install notes are in `deploy/README-aubeb-nginx.md`.
 
 ## Development Rules
 

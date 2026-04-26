@@ -55,6 +55,7 @@
       color: #fff;
     }
     .card-header.sc { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #3d2b00 0%, #b8860b 100%); }
     .card-header.vc { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     .card-header.gt { background: linear-gradient(135deg, #0b0e14 0%, #1a2535 100%); border-top: 3px solid #f0c040; }
     .card-icon { font-size: 40px; margin-bottom: 10px; }
@@ -108,7 +109,8 @@
       <h1>🏆 Gold Supply &amp; Value Chain</h1>
       <p class="subtitle">
         Choose a layer: the <strong>Supply Chain</strong> models physical flow, custody, and constraints
-        across 9 phases (Phase 0 → 8). The <strong>Value Chain</strong> models costs, margins, and
+        across 9 phases (Phase 0 → 8). The <strong>System Lifecycle</strong> models the physical maintenance,
+        assurance, closure, and recycling loop. The <strong>Value Chain</strong> models costs, margins, and
         value-layer N-D-C — kept strictly separate from the physical layer.
       </p>
 
@@ -131,6 +133,28 @@
             <div class="sub-links">
               <a href="supply_chain/dashboard.html">Dashboard</a>
               <a href="supply_chain/what_if_simulator.html">What-If</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header lc">
+            <div class="card-icon">🔁</div>
+            <div class="card-title">System Lifecycle</div>
+            <div class="card-desc">Resource · Develop · Operate · Sustain · Close</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Lifecycle N-D-C for the maintained physical gold system</li>
+              <li>Links resource design, operation, assurance, closure, and recycling</li>
+              <li>Uses reserves, mine life, reclamation, water recycling, audits, and recycling share</li>
+              <li>Identifies sustaining assurance and closure/recycling as lifecycle bottlenecks</li>
+              <li>Data loaded from <code>gold_system_lifecycle_ndc.json</code></li>
+            </ul>
+            <a href="supply_chain/system_lifecycle.html" class="btn sc">Open Lifecycle →</a>
+            <div class="sub-links">
+              <a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+              <a href="supply_chain/project_context.html">Project Context</a>
             </div>
           </div>
         </div>
@@ -306,7 +330,7 @@
           if(data&&data.coherence_scores&&data.coherence_scores.scenarios&&data.coherence_scores.scenarios.current){
             scores=data.coherence_scores.scenarios.current;
           } else {
-            var D={gold:{pi:82.5,phi:49.5,sqrt2:72.1,ln2:40.4,e:37},shea:{pi:81.6,phi:53.6,sqrt2:38.2,ln2:39.7,e:54},aubeb:{pi:87,phi:54,sqrt2:58,ln2:62,e:0}};
+            var D={gold:{pi:82.5,phi:49.5,sqrt2:72.1,ln2:40.4,e:37}};
             scores=D[CHAIN]||D.gold;
           }
           var se=document.getElementById('pent-svg-'+CHAIN);

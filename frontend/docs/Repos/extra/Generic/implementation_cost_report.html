@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrueValue Framework — Implementation Cost & Deployment Analysis</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    /* ── Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy:   #1a2744;
+      --navy2:  #243358;
+      --gold:   #c8a84b;
+      --gold2:  #e8c96b;
+      --offwhite: #f8f7f4;
+      --cream:  #f0ece3;
+      --rule:   #ddd8cc;
+      --text:   #2c2c2c;
+      --muted:  #666;
+      --red:    #b03030;
+      --amber:  #c87020;
+      --green:  #2e7d4f;
+      --teal:   #1e6b6b;
+      --page-width: 860px;
+    }
+    html { font-size: 16px; }
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--text);
+      background: #e8e4dc;
+    }
+
+    /* ── Page wrapper ── */
+    .page { max-width: var(--page-width); margin: 2rem auto; background: #fff; box-shadow: 0 4px 40px rgba(0,0,0,0.18); }
+
+    /* ── Cover ── */
+    .cover { background: var(--navy); color: #fff; padding: 5rem 5rem 4rem; position: relative; overflow: hidden; }
+    .cover::before {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle at 80% 20%, rgba(200,168,75,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cover-eyebrow {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--gold); margin-bottom: 1.8rem;
+    }
+    .cover h1 { font-family: Georgia, serif; font-size: 2.6rem; font-weight: normal; line-height: 1.2; color: #fff; margin-bottom: 1rem; max-width: 600px; }
+    .cover h1 em { color: var(--gold); font-style: normal; }
+    .cover-subtitle { font-size: 1.05rem; color: rgba(255,255,255,0.72); margin-bottom: 3.5rem; max-width: 530px; font-style: italic; }
+    .cover-meta { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.78rem; color: rgba(255,255,255,0.5); border-top: 1px solid rgba(255,255,255,0.15); padding-top: 1.5rem; display: flex; gap: 2.5rem; flex-wrap: wrap; }
+    .cover-meta span { display: block; }
+    .cover-meta strong { color: rgba(255,255,255,0.8); display: block; margin-bottom: 0.15rem; }
+    .cover-disclaimer { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.35); margin-top: 2rem; max-width: 620px; line-height: 1.5; }
+
+    /* ── Content & sections ── */
+    .content { padding: 0; }
+    section { padding: 3.5rem 5rem; border-bottom: 1px solid var(--rule); }
+    section:last-child { border-bottom: none; }
+    .section-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.4rem; }
+    h2 { font-family: Georgia, serif; font-size: 1.75rem; font-weight: normal; color: var(--navy); margin-bottom: 1.6rem; line-height: 1.25; }
+    h3 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.88rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--navy); margin: 2rem 0 0.75rem; }
+    p { margin-bottom: 1rem; }
+    p:last-child { margin-bottom: 0; }
+
+    /* ── Exec summary ── */
+    .exec-summary { background: var(--offwhite); }
+    .summary-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 2rem; }
+    .kpi-card { background: #fff; border: 1px solid var(--rule); border-top: 3px solid var(--gold); padding: 1.4rem 1.6rem; }
+    .kpi-card .kpi-value { font-size: 2.2rem; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--navy); line-height: 1; margin-bottom: 0.3rem; }
+    .kpi-card .kpi-value.amber { color: var(--amber); }
+    .kpi-card .kpi-value.green { color: var(--green); }
+    .kpi-card .kpi-value.navy { color: var(--navy); }
+    .kpi-card .kpi-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+    .kpi-card p { font-size: 0.82rem; margin-top: 0.6rem; color: var(--muted); margin-bottom: 0; }
+
+    /* ── Finding boxes ── */
+    .finding { border-left: 3px solid var(--gold); padding: 0.9rem 1.2rem; background: var(--offwhite); margin: 1.5rem 0; font-size: 0.9rem; }
+    .finding strong { color: var(--navy); }
+    .finding.risk { border-left-color: var(--red); }
+    .finding.positive { border-left-color: var(--green); }
+
+    /* ── Data tables ── */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; margin: 1.5rem 0; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .data-table th { background: var(--navy); color: #fff; padding: 0.6rem 0.8rem; text-align: left; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+    .data-table td { padding: 0.55rem 0.8rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+    .data-table tr:nth-child(even) td { background: var(--offwhite); }
+    .data-table tr:hover td { background: var(--cream); }
+    .data-table .total-row td { background: var(--navy) !important; color: #fff; font-weight: 700; }
+    .data-table .total-row td strong { color: var(--gold2); }
+
+    /* ── Range display ── */
+    .range-low { color: var(--amber); font-weight: 700; }
+    .range-high { color: var(--green); font-weight: 700; }
+    .range-sep { color: var(--muted); margin: 0 0.15rem; }
+
+    /* ── Charts ── */
+    .chart-wrap { margin: 2rem 0; padding: 1.5rem; background: var(--offwhite); border: 1px solid var(--rule); }
+    .chart-title { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--navy); margin-bottom: 0.3rem; }
+    .chart-subtitle { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.74rem; color: var(--muted); margin-bottom: 1rem; }
+    canvas { max-width: 100%; }
+
+    /* ── Stakeholder grid ── */
+    .stakeholder-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .stakeholder-card { background: #fff; border: 1px solid var(--rule); padding: 1.3rem; }
+    .stakeholder-card h4 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.9rem; padding-bottom: 0.5rem; }
+    .stakeholder-card.gold-chain h4 { color: #a08030; border-bottom: 2px solid var(--gold); }
+    .stakeholder-card.shea-chain h4 { color: var(--green); border-bottom: 2px solid var(--green); }
+    .stakeholder-item { display: flex; align-items: baseline; gap: 0.5rem; margin-bottom: 0.5rem; font-size: 0.82rem; }
+    .stakeholder-item .role { font-weight: 700; color: var(--navy); min-width: 110px; font-size: 0.78rem; }
+    .stakeholder-item .examples { color: var(--muted); font-size: 0.75rem; }
+
+    /* ── Phase cost cards ── */
+    .phase-cost-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .phase-cost-card { border: 1px solid var(--rule); padding: 1.1rem; background: #fff; }
+    .phase-cost-card .pc-label { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--gold); margin-bottom: 0.4rem; }
+    .phase-cost-card .pc-name { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 0.6rem; line-height: 1.25; }
+    .phase-cost-card .pc-duration { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.72rem; color: var(--muted); margin-bottom: 0.4rem; }
+    .phase-cost-card .pc-range { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.78rem; font-weight: 700; }
+
+    /* ── Comparison section (teal) ── */
+    .benchmark-section { background: #f0f4f4; }
+
+    /* ── Roadmap section (dark) ── */
+    .roadmap-section { background: var(--navy); color: #fff; }
+    .roadmap-section .section-label { color: var(--gold2); }
+    .roadmap-section h2 { color: #fff; }
+    .roadmap-section h3 { color: rgba(255,255,255,0.9); }
+    .roadmap-section p { color: rgba(255,255,255,0.8); }
+    .roadmap-section .chart-wrap { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.12); }
+    .roadmap-section .chart-title { color: rgba(255,255,255,0.9); }
+    .roadmap-section .chart-subtitle { color: rgba(255,255,255,0.5); }
+    .roadmap-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.5rem 0; }
+    .roadmap-stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); padding: 1.2rem; text-align: center; }
+    .roadmap-stat .rv { font-size: 1.9rem; font-weight: 700; font-family: 'Helvetica Neue', Arial, sans-serif; color: var(--gold2); line-height: 1; }
+    .roadmap-stat .rl { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.5); margin-top: 0.4rem; font-family: 'Helvetica Neue', Arial, sans-serif; }
+
+    /* ── Variable risk table ── */
+    .var-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin: 1.5rem 0; }
+    .var-card { border: 1px solid var(--rule); padding: 1.3rem; }
+    .var-card h4 { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.8rem; }
+    .var-card.upside h4 { color: var(--green); border-left: 3px solid var(--green); padding-left: 0.6rem; }
+    .var-card.downside h4 { color: var(--red); border-left: 3px solid var(--red); padding-left: 0.6rem; }
+    .var-card ul { padding-left: 1.2rem; }
+    .var-card li { font-size: 0.85rem; margin-bottom: 0.45rem; }
+
+    /* ── Appendix ── */
+    .appendix { background: var(--offwhite); }
+    .appendix-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-top: 1.5rem; }
+    .appendix-block h3 { font-size: 0.78rem; margin-top: 0; margin-bottom: 0.6rem; }
+    .appendix-block p, .appendix-block li { font-size: 0.8rem; color: var(--muted); }
+    .appendix-block ul { padding-left: 1.2rem; }
+    .appendix-block li { margin-bottom: 0.3rem; }
+
+    /* ── Footer ── */
+    .report-footer { background: var(--navy); padding: 1.2rem 5rem; display: flex; justify-content: space-between; align-items: center; }
+    .report-footer span { font-family: 'Helvetica Neue', Arial, sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+    .report-footer .footer-brand { color: var(--gold); font-weight: 700; font-size: 0.8rem; }
+
+    /* ── Badges ── */
+    .badge { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 2px; font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; font-family: 'Helvetica Neue', Arial, sans-serif; }
+    .badge-high   { background: rgba(46,125,79,0.12);  color: var(--green); }
+    .badge-med    { background: rgba(200,112,32,0.12); color: var(--amber); }
+    .badge-low    { background: rgba(176,48,48,0.12);  color: var(--red); }
+
+    /* ── Utility ── */
+    .gold-rule { border: none; border-top: 2px solid var(--gold); margin: 2rem 0; opacity: 0.4; }
+    .footnote { font-size: 0.72rem; color: var(--muted); margin-top: 0.5rem; font-style: italic; }
+    .mt-2 { margin-top: 2rem; }
+
+    /* ── Print ── */
+    @media print {
+      body { background: #fff; font-size: 0.85rem; }
+      .page { box-shadow: none; margin: 0; max-width: 100%; }
+      section { padding: 2.5rem 4rem; }
+      .cover { padding: 4rem; page-break-after: always; background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .exec-summary, .stakeholder-section, .roadmap-section { page-break-after: always; }
+      .roadmap-section { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .data-table th { background: var(--navy) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+      .report-footer { display: none; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- ══ COVER ══ -->
+  <div class="cover">
+    <div class="cover-eyebrow">TrueValue Analytics &nbsp;·&nbsp; Implementation Intelligence Series</div>
+    <h1>What Does It Cost to Build a<br><em>TrueValue Framework</em>?</h1>
+    <p class="cover-subtitle">A phase-resolved cost, time, and resource estimate for deploying the TrueValue Framework across a commodity supply chain — using gold and shea as primary case studies.</p>
+    <div class="cover-meta">
+      <div><strong>Document Type</strong><span>Implementation Cost Analysis</span></div>
+      <div><strong>Primary Case</strong><span>Gold Supply Chain (9 phases)</span></div>
+      <div><strong>Comparative Case</strong><span>Shea Value Chain (West Africa)</span></div>
+      <div><strong>Horizon</strong><span>5 Years (Gold) / 3 Years (Shea)</span></div>
+      <div><strong>Date</strong><span>March 2026</span></div>
+    </div>
+    <p class="cover-disclaimer">All cost estimates presented in this report are order-of-magnitude ranges derived from analogous framework deployment data, industry staffing benchmarks, and structural analysis of supply chain complexity. They are not quotes, contracts, or financial projections. Actual implementation costs will vary materially based on industry cooperation, regulatory environment, and technology approach selected.</p>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ EXECUTIVE SUMMARY ══ -->
+    <section class="exec-summary">
+      <div class="section-label">Executive Summary</div>
+      <h2>Is It Possible to Estimate? Yes — With Important Caveats.</h2>
+
+      <p>A common instinct when facing a question like this is to conclude that there are simply too many variables to provide a meaningful estimate. That instinct is wrong. There are many variables — but they are knowable, classifiable, and bounded. The cost of deploying the TrueValue Framework into a commodity supply chain is estimable in the same way any large institutional project is estimable: by decomposing the work into phases, mapping the required labour and infrastructure at each phase, and stress-testing the assumptions against analogous frameworks that have already been built.</p>
+
+      <p>The key finding of this analysis is that the TrueValue Framework is deployable at a cost that is modest relative to the value it unlocks — and well within the range of comparable certification, transparency, and impact-measurement systems that the industry has already funded.</p>
+
+      <div class="summary-grid">
+        <div class="kpi-card">
+          <div class="kpi-value amber">$13M–$30M</div>
+          <div class="kpi-label">Gold Supply Chain — 5-Year Total</div>
+          <p>Full deployment across all 9 phases, multi-jurisdictional, from framework design through steady-state operations. Range reflects cooperative vs. resistant industry posture.</p>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value green">$1.8M–$4.0M</div>
+          <div class="kpi-label">Shea Value Chain — 3-Year Total</div>
+          <p>Deployment leveraging existing cooperative structures (Acorn, Serious Shea), shorter chain, and existing NGO/development finance infrastructure in West Africa.</p>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value navy">4–5 Years</div>
+          <div class="kpi-label">Gold: Foundation to Full Scale</div>
+          <p>Minimum credible timeline for a framework with industry-wide validity. Opaque phases (Refining, Logistics) drive timeline; regulatory engagement cannot be compressed.</p>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-value green">2–3 Years</div>
+          <div class="kpi-label">Shea: Foundation to Full Scale</div>
+          <p>Faster deployment due to simpler chain, existing cooperative data infrastructure, and development finance stakeholders already aligned on transparency goals.</p>
+        </div>
+      </div>
+
+      <div class="finding">
+        <strong>The critical cost driver is not technology — it is data opacity.</strong> Approximately 35–45% of the gold deployment cost is attributable to obtaining, verifying, and auditing data from the three opaque phases: Doré/Intermediate, Refining, and Logistics &amp; Vaulting. If LBMA or WGC mandate participation, this cost compresses by 40–60%. If voluntary, stakeholder negotiation adds both cost and time.
+      </div>
+    </section>
+
+    <!-- ══ STAKEHOLDER ECOSYSTEM ══ -->
+    <section class="stakeholder-section">
+      <div class="section-label">Section 1</div>
+      <h2>The Stakeholder Ecosystem: Who Is Involved and What They Cost</h2>
+
+      <p>Deploying the TrueValue Framework is not a technology project. It is a coordination project — building agreement across parties who have historically benefited from the information asymmetries the Framework is designed to measure and reduce. Understanding the stakeholder landscape is the prerequisite to any credible cost estimate.</p>
+
+      <p>Each stakeholder type incurs a different category of cost: some require <em>legal negotiation</em> (data sharing, IP, audit rights); some require <em>technical integration</em> (API access, custody system hooks); some require <em>change management</em> (training, process change, incentive alignment); and some require <em>regulatory engagement</em> (standards bodies, financial regulators, government ministries).</p>
+
+      <h3>Gold Supply Chain — Stakeholder Map</h3>
+      <div class="stakeholder-grid">
+        <div class="stakeholder-card gold-chain">
+          <h4>Gold — Upstream &amp; Production</h4>
+          <div class="stakeholder-item"><span class="role">Major Miners</span><span class="examples">Newmont, Barrick, Agnico Eagle, AngloGold — 10–15 key companies covering ~70% of supply</span></div>
+          <div class="stakeholder-item"><span class="role">Junior Miners</span><span class="examples">350+ operators; artisanal and small-scale (ASM) sector particularly opaque</span></div>
+          <div class="stakeholder-item"><span class="role">Doré Refiners</span><span class="examples">Private contract refiners; 40–60 globally; data sharing historically refused</span></div>
+          <div class="stakeholder-item"><span class="role">LBMA Refineries</span><span class="examples">5 accredited facilities process ~90% of newly mined gold (Metalor, Umicore, Rand, Valcambi, PAMP)</span></div>
+        </div>
+        <div class="stakeholder-card gold-chain">
+          <h4>Gold — Midstream &amp; Market</h4>
+          <div class="stakeholder-item"><span class="role">Vault Operators</span><span class="examples">Brink's, G4S, Via Mat, JP Morgan, HSBC — data sharing governed by insurance &amp; security constraints</span></div>
+          <div class="stakeholder-item"><span class="role">Exchange Operators</span><span class="examples">CME Group (COMEX), LBMA — high transparency, easier to engage</span></div>
+          <div class="stakeholder-item"><span class="role">Central Banks</span><span class="examples">32,000 t in stock globally; holders but not active chain participants</span></div>
+          <div class="stakeholder-item"><span class="role">Regulators</span><span class="examples">LBMA, WGC, UK FCA, US CFTC/SEC — standard-setting role; can mandate participation</span></div>
+        </div>
+        <div class="stakeholder-card gold-chain">
+          <h4>Gold — Verification &amp; Standards</h4>
+          <div class="stakeholder-item"><span class="role">Audit Firms</span><span class="examples">Big 4 (Deloitte, PwC, EY, KPMG) + specialist assay auditors (SGS, Bureau Veritas)</span></div>
+          <div class="stakeholder-item"><span class="role">Standards Bodies</span><span class="examples">LBMA Responsible Gold Guidance, WGC Conflict-Free Gold Standard, OECD Due Diligence</span></div>
+          <div class="stakeholder-item"><span class="role">ESG Data Platforms</span><span class="examples">Bloomberg ESG, Sustainalytics, MSCI ESG — downstream data consumers and distributors</span></div>
+          <div class="stakeholder-item"><span class="role">Academic Partners</span><span class="examples">CSIRO, University of Sydney (Foran TBL methodology); supply chain research institutions</span></div>
+        </div>
+        <div class="stakeholder-card shea-chain">
+          <h4>Shea — All Phases</h4>
+          <div class="stakeholder-item"><span class="role">Farmer Coops</span><span class="examples">100k+ women farmers; Acorn-enrolled groups in BF, Mali, Ghana, Senegal</span></div>
+          <div class="stakeholder-item"><span class="role">Aggregators</span><span class="examples">Serious Shea, Olam, Barry Callebaut — existing cooperative data infrastructure</span></div>
+          <div class="stakeholder-item"><span class="role">End Buyers</span><span class="examples">L'Oréal, Unilever, Mars, Mondelez — ESG mandates drive demand for framework</span></div>
+          <div class="stakeholder-item"><span class="role">Dev Finance</span><span class="examples">IFC, EU, USAID, GIZ, Mirova — grant and concessional funding available</span></div>
+          <div class="stakeholder-item"><span class="role">Certifiers</span><span class="examples">Fairtrade International, Rainforest Alliance, Acorn (carbon) — existing audit infrastructure</span></div>
+        </div>
+      </div>
+
+      <div class="finding">
+        <strong>The asymmetry of engagement cost:</strong> For gold, the most expensive stakeholders to engage are the least transparent ones — the private doré refiners and vault operators in Phase 3 and Phase 6 who hold the data the Framework most needs. For shea, the opposite is true: the grassroots level (farmer cooperatives) is already partially digitised through Acorn and has an existing incentive to participate. This structural difference explains roughly 70% of the cost gap between the two deployments.
+      </div>
+    </section>
+
+    <!-- ══ GOLD COST ESTIMATE ══ -->
+    <section>
+      <div class="section-label">Section 2 — Primary Case</div>
+      <h2>Gold Supply Chain: Phase-by-Phase Cost Estimate</h2>
+
+      <p>The gold deployment is broken into four phases reflecting the natural sequence of a framework build: foundational design, data collection and baseline establishment, pilot with limited participants, and full industry scale. Each phase has distinct staffing, infrastructure, legal, and engagement requirements.</p>
+
+      <div class="phase-cost-grid">
+        <div class="phase-cost-card">
+          <div class="pc-label">Phase 0 · Months 0–12</div>
+          <div class="pc-name">Foundation &amp; Architecture</div>
+          <div class="pc-duration">12 months</div>
+          <div class="pc-range"><span class="range-low">$1.3M</span><span class="range-sep">–</span><span class="range-high">$3.0M</span></div>
+        </div>
+        <div class="phase-cost-card">
+          <div class="pc-label">Phase 1 · Months 6–24</div>
+          <div class="pc-name">Data Collection &amp; Baseline</div>
+          <div class="pc-duration">18 months</div>
+          <div class="pc-range"><span class="range-low">$3.4M</span><span class="range-sep">–</span><span class="range-high">$7.7M</span></div>
+        </div>
+        <div class="phase-cost-card">
+          <div class="pc-label">Phase 2 · Months 18–42</div>
+          <div class="pc-name">Pilot Programme</div>
+          <div class="pc-duration">18 months</div>
+          <div class="pc-range"><span class="range-low">$3.3M</span><span class="range-sep">–</span><span class="range-high">$7.8M</span></div>
+        </div>
+        <div class="phase-cost-card">
+          <div class="pc-label">Phase 3 · Months 36–60</div>
+          <div class="pc-name">Full Industry Scale</div>
+          <div class="pc-duration">24 months</div>
+          <div class="pc-range"><span class="range-low">$5.0M</span><span class="range-sep">–</span><span class="range-high">$12.0M</span></div>
+        </div>
+      </div>
+
+      <h3>Detailed Cost Breakdown — Gold Supply Chain</h3>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Cost Category</th>
+            <th>Description</th>
+            <th>Phase 0</th>
+            <th>Phase 1</th>
+            <th>Phase 2</th>
+            <th>Phase 3</th>
+            <th>5-Yr Total (Low)</th>
+            <th>5-Yr Total (High)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Personnel — Analysis</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Supply chain analysts, TBL modellers, phase specialists (4–10 FTE escalating)</td>
+            <td>$360k–$720k</td><td>$900k–$2.0M</td><td>$900k–$2.0M</td><td>$1.2M–$3.0M</td>
+            <td><strong>$3.36M</strong></td><td><strong>$7.72M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Personnel — Technology</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Data engineers, platform developers, API architects (2–6 FTE)</td>
+            <td>$240k–$480k</td><td>$540k–$1.1M</td><td>$540k–$1.1M</td><td>$720k–$1.8M</td>
+            <td><strong>$2.04M</strong></td><td><strong>$4.48M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Personnel — Field</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">In-country data collectors, custody verification, site visit teams (3–12 FTE)</td>
+            <td>$0</td><td>$540k–$1.4M</td><td>$480k–$1.2M</td><td>$600k–$1.6M</td>
+            <td><strong>$1.62M</strong></td><td><strong>$4.2M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Legal &amp; Compliance</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Data sharing agreements, IP framework, multi-jurisdictional regulatory counsel (15+ countries)</td>
+            <td>$200k–$400k</td><td>$400k–$900k</td><td>$300k–$700k</td><td>$300k–$700k</td>
+            <td><strong>$1.2M</strong></td><td><strong>$2.7M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Audit &amp; Verification</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Third-party auditors (Big 4 + specialist assay), methodology validation, chain-of-custody certification</td>
+            <td>$0</td><td>$300k–$700k</td><td>$500k–$1.2M</td><td>$800k–$2.0M</td>
+            <td><strong>$1.6M</strong></td><td><strong>$3.9M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Technology Platform</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Cloud infrastructure, data ingestion pipeline, scoring engine, API layer, dashboards</td>
+            <td>$200k–$500k</td><td>$400k–$900k</td><td>$300k–$700k</td><td>$400k–$1.0M</td>
+            <td><strong>$1.3M</strong></td><td><strong>$3.1M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Stakeholder Engagement</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Industry conferences, working groups, regulatory liaison, partner onboarding, change management</td>
+            <td>$150k–$300k</td><td>$200k–$500k</td><td>$200k–$500k</td><td>$300k–$700k</td>
+            <td><strong>$850k</strong></td><td><strong>$2.0M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Contingency (15%)</strong></td>
+            <td style="font-size:0.75rem;color:var(--muted)">Regulatory delays, litigation risk from opaque-phase participants, currency fluctuation</td>
+            <td colspan="4" style="color:var(--muted);font-style:italic">Applied to total</td>
+            <td><strong>$1.79M</strong></td><td><strong>$4.22M</strong></td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="6"><strong>GOLD SUPPLY CHAIN — 5-YEAR TOTAL (ALL PHASES)</strong></td>
+            <td><strong>$13.7M</strong></td>
+            <td><strong>$32.3M</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="chart-wrap">
+        <div class="chart-title">Gold Supply Chain — Cost by Deployment Phase (Midpoint Estimate)</div>
+        <div class="chart-subtitle">Stacked by cost category. Phase 1 (Data &amp; Baseline) and Phase 3 (Full Scale) are the largest cost periods. Personnel dominates at ~50% of total across all phases.</div>
+        <canvas id="goldCostChart" height="260"></canvas>
+      </div>
+
+      <h3>Steady-State Annual Operating Cost (Post Year 5)</h3>
+      <p>Once fully deployed, the Framework transitions from a build cost to an operating cost. Steady-state annual operations for a full gold supply chain implementation are estimated at <strong>$3.0M–$6.0M/year</strong>, covering: a core team of 10–15 FTE, ongoing audit cycles, platform maintenance, and annual recertification of participating entities. This cost is recoverable through a framework licensing or participation fee structure, making long-run self-funding achievable at scale.</p>
+    </section>
+
+    <!-- ══ SHEA COST ESTIMATE ══ -->
+    <section style="background:var(--offwhite)">
+      <div class="section-label">Section 3 — Comparative Case</div>
+      <h2>Shea Value Chain: A Faster, Lower-Cost Deployment</h2>
+
+      <p>The Shea deployment is structurally simpler for four reasons: the chain has fewer phases (six versus nine); existing cooperative and certification infrastructure reduces data collection costs significantly; development finance stakeholders (IFC, GIZ, EU, Mirova) are already aligned on transparency goals and represent potential co-funders; and the principal buyers (L'Oréal, Unilever, Mars) carry their own ESG mandates that create a pull incentive for framework adoption rather than a push requirement.</p>
+
+      <div class="chart-wrap">
+        <div class="chart-title">Gold vs Shea — Total Deployment Cost Comparison</div>
+        <div class="chart-subtitle">Both low and high estimates shown. Shea deploys in 3 years vs 5 for gold; shared platform infrastructure reduces combined cost if deployed in parallel.</div>
+        <canvas id="compareChart" height="240"></canvas>
+      </div>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Cost Category</th>
+            <th>Shea Foundation (0–6 mo)</th>
+            <th>Shea Data &amp; Baseline (6–18 mo)</th>
+            <th>Shea Pilot &amp; Scale (12–36 mo)</th>
+            <th>3-Yr Total (Low)</th>
+            <th>3-Yr Total (High)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Personnel — Analysis</strong></td>
+            <td>$80k–$160k</td><td>$200k–$450k</td><td>$280k–$600k</td>
+            <td><strong>$560k</strong></td><td><strong>$1.21M</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Personnel — Field</strong></td>
+            <td>$0</td><td>$120k–$300k</td><td>$160k–$400k</td>
+            <td><strong>$280k</strong></td><td><strong>$700k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Legal &amp; Compliance</strong></td>
+            <td>$50k–$100k</td><td>$80k–$180k</td><td>$80k–$180k</td>
+            <td><strong>$210k</strong></td><td><strong>$460k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Audit &amp; Verification</strong></td>
+            <td>$0</td><td>$80k–$200k</td><td>$150k–$380k</td>
+            <td><strong>$230k</strong></td><td><strong>$580k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Technology Platform</strong></td>
+            <td>$80k–$160k</td><td>$80k–$160k</td><td>$80k–$160k</td>
+            <td><strong>$240k</strong></td><td><strong>$480k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Stakeholder Engagement</strong></td>
+            <td>$40k–$80k</td><td>$60k–$130k</td><td>$80k–$180k</td>
+            <td><strong>$180k</strong></td><td><strong>$390k</strong></td>
+          </tr>
+          <tr>
+            <td><strong>Contingency (15%)</strong></td>
+            <td colspan="3" style="color:var(--muted);font-style:italic">Applied to total</td>
+            <td><strong>$222k</strong></td><td><strong>$543k</strong></td>
+          </tr>
+          <tr class="total-row">
+            <td colspan="4"><strong>SHEA VALUE CHAIN — 3-YEAR TOTAL</strong></td>
+            <td><strong>$1.92M</strong></td><td><strong>$4.36M</strong></td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="finding positive">
+        <strong>The parallel deployment advantage:</strong> If gold and shea are deployed simultaneously using a shared technology platform, the combined cost falls to approximately <strong>$12M–$28M</strong> (versus $15.6M–$36.7M sequential) — a 20–25% efficiency gain from shared infrastructure. The Shea deployment also serves as the proof-of-concept case for gold: demonstrating Framework validity in a cooperative, transparent chain before tackling the opacity challenge in gold's midstream phases.
+      </div>
+    </section>
+
+    <!-- ══ COST DRIVER ANALYSIS ══ -->
+    <section>
+      <div class="section-label">Section 4 — Cost Drivers</div>
+      <h2>What Makes It Expensive — and What Brings the Cost Down</h2>
+
+      <div class="chart-wrap">
+        <div class="chart-title">Gold Deployment Cost — Breakdown by Category (Midpoint)</div>
+        <div class="chart-subtitle">Personnel (combined analysis, technology, and field roles) accounts for approximately 51% of total cost. Data opacity is the primary cost driver — it multiplies field, legal, and audit costs at Phases 3, 4, and 6.</div>
+        <canvas id="categoryChart" height="240"></canvas>
+      </div>
+
+      <h3>The Five Primary Cost Drivers</h3>
+
+      <table class="data-table">
+        <thead>
+          <tr><th>Cost Driver</th><th>Impact on Total Cost</th><th>Applies To</th><th>Mitigation</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>Data opacity at Phases 3, 4 &amp; 6</strong></td>
+            <td><span class="badge badge-low">35–45% of cost</span></td>
+            <td>Gold only</td>
+            <td>LBMA/WGC mandatory participation reduces by 40–60%</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-jurisdictional legal framework</strong></td>
+            <td><span class="badge badge-med">14–18% of cost</span></td>
+            <td>Gold (15+ countries)</td>
+            <td>Standardised data sharing templates; OECD model clauses</td>
+          </tr>
+          <tr>
+            <td><strong>Technology platform (bespoke vs SaaS)</strong></td>
+            <td><span class="badge badge-med">13–17% of cost</span></td>
+            <td>Both chains</td>
+            <td>SaaS/existing platform reduces by 50–60% vs bespoke build</td>
+          </tr>
+          <tr>
+            <td><strong>Third-party audit &amp; certification</strong></td>
+            <td><span class="badge badge-med">11–14% of cost</span></td>
+            <td>Both chains</td>
+            <td>Leverage existing LBMA/Fairtrade audit infrastructure</td>
+          </tr>
+          <tr>
+            <td><strong>Stakeholder change management</strong></td>
+            <td><span class="badge badge-high">6–10% of cost</span></td>
+            <td>Gold primarily</td>
+            <td>Align early with LBMA, WGC, and major mining companies as co-sponsors</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h3>Key Variables: What Could Materially Change the Estimate</h3>
+
+      <div class="var-grid">
+        <div class="var-card upside">
+          <h4>Factors That Reduce Cost &amp; Timeline</h4>
+          <ul>
+            <li><strong>Regulatory mandate:</strong> If LBMA or WGC require TrueValue participation as a condition of accreditation, data access costs fall 40–60% and timeline compresses by 12–18 months</li>
+            <li><strong>Major mining co-sponsors:</strong> If 2–3 major miners (e.g. Newmont, Barrick) co-fund as pilot participants, Phase 2 cost drops by $1–2M and credibility is established early</li>
+            <li><strong>Shared platform with Shea:</strong> Parallel deployment saves 20–25% on technology and management overhead</li>
+            <li><strong>Development finance grants (Shea):</strong> IFC, GIZ, and EU grants could cover 30–50% of Shea deployment costs; Shea becomes near-self-funding</li>
+            <li><strong>SaaS technology approach:</strong> Using existing supply chain data platforms (e.g. Sourcemap, GreenToken) rather than bespoke build saves $1–2M in Phase 0–1</li>
+            <li><strong>Academic partnerships:</strong> CSIRO, LBMA research arm, university partnerships reduce methodology validation cost by $200–500k</li>
+          </ul>
+        </div>
+        <div class="var-card downside">
+          <h4>Factors That Increase Cost &amp; Timeline</h4>
+          <ul>
+            <li><strong>Refiner/logistics resistance:</strong> If LBMA-accredited refineries or vault operators refuse data sharing, legal contestation adds $500k–$2M and 12–24 months</li>
+            <li><strong>Regulatory inaction:</strong> Without mandate, voluntary adoption in the gold midstream may take 3–5 extra years and $3–5M in additional stakeholder engagement</li>
+            <li><strong>ASM (artisanal mining) inclusion:</strong> Including artisanal and small-scale mining in Phase 1 adds complexity, field cost, and 6–12 months; may require separate sub-framework</li>
+            <li><strong>Geopolitical disruption:</strong> Operations in jurisdictions with political instability (DRC, Mali, Sudan) add security cost, legal risk, and data quality challenges</li>
+            <li><strong>ESG litigation risk:</strong> Opaque phase operators may challenge Framework disclosures legally; contingency of $500k–$2M should be reserved</li>
+            <li><strong>Currency &amp; inflation:</strong> Multi-currency operations in 15+ countries; 10–15% cost buffer recommended for exchange rate and local inflation risk</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══ BENCHMARK COMPARISONS ══ -->
+    <section class="benchmark-section">
+      <div class="section-label">Section 5 — Analogous Frameworks</div>
+      <h2>How Does This Compare to Frameworks Already Built?</h2>
+
+      <p>The most reliable cross-check on any cost estimate is comparison with analogous systems that have already been deployed. Six frameworks are directly comparable to TrueValue in scope, ambition, and the stakeholder coordination challenge they required. All cost estimates for analogous frameworks are derived from public financial disclosures, industry reports, and academic literature on standard-setting economics.</p>
+
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Framework</th>
+            <th>Sector</th>
+            <th>Est. Development Cost</th>
+            <th>Timeline to Full Scale</th>
+            <th>Annual Operating Cost</th>
+            <th>Relevance to TrueValue</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>LBMA Responsible Gold Guidance</strong></td>
+            <td>Gold</td>
+            <td>$20M–$40M (system-wide incl. participant costs)</td>
+            <td>5–7 years</td>
+            <td>$5M–$10M/yr (LBMA + participants)</td>
+            <td><span class="badge badge-high">Direct precedent</span> — same industry, similar phases; TrueValue extends to balance scoring not covered by LBMA</td>
+          </tr>
+          <tr>
+            <td><strong>Fairtrade International</strong></td>
+            <td>Agricultural (coffee, cocoa, cotton)</td>
+            <td>$50M–$80M (30-yr build)</td>
+            <td>10+ years</td>
+            <td>€30M/yr current budget</td>
+            <td><span class="badge badge-high">Direct precedent</span> — cooperative structures, grassroots data collection; Shea deployment mirrors early Fairtrade build</td>
+          </tr>
+          <tr>
+            <td><strong>CDP (formerly Carbon Disclosure Project)</strong></td>
+            <td>Cross-sector (climate disclosure)</td>
+            <td>$30M–$50M (first decade)</td>
+            <td>7–10 years</td>
+            <td>~$70M/yr current budget</td>
+            <td><span class="badge badge-med">Methodological precedent</span> — voluntary to mandatory transition; disclosure framework becoming compliance infrastructure</td>
+          </tr>
+          <tr>
+            <td><strong>GRI Standards</strong></td>
+            <td>Cross-sector (sustainability reporting)</td>
+            <td>$15M–$25M (framework design)</td>
+            <td>6–8 years</td>
+            <td>~$20M/yr current budget</td>
+            <td><span class="badge badge-med">Methodological precedent</span> — multi-stakeholder standard development; phased adoption model directly applicable</td>
+          </tr>
+          <tr>
+            <td><strong>FSC (Forest Stewardship Council)</strong></td>
+            <td>Forestry / timber</td>
+            <td>$25M–$40M</td>
+            <td>5–8 years</td>
+            <td>~$25M/yr current budget</td>
+            <td><span class="badge badge-med">Chain-of-custody precedent</span> — physical flow traceability from extraction to consumer; custody transfer model maps well</td>
+          </tr>
+          <tr>
+            <td><strong>Acorn Carbon Programme (Shea)</strong></td>
+            <td>Shea / agroforestry</td>
+            <td>$2M–$5M (programme build)</td>
+            <td>2–3 years</td>
+            <td>$1M–$2M/yr</td>
+            <td><span class="badge badge-high">Direct infrastructure</span> — Acorn's cooperative data system is the foundation layer for TrueValue Shea deployment; reduces cost materially</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="finding">
+        <strong>What the comparisons tell us:</strong> The TrueValue gold estimate of $13M–$30M over 5 years sits at the <em>low end</em> of comparable frameworks relative to the complexity and value of the commodity chain it covers. The LBMA Responsible Gold Guidance alone cost $20–40M system-wide. TrueValue's advantage is that it builds on top of existing LBMA infrastructure rather than replacing it — adding the balance-scoring and resource-flow analytical layer that the LBMA framework does not provide.
+      </div>
+    </section>
+
+    <!-- ══ ROADMAP ══ -->
+    <section class="roadmap-section">
+      <div class="section-label">Section 6 — Deployment Roadmap</div>
+      <h2>The Minimum Credible Deployment Path</h2>
+
+      <p>The roadmap below represents the most efficient realistic path — not the fastest theoretically possible, but the fastest that would produce a Framework with genuine industry validity. Cutting the timeline below these minimums risks producing a scoring system with insufficient data depth to survive regulatory or academic scrutiny.</p>
+
+      <div class="roadmap-stats">
+        <div class="roadmap-stat">
+          <div class="rv">Month 0</div>
+          <div class="rl">Framework design begins;<br>core team of 4–6 hired</div>
+        </div>
+        <div class="roadmap-stat">
+          <div class="rv">Month 24</div>
+          <div class="rl">Pilot data available;<br>first balance scores published</div>
+        </div>
+        <div class="roadmap-stat">
+          <div class="rv">Month 48–60</div>
+          <div class="rl">Full industry deployment;<br>steady-state operations begin</div>
+        </div>
+      </div>
+
+      <div class="chart-wrap">
+        <div class="chart-title">Deployment Timeline — Gold &amp; Shea (Parallel)</div>
+        <div class="chart-subtitle">Horizontal bars show duration of each workstream. Shea runs in parallel from Month 6, sharing technology platform and methodology. Gold's opaque-phase data collection is the critical path item.</div>
+        <canvas id="ganttChart" height="320"></canvas>
+      </div>
+
+      <h3>The Critical Path</h3>
+      <p>The deployment is not constrained by technology or money — it is constrained by data access at three gold supply chain phases: Doré/Intermediate (Phase 3), Refining (Phase 4), and Logistics &amp; Vaulting (Phase 6). These phases are architecturally designed for opacity. Obtaining reliable, auditable data requires either regulatory mandate (fastest path) or extended voluntary negotiation with individual operators (slowest, most expensive path). Every other workstream can run in parallel; these three data negotiations are serial dependencies.</p>
+
+      <p>The recommended first action is therefore not a technology build — it is a <strong>regulatory engagement strategy</strong>: approaching LBMA and WGC with a co-development proposal that frames TrueValue as an extension of their existing responsible sourcing infrastructure, not a competitive alternative. This positions the Framework to benefit from mandatory data flows rather than having to negotiate each one individually.</p>
+    </section>
+
+    <!-- ══ INVESTMENT IMPLICATIONS ══ -->
+    <section>
+      <div class="section-label">Section 7</div>
+      <h2>The Investment Case: Cost vs. Value Unlocked</h2>
+
+      <p>Implementation costs must be evaluated against the structural value the Framework is designed to unlock. The Investor Report documents a 71% cumulative value advantage for TrueValue-managed chains over a 10-year horizon. Even at conservative estimates of the gold supply chain's annual value (~$250B), the Framework's optimisation potential — capturing just 1% of currently leaked structural value — generates annual returns of $2.5B+. The implementation cost of $13–$30M is a rounding error relative to that potential.</p>
+
+      <div class="var-grid">
+        <div class="var-card upside">
+          <h4>Who Should Fund This — and Why</h4>
+          <ul>
+            <li><strong>Major mining companies</strong> (co-development): benefit from ESG premium pricing and reduced regulatory risk. Contribution: $1–3M each for 3–5 anchor participants</li>
+            <li><strong>Institutional investors</strong> (impact/ESG mandates): obtain phase-resolved supply chain risk data not available elsewhere. Contribution: $2–5M total as consortium</li>
+            <li><strong>LBMA / WGC</strong> (standards body mandate): natural home for ongoing operations; existing regulatory infrastructure reduces deployment friction by 40–60%</li>
+            <li><strong>Development finance (Shea)</strong>: IFC, GIZ, EU grants could cover 30–50% of Shea deployment; Shea becomes proof-of-concept for gold</li>
+            <li><strong>ESG data platforms</strong> (Bloomberg, MSCI, Sustainalytics): TrueValue scores are a premium data product; licensing revenue can self-fund steady-state operations within 3–4 years</li>
+          </ul>
+        </div>
+        <div class="var-card downside">
+          <h4>What Happens If It Is Not Built</h4>
+          <ul>
+            <li><strong>Continued structural opacity</strong> at Phases 3, 4, and 6 means investors cannot price hidden constraint accumulation — the exact risk profile that generates sudden, correlated supply chain failures</li>
+            <li><strong>ESG capital reallocation pressure</strong> increases without structural data to defend supply chain choices; gold and commodity producers face growing cost-of-capital premium with no measurement tool to respond</li>
+            <li><strong>Regulatory gap</strong>: EU CSRD, SEC climate disclosure, and OECD due diligence requirements are moving toward exactly the kind of phase-level supply chain data TrueValue provides; first movers capture the compliance alignment premium</li>
+            <li><strong>Shea value leakage continues</strong>: $25–80M/year in unmonetised water and biodiversity assets remains off the balance sheet; women farmers receive below-market compensation with no structural measurement to demonstrate or negotiate against</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr class="gold-rule">
+
+      <h3>The Implementation Thesis in One Sentence</h3>
+      <p style="font-size:1.05rem; font-style:italic; color:var(--navy); line-height:1.6;">At $13–$30M over five years for gold, and $1.8–$4M over three years for shea, the TrueValue Framework is not an expensive project — it is a modestly priced structural measurement system for commodity chains that collectively move trillions of dollars of value annually, and whose hidden imbalances represent multiples of the Framework's cost in annually leaking value.</p>
+    </section>
+
+    <!-- ══ APPENDIX ══ -->
+    <section class="appendix">
+      <div class="section-label">Appendix</div>
+      <h2>Methodology &amp; Estimation Assumptions</h2>
+      <div class="appendix-grid">
+        <div class="appendix-block">
+          <h3>Cost Estimation Methodology</h3>
+          <p>All cost estimates use a bottom-up labour-hours approach: role types are identified per phase, staffing levels estimated based on analogous project deployments, and blended day rates applied by role (analyst: $800–$1,400/day; engineer: $900–$1,500/day; field researcher: $400–$700/day; legal: $300–$600/hr). Ranges reflect the difference between a cooperative industry posture (low) and a resistant one (high).</p>
+        </div>
+        <div class="appendix-block">
+          <h3>Analogous Framework Sources</h3>
+          <ul>
+            <li>LBMA Responsible Gold Guidance — public annual reports and industry cost surveys</li>
+            <li>Fairtrade International — annual report financial statements; academic analysis of standard-setting costs</li>
+            <li>CDP — published annual reports and 10-year retrospectives</li>
+            <li>GRI — organisational history documentation and budget disclosures</li>
+            <li>Acorn Carbon Programme — Serious Shea / Rabobank programme documentation</li>
+            <li>Foran, Lenzen &amp; Dey (2005) — TBL methodology precedent; CSIRO operational research</li>
+          </ul>
+        </div>
+        <div class="appendix-block">
+          <h3>Key Assumptions</h3>
+          <ul>
+            <li>Day rates are in 2026 USD; no forward inflation adjustment applied</li>
+            <li>Technology platform assumes 60% SaaS / 40% custom build hybrid</li>
+            <li>Contingency of 15% applied to all phases</li>
+            <li>Gold pilot covers 2–3 major mine operations, 1 LBMA refinery, and COMEX exchange data</li>
+            <li>Shea pilot covers Acorn-enrolled cooperatives in Burkina Faso and Senegal</li>
+            <li>Steady-state cost assumes industry cost-sharing via licensing fees from Year 4 onwards</li>
+          </ul>
+        </div>
+        <div class="appendix-block">
+          <h3>What This Estimate Does Not Cover</h3>
+          <ul>
+            <li>Policy lobbying costs (if regulatory mandate route pursued)</li>
+            <li>Marketing and external communications for Framework adoption</li>
+            <li>Third-party academic peer review and journal publication</li>
+            <li>Translation and localisation costs for non-English jurisdictions</li>
+            <li>Litigation costs above the 15% contingency reserve</li>
+            <li>Costs borne by participating entities to integrate with the Framework (estimated separately at $200k–$1M per major participant)</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footnote mt-2">TrueValue Analytics — Structural Supply Chain Intelligence. This document presents order-of-magnitude implementation cost estimates based on analogous framework analysis. It does not constitute a project proposal, budget commitment, or financial guarantee. © 2026 TrueValue Analytics. All rights reserved.</p>
+    </section>
+
+  </div><!-- /content -->
+
+  <!-- ══ FOOTER ══ -->
+  <div class="report-footer">
+    <span class="footer-brand">TrueValue Analytics</span>
+    <span>Implementation Intelligence Series — Framework Deployment Analysis</span>
+    <span>March 2026 &nbsp;·&nbsp; Confidential</span>
+  </div>
+
+</div><!-- /page -->
+
+<!-- ══ CHARTS ══ -->
+<script>
+Chart.defaults.font.family = "'Helvetica Neue', Arial, sans-serif";
+Chart.defaults.font.size = 11;
+
+// ── Chart 1: Gold cost by deployment phase (stacked bar) ──────────────────────
+new Chart(document.getElementById('goldCostChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Phase 0\nFoundation', 'Phase 1\nData & Baseline', 'Phase 2\nPilot', 'Phase 3\nFull Scale'],
+    datasets: [
+      { label: 'Personnel — Analysis', data: [540, 1450, 1450, 2100], backgroundColor: 'rgba(26,39,68,0.80)', borderWidth:0, borderRadius:1 },
+      { label: 'Personnel — Tech',     data: [360, 820,  820,  1260], backgroundColor: 'rgba(26,39,68,0.55)', borderWidth:0, borderRadius:1 },
+      { label: 'Personnel — Field',    data: [0,   970,  840,  1100], backgroundColor: 'rgba(26,39,68,0.35)', borderWidth:0, borderRadius:1 },
+      { label: 'Legal & Compliance',   data: [300, 650,  500,  500],  backgroundColor: 'rgba(176,48,48,0.70)', borderWidth:0, borderRadius:1 },
+      { label: 'Audit & Verification', data: [0,   500,  850,  1400], backgroundColor: 'rgba(200,112,32,0.75)', borderWidth:0, borderRadius:1 },
+      { label: 'Technology Platform',  data: [350, 650,  500,  700],  backgroundColor: 'rgba(200,168,75,0.80)', borderWidth:0, borderRadius:1 },
+      { label: 'Stakeholder Engagement',data:[225, 350,  350,  500],  backgroundColor: 'rgba(46,125,79,0.70)', borderWidth:0, borderRadius:1 }
+    ]
+  },
+  options: {
+    responsive:true,
+    scales: {
+      x: { stacked:true, ticks:{color:'#555'}, grid:{display:false} },
+      y: { stacked:true, ticks:{ callback: v => '$'+(v/1000).toFixed(1)+'M', color:'#888' }, grid:{color:'rgba(0,0,0,0.06)'} }
+    },
+    plugins: {
+      legend: { position:'bottom', labels:{ boxWidth:12, padding:12, font:{size:10} } },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.dataset.label + ': $' + (ctx.parsed.y/1000).toFixed(2) + 'M' } }
+    }
+  }
+});
+
+// ── Chart 2: Gold vs Shea comparison (grouped bar) ────────────────────────────
+new Chart(document.getElementById('compareChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Gold (5-Year Low)', 'Gold (5-Year High)', 'Shea (3-Year Low)', 'Shea (3-Year High)', 'Combined Parallel (Low)', 'Combined Parallel (High)'],
+    datasets: [{
+      label: 'Total Deployment Cost (USD)',
+      data: [13700000, 32300000, 1920000, 4360000, 11600000, 28000000],
+      backgroundColor: [
+        'rgba(200,112,32,0.75)', 'rgba(200,112,32,0.40)',
+        'rgba(46,125,79,0.75)',  'rgba(46,125,79,0.40)',
+        'rgba(26,39,68,0.75)',   'rgba(26,39,68,0.40)'
+      ],
+      borderWidth:0, borderRadius:2
+    }]
+  },
+  options: {
+    responsive:true, indexAxis:'y',
+    scales: {
+      x: { ticks:{ callback: v => '$'+(v/1e6).toFixed(1)+'M', color:'#888' }, grid:{color:'rgba(0,0,0,0.06)'} },
+      y: { ticks:{color:'#555'}, grid:{display:false} }
+    },
+    plugins: {
+      legend: { display:false },
+      tooltip: { callbacks: { label: ctx => ' $' + (ctx.parsed.x/1e6).toFixed(2) + 'M' } }
+    }
+  }
+});
+
+// ── Chart 3: Cost by category doughnut ──────────────────────────────────────
+new Chart(document.getElementById('categoryChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Personnel — Analysis', 'Personnel — Technology', 'Personnel — Field', 'Legal & Compliance', 'Audit & Verification', 'Technology Platform', 'Stakeholder Engagement', 'Contingency (15%)'],
+    datasets: [{
+      data: [28, 17, 16, 10, 10, 8, 5, 6],
+      backgroundColor: [
+        'rgba(26,39,68,0.85)', 'rgba(26,39,68,0.60)', 'rgba(26,39,68,0.38)',
+        'rgba(176,48,48,0.75)', 'rgba(200,112,32,0.80)',
+        'rgba(200,168,75,0.85)', 'rgba(46,125,79,0.75)', 'rgba(100,100,100,0.45)'
+      ],
+      borderWidth: 2, borderColor: '#fff'
+    }]
+  },
+  options: {
+    responsive:true,
+    cutout:'55%',
+    plugins: {
+      legend: { position:'right', labels:{ boxWidth:12, padding:10, font:{size:10} } },
+      tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': ' + ctx.parsed + '%' } }
+    }
+  }
+});
+
+// ── Chart 4: Gantt-style deployment timeline ──────────────────────────────────
+(function() {
+  const workstreams = [
+    { label:'GOLD — Framework Design',          start:0,  end:12, color:'rgba(26,39,68,0.85)' },
+    { label:'GOLD — Platform Architecture',     start:3,  end:18, color:'rgba(26,39,68,0.65)' },
+    { label:'GOLD — Regulatory Engagement',     start:3,  end:48, color:'rgba(176,48,48,0.70)' },
+    { label:'GOLD — Phase 1–2 Data Collection', start:9,  end:30, color:'rgba(200,112,32,0.80)' },
+    { label:'GOLD — Phase 3,4,6 Data (Opaque)', start:12, end:42, color:'rgba(176,48,48,0.85)' },
+    { label:'GOLD — Pilot Programme',           start:24, end:42, color:'rgba(200,168,75,0.85)' },
+    { label:'GOLD — Full Industry Scale',       start:36, end:60, color:'rgba(46,125,79,0.80)' },
+    { label:'SHEA — Framework (shared)',        start:6,  end:15, color:'rgba(46,125,79,0.55)' },
+    { label:'SHEA — Data Collection',           start:9,  end:24, color:'rgba(46,125,79,0.70)' },
+    { label:'SHEA — Pilot & Scale',             start:18, end:36, color:'rgba(46,125,79,0.85)' }
+  ];
+
+  const months = Array.from({length:13}, (_,i) => 'Mo '+(i*5));
+
+  new Chart(document.getElementById('ganttChart'), {
+    type:'bar',
+    data: {
+      labels: workstreams.map(w => w.label),
+      datasets: [{
+        label:'Start offset (hidden)',
+        data: workstreams.map(w => w.start),
+        backgroundColor:'rgba(0,0,0,0)',
+        borderWidth:0
+      },{
+        label:'Duration',
+        data: workstreams.map(w => w.end - w.start),
+        backgroundColor: workstreams.map(w => w.color),
+        borderWidth:0,
+        borderRadius:2
+      }]
+    },
+    options: {
+      responsive:true, indexAxis:'y',
+      scales: {
+        x: { stacked:true, min:0, max:60, ticks:{ callback: v => 'Mo '+v, stepSize:6, color:'rgba(255,255,255,0.55)' }, grid:{color:'rgba(255,255,255,0.08)'}, title:{display:true,text:'Months from Project Start',color:'rgba(255,255,255,0.45)',font:{size:10}} },
+        y: { stacked:true, ticks:{color:'rgba(255,255,255,0.7)', font:{size:10}}, grid:{display:false} }
+      },
+      plugins: {
+        legend:{ display:false },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              if(ctx.datasetIndex === 1) {
+                const w = workstreams[ctx.dataIndex];
+                return ` Month ${w.start} → Month ${w.end} (${w.end-w.start} months)`;
+              }
+              return null;
+            }
+          },
+          filter: ctx => ctx.datasetIndex === 1
+        }
+      }
+    }
+  });
+})();
+</script>
+
+
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
+      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
+      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
+      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
+    ];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
+    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
+    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
+    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
+    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
+    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
+  ];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+
+</body>
+</html>

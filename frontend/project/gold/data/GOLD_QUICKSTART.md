@@ -1,3 +1,22 @@
+---
+doc_id: frontend_project_gold_data_gold_quickstart
+title: Quick Start Guide
+type: documentation
+status: active
+domain: gold_supply_chain
+layer: methodology
+projects:
+  - gold
+tags:
+  - gold
+  - gold_supply_chain
+  - methodology
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Quick Start Guide
 
 ## Gold Supply Chain Intelligence Platform - Initial Setup

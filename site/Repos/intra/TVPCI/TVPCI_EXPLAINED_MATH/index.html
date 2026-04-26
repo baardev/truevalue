@@ -1,0 +1,3297 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Gold & shea supply chain phase templates, rules, APIs, and methodology">
+      
+      
+      
+        <link rel="canonical" href="http://dev.tholonia.com:8000/site/Repos/intra/TVPCI/TVPCI_EXPLAINED_MATH/">
+      
+      
+        <link rel="prev" href="../TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX/">
+      
+      
+        <link rel="next" href="../../../../Research/modeling/CLARITY_TRUE_VALUE_VS_KPMG_TRUE_VALUE/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
+    
+    
+      
+        <title>TVPCI Explained Math - Supply Chain Intelligence Docs</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../../../stylesheets/mkdocs-site.css">
+    
+    <script>__md_scope=new URL("../../../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#the-true-value-pricing-convergence-index-tvpci" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="/" title="Supply Chain Intelligence Docs" class="md-header__button md-logo" aria-label="Supply Chain Intelligence Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <a href="/site/" class="md-ellipsis tv-header__site" title="Documentation home">
+            Supply Chain Intelligence Docs
+          </a>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              TVPCI Explained Math
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="amber"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE/" class="md-tabs__link">
+          
+  
+  
+  Supply chain phase templates
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PDI/ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE/" class="md-tabs__link">
+          
+  
+  
+  Value chain phase templates
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../PDI/NDC_CONCEPTS_PARAMETERS_AND_SOURCES_REFERENCE/" class="md-tabs__link">
+          
+  
+  
+  N-D-C framework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Research/modeling/SUPPLY_CHAIN_RULES/" class="md-tabs__link">
+          
+  
+  
+  Rules
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../api/FRONTEND_API/" class="md-tabs__link">
+          
+  
+  
+  API & frontend
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../DOCUMENT_INTELLIGENCE_README/" class="md-tabs__link">
+          
+  
+  
+  Methodology
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../../../../Research/modeling/THOLONIC_FRAMEWORK_SUPPLY_AND_VALUE_CHAIN_APPLICATION/" class="md-tabs__link">
+          
+  
+  
+  Tholonic framework
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../Research/modeling/CLARITY_TRUE_VALUE_VS_KPMG_TRUE_VALUE/" class="md-tabs__link">
+          
+  
+  
+  Research
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../../../PDI/PDI_water_newwater_STATUS/" class="md-tabs__link">
+          
+  
+  
+  PDI status
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="/" title="Supply Chain Intelligence Docs" class="md-nav__button md-logo" aria-label="Supply Chain Intelligence Docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <a href="/site/" class="md-nav__title--site tv-drawer__site" title="Documentation home">Supply Chain Intelligence Docs</a>
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supply chain phase templates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Supply chain phase templates
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract template
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE_GOLD_INSTANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gold instance
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/PDI_WORKED_EXAMPLE_GOLD_SUPPLY_CHAIN/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PDI worked example (gold)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/PDI_WORKED_EXAMPLE_MUNICIPAL_WATER_SUPPLY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PDI worked example (water)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/PDI_ECOSYSTEM_CASE_MANGO_COASTAL_Q_AND_A/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Mango coastal case
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Phase mapping protocol
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Value chain phase templates
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Value chain phase templates
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Abstract value template
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/SHEA_VALUE_CHAIN_PHASE_INSTANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Shea value instance
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/GOLD_VALUE_CHAIN_PHASE_INSTANCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Gold value instance
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    N-D-C framework
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    N-D-C framework
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/NDC_CONCEPTS_PARAMETERS_AND_SOURCES_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts, parameters & sources
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/NDC_D_C_N_METRICS_CALCULATION_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Metrics calculation reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../PDI/NDC_QUALITATIVE_D_AND_C_MAPPING_BY_PHASE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Qualitative D & C mapping
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/NDC-global-support/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NDC global support
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Rules
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Rules
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/SUPPLY_CHAIN_RULES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Supply chain rules
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/VALUE_CHAIN_RULES/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Value chain rules
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    API & frontend
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    API & frontend
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/FRONTEND_API/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../api/VALUE_CHAIN_API/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Value chain API
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/FRONTEND_SIMULATOR_VISUALIZATION_STRATEGY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Frontend visualization strategy
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_7" >
+        
+          
+          <label class="md-nav__link" for="__nav_7" id="__nav_7_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Methodology
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_7_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_7">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Methodology
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../DOCUMENT_INTELLIGENCE_README/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Document intelligence setup
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Reports/WATER_WASTE_METHODOLOGY/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Water, waste & environment
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/SARAH_DATA_INGESTION_QUICK_REFERENCE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sarah quick reference
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/SYNTHETIC_DATA_COMPLETE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Synthetic data complete
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_8" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_8" id="__nav_8_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tholonic framework
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_8_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_8">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Tholonic framework
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/THOLONIC_FRAMEWORK_SUPPLY_AND_VALUE_CHAIN_APPLICATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tholonic framework (supply chain)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/THOLONIC_INTEGRATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tholonic integration
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/THOLONIC_IMPLEMENTATION_COMPLETE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Tholonic implementation complete
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TVPCI_FOUNDATION_INTRO/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TVPCI introduction
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TVPCI_FOUNDATION/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TVPCI foundation (full derivation)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TVPCI_FOUNDATION_SIMPLE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TVPCI foundation (simple)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TVPCI specification (methodology)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TVPCI explained (math)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    TVPCI explained (math)
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#an-introduction-with-mechanics-mathematics-and-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        An Introduction with Mechanics, Mathematics, and Interpretation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-where-the-tvpci-sits-in-the-analytical-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Where the TVPCI Sits in the Analytical Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-three-structural-sub-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Three Structural Sub-Scores
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Three Structural Sub-Scores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-phase-balance-score-b-weight-040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Phase Balance Score ( B̄ ), Weight: 0.40
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-boundary-coherence-score-weight-040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Boundary Coherence Score ( Φ̄ ), Weight: 0.40
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-phase-sustainability-score-s_norm-weight-020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Phase Sustainability Score ( S̄_norm ), Weight: 0.20
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-composite-tvpci-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Composite TVPCI Formula
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-opacity-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Opacity Correction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-complete-worked-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. A Complete Worked Calculation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. A Complete Worked Calculation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-phase-n-values-and-balance-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Phase N-values and Balance Scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-n-states-and-boundary-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: N-states and Boundary Ratios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-composite-tvpci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Composite TVPCI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-the-relationship-to-true-value-price" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. The Relationship to True Value Price
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-bottleneck-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Bottleneck Identification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-summary-what-the-tvpci-is-and-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Summary: What the TVPCI Is and Is Not
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Summary: What the TVPCI Is and Is Not">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#score-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Score Interpretation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_9" >
+        
+          
+          <label class="md-nav__link" for="__nav_9" id="__nav_9_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_9_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_9">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Research
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/modeling/CLARITY_TRUE_VALUE_VS_KPMG_TRUE_VALUE/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Clarity True Value vs KPMG True Value
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--draft"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../gametheory/tholonic_vs_twistor_theory/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Game theory vs twistor theory
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../Research/archive/SUSTAINABILITY_LINKED_LOAN_CREDIT_RATING_FRAMEWORK/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Sustainability loan rating framework
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../extra/Horizon/HORIZON_EUROPE_GRANT_PROPOSAL_CIRCBIO09/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Horizon grant proposal
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_10" >
+        
+          
+          <label class="md-nav__link" for="__nav_10" id="__nav_10_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    PDI status
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_10_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_10">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    PDI status
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../PDI/PDI_water_newwater_STATUS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    NEWater PDI status
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../PDI/PDI_water_ocwd_STATUS/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    OCWD PDI status
+  
+
+    
+  </span>
+  
+  
+    
+  
+  
+    <span class="md-status md-status--active"></span>
+  
+
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#an-introduction-with-mechanics-mathematics-and-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        An Introduction with Mechanics, Mathematics, and Interpretation
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#preface" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Preface
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-where-the-tvpci-sits-in-the-analytical-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        1. Where the TVPCI Sits in the Analytical Stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-the-three-structural-sub-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2. The Three Structural Sub-Scores
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="2. The Three Structural Sub-Scores">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#21-phase-balance-score-b-weight-040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.1 Phase Balance Score ( B̄ ), Weight: 0.40
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#22-boundary-coherence-score-weight-040" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.2 Boundary Coherence Score ( Φ̄ ), Weight: 0.40
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#23-phase-sustainability-score-s_norm-weight-020" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        2.3 Phase Sustainability Score ( S̄_norm ), Weight: 0.20
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-the-composite-tvpci-formula" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        3. The Composite TVPCI Formula
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-the-opacity-correction" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        4. The Opacity Correction
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-a-complete-worked-calculation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        5. A Complete Worked Calculation
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="5. A Complete Worked Calculation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#step-1-phase-n-values-and-balance-scores" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 1: Phase N-values and Balance Scores
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-2-n-states-and-boundary-ratios" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 2: N-states and Boundary Ratios
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#step-3-composite-tvpci" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Step 3: Composite TVPCI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-the-relationship-to-true-value-price" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        6. The Relationship to True Value Price
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-bottleneck-identification" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        7. Bottleneck Identification
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-summary-what-the-tvpci-is-and-is-not" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        8. Summary: What the TVPCI Is and Is Not
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="8. Summary: What the TVPCI Is and Is Not">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#score-interpretation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Score Interpretation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="the-true-value-pricing-convergence-index-tvpci">The True Value Pricing Convergence Index (TVPCI)</h1>
+<h3 id="an-introduction-with-mechanics-mathematics-and-interpretation"><em>An Introduction with Mechanics, Mathematics, and Interpretation</em></h3>
+<hr />
+<h2 id="preface">Preface</h2>
+<p>This document explains the <strong>True Value Pricing Convergence Index (TVPCI)</strong>: what it measures, how it is calculated, and what it means for price interpretation. It assumes familiarity with the True Value Framework (TVF) and the N-D-C phase analysis that underpins it. If you haven't read the TVF college-level introduction, start there: the TVPCI is the index that sits on top of the TVF's phase analysis.</p>
+<p>The TVPCI is a composite index from 0 to 100. <strong>It is not a price.</strong> It is a structural integrity score, a quantitative measure of how much friction, imbalance, and incoherence exists within a supply chain such that the observed market price diverges from True Value. A TVPCI of 100 means the chain is structurally coherent: value flows proportionally through every phase, all phases are internally balanced, and the market price is structurally trustworthy. As the score falls, the gap between market price and True Value is <em>structurally explained</em>, not by intent or speculation, but by measurable conditions at each phase.</p>
+<hr />
+<h2 id="1-where-the-tvpci-sits-in-the-analytical-stack">1. Where the TVPCI Sits in the Analytical Stack</h2>
+<p>The TVF separates analysis into five layers:</p>
+<div class="highlight"><pre><span></span><code>Layer 1: Physical Supply Chain     (Phase mapping, N-D-C metrics per phase)
+Layer 2: Value Chain               (Phase-aligned costs, margins, prices)
+Layer 3: TVPCI                     (Composite structural integrity score)  &lt;- HERE
+Layer 4: True Value Pricing        (Price convergence interpretation)
+Layer 5: Financial Abstraction     (Paper claims, derivatives, out of scope)
+</code></pre></div>
+<p>The TVPCI is computed entirely from Layer 1 and Layer 2 inputs. It feeds forward into Layer 4 (price interpretation) but is never derived from Layer 5 data. This sequencing is methodologically non-negotiable: if you allow financial derivatives or exchange positioning to influence a structural supply chain score, you collapse the analytical independence that makes the score meaningful.</p>
+<hr />
+<h2 id="2-the-three-structural-sub-scores">2. The Three Structural Sub-Scores</h2>
+<p>The TVPCI is a weighted composite of three independent sub-scores. Each captures a distinct structural property of the supply chain.</p>
+<hr />
+<h3 id="21-phase-balance-score-b-weight-040">2.1 Phase Balance Score ( B̄ ), Weight: 0.40</h3>
+<p>This is the most direct sub-score. For each phase <em>i</em>, the balance score is:</p>
+<p>$$B_i = 100 \cdot \exp!\left(-2 \cdot \frac{|D_i - C_i|}{\max(D_i, C_i)}\right)$$</p>
+<p>Where D_i is the sum of constraint parameters and C_i is the sum of connection parameters, each on a 0-100 scale. The balance score peaks at 100 when D = C and decays exponentially as imbalance grows.</p>
+<p>The chain-level mean balance score is:</p>
+<p>$$\bar{B} = \frac{1}{P} \sum_{i=0}^{P-1} B_i$$</p>
+<p><strong>Worked example: shea collection phase (Phase 0)</strong></p>
+<div class="highlight"><pre><span></span><code>D1: buyer quality specifications     = 45
+D2: cooperative membership rules     = 50
+D3: seasonal harvest calendar        = 70
+D4: transport packaging standards    = 40
+D_total = 205
+
+C1: alternative buyers               = 20
+C2: price information access         = 15
+C3: cooperative network strength     = 40
+C4: processing alternatives          = 35
+C_total = 110
+
+Imbalance = |205 - 110| = 95
+B0 = 100 x exp(-2 x 95 / 205)
+   = 100 x exp(-0.927)
+   = 100 x 0.396
+   = 39.6  &lt;-  CRITICAL range
+</code></pre></div>
+<p>The collection phase has a balance score of approximately 40, indicating severe structural imbalance. The collector is heavily constrained (D = 205) with very few alternatives or market connections (C = 110). This one phase will substantially drag down the chain-wide B̄.</p>
+<p><strong>Interpretation scale:</strong></p>
+<table>
+<thead>
+<tr>
+<th>B̄</th>
+<th>Condition</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>95-100</td>
+<td>Near-perfect: all phases operating at structural optimum</td>
+</tr>
+<tr>
+<td>80-94</td>
+<td>Good: minor phase-level imbalances</td>
+</tr>
+<tr>
+<td>60-79</td>
+<td>Fair: one or more phases with meaningful D-C friction</td>
+</tr>
+<tr>
+<td>40-59</td>
+<td>Poor: multiple phases underperforming</td>
+</tr>
+<tr>
+<td>0-39</td>
+<td>Critical: chain-wide structural failure</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="22-boundary-coherence-score-weight-040">2.2 Boundary Coherence Score ( Φ̄ ), Weight: 0.40</h3>
+<p>This is the most mathematically interesting sub-score and the most diagnostically powerful.</p>
+<p>At every boundary between adjacent phases, the TVF computes the ratio of their N-states:</p>
+<p>$$r_{i \to i+1} = \frac{N_{i+1}}{N_i}$$</p>
+<p>It then compares this ratio to <strong>φ, the golden ratio (approximately 1.61803)</strong>, using the same exponential decay function:</p>
+<p>$$\Phi_{i \to i+1} = 100 \cdot \exp!\left(-2 \cdot \frac{|r_{i \to i+1} - \varphi|}{\varphi}\right)$$</p>
+<p>The chain-level mean boundary coherence is:</p>
+<p>$$\bar{\Phi} = \frac{1}{P-1} \sum_{i=0}^{P-2} \Phi_{i \to i+1}$$</p>
+<p><strong>Why φ: The Fibonacci Derivation</strong></p>
+<p>This is not a cosmetic choice. The mathematical justification runs as follows.</p>
+<p>The Clarity TrueValue  propagation rule states that when D and C parameters are <em>inherited naturally</em> between phases (specifically, when each new phase's D receives the value of the prior phase's N-state, and each new phase's C receives the value of the prior phase's D), the sequences of D and C values follow the Fibonacci recursion:</p>
+<p>$$D_{n+1} = N_n = \sqrt{D_n \cdot C_n}, \qquad C_{n+1} = D_n$$</p>
+<p>When D and C follow Fibonacci-type growth (each D_n = F_{n+1} and C_n = F_n, where F_n is the nth Fibonacci number), the N-states are:</p>
+<p>$$N_n = \sqrt{D_n \cdot C_n} \cdot \frac{B_n}{100} \approx \sqrt{F_{n+1} \cdot F_n}$$</p>
+<p>The ratio of consecutive N-states then becomes:</p>
+<p>$$\frac{N_{n+1}}{N_n} = \frac{\sqrt{F_{n+2} \cdot F_{n+1}}}{\sqrt{F_{n+1} \cdot F_n}} = \sqrt{\frac{F_{n+2}}{F_n}}$$</p>
+<p>Using the Fibonacci identity F_{n+2} = F_{n+1} + F_n:</p>
+<p>$$\frac{F_{n+2}}{F_n} = \frac{F_{n+1}}{F_n} + 1 \;\xrightarrow{n \to \infty}\; \varphi + 1 = \varphi^2$$</p>
+<p>Therefore:</p>
+<p>$$\frac{N_{n+1}}{N_n} \;\to\; \sqrt{\varphi^2} = \varphi$$</p>
+<p><strong>The φ benchmark is not an assumption.</strong> It is the convergent limit of the natural proportional inheritance of D and C parameters between phases. A boundary ratio at φ means that phase is inheriting capacity from the prior phase in exactly the proportion the Tholonic framework generates from first principles. A ratio below φ (say, 0.5) means capacity has been suppressed: something is extracting or retaining value at that boundary that the structural logic does not account for.</p>
+<p><strong>Worked example: gold, Phase 5 to Phase 6 boundary</strong></p>
+<div class="highlight"><pre><span></span><code>N5 (bar casting) = 237
+N6 (vaulting)    = 118
+
+r(5-&gt;6) = 118 / 237 = 0.498
+
+Phi(5-&gt;6) = 100 x exp(-2 x |0.498 - 1.618| / 1.618)
+          = 100 x exp(-2 x 1.120 / 1.618)
+          = 100 x exp(-1.385)
+          = 100 x 0.250
+          = 25.0  &lt;-  SEVERE suppression
+</code></pre></div>
+<p>The Phase 5 to Phase 6 boundary in the gold supply chain, the transition from refiner to vault, scores 25/100 on boundary coherence. The N-state is being cut roughly in half (0.498) when the natural, proportional value would be to increase it by 1.618. This is quantitative evidence of the structural bottleneck at the custody and vaulting interface: the small number of approved vault operators, the opaque custody arrangements, and the institutional D-constraints on logistics all suppress capacity precisely at this junction.</p>
+<p><strong>Worked example: shea, farmgate to retail amplification</strong></p>
+<p>From Phase 1 (first farmgate sale: \$150/MT) to Phase 6 (retail equivalent: \$47,500/MT), the value multiplies <strong>317 times</strong> across 5 phase boundaries.</p>
+<p>In a structurally coherent chain where each boundary ratio equals φ:
+$$317 \approx \varphi^{12.0}$$</p>
+<p>So a 317x value amplification distributed equally across 12 φ-steps would require 12 boundaries, which is more than the 5 actual boundaries. In practice, the amplification is highly concentrated: approximately 16x at Phase 3 (processing/refining, \$250 to \$4,000/MT) and a disproportionate accumulation at the EU manufacturing and retail stages. The Phase 4 (export) boundary shows N4 = 158 vs N3 = 241, a ratio of 0.66, which is below φ and consistent with intermediary extraction at the export stage.</p>
+<p><strong>Boundary coherence interpretation:</strong></p>
+<table>
+<thead>
+<tr>
+<th>Φ̄</th>
+<th>Status</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>80-100</td>
+<td>r approximately φ across most boundaries</td>
+<td>Value flows proportionally, with no structural extraction</td>
+</tr>
+<tr>
+<td>55-79</td>
+<td>Mild deviation</td>
+<td>Localised boundary failures</td>
+</tr>
+<tr>
+<td>35-54</td>
+<td>Moderate deviation</td>
+<td>Systematic value capture by intermediaries</td>
+</tr>
+<tr>
+<td>0-34</td>
+<td>Severe deviation</td>
+<td>Market price structurally divorced from True Value</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h3 id="23-phase-sustainability-score-s_norm-weight-020">2.3 Phase Sustainability Score ( S̄_norm ), Weight: 0.20</h3>
+<p>The sustainability index for each phase measures the <em>energy cost</em> of imbalance, capturing the friction, coercion, and inefficiency consumed by maintaining an unbalanced phase. It is defined as:</p>
+<p>$$S_i = \frac{100}{|D_i - C_i|^2 + 10}$$</p>
+<p>This is a decreasing function of imbalance: when D = C (imbalance = 0), S reaches its maximum of 100/10 = 10 (arbitrary units). As imbalance grows, the squared term in the denominator causes S to fall rapidly; the energy cost of imbalance grows quadratically, not linearly.</p>
+<p>For chain-level comparison, S is normalised to 0-100 across all phases:</p>
+<p>$$\bar{S}<em>{\text{norm}} = \frac{\bar{S} - S</em>{\min}}{S_{\max} - S_{\min}} \cdot 100$$</p>
+<p>This sub-score is weighted at 0.20 because it is partially captured by the balance score (B̄ already reflects D-C disparity). Its additional value is diagnostic: phases with catastrophically low S values (very large imbalances) stand out even when the balance score alone might obscure the scale of the energy waste.</p>
+<hr />
+<h2 id="3-the-composite-tvpci-formula">3. The Composite TVPCI Formula</h2>
+<p>$$\text{TVPCI} = w_B \cdot \bar{B} + w_\Phi \cdot \bar{\Phi} + w_S \cdot \bar{S}_{\text{norm}}$$</p>
+<p>With default weights w_B = 0.40, w_Phi = 0.40, w_S = 0.20.</p>
+<p><strong>Commodity-specific weight profiles are permitted.</strong> The gold chain weights more heavily on balance (w_B = 0.45) because Phase 6 (vaulting) is the dominant structural weakness and shows up most clearly in balance scores. The shea chain weights more heavily on boundary coherence (w_Phi = 0.45) because the diagnostic signal in shea is the disproportionate value amplification between phases, not the balance of any single phase.</p>
+<hr />
+<h2 id="4-the-opacity-correction">4. The Opacity Correction</h2>
+<p>Not all phases are observable. When a phase is flagged as <code>OPAQUE</code> (no reliable data exists), it cannot contribute its actual scores. The opaque phase receives the chain mean of the transparent phases as a placeholder, and a <strong>transparency penalty</strong> is applied to the final index:</p>
+<p>$$\text{TVPCI}<em>{\text{adjusted}} = \text{TVPCI} \cdot \left(1 - \alpha \cdot \frac{N</em>{\text{opaque}}}{P}\right)$$</p>
+<p>Where α = 0.15 (15% maximum per-phase penalty), N_opaque is the count of opaque phases, and P is total phases.</p>
+<p><strong>Example:</strong> A chain with 8 phases, one of which is opaque (e.g., Phase 3, informal cross-border trade in the shea chain):</p>
+<div class="highlight"><pre><span></span><code>TVPCI (raw) = 68.4
+Penalty = 1 - (0.15 x 1/8) = 1 - 0.01875 = 0.981
+TVPCI_adjusted = 68.4 x 0.981 = 67.1
+</code></pre></div>
+<p>This penalty is not punitive in the moral sense. It is an epistemic adjustment: a chain we cannot fully observe cannot be given the same trust score as one we can. <strong>Opacity is a finding, not a data gap.</strong> The identity and count of opaque phases are always reported alongside the TVPCI score.</p>
+<hr />
+<h2 id="5-a-complete-worked-calculation">5. A Complete Worked Calculation</h2>
+<p>Here is the full TVPCI calculation for the gold supply chain using the reference N-values from the φ-engine:</p>
+<h3 id="step-1-phase-n-values-and-balance-scores">Step 1: Phase N-values and Balance Scores</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>Name</th>
+<th>D</th>
+<th>C</th>
+<th>B_i</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>Prospecting</td>
+<td>220</td>
+<td>210</td>
+<td>95.2</td>
+</tr>
+<tr>
+<td>1</td>
+<td>Mining</td>
+<td>260</td>
+<td>250</td>
+<td>96.1</td>
+</tr>
+<tr>
+<td>2</td>
+<td>Processing</td>
+<td>280</td>
+<td>275</td>
+<td>98.2</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Dore</td>
+<td>240</td>
+<td>235</td>
+<td>97.9</td>
+</tr>
+<tr>
+<td>4</td>
+<td>Refining</td>
+<td>270</td>
+<td>260</td>
+<td>96.4</td>
+</tr>
+<tr>
+<td>5</td>
+<td>Casting</td>
+<td>255</td>
+<td>250</td>
+<td>98.0</td>
+</tr>
+<tr>
+<td>6</td>
+<td>Vaulting</td>
+<td>420</td>
+<td>180</td>
+<td><strong>31.9</strong> (bottleneck)</td>
+</tr>
+<tr>
+<td>7</td>
+<td>Exchange</td>
+<td>280</td>
+<td>275</td>
+<td>98.2</td>
+</tr>
+</tbody>
+</table>
+<p>B̄ = (95.2 + 96.1 + 98.2 + 97.9 + 96.4 + 98.0 + 31.9 + 98.2) / 8 = <strong>76.5</strong></p>
+<h3 id="step-2-n-states-and-boundary-ratios">Step 2: N-states and Boundary Ratios</h3>
+<table>
+<thead>
+<tr>
+<th>Phase</th>
+<th>N</th>
+<th>Boundary</th>
+<th>Ratio r</th>
+<th>Phi score</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0</td>
+<td>183</td>
+<td>P0 to P1</td>
+<td>259/183 = 1.415</td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>1</td>
+<td>259</td>
+<td>P1 to P2</td>
+<td>263/259 = 1.015</td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>2</td>
+<td>263</td>
+<td>P2 to P3</td>
+<td>229/263 = 0.871</td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>3</td>
+<td>229</td>
+<td>P3 to P4</td>
+<td>253/229 = 1.105</td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>4</td>
+<td>253</td>
+<td>P4 to P5</td>
+<td>237/253 = 0.937</td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>5</td>
+<td>237</td>
+<td>P5 to P6</td>
+<td>118/237 = <strong>0.498</strong></td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>6</td>
+<td>118</td>
+<td>P6 to P7</td>
+<td>239/118 = 2.025</td>
+<td>exp(-2 x</td>
+</tr>
+<tr>
+<td>7</td>
+<td>239</td>
+<td>n/a</td>
+<td>n/a</td>
+<td>n/a</td>
+</tr>
+</tbody>
+</table>
+<p>Phī = (78.1 + 47.6 + 39.5 + 53.4 + 43.5 + 25.0 + 60.4) / 7 = <strong>49.6</strong></p>
+<h3 id="step-3-composite-tvpci">Step 3: Composite TVPCI</h3>
+<p>Using gold weight profile (w_B = 0.45, w_Phi = 0.35, w_S = 0.20) and assuming normalised sustainability score of approximately 72:</p>
+<div class="highlight"><pre><span></span><code>TVPCI = (0.45 x 76.5) + (0.35 x 49.6) + (0.20 x 72.0)
+      = 34.4 + 17.4 + 14.4
+      = 66.2
+</code></pre></div>
+<p>With opacity correction (Phase 0 partially opaque, α = 0.15, 1 of 8 phases):</p>
+<div class="highlight"><pre><span></span><code>TVPCI_adjusted = 66.2 x (1 - 0.15 x 1/8)
+               = 66.2 x 0.981
+               = 65.0  (Moderate Divergence)
+</code></pre></div>
+<p><strong>Diagnosis:</strong> The gold supply chain scores 65/100 (moderate divergence). The Phase 6 (vaulting) balance score of 31.9 is the primary drag on B̄. The Phase 5 to Phase 6 boundary coherence score of 25.0 is the primary drag on Phī. The bottleneck is unambiguously the custody and logistics interface: the structural point where a small number of approved vault operators, opaque holdings, and high institutional D-constraints compress the chain's operational capacity by more than half.</p>
+<hr />
+<h2 id="6-the-relationship-to-true-value-price">6. The Relationship to True Value Price</h2>
+<p>The TVPCI is explicitly a <em>structural</em> index, not a pricing model. The formal relationship is:</p>
+<p>$$P_{\text{market}} = P_{\text{true}} \cdot \left(1 + \delta_{\text{structural}}\right)$$</p>
+<p>Where the magnitude of the structural divergence term is proportional to:</p>
+<p>$$|\delta_{\text{structural}}| \propto \left(1 - \frac{\text{TVPCI}}{100}\right)$$</p>
+<p><strong>A TVPCI of 65 does not mean the market price is 35% wrong.</strong> It means that 35 structural index points of friction, imbalance, and incoherence exist within the chain, and that any price formed in that chain carries a structurally unexplained component of that magnitude. How that component manifests (as overpricing at retail, underpricing at farmgate, or redistribution between intermediaries) is a Layer 4 (True Value Pricing) question, not a Layer 3 question.</p>
+<p>This distinction is important for responsible use of the index. The TVPCI quantifies the <em>existence and scale</em> of structural distortion. It does not assign direction, intent, or mechanism to that distortion. Those require the full value chain layer analysis.</p>
+<hr />
+<h2 id="7-bottleneck-identification">7. Bottleneck Identification</h2>
+<p>Because the TVPCI is fully decomposable by phase, it identifies which phase is most suppressing the chain-wide score. The <strong>phase TVPCI contribution</strong> formula is:</p>
+<p>$$\text{TVPCI}<em>i = \frac{w_B \cdot B_i + w_S \cdot S</em>{i,\text{norm}}}{P} + \frac{w_\Phi \cdot (\Phi_{i-1 \to i} + \Phi_{i \to i+1})}{2(P-1)}$$</p>
+<p>The phase with the lowest TVPCI_i is the structural bottleneck, the point where a targeted intervention would produce the largest gain in chain-wide convergence. In the gold chain, Phase 6 produces by far the lowest phase contribution. In the shea chain, Phase 0 (collection) and the Phase 3 to Phase 4 (processing-to-export) boundary produce the lowest contributions.</p>
+<p>This bottleneck identification is the primary policy-actionable output of the TVPCI. It transforms a single headline number into a directed, phase-specific prescription.</p>
+<hr />
+<h2 id="8-summary-what-the-tvpci-is-and-is-not">8. Summary: What the TVPCI Is and Is Not</h2>
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Scale</td>
+<td>0-100 (dimensionless)</td>
+</tr>
+<tr>
+<td>Produces a price?</td>
+<td><strong>No</strong>: produces a structural trust score</td>
+</tr>
+<tr>
+<td>Three inputs</td>
+<td>Phase Balance (40%), Boundary Coherence (40%), Phase Sustainability (20%)</td>
+</tr>
+<tr>
+<td>Mathematical constants used</td>
+<td>e (balance and boundary decay functions), φ (boundary coherence benchmark)</td>
+</tr>
+<tr>
+<td>Source of φ-benchmark</td>
+<td>Fibonacci propagation limit; not an assumption</td>
+</tr>
+<tr>
+<td>Source of e in decay functions</td>
+<td>Tholonic recursive structure; structurally required, not chosen</td>
+</tr>
+<tr>
+<td>Opacity handling</td>
+<td>Penalty per opaque phase; opacity always reported alongside score</td>
+</tr>
+<tr>
+<td>Bottleneck output</td>
+<td>Phase with lowest individual TVPCI contribution</td>
+</tr>
+<tr>
+<td>Policy relevance</td>
+<td>Identifies <em>where</em> and <em>how much</em> to intervene, not <em>whether</em> the price is right</td>
+</tr>
+</tbody>
+</table>
+<h3 id="score-interpretation">Score Interpretation</h3>
+<table>
+<thead>
+<tr>
+<th>TVPCI</th>
+<th>Label</th>
+<th>Meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>90-100</td>
+<td>Structurally Coherent</td>
+<td>Market price and True Value are structurally aligned</td>
+</tr>
+<tr>
+<td>75-89</td>
+<td>Near Convergence</td>
+<td>Minor structural friction; small measurable divergence</td>
+</tr>
+<tr>
+<td>55-74</td>
+<td>Moderate Divergence</td>
+<td>Identifiable phases distorting price</td>
+</tr>
+<tr>
+<td>35-54</td>
+<td>Significant Divergence</td>
+<td>Structural price distortion; financial analysis will mislead</td>
+</tr>
+<tr>
+<td>0-34</td>
+<td>Critical Divergence</td>
+<td>Market price does not reflect physical chain conditions</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><em>Document: TVPCI, True Value Pricing Convergence Index, College-Level Explanation</em>
+<em>Version: 1.0, April 2026</em>
+<em>Part of the True Value Analytics framework documentation</em></p>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../../../..", "features": ["navigation.tabs", "navigation.sections", "navigation.expand", "navigation.top", "search.suggest", "search.highlight"], "search": "../../../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>

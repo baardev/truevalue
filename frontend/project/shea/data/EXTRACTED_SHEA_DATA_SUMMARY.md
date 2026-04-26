@@ -1,3 +1,22 @@
+---
+doc_id: frontend_project_shea_data_extracted_shea_data_summary
+title: "Extracted Shea Data – Summary (lives in `frontend/project/shea/data/` with the shea schema CSVs and source PDFs/Office files)"
+type: summary
+status: active
+domain: shea_supply_chain
+layer: methodology
+projects:
+  - shea
+tags:
+  - methodology
+  - shea
+  - shea_supply_chain
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Extracted Shea Data – Summary (lives in `frontend/project/shea/data/` with the shea schema CSVs and source PDFs/Office files)
 
 This note summarises **new or updated data** extracted from the four documents and integrated into the shea CSVs. The **Clarity_Cleo_Shea_Value_Chain_Outline.md** was already the project’s synthesis; no duplicate extraction was done from it.

@@ -1,3 +1,25 @@
+---
+doc_id: frontend_project_shea_data_shea_schema_readme
+title: Shea Supply Chain – Phase-Resolved, Custody-Aware, Schema-First Template
+type: readme
+status: active
+domain: shea_supply_chain
+layer: supply_chain
+projects:
+  - shea
+tags:
+  - phase_mapping
+  - readme
+  - schema
+  - shea
+  - shea_supply_chain
+  - supply_chain
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Shea Supply Chain – Phase-Resolved, Custody-Aware, Schema-First Template
 
 This folder contains a **template** for the shea (shea butter) supply chain in a phase-resolved, custody-aware, schema-first form. Cells are **populated only where information is present** in the source (Clarity Coalition Cleo Shea True Value page and cited references); **missing areas are left blank** or marked **OPAQUE**.

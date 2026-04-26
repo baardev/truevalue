@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ERCOT Uri Lifecycle</title>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Segoe UI,Tahoma,sans-serif; background:#fffaf0; color:#1a202c; }
+    header { background:linear-gradient(135deg,#744210,#dd6b20); color:#fff; padding:22px 30px; display:flex; justify-content:space-between; align-items:center; }
+    header h1 { font-size:22px; font-weight:400; }
+    header a { color:#feebc8; text-decoration:none; margin-left:12px; font-size:14px; }
+    main { max-width:1180px; margin:0 auto; padding:28px; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .stat,.card { background:#fff; border-radius:10px; padding:18px; box-shadow:0 1px 5px rgba(0,0,0,.08); }
+    .label { color:#718096; font-size:11px; text-transform:uppercase; font-weight:800; }
+    .value { color:#744210; font-size:26px; font-weight:900; margin-top:4px; }
+    .flow { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+    .phase { border:1px solid #feebc8; border-radius:10px; padding:16px; background:#fff; }
+    .phase h3 { color:#744210; font-size:16px; margin-bottom:8px; }
+    .score { display:flex; justify-content:space-between; font-size:13px; margin:4px 0; }
+    .note { color:#4a5568; font-size:13px; line-height:1.5; margin-top:10px; }
+    @media (max-width:800px) { .stats,.flow { grid-template-columns:1fr; } header { display:block; } }
+  </style>
+</head>
+<body>
+  <header><h1>ERCOT Uri System Lifecycle N-D-C</h1><nav><a href="index.html">Supply Chain</a><a href="dashboard.html">Dashboard</a><a href="../index.html">Hub</a></nav></header>
+  <main>
+    <div class="stats" id="stats"></div>
+    <div class="card"><div class="flow" id="flow"></div></div>
+    <div class="card" style="margin-top:18px;"><p id="interp" class="note"></p></div>
+  </main>
+  <script>
+    fetch("../data/processed/grid_ercot_uri_system_lifecycle_ndc.json").then(r => r.json()).then(data => {
+      const phases = data.phases;
+      const system = data.system;
+      document.getElementById("stats").innerHTML = [
+        ["Lifecycle phases", phases.length],
+        ["System balance", system.balance_score + "%"],
+        ["Average N", system.average_N],
+        ["Bottlenecks", system.bottleneck_phase_ids.length]
+      ].map(s => `<div class="stat"><div class="label">${s[0]}</div><div class="value">${s[1]}</div></div>`).join("");
+      document.getElementById("flow").innerHTML = phases.map(p => `
+        <div class="phase"><h3>${p.lifecycle_phase_id}. ${p.phase_name}</h3>
+        <div class="score"><span>D</span><strong>${p.D_total}</strong></div>
+        <div class="score"><span>C</span><strong>${p.C_total}</strong></div>
+        <div class="score"><span>N</span><strong>${p.N}</strong></div>
+        <div class="score"><span>Balance</span><strong>${p.balance_score}%</strong></div>
+        <p class="note">${p.notes}</p></div>`).join("");
+      document.getElementById("interp").textContent = system.interpretation;
+    });
+  </script>
+</body>
+</html>

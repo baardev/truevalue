@@ -1,3 +1,22 @@
+---
+doc_id: frontend_project_gold_data_sarah_integration_analysis
+title: Sarah Document Integration Analysis
+type: implementation_note
+status: active
+domain: gold_supply_chain
+layer: methodology
+projects:
+  - gold
+tags:
+  - gold
+  - gold_supply_chain
+  - methodology
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Sarah Document Integration Analysis
 ## Date: January 24, 2026
 

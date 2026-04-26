@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Aubeb System Lifecycle Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Aubeb System Lifecycle Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>aubeb_system_lifecycle_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>lifecycle_phase_id<span class="sort-indicator"></span></th>
+<th>lifecycle_phase_name<span class="sort-indicator"></span></th>
+<th>lifecycle_category<span class="sort-indicator"></span></th>
+<th>linked_supply_phases<span class="sort-indicator"></span></th>
+<th>parent_N<span class="sort-indicator"></span></th>
+<th>D_total<span class="sort-indicator"></span></th>
+<th>C_total<span class="sort-indicator"></span></th>
+<th>balance_score<span class="sort-indicator"></span></th>
+<th>N<span class="sort-indicator"></span></th>
+<th>sustainability_index<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Programme design and custodial mandate</td><td>Pre-restoration</td><td>0,1</td><td>Defined multi-country mangrove restoration mandate</td><td>270</td><td>250</td><td>88.0</td><td>229</td><td>0.92</td><td>high</td><td>Programme envelope; sovereign mandates; land-cover boundary; carbon-rights eligibility; community custodian register</td><td>AUC coordination; host government participation; community mandate; country site coverage</td><td>Mandated 150000 ha programme boundary across seven AU member states</td><td>ha; countries; mandate records</td><td>PDI; confidential</td><td>PDI_AUBEB_2026-04-21.yaml; DRAFT_AUBEB_PDI_v1 response.docx</td><td>POPULATED</td><td>Design is strong because programme scale, countries, custodians, and initial boundary logic are specified. Per-site legal documents remain source-dependent.</td></tr>
+<tr><td>1</td><td>Baseline MRV and certification setup</td><td>Measurement and verification</td><td>2,3,4</td><td>Verified carbon and ecosystem baseline ready for registration</td><td>285</td><td>270</td><td>92.0</td><td>255</td><td>1.45</td><td>high</td><td>ODIN dMRV baseline; land-cover classification; carbon methodology; non-permanence buffer; standards eligibility</td><td>Remote sensing; field survey; carbon quantification; third-party verification pathway; registry readiness</td><td>Baseline carbon, biodiversity, livelihood, and crediting dataset</td><td>ha; Mg C/ha; tCO2e/year; species indices</td><td>PDI; inferred</td><td>PDI_AUBEB_2026-04-21.yaml; ODIN dMRV references</td><td>POPULATED</td><td>Measurement setup is the strongest lifecycle area, with high transparency from dMRV, field survey, and standard-selection pathways. Per-country credit allocation remains incomplete.</td></tr>
+<tr><td>2</td><td>Finance and capital return loop</td><td>Capital deployment</td><td>5,6</td><td>Funded conservation and restoration operating base</td><td>260</td><td>225</td><td>78.0</td><td>189</td><td>0.44</td><td>medium</td><td>Bond structure; Conservation Trust Fund rules; offtake contracts; reserve coverage floor; disbursement controls</td><td>DFI issuance; carbon buyer offtake; fisheries royalty inflow; trust fund deployment; implementer funding</td><td>Capital returned to restoration contracts and community implementation</td><td>USD; ha under contract; agreements</td><td>PDI; confidential</td><td>PDI_AUBEB_2026-04-21.yaml; PDI_AUBEB_STATUS.md</td><td>PARTIAL</td><td>Commercial floors and reserve capacity are documented, but total bond principal and Conservation Trust Fund disbursement schedule are missing.</td></tr>
+<tr><td>3</td><td>Restoration implementation and co-management</td><td>Stewardship operations</td><td>7,8,9</td><td>Actively recovering mangrove ecosystem under community co-management</td><td>275</td><td>245</td><td>84.0</td><td>218</td><td>0.74</td><td>medium</td><td>CBEMR site plans; seed provenance; hydrology restoration; FPIC; benefit-sharing agreements; governance registration</td><td>Community co-management; women and youth stewardship; nursery operations; physical regeneration; ODIN monitoring</td><td>Recovering mangrove canopy, sediment accretion, and community stewardship outputs</td><td>ha; tCO2e/ha/year; committees; employment figures</td><td>PDI; confidential</td><td>PDI_AUBEB_2026-04-21.yaml</td><td>PARTIAL</td><td>Restoration logic is well specified, but women and youth employment targets, Seed Bank governance, and site-level implementation cadence are not yet tabulated.</td></tr>
+<tr><td>4</td><td>Monitor</td><td> maintain</td><td> and adapt sustained asset</td><td>Long-term maintenance</td><td>8,9,10</td><td>Verified sustained blue economy asset</td><td>290</td><td>230</td><td>78.0</td><td>203</td><td>0.46</td><td>medium</td><td>30-year crediting period; annual verification; buffer management; leakage monitoring; climate and storm risk triggers; adaptive governance</td><td>ODIN monitoring; community maintenance; third-party audits; replanting or hydrology correction; benefit-sharing feedback; NDC reporting</td><td>Maintained verified ecosystem service outputs over crediting period</td><td>tCO2e/year; ha protected; audit reports; adaptation actions</td><td>PDI; inferred</td><td>PDI_AUBEB_2026-04-21.yaml; PDI_AUBEB_STATUS.md</td><td>PARTIAL</td><td>This is the long-term sustainability risk. The 30-year crediting period and output targets are defined, but maintenance cadence, climate stress triggers, fisheries methodology, and adaptation action logs are not fully specified.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

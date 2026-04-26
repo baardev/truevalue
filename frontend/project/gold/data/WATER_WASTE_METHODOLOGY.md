@@ -1,3 +1,22 @@
+---
+doc_id: frontend_docs_reports_water_waste_methodology
+title: "Water, Waste, and Environmental Metrics Methodology"
+type: methodology
+status: active
+domain: water_systems
+layer: methodology
+projects:
+  []
+tags:
+  - methodology
+  - water
+  - water_systems
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Water, Waste, and Environmental Metrics Methodology
 ## Gold Supply Chain Intelligence Platform
 

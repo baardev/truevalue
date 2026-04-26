@@ -49,7 +49,7 @@
         .finding-card .finding-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
         .finding-card .finding-body  { font-size: 11px; line-height: 1.5; color: #495057; }
         .footnote { padding: 16px 30px; background: #f8f9fa; border-top: 1px solid #dee2e6; font-size: 10px; color: #adb5bd; line-height: 1.6; }
-        .progress-bar { height: 8px; border-radius: 4px; background: #e9ecef; overflow: hidden; }
+        .progress-record { height: 8px; border-radius: 4px; background: #e9ecef; overflow: hidden; }
         .progress-fill { height: 100%; border-radius: 4px; }
     </style>
 </head>
@@ -58,7 +58,7 @@
     <div class="header">
         <div class="header-left">
             <h1>⚡ Energy Consumption Analysis — AUBEB Supply Chain</h1>
-            <p>Total consumption · Clean vs fossil split · Per-phase intensity · WGC 2030 target tracking</p>
+            <p>Total consumption · Clean vs fossil split · Per-phase intensity · AUBEB MRV 2030 target tracking</p>
         </div>
         <div>
             <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
@@ -72,9 +72,9 @@
         <div class="kpi-card"><div class="kpi-label">Total Energy</div><div class="kpi-value" id="kpiTotal" style="color:#6a1b9a;">—</div><div class="kpi-sub">kWh (reference scale)</div></div>
         <div class="kpi-card"><div class="kpi-label">Clean Energy</div><div class="kpi-value" id="kpiClean" style="color:#2e7d32;">—</div><div class="kpi-sub">renewables / nuclear</div></div>
         <div class="kpi-card"><div class="kpi-label">Fossil Energy</div><div class="kpi-value" id="kpiFossil" style="color:#bf360c;">—</div><div class="kpi-sub">coal / oil / gas</div></div>
-        <div class="kpi-card"><div class="kpi-label">Clean Mix</div><div class="kpi-value" id="kpiMix" style="color:#1565c0;">—</div><div class="kpi-sub" id="kpiMixSub">vs 60% WGC 2030 target</div></div>
+        <div class="kpi-card"><div class="kpi-label">Clean Mix</div><div class="kpi-value" id="kpiMix" style="color:#1565c0;">—</div><div class="kpi-sub" id="kpiMixSub">vs 60% AUBEB MRV 2030 target</div></div>
         <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest energy use</div></div>
-        <div class="kpi-card"><div class="kpi-label">Decarbonisation Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs WGC 2030 target</div></div>
+        <div class="kpi-card"><div class="kpi-label">Decarbonisation Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs AUBEB MRV 2030 target</div></div>
     </div>
     <div class="main-grid">
         <div class="card">
@@ -82,7 +82,7 @@
             <div class="chart-wrap"><svg class="chart" id="barChart" viewBox="0 0 600 320"></svg></div>
         </div>
         <div class="card">
-            <div class="card-title">🎯 Clean Energy % vs WGC 2030 Target (60%)</div>
+            <div class="card-title">🎯 Clean Energy % vs AUBEB MRV 2030 Target (60%)</div>
             <div class="chart-wrap"><svg class="chart" id="targetChart" viewBox="0 0 600 320"></svg></div>
         </div>
         <div class="card full-width">
@@ -98,35 +98,35 @@
         </div>
         <div class="card full-width">
             <div class="card-title">🔋 Fossil Energy Reduction Opportunity Ranking</div>
-            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by fossil energy consumption. Reaching 60% clean mix would reduce these figures. Sources: WGC Mangrove and Climate 2023, Foran et al. 2005, WATER_WASTE_METHODOLOGY.md.</p>
+            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by fossil energy consumption. Reaching 60% clean mix would reduce these figures. Sources: AUBEB MRV Mangrove and Climate 2023, Foran et al. 2005, WATER_WASTE_METHODOLOGY.md.</p>
             <div id="fossilRanking"></div>
         </div>
     </div>
     <div class="footnote">
         <strong>Data sources &amp; quality flags:</strong>
-        Phase 1: WGC 2023; Foran et al. 2005 (quality: Medium) ·
+        Phase 1: AUBEB MRV 2023; Foran et al. 2005 (quality: Medium) ·
         Phase 2: AUBEB PDI v1; benchmark estimate — not project-specific (quality: Medium) ·
         Phases 0, 3–8: Inferred from industry benchmarks and WATER_WASTE_METHODOLOGY.md (quality: Low) ·
-        WGC 2030 clean energy target: 60% for Scopes 1+2 across the industry ·
+        AUBEB MRV 2030 clean energy target: 60% for Scopes 1+2 across the industry ·
         Values are reference-scale figures, not global annual totals. Per-phase clean % from WATER_WASTE_METHODOLOGY.md base_clean_pct.
-        Phase 10 (Recycling) saves 60-80% energy vs primary production — the most impactful single lever for energy reduction.
+        Phase 10 (Sustained asset) saves 60-80% energy vs primary production — the most impactful single lever for energy reduction.
         This page reads live state from the What-If Simulator if opened via the ⚡ Energy button.
     </div>
 </div>
 <script>
 const DATA_URL = '/frontend/project/aubeb/data/processed/aubeb_supply_chain_ui.json';
-const WGC_TARGET_CLEAN_PCT = 60;
+const AUBEB MRV_TARGET_CLEAN_PCT = 60;
 
 const FALLBACK = [
-    { id:0, name:'Prospecting',   D:227, C:208, energy:   5000, energy_unit:'kWh', energy_clean_pct:20, energy_quality:'Low',    energy_notes:'Field generators, mostly diesel.' },
-    { id:1, name:'Mining',        D:270, C:277, energy: 250000, energy_unit:'kWh', energy_clean_pct:25, energy_quality:'Medium', energy_notes:'Diesel dominant; growing renewables.' },
-    { id:2, name:'Ore Processing',D:276, C:271, energy: 180000, energy_unit:'kWh', energy_clean_pct:40, energy_quality:'Medium', energy_notes:'Grid electricity dominant (mills).' },
-    { id:3, name:'Doré',          D:264, C:249, energy:  30000, energy_unit:'kWh', energy_clean_pct:35, energy_quality:'Low',    energy_notes:'Furnace fuel + some grid.' },
-    { id:4, name:'Refining',      D:263, C:270, energy:  80000, energy_unit:'kWh', energy_clean_pct:50, energy_quality:'Low',    energy_notes:'Electrolytic cells + furnaces.' },
-    { id:5, name:'Bar Casting',   D:253, C:247, energy:  15000, energy_unit:'kWh', energy_clean_pct:50, energy_quality:'Low',    energy_notes:'Shares refinery grid profile.' },
+    { id:0, name:'Degraded baseline',   D:227, C:208, energy:   5000, energy_unit:'kWh', energy_clean_pct:20, energy_quality:'Low',    energy_notes:'Field generators, mostly diesel.' },
+    { id:1, name:'Custodial mandate',        D:270, C:277, energy: 250000, energy_unit:'kWh', energy_clean_pct:25, energy_quality:'Medium', energy_notes:'Diesel dominant; growing renewables.' },
+    { id:2, name:'Baseline Baseline sensing',D:276, C:271, energy: 180000, energy_unit:'kWh', energy_clean_pct:40, energy_quality:'Medium', energy_notes:'Grid electricity dominant (mills).' },
+    { id:3, name:'Carbon quantification',          D:264, C:249, energy:  30000, energy_unit:'kWh', energy_clean_pct:35, energy_quality:'Low',    energy_notes:'Furnace fuel + some grid.' },
+    { id:4, name:'Certification',      D:263, C:270, energy:  80000, energy_unit:'kWh', energy_clean_pct:50, energy_quality:'Low',    energy_notes:'Electrolytic cells + furnaces.' },
+    { id:5, name:'Bar Commercialisation',   D:253, C:247, energy:  15000, energy_unit:'kWh', energy_clean_pct:50, energy_quality:'Low',    energy_notes:'Shares refinery grid profile.' },
     { id:6, name:'Logistics',     D:204, C:161, energy:   5000, energy_unit:'kWh', energy_clean_pct:55, energy_quality:'Low',    energy_notes:'HVAC, lighting, security. Urban grid.' },
-    { id:7, name:'Exchange',      D:254, C:265, energy:   2000, energy_unit:'kWh', energy_clean_pct:60, energy_quality:'Low',    energy_notes:'IT infrastructure, growing renewables.' },
-    { id:8, name:'Recycling ♻️',  D:245, C:250, energy:  70000, energy_unit:'kWh', energy_clean_pct:45, energy_quality:'Low',    energy_notes:'Saves 60-80% vs primary production.' },
+    { id:7, name:'CBEMR design',      D:254, C:265, energy:   2000, energy_unit:'kWh', energy_clean_pct:60, energy_quality:'Low',    energy_notes:'IT infrastructure, growing renewables.' },
+    { id:8, name:'Sustained asset',  D:245, C:250, energy:  70000, energy_unit:'kWh', energy_clean_pct:45, energy_quality:'Low',    energy_notes:'Saves 60-80% vs primary production.' },
 ];
 
 function calcBalance(D, C) { const i = Math.abs(D-C); return 100 * Math.exp(-2 * i / Math.max(D,C,1)); }
@@ -176,8 +176,8 @@ function render(rawPhases, sourceLabel) {
     document.getElementById('kpiClean').textContent    = fmtE(totalClean);
     document.getElementById('kpiFossil').textContent   = fmtE(totalFossil);
     document.getElementById('kpiMix').textContent      = chainCleanPct.toFixed(1) + '%';
-    document.getElementById('kpiMixSub').textContent   = chainCleanPct >= WGC_TARGET_CLEAN_PCT
-        ? `✅ Meets ${WGC_TARGET_CLEAN_PCT}% WGC 2030 target` : `Gap: ${(WGC_TARGET_CLEAN_PCT - chainCleanPct).toFixed(1)}pp to ${WGC_TARGET_CLEAN_PCT}% WGC target`;
+    document.getElementById('kpiMixSub').textContent   = chainCleanPct >= AUBEB MRV_TARGET_CLEAN_PCT
+        ? `✅ Meets ${AUBEB MRV_TARGET_CLEAN_PCT}% AUBEB MRV 2030 target` : `Gap: ${(AUBEB MRV_TARGET_CLEAN_PCT - chainCleanPct).toFixed(1)}pp to ${AUBEB MRV_TARGET_CLEAN_PCT}% AUBEB MRV target`;
     document.getElementById('kpiDominant').textContent = `P${dominant.id} ${dominant.name.split(' ')[0]}`;
     document.getElementById('kpiGrade').innerHTML      = `<span class="grade-badge" style="background:${grade.bg};color:${grade.color};">${grade.grade}</span>`;
     document.getElementById('kpiGradeSub').textContent = grade.label;
@@ -226,7 +226,7 @@ function drawTargetChart(data) {
         svg += `<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="${isTarget?'#f44336':'#e9ecef'}" stroke-width="${isTarget?1.5:1}" stroke-dasharray="${isTarget?'4,3':'none'}"/>`;
         svg += `<text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="${isTarget?'#f44336':'#adb5bd'}">${f}%</text>`;
     });
-    svg += `<text x="${mL+(60/100)*plotW}" y="${mT-4}" text-anchor="middle" font-size="9" fill="#f44336" font-weight="600">WGC 2030</text>`;
+    svg += `<text x="${mL+(60/100)*plotW}" y="${mT-4}" text-anchor="middle" font-size="9" fill="#f44336" font-weight="600">AUBEB MRV 2030</text>`;
     data.forEach((p,i) => {
         const y = mT + i*rowH, barH = rowH*0.6, barY = y+(rowH-barH)/2;
         const fillW = (p.energy_clean_pct/100)*plotW;
@@ -244,7 +244,7 @@ function drawTargetChart(data) {
 function buildTable(data, totalEnergy) {
     const rows = data.map(p => {
         const chainPct  = totalEnergy > 0 ? (p.energy / totalEnergy * 100) : 0;
-        const gap       = Math.max(0, WGC_TARGET_CLEAN_PCT - p.energy_clean_pct);
+        const gap       = Math.max(0, AUBEB MRV_TARGET_CLEAN_PCT - p.energy_clean_pct);
         const rating    = getPhaseRating(p.energy_clean_pct, p.balance);
         return `<tr>
             <td><strong>P${p.id}</strong> ${p.name}</td>
@@ -277,7 +277,7 @@ function buildTable(data, totalEnergy) {
 
 function buildFindings(data, totalEnergy, totalClean, totalFossil, chainCleanPct, grade) {
     const findings = [];
-    const gradeDesc = {'A+':'Chain clean energy mix ≥60% meets WGC 2030 target. Excellent decarbonisation trajectory.','A':'50-60% clean — close to WGC 2030 target. Targeted improvement in dominant phases can close the gap.','B':'40-50% clean — nearing industry average. Procurement of grid renewables for Phase 2 is highest-leverage lever.','C':'25-40% clean — significant fossil dependency. Long-term operational cost and regulatory risk.','D':'Below 25% clean — critically exposed to carbon pricing and regulatory action.'};
+    const gradeDesc = {'A+':'Chain clean energy mix ≥60% meets AUBEB MRV 2030 target. Excellent decarbonisation trajectory.','A':'50-60% clean — close to AUBEB MRV 2030 target. Targeted improvement in dominant phases can close the gap.','B':'40-50% clean — nearing industry average. Procurement of grid renewables for Phase 2 is highest-leverage lever.','C':'25-40% clean — significant fossil dependency. Long-term operational cost and regulatory risk.','D':'Below 25% clean — critically exposed to carbon pricing and regulatory action.'};
     findings.push({ type: chainCleanPct>=50?'positive':'warning', title:`Overall Rating: ${grade.grade} — ${grade.label}`, body: gradeDesc[grade.grade] || `Chain clean energy mix: ${chainCleanPct.toFixed(1)}%` });
 
     const dom = data.reduce((a,b)=>b.energy>a.energy?b:a);
@@ -285,16 +285,16 @@ function buildFindings(data, totalEnergy, totalClean, totalFossil, chainCleanPct
     findings.push({ type:'warning', title:`Dominant Phase: P${dom.id} ${dom.name} (${domPct}%)`, body:`Phase ${dom.id} accounts for ${domPct}% of total energy (${fmtE(dom.energy)}). With ${dom.energy_clean_pct}% clean energy, raising this to 60% would eliminate ~${fmtE(dom.energy*(0.6-dom.energy_clean_pct/100))} of fossil energy — the single largest decarbonisation opportunity.` });
 
     const p2 = data.find(p=>p.id===2);
-    if (p2) findings.push({ type: p2.energy_clean_pct>=60?'positive':'warning', title:`Phase 2 (Processing): Grid Electricity Dominates`, body:`Phase 2 is the most electricity-intensive phase (grinding mills). Its grid clean % (${p2.energy_clean_pct}%) directly reflects the national grid mix of host countries. Power Purchase Agreements (PPAs) for renewables are the fastest path to improvement here.` });
+    if (p2) findings.push({ type: p2.energy_clean_pct>=60?'positive':'warning', title:`Phase 2 (Baseline sensing): Grid Electricity Dominates`, body:`Phase 2 is the most electricity-intensive phase (grinding mills). Its grid clean % (${p2.energy_clean_pct}%) directly reflects the national grid mix of host countries. Power Purchase Agreements (PPAs) for renewables are the fastest path to improvement here.` });
 
     const p1 = data.find(p=>p.id===1);
-    if (p1) findings.push({ type:'negative', title:`Phase 1 (Mining): Diesel Lock-in at ${p1.energy_clean_pct}% Clean`, body:`Mining is the most diesel-dependent phase (haul trucks, excavators). With only ${p1.energy_clean_pct}% clean energy, electrification of the mining fleet is a 2025-2035 priority. Diesel accounts for ~60-80% of on-site energy. BEV trucks entering service at AUBEB programme sites by 2027-28.` });
+    if (p1) findings.push({ type:'negative', title:`Phase 1 (Custodial mandate): Diesel Lock-in at ${p1.energy_clean_pct}% Clean`, body:`Custodial mandate is the most diesel-dependent phase (field logistics, boats, vehicles, and nursery equipment). With only ${p1.energy_clean_pct}% clean energy, electrification of field logistics is a 2025-2035 priority. Diesel accounts for ~60-80% of on-site energy. BEV trucks entering service at AUBEB programme sites by 2027-28.` });
 
     const p8 = data.find(p=>p.id===8);
-    if (p8) findings.push({ type:'positive', title:`Phase 10 (Recycling): 60-80% Energy Saving vs Primary`, body:`Secondary gold production saves 60-80% of the energy required for primary production. The ${fmtE(p8.energy)} used in Phase 10 replaces an equivalent output from Phases 0-5. Each tonne of recycled gold avoids ~${fmtE((data.reduce((s,p)=>s+p.energy,0)-p8.energy))} of upstream energy consumption.` });
+    if (p8) findings.push({ type:'positive', title:`Phase 10 (Sustained asset): 60-80% Energy Saving vs Primary`, body:`Verified restoration maintenance avoids repeated high-intensity establishment work. The ${fmtE(p8.energy)} used in Phase 10 replaces an equivalent output from Phases 0-5. Each maintained hectare avoids ~${fmtE((data.reduce((s,p)=>s+p.energy,0)-p8.energy))} of upstream energy consumption.` });
 
     const onTarget = data.filter(p=>p.energy_clean_pct>=60);
-    findings.push({ type: onTarget.length>=3?'positive':'warning', title:`${onTarget.length} phase(s) already meet the WGC 2030 target`, body: onTarget.length>0?`Phases ${onTarget.map(p=>`P${p.id} (${p.energy_clean_pct}%)`).join(', ')} already achieve ≥60% clean energy, demonstrating the target is operationally achievable. ${onTarget.length<3?'Scale these procurement strategies to energy-intensive upstream phases.':''}`:'No phase currently meets the 60% clean energy target. Grid decarbonisation and PPA procurement are essential.' });
+    findings.push({ type: onTarget.length>=3?'positive':'warning', title:`${onTarget.length} phase(s) already meet the AUBEB MRV 2030 target`, body: onTarget.length>0?`Phases ${onTarget.map(p=>`P${p.id} (${p.energy_clean_pct}%)`).join(', ')} already achieve ≥60% clean energy, demonstrating the target is operationally achievable. ${onTarget.length<3?'Scale these procurement strategies to energy-intensive upstream phases.':''}`:'No phase currently meets the 60% clean energy target. Grid decarbonisation and PPA procurement are essential.' });
 
     document.getElementById('findingsGrid').innerHTML = findings.map(f=>`<div class="finding-card ${f.type}"><div class="finding-title">${f.title}</div><div class="finding-body">${f.body}</div></div>`).join('');
 }
@@ -304,7 +304,7 @@ function buildRanking(data) {
     const maxFossil = ranked[0]?.fossil||1;
     const html = ranked.map((p,i) => {
         const rating = getPhaseRating(p.energy_clean_pct, p.balance);
-        const gap    = Math.max(0, WGC_TARGET_CLEAN_PCT - p.energy_clean_pct);
+        const gap    = Math.max(0, AUBEB MRV_TARGET_CLEAN_PCT - p.energy_clean_pct);
         const savings = Math.round(p.energy * gap/100);
         return `<div style="display:grid;grid-template-columns:30px 140px 1fr 90px 90px 90px 90px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">
             <div style="font-weight:700;color:#6c757d;">#${i+1}</div>
@@ -326,13 +326,13 @@ function buildRanking(data) {
             <div>#</div><div>Phase</div><div>Clean / Fossil split</div><div>Total</div><div>Fossil energy</div><div>2030 gap</div><div>Rating</div>
         </div>${html}
         <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#f8f9fa;padding:10px;border-radius:6px;">
-            <strong>Green bar</strong> = clean energy proportion · <strong>Red bar</strong> = fossil proportion · WGC 2030 target: 60% clean energy mix. Dashed line on target chart indicates the 60% threshold.
+            <strong>Green bar</strong> = clean energy proportion · <strong>Red bar</strong> = fossil proportion · AUBEB MRV 2030 target: 60% clean energy mix. Dashed line on target chart indicates the 60% threshold.
         </div>`;
 }
 
 async function init() {
     try {
-        const stored = localStorage.getItem('gold_energy_analysis');
+        const stored = localStorage.getItem('aubeb_energy_analysis');
         if (stored) {
             const parsed = JSON.parse(stored);
             if (parsed?.data?.length) {
@@ -365,7 +365,7 @@ init();
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'Dashboard',
     'what_if_simulator.html':'What-If Simulator',
@@ -377,7 +377,7 @@ init();
     'index.html':null,'frontend':null
   };
   var HUBS = {
-    'gold':'/frontend/project/aubeb/index.html',
+    'aubeb':'/frontend/project/aubeb/index.html',
     'shea':'/frontend/project/shea/index.html',
     'supply_chain':'index.html',
     'value_chain':'index.html'
@@ -445,7 +445,7 @@ init();
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -464,8 +464,8 @@ init();
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -476,17 +476,17 @@ init();
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

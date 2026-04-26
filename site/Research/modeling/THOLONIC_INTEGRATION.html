@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="generator" content="pandoc" />
+  <title>THOLONIC_INTEGRATION</title>
+  <style type="text/css">:root {
+color-scheme: light dark;
+--bg: #ffffff;
+--fg: #1f2328;
+--muted: #57606a;
+--link: #0969da;
+--border: #d0d7de;
+--code-bg: #f6f8fa;
+--quote: #656d76;
+--maxw: 900px;
+}
+@media (prefers-color-scheme: dark) {
+:root {
+--bg: #0d1117;
+--fg: #e6edf3;
+--muted: #9da7b3;
+--link: #58a6ff;
+--border: #30363d;
+--code-bg: #161b22;
+--quote: #8b949e;
+}
+}
+html {
+font-size: 18px;
+}
+body {
+margin: 0;
+padding: 0;
+background: var(--bg);
+color: var(--fg);
+font-family: Georgia, "Times New Roman", serif;
+line-height: 1.65;
+}
+main,
+body > .container {
+max-width: var(--maxw);
+margin: 0 auto;
+padding: 2.5rem 1.25rem 4rem;
+}
+header {
+margin-bottom: 2rem;
+border-bottom: 1px solid var(--border);
+padding-bottom: 1rem;
+}
+h1, h2, h3, h4, h5, h6 {
+line-height: 1.25;
+margin-top: 1.8em;
+margin-bottom: 0.6em;
+font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+h1 {
+font-size: 2.1rem;
+margin-top: 0;
+}
+h2 {
+font-size: 1.6rem;
+border-bottom: 1px solid var(--border);
+padding-bottom: 0.2em;
+}
+h3 {
+font-size: 1.3rem;
+}
+p, li {
+font-size: 1rem;
+}
+a {
+color: var(--link);
+text-decoration: none;
+}
+a:hover {
+text-decoration: underline;
+}
+img {
+max-width: 100%;
+height: auto;
+display: block;
+margin: 1rem auto;
+border-radius: 6px;
+}
+pre, code {
+font-family: "DejaVu Sans Mono", "Noto Sans Mono", "Liberation Mono", monospace;
+}
+code {
+background: var(--code-bg);
+padding: 0.12em 0.35em;
+border-radius: 4px;
+font-size: 0.92em;
+}
+pre {
+background: var(--code-bg);
+padding: 1rem;
+border-radius: 8px;
+overflow-x: auto;
+border: 1px solid var(--border);
+}
+pre code {
+background: transparent;
+padding: 0;
+}
+blockquote {
+margin: 1.2rem 0;
+padding: 0.2rem 1rem;
+border-left: 4px solid var(--border);
+color: var(--quote);
+}
+table {
+width: 100%;
+border-collapse: collapse;
+margin: 1.5rem 0;
+display: block;
+overflow-x: auto;
+}
+th, td {
+border: 1px solid var(--border);
+padding: 0.6rem 0.8rem;
+text-align: left;
+}
+th {
+background: var(--code-bg);
+}
+hr {
+border: 0;
+border-top: 1px solid var(--border);
+margin: 2rem 0;
+}
+nav#TOC, nav[role="doc-toc"] {
+padding: 1rem 1.2rem;
+background: var(--code-bg);
+border: 1px solid var(--border);
+border-radius: 8px;
+margin: 1.5rem 0 2rem;
+}
+nav#TOC ul, nav[role="doc-toc"] ul {
+padding-left: 1.2rem;
+}
+nav#TOC li, nav[role="doc-toc"] li {
+margin: 0.25rem 0;
+}
+.footer {
+margin-top: 3rem;
+padding-top: 1rem;
+border-top: 1px solid var(--border);
+color: var(--muted);
+font-size: 0.95rem;
+}
+</style>
+</head>
+<body>
+  <main class="container">
+        <header id="title-block-header">
+      <h1 class="title">THOLONIC_INTEGRATION</h1>
+                      </header>
+    
+        <nav id="TOC" role="doc-toc">
+      <h2>Contents</h2>
+      <ul>
+      <li><a href="#tholonic-n-d-c-framework-integration-guide" id="toc-tholonic-n-d-c-framework-integration-guide"><span class="toc-section-number">1</span> Tholonic N-D-C Framework Integration Guide</a>
+      <ul>
+      <li><a href="#overview" id="toc-overview"><span class="toc-section-number">1.1</span> Overview</a></li>
+      <li><a href="#core-concepts" id="toc-core-concepts"><span class="toc-section-number">1.2</span> Core Concepts</a>
+      <ul>
+      <li><a href="#the-three-forces" id="toc-the-three-forces"><span class="toc-section-number">1.2.1</span> The Three Forces</a></li>
+      </ul></li>
+      <li><a href="#fundamental-principle-sustainability-through-balance" id="toc-fundamental-principle-sustainability-through-balance"><span class="toc-section-number">1.3</span> Fundamental Principle: Sustainability Through Balance</a>
+      <ul>
+      <li><a href="#the-energy-equation" id="toc-the-energy-equation"><span class="toc-section-number">1.3.1</span> The Energy Equation</a></li>
+      </ul></li>
+      <li><a href="#how-n-d-c-values-are-calculated" id="toc-how-n-d-c-values-are-calculated"><span class="toc-section-number">1.4</span> How N-D-C Values Are Calculated</a>
+      <ul>
+      <li><a href="#scale-and-range" id="toc-scale-and-range"><span class="toc-section-number">1.4.1</span> Scale and Range</a></li>
+      <li><a href="#step-by-step-calculation" id="toc-step-by-step-calculation"><span class="toc-section-number">1.4.2</span> Step-by-Step Calculation</a></li>
+      <li><a href="#complete-example-phase-2-ore-processing" id="toc-complete-example-phase-2-ore-processing"><span class="toc-section-number">1.4.3</span> Complete Example: Phase 2 (Ore Processing)</a></li>
+      </ul></li>
+      <li><a href="#real-world-mapping-examples" id="toc-real-world-mapping-examples"><span class="toc-section-number">1.5</span> Real-World Mapping Examples</a>
+      <ul>
+      <li><a href="#mining-operation-phase-1" id="toc-mining-operation-phase-1"><span class="toc-section-number">1.5.1</span> Mining Operation (Phase 1)</a></li>
+      <li><a href="#vaulting-operation-phase-6---bottleneck" id="toc-vaulting-operation-phase-6---bottleneck"><span class="toc-section-number">1.5.2</span> Vaulting Operation (Phase 6) - Bottleneck</a></li>
+      <li><a href="#why-balance-matters" id="toc-why-balance-matters"><span class="toc-section-number">1.5.3</span> Why Balance Matters</a></li>
+      </ul></li>
+      <li><a href="#gold-supply-chain-mapping" id="toc-gold-supply-chain-mapping"><span class="toc-section-number">1.6</span> Gold Supply Chain Mapping</a>
+      <ul>
+      <li><a href="#phase-by-phase-n-d-c-structure" id="toc-phase-by-phase-n-d-c-structure"><span class="toc-section-number">1.6.1</span> Phase-by-Phase N-D-C Structure</a></li>
+      </ul></li>
+      <li><a href="#phase-interactions-constraint-propagation" id="toc-phase-interactions-constraint-propagation"><span class="toc-section-number">1.7</span> Phase Interactions: Constraint Propagation</a>
+      <ul>
+      <li><a href="#how-imbalances-cascade" id="toc-how-imbalances-cascade"><span class="toc-section-number">1.7.1</span> How Imbalances Cascade</a></li>
+      <li><a href="#interaction-types" id="toc-interaction-types"><span class="toc-section-number">1.7.2</span> Interaction Types</a></li>
+      </ul></li>
+      <li><a href="#evaluating-transactionsprocesses-with-n-d-c" id="toc-evaluating-transactionsprocesses-with-n-d-c"><span class="toc-section-number">1.8</span> Evaluating Transactions/Processes with N-D-C</a>
+      <ul>
+      <li><a href="#step-by-step-evaluation" id="toc-step-by-step-evaluation"><span class="toc-section-number">1.8.1</span> Step-by-Step Evaluation</a></li>
+      <li><a href="#example-evaluating-a-doré-shipment-phase-34" id="toc-example-evaluating-a-doré-shipment-phase-34"><span class="toc-section-number">1.8.2</span> Example: Evaluating a Doré Shipment (Phase 3→4)</a></li>
+      </ul></li>
+      <li><a href="#using-the-simulation-engine" id="toc-using-the-simulation-engine"><span class="toc-section-number">1.9</span> Using the Simulation Engine</a>
+      <ul>
+      <li><a href="#basic-usage" id="toc-basic-usage"><span class="toc-section-number">1.9.1</span> Basic Usage</a></li>
+      <li><a href="#optimization" id="toc-optimization"><span class="toc-section-number">1.9.2</span> Optimization</a></li>
+      </ul></li>
+      <li><a href="#sustainability-metrics-dashboard" id="toc-sustainability-metrics-dashboard"><span class="toc-section-number">1.10</span> Sustainability Metrics Dashboard</a>
+      <ul>
+      <li><a href="#key-metrics-to-monitor" id="toc-key-metrics-to-monitor"><span class="toc-section-number">1.10.1</span> Key Metrics to Monitor</a></li>
+      </ul></li>
+      <li><a href="#frontend-integration" id="toc-frontend-integration"><span class="toc-section-number">1.11</span> Frontend Integration</a>
+      <ul>
+      <li><a href="#data-contract-extension" id="toc-data-contract-extension"><span class="toc-section-number">1.11.1</span> Data Contract Extension</a></li>
+      <li><a href="#visualization-recommendations" id="toc-visualization-recommendations"><span class="toc-section-number">1.11.2</span> Visualization Recommendations</a></li>
+      </ul></li>
+      <li><a href="#references" id="toc-references"><span class="toc-section-number">1.12</span> References</a></li>
+      </ul></li>
+      </ul>
+    </nav>
+    
+    <h1 data-number="1" id="tholonic-n-d-c-framework-integration-guide"><span class="header-section-number">1</span> Tholonic N-D-C Framework Integration Guide</h1>
+    <h2 data-number="1.1" id="overview"><span class="header-section-number">1.1</span> Overview</h2>
+    <p>The gold supply chain project now incorporates the <strong>Tholonic Framework</strong> for modeling complex adaptive systems using N-D-C (Negotiation-Definition-Contribution) dynamics.</p>
+    <hr />
+    <h2 data-number="1.2" id="core-concepts"><span class="header-section-number">1.2</span> Core Concepts</h2>
+    <h3 data-number="1.2.1" id="the-three-forces"><span class="header-section-number">1.2.1</span> The Three Forces</h3>
+    <h4 data-number="1.2.1.1" id="n-negotiation---emergent-reality"><span class="header-section-number">1.2.1.1</span> N (Negotiation) - Emergent Reality</h4>
+    <ul>
+    <li><strong>What it is</strong>: The actual operational state that emerges from D-C interaction</li>
+    <li><strong>In supply chain</strong>: Current inventory levels, throughput rates, operational metrics</li>
+    <li><strong>Formula</strong>: <code>N = √(D × C) × balance_factor</code></li>
+    <li><strong>Meaning</strong>: What actually happens when constraints meet integration</li>
+    <li><strong>Scale</strong>: 50-350 (typical operational range 150-280)</li>
+    <li><strong>NOT directly measured</strong> - calculated from D and C</li>
+    </ul>
+    <h4 data-number="1.2.1.2" id="d-definition---constraints-boundaries"><span class="header-section-number">1.2.1.2</span> D (Definition) - Constraints &amp; Boundaries</h4>
+    <ul>
+    <li><strong>What it is</strong>: All limitations, specifications, standards, boundaries</li>
+    <li><strong>In supply chain</strong>: Ore grade requirements, purity standards, capacity limits, regulations</li>
+    <li><strong>Growth pattern</strong>: Exponential (self-referential, internally focused)</li>
+    <li><strong>Cost</strong>: Energy to maintain boundaries, reduced adaptability</li>
+    <li><strong>Scale</strong>: 0-100 per parameter, sum of 4-5 parameters = 150-350 typical</li>
+    <li><strong>Measured by</strong>: Intensity/stringency of each constraint parameter</li>
+    </ul>
+    <h4 data-number="1.2.1.3" id="c-contribution---integration-flow"><span class="header-section-number">1.2.1.3</span> C (Contribution) - Integration &amp; Flow</h4>
+    <ul>
+    <li><strong>What it is</strong>: All connections, relationships, flows, exchanges</li>
+    <li><strong>In supply chain</strong>: Supplier networks, logistics flexibility, information systems, market access</li>
+    <li><strong>Growth pattern</strong>: Linear (relational, externally focused)</li>
+    <li><strong>Cost</strong>: Energy to maintain connections, coordination overhead</li>
+    <li><strong>Scale</strong>: 0-100 per parameter, sum of 4-5 parameters = 150-350 typical</li>
+    <li><strong>Measured by</strong>: Strength/diversity of each integration parameter</li>
+    </ul>
+    <hr />
+    <h2 data-number="1.3" id="fundamental-principle-sustainability-through-balance"><span class="header-section-number">1.3</span> Fundamental Principle: Sustainability Through Balance</h2>
+    <h3 data-number="1.3.1" id="the-energy-equation"><span class="header-section-number">1.3.1</span> The Energy Equation</h3>
+    <pre><code>Sustainability = 1 / Energy_cost
+Energy_cost = |D - C|² + E_base</code></pre>
+    <p><strong>Key Insight</strong>: Systems are most sustainable when <strong>D ≈ C</strong> (balanced)</p>
+    <hr />
+    <h2 data-number="1.4" id="how-n-d-c-values-are-calculated"><span class="header-section-number">1.4</span> How N-D-C Values Are Calculated</h2>
+    <h3 data-number="1.4.1" id="scale-and-range"><span class="header-section-number">1.4.1</span> Scale and Range</h3>
+    <p>All values use a <strong>0-500 theoretical scale</strong> (typical operational range: <strong>50-350</strong>):</p>
+    <table>
+    <colgroup>
+    <col style="width: 18%" />
+    <col style="width: 40%" />
+    <col style="width: 16%" />
+    <col style="width: 24%" />
+    </colgroup>
+    <thead>
+    <tr>
+    <th>Value</th>
+    <th>Typical Range</th>
+    <th>Unit</th>
+    <th>Purpose</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <td><strong>D (Definition)</strong></td>
+    <td>150-350</td>
+    <td>index</td>
+    <td>Sum of constraint parameters</td>
+    </tr>
+    <tr>
+    <td><strong>C (Contribution)</strong></td>
+    <td>150-350</td>
+    <td>index</td>
+    <td>Sum of integration parameters</td>
+    </tr>
+    <tr>
+    <td><strong>N (Negotiation)</strong></td>
+    <td>120-280</td>
+    <td>index</td>
+    <td>Calculated operational capacity</td>
+    </tr>
+    <tr>
+    <td><strong>Balance Score</strong></td>
+    <td>0-100</td>
+    <td>percent</td>
+    <td>Proximity of D to C</td>
+    </tr>
+    <tr>
+    <td><strong>Sustainability</strong></td>
+    <td>0.01-3.0</td>
+    <td>index</td>
+    <td>Inverse of energy cost</td>
+    </tr>
+    </tbody>
+    </table>
+    <h3 data-number="1.4.2" id="step-by-step-calculation"><span class="header-section-number">1.4.2</span> Step-by-Step Calculation</h3>
+    <h4 data-number="1.4.2.1" id="measure-individual-d-parameters-0-100-scale-each"><span class="header-section-number">1.4.2.1</span> 1. Measure Individual D Parameters (0-100 scale each)</h4>
+    <p>Each constraint parameter is scored 0-100 based on intensity:</p>
+    <p><strong>Example - Phase 1 (Mining):</strong></p>
+    <pre><code>D1: ore_grade_requirements      = 85  (strict 5g/t minimum)
+D2: extraction_method_specs     = 70  (specific protocols required)
+D3: safety_standards            = 90  (high safety requirements)
+D4: environmental_regulations   = 65  (moderate environmental rules)
+D5: production_capacity_limits  = 80  (near maximum capacity)
+
+D_total = 85 + 70 + 90 + 65 + 80 = 390</code></pre>
+    <p><strong>Individual Parameter Scale:</strong>
+    - <strong>0-20</strong>: Minimal/negligible constraint
+    - <strong>20-40</strong>: Low constraint
+    - <strong>40-60</strong>: Moderate constraint ✓ (typical)
+    - <strong>60-80</strong>: High constraint
+    - <strong>80-100</strong>: Very high/maximum constraint</p>
+    <h4 data-number="1.4.2.2" id="measure-individual-c-parameters-0-100-scale-each"><span class="header-section-number">1.4.2.2</span> 2. Measure Individual C Parameters (0-100 scale each)</h4>
+    <p>Each integration parameter is scored 0-100 based on strength/diversity:</p>
+    <p><strong>Example - Phase 1 (Mining):</strong></p>
+    <pre><code>C1: equipment_suppliers         = 60  (6 alternative suppliers)
+C2: labor_flexibility          = 55  (moderate workforce adaptability)
+C3: energy_sources             = 50  (2-3 energy options)
+C4: transportation_options     = 65  (multiple transport routes)
+C5: market_access              = 70  (well-connected to buyers)
+
+C_total = 60 + 55 + 50 + 65 + 70 = 300</code></pre>
+    <p><strong>Individual Parameter Scale:</strong>
+    - <strong>0-20</strong>: Minimal/isolated
+    - <strong>20-40</strong>: Low integration
+    - <strong>40-60</strong>: Moderate integration ✓ (typical)
+    - <strong>60-80</strong>: High integration
+    - <strong>80-100</strong>: Maximum integration</p>
+    <h4 data-number="1.4.2.3" id="calculate-d_total-and-c_total"><span class="header-section-number">1.4.2.3</span> 3. Calculate D_total and C_total</h4>
+    <p>Simply sum the individual parameters:</p>
+    <pre><code>D_total = Σ D_i  (sum of all D parameters)
+C_total = Σ C_j  (sum of all C parameters)</code></pre>
+    <p><strong>Typical Totals:</strong>
+    - <strong>Balanced system</strong>: D ≈ 250, C ≈ 250
+    - <strong>D-dominant system</strong>: D ≈ 400, C ≈ 180 (over-constrained)
+    - <strong>C-dominant system</strong>: D ≈ 180, C ≈ 400 (over-integrated)</p>
+    <h4 data-number="1.4.2.4" id="calculate-imbalance"><span class="header-section-number">1.4.2.4</span> 4. Calculate Imbalance</h4>
+    <div class="sourceCode" id="cb5"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>imbalance <span class="op">=</span> <span class="bu">abs</span>(D_total <span class="op">-</span> C_total)</span></code></pre></div>
+    <p><strong>Example:</strong>
+    - D=390, C=300 → imbalance = 90
+    - D=250, C=245 → imbalance = 5 (excellent!)
+    - D=420, C=180 → imbalance = 240 (critical!)</p>
+    <h4 data-number="1.4.2.5" id="calculate-balance-score-0-100"><span class="header-section-number">1.4.2.5</span> 5. Calculate Balance Score (0-100)</h4>
+    <div class="sourceCode" id="cb6"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>balance_score <span class="op">=</span> <span class="dv">100</span> × exp(<span class="op">-</span><span class="dv">2</span> × imbalance <span class="op">/</span> <span class="bu">max</span>(D_total, C_total))</span></code></pre></div>
+    <p><strong>How it works:</strong>
+    - When D = C (imbalance = 0): balance_score = 100
+    - Small imbalance: balance_score 80-95
+    - Large imbalance: balance_score &lt; 50</p>
+    <p><strong>Example:</strong></p>
+    <pre><code>D=390, C=300:
+  imbalance = 90
+  balance_score = 100 × exp(-2 × 90/390) = 100 × exp(-0.46) = 63.2</code></pre>
+    <p><strong>Balance Score Interpretation:</strong>
+    - <strong>95-100</strong>: Excellent balance (D ≈ C)
+    - <strong>80-95</strong>: Good balance ✓ (baseline)
+    - <strong>60-80</strong>: Fair balance
+    - <strong>40-60</strong>: Poor balance
+    - <strong>0-40</strong>: Critical imbalance</p>
+    <h4 data-number="1.4.2.6" id="calculate-sustainability-index"><span class="header-section-number">1.4.2.6</span> 6. Calculate Sustainability Index</h4>
+    <div class="sourceCode" id="cb8"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>energy_cost <span class="op">=</span> imbalance² <span class="op">+</span> E_base</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>sustainability <span class="op">=</span> <span class="dv">100</span> <span class="op">/</span> energy_cost</span></code></pre></div>
+    <p>Where <code>E_base</code> is the minimum baseline energy (typically 10.0)</p>
+    <p><strong>Example:</strong></p>
+    <pre><code>D=390, C=300:
+  imbalance = 90
+  energy_cost = 90² + 10 = 8,100 + 10 = 8,110
+  sustainability = 100 / 8,110 = 0.0123
+
+D=250, C=245:
+  imbalance = 5
+  energy_cost = 5² + 10 = 25 + 10 = 35
+  sustainability = 100 / 35 = 2.857 (much better!)</code></pre>
+    <p><strong>Sustainability Interpretation:</strong>
+    - <strong>&gt;2.0</strong>: Excellent (minimal energy cost)
+    - <strong>1.0-2.0</strong>: Good ✓ (baseline)
+    - <strong>0.5-1.0</strong>: Fair
+    - <strong>0.1-0.5</strong>: Poor
+    - <strong>&lt;0.1</strong>: Critical (unsustainable)</p>
+    <h4 data-number="1.4.2.7" id="calculate-n-state-emergent-equilibrium"><span class="header-section-number">1.4.2.7</span> 7. Calculate N-State (Emergent Equilibrium)</h4>
+    <div class="sourceCode" id="cb10"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>balance_factor <span class="op">=</span> balance_score <span class="op">/</span> <span class="dv">100</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> sqrt(D_total × C_total) × balance_factor</span></code></pre></div>
+    <p><strong>Example:</strong></p>
+    <pre><code>D=390, C=300, balance_score=63.2:
+  balance_factor = 0.632
+  N = sqrt(390 × 300) × 0.632
+  N = sqrt(117,000) × 0.632
+  N = 342.1 × 0.632 = 216.2
+
+D=250, C=245, balance_score=95:
+  balance_factor = 0.95
+  N = sqrt(250 × 245) × 0.95
+  N = 247.5 × 0.95 = 235.1</code></pre>
+    <p><strong>N-State Interpretation:</strong>
+    - <strong>N ≈ √(D × C)</strong>: System operating near theoretical maximum
+    - <strong>N &lt;&lt; √(D × C)</strong>: System constrained by imbalance
+    - <strong>Higher N</strong>: Greater operational capacity
+    - <strong>Lower N</strong>: Reduced capacity due to D-C friction</p>
+    <h3 data-number="1.4.3" id="complete-example-phase-2-ore-processing"><span class="header-section-number">1.4.3</span> Complete Example: Phase 2 (Ore Processing)</h3>
+    <p><strong>Given:</strong></p>
+    <pre><code>D1: recovery_rate_target       = 85
+D2: process_specifications     = 70
+D3: purity_standards          = 90
+D4: throughput_capacity       = 80
+D5: waste_management          = 75
+
+C1: chemical_suppliers        = 45
+C2: technology_integration    = 60
+C3: water_sources            = 50
+C4: byproduct_markets        = 40
+C5: information_systems      = 55</code></pre>
+    <p><strong>Calculations:</strong></p>
+    <pre><code>D_total = 85 + 70 + 90 + 80 + 75 = 400
+C_total = 45 + 60 + 50 + 40 + 55 = 250
+
+imbalance = |400 - 250| = 150
+
+balance_score = 100 × exp(-2 × 150/400) = 100 × exp(-0.75) = 47.2
+
+energy_cost = 150² + 10 = 22,510
+sustainability = 100 / 22,510 = 0.0044 (very low!)
+
+balance_factor = 0.472
+N = sqrt(400 × 250) × 0.472 = 316.2 × 0.472 = 149.3</code></pre>
+    <p><strong>Diagnosis:</strong>
+    - <strong>Type</strong>: D-dominant (over-constrained)
+    - <strong>Severity</strong>: 150/400 = 37.5% imbalance (critical!)
+    - <strong>Issue</strong>: Too many rigid specifications, insufficient supplier flexibility
+    - <strong>Recommendation</strong>: Increase C (add suppliers) OR reduce D (relax specifications)
+    - <strong>N-state</strong>: Only 149.3 capacity vs. theoretical 316.2 (53% efficiency loss!)</p>
+    <hr />
+    <h2 data-number="1.5" id="real-world-mapping-examples"><span class="header-section-number">1.5</span> Real-World Mapping Examples</h2>
+    <h3 data-number="1.5.1" id="mining-operation-phase-1"><span class="header-section-number">1.5.1</span> Mining Operation (Phase 1)</h3>
+    <p><strong>Synthetic Values:</strong>
+    - D_total = 270 (moderate constraints)
+    - C_total = 260 (moderate integration)
+    - N = 255 (healthy capacity)</p>
+    <p><strong>Real-World Equivalents:</strong>
+    - D: Operating at 5 g/t ore grade with standard safety protocols
+    - C: Has 5-6 equipment suppliers, 3 energy sources, multiple transport options
+    - N: Achieving 85% of theoretical production capacity</p>
+    <h3 data-number="1.5.2" id="vaulting-operation-phase-6---bottleneck"><span class="header-section-number">1.5.2</span> Vaulting Operation (Phase 6) - Bottleneck</h3>
+    <p><strong>Synthetic Values:</strong>
+    - D_total = 420 (very high constraints)
+    - C_total = 180 (low integration)
+    - N = 150 (severely limited capacity)</p>
+    <p><strong>Real-World Equivalents:</strong>
+    - D: Strict security, insurance limits, jurisdictional compliance, capacity constraints
+    - C: Limited vault network, single transport provider, minimal client access
+    - N: Operating at only 40% capacity due to bottlenecks</p>
+    <h3 data-number="1.5.3" id="why-balance-matters"><span class="header-section-number">1.5.3</span> Why Balance Matters</h3>
+    <h4 data-number="1.5.3.1" id="balanced-system-d-c"><span class="header-section-number">1.5.3.1</span> Balanced System (D ≈ C)</h4>
+    <ul>
+    <li><strong>Low energy cost</strong>: Minimal friction between constraint and flow</li>
+    <li><strong>High sustainability</strong>: Can maintain state with minimal resources</li>
+    <li><strong>Resilient</strong>: Absorbs perturbations effectively</li>
+    <li><strong>Efficient</strong>: Maximum output per energy input</li>
+    </ul>
+    <h4 data-number="1.5.3.2" id="d-dominant-system-d-c"><span class="header-section-number">1.5.3.2</span> D-Dominant System (D &gt;&gt; C)</h4>
+    <ul>
+    <li><strong>Symptoms</strong>: Over-constrained, rigid, isolated, internally focused</li>
+    <li><strong>Failure mode</strong>: Resource depletion, obsolescence, inability to adapt</li>
+    <li><strong>Example</strong>: Mining operation with strict quality standards but limited supplier flexibility</li>
+    <li><strong>Fix</strong>: Increase C (enhance integration) OR decrease D (relax constraints)</li>
+    </ul>
+    <h4 data-number="1.5.3.3" id="c-dominant-system-c-d"><span class="header-section-number">1.5.3.3</span> C-Dominant System (C &gt;&gt; D)</h4>
+    <ul>
+    <li><strong>Symptoms</strong>: Over-integrated, unstable, boundary dissolution, identity loss</li>
+    <li><strong>Failure mode</strong>: Structural collapse, resource dissipation, exploitation</li>
+    <li><strong>Example</strong>: Refinery with extensive partnerships but insufficient process control</li>
+    <li><strong>Fix</strong>: Increase D (strengthen boundaries) OR decrease C (reduce connections)</li>
+    </ul>
+    <hr />
+    <h2 data-number="1.6" id="gold-supply-chain-mapping"><span class="header-section-number">1.6</span> Gold Supply Chain Mapping</h2>
+    <h3 data-number="1.6.1" id="phase-by-phase-n-d-c-structure"><span class="header-section-number">1.6.1</span> Phase-by-Phase N-D-C Structure</h3>
+    <h4 data-number="1.6.1.1" id="phase-0-geological-prospecting"><span class="header-section-number">1.6.1.1</span> Phase 0: Geological Prospecting</h4>
+    <ul>
+    <li><strong>N</strong>: Identified reserves, exploration targets</li>
+    <li><strong>D</strong>: Ore grade thresholds, geological certainty requirements, cost limits</li>
+    <li><strong>C</strong>: Survey technology access, data sharing, industry partnerships</li>
+    <li><strong>Balance Target</strong>: 0.75 (moderate balance acceptable given uncertainty)</li>
+    </ul>
+    <h4 data-number="1.6.1.2" id="phase-1-mine-extraction"><span class="header-section-number">1.6.1.2</span> Phase 1: Mine Extraction</h4>
+    <ul>
+    <li><strong>N</strong>: Actual production volume, cost per ounce</li>
+    <li><strong>D</strong>: Ore grade, extraction methods, safety/environmental standards, capacity</li>
+    <li><strong>C</strong>: Equipment suppliers, labor flexibility, energy sources, transportation</li>
+    <li><strong>Balance Target</strong>: 0.85 (high balance for operational stability)</li>
+    </ul>
+    <h4 data-number="1.6.1.3" id="phase-2-ore-processing-concentration"><span class="header-section-number">1.6.1.3</span> Phase 2: Ore Processing &amp; Concentration</h4>
+    <ul>
+    <li><strong>N</strong>: Recovery rate achieved, throughput</li>
+    <li><strong>D</strong>: Recovery targets, process specs, purity standards, capacity, waste management</li>
+    <li><strong>C</strong>: Chemical suppliers, technology integration, water sources, byproduct markets</li>
+    <li><strong>Balance Target</strong>: 0.90 (very high balance - critical transformation phase)</li>
+    </ul>
+    <h4 data-number="1.6.1.4" id="phase-3-doré-production"><span class="header-section-number">1.6.1.4</span> Phase 3: Doré Production</h4>
+    <ul>
+    <li><strong>N</strong>: Doré bars produced, purity range achieved</li>
+    <li><strong>D</strong>: Purity specifications, smelting protocols, bar weights, quality control</li>
+    <li><strong>C</strong>: Refinery network, transport providers, assay services, trade relationships</li>
+    <li><strong>Balance Target</strong>: 0.70 (moderate - buffered by inventory)</li>
+    </ul>
+    <h4 data-number="1.6.1.5" id="phase-4-refining"><span class="header-section-number">1.6.1.5</span> Phase 4: Refining</h4>
+    <ul>
+    <li><strong>N</strong>: Fine gold output, fineness achieved</li>
+    <li><strong>D</strong>: Fineness standards (99.99%), accreditation, capacity, process control</li>
+    <li><strong>C</strong>: Client base, equipment vendors, certification bodies, market integration</li>
+    <li><strong>Balance Target</strong>: 0.75 (moderate-high balance)</li>
+    </ul>
+    <h4 data-number="1.6.1.6" id="phase-5-bar-casting-assay"><span class="header-section-number">1.6.1.6</span> Phase 5: Bar Casting &amp; Assay</h4>
+    <ul>
+    <li><strong>N</strong>: Certified bars, serial numbers assigned</li>
+    <li><strong>D</strong>: Bar specifications, assay precision, serial protocols, storage standards</li>
+    <li><strong>C</strong>: Exchange relationships, vault network, transport logistics, documentation</li>
+    <li><strong>Balance Target</strong>: 0.80 (high - standardization critical)</li>
+    </ul>
+    <h4 data-number="1.6.1.7" id="phase-6-logistics-vaulting"><span class="header-section-number">1.6.1.7</span> Phase 6: Logistics &amp; Vaulting ⚠️</h4>
+    <ul>
+    <li><strong>N</strong>: Vaulted inventory, custody transfers</li>
+    <li><strong>D</strong>: Vault capacity, security protocols, insurance requirements, compliance</li>
+    <li><strong>C</strong>: Vault network, transport flexibility, insurance access, client access</li>
+    <li><strong>Balance Target</strong>: 0.50 (LOW - structural opacity, custodial secrecy)</li>
+    <li><strong>Note</strong>: This is the system’s weakest link (low transparency + low balance target)</li>
+    </ul>
+    <h4 data-number="1.6.1.8" id="phase-7-exchange-registration-comex"><span class="header-section-number">1.6.1.8</span> Phase 7: Exchange Registration (COMEX)</h4>
+    <ul>
+    <li><strong>N</strong>: Registered inventory, eligible inventory, daily changes</li>
+    <li><strong>D</strong>: Exchange standards, registration requirements, warehouse specs, delivery protocols</li>
+    <li><strong>C</strong>: Market participants, clearing systems, information transparency, settlement</li>
+    <li><strong>Balance Target</strong>: 0.85 (high - regulatory framework ensures balance)</li>
+    </ul>
+    <hr />
+    <h2 data-number="1.7" id="phase-interactions-constraint-propagation"><span class="header-section-number">1.7</span> Phase Interactions: Constraint Propagation</h2>
+    <h3 data-number="1.7.1" id="how-imbalances-cascade"><span class="header-section-number">1.7.1</span> How Imbalances Cascade</h3>
+    <p>When <strong>Phase i</strong> has D &gt;&gt; C (over-constrained):
+    1. <strong>Downstream effect</strong>: Phase i+1 must increase its D to match upstream constraints
+    2. <strong>Example</strong>: Strict ore processing standards → refinery must maintain tight quality control
+    3. <strong>Coupling strength</strong>: Defined by <code>d_coupling</code> (0-1 scale)</p>
+    <p>When <strong>Phase i</strong> has C &gt;&gt; D (over-integrated):
+    1. <strong>Downstream effect</strong>: Phase i+1 must increase its C to handle flow
+    2. <strong>Example</strong>: High supplier diversity → increased coordination requirements downstream
+    3. <strong>Coupling strength</strong>: Defined by <code>c_coupling</code> (0-1 scale)</p>
+    <h3 data-number="1.7.2" id="interaction-types"><span class="header-section-number">1.7.2</span> Interaction Types</h3>
+    <ul>
+    <li><strong>Direct</strong>: Changes propagate immediately (tight coupling)</li>
+    <li><strong>Buffered</strong>: Inventory or time delays dampen propagation</li>
+    <li><strong>Constrained</strong>: One phase physically limits another (bottleneck)</li>
+    </ul>
+    <hr />
+    <h2 data-number="1.8" id="evaluating-transactionsprocesses-with-n-d-c"><span class="header-section-number">1.8</span> Evaluating Transactions/Processes with N-D-C</h2>
+    <h3 data-number="1.8.1" id="step-by-step-evaluation"><span class="header-section-number">1.8.1</span> Step-by-Step Evaluation</h3>
+    <h4 data-number="1.8.1.1" id="identify-d-parameters"><span class="header-section-number">1.8.1.1</span> 1. Identify D Parameters</h4>
+    <p>For the transaction/process, list all constraints:
+    - Specifications (what standards must be met?)
+    - Capacity limits (what can physically be done?)
+    - Regulations (what must legally be done?)
+    - Quality requirements (what defines acceptable?)</p>
+    <p><strong>Quantify each</strong>: 0-100 scale based on stringency</p>
+    <h4 data-number="1.8.1.2" id="identify-c-parameters"><span class="header-section-number">1.8.1.2</span> 2. Identify C Parameters</h4>
+    <p>For the transaction/process, list all integrations:
+    - Supplier relationships (how many? how flexible?)
+    - Information flows (how connected? how fast?)
+    - Distribution channels (how diverse? how accessible?)
+    - Partnerships (how collaborative?)</p>
+    <p><strong>Quantify each</strong>: 0-100 scale based on strength/diversity</p>
+    <h4 data-number="1.8.1.3" id="calculate-totals"><span class="header-section-number">1.8.1.3</span> 3. Calculate Totals</h4>
+    <div class="sourceCode" id="cb14"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>D_total <span class="op">=</span> <span class="bu">sum</span>(D_parameters.values())</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>C_total <span class="op">=</span> <span class="bu">sum</span>(C_parameters.values())</span></code></pre></div>
+    <h4 data-number="1.8.1.4" id="calculate-balance"><span class="header-section-number">1.8.1.4</span> 4. Calculate Balance</h4>
+    <div class="sourceCode" id="cb15"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>imbalance <span class="op">=</span> <span class="bu">abs</span>(D_total <span class="op">-</span> C_total)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>balance_score <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> imbalance <span class="op">/</span> <span class="bu">max</span>(D_total, C_total))</span></code></pre></div>
+    <h4 data-number="1.8.1.5" id="calculate-sustainability"><span class="header-section-number">1.8.1.5</span> 5. Calculate Sustainability</h4>
+    <div class="sourceCode" id="cb16"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>energy_cost <span class="op">=</span> imbalance² <span class="op">+</span> <span class="fl">10.0</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>sustainability_index <span class="op">=</span> <span class="dv">100</span> <span class="op">/</span> energy_cost</span></code></pre></div>
+    <h4 data-number="1.8.1.6" id="diagnose"><span class="header-section-number">1.8.1.6</span> 6. Diagnose</h4>
+    <div class="sourceCode" id="cb17"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> balance_score <span class="op">&lt;</span> <span class="dv">60</span>:</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> D_total <span class="op">&gt;</span> C_total:</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>        issue <span class="op">=</span> <span class="st">&quot;Over-constrained: Need more integration&quot;</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>        recommendation <span class="op">=</span> <span class="st">&quot;Increase supplier diversity, logistics flexibility, or information sharing&quot;</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>        issue <span class="op">=</span> <span class="st">&quot;Over-integrated: Need more structure&quot;</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>        recommendation <span class="op">=</span> <span class="st">&quot;Strengthen specifications, quality standards, or boundaries&quot;</span></span></code></pre></div>
+    <h4 data-number="1.8.1.7" id="calculate-n-state"><span class="header-section-number">1.8.1.7</span> 7. Calculate N-State</h4>
+    <div class="sourceCode" id="cb18"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> sqrt(D_total <span class="op">*</span> C_total) <span class="op">*</span> (balance_score <span class="op">/</span> <span class="dv">100</span>)</span></code></pre></div>
+    <p>This N-value represents the <strong>actual operational capacity</strong> given current D-C configuration.</p>
+    <h3 data-number="1.8.2" id="example-evaluating-a-doré-shipment-phase-34"><span class="header-section-number">1.8.2</span> Example: Evaluating a Doré Shipment (Phase 3→4)</h3>
+    <div class="sourceCode" id="cb19"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Transaction: Ship doré from mine to refinery</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>D_parameters <span class="op">=</span> {</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;purity_requirement&#39;</span>: <span class="dv">85</span>,  <span class="co"># Must be 80-90% gold</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;weight_specification&#39;</span>: <span class="dv">90</span>, <span class="co"># Strict bar weight tolerance</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;documentation&#39;</span>: <span class="dv">95</span>,        <span class="co"># Extensive paperwork required</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;insurance_requirement&#39;</span>: <span class="dv">80</span> <span class="co"># High security standards</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>D_total <span class="op">=</span> <span class="dv">350</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>C_parameters <span class="op">=</span> {</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;transport_options&#39;</span>: <span class="dv">40</span>,    <span class="co"># Limited carriers (security)</span></span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;refinery_network&#39;</span>: <span class="dv">60</span>,     <span class="co"># Multiple refineries available</span></span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;information_tracking&#39;</span>: <span class="dv">70</span>, <span class="co"># Real-time GPS monitoring</span></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;trade_relationships&#39;</span>: <span class="dv">50</span>   <span class="co"># Established contracts</span></span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>C_total <span class="op">=</span> <span class="dv">220</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Analysis</span></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>imbalance <span class="op">=</span> <span class="op">|</span><span class="dv">350</span> <span class="op">-</span> <span class="dv">220</span><span class="op">|</span> <span class="op">=</span> <span class="dv">130</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>balance_score <span class="op">=</span> <span class="dv">100</span> <span class="op">*</span> exp(<span class="op">-</span><span class="dv">2</span> <span class="op">*</span> <span class="dv">130</span><span class="op">/</span><span class="dv">350</span>) <span class="op">=</span> <span class="fl">48.7</span>  <span class="co"># LOW!</span></span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Diagnosis: D-dominant (over-constrained)</span></span>
+<span id="cb19-24"><a href="#cb19-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Issue: Too many restrictions, insufficient integration</span></span>
+<span id="cb19-25"><a href="#cb19-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Recommendation: Increase transport flexibility or reduce documentation burden</span></span></code></pre></div>
+    <hr />
+    <h2 data-number="1.9" id="using-the-simulation-engine"><span class="header-section-number">1.9</span> Using the Simulation Engine</h2>
+    <h3 data-number="1.9.1" id="basic-usage"><span class="header-section-number">1.9.1</span> Basic Usage</h3>
+    <div class="sourceCode" id="cb20"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.simulation.tholonic_engine <span class="im">import</span> Thologram</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pathlib <span class="im">import</span> Path</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Load supply chain</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>schema <span class="op">=</span> Path(<span class="st">&quot;schema/supply_chain_phases_ndc.csv&quot;</span>)</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>interactions <span class="op">=</span> Path(<span class="st">&quot;schema/phase_interactions_ndc.csv&quot;</span>)</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>thologram <span class="op">=</span> Thologram(schema)</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>thologram.load_interactions(interactions)</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Check system health</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>sustainability <span class="op">=</span> thologram.calculate_system_sustainability()</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>bottlenecks <span class="op">=</span> thologram.identify_bottlenecks()</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Run simulation with perturbation</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>perturbations <span class="op">=</span> {</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>    <span class="dv">10</span>: {  <span class="co"># At time step 10</span></span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>        <span class="dv">2</span>: {  <span class="co"># Phase 2 (Ore Processing)</span></span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>            <span class="st">&#39;D&#39;</span>: {<span class="st">&#39;D4:throughput_capacity&#39;</span>: <span class="dv">90</span>}  <span class="co"># Capacity constraint tightens</span></span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>history <span class="op">=</span> thologram.run_simulation(duration<span class="op">=</span><span class="dv">50</span>, perturbations_schedule<span class="op">=</span>perturbations)</span></code></pre></div>
+    <h3 data-number="1.9.2" id="optimization"><span class="header-section-number">1.9.2</span> Optimization</h3>
+    <div class="sourceCode" id="cb21"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> src.simulation.balance_optimizer <span class="im">import</span> BalanceOptimizer</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Define current state</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>D_params <span class="op">=</span> {</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;recovery_rate_target&#39;</span>: <span class="dv">85</span>,</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;process_specifications&#39;</span>: <span class="dv">70</span>,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;purity_standards&#39;</span>: <span class="dv">90</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>C_params <span class="op">=</span> {</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;supplier_diversity&#39;</span>: <span class="dv">45</span>,</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;technology_integration&#39;</span>: <span class="dv">60</span>,</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;information_systems&#39;</span>: <span class="dv">50</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Optimize for sustainability</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>optimizer <span class="op">=</span> BalanceOptimizer(D_params, C_params)</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> optimizer.optimize_gradient_ascent(iterations<span class="op">=</span><span class="dv">100</span>)</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Optimized D: </span><span class="sc">{</span>result[<span class="st">&#39;D_total&#39;</span>]<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Optimized C: </span><span class="sc">{</span>result[<span class="st">&#39;C_total&#39;</span>]<span class="sc">}</span><span class="ss">&quot;</span>)</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f&quot;Balance achieved: </span><span class="sc">{</span>result[<span class="st">&#39;balance&#39;</span>]<span class="sc">}</span><span class="ss">&quot;</span>)</span></code></pre></div>
+    <hr />
+    <h2 data-number="1.10" id="sustainability-metrics-dashboard"><span class="header-section-number">1.10</span> Sustainability Metrics Dashboard</h2>
+    <h3 data-number="1.10.1" id="key-metrics-to-monitor"><span class="header-section-number">1.10.1</span> Key Metrics to Monitor</h3>
+    <ol type="1">
+    <li><strong>Balance Score</strong> (0-100)
+    <ul>
+    <li>Target: &gt;60 (acceptable), &gt;80 (excellent)</li>
+    <li>Red flag: &lt;40</li>
+    </ul></li>
+    <li><strong>Sustainability Index</strong> (higher is better)
+    <ul>
+    <li>Baseline: ~10 (typical)</li>
+    <li>Target: &gt;15 (efficient)</li>
+    <li>Red flag: &lt;5 (unsustainable)</li>
+    </ul></li>
+    <li><strong>D-C Imbalance</strong> (absolute)
+    <ul>
+    <li>Target: &lt;20% of max(D,C)</li>
+    <li>Red flag: &gt;50%</li>
+    </ul></li>
+    <li><strong>System Health Score</strong> (0-100)
+    <ul>
+    <li>Excellent: &gt;80</li>
+    <li>Good: 60-80</li>
+    <li>Fair: 40-60</li>
+    <li>Poor: 20-40</li>
+    <li>Critical: &lt;20</li>
+    </ul></li>
+    <li><strong>Bottleneck Count</strong>
+    <ul>
+    <li>Target: 0-1 phases with severe imbalance</li>
+    <li>Red flag: &gt;3 phases</li>
+    </ul></li>
+    </ol>
+    <hr />
+    <h2 data-number="1.11" id="frontend-integration"><span class="header-section-number">1.11</span> Frontend Integration</h2>
+    <h3 data-number="1.11.1" id="data-contract-extension"><span class="header-section-number">1.11.1</span> Data Contract Extension</h3>
+    <p>The frontend can now request:</p>
+    <div class="sourceCode" id="cb22"><pre class="sourceCode javascript"><code class="sourceCode javascript"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">// GET /api/v1/phase/{id}/ndc</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>{</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;phase_id&quot;</span><span class="op">:</span> <span class="dv">2</span><span class="op">,</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;D_parameters&quot;</span><span class="op">:</span> {</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;D1:recovery_rate_target&quot;</span><span class="op">:</span> <span class="dv">85</span><span class="op">,</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;D2:process_specifications&quot;</span><span class="op">:</span> <span class="dv">70</span><span class="op">,</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;C_parameters&quot;</span><span class="op">:</span> {</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C1:chemical_suppliers&quot;</span><span class="op">:</span> <span class="dv">45</span><span class="op">,</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;C2:technology_integration&quot;</span><span class="op">:</span> <span class="dv">60</span><span class="op">,</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="co">// ...</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  }<span class="op">,</span></span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;D_total&quot;</span><span class="op">:</span> <span class="dv">325</span><span class="op">,</span></span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;C_total&quot;</span><span class="op">:</span> <span class="dv">195</span><span class="op">,</span></span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;N&quot;</span><span class="op">:</span> <span class="fl">187.5</span><span class="op">,</span></span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;balance_score&quot;</span><span class="op">:</span> <span class="fl">52.3</span><span class="op">,</span></span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;sustainability_index&quot;</span><span class="op">:</span> <span class="fl">0.46</span><span class="op">,</span></span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>  <span class="st">&quot;diagnosis&quot;</span><span class="op">:</span> {</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;type&quot;</span><span class="op">:</span> <span class="st">&quot;D-dominant&quot;</span><span class="op">,</span></span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;severity&quot;</span><span class="op">:</span> <span class="fl">0.4</span><span class="op">,</span></span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;recommendation&quot;</span><span class="op">:</span> <span class="st">&quot;Increase supplier diversity and information systems&quot;</span></span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>}</span></code></pre></div>
+    <h3 data-number="1.11.2" id="visualization-recommendations"><span class="header-section-number">1.11.2</span> Visualization Recommendations</h3>
+    <ol type="1">
+    <li><strong>Balance Gauge</strong>: For each phase, show D vs C as dual horizontal bars</li>
+    <li><strong>Sustainability Heat Map</strong>: Color phases by sustainability index</li>
+    <li><strong>Interaction Flow</strong>: Sankey diagram showing how imbalances propagate</li>
+    <li><strong>Optimization Path</strong>: Animated trajectory showing balance improvement</li>
+    <li><strong>System Health Dial</strong>: Overall health score (0-100) with status indicator</li>
+    </ol>
+    <hr />
+    <h2 data-number="1.12" id="references"><span class="header-section-number">1.12</span> References</h2>
+    <ul>
+    <li>Original framework: <code>/home/jw/books/tholonia/Tholonic_Framework_Supply_Chain_Application.md</code></li>
+    <li>Implementation: <code>src/simulation/tholonic_engine.py</code></li>
+    <li>Optimization: <code>src/simulation/balance_optimizer.py</code></li>
+    <li>Schema: <code>schema/supply_chain_phases_ndc.csv</code></li>
+    </ul>
+    <hr />
+    <p><strong>Document Status</strong>: Implementation Complete<br />
+    <strong>Next</strong>: Frontend integration and real-time monitoring dashboard</p>
+
+    <div class="footer">
+      Generated from Markdown with Pandoc.
+    </div>
+  </main>
+</body>
+</html>

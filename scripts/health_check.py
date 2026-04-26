@@ -50,7 +50,7 @@ class HealthChecker:
         self.check("src/ingest/", (self.project_root / "src/ingest").exists())
         self.check("src/analysis/", (self.project_root / "src/analysis").exists())
         self.check("src/api/", (self.project_root / "src/api").exists())
-        self.check("docs/", (self.project_root / "docs").exists())
+        self.check("frontend/docs/", (self.project_root / "frontend" / "docs").exists())
         print()
         
         # 2. Schema Files
@@ -117,8 +117,14 @@ class HealthChecker:
         print("📚 Documentation")
         self.check("README.md", (self.project_root / "README.md").exists())
         self.check("QUICKSTART.md", (self.project_root / "QUICKSTART.md").exists())
-        self.check("docs/Guidelines/SUPPLY_CHAIN_RULES.md", (self.project_root / "docs/Guidelines/SUPPLY_CHAIN_RULES.md").exists())
-        self.check("docs/api/FRONTEND_API.md", (self.project_root / "docs/api/FRONTEND_API.md").exists())
+        self.check(
+            "frontend/docs/Guidelines/SUPPLY_CHAIN_RULES.md",
+            (self.project_root / "frontend" / "docs" / "Guidelines" / "SUPPLY_CHAIN_RULES.md").exists(),
+        )
+        self.check(
+            "frontend/docs/api/FRONTEND_API.md",
+            (self.project_root / "frontend" / "docs" / "api" / "FRONTEND_API.md").exists(),
+        )
         print()
         
         # 7. Data Status

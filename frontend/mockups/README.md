@@ -1,3 +1,21 @@
+---
+doc_id: frontend_mockups_readme
+title: "🎨 Interactive Frontend Mockups - Quick Start"
+type: readme
+status: active
+domain: project_documentation
+layer: operations
+projects:
+  []
+tags:
+  - operations
+  - project_documentation
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # 🎨 Interactive Frontend Mockups - Quick Start
 
 ## What You Have

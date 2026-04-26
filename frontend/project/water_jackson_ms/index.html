@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jackson MS Water System - Broken System Case</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #263238 0%, #455a64 50%, #607d8b 100%);
+      min-height: 100vh; padding: 24px; color: #2c3e50;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px; margin-bottom: 22px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #455a64; background: #eceff1;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    }
+    h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 780px; margin: 0 auto 8px; }
+    .compare-link { font-size: 14px; margin-top: 12px; }
+    .compare-link a { color: #455a64; font-weight: 700; text-decoration: none; }
+    .compare-link a:hover { text-decoration: underline; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px; }
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden; text-align: left;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 28px 28px 18px; color: #fff; }
+    .card-header.sc { background: linear-gradient(135deg, #263238 0%, #455a64 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #7f1d1d 0%, #c62828 100%); }
+    .card-header.vc { background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%); }
+    .card-icon { font-size: 40px; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 22px 28px 26px; }
+    .card-body ul { list-style: none; margin-bottom: 18px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+    .card-body li::before { content: "!"; position: absolute; left: 0; color: #c62828; font-weight: 900; }
+    .btn {
+      display: inline-block; padding: 11px 22px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn.sc { background: linear-gradient(135deg, #263238 0%, #455a64 100%); }
+    .btn.lc { background: linear-gradient(135deg, #7f1d1d 0%, #c62828 100%); }
+    .btn.vc { background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 100%); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    .sub-links { margin-top: 12px; font-size: 13px; }
+    .sub-links a { color: #2c3e50; font-weight: 600; text-decoration: none; margin-right: 12px; }
+    .sub-links a:hover { text-decoration: underline; }
+    .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-top: 24px; }
+    .kpi { background: #eceff1; border-radius: 10px; padding: 16px 18px; border-left: 4px solid #455a64; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; color: #6c757d; margin-bottom: 4px; }
+    .kpi-value { font-size: 24px; font-weight: 800; color: #263238; }
+    .kpi-sub { font-size: 11px; color: #6c757d; margin-top: 4px; }
+    .failure-alert { background: #ffebee; border: 1px solid #c62828; border-radius: 10px; padding: 14px 18px; margin-top: 18px; font-size: 13px; color: #7f1d1d; text-align: left; }
+    .phase-strip { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; margin-top: 18px; text-align: left; }
+    .phase-chip { background: #f8f9fb; border: 1px solid #d9dee3; border-radius: 8px; padding: 9px 10px; font-size: 11px; color: #495057; }
+    .phase-chip strong { display: block; color: #263238; margin-bottom: 2px; }
+    .phase-chip.weak { border-color: #c62828; background: #ffebee; }
+    .footer { text-align: center; color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 18px; padding: 8px 0; }
+    .nav { text-align: center; margin-top: 14px; }
+    .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+    .nav a:hover { text-decoration: underline; }
+    @media (max-width: 900px) { .phase-strip { grid-template-columns: repeat(3,1fr); } }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .kpis, .phase-strip { grid-template-columns: repeat(2,1fr); } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="kicker">Broken Water Infrastructure Case · Jackson, Mississippi</div>
+      <h1>🚰 Jackson Water System</h1>
+      <p class="subtitle">
+        A 12-phase municipal water-cycle failure model: from source water and raw intake through treatment control,
+        clearwell storage, distribution pressure, household delivery, wastewater interaction, public notice, and emergency restoration.
+        This is the contrast case for a built water system whose maintenance lifecycle did not remain sustainable.
+      </p>
+      <p class="compare-link">
+        💧 <a href="/frontend/project/water_ocwd/index.html">Compare visual pattern with OCWD GWRS water model →</a>
+      </p>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-label">System Balance</div>
+          <div class="kpi-value">59.1%</div>
+          <div class="kpi-sub">12-phase N-D-C baseline</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Average N</div>
+          <div class="kpi-value">137</div>
+          <div class="kpi-sub">degraded system state</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Bottlenecks</div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-sub">P3, P5, P6, P9, P11</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Low Transparency</div>
+          <div class="kpi-value">4</div>
+          <div class="kpi-sub">storage, pressure, sewer, storm stress</div>
+        </div>
+      </div>
+
+      <div class="failure-alert">
+        ⚠️ <strong>Failure signature:</strong>
+        Jackson does not fail because source water disappears. The phase map shows a D-C split in treatment control,
+        storage/pumping, distribution pressure, household delivery, storm stress, and emergency restoration.
+        Regulatory monitoring is visible, but monitoring does not repair the physical water chain.
+      </div>
+
+      <div class="phase-strip" id="phase-strip">
+        <div class="phase-chip"><strong>P0</strong>Source water</div>
+        <div class="phase-chip"><strong>P1</strong>Raw intake</div>
+        <div class="phase-chip"><strong>P2</strong>Filtration</div>
+        <div class="phase-chip weak"><strong>P3</strong>Treatment control</div>
+        <div class="phase-chip"><strong>P4</strong>Storage/pumping</div>
+        <div class="phase-chip weak"><strong>P5</strong>Pressure</div>
+        <div class="phase-chip weak"><strong>P6</strong>Tap delivery</div>
+        <div class="phase-chip"><strong>P7</strong>Wastewater collection</div>
+        <div class="phase-chip"><strong>P8</strong>Wastewater treatment</div>
+        <div class="phase-chip weak"><strong>P9</strong>Storm stress</div>
+        <div class="phase-chip"><strong>P10</strong>Public notice</div>
+        <div class="phase-chip weak"><strong>P11</strong>Emergency restoration</div>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header sc">
+            <div class="card-icon">🔬</div>
+            <div class="card-title">Supply Chain</div>
+            <div class="card-desc">Physical flow · Custody · Constraints · 12 phases</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Phase 0-11: source water -> treatment -> tap -> wastewater -> emergency restoration</li>
+              <li>N-D-C balance per phase using the same visual pattern as the water models</li>
+              <li>Treatment control, pressure, household delivery, and restoration scored as bottlenecks</li>
+              <li>Transparency flags identify where asset condition and operating margin remain opaque</li>
+              <li>Dashboard renders the same processed JSON phase map used by this hub</li>
+            </ul>
+            <a href="supply_chain/index.html" class="btn sc">Open Supply Chain →</a>
+            <div class="sub-links">
+              <a href="supply_chain/dashboard.html">Dashboard</a>
+              <a href="supply_chain/project_context.html">Context</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header lc">
+            <div class="card-icon">🛠️</div>
+            <div class="card-title">System Lifecycle</div>
+            <div class="card-desc">Plan · Build · Operate · Maintain · Repair · Adapt</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Lifecycle N-D-C model for maintenance collapse</li>
+              <li>Preventive maintenance is separated from emergency repair</li>
+              <li>Emergency water logistics are treated as substitute infrastructure</li>
+              <li>Shows why a sustainable water system must also sustain maintenance capacity</li>
+              <li>Links physical bottlenecks back to planning, staffing, and renewal gaps</li>
+            </ul>
+            <a href="supply_chain/system_lifecycle.html" class="btn lc">Open Lifecycle →</a>
+            <div class="sub-links">
+              <a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header vc">
+            <div class="card-icon">📉</div>
+            <div class="card-title">Value Chain</div>
+            <div class="card-desc">Deferred economic layer · Affordability · Capital backlog</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Affordability and rate-base analysis intentionally deferred</li>
+              <li>Capital funding, repair backlog, and emergency cost data belong here</li>
+              <li>Kept separate from physical water reliability</li>
+              <li>Requires audited finance, aid, and household burden inputs</li>
+              <li>Future TVPCI layer can compare true service value against repair cost</li>
+            </ul>
+            <a href="value_chain/index.html" class="btn vc">Open Value Layer →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+      <div class="kicker" style="color:#455a64;background:transparent;padding:0 0 4px;font-size:11px;">Phase-Level Detail</div>
+      <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Jackson Water System - Phase-by-Phase N·D·C Profile</h2>
+      <p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:730px;line-height:1.55;">
+        Each axis is one municipal water-cycle phase (0-11). The deepest visible D-C gaps occur at treatment control,
+        distribution pressure, household delivery, storm stress, and emergency restoration.
+      </p>
+      <div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
+        <canvas id="ndc-radar-jackson" width="700" height="700" style="max-width:100%;flex-shrink:0;"></canvas>
+        <div id="ndc-radar-info-jackson" style="font-size:13px;color:#495057;min-width:180px;max-width:260px;flex-shrink:0;"></div>
+      </div>
+      <div id="ndc-radar-interp-jackson" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:850px;border-left:3px solid #455a64;"></div>
+    </div>
+
+    <script>
+    (function() {
+      var DATA_URL = "/frontend/project/water_jackson_ms/data/processed/water_jackson_ms_supply_chain_ui.json";
+      var ENTITY = "synthetic";
+      fetch(DATA_URL).then(function(r){return r.json();}).catch(function(){return null;})
+      .then(function(data){
+        if(!data) return;
+        var rawPhases = (data.phases||{})[ENTITY]||{};
+        var phaseMeta = data.phase_meta||{};
+        var ids = Object.keys(rawPhases).filter(function(k){return /^\d+$/.test(k);}).sort(function(a,b){return +a-+b;});
+        if(ids.length < 3) return;
+        var labels = ids.map(function(id){
+          var m = phaseMeta[id];
+          var name = (m&&m.name)?m.name:((rawPhases[id]&&rawPhases[id].name)?rawPhases[id].name:"");
+          if(name.length > 16) name = name.slice(0,15) + "…";
+          return name ? ("Ph\u202f" + id + "\n" + name) : ("Phase " + id);
+        });
+        var Dvals = ids.map(function(id){return +(rawPhases[id].D||0);});
+        var Cvals = ids.map(function(id){return +(rawPhases[id].C||0);});
+        var Nvals = ids.map(function(id){return +(rawPhases[id].N||0);});
+        var Bvals = ids.map(function(id){return +(rawPhases[id].balance||0);});
+        var canvas = document.getElementById("ndc-radar-jackson");
+        var ctx = canvas.getContext("2d");
+        var W = canvas.width, H = canvas.height, cx = W/2, cy = H/2, R = Math.min(W,H)*0.32, labelR = R + 50;
+        var Npts = ids.length, minV = 80, maxV = 360;
+        function ang(i){ return (2*Math.PI*i/Npts) - Math.PI/2; }
+        function pt2(i,v){
+          var frac = Math.max(0, Math.min(1, (v-minV)/(maxV-minV)));
+          return {x: cx + R*frac*Math.cos(ang(i)), y: cy + R*frac*Math.sin(ang(i))};
+        }
+        ctx.clearRect(0,0,W,H); ctx.fillStyle = "#0d1117"; ctx.fillRect(0,0,W,H);
+        function polyPath(frac){
+          ctx.beginPath();
+          for(var i=0;i<Npts;i++){
+            var a = ang(i), x = cx + R*frac*Math.cos(a), y = cy + R*frac*Math.sin(a);
+            i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+          }
+          ctx.closePath();
+        }
+        polyPath(1); ctx.fillStyle = "rgba(96,125,139,0.10)"; ctx.fill();
+        polyPath((300-minV)/(maxV-minV)); ctx.fillStyle = "rgba(198,40,40,0.16)"; ctx.fill();
+        polyPath((220-minV)/(maxV-minV)); ctx.fillStyle = "rgba(69,90,100,0.28)"; ctx.fill();
+        [160,200,240,280,320,maxV].forEach(function(gv,gi){
+          ctx.beginPath();
+          for(var i=0;i<Npts;i++){
+            var frac2 = (gv-minV)/(maxV-minV), x = cx + R*frac2*Math.cos(ang(i)), y = cy + R*frac2*Math.sin(ang(i));
+            i === 0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+          }
+          ctx.closePath();
+          ctx.strokeStyle = gi === 5 ? "rgba(255,255,255,0.25)" : "rgba(255,255,255,0.08)";
+          ctx.lineWidth = gi === 5 ? 1.5 : 0.8;
+          ctx.stroke();
+          if(gi > 0 && gi < 5){
+            var fx2 = (gv-minV)/(maxV-minV);
+            ctx.fillStyle = "rgba(255,255,255,0.3)";
+            ctx.font = "9px ui-sans-serif,sans-serif";
+            ctx.textAlign = "left";
+            ctx.fillText(gv, cx + R*fx2 + 4, cy - 2);
+          }
+        });
+        for(var i=0;i<Npts;i++){
+          ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(cx+R*Math.cos(ang(i)), cy+R*Math.sin(ang(i)));
+          ctx.strokeStyle = "rgba(255,255,255,0.10)"; ctx.lineWidth = 1; ctx.stroke();
+        }
+        function poly(vals,col,alpha){
+          ctx.beginPath();
+          for(var i=0;i<Npts;i++){
+            var p = pt2(i, vals[i]);
+            i === 0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y);
+          }
+          ctx.closePath();
+          ctx.globalAlpha = alpha; ctx.fillStyle = col; ctx.fill(); ctx.globalAlpha = 1;
+          ctx.strokeStyle = col; ctx.lineWidth = 2.5; ctx.stroke();
+          ctx.fillStyle = col;
+          for(var j=0;j<Npts;j++){ var q = pt2(j, vals[j]); ctx.beginPath(); ctx.arc(q.x,q.y,3.5,0,2*Math.PI); ctx.fill(); }
+        }
+        poly(Dvals, "#3ecf8e", 0.18);
+        poly(Cvals, "#ef5350", 0.18);
+        poly(Nvals, "#4fc3f7", 0.22);
+        for(var k=0;k<Npts;k++){
+          var a = ang(k), lx = cx + labelR*Math.cos(a), ly = cy + labelR*Math.sin(a);
+          var lines = labels[k].split("\n");
+          var align = "center";
+          if(Math.cos(a) > 0.25) align = "left";
+          if(Math.cos(a) < -0.25) align = "right";
+          ctx.textAlign = align;
+          var lineH = 13, startY = ly - (lines.length*lineH)/2 + lineH/2;
+          lines.forEach(function(line,li){
+            if(li === 0){ ctx.fillStyle = "#e6edf3"; ctx.font = "bold 10.5px ui-sans-serif,sans-serif"; }
+            else { ctx.fillStyle = "#8b949e"; ctx.font = "9.5px ui-sans-serif,sans-serif"; }
+            ctx.fillText(line,lx,startY+li*lineH);
+          });
+        }
+        ctx.beginPath(); ctx.arc(cx,cy,3,0,2*Math.PI); ctx.fillStyle = "rgba(255,255,255,0.3)"; ctx.fill();
+        function avg(arr){ return arr.reduce(function(a,b){return a+b;},0)/arr.length; }
+        var minBi = Bvals.indexOf(Math.min.apply(null,Bvals));
+        var maxBi = Bvals.indexOf(Math.max.apply(null,Bvals));
+        var avgD = avg(Dvals).toFixed(0), avgC = avg(Cvals).toFixed(0), avgN = avg(Nvals).toFixed(0), avgB = avg(Bvals).toFixed(1);
+        document.getElementById("ndc-radar-info-jackson").innerHTML =
+          '<div style="margin-bottom:16px;">' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><span style="display:inline-block;width:14px;height:14px;background:#2a9a5a;border-radius:3px;flex-shrink:0;"></span><span><b>Definition (D)</b><br>chain avg&nbsp;' + avgD + '</span></div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;"><span style="display:inline-block;width:14px;height:14px;background:#c62828;border-radius:3px;flex-shrink:0;"></span><span><b>Contribution (C)</b><br>chain avg&nbsp;' + avgC + '</span></div>' +
+          '<div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;"><span style="display:inline-block;width:14px;height:14px;background:#1a6aaa;border-radius:3px;flex-shrink:0;"></span><span><b>Negotiation (N)</b><br>chain avg&nbsp;' + avgN + '</span></div>' +
+          '</div>' +
+          '<div style="background:#eceff1;border-radius:8px;padding:12px 14px;line-height:1.85;font-size:12px;">' +
+          '<div style="font-weight:700;color:#263238;margin-bottom:4px;font-size:13px;">Chain Balance</div>' +
+          '<div>Average: <b>' + avgB + '%</b></div>' +
+          '<div>Best:&nbsp;&nbsp;&nbsp;<b>' + Math.max.apply(null,Bvals).toFixed(1) + '%</b> (Ph\u202f' + ids[maxBi] + ')</div>' +
+          '<div>Weakest: <b>' + Math.min.apply(null,Bvals).toFixed(1) + '%</b> (Ph\u202f' + ids[minBi] + ')</div>' +
+          '<div style="margin-top:6px;">Phases: <b>' + Npts + '</b></div>' +
+          '<div style="margin-top:8px;padding-top:8px;border-top:1px solid #b0bec5;font-size:11px;color:#455a64;"><b>Tholonic note:</b> high D with low C marks the maintenance collapse pattern. The system is constrained by safe-water requirements, but contribution capacity fails at treatment, pressure, and restoration.</div>' +
+          '</div>';
+        var gaps = ids.map(function(id,i){ return Math.abs(Dvals[i]-Cvals[i]); });
+        var maxGapIdx = gaps.indexOf(Math.max.apply(null,gaps));
+        var stressed = ids.filter(function(id,i){ return Bvals[i] < 60; });
+        var lowN = ids.filter(function(id,i){ return Nvals[i] < 130; });
+        var interlines = [];
+        interlines.push("<strong>Reading this chart (Jackson MS water system):</strong> The chart maps the full municipal water cycle, not just the treatment plant. The stable source-water phase does not compensate for failures in treatment control, pressure, tap delivery, storm stress, and restoration.");
+        interlines.push("<strong>Largest D-C gap:</strong> Phase " + ids[maxGapIdx] + " has the widest split between Definition and Contribution. In tholonic terms, the phase has strong requirements but weak physical delivery capacity.");
+        if(stressed.length > 0) interlines.push("<strong>Stressed phases:</strong> Phase" + (stressed.length>1 ? "s " : " ") + stressed.join(", ") + " have balance below 60%. These are the practical repair targets before any value-chain or finance interpretation should be layered on top.");
+        if(lowN.length > 0) interlines.push("<strong>Low N-state phases:</strong> Phase" + (lowN.length>1 ? "s " : " ") + lowN.join(", ") + " show degraded operational coherence. These are where the child-N of the phase cannot reliably become the parent-N for the next phase.");
+        interlines.push("<strong>Lifecycle implication:</strong> emergency water distribution appears as Phase 11 because it becomes substitute infrastructure when the normal chain fails. That is not resilience by itself. It is evidence that the maintenance layer has lost the ability to keep the physical chain stable.");
+        document.getElementById("ndc-radar-interp-jackson").innerHTML = interlines.join("<br><br>");
+      });
+    })();
+    </script>
+
+    <div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+      <div class="kicker" style="color:#455a64;background:transparent;padding:0 0 4px;font-size:11px;">Five-Model N·D·C Analysis</div>
+      <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Jackson Water - Five-Model Coherence Signature</h2>
+      <p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:720px;line-height:1.55;">
+        Baseline five-model score derived from the Jackson phase N-D-C profile. The outer zone is coherent, the middle zone is stressed, and the inner zone indicates failure or missing measurement.
+      </p>
+      <div style="display:flex;justify-content:center;align-items:flex-start;gap:28px;flex-wrap:wrap;">
+        <div id="five-svg-jackson" style="flex-shrink:0;max-width:360px;width:100%;"></div>
+        <div id="five-info-jackson" style="min-width:190px;max-width:300px;flex-shrink:0;font-size:13px;color:#495057;"></div>
+      </div>
+      <div id="five-interp-jackson" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:850px;border-left:3px solid #455a64;"></div>
+      <div style="margin-top:10px;text-align:right;">
+        <a href="/frontend/project/five_model_coherence.html" style="font-size:12px;color:#455a64;font-weight:700;text-decoration:none;">View full five-model analysis and scenario explorer -></a>
+      </div>
+    </div>
+    <script>
+    (function(){
+      var CHART_ID = "jackson";
+      var scores = [
+        {label:"π", sub:"Operational", value:46.0},
+        {label:"φ", sub:"Proportional", value:38.0},
+        {label:"√2", sub:"Structural", value:42.0},
+        {label:"ln(2)", sub:"Growth", value:34.0},
+        {label:"e", sub:"Abstract", value:30.0}
+      ];
+      function status(v){ return v >= 70 ? "coherent" : (v >= 40 ? "stressed" : "failure"); }
+      function statusColor(v){ return v >= 70 ? "#4ade80" : (v >= 40 ? "#f59e0b" : "#ef4444"); }
+      function pt(cx,cy,r,deg){ var a=(deg-90)*Math.PI/180; return {x:cx+r*Math.cos(a), y:cy+r*Math.sin(a)}; }
+      function polyPath(cx,cy,r,scale){ var out=[]; for(var i=0;i<5;i++){ var p=pt(cx,cy,r*scale,i*72); out.push((i?"L":"M")+p.x.toFixed(2)+","+p.y.toFixed(2)); } return out.join(" ")+"Z"; }
+      function dataPath(cx,cy,r){ var out=[]; scores.forEach(function(s,i){ var p=pt(cx,cy,r*(s.value/100),i*72); out.push((i?"L":"M")+p.x.toFixed(2)+","+p.y.toFixed(2)); }); return out.join(" ")+"Z"; }
+      var cx=180, cy=170, r=110;
+      var svg='<svg viewBox="0 0 360 340" style="width:100%;background:#111827;border-radius:10px;">';
+      svg += '<path d="'+polyPath(cx,cy,r,1)+'" fill="rgba(96,125,139,0.28)"/><path d="'+polyPath(cx,cy,r,0.7)+'" fill="rgba(96,125,139,0.20)"/><path d="'+polyPath(cx,cy,r,0.4)+'" fill="rgba(198,40,40,0.14)"/>';
+      [0.25,0.5,0.75,1].forEach(function(s){ svg += '<path d="'+polyPath(cx,cy,r,s)+'" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="1"/>'; });
+      for(var i=0;i<5;i++){ var p=pt(cx,cy,r,i*72); svg += '<line x1="'+cx+'" y1="'+cy+'" x2="'+p.x.toFixed(2)+'" y2="'+p.y.toFixed(2)+'" stroke="rgba(255,255,255,0.12)"/>'; }
+      svg += '<path d="'+dataPath(cx,cy,r)+'" fill="rgba(245,158,11,0.32)" stroke="#f8c35a" stroke-width="2.5"/>';
+      scores.forEach(function(s,i){ var p=pt(cx,cy,r*(s.value/100),i*72); svg += '<circle cx="'+p.x.toFixed(2)+'" cy="'+p.y.toFixed(2)+'" r="4" fill="#f8c35a" stroke="#fff" stroke-width="1"/>'; });
+      scores.forEach(function(s,i){ var p=pt(cx,cy,r+34,i*72); svg += '<text x="'+p.x.toFixed(2)+'" y="'+p.y.toFixed(2)+'" text-anchor="middle" fill="#e5e7eb" font-size="13" font-weight="700">'+s.label+'</text><text x="'+p.x.toFixed(2)+'" y="'+(p.y+14).toFixed(2)+'" text-anchor="middle" fill="#9ca3af" font-size="9">'+s.sub+'</text>'; });
+      svg += '<text x="'+cx+'" y="'+cy+'" text-anchor="middle" fill="#9ca3af" font-size="10">baseline</text></svg>';
+      document.getElementById("five-svg-"+CHART_ID).innerHTML = svg;
+      document.getElementById("five-info-"+CHART_ID).innerHTML = scores.map(function(s){
+        return '<div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;"><span style="display:inline-flex;width:28px;height:28px;border-radius:6px;background:#263238;color:#eceff1;align-items:center;justify-content:center;font-weight:800;">'+s.label+'</span><div style="flex:1;"><b>'+s.sub+'</b> <span style="color:'+statusColor(s.value)+';font-weight:800;">'+s.value.toFixed(1)+'</span> <span style="font-size:11px;color:'+statusColor(s.value)+';">'+status(s.value)+'</span><div style="height:3px;background:#1f2937;margin-top:4px;"><div style="height:3px;background:'+statusColor(s.value)+';width:'+s.value+'%;"></div></div></div></div>';
+      }).join("");
+      document.getElementById("five-interp-"+CHART_ID).innerHTML = "<strong>Interpretation:</strong> Jackson's signature is a broken maintenance profile. Operational and structural scores are stressed, while proportional, growth, and abstraction scores fall into failure because the system cannot reliably turn requirements into maintained potable service.";
+    })();
+    </script>
+
+    <div class="nav">
+      <a href="/index.html">🏠 Main Homepage</a>
+    </div>
+    <div class="footer">Jackson MS Water · Broken System Intelligence Platform · v0.2</div>
+  </div>
+</body>
+</html>

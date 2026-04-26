@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold System Lifecycle N-D-C</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #c9922a 50%, #8b6914 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c3e50;
+        }
+        .page {
+            max-width: 1180px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a2535 0%, #2c3e50 100%);
+            color: white;
+            padding: 22px 30px;
+            display: flex;
+            justify-content: space-between;
+            gap: 20px;
+            align-items: center;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header p { font-size: 13px; color: #f0d080; margin-top: 6px; line-height: 1.5; }
+        .header a { color: #f0d080; text-decoration: none; margin-left: 12px; font-size: 14px; }
+        .header a:hover { color: white; }
+        .content { padding: 30px; }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 26px;
+        }
+        .kpi {
+            background: #f8f9fa;
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid #c9922a;
+        }
+        .kpi-label { font-size: 11px; text-transform: uppercase; color: #6c757d; margin-bottom: 5px; }
+        .kpi-value { font-size: 26px; font-weight: 700; color: #2c3e50; }
+        .section { margin-bottom: 28px; }
+        .section h2 { font-size: 18px; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 2px solid #c9922a; }
+        .section p { font-size: 14px; color: #495057; line-height: 1.7; margin-bottom: 10px; }
+        .lifecycle-flow {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin: 18px 0 24px;
+        }
+        .phase-card {
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 14px;
+            background: #fff;
+        }
+        .phase-card.medium { background: #fffaf0; border-color: #efd59a; }
+        .phase-title { font-size: 14px; font-weight: 700; margin-bottom: 6px; color: #2c3e50; }
+        .phase-sub { font-size: 12px; color: #6c757d; margin-bottom: 8px; }
+        .score-row { display: flex; justify-content: space-between; font-size: 12px; margin: 4px 0; }
+        .score-row strong { color: #8b6914; }
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 999px;
+            font-size: 11px;
+            font-weight: 700;
+            background: #e9ecef;
+            color: #495057;
+        }
+        .badge.high { background: #d4edda; color: #155724; }
+        .badge.medium { background: #fff3cd; color: #856404; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            margin-top: 12px;
+        }
+        th {
+            text-align: left;
+            background: #f8f9fa;
+            color: #495057;
+            padding: 10px;
+            border-bottom: 2px solid #dee2e6;
+        }
+        td {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+            color: #495057;
+        }
+        .note {
+            background: #e7f3ff;
+            border-left: 4px solid #17a2b8;
+            padding: 14px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            line-height: 1.6;
+            color: #2c3e50;
+        }
+        .data-links a { color: #8b6914; font-weight: 700; text-decoration: none; margin-right: 14px; }
+        .data-links a:hover { text-decoration: underline; }
+        @media (max-width: 900px) {
+            .summary-grid, .lifecycle-flow { grid-template-columns: 1fr; }
+            .header { display: block; }
+            .header nav { margin-top: 12px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <div class="header">
+            <div>
+                <h1>Gold System Lifecycle N-D-C</h1>
+                <p>Lifecycle layer for the physical operating system that keeps gold production, custody, closure, and recycling coherent over time.</p>
+            </div>
+            <nav>
+                <a href="index.html">Supply Chain</a>
+                <a href="project_context.html">Project Context</a>
+                <a href="../index.html">Gold Hub</a>
+                <a href="/index.html">Main Homepage</a>
+            </nav>
+        </div>
+
+        <div class="content">
+            <div class="summary-grid" id="summaryGrid"></div>
+
+            <div class="section">
+                <h2>Lifecycle View</h2>
+                <p>
+                    This layer evaluates the durable physical system behind the gold chain:
+                    resource definition, development, operation, sustaining assurance, and
+                    closure or circular re-entry. It links each lifecycle phase back to the
+                    supply-chain phases it supports without mixing in pricing or financial claims.
+                </p>
+                <div class="lifecycle-flow" id="lifecycleFlow"></div>
+            </div>
+
+            <div class="section">
+                <h2>Phase Detail</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Lifecycle Phase</th>
+                            <th>Linked Supply Phases</th>
+                            <th>D Parameters</th>
+                            <th>C Parameters</th>
+                            <th>Measured Output</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="detailRows"></tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h2>Interpretation</h2>
+                <div class="note" id="interpretation"></div>
+            </div>
+
+            <div class="section">
+                <h2>Data Files</h2>
+                <p class="data-links">
+                    <a href="../data/gold_system_lifecycle_phases.csv">Lifecycle phases CSV</a>
+                    <a href="../data/gold_system_lifecycle_metrics.csv">Lifecycle metrics CSV</a>
+                    <a href="../data/processed/gold_system_lifecycle_ndc.json">Lifecycle N-D-C JSON</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const DATA_URL = "../data/processed/gold_system_lifecycle_ndc.json";
+
+        function fmt(value, suffix) {
+            if (value === null || value === undefined) return "OPAQUE";
+            if (typeof value === "number") return value.toLocaleString() + (suffix || "");
+            return value + (suffix || "");
+        }
+
+        function render(data) {
+            const phases = data.phases || [];
+            const system = data.system || {};
+
+            document.getElementById("summaryGrid").innerHTML = [
+                { label: "Lifecycle phases", value: phases.length },
+                { label: "System balance", value: fmt(system.balance_score, "%") },
+                { label: "Average N", value: fmt(system.average_N) },
+                { label: "Bottlenecks", value: (system.bottleneck_phase_ids || []).length }
+            ].map(k => `
+                <div class="kpi">
+                    <div class="kpi-label">${k.label}</div>
+                    <div class="kpi-value">${k.value}</div>
+                </div>
+            `).join("");
+
+            document.getElementById("lifecycleFlow").innerHTML = phases.map(phase => {
+                const level = phase.transparency_level || "medium";
+                return `
+                    <div class="phase-card ${level}">
+                        <div class="phase-title">${phase.lifecycle_phase_id}. ${phase.phase_name}</div>
+                        <div class="phase-sub">${phase.category}</div>
+                        <div class="score-row"><span>D</span><strong>${phase.D_total}</strong></div>
+                        <div class="score-row"><span>C</span><strong>${phase.C_total}</strong></div>
+                        <div class="score-row"><span>N</span><strong>${phase.N}</strong></div>
+                        <div class="score-row"><span>Balance</span><strong>${phase.balance_score}%</strong></div>
+                        <span class="badge ${level}">${level} transparency</span>
+                    </div>
+                `;
+            }).join("");
+
+            document.getElementById("detailRows").innerHTML = phases.map(phase => `
+                <tr>
+                    <td><strong>${phase.phase_name}</strong><br>${phase.notes}</td>
+                    <td>${(phase.linked_supply_phases || []).map(p => "P" + p).join(", ")}</td>
+                    <td>${(phase.D_parameters || []).join("; ")}</td>
+                    <td>${(phase.C_parameters || []).join("; ")}</td>
+                    <td>${phase.measurable_output}<br><small>${phase.output_unit}</small></td>
+                    <td><span class="badge ${phase.transparency_level}">${phase.data_status}</span></td>
+                </tr>
+            `).join("");
+
+            document.getElementById("interpretation").textContent = system.interpretation || "";
+        }
+
+        fetch(DATA_URL)
+            .then(response => response.json())
+            .then(render)
+            .catch(error => {
+                document.getElementById("interpretation").textContent =
+                    "Lifecycle data could not be loaded: " + error.message;
+            });
+    </script>
+</body>
+</html>

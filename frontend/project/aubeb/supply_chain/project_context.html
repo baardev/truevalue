@@ -22,7 +22,7 @@
 
     .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
 
-    /* KPI bar */
+    /* KPI record */
     .kpi-row { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 2rem; }
     .kpi {
       flex: 1 1 180px; background: #fff; border-radius: 10px;
@@ -91,6 +91,7 @@
   <nav>
     <a href="index.html">Supply Chain</a>
     <a href="dashboard.html">Dashboard</a>
+    <a href="system_lifecycle.html">Lifecycle</a>
     <a href="what_if_simulator.html">Simulator</a>
     <a href="../value_chain/index.html">Value Chain</a>
     <a href="../index.html">Hub</a>
@@ -122,7 +123,7 @@
     <p>The supply chain spans <strong>11 phases (Phase 0–10)</strong>, from pre-commercial degraded ecosystem baseline
     through active Community-Based Ecological Mangrove Restoration (CBEMR) to a verified, sustained blue-economy
     asset. The programme monetises through <strong>voluntary carbon markets (VCM)</strong>,
-    <strong>CORSIA-compliant credits</strong>, <strong>fisheries royalties</strong>, and an
+    <strong>CORSIA-compliant credits</strong>, <strong>fisheries benefit shares</strong>, and an
     <strong>AUBEB-labelled bond</strong> structured for institutional investors.</p>
     <br/>
     <p><em>Material class:</em> Ecosystem services (blue carbon) &nbsp;|&nbsp;
@@ -181,7 +182,7 @@
       <span class="badge high">High transparency</span>
       <div class="phase-name">Commercialisation outward</div>
       <div class="phase-actor">Carbon buyers; institutional investors; DFI (AfDB / AFC)</div>
-      <div class="phase-note">Floor: USD 15/tCO₂e VCM; USD 20/tCO₂e CORSIA. AUBEB bond issued. Fisheries royalties activated. Annual reserve USD 84.6M+.</div>
+      <div class="phase-note">Floor: USD 15/tCO₂e VCM; USD 20/tCO₂e CORSIA. AUBEB bond issued. Fisheries benefit shares activated. Annual reserve USD 84.6M+.</div>
     </div>
 
     <div class="phase-card phase-high">
@@ -189,7 +190,7 @@
       <span class="badge high">High transparency</span>
       <div class="phase-name">Capital return — Conservation Fund deployment</div>
       <div class="phase-actor">Trust Fund administrator; AUC; GUD</div>
-      <div class="phase-note">Bond proceeds + carbon revenues + fisheries royalties deployed via Conservation Trust Fund to community-led CBEMR.</div>
+      <div class="phase-note">Bond proceeds + carbon revenues + fisheries benefit shares deployed via Conservation Trust Fund to community-led CBEMR.</div>
     </div>
 
     <div class="phase-card phase-high">
@@ -226,6 +227,12 @@
 
   </div>
 
+  <h2>System lifecycle layer</h2>
+  <div class="overview">
+    <p>The AUBEB project now separates the maintained programme system from the 0-10 supply-chain phase map. The lifecycle layer evaluates programme mandate, baseline MRV, finance and capital return, restoration implementation, and long-term monitoring, maintenance, and adaptation.</p>
+    <p><a href="system_lifecycle.html">Open the System Lifecycle N-D-C view</a></p>
+  </div>
+
   <!-- Actors -->
   <h2>Key Actors</h2>
   <div class="actor-grid">
@@ -258,7 +265,7 @@
       <tr><td>Phase-level cost breakdown</td><td class="status-na">⚠ Partial</td><td>Phase 5 only (carbon floor); other phases require separate input</td></tr>
       <tr><td>Country allocation by phase</td><td class="status-na">⚠ Partial</td><td>7 countries identified; per-country phase split not in PDI v1</td></tr>
       <tr><td>Verifier identity</td><td class="status-na">⚠ TBD</td><td>Standard flexible (Verra / Gold Standard / Plan Vivo / ICR / ACR)</td></tr>
-      <tr><td>Fisheries royalty value (USD)</td><td class="status-no">✗ Not available</td><td>Structure described; quantum not specified in PDI v1</td></tr>
+      <tr><td>Fisheries benefit-share value (USD)</td><td class="status-no">✗ Not available</td><td>Structure described; quantum not specified in PDI v1</td></tr>
     </tbody>
   </table>
 
@@ -266,8 +273,8 @@
   <div class="overview" style="font-size:0.85rem;">
     <ul style="padding-left:1.2rem;line-height:2;">
       <li>DRAFT_AUBEB_PDI_v1 response.docx — primary source document</li>
-      <li>docs/PDI/PDI_AUBEB_2026-04-21.yaml — completed PDI YAML instance</li>
-      <li>docs/PDI/PDI_AUBEB_STATUS.md — field audit and analyst notes</li>
+      <li>frontend/docs/PDI/PDI_AUBEB_2026-04-21.yaml — completed PDI YAML instance</li>
+      <li>frontend/docs/PDI/PDI_AUBEB_STATUS.md — field audit and analyst notes</li>
       <li>ODIN dMRV platform (Global Underwater Diagnostics) — satellite archive data described in PDI</li>
       <li>African Union Commission — programme mandate documentation (referenced in PDI)</li>
     </ul>
@@ -285,7 +292,7 @@
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -304,8 +311,8 @@
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -316,17 +323,17 @@
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

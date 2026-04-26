@@ -1,0 +1,237 @@
+{
+  "_meta": {
+    "material": "water_jackson_ms",
+    "case_type": "broken municipal water system",
+    "generated": "2026-04-24",
+    "sources": [
+      "EPA Jackson MS Safe Drinking Water Act emergency orders and consent decree materials",
+      "Mississippi State Department of Health boil-water notices and compliance records",
+      "City of Jackson water system public reporting",
+      "US DOJ and EPA Jackson water system case materials",
+      "Public reporting on 2022 O.B. Curtis Water Treatment Plant failure"
+    ],
+    "note": "Exploratory 12-phase N-D-C baseline for a dysfunctional municipal potable water system. Values are structured estimates for model demonstration and should be replaced with audited time-series data where available."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "AI structured baseline",
+      "description": "Generated from public Jackson water failure case materials for phase-map demonstration."
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Source water and watershed condition",
+      "transparency": "MEDIUM",
+      "transformation": "Surface-water source assigned to municipal treatment system"
+    },
+    "1": {
+      "name": "Raw water intake and pumping",
+      "transparency": "MEDIUM",
+      "transformation": "Raw water moved from source into treatment intake"
+    },
+    "2": {
+      "name": "Coagulation, sedimentation, and filtration",
+      "transparency": "MEDIUM",
+      "transformation": "Partially clarified water in treatment process"
+    },
+    "3": {
+      "name": "Disinfection and chemical treatment control",
+      "transparency": "MEDIUM",
+      "transformation": "Chemically treated water intended to meet potable standards"
+    },
+    "4": {
+      "name": "Clearwell, storage, and finished-water pumping",
+      "transparency": "LOW",
+      "transformation": "Finished water held and pumped into distribution"
+    },
+    "5": {
+      "name": "Distribution network pressure",
+      "transparency": "LOW",
+      "transformation": "Pressurised potable water in pipe network"
+    },
+    "6": {
+      "name": "Household delivery and access",
+      "transparency": "MEDIUM",
+      "transformation": "Water delivered to homes, businesses, and public facilities"
+    },
+    "7": {
+      "name": "Wastewater collection and conveyance",
+      "transparency": "LOW",
+      "transformation": "Used water collected into sewer system"
+    },
+    "8": {
+      "name": "Wastewater treatment and discharge",
+      "transparency": "MEDIUM",
+      "transformation": "Treated wastewater discharged under permit"
+    },
+    "9": {
+      "name": "Stormwater and flood stress interaction",
+      "transparency": "LOW",
+      "transformation": "Storm stress applied to potable, wastewater, and road-access systems"
+    },
+    "10": {
+      "name": "Regulatory monitoring and public notice",
+      "transparency": "HIGH",
+      "transformation": "Compliance status and boil-water information communicated"
+    },
+    "11": {
+      "name": "Emergency water distribution and service restoration",
+      "transparency": "MEDIUM",
+      "transformation": "Bottled-water logistics, repairs, and pressure restoration after failure"
+    }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 245,
+        "C": 220,
+        "balance": 82,
+        "N": 191,
+        "sustainability": 0.52,
+        "notes": "Source water constraints are real but not the primary collapse point. Treatment and distribution failures dominate downstream risk.",
+        "data_quality": "medium",
+        "metrics": {
+          "source_water_risk": {"value": null, "unit": "index", "source": "EPA/MSDH", "note": "Requires source-water time series."}
+        }
+      },
+      "1": {
+        "D": 265,
+        "C": 190,
+        "balance": 69,
+        "N": 157,
+        "sustainability": 0.16,
+        "notes": "Raw water intake and pumping are vulnerable to equipment condition, power continuity, and flood/turbidity events.",
+        "data_quality": "medium",
+        "metrics": {
+          "pump_reliability": {"value": null, "unit": "uptime", "source": "City reports", "note": "Pump uptime not yet tabulated."}
+        }
+      },
+      "2": {
+        "D": 305,
+        "C": 170,
+        "balance": 56,
+        "N": 131,
+        "sustainability": 0.04,
+        "notes": "Treatment process reliability is a central bottleneck. Staffing gaps, chemical controls, sludge handling, and equipment condition reduce contribution capacity.",
+        "data_quality": "medium",
+        "metrics": {
+          "treatment_process_failure_flag": {"value": 1, "unit": "binary", "source": "EPA/DOJ public materials", "note": "System-level treatment process reliability failure documented."}
+        }
+      },
+      "3": {
+        "D": 320,
+        "C": 160,
+        "balance": 50,
+        "N": 120,
+        "sustainability": 0.02,
+        "notes": "Disinfection and treatment control degrade when operators, chemical feed, and process monitoring cannot meet safe-drinking-water constraints.",
+        "data_quality": "medium",
+        "metrics": {
+          "treatment_control_failure_flag": {"value": 1, "unit": "binary", "source": "EPA/DOJ public materials", "note": "Chemical and operational control issues require time-series confirmation."}
+        }
+      },
+      "4": {
+        "D": 290,
+        "C": 165,
+        "balance": 57,
+        "N": 130,
+        "sustainability": 0.04,
+        "notes": "Storage and finished-water pumping have limited public visibility. Storage cannot buffer the system when treatment and pressure failures coincide.",
+        "data_quality": "low",
+        "metrics": {
+          "storage_resilience": {"value": null, "unit": "days", "source": "OPAQUE", "note": "Storage duration and operating margin not yet tabulated."}
+        }
+      },
+      "5": {
+        "D": 335,
+        "C": 145,
+        "balance": 43,
+        "N": 103,
+        "sustainability": 0.01,
+        "notes": "Distribution pressure is the deepest physical failure mode. Pressure loss turns treated water into unreliable service and triggers contamination risk.",
+        "data_quality": "low",
+        "metrics": {
+          "pressure_loss_failure": {"value": 1, "unit": "binary", "source": "EPA/MSDH public notices", "note": "Loss of pressure and boil-water conditions documented."}
+        }
+      },
+      "6": {
+        "D": 310,
+        "C": 150,
+        "balance": 48,
+        "N": 110,
+        "sustainability": 0.01,
+        "notes": "Household delivery fails when pressure, reliability, and public confidence fail. The material output is no longer reliably potable water at the tap.",
+        "data_quality": "medium",
+        "metrics": {
+          "boil_water_notice_exposure": {"value": null, "unit": "household-days", "source": "MSDH", "note": "Requires notice duration and affected population normalization."}
+        }
+      },
+      "7": {
+        "D": 275,
+        "C": 165,
+        "balance": 60,
+        "N": 132,
+        "sustainability": 0.05,
+        "notes": "Wastewater collection remains part of the urban water cycle and can add fragility during storms, overflows, or infrastructure outages.",
+        "data_quality": "low",
+        "metrics": {
+          "sewer_collection_condition": {"value": null, "unit": "index", "source": "OPAQUE", "note": "Needs sewer condition and overflow data."}
+        }
+      },
+      "8": {
+        "D": 270,
+        "C": 175,
+        "balance": 65,
+        "N": 146,
+        "sustainability": 0.10,
+        "notes": "Wastewater treatment is adjacent to potable reliability because storm and sewer failures can compound public-health risk during water outages.",
+        "data_quality": "medium",
+        "metrics": {
+          "wastewater_permit_stress": {"value": null, "unit": "index", "source": "EPA", "note": "Needs permit and discharge compliance time series."}
+        }
+      },
+      "9": {
+        "D": 300,
+        "C": 150,
+        "balance": 50,
+        "N": 113,
+        "sustainability": 0.02,
+        "notes": "Stormwater and flood stress interacts with potable infrastructure during flooding and system disruptions. This is a cross-system fragility channel.",
+        "data_quality": "low",
+        "metrics": {
+          "stormwater_interaction_risk": {"value": null, "unit": "index", "source": "OPAQUE", "note": "Needs event-based stormwater and wastewater incident data."}
+        }
+      },
+      "10": {
+        "D": 280,
+        "C": 215,
+        "balance": 77,
+        "N": 186,
+        "sustainability": 0.36,
+        "notes": "Regulatory monitoring is comparatively transparent, but monitoring is a warning layer, not a physical repair layer.",
+        "data_quality": "high",
+        "metrics": {
+          "regulatory_intervention_flag": {"value": 1, "unit": "binary", "source": "EPA/DOJ", "note": "Federal intervention and enforcement materials are public."}
+        }
+      },
+      "11": {
+        "D": 325,
+        "C": 170,
+        "balance": 52,
+        "N": 129,
+        "sustainability": 0.03,
+        "notes": "Emergency water distribution and restoration become substitute infrastructure when the normal water chain fails. That protects households but confirms lifecycle degradation.",
+        "data_quality": "medium",
+        "metrics": {
+          "emergency_distribution_flag": {"value": 1, "unit": "binary", "source": "Public reporting", "note": "Bottled-water distribution and emergency restoration publicly documented."}
+        }
+      }
+    }
+  },
+  "system": {
+    "balance": 59.1,
+    "average_N": 137,
+    "bottleneck_phase_ids": [3, 5, 6, 9, 11],
+    "interpretation": "Jackson is a chronic maintenance-collapse case. The water chain breaks at treatment control, distribution pressure, household delivery, storm stress, and emergency restoration. Regulatory monitoring is more visible than the physical system it is monitoring."
+  }
+}
