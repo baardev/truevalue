@@ -53,8 +53,8 @@
         .model-tab.active { background: #2e7d32; color: white; cursor: default; }
         .model-tab.disabled { opacity: 0.4; cursor: not-allowed; }
 
-        /* Scenario selector bar */
-        .scenario-bar {
+        /* Scenario selector record */
+        .scenario-record {
             display: flex; align-items: center; gap: 12px;
             padding: 10px 20px; background: #111a12;
             border-bottom: 2px solid #2e7d32; flex-wrap: wrap;
@@ -197,8 +197,8 @@
             padding: 2px 7px; background: #e0e0e0; color: #666;
             border-radius: 6px; font-size: 10px; margin-left: 6px;
         }
-        .d-bar { display: inline-block; height: 8px; background: #c62828; border-radius: 3px; }
-        .c-bar { display: inline-block; height: 8px; background: #2e7d32; border-radius: 3px; }
+        .d-record { display: inline-block; height: 8px; background: #c62828; border-radius: 3px; }
+        .c-record { display: inline-block; height: 8px; background: #2e7d32; border-radius: 3px; }
 
         /* What-if simulator */
         .simulator {
@@ -284,12 +284,12 @@
         <div class="card poor-border" id="sc-worst">
             <div class="card-label">Worst Boundary</div>
             <div class="card-value red" id="sc-worst-val">P0→P1</div>
-            <div class="card-sub" id="sc-worst-sub">Score: 28.7 — Geological opacity<br>D=8, C=3 (ratio 0.375)</div>
+            <div class="card-sub" id="sc-worst-sub">Score: 28.7 — baseline opacity<br>D=8, C=3 (ratio 0.375)</div>
         </div>
         <div class="card good-border" id="sc-best">
             <div class="card-label">Best Boundary</div>
             <div class="card-value green" id="sc-best-val">P3→P4 &amp; P5→P6</div>
-            <div class="card-sub" id="sc-best-sub">Score: 100.0 — Perfect symmetry<br>LBMA standards &amp; COMEX registration</div>
+            <div class="card-sub" id="sc-best-sub">Score: 100.0 — strong symmetry<br>carbon quantification and capital deployment handoffs</div>
         </div>
         <div class="card warn-border" id="sc-sym">
             <div class="card-label">Symmetric Boundaries (≥80)</div>
@@ -352,7 +352,7 @@
         <div class="data-note">
             <h4>⚠️ Data Note — Structural Transfer Data for Mangrove</h4>
             <p>
-                The D and C values in this model are <strong>inferred from public sources</strong> — LBMA Good Delivery standards, COMEX warehouse receipt requirements, and publicly known industry practices. The underlying raw data (actual custody transfer records, private assay certificates, proprietary vault inventories) is <strong>not publicly available</strong>. The P0→P1 boundary (Geological → Mining) is the most structurally asymmetric: geological survey data, exploration results, and permit documentation exist in private corporate databases that are not disclosed to the public. The <code>custody_and_flow.csv</code> schema is currently empty — populating it with actual transfer records would allow these scores to be computed from data rather than inferred.
+                The D and C values in this model are <strong>inferred from AUBEB PDI source material</strong>, including programme mandate, ODIN dMRV, carbon quantification, certification, fund deployment, CBEMR design, and community co-management requirements. The underlying raw data (site work packages, disbursement records, field validation records, and community governance records) is <strong>not yet integrated</strong>. The P0→P1 boundary is the most structurally asymmetric because the degraded ecosystem baseline is reconstructed retrospectively. Populating the project with actual custody, MRV, and restoration records would allow these scores to be computed from data rather than inferred.
             </p>
         </div>
 
@@ -362,7 +362,7 @@
             <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; font-size:13px; color:#555;">
                 <div>
                     <strong style="color:#1b5e20;">Score 80–100: Symmetric</strong><br>
-                    D requirements match C deliverables. The boundary is a neutral conduit — it imposes only the natural √2 overhead (41.4%) and nothing more. Mangrove achieves this at P3→P4 (LBMA) and P5→P6 (COMEX).
+                    D requirements match C deliverables. The boundary is a neutral conduit, it imposes only the natural √2 overhead (41.4%) and nothing more. AUBEB achieves this where carbon quantification, certification, and capital deployment handoffs are clearly specified.
                 </div>
                 <div>
                     <strong style="color:#f57f17;">Score 40–80: Asymmetric</strong><br>
@@ -370,7 +370,7 @@
                 </div>
                 <div>
                     <strong style="color:#c62828;">Score 0–40: Critical asymmetry</strong><br>
-                    The boundary has failed the √2 structural test significantly. P0→P1 (score 28.7) reflects geological opacity: high formal requirements, low public data delivery. This is the structural basis for exploration opacity.
+                    The boundary has failed the √2 structural test significantly. P0→P1 (score 28.7) reflects baseline opacity: high formal requirements, low public data delivery. This is the structural basis for degraded-ecosystem origin opacity.
                 </div>
             </div>
         </div>
@@ -387,13 +387,13 @@
 <script>
 // ── Data ─────────────────────────────────────────────────────────────────────
 const BOUNDARIES_BASE = [
-    { id:"P0→P1", from:"Prospecting", to:"Mining",    d:8, c:3, opacity:"high",   note:"Geological data private; permit requirements formal but data confidential." },
-    { id:"P1→P2", from:"Mining",      to:"Processing", d:6, c:5, opacity:"medium", note:"Internal ore grade tracking; some symmetry via run-of-mine documentation." },
-    { id:"P2→P3", from:"Processing",  to:"Doré",       d:7, c:6, opacity:"medium", note:"LBMA assay standards — assay certs provide C-side. Slight D surplus from proprietary smelter specs." },
-    { id:"P3→P4", from:"Doré",        to:"Refining",   d:7, c:7, opacity:"low",    note:"LBMA Good Delivery: every requirement matches a specific deliverable. Near-perfect symmetry." },
-    { id:"P4→P5", from:"Refining",    to:"Vaulting",   d:8, c:7, opacity:"medium", note:"Vault entry requires bar registration, insurance, COMEX eligibility. Slight D surplus from eligibility requirements." },
-    { id:"P5→P6", from:"Vaulting",    to:"COMEX",      d:8, c:8, opacity:"low",    note:"COMEX warehouse receipts — highest structural symmetry: every bar documented, weighted, registered." },
-    { id:"P6→P7", from:"COMEX",       to:"Retail",     d:6, c:4, opacity:"medium", note:"OTC market: unallocated accounts and paper claims create C-side deficiency." },
+    { id:"P0→P1", from:"Degraded ecosystem", to:"Custodial mandate", d:8, c:3, opacity:"high", note:"Baseline reconstructed retrospectively; stewardship evidence varies by site." },
+    { id:"P1→P2", from:"Custodial mandate", to:"Baseline sensing", d:6, c:5, opacity:"medium", note:"Mandate boundaries and ODIN sensing requirements are defined, but site evidence is still being assembled." },
+    { id:"P2→P3", from:"Baseline sensing", to:"Carbon quantification", d:7, c:6, opacity:"medium", note:"Remote-sensing outputs support C-side delivery; uncertainty accounting adds D burden." },
+    { id:"P3→P4", from:"Carbon quantification", to:"Certification", d:7, c:7, opacity:"low", note:"Quantification requirements map directly to verification and registry deliverables." },
+    { id:"P4→P5", from:"Certification", to:"Commercialisation", d:8, c:7, opacity:"medium", note:"Credit eligibility and buyer documentation add slight D surplus." },
+    { id:"P5→P6", from:"Commercialisation", to:"Capital return", d:8, c:8, opacity:"low", note:"Revenue and fund-deployment requirements are explicitly tied in the programme design." },
+    { id:"P6→P7", from:"Capital return", to:"CBEMR design", d:6, c:4, opacity:"medium", note:"Site-level disbursement and restoration work-package data remain incomplete." },
 ];
 
 // ── Scenarios ─────────────────────────────────────────────────────────────────
@@ -466,7 +466,7 @@ function statusLabel(d, c, s) {
 function renderChainFlow(bs) {
     const row = document.getElementById("phases-row");
     row.innerHTML = '';
-    const nodes = ["Prospecting","Mining","Processing","Doré","Refining","Vaulting","COMEX","Retail"];
+    const nodes = ["Degraded baseline","Custodial mandate","Baseline sensing","Carbon quantification","Certification","Capital return","MRV registry","Retail"];
     const nodeIds = [0,1,2,3,4,5,6,7];
     const scored = bs.map(b => ({ ...b, score: sqrt2Score(b.d, b.c) }));
 
@@ -667,7 +667,7 @@ function renderAll(bs) {
 /* ── Auto-breadcrumb ──────────────────────────────────────────────────────── */
 (function(){
   var LABELS={
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'sqrt2_dashboard.html':'√2 Structural',
     'index.html':null,'frontend':null
@@ -707,7 +707,7 @@ function renderAll(bs) {
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -726,8 +726,8 @@ function renderAll(bs) {
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -738,17 +738,17 @@ function renderAll(bs) {
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

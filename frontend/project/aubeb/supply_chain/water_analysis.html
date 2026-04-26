@@ -55,7 +55,7 @@
     <div class="header">
         <div class="header-left">
             <h1>💧 Water Consumption Analysis — AUBEB Supply Chain</h1>
-            <p>Consumption · Recycling · Net withdrawal · Phase-resolved · What-If aware</p>
+            <p>Consumption · Sustained asset · Net withdrawal · Phase-resolved · What-If aware</p>
         </div>
         <div>
             <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
@@ -69,9 +69,9 @@
         <div class="kpi-card"><div class="kpi-label">Total Consumed</div><div class="kpi-value" id="kpiTotal" style="color:#0d47a1;">—</div><div class="kpi-sub">litres (reference scale)</div></div>
         <div class="kpi-card"><div class="kpi-label">Total Recycled</div><div class="kpi-value" id="kpiRecycled" style="color:#2e7d32;">—</div><div class="kpi-sub">closed-loop return</div></div>
         <div class="kpi-card"><div class="kpi-label">Net Withdrawal</div><div class="kpi-value" id="kpiNet" style="color:#e65100;">—</div><div class="kpi-sub">freshwater consumed</div></div>
-        <div class="kpi-card"><div class="kpi-label">Chain Recycling Rate</div><div class="kpi-value" id="kpiRate" style="color:#1565c0;">—</div><div class="kpi-sub">% returned to process</div></div>
+        <div class="kpi-card"><div class="kpi-label">Chain Sustained asset Rate</div><div class="kpi-value" id="kpiRate" style="color:#1565c0;">—</div><div class="kpi-sub">% returned to process</div></div>
         <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest water use</div></div>
-        <div class="kpi-card"><div class="kpi-label">Efficiency Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs WGC/ICMM benchmarks</div></div>
+        <div class="kpi-card"><div class="kpi-label">Efficiency Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs AUBEB MRV/mangrove MRV benchmarks</div></div>
     </div>
     <div class="main-grid">
         <div class="card">
@@ -85,7 +85,7 @@
         <div class="card full-width">
             <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
             <table class="phase-table"><thead><tr>
-                <th>Phase</th><th>Consumed</th><th>Recycled</th><th>Recycling Rate</th><th>Net Withdrawal</th>
+                <th>Phase</th><th>Consumed</th><th>Recycled</th><th>Sustained asset Rate</th><th>Net Withdrawal</th>
                 <th>% of Chain Net</th><th>Cascade Burden ↑</th><th>Data Quality</th><th>Rating</th>
             </tr></thead><tbody id="phaseTableBody"></tbody></table>
         </div>
@@ -94,8 +94,8 @@
             <div class="findings-grid" id="findingsGrid"></div>
         </div>
         <div class="card full-width">
-            <div class="card-title">♻️ Recycling Improvement Opportunity Ranking</div>
-            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by net freshwater withdrawal. Higher recycling rates would reduce these numbers. Sources: benchmark estimate — not project-specific, ICMM Water Reporting Guidelines.</p>
+            <div class="card-title">♻️ Sustained asset Improvement Opportunity Ranking</div>
+            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by net freshwater withdrawal. Higher recycling rates would reduce these numbers. Sources: benchmark estimate — not project-specific, mangrove MRV Water Reporting Guidelines.</p>
             <div id="recyclingRanking"></div>
         </div>
     </div>
@@ -103,24 +103,24 @@
         <strong>Data sources &amp; quality flags:</strong>
         Phase 2: sector benchmark — not project-specific (75% recycling — actual 71%; quality: High) ·
         Phase 1: AUBEB PDI v1; IUCN mangrove restoration benchmarks (quality: Low) ·
-        Phases 0, 3–8: Inferred from smelting, LBMA refinery, and WATER_WASTE_METHODOLOGY.md benchmarks (quality: Low) ·
-        Values shown are reference-scale daily rates (not global annual totals). Per-phase recycling rates from ICMM/WGC benchmarks.
-        WGC 2030 water target: 75% recycling industry-wide (Phase 2 already meets this). This page reads live state from the What-If Simulator if opened via the 💧 Water button.
+        Phases 0, 3–8: Inferred from smelting, carbon registry refinery, and WATER_WASTE_METHODOLOGY.md benchmarks (quality: Low) ·
+        Values shown are reference-scale daily rates (not global annual totals). Per-phase recycling rates from mangrove MRV/AUBEB MRV benchmarks.
+        AUBEB MRV 2030 water target: 75% recycling industry-wide (Phase 2 already meets this). This page reads live state from the What-If Simulator if opened via the 💧 Water button.
     </div>
 </div>
 <script>
 const DATA_URL = '/frontend/project/aubeb/data/processed/aubeb_supply_chain_ui.json';
 
 const FALLBACK = [
-    { id:0, name:'Prospecting',  D:227, C:208, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'Negligible use.' },
-    { id:1, name:'Mining',       D:270, C:277, water:2000000, water_recycling_pct:20, water_quality:'Medium', water_notes:'Dust suppression, ore washing, cooling.' },
-    { id:2, name:'Ore Processing',D:276,C:271, water:8500000, water_recycling_pct:75, water_quality:'High',   water_notes:'Cyanide leaching, flotation. Closed-loop circuits.' },
-    { id:3, name:'Doré',         D:264, C:249, water: 300000, water_recycling_pct:80, water_quality:'Low',    water_notes:'Furnace cooling, slag granulation.' },
-    { id:4, name:'Refining',     D:263, C:270, water:1000000, water_recycling_pct:65, water_quality:'Low',    water_notes:'Electrolytic baths; ultra-pure water needed.' },
-    { id:5, name:'Bar Casting',  D:253, C:247, water:  30000, water_recycling_pct:30, water_quality:'Low',    water_notes:'Cooling water only.' },
+    { id:0, name:'Degraded baseline',  D:227, C:208, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'Negligible use.' },
+    { id:1, name:'Custodial mandate',       D:270, C:277, water:2000000, water_recycling_pct:20, water_quality:'Medium', water_notes:'Dust suppression, baseline washing, cooling.' },
+    { id:2, name:'Baseline Baseline sensing',D:276,C:271, water:8500000, water_recycling_pct:75, water_quality:'High',   water_notes:'Cyanide leaching, flotation. Closed-loop circuits.' },
+    { id:3, name:'Carbon quantification',         D:264, C:249, water: 300000, water_recycling_pct:80, water_quality:'Low',    water_notes:'Furnace cooling, slag granulation.' },
+    { id:4, name:'Certification',     D:263, C:270, water:1000000, water_recycling_pct:65, water_quality:'Low',    water_notes:'Electrolytic baths; ultra-pure water needed.' },
+    { id:5, name:'Bar Commercialisation',  D:253, C:247, water:  30000, water_recycling_pct:30, water_quality:'Low',    water_notes:'Cooling water only.' },
     { id:6, name:'Logistics',    D:204, C:161, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'HVAC condensate only.' },
-    { id:7, name:'Exchange',     D:254, C:265, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'Office use only.' },
-    { id:8, name:'Recycling ♻️', D:245, C:250, water:1000000, water_recycling_pct:70, water_quality:'Low',    water_notes:'Similar to Phase 4 with variable input.' },
+    { id:7, name:'CBEMR design',     D:254, C:265, water:      0, water_recycling_pct: 0, water_quality:'Low',    water_notes:'Office use only.' },
+    { id:8, name:'Sustained asset', D:245, C:250, water:1000000, water_recycling_pct:70, water_quality:'Low',    water_notes:'Similar to Phase 4 with variable input.' },
 ];
 
 function calcBalance(D, C) { const i = Math.abs(D-C); return 100 * Math.exp(-2 * i / Math.max(D,C,1)); }
@@ -278,12 +278,12 @@ function buildTable(data, totalNet) {
 
 function buildFindings(data, totalConsumed, totalRecycled, totalNet, chainRate, grade) {
     const findings = [];
-    const gradeDesc = {'A+':'Chain recycling rate ≥75% meets WGC 2030 target. Best-in-class water stewardship.','A':'Above 60% recycling — well-managed chain. Improvement in Phase 1-2 would push to A+.','B':'45-60% recycling — near industry average. Targeted improvements in dominant phases are achievable.','C':'Below 45% — significant freshwater exposure. Regulatory and operational risk is elevated.','D':'Below 30% — critically inefficient. Immediate intervention needed.'};
+    const gradeDesc = {'A+':'Chain recycling rate ≥75% meets AUBEB MRV 2030 target. Best-in-class water stewardship.','A':'Above 60% recycling — well-managed chain. Improvement in Phase 1-2 would push to A+.','B':'45-60% recycling — near industry average. Targeted improvements in dominant phases are achievable.','C':'Below 45% — significant freshwater exposure. Regulatory and operational risk is elevated.','D':'Below 30% — critically inefficient. Immediate intervention needed.'};
     findings.push({ type: chainRate>=60?'positive':'warning', title:`Overall Rating: ${grade.grade} — ${grade.label}`, body: gradeDesc[grade.grade] || `Chain recycling rate: ${chainRate.toFixed(1)}%` });
 
     const dom = data.reduce((a,b) => b.water>a.water?b:a);
     const domPct = ((dom.water/totalConsumed)*100).toFixed(0);
-    findings.push({ type: Number(domPct)>70?'warning':'positive', title:`Dominant Phase: P${dom.id} ${dom.name}`, body:`Phase ${dom.id} accounts for ${domPct}% of total water consumed (${fmtL(dom.water)}). It has a recycling rate of ${dom.water_recycling_pct}%. ${dom.water_recycling_pct>=75?'This meets the WGC 2030 target.':'Improving recycling here has the greatest system-wide impact.'}` });
+    findings.push({ type: Number(domPct)>70?'warning':'positive', title:`Dominant Phase: P${dom.id} ${dom.name}`, body:`Phase ${dom.id} accounts for ${domPct}% of total water consumed (${fmtL(dom.water)}). It has a recycling rate of ${dom.water_recycling_pct}%. ${dom.water_recycling_pct>=75?'This meets the AUBEB MRV 2030 target.':'Improving recycling here has the greatest system-wide impact.'}` });
 
     const highRecyclers = data.filter(p=>p.water>0&&p.water_recycling_pct>=70);
     findings.push({ type:'positive', title:`High Recyclers: ${highRecyclers.length} phase(s) ≥70%`, body:`Phases ${highRecyclers.map(p=>`P${p.id}`).join(', ')||'none'} achieve ≥70% water recycling. These closed-loop operations (${highRecyclers.map(p=>p.name.split(' ')[0]).join(', ')}) represent best practice for their process type.` });
@@ -292,11 +292,11 @@ function buildFindings(data, totalConsumed, totalRecycled, totalNet, chainRate, 
     findings.push({ type: lowRecyclers.length>0?'negative':'positive', title: lowRecyclers.length>0?`Improvement Needed: ${lowRecyclers.length} phase(s) <40%`:'All active phases above 40% recycling', body: lowRecyclers.length>0?`Phases ${lowRecyclers.map(p=>`P${p.id} ${p.name.split(' ')[0]}`).join(', ')} have recycling rates below 40%. Improving these to industry benchmark (60%+) would reduce net withdrawal by ~${fmtL(lowRecyclers.reduce((s,p)=>s+p.water*0.25,0))}.`:'Strong recycling performance across all water-intensive phases.' });
 
     const phase2 = data.find(p=>p.id===2);
-    findings.push({ type:'positive', title:'Phase 2 — Indicative Benchmark (no project-specific data)', body:`Ore processing recycling is grounded in real data. No project-specific water recycling data available for AUBEB. Rates shown are indicative benchmarks for mangrove restoration operations.` });
+    findings.push({ type:'positive', title:'Phase 2 — Indicative Benchmark (no project-specific data)', body:`Baseline processing recycling is grounded in real data. No project-specific water recycling data available for AUBEB. Rates shown are indicative benchmarks for mangrove restoration operations.` });
 
     const phase8 = data.find(p=>p.id===8);
     const cumulativeToP8 = data.filter(p=>p.id<8).reduce((s,p)=>s+p.net,0);
-    findings.push({ type:'warning', title:`Accumulated Burden at Recycling Phase: ${fmtL(cumulativeToP8)}`, body:`By Phase 10 (Recycling), the accumulated net water withdrawn upstream is ${fmtL(cumulativeToP8)}. Recycling gold replaces primary production and avoids this entire upstream water burden — a key argument for secondary supply.` });
+    findings.push({ type:'warning', title:`Accumulated Burden at Sustained asset Phase: ${fmtL(cumulativeToP8)}`, body:`By Phase 10 (Sustained asset), the accumulated net water withdrawn upstream is ${fmtL(cumulativeToP8)}. Sustained restoration avoids repeating the full upstream establishment burden, a key argument for maintenance and survival-rate monitoring.` });
 
     document.getElementById('findingsGrid').innerHTML = findings.map(f=>`<div class="finding-card ${f.type}"><div class="finding-title">${f.title}</div><div class="finding-body">${f.body}</div></div>`).join('');
 }
@@ -327,13 +327,13 @@ function buildRanking(data) {
             <div>#</div><div>Phase</div><div>Recycled / Net split</div><div>Consumed</div><div>Net withdrawal</div><div>Recycle rate</div><div>Rating</div>
         </div>${html}
         <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#f8f9fa;padding:10px;border-radius:6px;">
-            <strong>Green bar</strong> = recycled proportion · <strong>Orange bar</strong> = net freshwater withdrawal · WGC 2030 target: 75% recycling rate chain-wide.
+            <strong>Green bar</strong> = recycled proportion · <strong>Orange bar</strong> = net freshwater withdrawal · AUBEB MRV 2030 target: 75% recycling rate chain-wide.
         </div>`;
 }
 
 async function init() {
     try {
-        const stored = localStorage.getItem('gold_water_analysis');
+        const stored = localStorage.getItem('aubeb_water_analysis');
         if (stored) {
             const parsed = JSON.parse(stored);
             if (parsed?.data?.length) {
@@ -366,7 +366,7 @@ init();
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'Dashboard',
     'what_if_simulator.html':'What-If Simulator',
@@ -378,7 +378,7 @@ init();
     'index.html':null,'frontend':null
   };
   var HUBS = {
-    'gold':'/frontend/project/aubeb/index.html',
+    'aubeb':'/frontend/project/aubeb/index.html',
     'shea':'/frontend/project/shea/index.html',
     'supply_chain':'index.html',
     'value_chain':'index.html'
@@ -446,7 +446,7 @@ init();
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -465,8 +465,8 @@ init();
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -477,17 +477,17 @@ init();
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

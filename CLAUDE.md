@@ -1,3 +1,21 @@
+---
+doc_id: claude
+title: CLAUDE.md
+type: documentation
+status: active
+domain: project_documentation
+layer: methodology
+projects:
+  []
+tags:
+  - methodology
+  - project_documentation
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
@@ -15,7 +33,7 @@ A quantitative, phase-resolved, physically-grounded model of the gold supply cha
 ### Start the dev environment
 ```bash
 cd /home/jw/src/tv
-python -m http.server 8000          # static frontend at http://localhost:8000
+python3 -m http.server 8000 --bind 127.0.0.1 # static backend behind Nginx
 ./scripts/start_mkdocs_from_site.sh # docs wiki (pre-built site/)
 ```
 
@@ -29,6 +47,13 @@ sudo cp deploy/tv-web.service /etc/systemd/system/
 sudo cp deploy/tv-docs.service /etc/systemd/system/
 sudo systemctl daemon-reload && sudo systemctl enable --now tv-web.service tv-docs.service
 ```
+
+### AUBEB password gate
+
+Use Nginx in front of the Python static server when AUBEB pages need password
+protection. See `deploy/README-aubeb-nginx.md`. The Python server should bind
+to `127.0.0.1:8000` so browsers cannot bypass Nginx and request protected files
+directly.
 
 ### Generate frontend data from schema CSVs
 ```bash
@@ -49,7 +74,7 @@ python scripts/health_check.py
 ### Documentation wiki (live reload)
 ```bash
 pip install -r requirements-docs.txt
-mkdocs serve
+mkdocs serve -f scripts/mkdocs.yml
 ```
 
 ### Install dependencies

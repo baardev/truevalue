@@ -1,3 +1,22 @@
+---
+doc_id: frontend_project_gold_data_gold_e_model_summary
+title: Gold E-Model Claims Register
+type: summary
+status: active
+domain: gold_supply_chain
+layer: methodology
+projects:
+  - gold
+tags:
+  - gold
+  - gold_supply_chain
+  - methodology
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # Gold E-Model Claims Register
 ## Abstract Layer Decoupling Analysis — All Phases
 

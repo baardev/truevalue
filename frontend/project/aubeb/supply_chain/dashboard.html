@@ -82,7 +82,7 @@
             margin-bottom: 10px;
         }
         
-        .card-bar {
+        .card-record {
             height: 8px;
             background: #e9ecef;
             border-radius: 4px;
@@ -320,7 +320,7 @@
             border-radius: 4px;
         }
         
-        /* Model strip + scenario bar */
+        /* Model strip + scenario record */
         .model-strip {
             display: flex; background: #1a1a1a; overflow-x: auto;
         }
@@ -332,7 +332,7 @@
         .model-tab:hover { background: #2a2a2a; color: #ccc; }
         .model-tab.active { background: #5c4a1e; color: #f5d97a; cursor: default; }
         .model-tab.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; }
-        .scenario-bar {
+        .scenario-record {
             display: flex; align-items: center; gap: 12px;
             padding: 10px 20px; background: #1a1410;
             border-bottom: 2px solid #c9a227; flex-wrap: wrap;
@@ -425,10 +425,10 @@
             <select id="entity-select" style="background:#222;color:#aaa;border:1px solid #333;border-radius:4px;padding:3px 8px;font-size:11px;" onchange="switchEntity(this.value)">
                 <option value="synthetic">Synthetic Baseline</option>
                 <option value="aubeb_baseline">AUBEB Baseline (PDI synthetic)</option>
-                <option value="barrick">Programme synthetic baseline (synthetic)</option>
-                <option value="royal_mint">GUD ODIN – Recycler (synthetic)</option>
-                <option value="mining_co_a">Mining Co A – Efficient</option>
-                <option value="mining_co_b">Mining Co B – Inefficient</option>
+                <option value="programme_baseline">Programme synthetic baseline (synthetic)</option>
+                <option value="gud_odin">GUD ODIN dMRV overlay (synthetic)</option>
+                <option value="community_site_a">Community Site A – Strong stewardship</option>
+                <option value="community_site_b">Community Site B – Capacity constrained</option>
             </select>
             <span id="entity-desc" style="color:#555;font-style:italic;">Entity overlay applies to phase detail modal only</span>
         </div>
@@ -444,7 +444,7 @@
             </div>
             
             <div class="card good" id="card-water">
-                <div class="card-label">Water Recycling</div>
+                <div class="card-label">Water Sustained asset</div>
                 <div class="card-value" id="cv-water">73%</div>
                 <div class="card-bar">
                     <div class="card-bar-fill" id="cb-water" style="width: 73%; background: linear-gradient(90deg, #17a2b8, #20c997);"></div>
@@ -473,7 +473,7 @@
         
         <div class="main-content">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-                <div class="section-title" style="margin-bottom: 0;">Supply Chain Flow - Now includes Recycling ♻️</div>
+                <div class="section-title" style="margin-bottom: 0;">Supply Chain Flow - Now includes Sustained asset</div>
             </div>
             
             <div class="flow-chart">
@@ -482,7 +482,7 @@
                 </div>
 
                 <div id="recycling-section" style="margin-top: 40px; padding: 20px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #17a2b8;">
-                    <h3 style="font-size: 16px; color: #0d4f47; margin-bottom: 10px;">♻️ Circular Economy: Phase 10 (Recycling)</h3>
+                    <h3 style="font-size: 16px; color: #0d4f47; margin-bottom: 10px;">♻️ Circular Economy: Phase 10 (Sustained asset)</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 15px;">
                         <div class="phase" onclick="showPhaseDetail(8)" id="phase8-box">
                             <!-- Dynamically rendered -->
@@ -567,7 +567,7 @@
                             <span>♻️ Phase 2 Waste Generation</span>
                             <span style="font-weight: bold; color: #dc3545;">9,500 tonnes/day</span>
                         </div>
-                        <div style="font-size: 11px; color: #dc3545; margin-bottom: 10px;">⚠️ 95% of ore becomes tailings (Critical!)</div>
+                        <div style="font-size: 11px; color: #dc3545; margin-bottom: 10px;">⚠️ Site-level water data is currently OPAQUE in the PDI baseline</div>
                         
                         <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 12px;">
                             <span>⚡ Phase 1-2 Energy Mix</span>
@@ -579,9 +579,9 @@
                     <div style="padding: 15px; background: #fff3cd; border-radius: 8px; border-left: 4px solid #ffc107; margin-top: 15px;">
                         <div style="font-weight: 600; margin-bottom: 5px; font-size: 13px;">💡 Circular Economy Opportunity</div>
                         <div style="font-size: 12px; color: #856404;">
-                            Phase 2 waste: Only 5% recycled<br>
-                            <strong>Potential:</strong> Reprocess old tailings, use for mine backfill<br>
-                            <strong>Impact:</strong> +3% waste circularity = $1.2M savings
+                            Phase 9 maintenance: survival and regeneration loops require field validation<br>
+                            <strong>Potential:</strong> improve hydrology, planting survival, and community stewardship data<br>
+                            <strong>Impact:</strong> stronger verification confidence and reduced permanence risk
                         </div>
                     </div>
                     
@@ -614,8 +614,8 @@
 
         // ── Phase metadata (names) ─────────────────────────────────────────────────
         const PHASE_NAMES = {
-            0:'Prospecting', 1:'Mining', 2:'Processing', 3:'Doré',
-            4:'Refining', 5:'Casting', 6:'Vaulting', 7:'Exchange', 8:'Recycling'
+            0:'Degraded ecosystem', 1:'Custodial formalisation', 2:'Baseline sensing', 3:'Carbon quantification',
+            4:'Certification', 5:'Commercialisation', 6:'Capital return', 7:'CBEMR design', 8:'Co-management'
         };
 
         // ── Scenarios ─────────────────────────────────────────────────────────────
@@ -707,7 +707,7 @@
                         <div class="phase-score">${p8.score}</div>
                         <div class="phase-n">N: ${p8.N}</div>
                     </div>
-                    <div class="phase-name">Recycling</div>`;
+                    <div class="phase-name">Sustained asset</div>`;
             }
 
             // Sync phaseData scores with scenario for the detail modal
@@ -788,7 +788,7 @@
             title.textContent = `Phase ${phaseId}: ${phase.name}`;
             body.innerHTML = `
                 <div style="margin: 20px 0;">
-                    ${phaseId === 8 ? '<div style="background:#e7f3ff;padding:10px;border-radius:6px;margin-bottom:15px;font-size:13px;"><strong>♻️ Circular Economy Phase</strong><br>Recycled gold feeds back to Phase 4 (Refining). ~28% of annual supply.</div>' : ''}
+                    ${phaseId === 8 ? '<div style="background:#e7f3ff;padding:10px;border-radius:6px;margin-bottom:15px;font-size:13px;"><strong>🌱 Community Co-management Phase</strong><br>Local stewardship feeds restoration performance data back into MRV, certification, and benefit-sharing decisions.</div>' : ''}
                     <div style="font-size:12px;color:#6c757d;margin-bottom:12px;">Transparency: <strong>${transparency}</strong></div>
                     <h3 style="margin-bottom:15px;">D–C Balance</h3>
                     <div style="margin-bottom:10px;">
@@ -843,9 +843,9 @@
 
         function showRecommendation(id) {
             const messages = {
-                1: 'Phase 6 Recommendation:\n\nProblem: Vault capacity (D) is high but network integration (C) is low.\n\nSolution: Add 2 vault providers to increase network diversity.\n\nExpected Impact:\n- C: 161 → 195 (+21%)\n- Balance: 65.5 → 78.2 (+19%)\n- N-capacity: 118 → 145 (+23%)',
-                2: 'Phase 3 Recommendation:\n\nProblem: Doré production has moderate D-dominance.\n\nSolution: Enhance refinery network relationships.\n\nExpected Impact:\n- Balance: 89.3 → 93.5 (+5%)',
-                3: 'Phase 0 Recommendation:\n\nProblem: Exploration has limited supplier diversity.\n\nSolution: Engage 2 additional survey technology providers.\n\nExpected Impact:\n- C: 208 → 228 (+10%)\n- Balance: 83.9 → 91.2 (+9%)'
+                1: 'Phase 6 Recommendation:\n\nProblem: Conservation Fund deployment has high definition requirements but weaker distribution traceability.\n\nSolution: Publish site-level disbursement and restoration work-package records.\n\nExpected Impact:\n- Higher C transparency\n- Stronger capital-return traceability\n- Improved lifecycle balance',
+                2: 'Phase 3 Recommendation:\n\nProblem: Carbon quantification is sensitive to field validation and buffer assumptions.\n\nSolution: Add auditable stratification records and uncertainty bands.\n\nExpected Impact:\n- Higher verification confidence\n- Cleaner handoff into certification',
+                3: 'Phase 0 Recommendation:\n\nProblem: Degraded ecosystem baseline is structurally opaque.\n\nSolution: Expand retrospective remote-sensing and community stewardship evidence.\n\nExpected Impact:\n- Reduced baseline opacity\n- Stronger parent-to-child N traceability'
             };
             alert(messages[id]);
         }
@@ -863,11 +863,10 @@
             const label = (UI_DATA.entities && UI_DATA.entities[entity] && UI_DATA.entities[entity].label) || entity;
             const descMap = {
                 synthetic:   'Synthetic baseline — modeled N-D-C parameters across all 11 phases.',
-                newmont:     'AUBEB: All phases use synthetic baseline derived from PDI v1 (2026-04-21).',
-                barrick:     'Programme synthetic baseline: real data not yet integrated — all phases synthetic.',
-                royal_mint:  'GUD ODIN (Recycler): Phase 10 specialist; real data not yet integrated.',
-                mining_co_a: 'Mining Co A (Efficient): high-grade ore, streamlined permitting. Upstream phases only.',
-                mining_co_b: 'Mining Co B (Inefficient): low-grade ore, contested permits. Upstream phases only.'
+                programme_baseline: 'Programme synthetic baseline: real data not yet integrated, all phases synthetic.',
+                gud_odin:  'GUD ODIN dMRV overlay: remote-sensing and verification data pathway, synthetic until live records are integrated.',
+                community_site_a: 'Community Site A: stronger local stewardship and data completeness assumptions.',
+                community_site_b: 'Community Site B: constrained local capacity and lower data completeness assumptions.'
             };
             const descEl = document.getElementById('entity-desc');
             if (descEl) descEl.textContent = descMap[entity] || label;
@@ -886,17 +885,17 @@
                 if (!uiRes.ok) throw new Error(`HTTP ${uiRes.status} loading ${DATA_URL}`);
                 UI_DATA = await uiRes.json();
                 phaseData = buildPhaseData(currentEntity);
-                console.info(`[gold-sc] Loaded UI data (generated: ${UI_DATA._meta && UI_DATA._meta.generated})`);
+                console.info(`[aubeb-sc] Loaded UI data (generated: ${UI_DATA._meta && UI_DATA._meta.generated})`);
                 if (scenRes.ok) {
                     const scenData = await scenRes.json();
                     SCENARIOS = scenData.pi.scenarios;
                     buildScenarioButtons(SCENARIOS);
                     currentScenario = SCENARIOS.current;
                 } else {
-                    console.warn('[gold-sc] scenarios.json not found — scenario bar will be empty');
+                    console.warn('[aubeb-sc] scenarios.json not found, scenario record will be empty');
                 }
             } catch (err) {
-                console.error('[gold-sc] Failed to load UI data, falling back to empty dataset:', err);
+                console.error('[aubeb-sc] Failed to load UI data, falling back to empty dataset:', err);
                 UI_DATA = { phases: { synthetic: {} }, phase_meta: {}, entities: {}, system: {} };
                 phaseData = {};
             }
@@ -910,7 +909,7 @@
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'Dashboard',
     'what_if_simulator.html':'What-If Simulator',
@@ -922,7 +921,7 @@
     'index.html':null,'frontend':null
   };
   var HUBS = {
-    'gold':'/frontend/project/aubeb/index.html',
+    'aubeb':'/frontend/project/aubeb/index.html',
     'shea':'/frontend/project/shea/index.html',
     'supply_chain':'index.html',
     'value_chain':'index.html'
@@ -990,7 +989,7 @@
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -1009,8 +1008,8 @@
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -1021,17 +1020,17 @@
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

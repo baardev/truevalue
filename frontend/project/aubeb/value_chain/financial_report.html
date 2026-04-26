@@ -23,14 +23,14 @@
     .header h1 { font-size: 18px; font-weight: 900; }
     .nav a { color: rgba(255,255,255,0.85); text-decoration: none; font-weight: 800; margin-left: 14px; }
     .nav a:hover { color: #fff; text-decoration: underline; }
-    .toolbar {
+    .toolrecord {
       background: #f8fafc; padding: 12px 24px; border-bottom: 1px solid #e2e8f0;
       display: flex; gap: 14px; align-items: center; flex-wrap: wrap;
     }
-    .toolbar label { font-size: 12px; font-weight: 900; color: #475569; }
-    .toolbar select, .toolbar input[type=range] { font-size: 12px; accent-color: #0d9488; }
-    .toolbar .ctrl { display: flex; align-items: center; gap: 8px; }
-    .toolbar .val { font-weight: 900; color: #0f172a; font-size: 12px; min-width: 48px; }
+    .toolrecord label { font-size: 12px; font-weight: 900; color: #475569; }
+    .toolrecord select, .toolrecord input[type=range] { font-size: 12px; accent-color: #0d9488; }
+    .toolrecord .ctrl { display: flex; align-items: center; gap: 8px; }
+    .toolrecord .val { font-weight: 900; color: #0f172a; font-size: 12px; min-width: 48px; }
     .body { padding: 24px; }
     .report-title {
       font-size: 16px; font-weight: 900; color: #0f172a;
@@ -221,7 +221,7 @@
         <div class="disclaimer">
           <strong>Data quality:</strong> All financial figures are synthetic educational estimates derived
           from the AUBEB PDI v1 (2026-04-21). Phase costs are indicative benchmarks for mangrove
-          restoration programmes (IUCN, TNC, Restore Ocean 2023). Carbon revenue uses PDI pricing anchors.
+          restoration programmes (IUCN, TNC, Restbaseline Ocean 2023). Carbon revenue uses PDI pricing anchors.
           Ecosystem service co-benefit proxy uses $50/ha/yr (conservative coastal protection estimate).
           All values are <em>simulated</em> and not real project accounting.
         </div>
@@ -277,7 +277,7 @@
 
   <div class="footer">
     <div>AUBEB carbon programme financial report · Value layer only · Physical supply-chain layer unchanged</div>
-    <div><a href="../../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
+    <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
   </div>
 </div>
 
@@ -387,7 +387,7 @@
       `<div class="kpi ${k.cls}"><div class="kl">${k.label}</div><div class="kv">${k.val}</div><div class="ks">${k.sub}</div></div>`
     ).join("");
 
-    // Phase cost bars
+    // Phase cost verified records
     const maxCost = Math.max(...Object.values(PHASE_COSTS).map(p=>p.cost));
     el("costBars").innerHTML = Object.entries(PHASE_COSTS).map(([pid, p]) => {
       const pct = (p.cost / maxCost * 100).toFixed(1);
@@ -465,7 +465,7 @@
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'aubeb':'AUBEB','shea':'Shea','gold':'Gold',
+    'aubeb':'AUBEB','shea':'Shea','aubeb':'AUBEB',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'financial_report.html':'Financial Report',
     'dashboard.html':'Dashboard',
@@ -524,7 +524,7 @@
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -543,8 +543,8 @@
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -555,17 +555,17 @@
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

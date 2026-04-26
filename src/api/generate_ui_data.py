@@ -189,7 +189,7 @@ SCOPE_EMISSIONS: dict[str, dict] = {
 
 
 # ── Water data per phase ───────────────────────────────────────────────────────
-# Recycling rates and source citations from docs/Reports/WATER_WASTE_METHODOLOGY.md.
+# Recycling rates and source citations from frontend/docs/Reports/WATER_WASTE_METHODOLOGY.md.
 # Newmont 2024 SR confirms Phase 2 actual recycling = 71% (stored in metrics CSV).
 
 WATER_DATA: dict[str, dict] = {

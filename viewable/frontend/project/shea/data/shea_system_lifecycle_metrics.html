@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shea System Lifecycle Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Shea System Lifecycle Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>shea_system_lifecycle_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">25</span> / 25
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>lifecycle_phase_id<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>pilot_farmers_koul</td><td>50</td><td>persons</td><td>confidential</td><td>Acorn Project Summary 080523</td><td>POPULATED</td><td>Existing farmer participants in Koul pilot.</td></tr>
+<tr><td>2</td><td>0</td><td>potential_participants_10y</td><td>100000</td><td>persons</td><td>confidential</td><td>Acorn Project Summary 080523</td><td>POPULATED</td><td>Potential participants over 10 years.</td></tr>
+<tr><td>3</td><td>0</td><td>plot_size_ha_per_farmer</td><td>1</td><td>ha</td><td>confidential</td><td>Acorn Project Summary 080523</td><td>POPULATED</td><td>Estimated average plot size per existing farmer.</td></tr>
+<tr><td>4</td><td>0</td><td>additionality_barrier_finance</td><td></td><td></td><td>confidential</td><td>Serious Shea Additionality Assessment</td><td>POPULATED</td><td>Limited access to financial resources.</td></tr>
+<tr><td>5</td><td>0</td><td>additionality_barrier_expertise</td><td></td><td></td><td>confidential</td><td>Serious Shea Additionality Assessment</td><td>POPULATED</td><td>Limited technical expertise for agroforestry.</td></tr>
+<tr><td>6</td><td>0</td><td>additionality_barrier_land</td><td></td><td></td><td>confidential</td><td>Serious Shea Additionality Assessment</td><td>POPULATED</td><td>Degraded soils, erosion, and land tenure.</td></tr>
+<tr><td>7</td><td>0</td><td>additionality_barrier_markets</td><td></td><td></td><td>confidential</td><td>Serious Shea Additionality Assessment</td><td>POPULATED</td><td>Lack of market opportunities.</td></tr>
+<tr><td>8</td><td>1</td><td>trees_planted_target</td><td>35000000</td><td>trees</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Native trees target by 2030.</td></tr>
+<tr><td>9</td><td>1</td><td>hectares_plantations</td><td>1000000</td><td>ha</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>0.9M ha primary and 0.1M ha secondary agroforestry.</td></tr>
+<tr><td>10</td><td>1</td><td>nurseries_count</td><td>5</td><td>nurseries</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Five nurseries, each with 1M seedlings per year.</td></tr>
+<tr><td>11</td><td>1</td><td>facilities_total</td><td>26</td><td>facilities</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Clean-energy processing and collection facilities.</td></tr>
+<tr><td>12</td><td>1</td><td>plantation_sites_count</td><td>31</td><td>sites</td><td>confidential</td><td>EP Carbon new Requirements</td><td>POPULATED</td><td>Site list currently tabulated in shea_plantation_sites_senegal.csv.</td></tr>
+<tr><td>13</td><td>2</td><td>agrofood_processed_pa</td><td>3774</td><td>MT/year</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Total agro-food processed per year across shea, mango, moringa, and baobab.</td></tr>
+<tr><td>14</td><td>2</td><td>cooperative_workers</td><td>13500</td><td>persons</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>At least 50% women, with equal payment and land rights.</td></tr>
+<tr><td>15</td><td>2</td><td>households_beneficiaries</td><td>135000</td><td>households</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Households expected to benefit.</td></tr>
+<tr><td>16</td><td>2</td><td>staff_total</td><td>750</td><td>persons</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Project staff, 50%+ women.</td></tr>
+<tr><td>17</td><td>3</td><td>tree_survival_rate_target</td><td>0.8</td><td>ratio</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>80% survival target.</td></tr>
+<tr><td>18</td><td>3</td><td>monitoring_frequency</td><td></td><td></td><td>confidential</td><td></td><td>OPAQUE</td><td>Inspection cadence is not yet extracted or tabulated.</td></tr>
+<tr><td>19</td><td>3</td><td>seedling_replacement_rate</td><td></td><td></td><td>confidential</td><td></td><td>OPAQUE</td><td>Replacement rate for failed seedlings is not yet documented.</td></tr>
+<tr><td>20</td><td>3</td><td>maintenance_budget_annual</td><td></td><td></td><td>confidential</td><td></td><td>OPAQUE</td><td>Dedicated annual maintenance budget is not yet tabulated.</td></tr>
+<tr><td>21</td><td>3</td><td>training_refresh_frequency</td><td></td><td></td><td>confidential</td><td></td><td>OPAQUE</td><td>Recurring training cadence is not yet documented.</td></tr>
+<tr><td>22</td><td>4</td><td>carbon_sequestered_year_10</td><td>4200000</td><td>tCO2e</td><td>confidential</td><td>Serious Shea BPlan V8 2023</td><td>POPULATED</td><td>Year 10 carbon sequestration target.</td></tr>
+<tr><td>23</td><td>4</td><td>target_poverty_2030</td><td>Zero</td><td>status</td><td>confidential</td><td>Serious Shea Global Indicator Framework</td><td>POPULATED</td><td>Serious Shea 2030 poverty target.</td></tr>
+<tr><td>24</td><td>4</td><td>adaptation_action_log</td><td></td><td></td><td>confidential</td><td></td><td>OPAQUE</td><td>No recurring adaptation action log is currently tabulated.</td></tr>
+<tr><td>25</td><td>4</td><td>climate_stress_trigger_threshold</td><td></td><td></td><td>inferred</td><td></td><td>OPAQUE</td><td>Thresholds for drought, fire, pests, or land pressure are not yet defined.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

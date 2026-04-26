@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jackson Water Dashboard</title>
+  <style>
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:Segoe UI,Tahoma,sans-serif; background:#edf2f7; color:#2d3748; }
+    header { background:linear-gradient(135deg,#2d3748,#4a5568); color:#fff; padding:22px 30px; display:flex; justify-content:space-between; align-items:center; }
+    header h1 { font-size:22px; font-weight:400; }
+    header a { color:#e2e8f0; text-decoration:none; margin-left:12px; font-size:14px; }
+    main { max-width:1180px; margin:0 auto; padding:28px; }
+    .stats { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; margin-bottom:22px; }
+    .stat,.card { background:#fff; border-radius:10px; padding:18px; box-shadow:0 1px 5px rgba(0,0,0,.08); }
+    .label { color:#718096; font-size:11px; text-transform:uppercase; font-weight:800; }
+    .value { color:#2d3748; font-size:26px; font-weight:900; margin-top:4px; }
+    table { width:100%; border-collapse:collapse; font-size:13px; }
+    th { text-align:left; background:#2d3748; color:#fff; padding:10px; }
+    td { border-bottom:1px solid #e2e8f0; padding:10px; vertical-align:top; }
+    .bad { color:#c53030; font-weight:800; }
+    .warn { color:#975a16; font-weight:800; }
+    @media (max-width:800px) { .stats { grid-template-columns:1fr 1fr; } header { display:block; } }
+  </style>
+</head>
+<body>
+  <header><h1>Jackson Water Supply Chain Dashboard</h1><nav><a href="index.html">Supply Chain</a><a href="system_lifecycle.html">Lifecycle</a><a href="../index.html">Hub</a></nav></header>
+  <main>
+    <div class="stats" id="stats"></div>
+    <div class="card">
+      <table><thead><tr><th>Phase</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Interpretation</th></tr></thead><tbody id="rows"></tbody></table>
+    </div>
+  </main>
+  <script>
+    fetch("../data/processed/water_jackson_ms_supply_chain_ui.json").then(r => r.json()).then(data => {
+      const phases = data.phases.synthetic;
+      const ids = Object.keys(phases).sort((a, b) => Number(a) - Number(b));
+      const bottlenecks = data.system.bottleneck_phase_ids || [];
+      const worstId = ids.reduce((worst, id) => phases[id].balance < phases[worst].balance ? id : worst, ids[0]);
+      document.getElementById("stats").innerHTML = [
+        ["System balance", data.system.balance + "%"],
+        ["Average N", data.system.average_N],
+        ["Bottlenecks", bottlenecks.length],
+        ["Worst phase", `P${worstId}`]
+      ].map(s => `<div class="stat"><div class="label">${s[0]}</div><div class="value">${s[1]}</div></div>`).join("");
+      document.getElementById("rows").innerHTML = ids.map(id => {
+        const p = phases[id], meta = data.phase_meta[id], cls = bottlenecks.includes(Number(id)) ? "bad" : (p.balance < 65 ? "warn" : "");
+        return `<tr><td><strong>P${id}: ${meta.name}</strong><br><small>${meta.transparency} transparency</small></td><td>${p.D}</td><td>${p.C}</td><td>${p.N}</td><td class="${cls}">${p.balance}%</td><td>${p.notes}</td></tr>`;
+      }).join("");
+    });
+  </script>
+</body>
+</html>

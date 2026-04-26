@@ -1,3 +1,22 @@
+---
+doc_id: frontend_project_shea_data_clarity_cleo_shea_value_chain_outline
+title: "True Value Carbon – Cleo Shea Value Chain (Updated 2020)"
+type: documentation
+status: active
+domain: shea_supply_chain
+layer: value_chain
+projects:
+  - shea
+tags:
+  - shea
+  - shea_supply_chain
+  - value_chain
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # True Value Carbon – Cleo Shea Value Chain (Updated 2020)
 
 **Source:** [Clarity Coalition – True Value Carbon, Cleo Shea Value Chain](https://claritycoalition.net/?epkb_post_type_1=true-value-chain-cleo-shea-carbon&seq_no=2)  

@@ -426,7 +426,7 @@
                         <div class="metric-card-delta delta-positive" id="balanceDelta">—</div>
                     </div>
                     <div class="metric-card">
-                        <div class="metric-card-label">Water Recycling</div>
+                        <div class="metric-card-label">Water Sustained asset</div>
                         <div class="metric-card-value" id="waterRecycle">73%</div>
                         <div class="metric-card-delta delta-positive" id="waterDelta">—</div>
                     </div>
@@ -520,12 +520,12 @@
                 </div>
                 
                 <div style="margin-top: 15px; padding: 15px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #17a2b8;">
-                    <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">♻️ Phase 10: Recycling Impact</div>
+                    <div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">♻️ Phase 10: Sustained asset Impact</div>
                     <div style="font-size: 11px; color: #6c757d;">
                         • Saves 60-80% energy vs. primary production<br>
-                        • Eliminates mining waste<br>
+                        • Eliminates unverified restoration waste<br>
                         • Reduces water use by 90%<br>
-                        • Feeds back to Phase 4 (Refining)<br>
+                        • Feeds back to Phase 4 (Certification)<br>
                         • Currently ~28% of annual supply
                     </div>
                 </div>
@@ -544,7 +544,7 @@
                     <div style="margin-top:10px;font-size:10px;color:#adb5bd;border-top:1px solid #e9ecef;padding-top:6px;">
                         S1 = direct combustion &nbsp;|&nbsp; S2 = purchased electricity<br>
                         S3↑ = accumulated burden from all upstream phases<br>
-                        Values adjust with N-D-C imbalance. Sources: WGC 2023, Foran 2005, industry benchmarks.
+                        Values adjust with N-D-C imbalance. Sources: AUBEB MRV 2023, Foran 2005, industry benchmarks.
                     </div>
                 </div>
             </div>
@@ -559,11 +559,11 @@
         // Keep in sync with data/frontend/aubeb_supply_chain_ui.json → entities + phases_companies.
         const INLINE_ENTITY_DATA = {
             entities: {
-                mining_co_a: {
-                    label: "Mining Co A — Efficient",
-                    description: "High-grade ore, streamlined permitting, 8 active sites.",
+                community_site_a: {
+                    label: "Community Site A — Efficient",
+                    description: "Strong local stewardship, streamlined permitting, 8 active sites.",
                     profile: {
-                        ore_grade:             { value: 8,   unit: "/10" },
+                        stewardship_quality:             { value: 8,   unit: "/10" },
                         regulatory_burden:     { value: 3,   unit: "/10" },
                         active_sites:          { value: 8,   unit: "sites" },
                         water_recycling_pct:   { value: 85,  unit: "%" },
@@ -571,11 +571,11 @@
                         energy_clean_pct:      { value: 65,  unit: "%" }
                     }
                 },
-                mining_co_b: {
-                    label: "Mining Co B — Inefficient",
-                    description: "Low-grade ore, heavy regulatory burden, 3 active sites.",
+                community_site_b: {
+                    label: "Community Site B — Inefficient",
+                    description: "Capacity-constrained stewardship, heavy regulatory burden, 3 active sites.",
                     profile: {
-                        ore_grade:             { value: 3,   unit: "/10" },
+                        stewardship_quality:             { value: 3,   unit: "/10" },
                         regulatory_burden:     { value: 8,   unit: "/10" },
                         active_sites:          { value: 3,   unit: "sites" },
                         water_recycling_pct:   { value: 30,  unit: "%" },
@@ -585,7 +585,7 @@
                 }
             },
             phases_companies: {
-                mining_co_a: {
+                community_site_a: {
                     "1": {
                         D: 255, C: 268, balance: 90.8, N: 237,
                         derived_from: {
@@ -594,7 +594,7 @@
                         }
                     }
                 },
-                mining_co_b: {
+                community_site_b: {
                     "1": {
                         D: 306, C: 185, balance: 42.3, N: 192,
                         derived_from: {
@@ -972,7 +972,7 @@
 
         // Build the carbon footprint summary panel
         function updateCarbonSummary() {
-            const GLOBAL_OZ = 106_000_000; // approx annual gold production in troy oz
+            const PROGRAMME_HECTARES = 150_000; // AUBEB programme area in verified hectares
 
             // Compute effective S1/S2 per phase (adjusted for imbalance)
             const phaseEmissions = phases.map(p => {
@@ -988,7 +988,7 @@
             const totalS1 = phaseEmissions.reduce((s, p) => s + p.s1, 0);
             const totalS2 = phaseEmissions.reduce((s, p) => s + p.s2, 0);
             const totalS12 = totalS1 + totalS2;
-            const perOz = totalS12 / GLOBAL_OZ; // tCO2e per oz
+            const perOz = totalS12 / PROGRAMME_HECTARES; // tCO2e per tCO₂e
 
             const summaryEl = document.getElementById('carbonSummary');
             if (!summaryEl) return;
@@ -1012,7 +1012,7 @@
                         <div style="font-size:18px;font-weight:700;">${fmtCO2(totalS12)}</div>
                     </div>
                     <div style="text-align:right;">
-                        <div style="font-size:10px;opacity:0.7;">Per troy oz</div>
+                        <div style="font-size:10px;opacity:0.7;">Per verified hectare</div>
                         <div style="font-size:14px;font-weight:700;">${perOz.toFixed(2)} t</div>
                     </div>
                 </div>`;
@@ -1049,22 +1049,22 @@
             
             // Layout: 3x3 grid
             const positions = [
-                [50, 50],    // 0: Prospecting
-                [180, 50],   // 1: Mining
-                [310, 50],   // 2: Processing
-                [440, 50],   // 3: Doré
-                [570, 50],   // 4: Refining
-                [50, 200],   // 5: Casting
-                [180, 200],  // 6: Vaulting
-                [310, 200],  // 7: Exchange
-                [570, 350]   // 8: Recycling (bottom right with arrow back to Phase 4)
+                [50, 50],    // 0: Degraded baseline
+                [180, 50],   // 1: Custodial mandate
+                [310, 50],   // 2: Baseline sensing
+                [440, 50],   // 3: Carbon quantification
+                [570, 50],   // 4: Certification
+                [50, 200],   // 5: Commercialisation
+                [180, 200],  // 6: Capital return
+                [310, 200],  // 7: CBEMR design
+                [570, 350]   // 8: Sustained asset (bottom right with arrow back to Phase 4)
             ];
             
             // Draw connections
             const connections = [
                 [0,1], [1,2], [2,3], [3,4],  // Top row
                 [4,5], [5,6], [6,7],          // Down and across
-                [8,4]                          // Recycling back to Refining (circular!)
+                [8,4]                          // Sustained asset back to Certification (circular!)
             ];
             
             connections.forEach(([fromIdx, toIdx]) => {
@@ -1078,21 +1078,21 @@
                 const strokeWidth = 2 + (metrics.N / 80);
                 
                 // Special styling for recycling loop
-                const isRecycling = fromIdx === 8;
-                const dashArray = isRecycling ? "8,4" : "0";
-                const opacity = isRecycling ? "0.8" : "0.6";
+                const isSustained asset = fromIdx === 8;
+                const dashArray = isSustained asset ? "8,4" : "0";
+                const opacity = isSustained asset ? "0.8" : "0.6";
                 
                 svg.innerHTML += `
                     <line x1="${x1 + nodeWidth/2}" y1="${y1 + nodeHeight/2}" 
                           x2="${x2 + nodeWidth/2}" y2="${y2 + nodeHeight/2}" 
-                          stroke="${isRecycling ? '#17a2b8' : strokeColor}" 
+                          stroke="${isSustained asset ? '#17a2b8' : strokeColor}" 
                           stroke-width="${strokeWidth}" 
                           stroke-dasharray="${dashArray}"
                           opacity="${opacity}"/>
                 `;
                 
                 // Add arrow for recycling
-                if (isRecycling) {
+                if (isSustained asset) {
                     svg.innerHTML += `
                         <text x="${(x1 + x2)/2 + nodeWidth/2 - 20}" y="${(y1 + y2)/2 + nodeHeight/2 - 10}" 
                               font-size="24" fill="#17a2b8">↻</text>
@@ -1109,11 +1109,11 @@
                                 metrics.balance >= 60 ? '#ffc107' : '#dc3545';
                 
                 // Special color for recycling phase
-                const isRecycling = idx === 8;
-                const nodeColor = isRecycling ? '#17a2b8' : fillColor;
+                const isSustained asset = idx === 8;
+                const nodeColor = isSustained asset ? '#17a2b8' : fillColor;
                 
                 svg.innerHTML += `
-                    <g class="flow-node" onclick="alert('Phase ${phase.id}: ${phase.name}\\nD: ${phase.D}, C: ${phase.C}\\nBalance: ${metrics.balance.toFixed(1)}${isRecycling ? '\\n♻️ Circular Economy: Feeds to Phase 4' : ''}')">
+                    <g class="flow-node" onclick="alert('Phase ${phase.id}: ${phase.name}\\nD: ${phase.D}, C: ${phase.C}\\nBalance: ${metrics.balance.toFixed(1)}${isSustained asset ? '\\n♻️ Circular Economy: Feeds to Phase 4' : ''}')">
                         <rect x="${x}" y="${y}" width="${nodeWidth}" height="${nodeHeight}" 
                               fill="${nodeColor}" rx="8" opacity="0.9"/>
                         <text x="${x + nodeWidth/2}" y="${y + 20}" text-anchor="middle" 
@@ -1240,19 +1240,19 @@
 
         function openEmissionsAnalysis() {
             const snapshot = phases.map(p => ({ id: p.id, name: p.name, D: p.D, C: p.C, scope1_tco2: p.scope1_tco2, scope2_tco2: p.scope2_tco2, scope_quality: p.scope_quality, scope_source: p.scope_source, scope_notes: p.scope_notes }));
-            try { localStorage.setItem('gold_emissions_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
+            try { localStorage.setItem('aubeb_emissions_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
             window.open('emissions_analysis.html', '_blank');
         }
 
         function openWaterAnalysis() {
             const snapshot = phases.map(p => ({ id: p.id, name: p.name, D: p.D, C: p.C, water: p.water, water_recycling_pct: p.water_recycling_pct, water_quality: p.water_quality, water_source: p.water_source, water_notes: p.water_notes }));
-            try { localStorage.setItem('gold_water_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
+            try { localStorage.setItem('aubeb_water_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
             window.open('water_analysis.html', '_blank');
         }
 
         function openEnergyAnalysis() {
             const snapshot = phases.map(p => ({ id: p.id, name: p.name, D: p.D, C: p.C, energy: p.energy, energy_unit: p.energy_unit, energy_clean_pct: p.energy_clean_pct, energy_quality: p.energy_quality, energy_source: p.energy_source, energy_notes: p.energy_notes }));
-            try { localStorage.setItem('gold_energy_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
+            try { localStorage.setItem('aubeb_energy_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
             window.open('energy_analysis.html', '_blank');
         }
         
@@ -1263,19 +1263,19 @@
                 if (!res.ok) throw new Error(`HTTP ${res.status} loading ${DATA_URL}`);
                 UI_DATA = await res.json();
                 phases  = buildPhasesFromData(UI_DATA);
-                console.info(`[gold-sim] Loaded UI data (generated: ${UI_DATA._meta && UI_DATA._meta.generated})`);
+                console.info(`[aubeb-sim] Loaded UI data (generated: ${UI_DATA._meta && UI_DATA._meta.generated})`);
             } catch (err) {
-                console.warn('[gold-sim] Could not load JSON, using hardcoded fallback:', err);
+                console.warn('[aubeb-sim] Could not load JSON, using hardcoded fallback:', err);
                 phases = [
-                    { id: 0, name: 'Prospecting', D: 227, C: 208, defaultD: 227, defaultC: 208, scope1_tco2:    120000, scope2_tco2:    25000, scope_quality: 'Low',    scope_source: 'Inferred — exploration benchmarks',         scope_notes: 'Diesel vehicles, drilling, seismic (S1); remote field power (S2).', water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'Negligible use.',                    energy:   5000, energy_unit:'kWh', energy_clean_pct: 20, energy_quality: 'Low',    energy_notes: 'Field generators, mostly diesel.'       },
-                    { id: 1, name: 'Mining',      D: 270, C: 277, defaultD: 270, defaultC: 277, scope1_tco2:   8200000, scope2_tco2: 27800000, scope_quality: 'Medium', scope_source: 'WGC 2023; Foran et al. 2005',               scope_notes: 'Diesel haul trucks, blasting (S1); ventilation, mills (S2).',        water: 2000000, water_recycling_pct: 20, water_quality: 'Medium', water_notes: 'Dust suppression, ore washing, cooling.', energy: 250000, energy_unit:'kWh', energy_clean_pct: 25, energy_quality: 'Medium', energy_notes: 'Diesel dominant; growing renewables.'  },
-                    { id: 2, name: 'Processing',  D: 276, C: 271, defaultD: 276, defaultC: 271, scope1_tco2:   3000000, scope2_tco2: 17000000, scope_quality: 'Medium', scope_source: 'AUBEB PDI v1; benchmark estimate — not project-specific',                 scope_notes: 'Chemical heating (S1); grinding mills — most electricity-intensive phase (S2).', water: 8500000, water_recycling_pct: 75, water_quality: 'High',   water_notes: 'Leaching, flotation. Closed-loop.',      energy: 180000, energy_unit:'kWh', energy_clean_pct: 40, energy_quality: 'Medium', energy_notes: 'Grid electricity dominant (mills).'     },
-                    { id: 3, name: 'Doré',        D: 264, C: 249, defaultD: 264, defaultC: 249, scope1_tco2:   3800000, scope2_tco2:  2600000, scope_quality: 'Low',    scope_source: 'Inferred — smelting benchmarks',            scope_notes: 'Furnace fuel dominant (S1); ancillary electricity (S2).',            water:  300000, water_recycling_pct: 80, water_quality: 'Low',    water_notes: 'Furnace cooling. Closed-loop.',          energy:  30000, energy_unit:'kWh', energy_clean_pct: 35, energy_quality: 'Low',    energy_notes: 'Furnace fuel + some grid.'              },
-                    { id: 4, name: 'Refining',    D: 263, C: 270, defaultD: 263, defaultC: 270, scope1_tco2:   2000000, scope2_tco2:  3600000, scope_quality: 'Low',    scope_source: 'Inferred — LBMA refinery benchmarks',       scope_notes: 'Acid process heating (S1); electrolytic cells, ventilation (S2).',   water: 1000000, water_recycling_pct: 65, water_quality: 'Low',    water_notes: 'Electrolytic baths; ultra-pure needed.', energy:  80000, energy_unit:'kWh', energy_clean_pct: 50, energy_quality: 'Low',    energy_notes: 'Electrolytic cells + furnaces.'         },
-                    { id: 5, name: 'Casting',     D: 253, C: 247, defaultD: 253, defaultC: 247, scope1_tco2:    500000, scope2_tco2:   700000, scope_quality: 'Low',    scope_source: 'Inferred — metal casting benchmarks',       scope_notes: 'Casting furnace fuel (S1); assay equipment (S2).',                   water:   30000, water_recycling_pct: 30, water_quality: 'Low',    water_notes: 'Cooling water only. Small volume.',      energy:  15000, energy_unit:'kWh', energy_clean_pct: 50, energy_quality: 'Low',    energy_notes: 'Shares refinery grid profile.'          },
-                    { id: 6, name: 'Vaulting',    D: 204, C: 161, defaultD: 204, defaultC: 161, scope1_tco2:   3200000, scope2_tco2:   800000, scope_quality: 'Low',    scope_source: 'Inferred — ICCT transport benchmarks',      scope_notes: 'Air freight, armoured vehicles dominant (S1); vault HVAC (S2).',     water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'HVAC condensate only.',                  energy:   5000, energy_unit:'kWh', energy_clean_pct: 55, energy_quality: 'Low',    energy_notes: 'HVAC, lighting, security. Urban grid.'  },
-                    { id: 7, name: 'Exchange',    D: 254, C: 265, defaultD: 254, defaultC: 265, scope1_tco2:     40000, scope2_tco2:   200000, scope_quality: 'Low',    scope_source: 'Inferred — financial sector GHG Protocol',  scope_notes: 'Exchange operations minimal; IT, offices (S2 dominant).',            water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'Office/data centre only.',               energy:   2000, energy_unit:'kWh', energy_clean_pct: 60, energy_quality: 'Low',    energy_notes: 'IT infrastructure, growing renewables.' },
-                    { id: 8, name: 'Recycling ♻️',D: 245, C: 250, defaultD: 245, defaultC: 250, scope1_tco2:   1200000, scope2_tco2:  2000000, scope_quality: 'Low',    scope_source: 'WGC Recycling Report 2023',                 scope_notes: 'Secondary smelting (S1); processing electricity (S2).',              water: 1000000, water_recycling_pct: 70, water_quality: 'Low',    water_notes: 'Similar to Phase 4, variable input.',    energy:  70000, energy_unit:'kWh', energy_clean_pct: 45, energy_quality: 'Low',    energy_notes: 'Saves 60-80% vs primary production.'    },
+                    { id: 0, name: 'Degraded baseline', D: 227, C: 208, defaultD: 227, defaultC: 208, scope1_tco2:    120000, scope2_tco2:    25000, scope_quality: 'Low',    scope_source: 'Inferred — exploration benchmarks',         scope_notes: 'Diesel vehicles, drilling, seismic (S1); remote field power (S2).', water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'Negligible use.',                    energy:   5000, energy_unit:'kWh', energy_clean_pct: 20, energy_quality: 'Low',    energy_notes: 'Field generators, mostly diesel.'       },
+                    { id: 1, name: 'Custodial mandate',      D: 270, C: 277, defaultD: 270, defaultC: 277, scope1_tco2:   8200000, scope2_tco2: 27800000, scope_quality: 'Medium', scope_source: 'AUBEB MRV 2023; Foran et al. 2005',               scope_notes: 'Diesel haul trucks, blasting (S1); ventilation, mills (S2).',        water: 2000000, water_recycling_pct: 20, water_quality: 'Medium', water_notes: 'Dust suppression, baseline washing, cooling.', energy: 250000, energy_unit:'kWh', energy_clean_pct: 25, energy_quality: 'Medium', energy_notes: 'Diesel dominant; growing renewables.'  },
+                    { id: 2, name: 'Baseline sensing',  D: 276, C: 271, defaultD: 276, defaultC: 271, scope1_tco2:   3000000, scope2_tco2: 17000000, scope_quality: 'Medium', scope_source: 'AUBEB PDI v1; benchmark estimate — not project-specific',                 scope_notes: 'Chemical heating (S1); grinding mills — most electricity-intensive phase (S2).', water: 8500000, water_recycling_pct: 75, water_quality: 'High',   water_notes: 'Leaching, flotation. Closed-loop.',      energy: 180000, energy_unit:'kWh', energy_clean_pct: 40, energy_quality: 'Medium', energy_notes: 'Grid electricity dominant (mills).'     },
+                    { id: 3, name: 'Carbon quantification',        D: 264, C: 249, defaultD: 264, defaultC: 249, scope1_tco2:   3800000, scope2_tco2:  2600000, scope_quality: 'Low',    scope_source: 'Inferred — smelting benchmarks',            scope_notes: 'Furnace fuel dominant (S1); ancillary electricity (S2).',            water:  300000, water_recycling_pct: 80, water_quality: 'Low',    water_notes: 'Furnace cooling. Closed-loop.',          energy:  30000, energy_unit:'kWh', energy_clean_pct: 35, energy_quality: 'Low',    energy_notes: 'Furnace fuel + some grid.'              },
+                    { id: 4, name: 'Certification',    D: 263, C: 270, defaultD: 263, defaultC: 270, scope1_tco2:   2000000, scope2_tco2:  3600000, scope_quality: 'Low',    scope_source: 'Inferred — carbon registry refinery benchmarks',       scope_notes: 'Registry, verifier, and documentation workloads.',   water: 1000000, water_recycling_pct: 65, water_quality: 'Low',    water_notes: 'Verification records and data QA.', energy:  80000, energy_unit:'kWh', energy_clean_pct: 50, energy_quality: 'Low',    energy_notes: 'Electrolytic cells + furnaces.'         },
+                    { id: 5, name: 'Commercialisation',     D: 253, C: 247, defaultD: 253, defaultC: 247, scope1_tco2:    500000, scope2_tco2:   700000, scope_quality: 'Low',    scope_source: 'Inferred — programme finance benchmarks',       scope_notes: 'Commercialisation and investor documentation workloads.',                   water:   30000, water_recycling_pct: 30, water_quality: 'Low',    water_notes: 'Cooling water only. Small volume.',      energy:  15000, energy_unit:'kWh', energy_clean_pct: 50, energy_quality: 'Low',    energy_notes: 'Shares refinery grid profile.'          },
+                    { id: 6, name: 'Capital return',    D: 204, C: 161, defaultD: 204, defaultC: 161, scope1_tco2:   3200000, scope2_tco2:   800000, scope_quality: 'Low',    scope_source: 'Inferred — ICCT transport benchmarks',      scope_notes: 'Air freight, armoured vehicles dominant (S1); fund HVAC (S2).',     water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'HVAC condensate only.',                  energy:   5000, energy_unit:'kWh', energy_clean_pct: 55, energy_quality: 'Low',    energy_notes: 'HVAC, lighting, security. Urban grid.'  },
+                    { id: 7, name: 'CBEMR design',    D: 254, C: 265, defaultD: 254, defaultC: 265, scope1_tco2:     40000, scope2_tco2:   200000, scope_quality: 'Low',    scope_source: 'Inferred — financial sector GHG Protocol',  scope_notes: 'CBEMR design operations minimal; IT, offices (S2 dominant).',            water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'Office/data centre only.',               energy:   2000, energy_unit:'kWh', energy_clean_pct: 60, energy_quality: 'Low',    energy_notes: 'IT infrastructure, growing renewables.' },
+                    { id: 8, name: 'Sustained asset',D: 245, C: 250, defaultD: 245, defaultC: 250, scope1_tco2:   1200000, scope2_tco2:  2000000, scope_quality: 'Low',    scope_source: 'AUBEB MRV Sustained asset Report 2023',                 scope_notes: 'Secondary smelting (S1); processing electricity (S2).',              water: 1000000, water_recycling_pct: 70, water_quality: 'Low',    water_notes: 'Similar to Phase 4, variable input.',    energy:  70000, energy_unit:'kWh', energy_clean_pct: 45, energy_quality: 'Low',    energy_notes: 'Saves 60-80% vs primary production.'    },
                 ];
             }
             renderPhaseControls();
@@ -1291,7 +1291,7 @@
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'Dashboard',
     'what_if_simulator.html':'What-If Simulator',
@@ -1303,7 +1303,7 @@
     'index.html':null,'frontend':null
   };
   var HUBS = {
-    'gold':'/frontend/project/aubeb/index.html',
+    'aubeb':'/frontend/project/aubeb/index.html',
     'shea':'/frontend/project/shea/index.html',
     'supply_chain':'index.html',
     'value_chain':'index.html'
@@ -1371,7 +1371,7 @@
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -1390,8 +1390,8 @@
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -1402,17 +1402,17 @@
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

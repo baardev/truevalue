@@ -1,3 +1,22 @@
+---
+doc_id: frontend_project_aubeb_data_pdi_aubeb_status
+title: "PDI AUBEB — Schema Updates and Missing Data Report"
+type: status_report
+status: active
+domain: pdi
+layer: methodology
+projects:
+  - aubeb
+tags:
+  - aubeb
+  - methodology
+  - pdi
+related_docs:
+  []
+key_claims:
+  []
+---
+
 # PDI AUBEB — Schema Updates and Missing Data Report
 
 **Instrument:** Phase Discovery Instrument (PDI) v1.0

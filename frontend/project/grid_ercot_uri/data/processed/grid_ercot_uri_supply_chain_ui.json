@@ -1,0 +1,237 @@
+{
+  "_meta": {
+    "material": "grid_ercot_uri",
+    "case_type": "broken electrical grid during Winter Storm Uri",
+    "generated": "2026-04-24",
+    "sources": [
+      "FERC/NERC/Regional Entity joint staff report on February 2021 cold weather outages",
+      "ERCOT public market and operations reports",
+      "Public Utility Commission of Texas materials",
+      "Texas legislative and public reporting on Winter Storm Uri",
+      "EIA electricity and natural gas public data"
+    ],
+    "note": "Exploratory 12-phase N-D-C baseline for real-time grid cascade failure. Values are structured estimates for model demonstration and should be replaced with audited event time-series data where available."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "AI structured baseline",
+      "description": "Generated from public ERCOT Uri materials for phase-map demonstration."
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Weather forecast and demand expectation",
+      "transparency": "HIGH",
+      "transformation": "Cold-weather demand scenario enters system operations planning"
+    },
+    "1": {
+      "name": "Natural gas production and fuel supply",
+      "transparency": "MEDIUM",
+      "transformation": "Gas and fuel availability prepared for power generation"
+    },
+    "2": {
+      "name": "Fuel transport and gas-electric dependency",
+      "transparency": "LOW",
+      "transformation": "Fuel delivered to generators through dependent pipeline and power systems"
+    },
+    "3": {
+      "name": "Generation winterization and plant readiness",
+      "transparency": "MEDIUM",
+      "transformation": "Generation assets prepared to operate in extreme cold"
+    },
+    "4": {
+      "name": "Generation dispatch and fleet availability",
+      "transparency": "HIGH",
+      "transformation": "Available MW dispatched into ERCOT market and grid operations"
+    },
+    "5": {
+      "name": "Transmission network and interconnection limits",
+      "transparency": "MEDIUM",
+      "transformation": "Bulk power moved across ERCOT with limited external transfer support"
+    },
+    "6": {
+      "name": "Control room frequency balancing",
+      "transparency": "HIGH",
+      "transformation": "Supply and demand balanced in real time to preserve frequency"
+    },
+    "7": {
+      "name": "Load shedding and emergency operations",
+      "transparency": "MEDIUM",
+      "transformation": "Involuntary load reductions applied to avoid total system collapse"
+    },
+    "8": {
+      "name": "Distribution feeder outage management",
+      "transparency": "MEDIUM",
+      "transformation": "Distribution utilities implement feeder-level outages and restoration sequencing"
+    },
+    "9": {
+      "name": "Critical services and dependent infrastructure",
+      "transparency": "MEDIUM",
+      "transformation": "Electricity availability affects water, heat, hospitals, telecom, and public safety"
+    },
+    "10": {
+      "name": "Customer outage exposure and public communication",
+      "transparency": "MEDIUM",
+      "transformation": "Households and businesses experience outage duration, communication, and access limits"
+    },
+    "11": {
+      "name": "Emergency restoration and black-start readiness",
+      "transparency": "MEDIUM",
+      "transformation": "Generation, transmission, distribution, and customer service restored after crisis"
+    }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 285,
+        "C": 220,
+        "balance": 77,
+        "N": 185,
+        "sustainability": 0.35,
+        "notes": "Forecasting and public warning were visible, but forecast awareness did not translate into adequate physical readiness across fuel and generation systems.",
+        "data_quality": "high",
+        "metrics": {
+          "extreme_weather_forecast_flag": {"value": 1, "unit": "binary", "source": "Public weather and grid materials", "note": "Cold-weather risk was visible before peak system failure."}
+        }
+      },
+      "1": {
+        "D": 330,
+        "C": 150,
+        "balance": 45,
+        "N": 108,
+        "sustainability": 0.01,
+        "notes": "Fuel production and supply were not reliably available when thermal generators needed them. This is an upstream physical dependency failure.",
+        "data_quality": "medium",
+        "metrics": {
+          "fuel_supply_failure": {"value": 1, "unit": "binary", "source": "FERC/NERC", "note": "Natural gas supply disruption was a documented failure channel."}
+        }
+      },
+      "2": {
+        "D": 345,
+        "C": 135,
+        "balance": 39,
+        "N": 93,
+        "sustainability": 0.0,
+        "notes": "Gas-electric dependency became recursive: power was needed to move fuel, while fuel was needed to generate power.",
+        "data_quality": "low",
+        "metrics": {
+          "gas_electric_dependency_failure": {"value": 1, "unit": "binary", "source": "FERC/NERC", "note": "Coupled gas and electric infrastructure failure documented."}
+        }
+      },
+      "3": {
+        "D": 350,
+        "C": 130,
+        "balance": 37,
+        "N": 89,
+        "sustainability": 0.0,
+        "notes": "Winterization was the deepest preventive lifecycle failure. Plant readiness did not meet the physical requirement of extreme cold operation.",
+        "data_quality": "medium",
+        "metrics": {
+          "winterization_failure": {"value": 1, "unit": "binary", "source": "FERC/NERC", "note": "Generator weatherization failures were publicly documented."}
+        }
+      },
+      "4": {
+        "D": 340,
+        "C": 135,
+        "balance": 40,
+        "N": 95,
+        "sustainability": 0.01,
+        "notes": "Generation fleet availability collapsed under cold-weather stress. The physical output, available MW, fell far below required demand.",
+        "data_quality": "high",
+        "metrics": {
+          "generation_outage_failure": {"value": 1, "unit": "binary", "source": "FERC/NERC", "note": "Large-scale generator outages documented during Uri."}
+        }
+      },
+      "5": {
+        "D": 285,
+        "C": 200,
+        "balance": 68,
+        "N": 165,
+        "sustainability": 0.15,
+        "notes": "Transmission and interconnection limits constrained external support. ERCOT islanding increased dependence on internal capacity.",
+        "data_quality": "medium",
+        "metrics": {
+          "external_interconnection_limit": {"value": 1, "unit": "binary", "source": "ERCOT/FERC", "note": "Limited external transfer capability during crisis."}
+        }
+      },
+      "6": {
+        "D": 360,
+        "C": 155,
+        "balance": 43,
+        "N": 111,
+        "sustainability": 0.01,
+        "notes": "Grid control became emergency balancing. Frequency stability required involuntary load shedding to avoid full system collapse.",
+        "data_quality": "high",
+        "metrics": {
+          "emergency_load_shed_flag": {"value": 1, "unit": "binary", "source": "ERCOT", "note": "Emergency load shedding was required to preserve frequency."}
+        }
+      },
+      "7": {
+        "D": 335,
+        "C": 145,
+        "balance": 43,
+        "N": 104,
+        "sustainability": 0.01,
+        "notes": "Load shedding protected the grid N-state but degraded service N-state for customers and critical infrastructure.",
+        "data_quality": "medium",
+        "metrics": {
+          "load_shed_failure": {"value": 1, "unit": "binary", "source": "ERCOT/PUCT", "note": "Emergency load shed became prolonged customer outage."}
+        }
+      },
+      "8": {
+        "D": 320,
+        "C": 145,
+        "balance": 45,
+        "N": 105,
+        "sustainability": 0.01,
+        "notes": "Distribution-level shedding became prolonged outage. Operational contribution could not prioritize all critical load cleanly.",
+        "data_quality": "medium",
+        "metrics": {
+          "prolonged_outage_flag": {"value": 1, "unit": "binary", "source": "PUCT/ERCOT", "note": "Millions of customers experienced outages."}
+        }
+      },
+      "9": {
+        "D": 315,
+        "C": 135,
+        "balance": 43,
+        "N": 101,
+        "sustainability": 0.01,
+        "notes": "End-use load included homes, hospitals, water systems, and heating demand. Downstream critical services failed when electricity delivery failed.",
+        "data_quality": "medium",
+        "metrics": {
+          "critical_service_cascade": {"value": 1, "unit": "binary", "source": "Public reporting", "note": "Power outage cascaded into water, heating, and public safety impacts."}
+        }
+      },
+      "10": {
+        "D": 300,
+        "C": 140,
+        "balance": 47,
+        "N": 103,
+        "sustainability": 0.01,
+        "notes": "Customer outage exposure became a public-health and household-safety failure because electricity is the support system for heat, water, communication, and medical equipment.",
+        "data_quality": "medium",
+        "metrics": {
+          "customer_outage_exposure": {"value": null, "unit": "customer-hours", "source": "ERCOT/public reporting", "note": "Needs normalized outage exposure time series."}
+        }
+      },
+      "11": {
+        "D": 305,
+        "C": 175,
+        "balance": 57,
+        "N": 137,
+        "sustainability": 0.05,
+        "notes": "Emergency restoration was prolonged because generation, fuel, transmission, and distribution all needed recovery. Restoration did not behave as a simple single-phase repair.",
+        "data_quality": "medium",
+        "metrics": {
+          "restoration_duration": {"value": null, "unit": "hours", "source": "ERCOT/public reporting", "note": "Needs normalized outage restoration time series."}
+        }
+      }
+    }
+  },
+  "system": {
+    "balance": 48.7,
+    "average_N": 116,
+    "bottleneck_phase_ids": [2, 3, 4, 6, 7, 8, 9, 10],
+    "interpretation": "ERCOT Uri is a real-time cascade failure. Forecasting was visible, but fuel dependency, winterization, generation availability, balancing, load shedding, distribution, critical services, and customer outage exposure degraded together under cold-weather stress."
+  }
+}

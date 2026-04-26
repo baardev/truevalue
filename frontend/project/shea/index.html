@@ -55,6 +55,7 @@
       color: #fff;
     }
     .card-header.sc { background: linear-gradient(135deg, #5c4610 0%, #8b6914 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #264d25 0%, #4f7a31 100%); }
     .card-header.vc { background: linear-gradient(135deg, #3a2d0a 0%, #5c4610 100%); }
     .card-icon { font-size: 40px; margin-bottom: 10px; }
     .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
@@ -107,11 +108,34 @@
       <p class="subtitle">
         Choose a layer: the <strong>Supply Chain</strong> models physical flow and custody
         across 7 phases (Collection → Retail), sourced from Burkina Faso / West Africa to Cleo.
+        The <strong>System Lifecycle</strong> models the stewardship loop that keeps the chain productive.
         The <strong>Value Chain</strong> models income, prices, and value share —
         kept strictly separate from the physical layer.
       </p>
 
       <div class="grid">
+        <div class="card">
+          <div class="card-header lc">
+            <div class="card-icon">🌱</div>
+            <div class="card-title">System Lifecycle</div>
+            <div class="card-desc">Plan · Establish · Operate · Maintain · Adapt</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Lifecycle N-D-C for the maintained community/agroforestry system</li>
+              <li>Links stewardship phases back to supply phases 0 and 3</li>
+              <li>Survival rate, nurseries, facilities, participation, and maintenance gaps</li>
+              <li>Identifies Maintain and Adapt as lifecycle bottlenecks</li>
+              <li>Data loaded from <code>shea_system_lifecycle_ndc.json</code></li>
+            </ul>
+            <a href="supply_chain/system_lifecycle.html" class="btn sc">Open Lifecycle →</a>
+            <div class="sub-links">
+              <a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+              <a href="supply_chain/project_context.html">Project Context</a>
+            </div>
+          </div>
+        </div>
+
         <div class="card">
           <div class="card-header sc">
             <div class="card-icon">🌿</div>
@@ -121,7 +145,7 @@
           <div class="card-body">
             <ul>
               <li>Phase 0–6: Collection → Retail</li>
-              <li>N-D-C balance per phase (same Tholonic model as gold)</li>
+              <li>N-D-C balance per phase using the project Tholonic model</li>
               <li>CO₂e savings, firewood BAU vs renewable energy</li>
               <li>Women's share (94% collectors, income uplift ×11.9)</li>
               <li>What-If simulator with D/C sliders</li>
@@ -305,8 +329,8 @@
           if(data&&data.coherence_scores&&data.coherence_scores.scenarios&&data.coherence_scores.scenarios.current){
             scores=data.coherence_scores.scenarios.current;
           } else {
-            var D={gold:{pi:82.5,phi:49.5,sqrt2:72.1,ln2:40.4,e:37},shea:{pi:81.6,phi:53.6,sqrt2:38.2,ln2:39.7,e:54},aubeb:{pi:87,phi:54,sqrt2:58,ln2:62,e:0}};
-            scores=D[CHAIN]||D.gold;
+            var D={shea:{pi:81.6,phi:53.6,sqrt2:38.2,ln2:39.7,e:54}};
+            scores=D[CHAIN]||D.shea;
           }
           var se=document.getElementById('pent-svg-'+CHAIN);
           var ie=document.getElementById('pent-info-'+CHAIN);

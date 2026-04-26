@@ -55,6 +55,7 @@
       color: #fff;
     }
     .card-header.sc { background: linear-gradient(135deg, #0d4f47 0%, #1a6b5e 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #0b5f54 0%, #2d8f78 100%); }
     .card-header.vc { background: linear-gradient(135deg, #1a9e8a 0%, #0d7a6e 100%); }
     .card-header.gt { background: linear-gradient(135deg, #072e2a 0%, #072e2a 100%); border-top: 3px solid #4dd9c8; }
     .card-icon { font-size: 40px; margin-bottom: 10px; }
@@ -63,7 +64,7 @@
     .card-body { padding: 22px 28px 26px; }
     .card-body ul { list-style: none; margin-bottom: 18px; }
     .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
-    .card-body li::before { content: "✓"; position: absolute; left: 0; color: #28a745; font-weight: bold; }
+    .card-body li::befbaseline { content: "✓"; position: absolute; left: 0; color: #28a745; font-weight: bold; }
     .btn {
       display: inline-block;
       padding: 11px 22px;
@@ -108,7 +109,7 @@
       <h1>🌿 AUBEB – Supply &amp; Value Chain</h1>
       <p class="subtitle">
         Africa Union Blue Economy Bond · 150,000 ha across 7 AU member states · 5.64M net tCO₂e/yr ·
-        11 supply chain phases (Phase 0 → 10). Choose a layer below.
+        11 supply chain phases plus a system lifecycle layer. Choose a layer below.
       </p>
 
       <div class="grid">
@@ -136,6 +137,28 @@
         </div>
 
         <div class="card">
+          <div class="card-header lc">
+            <div class="card-icon">🌱</div>
+            <div class="card-title">System Lifecycle</div>
+            <div class="card-desc">Mandate · MRV · Capital return · Restbaseline · Maintain</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Lifecycle N-D-C for the maintained mangrove restoration system</li>
+              <li>Links mandate, MRV, finance, co-management, and adaptation</li>
+              <li>Uses hectares, countries, net tCO₂e, buffer, crediting period, and reserve capacity</li>
+              <li>Identifies capital return and long-term maintenance as bottlenecks</li>
+              <li>Data loaded from <code>aubeb_system_lifecycle_ndc.json</code></li>
+            </ul>
+            <a href="supply_chain/system_lifecycle.html" class="btn sc">Open Lifecycle →</a>
+            <div class="sub-links">
+              <a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+              <a href="supply_chain/project_context.html">Project Context</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
           <div class="card-header vc">
             <div class="card-icon">💰</div>
             <div class="card-title">Value Chain</div>
@@ -146,7 +169,7 @@
               <li>Floor: USD 15/tCO₂e VCM · USD 20/tCO₂e CORSIA</li>
               <li>Annual reserve capacity: USD 84.6M+</li>
               <li>Value-layer D (meaning) vs C (distribution)</li>
-              <li>Fisheries royalties &amp; community benefit flows</li>
+              <li>Fisheries benefit shares &amp; community benefit flows</li>
               <li>Partial data — Phase 5 pricing available from PDI</li>
             </ul>
             <a href="value_chain/index.html" class="btn vc">Open Value Chain →</a>
@@ -283,9 +306,9 @@
         else if(sq>=40) lines.push('<strong>√2 (Structural '+(sq.toFixed?sq.toFixed(1):sq)+'):</strong> Moderate structural asymmetry. Some transfer phases are imposing overhead beyond the natural √2 minimum — these boundaries are not neutral conduits.');
         else lines.push('<strong>√2 (Structural '+(sq.toFixed?sq.toFixed(1):sq)+'):</strong> Significant structural asymmetry. Transfer phases are functioning as extraction points rather than neutral boundaries. The overhead far exceeds the natural √2 cost of crossing a balanced boundary.');
 
-        if(ln>=60) lines.push('<strong>ln(2) (Growth '+(ln.toFixed?ln.toFixed(1):ln)+'):</strong> Transformation phases (processing, refining, certification) are functioning as natural growth conduits — value is compounding at or near the natural doubling rate.');
+        if(ln>=60) lines.push('<strong>ln(2) (Growth '+(ln.toFixed?ln.toFixed(1):ln)+'):</strong> Transformation phases (baseline sensing, carbon quantification, certification) are functioning as natural growth conduits — value is compounding at or near the natural doubling rate.');
         else if(ln>=40) lines.push('<strong>ln(2) (Growth '+(ln.toFixed?ln.toFixed(1):ln)+'):</strong> Growth is partially constrained. Transformation phases are not doubling value at the natural rate — artificial barriers (cost, certification, buyer power) are dampening the oscillatory convergence.');
-        else lines.push('<strong>ln(2) (Growth '+(ln.toFixed?ln.toFixed(1):ln)+'):</strong> Significant conduit capture. Processing and transformation phases have been converted from growth engines into rent-extraction bottlenecks. Each artificial constraint damps the natural doubling dynamic.');
+        else lines.push('<strong>ln(2) (Growth '+(ln.toFixed?ln.toFixed(1):ln)+'):</strong> Significant conduit capture. Baseline sensing and transformation phases have been converted from growth engines into rent-extraction bottlenecks. Each artificial constraint damps the natural doubling dynamic.');
 
         if(e===0) lines.push('<strong>e (Abstract — unmeasured):</strong> The claims register linking abstract financial instruments to physical holdings has not yet been built for this chain. A score of 0 means <em>unmeasured</em>, not failed. When data is available, this axis reveals whether paper claims (credits, certificates, derivatives) remain tethered to physical reality.');
         else if(e>=60) lines.push('<strong>e (Abstract '+(e.toFixed?e.toFixed(1):e)+'):</strong> Abstract claims are reasonably well coupled to physical holdings. Certifications, financial instruments, and paper claims are broadly backed by the physical supply chain reality.');
@@ -306,8 +329,8 @@
           if(data&&data.coherence_scores&&data.coherence_scores.scenarios&&data.coherence_scores.scenarios.current){
             scores=data.coherence_scores.scenarios.current;
           } else {
-            var D={gold:{pi:82.5,phi:49.5,sqrt2:72.1,ln2:40.4,e:37},shea:{pi:81.6,phi:53.6,sqrt2:38.2,ln2:39.7,e:54},aubeb:{pi:87,phi:54,sqrt2:58,ln2:62,e:0}};
-            scores=D[CHAIN]||D.gold;
+            var D={aubeb:{pi:87,phi:54,sqrt2:58,ln2:62,e:0}};
+            scores=D[CHAIN]||D.aubeb;
           }
           var se=document.getElementById('pent-svg-'+CHAIN);
           var ie=document.getElementById('pent-info-'+CHAIN);
@@ -490,7 +513,7 @@
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'Dashboard',
     'what_if_simulator.html':'What-If Simulator',
@@ -502,7 +525,7 @@
     'index.html':null,'frontend':null
   };
   var HUBS = {
-    'gold':'/frontend/project/aubeb/index.html',
+    'aubeb':'/frontend/project/aubeb/index.html',
     'shea':'/frontend/project/shea/index.html',
     'supply_chain':'index.html',
     'value_chain':'index.html'
@@ -571,7 +594,7 @@
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -590,8 +613,8 @@
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -602,17 +625,17 @@
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

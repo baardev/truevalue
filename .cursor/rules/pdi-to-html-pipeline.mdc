@@ -1,6 +1,6 @@
 ---
 description: Pipeline for converting a completed PDI YAML instance into a full set of project data files and HTML pages matching the gold/shea structure. Apply when generating a new commodity project from a PDI file.
-globs: docs/PDI/PDI_*.yaml,frontend/project/**
+globs: frontend/docs/PDI/PDI_*.yaml,frontend/project/**
 alwaysApply: false
 ---
 
@@ -13,7 +13,7 @@ under `frontend/project/<material>/` with all supporting data files.
 
 ## 0. Prerequisites
 
-- A completed and validated PDI YAML instance exists at `docs/PDI/PDI_<material>_<date>.yaml`.
+- A completed and validated PDI YAML instance exists at `frontend/docs/PDI/PDI_<material>_<date>.yaml`.
 - All required PDI fields are filled (no `null` boundary scores; all phases have names).
 - A `<material>` slug is chosen: lowercase, no spaces, matches the folder name
   (e.g. `gold`, `shea`, `mangrove`, `olive_oil`).
@@ -66,7 +66,7 @@ For Phase 0 (pre-commercial, no bounding event):
 
 ## 3. Data files to generate
 
-Run `src/tools/generate_project_data.py --pdi docs/PDI/PDI_<m>_<date>.yaml --material <m>`
+Run `src/tools/generate_project_data.py --pdi frontend/docs/PDI/PDI_<m>_<date>.yaml --material <m>`
 
 The script produces:
 

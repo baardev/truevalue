@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Recycling Comparison — NEWater vs. OCWD GWRS</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #0d0d1a 0%, #0f1e2e 50%, #132237 100%);
+      min-height: 100vh; padding: 24px; color: #e0e6ef;
+    }
+    .container { max-width: 1120px; margin: 0 auto; }
+
+    /* ── Hero ──────────────────────────────────────────────────────── */
+    .hero {
+      background: linear-gradient(135deg, #0a1628 0%, #0d1e30 100%);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px; padding: 44px; margin-bottom: 24px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
+      text-transform: uppercase; color: #00bcd4; background: rgba(0,188,212,0.12);
+      border: 1px solid rgba(0,188,212,0.28); padding: 6px 16px; border-radius: 999px; margin-bottom: 18px;
+    }
+    h1 { font-size: 38px; font-weight: 200; margin-bottom: 12px; line-height: 1.2; color: #e6edf3; }
+    .subtitle { font-size: 15px; color: #8b949e; line-height: 1.7; max-width: 780px; margin: 0 auto; }
+
+    /* ── Section title ──────────────────────────────────────────────── */
+    .section {
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 14px; padding: 36px; margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 20px; font-weight: 300; color: #e6edf3; margin-bottom: 8px;
+    }
+    .section-sub { font-size: 14px; color: #8b949e; margin-bottom: 24px; line-height: 1.6; }
+
+    /* ── System ID cards ─────────────────────────────────────────────── */
+    .systems { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+    .sys-card {
+      border-radius: 12px; padding: 24px;
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    .sys-card.newwater { background: linear-gradient(135deg, rgba(0,77,64,0.35), rgba(0,105,92,0.25)); border-color: rgba(0,137,123,0.4); }
+    .sys-card.ocwd { background: linear-gradient(135deg, rgba(13,71,161,0.35), rgba(21,101,192,0.25)); border-color: rgba(25,118,210,0.4); }
+    .sys-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    .sys-label.nw { color: #4db6ac; } .sys-label.oc { color: #64b5f6; }
+    .sys-name { font-size: 22px; font-weight: 600; margin-bottom: 6px; color: #e6edf3; }
+    .sys-sub { font-size: 13px; color: #8b949e; margin-bottom: 14px; }
+    .sys-kpis { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+    .sys-kpi { background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; }
+    .sys-kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #6c757d; margin-bottom: 3px; }
+    .sys-kpi-value { font-size: 18px; font-weight: 800; }
+    .sys-kpi-value.nw { color: #4db6ac; } .sys-kpi-value.oc { color: #64b5f6; }
+
+    /* ── Tholonic premise ──────────────────────────────────────────── */
+    .premise {
+      background: rgba(0,188,212,0.06); border: 1px solid rgba(0,188,212,0.2);
+      border-radius: 12px; padding: 24px; margin-bottom: 24px;
+    }
+    .premise h3 { font-size: 16px; color: #00bcd4; margin-bottom: 10px; font-weight: 600; }
+    .premise p { font-size: 14px; color: #cdd4db; line-height: 1.7; margin-bottom: 8px; }
+    .premise strong { color: #e6edf3; }
+
+    /* ── Phase comparison table ─────────────────────────────────────── */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    thead th { background: rgba(0,0,0,0.4); color: #8b949e; padding: 10px 12px; text-align: left; font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+    tbody tr:hover { background: rgba(255,255,255,0.03); }
+    tbody td { padding: 10px 12px; color: #cdd4db; vertical-align: middle; }
+    .td-phase { color: #8b949e; font-weight: 700; }
+    .td-name { color: #e6edf3; font-weight: 600; }
+    .badge-high { background: rgba(0,137,123,0.2); color: #4db6ac; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .badge-med  { background: rgba(245,127,23,0.2); color: #ffb74d; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .badge-low  { background: rgba(198,40,40,0.2); color: #ef9a9a; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+    .handoff-none { color: #4db6ac; font-size: 12px; }
+    .handoff-yes  { color: #ff8a65; font-weight: 700; font-size: 12px; }
+    .handoff-gap  { color: #ef9a9a; font-weight: 700; font-size: 12px; }
+
+    /* ── N stability chart ──────────────────────────────────────────── */
+    .n-chart { margin-top: 20px; }
+    .n-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 12px; }
+    .n-label { width: 200px; flex-shrink: 0; color: #8b949e; }
+    .n-bar-wrap { flex: 1; background: rgba(255,255,255,0.06); border-radius: 4px; height: 20px; position: relative; overflow: visible; }
+    .n-bar { height: 20px; border-radius: 4px; display: flex; align-items: center; padding-left: 8px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+    .n-bar.nw { background: linear-gradient(90deg,rgba(0,137,123,0.8),rgba(0,137,123,0.5)); color: #e0f2f1; }
+    .n-bar.oc { background: linear-gradient(90deg,rgba(25,118,210,0.8),rgba(25,118,210,0.5)); color: #e3f2fd; }
+    .n-delta { width: 90px; flex-shrink: 0; font-weight: 700; font-size: 12px; }
+
+    /* ── TVPCI derivation ────────────────────────────────────────────── */
+    .tvpci { background: rgba(255,152,0,0.06); border: 1px solid rgba(255,152,0,0.25); border-radius: 12px; padding: 24px; }
+    .tvpci h3 { font-size: 16px; color: #ffb74d; margin-bottom: 14px; font-weight: 600; }
+    .tvpci-step { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 14px; }
+    .tvpci-num { width: 28px; height: 28px; border-radius: 50%; background: rgba(255,152,0,0.2); color: #ffb74d; font-weight: 800; font-size: 13px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .tvpci-text { font-size: 14px; color: #cdd4db; line-height: 1.6; }
+    .tvpci-text strong { color: #e6edf3; }
+    .tvpci-result { background: rgba(255,152,0,0.12); border-radius: 8px; padding: 16px; margin-top: 14px; text-align: center; }
+    .tvpci-result .big { font-size: 32px; font-weight: 800; color: #ffb74d; }
+    .tvpci-result .small { font-size: 13px; color: #8b949e; margin-top: 4px; }
+
+    /* ── Loop closure diagram ────────────────────────────────────────── */
+    .loop-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .loop-card { background: rgba(0,0,0,0.2); border-radius: 12px; padding: 20px; }
+    .loop-card h4 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+    .loop-card h4.nw { color: #4db6ac; } .loop-card h4.oc { color: #64b5f6; }
+    .loop-step { font-size: 12px; color: #cdd4db; padding: 6px 10px; border-radius: 6px; margin-bottom: 6px; }
+    .loop-step.ok { background: rgba(0,137,123,0.15); border-left: 3px solid #4db6ac; }
+    .loop-step.warn { background: rgba(255,152,0,0.12); border-left: 3px solid #ffb74d; }
+    .loop-step.fail { background: rgba(198,40,40,0.12); border-left: 3px solid #ef9a9a; }
+
+    /* ── KPI comparison table ────────────────────────────────────────── */
+    .kpi-compare { width: 100%; border-collapse: collapse; font-size: 14px; }
+    .kpi-compare th { padding: 10px 16px; text-align: left; background: rgba(0,0,0,0.3); color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+    .kpi-compare td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cdd4db; }
+    .kpi-compare tr:hover td { background: rgba(255,255,255,0.02); }
+    .val-nw { color: #4db6ac; font-weight: 700; }
+    .val-oc { color: #64b5f6; font-weight: 700; }
+    .val-delta { color: #ffb74d; font-weight: 700; }
+    .val-label { color: #e6edf3; font-weight: 600; }
+
+    /* ── footer nav ──────────────────────────────────────────────────── */
+    .nav { text-align: center; margin-top: 20px; }
+    .nav a { display: inline-block; color: rgba(255,255,255,0.75); text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 12px; padding: 8px 18px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; transition: border-color 0.2s; }
+    .nav a:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+    @media (max-width: 768px) {
+      .systems, .loop-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 26px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <!-- ── Hero ─────────────────────────────────────────── -->
+    <div class="hero">
+      <div class="kicker">Tholonic Comparative Analysis · Water Recycling</div>
+      <h1>🇸🇬 NEWater vs. 💧 OCWD GWRS</h1>
+      <p class="subtitle">
+        Two world-class water recycling systems using <strong>identical treatment technology</strong>
+        (microfiltration + reverse osmosis + UV disinfection) with a <strong>42% cost gap</strong>.
+        The Tholonic N-D-C model reveals the source: institutional structure, not technology.
+        Same process — different actor map — different N stability — different cost.
+      </p>
+    </div>
+
+    <!-- ── System ID Cards ──────────────────────────────── -->
+    <div class="systems">
+      <div class="sys-card newwater">
+        <div class="sys-label nw">🇸🇬 Singapore PUB NEWater · Single-actor model</div>
+        <div class="sys-name">NEWater — PUB</div>
+        <div class="sys-sub">Public Utilities Board operates all 12 phases. Zero inter-institutional handoffs in recycling loop. Loop closes through PUB-controlled reservoirs.</div>
+        <div class="sys-kpis">
+          <div class="sys-kpi"><div class="sys-kpi-label">Treatment Cost</div><div class="sys-kpi-value nw">USD 0.88/m³</div></div>
+          <div class="sys-kpi"><div class="sys-kpi-label">Energy Intensity</div><div class="sys-kpi-value nw">3.5 kWh/m³</div></div>
+          <div class="sys-kpi"><div class="sys-kpi-label">Recycling Share</div><div class="sys-kpi-value nw">40% of supply</div></div>
+          <div class="sys-kpi"><div class="sys-kpi-label">NRW / Leakage</div><div class="sys-kpi-value nw">4.5%</div></div>
+        </div>
+      </div>
+      <div class="sys-card ocwd">
+        <div class="sys-label oc">💧 Orange County GWRS · Fragmented institutional model</div>
+        <div class="sys-name">GWRS — OC San + OCWD + ~30 agencies</div>
+        <div class="sys-sub">Three distinct institutional actors. Two inter-institutional handoffs in the recycling loop. Loop closure passes through a shared groundwater commons.</div>
+        <div class="sys-kpis">
+          <div class="sys-kpi"><div class="sys-kpi-label">Treatment Cost</div><div class="sys-kpi-value oc">USD 1.25/m³</div></div>
+          <div class="sys-kpi"><div class="sys-kpi-label">Energy Intensity</div><div class="sys-kpi-value oc">4.2 kWh/m³</div></div>
+          <div class="sys-kpi"><div class="sys-kpi-label">Recycling Share</div><div class="sys-kpi-value oc">35% of basin</div></div>
+          <div class="sys-kpi"><div class="sys-kpi-label">NRW / Leakage</div><div class="sys-kpi-value oc">~9% (est.)</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Tholonic Premise ──────────────────────────────── -->
+    <div class="premise">
+      <h3>The Tholonic Premise: Institutional Structure Determines Cost, Not Technology</h3>
+      <p>
+        The Tholonic model defines supply chain health through three interacting forces:
+        <strong>Definition (D)</strong> — the constraints that give a phase its identity (rules, standards, physical requirements);
+        <strong>Contribution (C)</strong> — the integration capacity and outputs that a phase generates;
+        <strong>Negotiation (N)</strong> — the emergent stable state produced by D and C in balance.
+      </p>
+      <p>
+        When an <strong>inter-institutional boundary</strong> is crossed (a new actor takes custody), D
+        increases through additional compliance requirements, coordination protocols, and dual governance,
+        without a proportional increase in C. This D-C discontinuity lowers the phase-level balance score,
+        which lowers N. Lower N stability across the chain manifests as higher operational cost, higher
+        leakage, and lower recycling efficiency.
+      </p>
+      <p>
+        <strong>Both systems use MF + RO + UV</strong> — the technology gap is near-zero.
+        The USD 0.37/m³ cost difference is the TVPCI-measurable institutional overhead.
+      </p>
+    </div>
+
+    <!-- ── Phase Actor Handoff Analysis ─────────────────── -->
+    <div class="section">
+      <div class="section-title">Phase-by-Phase Actor and Handoff Comparison</div>
+      <div class="section-sub">
+        Both systems have 12 confirmed phases with identical phase numbering. The rows in red/orange
+        mark institutional handoffs — boundaries where a new actor takes custody. These are the
+        D-C discontinuity points in the Tholonic model.
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Phase</th>
+            <th>Name</th>
+            <th>NEWater Actor</th>
+            <th>NEWater Transparency</th>
+            <th>OCWD Actor</th>
+            <th>OCWD Transparency</th>
+            <th>Structural Difference</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-phase">0</td>
+            <td class="td-name">Source &amp; Rights</td>
+            <td>PUB</td><td><span class="badge-high">HIGH</span></td>
+            <td>OCWD + SWRCB + 30 municipalities</td><td><span class="badge-high">HIGH</span></td>
+            <td class="handoff-none">Multiple rights holders vs. single PUB license</td>
+          </tr>
+          <tr>
+            <td class="td-phase">1</td>
+            <td class="td-name">Raw Abstraction</td>
+            <td>PUB</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>~30 municipal agencies</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>Multiple independent abstractors vs. single PUB</td>
+          </tr>
+          <tr>
+            <td class="td-phase">2</td>
+            <td class="td-name">Drinking Water Treatment</td>
+            <td>PUB (5 waterworks)</td><td><span class="badge-high">HIGH</span></td>
+            <td>~30 agency treatment plants</td><td><span class="badge-high">HIGH</span></td>
+            <td>Fragmented plants vs. PUB unified plants</td>
+          </tr>
+          <tr style="background:rgba(198,40,40,0.06);">
+            <td class="td-phase">3</td>
+            <td class="td-name">Service Reservoir</td>
+            <td>PUB</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>~30 agencies (no aggregate reporting)</td><td><span class="badge-low">LOW ⚠</span></td>
+            <td class="handoff-gap">Only low-transparency phase in either chain; fragmentation-driven</td>
+          </tr>
+          <tr>
+            <td class="td-phase">4</td>
+            <td class="td-name">Consumer Use</td>
+            <td>PUB → Consumer (143 L/day)</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>Agencies → Consumer (~75 gal/day)</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>Per capita 2× higher in Orange County</td>
+          </tr>
+          <tr>
+            <td class="td-phase">5</td>
+            <td class="td-name">Wastewater Collection</td>
+            <td>PUB (DTSS)</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>OC San (400 mi sewers)</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>OC San enters as new actor; NRW diverges</td>
+          </tr>
+          <tr>
+            <td class="td-phase">6</td>
+            <td class="td-name">Primary Treatment</td>
+            <td>PUB (WRPs)</td><td><span class="badge-high">HIGH</span></td>
+            <td>OC San (Plant 1 + Plant 2)</td><td><span class="badge-high">HIGH</span></td>
+            <td class="handoff-none">Similar transparency; different operator</td>
+          </tr>
+          <tr>
+            <td class="td-phase">7</td>
+            <td class="td-name">Secondary Biological Treatment</td>
+            <td>PUB (WRPs)</td><td><span class="badge-high">HIGH</span></td>
+            <td>OC San</td><td><span class="badge-high">HIGH</span></td>
+            <td class="handoff-none">Still OC San; handoff occurs at Phase 8 boundary</td>
+          </tr>
+          <tr style="background:rgba(255,152,0,0.08);">
+            <td class="td-phase"><strong>8 ★</strong></td>
+            <td class="td-name"><strong>Advanced Tertiary Treatment (MF/RO/UV)</strong></td>
+            <td><strong>PUB NEWater factories</strong></td><td><span class="badge-high">HIGH</span></td>
+            <td><strong>OCWD GWRS (from OC San)</strong></td><td><span class="badge-high">HIGH</span></td>
+            <td class="handoff-yes">⚠ HANDOFF 1 (OCWD only): OC San → OCWD · B9=true, B10=true · boundary_score=5 vs. 3 · +USD ~0.20/m³ overhead</td>
+          </tr>
+          <tr>
+            <td class="td-phase">9</td>
+            <td class="td-name">Quality Certification</td>
+            <td>PUB (WHO+ · 46,000 tests/yr)</td><td><span class="badge-high">HIGH</span></td>
+            <td>OCWD + California DDW (Title 22)</td><td><span class="badge-high">HIGH</span></td>
+            <td>US multi-layer regulatory adds overhead without proportional quality gain</td>
+          </tr>
+          <tr>
+            <td class="td-phase">10</td>
+            <td class="td-name">Recycled Water Distribution</td>
+            <td>PUB direct purple-pipe network</td><td><span class="badge-med">MEDIUM</span></td>
+            <td>OCWD injection wells → shared basin</td><td><span class="badge-med">MEDIUM</span></td>
+            <td class="handoff-yes">⚠ HANDOFF 2 begins (OCWD only): controlled distribution vs. shared commons entry</td>
+          </tr>
+          <tr style="background:rgba(198,40,40,0.06);">
+            <td class="td-phase"><strong>11 ★</strong></td>
+            <td class="td-name"><strong>End-Use / Reservoir Replenishment</strong></td>
+            <td><strong>PUB → industrial + PUB reservoirs (loop intact)</strong></td><td><span class="badge-high">HIGH</span></td>
+            <td><strong>OCWD → shared groundwater commons → 30 agencies (loop broken)</strong></td><td><span class="badge-med">MEDIUM</span></td>
+            <td class="handoff-gap">STRUCTURAL GAP: Phase 11 child-N ↛ Phase 0 parent-N through a single actor in OCWD</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ── N Stability Cascade ───────────────────────────── -->
+    <div class="section">
+      <div class="section-title">N Stability Cascade — Phase-by-Phase Comparison</div>
+      <div class="section-sub">
+        The bars show derived N (Negotiation) values per phase. Divergence at Phase 8 reflects the
+        institutional handoff cost in OCWD. Wider separation at Phase 11 reflects the broken loop
+        closure. Scale: 150 (minimum) to 290 (maximum coherent).
+      </div>
+      <div class="n-chart" id="n-chart">
+        <div style="font-size:12px;color:#8b949e;margin-bottom:12px;display:flex;gap:20px;">
+          <span style="color:#4db6ac;font-weight:700;">■ NEWater (PUB)</span>
+          <span style="color:#64b5f6;font-weight:700;">■ OCWD GWRS</span>
+          <span style="color:#ffb74d;font-weight:700;">Δ = gap (OCWD − NEWater)</span>
+        </div>
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- ── Loop Closure Asymmetry ───────────────────────── -->
+    <div class="section">
+      <div class="section-title">Loop Closure Asymmetry</div>
+      <div class="section-sub">
+        The most consequential structural difference: where does Phase 11 output go, and who controls it?
+        PUB has a closed tholonic recursion; OCWD does not.
+      </div>
+      <div class="loop-grid">
+        <div class="loop-card">
+          <h4 class="nw">🇸🇬 NEWater — Closed Tholonic Loop</h4>
+          <div class="loop-step ok">Phase 8–10: PUB NEWater factories → PUB distribution</div>
+          <div class="loop-step ok">Phase 11a: NEWater → industrial user (metered, PUB invoice)</div>
+          <div class="loop-step ok">Phase 11b: NEWater → PUB Bedok / Kranji reservoirs (direct)</div>
+          <div class="loop-step ok">Loop closure: PUB reservoir → PUB abstraction (Phase 1) — single actor</div>
+          <div class="loop-step ok">Phase 11 child-N → Phase 0 parent-N: structurally intact</div>
+          <div style="margin-top:12px;font-size:12px;color:#4db6ac;font-weight:700;">Result: zero value leakage at loop closure; full institutional control of the recursion</div>
+        </div>
+        <div class="loop-card">
+          <h4 class="oc">💧 OCWD — Broken Tholonic Loop</h4>
+          <div class="loop-step ok">Phase 8–10: OCWD GWRS → injection wells</div>
+          <div class="loop-step warn">Phase 11: GWRS water injected into shared groundwater commons</div>
+          <div class="loop-step fail">Basin pumping: ~30 independent municipal agencies (uncontrolled re-abstraction)</div>
+          <div class="loop-step fail">OCWD cannot attribute which agency pumps its recycled water, or when</div>
+          <div class="loop-step fail">Phase 11 child-N ↛ Phase 0 parent-N: recursion broken at shared commons</div>
+          <div style="margin-top:12px;font-size:12px;color:#ef9a9a;font-weight:700;">Result: OCWD subsidises Orange County water economy; cannot capture value from loop closure</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── TVPCI Derivation ─────────────────────────────── -->
+    <div class="section">
+      <div class="section-title">TVPCI Derivation — Explaining the USD 0.37/m³ Gap</div>
+      <div class="section-sub">
+        The TrueValue Price Convergence Index predicts where market price deviates from true value.
+        The cost gap between NEWater and OCWD is not technological — it is institutional overhead
+        made visible by the Tholonic D-C discontinuity model.
+      </div>
+      <div class="tvpci">
+        <h3>TVPCI Step-by-Step</h3>
+        <div class="tvpci-step">
+          <div class="tvpci-num">1</div>
+          <div class="tvpci-text">
+            <strong>Observed gap:</strong> OCWD treatment cost USD 1.25/m³ − NEWater USD 0.88/m³
+            = <strong>USD 0.37/m³ premium</strong>. Both systems use MF + RO + UV.
+            The technology variable is controlled — the remaining variable is institutional structure.
+          </div>
+        </div>
+        <div class="tvpci-step">
+          <div class="tvpci-num">2</div>
+          <div class="tvpci-text">
+            <strong>Tholonic diagnosis — Phase 8 (OC San → OCWD handoff):</strong>
+            OCWD Phase 8 boundary_score = 5 (B3+B4+B9+B10+B11) vs. NEWater Phase 8 boundary_score = 3 (B3+B4+B11).
+            The two extra flags (B9=true, B10=true) represent the OC San/OCWD supply agreement — a contractual
+            coordination overhead. In the D-C formula: D_OCWD − D_NEWater = (boundary_score_diff × 4) = 8 index points.
+            This elevated D without proportional C increase lowers the phase-level balance, lowering N.
+          </div>
+        </div>
+        <div class="tvpci-step">
+          <div class="tvpci-num">3</div>
+          <div class="tvpci-text">
+            <strong>Tholonic diagnosis — Phase 3 (low transparency):</strong>
+            OCWD Phase 3 opacity_score = 1 (low) vs. NEWater Phase 3 opacity_score = 2 (medium).
+            Fragmentation across ~30 agencies creates a Phase 3 C penalty: C_OCWD_Ph3 = 200 + (C_flags × 20) + (1 × 8)
+            vs. C_NEWater_Ph3 = 200 + (C_flags × 20) + (2 × 8). Lower C → lower N → higher per-unit cost
+            of the distribution network.
+          </div>
+        </div>
+        <div class="tvpci-step">
+          <div class="tvpci-num">4</div>
+          <div class="tvpci-text">
+            <strong>Tholonic diagnosis — Phase 11 (broken loop closure):</strong>
+            OCWD Phase 11 child-N does not map back to Phase 0 parent-N through a single actor.
+            This creates a systemic "value leak" — the value of basin replenishment (avoided desalination,
+            seawater intrusion prevention, groundwater level maintenance) is distributed across ~30 agencies
+            without OCWD capturing proportional cost recovery.
+            The Tholonic model predicts this as a C_loss at Phase 11 that is not recoverable through pricing alone.
+          </div>
+        </div>
+        <div class="tvpci-step">
+          <div class="tvpci-num">5</div>
+          <div class="tvpci-text">
+            <strong>True Value calculation:</strong> NEWater USD 0.88/m³ represents the <em>minimum
+            institutionally achievable</em> cost for MF+RO+UV recycling at scale — the baseline true value.
+            OCWD's USD 1.25/m³ includes approximately USD 0.37/m³ of institutional overhead (supply
+            agreement costs, compliance interfaces, dual governance, loop closure subsidy).
+            The TVPCI gap = USD 0.37/m³ = institutional inefficiency premium = cost of fragmentation.
+          </div>
+        </div>
+        <div class="tvpci-result">
+          <div class="big">USD 0.37/m³</div>
+          <div class="small">Institutional overhead premium · 42% above minimum achievable cost · Pure D-C discontinuity overhead</div>
+          <div style="margin-top:10px;font-size:13px;color:#cdd4db;">
+            At 130 MGD (GWRS capacity): <strong style="color:#ffb74d;">USD ~$25M/year</strong> in recoverable efficiency savings
+            if OCWD could eliminate inter-institutional handoffs — or equivalently, if the OC San / OCWD
+            institutional boundary were removed and a single PUB-equivalent actor operated the full cycle.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── KPI Comparison Table ─────────────────────────── -->
+    <div class="section">
+      <div class="section-title">Supporting KPI Comparison</div>
+      <div class="section-sub">Raw metrics in context. The Tholonic analysis above explains the "why" behind these numbers.</div>
+      <table class="kpi-compare">
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>NEWater (PUB)</th>
+            <th>OCWD GWRS</th>
+            <th>Δ Gap</th>
+            <th>Tholonic interpretation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="val-label">Treatment Cost</td>
+            <td class="val-nw">USD 0.88/m³</td>
+            <td class="val-oc">USD 1.25/m³</td>
+            <td class="val-delta">+USD 0.37/m³ (+42%)</td>
+            <td>Institutional overhead at Phase 8 handoff (B9+B10=true)</td>
+          </tr>
+          <tr>
+            <td class="val-label">Energy Intensity</td>
+            <td class="val-nw">3.5 kWh/m³</td>
+            <td class="val-oc">4.2 kWh/m³</td>
+            <td class="val-delta">+0.7 kWh/m³ (+20%)</td>
+            <td>Partially reflects less optimised RO operation due to variable feed quality from OC San</td>
+          </tr>
+          <tr>
+            <td class="val-label">Recycling Share of Supply</td>
+            <td class="val-nw">40% of national supply</td>
+            <td class="val-oc">35% of basin replenishment</td>
+            <td class="val-delta">+5 pp (NEWater higher)</td>
+            <td>Single-actor target-setting allows aggressive expansion; fragmented governance creates coordination delays</td>
+          </tr>
+          <tr>
+            <td class="val-label">Non-Revenue Water</td>
+            <td class="val-nw">4.5%</td>
+            <td class="val-oc">~9%</td>
+            <td class="val-delta">+4.5 pp (OCWD higher)</td>
+            <td>Fragmented distribution across ~30 agencies; no central NRW management; structural Phase 3 opacity</td>
+          </tr>
+          <tr>
+            <td class="val-label">Per Capita Consumption</td>
+            <td class="val-nw">143 L/day</td>
+            <td class="val-oc">~284 L/day (75 gal)</td>
+            <td class="val-delta">+141 L/day (OCWD ~2×)</td>
+            <td>Single-actor PUB can mandate and enforce conservation; fragmented agencies have inconsistent targets</td>
+          </tr>
+          <tr>
+            <td class="val-label">Institutional Actor Count</td>
+            <td class="val-nw">1 (PUB)</td>
+            <td class="val-oc">3+ types, ~32 entities</td>
+            <td class="val-delta">31+ additional entities</td>
+            <td>Each additional actor class is a potential D-C discontinuity; all confirmed in PDI Events 10 and 13</td>
+          </tr>
+          <tr>
+            <td class="val-label">Low-Transparency Phases</td>
+            <td class="val-nw">0</td>
+            <td class="val-oc">1 (Phase 3)</td>
+            <td class="val-delta">1 phase gap</td>
+            <td>Phase 3 transparency gap is institutional (fragmented storage), not physical — uniquely OCWD</td>
+          </tr>
+          <tr>
+            <td class="val-label">Loop Closure Integrity</td>
+            <td class="val-nw" style="color:#4db6ac;">INTACT (PUB → PUB reservoir)</td>
+            <td class="val-oc" style="color:#ef9a9a;">BROKEN (shared groundwater commons)</td>
+            <td class="val-delta">Fundamental structural gap</td>
+            <td>Phase 11 child-N cannot map to Phase 0 parent-N through single actor in OCWD; the Tholonic recursion is interrupted</td>
+          </tr>
+          <tr>
+            <td class="val-label">Production Capacity</td>
+            <td class="val-nw">~900 ML/day</td>
+            <td class="val-oc">~492 ML/day (130 MGD)</td>
+            <td class="val-delta">NEWater ~1.8× larger</td>
+            <td>Scale advantage from single-actor long-term planning; PUB can expand without inter-agency negotiation</td>
+          </tr>
+          <tr>
+            <td class="val-label">Independent Quality Tests / yr</td>
+            <td class="val-nw">46,000+</td>
+            <td class="val-oc">~12,000 est.</td>
+            <td class="val-delta">NEWater ~4× more tests</td>
+            <td>Single-actor PUB invests heavily in public confidence; OCWD tests are regulatory-minimum</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="nav">
+      <a href="/frontend/project/water_newwater/index.html">🇸🇬 NEWater Project</a>
+      <a href="/frontend/project/water_ocwd/index.html">💧 OCWD Project</a>
+      <a href="/index.html">🏠 Main Homepage</a>
+      <a href="/frontend/tvpci/index.html">🧭 TVPCI Framework</a>
+    </div>
+
+  </div>
+
+  <script>
+  (function() {
+    // Load both data files and render N stability chart
+    var NW_URL = '/frontend/project/water_newwater/data/processed/water_newwater_supply_chain_ui.json';
+    var OC_URL = '/frontend/project/water_ocwd/data/processed/water_ocwd_supply_chain_ui.json';
+
+    Promise.all([
+      fetch(NW_URL).then(function(r){return r.json();}).catch(function(){return null;}),
+      fetch(OC_URL).then(function(r){return r.json();}).catch(function(){return null;})
+    ]).then(function(results) {
+      var nwData = results[0], ocData = results[1];
+      if (!nwData || !ocData) return;
+
+      var nwPhases = (nwData.phases||{}).synthetic||{};
+      var ocPhases = (ocData.phases||{}).synthetic||{};
+      var nwMeta = nwData.phase_meta||{};
+      var ocMeta = ocData.phase_meta||{};
+
+      var ids = [];
+      for (var k in nwPhases) { if (/^\d+$/.test(k)) ids.push(+k); }
+      ids.sort(function(a,b){return a-b;});
+
+      var maxN = 290, minN = 150;
+      var chartEl = document.getElementById('n-chart');
+      if (!chartEl) return;
+
+      var rows = '';
+      ids.forEach(function(id) {
+        var nwN = +(nwPhases[id+''] && nwPhases[id+''].N) || 0;
+        var ocN = +(ocPhases[id+''] && ocPhases[id+''].N) || 0;
+        var nwPct = Math.max(0, Math.min(100, (nwN - minN) / (maxN - minN) * 100));
+        var ocPct = Math.max(0, Math.min(100, (ocN - minN) / (maxN - minN) * 100));
+        var delta = ocN - nwN;
+        var deltaStr = (delta >= 0 ? '+' : '') + delta.toFixed(0);
+        var deltaColor = delta < 0 ? '#ef9a9a' : '#4db6ac';
+        var name = (nwMeta[id+''] && nwMeta[id+''].name) || ('Phase '+id);
+        if (name.length > 28) name = name.slice(0,27)+'…';
+
+        // Flag phases with handoffs
+        var flag = (id === 8 || id === 11) ? ' ★' : '';
+        var rowBg = (id === 8 || id === 11) ? 'background:rgba(255,152,0,0.05);border-radius:6px;' : '';
+
+        rows += '<div class="n-row" style="'+rowBg+'">';
+        rows += '<div class="n-label" style="font-weight:'+(flag?'700':'400')+'">Ph\u00a0'+id+'\u00a0'+name+flag+'</div>';
+        rows += '<div style="flex:1;">';
+        rows += '<div style="font-size:10px;color:#4db6ac;margin-bottom:2px;">NEWater: '+nwN.toFixed(0)+'</div>';
+        rows += '<div class="n-bar-wrap" style="margin-bottom:4px;"><div class="n-bar nw" style="width:'+nwPct.toFixed(1)+'%;"></div></div>';
+        rows += '<div style="font-size:10px;color:#64b5f6;margin-bottom:2px;">OCWD: '+ocN.toFixed(0)+'</div>';
+        rows += '<div class="n-bar-wrap"><div class="n-bar oc" style="width:'+ocPct.toFixed(1)+'%;"></div></div>';
+        rows += '</div>';
+        rows += '<div class="n-delta" style="color:'+deltaColor+';">Δ\u00a0'+deltaStr+'</div>';
+        rows += '</div>';
+      });
+
+      // Append rows after the legend
+      var legend = chartEl.querySelector('div');
+      if (legend) {
+        var container = document.createElement('div');
+        container.innerHTML = rows;
+        chartEl.appendChild(container);
+      }
+    });
+  })();
+  </script>
+</body>
+</html>

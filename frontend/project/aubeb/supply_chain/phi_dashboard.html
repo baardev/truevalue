@@ -83,7 +83,7 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.08);
             border-top: 4px solid #e0e0e0;
         }
-        .card.gold-border { border-top-color: #b8860b; }
+        .card.amber-border { border-top-color: #b8860b; }
         .card.good-border { border-top-color: #28a745; }
         .card.warn-border { border-top-color: #ffc107; }
         .card.poor-border { border-top-color: #dc3545; }
@@ -100,7 +100,7 @@
             color: #0d4f47;
             margin-bottom: 6px;
         }
-        .card-value.gold { color: #b8860b; }
+        .card-value.amber { color: #b8860b; }
         .card-value.green { color: #28a745; }
         .card-value.red { color: #dc3545; }
         .card-sub { font-size: 12px; color: #6c757d; }
@@ -181,7 +181,7 @@
             margin-top: 4px;
             white-space: nowrap;
         }
-        .boundary-score-bar {
+        .boundary-score-record {
             width: 48px;
             height: 5px;
             background: #e0e0e0;
@@ -199,7 +199,7 @@
         .arrow-poor  { color: #dc3545; }
         .arrow-warn  { color: #fd7e14; }
 
-        /* φ reference bar */
+        /* φ reference record */
         .phi-reference {
             margin-top: 20px;
             padding: 16px 20px;
@@ -210,7 +210,7 @@
         .phi-reference h4 { font-size: 13px; color: #3d2b00; margin-bottom: 12px; font-weight: 700; }
         .phi-scale-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
         .phi-scale-label { font-size: 11px; color: #6c757d; width: 80px; flex-shrink: 0; }
-        .phi-scale-bar {
+        .phi-scale-record {
             flex: 1;
             height: 18px;
             background: #f0f0f0;
@@ -349,7 +349,7 @@
             font-size: 12px;
         }
         .result-label { width: 120px; color: #6c757d; flex-shrink: 0; }
-        .result-bar { flex: 1; height: 14px; background: #e9ecef; border-radius: 7px; overflow: hidden; }
+        .result-record { flex: 1; height: 14px; background: #e9ecef; border-radius: 7px; overflow: hidden; }
         .result-bar-fill { height: 100%; border-radius: 7px; transition: width 0.3s; }
         .result-score { width: 40px; text-align: right; font-weight: 700; color: #0d4f47; }
 
@@ -366,7 +366,7 @@
         .explainer-col p, .explainer-col li { font-size: 13px; line-height: 1.6; opacity: 0.9; }
         .explainer-col ul { list-style: none; padding: 0; }
         .explainer-col li { padding: 4px 0; padding-left: 18px; position: relative; }
-        .explainer-col li::before { content: "φ"; position: absolute; left: 0; color: #f5d97a; font-weight: 700; font-size: 11px; }
+        .explainer-col li::befbaseline { content: "φ"; position: absolute; left: 0; color: #f5d97a; font-weight: 700; font-size: 11px; }
         .phi-big { font-size: 64px; font-weight: 900; color: #f5d97a; line-height: 1; margin-bottom: 5px; }
         .phi-desc { font-size: 12px; opacity: 0.7; }
 
@@ -380,8 +380,8 @@
         }
         .footer a { color: #b8860b; text-decoration: none; }
 
-        /* Scenario selector bar */
-        .scenario-bar {
+        /* Scenario selector record */
+        .scenario-record {
             display: flex;
             align-items: center;
             gap: 12px;
@@ -459,20 +459,20 @@
 
     <!-- Score cards -->
     <div class="score-cards">
-        <div class="card gold-border">
+        <div class="card amber-border">
             <div class="card-label">System φ-Coherence</div>
-            <div class="card-value gold" id="sys-score">49.5</div>
+            <div class="card-value amber" id="sys-score">49.5</div>
             <div class="card-sub">Low coherence — systemic<br>proportionality breakdown</div>
         </div>
         <div class="card poor-border">
             <div class="card-label">Worst Boundary</div>
             <div class="card-value red">P5→P6</div>
-            <div class="card-sub">Score: 25.0 — Vaulting collapse<br>ratio 0.498× (target 1.618)</div>
+            <div class="card-sub">Score: 25.0 — capital return bottleneck<br>ratio 0.498× (target 1.618)</div>
         </div>
         <div class="card good-border">
             <div class="card-label">Best Boundary</div>
             <div class="card-value green">P0→P1</div>
-            <div class="card-sub">Score: 77.8 — Mining ramp<br>ratio 1.415× (near φ)</div>
+            <div class="card-sub">Score: 77.8 — mandate to baseline sensing ramp<br>ratio 1.415× (near φ)</div>
         </div>
         <div class="card warn-border">
             <div class="card-label">Boundaries at Target</div>
@@ -579,7 +579,7 @@
                         <li>Score 100 = ratio exactly equals φ (1.618)</li>
                         <li>Score &lt;40 = ratio critically far from φ — value extraction or suppression</li>
                         <li>Unlike π (phase-local), φ is chain-global — a single phase cannot be evaluated alone</li>
-                        <li>Mangrove finding: P5→P6 (Vaulting) collapses to 0.498× — the most severe φ failure in the chain, followed by a disproportionate recovery at P6→P7 (Exchange)</li>
+                        <li>AUBEB finding: P5→P6 (capital return) collapses to 0.498×, the most severe φ failure in the chain, followed by a disproportionate recovery at P6→P7 (CBEMR design)</li>
                     </ul>
                 </div>
             </div>
@@ -601,14 +601,14 @@
 const PHI = 1.6180339887;
 
 const PHASES = [
-    { id:0, name:"Prospecting", N:183 },
-    { id:1, name:"Mining",      N:259 },
-    { id:2, name:"Processing",  N:263 },
-    { id:3, name:"Doré",        N:229 },
-    { id:4, name:"Refining",    N:253 },
-    { id:5, name:"Casting",     N:237 },
-    { id:6, name:"Vaulting",    N:118 },
-    { id:7, name:"Exchange",    N:239 },
+    { id:0, name:"Degraded baseline", N:183 },
+    { id:1, name:"Custodial mandate", N:259 },
+    { id:2, name:"Baseline sensing",  N:263 },
+    { id:3, name:"Carbon quant.",     N:229 },
+    { id:4, name:"Certification",     N:253 },
+    { id:5, name:"Commercialisation", N:237 },
+    { id:6, name:"Capital return",    N:118 },
+    { id:7, name:"CBEMR design",      N:239 },
 ];
 
 // ── Scenarios (loaded from scenarios.json) ───────────────────────────────────
@@ -872,7 +872,7 @@ renderAll();
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS = {
-    'gold':'Mangrove','shea':'Shea',
+    'aubeb':'AUBEB','shea':'Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'dashboard.html':'π Dashboard',
     'phi_dashboard.html':'φ Proportional',
@@ -883,7 +883,7 @@ renderAll();
     'index.html':null,'frontend':null
   };
   var HUBS = {
-    'gold':'/frontend/project/aubeb/index.html',
+    'aubeb':'/frontend/project/aubeb/index.html',
     'shea':'/frontend/project/shea/index.html',
     'supply_chain':'index.html',
     'value_chain':'index.html'
@@ -933,7 +933,7 @@ renderAll();
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
   else if (/\/shea\//i.test(path))   project = 'shea';
-  else if (/\/gold\//i.test(path))   project = 'gold';
+  else if (/\/aubeb\//i.test(path))  project = 'aubeb';
 
   // Detect section
   var inSupply = /supply_chain/.test(path);
@@ -952,8 +952,8 @@ renderAll();
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
-    if (project === 'gold') {
-      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📊' });
     }
     if (project === 'shea') {
       projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
@@ -964,17 +964,17 @@ renderAll();
   var schemaLinks = [];
   if (inSupply || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
-      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
       { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
-      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+      { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
   if (inValue || (!inSupply && !inValue)) {
     schemaLinks = schemaLinks.concat([
-      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
-      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
-      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+      { label: 'Value Metric Definitions', href: '/frontend/project/aubeb/data/processed/aubeb_value_metrics.json', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',       icon: '🗂️' },
     ]);
   }
 

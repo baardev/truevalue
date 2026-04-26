@@ -1,0 +1,55 @@
+# AnythingLLM ingestion manifest for the TrueValue Analytics repository.
+#
+# API keys should be provided through environment variables:
+#   ANYTHINGLLM_API_KEY
+#   ANYTHINGLLM_BASE_URL
+#   ANYTHINGLLM_WORKSPACE
+
+workspace_slug: truevalue-analytics-documents
+
+api:
+  base_url: http://localhost:3001
+  upload_path: /api/v1/document/upload
+  documents_path: /api/v1/documents
+  workspaces_path: /api/v1/workspaces
+  workspace_update_path_template: /api/v1/workspace/{workspace_slug}/update-embeddings
+
+max_size_mb: 10
+skip_html_when_markdown_exists: true
+
+include:
+  - README.md
+  - CLAUDE.md
+  - .cursor/rules/*.mdc
+  - frontend/docs/**/*.md
+  - frontend/docs/**/*.txt
+  - frontend/docs/**/*.yaml
+  - frontend/docs/**/*.yml
+  - frontend/project/**/data/schema/*.csv
+  - frontend/project/**/data/*.csv
+  - data/*.csv
+
+exclude:
+  - .git/**
+  - .venv/**
+  - node_modules/**
+  - site/**
+  - viewable/**
+  - frontend/docs/**/archive/**
+  - frontend/docs/**/archive*/**
+  - frontend/docs/**/*.html
+  - frontend/docs/**/*.pdf
+  - frontend/docs/**/*.doc
+  - frontend/docs/**/*.docx
+  - frontend/docs/**/*.xlsx
+  - frontend/docs/**/*.png
+  - frontend/docs/**/*.jpg
+  - frontend/docs/**/*.jpeg
+  - frontend/docs/**/*.gif
+  - frontend/docs/**/*.webp
+  - frontend/docs/**/*.ogg
+
+allow_html:
+  - frontend/docs/Repos/extra/Generic/*.html
+  - frontend/docs/Repos/extra/UBS/*.html
+  - frontend/docs/Repos/extra/Deutsche/*.html

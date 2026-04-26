@@ -1,11 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
 cd /home/jw/src/tv
-nohup python -m http.server 8000 &
-nohup ./scripts/start_mkdocs_from_site.sh &
+
+# Bind to localhost so public traffic must pass through Nginx.
+nohup python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/tv-http.log 2>&1 &
+
+if [[ -x ./scripts/start_mkdocs_from_site.sh ]]; then
+  nohup ./scripts/start_mkdocs_from_site.sh > /tmp/tv-mkdocs.log 2>&1 &
+else
+  echo "MkDocs helper not found. Run bash scripts/RUN_MKWIKI when needed."
+fi
 
 # systemd (preferred)
 # sudo cp /home/jw/src/tv/deploy/tv-web.service /etc/systemd/system/tv-web.service
-# sudo cp /home/jw/src/tv/deploy/tv-docs.service /etc/systemd/system/tv-docs.service
 # sudo systemctl daemon-reload
-# sudo systemctl enable --now tv-web.service tv-docs.service
-# systemctl status tv-web.service tv-docs.service
+# sudo systemctl enable --now tv-web.service
+# systemctl status tv-web.service
 

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shea System Lifecycle Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Shea System Lifecycle Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>shea_system_lifecycle_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>lifecycle_phase_id<span class="sort-indicator"></span></th>
+<th>lifecycle_phase_name<span class="sort-indicator"></span></th>
+<th>lifecycle_category<span class="sort-indicator"></span></th>
+<th>linked_supply_phases<span class="sort-indicator"></span></th>
+<th>parent_N<span class="sort-indicator"></span></th>
+<th>D_total<span class="sort-indicator"></span></th>
+<th>C_total<span class="sort-indicator"></span></th>
+<th>balance_score<span class="sort-indicator"></span></th>
+<th>N<span class="sort-indicator"></span></th>
+<th>sustainability_index<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Plan / system design</td><td>Stewardship</td><td>0,1</td><td>Shea agroforestry and community production system</td><td>260</td><td>205</td><td>78.0</td><td>181</td><td>0.45</td><td>medium</td><td>Land eligibility; participant criteria; financing structure; planting target; governance design</td><td>Partner network; farmer enrollment; cooperative design; site list</td><td>Approved implementation design and participant base</td><td>plan; persons; ha</td><td>confidential; public</td><td>Serious Shea BPlan V8 2023; Acorn Project Summary 080523; Serious Shea Additionality Assessment</td><td>POPULATED</td><td>Strong D-design from project documents. C is lower because long-term community uptake and governance capacity are only partially evidenced.</td></tr>
+<tr><td>1</td><td>Establish / build productive base</td><td>Stewardship</td><td>0,3</td><td>Operational shea parkland and processing base</td><td>250</td><td>235</td><td>86.0</td><td>209</td><td>0.82</td><td>medium</td><td>Nursery capacity; planting schedule; facilities; clean-energy processing requirements</td><td>Tree planting; facility buildout; cooperative labor; local implementation</td><td>Trees planted; nurseries active; facilities established</td><td>trees; nurseries; facilities; ha</td><td>confidential</td><td>Serious Shea BPlan V8 2023; EP Carbon requirements; Mirova Shea Senegal Feasibility</td><td>POPULATED</td><td>Project has measurable establishment targets, including 35M trees, 5 nurseries, 26 facilities, and 1M ha. Actual delivered progress requires time-series confirmation.</td></tr>
+<tr><td>2</td><td>Operate / produce and move material</td><td>Operations</td><td>0,1,2,3,4,5,6</td><td>Running shea supply and processing system</td><td>245</td><td>260</td><td>90.0</td><td>227</td><td>1.20</td><td>medium</td><td>Seasonality; processing specifications; export requirements; product specifications</td><td>Collection labor; aggregation; processing throughput; buyer integration; retail delivery</td><td>Seasonal collection and processed shea output</td><td>kg; MT; units/year</td><td>public; confidential</td><td>shea_phase_metrics.csv; Serious Shea BPlan V8 2023; Clarity/Cleo outline</td><td>POPULATED</td><td>Operational layer is already represented by the supply-chain phases. This lifecycle phase links the physical chain into one operating state.</td></tr>
+<tr><td>3</td><td>Maintain / stewardship continuity</td><td>Stewardship</td><td>0,3</td><td>Maintained productive agroforestry and community system</td><td>275</td><td>210</td><td>70.0</td><td>170</td><td>0.18</td><td>low</td><td>Survival threshold; replacement rules; monitoring cadence; land tenure continuity; equipment upkeep</td><td>Field monitoring; replanting; training refresh; cooperative participation; maintenance labor</td><td>Survival rate maintained; failed seedlings replaced; facilities kept operational</td><td>ratio; trees/year; inspections/year; persons trained</td><td>confidential; inferred</td><td>Serious Shea BPlan V8 2023; Serious Shea Global Indicator Framework; Acorn onboarding process</td><td>PARTIAL</td><td>This is the newly identified hidden sustainability risk. The 80% survival target exists, but monitoring frequency, replanting volumes, maintenance budget, and accountable custodians are not yet tabulated.</td></tr>
+<tr><td>4</td><td>Adapt / renew system</td><td>Adaptive governance</td><td>0,1,3,4</td><td>Renewed shea system after ecological or market stress</td><td>230</td><td>205</td><td>74.0</td><td>161</td><td>0.32</td><td>low</td><td>Climate stress thresholds; market access constraints; compliance changes; land pressure; drought response rules</td><td>Learning loops; revised training; route or buyer diversification; governance updates; adaptive planting</td><td>Documented adaptation actions and renewed phase targets</td><td>actions/year; updated plans; risk flags</td><td>confidential; inferred</td><td>Serious Shea Additionality Assessment; Serious Shea Global Indicator Framework; shea_data_sources.csv</td><td>PARTIAL</td><td>Adaptation is implied by barriers and SDG framework, but not yet represented as a measured recurring cycle.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
