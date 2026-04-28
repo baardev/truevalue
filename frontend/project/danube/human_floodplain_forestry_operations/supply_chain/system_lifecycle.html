@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Floodplain Forestry Operations : System Lifecycle : Danube Basin</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:ui-sans-serif,system-ui,sans-serif; background:#0d1117; color:#e6edf3; padding:20px; }
+    .container { max-width:860px; margin:0 auto; }
+    .kicker { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#558b2f; margin-bottom:6px; }
+    h1 { font-size:20px; font-weight:400; margin-bottom:16px; }
+    h2 { font-size:14px; font-weight:700; color:#558b2f; margin-bottom:12px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+    .kpi { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:14px; text-align:center; }
+    .kpi-val { font-size:22px; font-weight:900; color:#558b2f; }
+    .kpi-lbl { font-size:10px; color:#8b949e; margin-top:4px; }
+    .panel { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:20px; margin-bottom:16px; }
+    .phase-block { margin-bottom:16px; border-bottom:1px solid #21262d; padding-bottom:14px; }
+    .phase-block:last-child { border-bottom:none; margin-bottom:0; }
+    .phase-title { font-size:13px; font-weight:700; color:#e6edf3; margin-bottom:6px; }
+    .phase-note { font-size:11px; color:#8b949e; margin-bottom:8px; }
+    .ndc-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:4px; }
+    .bar-track { background:#21262d; border-radius:3px; height:7px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:3px; }
+    .bar-lbl { font-size:10px; color:#6e7681; margin-top:2px; display:flex; justify-content:space-between; }
+    .interpret { font-size:13px; color:#8b949e; line-height:1.7; margin-bottom:12px; }
+    .nav { margin-top:16px; }
+    .nav a { color:#8b949e; text-decoration:none; font-size:12px; margin-right:14px; }
+    .badge-btl { display:inline-block; background:#3d1a1a; color:#f85149; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; margin-left:6px; }
+    .badge-weak { display:inline-block; background:#3d1a1a; color:#f85149; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; margin-left:6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="kicker">Danube Basin · Human System · Floodplain Forestry Operations</div>
+    <h1>♻️ System Lifecycle: N-D-C Analysis</h1>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-val">76.2%</div><div class="kpi-lbl">Avg Balance</div></div>
+      <div class="kpi"><div class="kpi-val">195</div><div class="kpi-lbl">Avg N Value</div></div>
+      <div class="kpi"><div class="kpi-val">Phase 3</div><div class="kpi-lbl">Bottleneck (73%)</div></div>
+      <div class="kpi"><div class="kpi-val">Phase 1</div><div class="kpi-lbl">Strongest (82%)</div></div>
+    </div>
+
+    <div class="panel">
+      <h2>Phase Lifecycle N-D-C</h2>
+      <div id="lifecycle-phases"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Structural Interpretation</h2>
+      <p class="interpret">
+        The floodplain forestry operations chain shows a clear downstream deterioration pattern.
+        Phase 0 (Forest Inventory, 79%) and Phase 1 (Timber Harvesting, 82%) represent the
+        physical operations core: timber is inventoried and extracted with moderate efficiency,
+        though 25% illegal logging in non-EU states and 35% of harvested sites showing soil
+        compaction indicate sub-optimal practices. The chain weakens progressively as it moves
+        toward market and financial abstraction. Phase 3 (Market Access, 73%) is the tholonic
+        N-D-C failure signal: D (regulatory and market requirements for certification and carbon
+        project compliance) far exceeds C (actual certified sales and registered carbon credits)
+        by approximately 20-fold for carbon and approximately 55 percentage points for certification.
+      </p>
+      <p class="interpret">
+        Phase 2 (Timber Processing, 77%) is structurally weak due to underinvestment: the 52%
+        recovery rate and 1.6 value-add ratio indicate processing infrastructure in Romania and
+        Serbia that has not received adequate capital for modernisation. This suppresses the revenue
+        that could otherwise fund Phase 3 and Phase 4 improvements. The D-C imbalance is one of
+        capital availability, not operational knowledge.
+      </p>
+      <p class="interpret">
+        Phase 4 (Revenue Capture, 70%) is the systemic lifecycle gap: EUR 48/ha/yr revenue (89%
+        from timber only) fails to compete with agricultural conversion returns of EUR 185/ha/yr.
+        This is the primary driver of ongoing deforestation outside protected areas. In tholonic
+        terms, the C-output of Phase 2-3 (revenue) is not completing the loop back to N-renewal
+        at Phase 0 (forest management reinvestment). A Carbon Market Development Bond closes this
+        loop by financing Phase 3 activation (carbon project registration, certification scale-up),
+        which raises Phase 4 revenue toward the level required to compete with conversion pressure.
+        The paired natural system (Phase 0 flood connectivity restoration) provides the additionality
+        that the human Phase 3 carbon market then monetises.
+      </p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">← Chain Overview</a>
+      <a href="../index.html">← Subproject Hub</a>
+      <a href="../../index.html">← Danube Basin</a>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var PHASES = [
+      {id:0, name:"Forest Inventory and Management Planning", D:264, C:252, balance:79.0, N:203,
+       note:"140,000 ha under management plan; 45% FSC/PEFC certified; 62% riparian zones with formal plans. Documentation gaps in Serbia and Ukraine."},
+      {id:1, name:"Timber Harvesting and Extraction",         D:268, C:256, balance:82.0, N:215,
+       note:"800,000 m3/yr total harvest. 25% illegal logging in non-EU states. 35% harvested sites with soil compaction from heavy machinery."},
+      {id:2, name:"Timber Processing and Value Addition",     D:264, C:248, balance:77.0, N:197,
+       note:"210,000 m3/yr sawnwood; 1,200 GWh/yr biomass energy. 52% recovery rate vs 65% EU avg. Value-add 1.6 vs 2.2 EU avg. Mill underinvestment in Romania and Serbia."},
+      {id:3, name:"Market Access and Certification",          D:268, C:240, balance:73.0, N:187,
+       note:"BOTTLENECK. 45% certified sales. Only 50,000 tCO2/yr credits vs 1,000,000 potential. Serbia 8%, Ukraine 5% certified. EUDR risk from 2025.", btl:true},
+      {id:4, name:"Revenue Capture and Ecosystem Service Payments", D:260, C:240, balance:70.0, N:175,
+       note:"WEAKEST. EUR 48/ha/yr revenue (89% timber). Agricultural conversion EUR 185/ha/yr creates deforestation incentive. Carbon revenue near-zero.", weak:true},
+    ];
+    var COLOR = "#558b2f";
+    function pctC(v){ return v>=82?"#56d364":(v>=74?"#d29922":"#f85149"); }
+    var html = "";
+    PHASES.forEach(function(p){
+      var dPct = Math.min(100,(p.D/300)*100).toFixed(1);
+      var cPct = Math.min(100,(p.C/300)*100).toFixed(1);
+      var nPct = Math.min(100,(p.N/300)*100).toFixed(1);
+      var btag = p.btl ? '<span class="badge-btl">BOTTLENECK</span>' : (p.weak ? '<span class="badge-weak">WEAKEST</span>' : '');
+      html += '<div class="phase-block">';
+      html += '<div class="phase-title">Ph '+p.id+' \u00b7 '+p.name+btag+'<span style="float:right;color:'+pctC(p.balance)+';font-weight:900;">'+p.balance.toFixed(1)+'%</span></div>';
+      html += '<div class="phase-note">'+p.note+'</div>';
+      html += '<div class="ndc-row">';
+      ['D','C','N'].forEach(function(k){
+        var val = k==='D'?p.D:(k==='C'?p.C:p.N);
+        var pct = k==='D'?dPct:(k==='C'?cPct:nPct);
+        var col = k==='D'?"#1565c0":(k==='C'?COLOR:"#56d364");
+        html += '<div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+';"></div></div>';
+        html += '<div class="bar-lbl"><span>'+k+'</span><span>'+val+'</span></div></div>';
+      });
+      html += '</div></div>';
+    });
+    document.getElementById("lifecycle-phases").innerHTML = html;
+  })();
+  </script>
+</body>
+</html>

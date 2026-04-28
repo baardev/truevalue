@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natural Fish Population : System Lifecycle : Danube Basin</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:ui-sans-serif,system-ui,sans-serif; background:#0d1117; color:#e6edf3; padding:20px; }
+    .container { max-width:860px; margin:0 auto; }
+    .kicker { font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0277bd; margin-bottom:6px; }
+    h1 { font-size:20px; font-weight:400; margin-bottom:16px; }
+    h2 { font-size:14px; font-weight:700; color:#0277bd; margin-bottom:12px; }
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:20px; }
+    .kpi { background:#161b22; border:1px solid #30363d; border-radius:8px; padding:14px; text-align:center; }
+    .kpi-val { font-size:22px; font-weight:900; color:#0277bd; }
+    .kpi-lbl { font-size:10px; color:#8b949e; margin-top:4px; }
+    .panel { background:#161b22; border:1px solid #30363d; border-radius:10px; padding:20px; margin-bottom:16px; }
+    .phase-block { margin-bottom:16px; border-bottom:1px solid #21262d; padding-bottom:14px; }
+    .phase-block:last-child { border-bottom:none; margin-bottom:0; }
+    .phase-title { font-size:13px; font-weight:700; color:#e6edf3; margin-bottom:6px; }
+    .phase-note { font-size:11px; color:#8b949e; margin-bottom:8px; }
+    .ndc-row { display:grid; grid-template-columns:1fr 1fr 1fr; gap:6px; margin-bottom:4px; }
+    .bar-track { background:#21262d; border-radius:3px; height:7px; overflow:hidden; }
+    .bar-fill { height:100%; border-radius:3px; }
+    .bar-lbl { font-size:10px; color:#6e7681; margin-top:2px; display:flex; justify-content:space-between; }
+    .interpret { font-size:13px; color:#8b949e; line-height:1.7; margin-bottom:12px; }
+    .nav { margin-top:16px; }
+    .nav a { color:#8b949e; text-decoration:none; font-size:12px; margin-right:14px; }
+    .badge-btl { display:inline-block; background:#3d1a1a; color:#f85149; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; margin-left:6px; }
+    .badge-str { display:inline-block; background:#1a3a4a; color:#4fc3f7; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; margin-left:6px; }
+    .badge-weak { display:inline-block; background:#3d1a1a; color:#f85149; font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; margin-left:6px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="kicker">Danube Basin · Natural System · Fish Population</div>
+    <h1>🔄 System Lifecycle: N-D-C Analysis</h1>
+
+    <div class="kpi-grid">
+      <div class="kpi"><div class="kpi-val">78.0%</div><div class="kpi-lbl">Avg Balance</div></div>
+      <div class="kpi"><div class="kpi-val">201</div><div class="kpi-lbl">Avg N Value</div></div>
+      <div class="kpi"><div class="kpi-val">Phase 1</div><div class="kpi-lbl">Bottleneck (71%)</div></div>
+      <div class="kpi"><div class="kpi-val">Phase 3</div><div class="kpi-lbl">Strongest (80%)</div></div>
+    </div>
+
+    <div class="panel">
+      <h2>Phase Lifecycle N-D-C</h2>
+      <div id="lifecycle-phases"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Structural Interpretation</h2>
+      <p class="interpret">
+        Phase 1 (71%) is the primary structural bottleneck: D (migratory corridor requirements of
+        100 native fish species) far exceeds C (actual accessible migration range) because 60 dams
+        restrict movement and only 16% of historical migratory range remains open. Iron Gate I and
+        II, built 1970-1984, occupy the most critical bottleneck position on the entire river and
+        have no functional fish passage for large migratory species. The D-C imbalance at Phase 1
+        propagates forward: without upstream spawning access, recruitment depends entirely on
+        restocking, Phase 2 is structurally decoupled from natural reproduction, and Phase 3 adult
+        biomass is trending downward despite legal catch limits.
+      </p>
+      <p class="interpret">
+        Phase 3 (80%, D approximately equal to C) is the system resilience node: 420,000 t total
+        fishable biomass provides a substantial stock base, and the 38,000 t/yr sustainable yield
+        represents a real biological capital asset. The 10-year declining trend signals that Phase 3
+        resilience is being eroded from below (Phase 1 corridor failure) and from above (Phase 4
+        quota compliance and illegal catch). The 480,000 recreational fishing licences and EUR 85M
+        recreational fishing value represent a social and economic asset that depends entirely on
+        Phase 3 remaining above the critical biomass threshold.
+      </p>
+      <p class="interpret">
+        A Fisheries Habitat Restoration Bond targeting Phase 1 fish pass construction would directly
+        address the D-C imbalance at the system root. Raising the fish pass operational rate from
+        22% to 45% (year 5 target) would increase accessible migration range from 16% toward 30%
+        (year 10 target). The e-score of 18 is the lowest of all built Danube subprojects: no
+        outcome-linked financial instrument currently exists for freshwater fisheries habitat in the
+        basin. LIFE grants and EMFAF are input-based. A verified outcome bond indexed to fish pass
+        operational rate and migration range accessible would shift e from 18 toward 45-55, creating
+        the financial abstraction layer the system currently lacks entirely.
+      </p>
+    </div>
+
+    <div class="nav">
+      <a href="index.html">← Cascade Index</a>
+      <a href="../index.html">← Subproject Hub</a>
+      <a href="../../index.html">← Danube Basin</a>
+    </div>
+  </div>
+
+  <script>
+  (function(){
+    var PHASES = [
+      {id:0, name:"Water Quality and Habitat Suitability", D:268, C:264, balance:83.0, N:218,
+       note:"40% good WFD ecological status; 580 kt/yr N load; 42% eutrophication risk. Habitat baseline adequate but nutrient loading high."},
+      {id:1, name:"Habitat and Migration Corridor",        D:264, C:220, balance:71.0, N:180,
+       note:"BOTTLENECK. 16% migration range accessible; 22% dams with fish pass; Iron Gate I+II NO functional pass. D > C: corridor requirements exceed delivered access.", btl:true},
+      {id:2, name:"Recruitment and Juvenile Development",  D:264, C:244, balance:79.0, N:203,
+       note:"38 fish/100m channel vs 112/100m floodplain; 95% sturgeon juveniles from restocking. Natural recruitment absent for migratory species."},
+      {id:3, name:"Adult Biomass and Population Dynamics", D:264, C:248, balance:80.0, N:207,
+       note:"STRONGEST. 420,000 t biomass; 38,000 t/yr sustainable yield; 58% exploitation rate; 10-yr declining trend.", str:true},
+      {id:4, name:"Harvest-Ready Population Stock",        D:260, C:244, balance:77.0, N:197,
+       note:"22,000 t AAC; 72% compliance; 21% illegal catch; 10 countries with sturgeon ban; 480,000 recreational licences.", weak:true},
+    ];
+    var COLOR = "#0277bd";
+    function pctC(v){ return v>=86?"#4fc3f7":(v>=78?"#d29922":"#f85149"); }
+    var html = "";
+    PHASES.forEach(function(p){
+      var dPct = Math.min(100,(p.D/300)*100).toFixed(1);
+      var cPct = Math.min(100,(p.C/300)*100).toFixed(1);
+      var nPct = Math.min(100,(p.N/300)*100).toFixed(1);
+      var btag = p.btl ? '<span class="badge-btl">BOTTLENECK</span>' : (p.str ? '<span class="badge-str">STRONGEST</span>' : (p.weak ? '<span class="badge-weak">WEAK</span>' : ''));
+      html += '<div class="phase-block">';
+      html += '<div class="phase-title">Ph '+p.id+' \u00b7 '+p.name+btag+'<span style="float:right;color:'+pctC(p.balance)+';font-weight:900;">'+p.balance.toFixed(1)+'%</span></div>';
+      html += '<div class="phase-note">'+p.note+'</div>';
+      html += '<div class="ndc-row">';
+      ['D','C','N'].forEach(function(k){
+        var val = k==='D'?p.D:(k==='C'?p.C:p.N);
+        var pct = k==='D'?dPct:(k==='C'?cPct:nPct);
+        var col = k==='D'?"#1565c0":(k==='C'?COLOR:"#4fc3f7");
+        html += '<div><div class="bar-track"><div class="bar-fill" style="width:'+pct+'%;background:'+col+';"></div></div>';
+        html += '<div class="bar-lbl"><span>'+k+'</span><span>'+val+'</span></div></div>';
+      });
+      html += '</div></div>';
+    });
+    document.getElementById("lifecycle-phases").innerHTML = html;
+  })();
+  </script>
+</body>
+</html>

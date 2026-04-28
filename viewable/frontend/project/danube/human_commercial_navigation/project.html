@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Project</h1>
+        <p class="subtitle">Generated from <strong>project.yaml</strong> (YAML)</p>
+      </div>
+<pre class="pre-wrap">id: human_commercial_navigation
+name: Commercial Navigation
+basin: danube
+type: human
+service_category: provisioning
+teeb_class: provisioning
+description: &#x27;The Danube is Europe&#x27;&#x27;s second longest river and the busiest international
+  waterway after the Rhine, carrying approximately 34 million tonnes of cargo per
+  year on the 2,414 km navigable section from Kelheim (Germany) to the Black Sea,
+  including the Rhine-Main-Danube Canal link to Western Europe. The navigable channel
+  is managed under the 1948 Belgrade Convention by the Danube Commission (13 member
+  states) and is classified as a core Trans-European Transport Network (TEN-T) corridor.
+  Annual transport value is estimated at EUR 5-8 billion/yr in trade facilitation.
+  The principal operator nations are Austria, Slovakia, Hungary, Croatia, Serbia,
+  Bulgaria, Romania, Ukraine, and Moldova. The primary bottleneck is Phase 2 (Fairway
+  Maintenance and Dredging, 72% balance): critical shallows at the Iron Gate gorge
+  exit (Romanian-Serbian border) and the Bratislava-Budapest reach regularly constrain
+  vessel drafts to 1.5-2.0 m in low-flow years, well below the 2.5 m design depth
+  of the TEN-T standard. Climate change is lengthening low-flow periods, making dredging
+  an increasingly expensive and ecologically damaging maintenance activity. This subproject
+  pairs with natural_river_channel to form the paired_navigation composite.
+
+  &#x27;
+paired_with:
+  natural: natural_river_channel
+  hub: paired_navigation
+data_availability: H
+primary_sources:
+- name: Danube Commission Annual Navigation Statistics
+  url: https://www.danubecom-intern.org
+  metrics: Cargo volumes by commodity, port throughput, fleet composition, passage
+    counts
+- name: Via Donau Waterway Management Reports
+  url: https://www.viadonau.org
+  metrics: Fairway maintenance, dredging volumes, channel depth profiles, low-water
+    events
+- name: ICPDR Navigation and Environment Working Group
+  url: https://www.icpdr.org
+  metrics: Navigation-environment trade-offs, dredging environmental impact, alternative
+    measures
+- name: EU TEN-T Core Network Corridor Performance Reports
+  url: https://ec.europa.eu/transport/themes/infrastructure
+  metrics: TEN-T compliance, fairway depth achievement, investment programmes
+- name: Eurostat Maritime and Inland Waterway Transport Statistics
+  url: https://ec.europa.eu/eurostat
+  metrics: Cargo tonnage, tonne-km, modal share, vessel fleet data
+- name: World Bank Danube Inland Waterway Trade Facilitation Studies
+  url: https://www.worldbank.org
+  metrics: Trade value facilitated, infrastructure investment needs, economic impact
+key_metrics:
+  navigable_length_km: 2414
+  annual_cargo_mt: 34
+  annual_trade_value_eur_bn: 6.5
+  active_ports: 68
+  commercial_vessel_fleet: 3200
+  minimum_fairway_depth_m_design: 2.5
+  minimum_fairway_depth_m_actual_low_water: 1.5
+  dredging_volume_m3_yr: 4500000
+  low_water_restriction_days_avg_yr: 42
+  low_water_restriction_days_trend: increasing 1.5 days/yr since 2000
+  co2_per_tonne_km_vs_road: river 5g CO2/tkm vs road 90g CO2/tkm
+  cargo_lost_to_restrictions_mt_yr: 8
+ndc_colors:
+  primary: &#x27;#0277bd&#x27;
+  dark: &#x27;#01579b&#x27;
+  light: &#x27;#e1f5fe&#x27;
+created: &#x27;2026-04-27&#x27;
+</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

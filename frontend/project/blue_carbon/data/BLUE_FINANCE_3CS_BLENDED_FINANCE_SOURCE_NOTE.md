@@ -6,9 +6,10 @@ status: active
 domain: research
 layer: financial_abstraction
 projects:
+  - blue_carbon
   - aubeb
-  - water_newwater
 tags:
+  - blue_carbon
   - blue_finance
   - blended_finance
   - blue_economy
@@ -16,6 +17,7 @@ tags:
   - market_access
   - ecosystem_services
 related_docs:
+  - blue_carbon_ctvf_gap_analysis
   - sustainability_linked_loan_framework
   - clarity_vs_kpmg_tvf
   - aubeb_pdi_feedback_source_note

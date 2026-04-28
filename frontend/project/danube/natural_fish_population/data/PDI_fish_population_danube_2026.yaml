@@ -1,0 +1,251 @@
+pdi:
+  material: "Danube fish population"
+  analyst: "Danube Basin Research Team"
+  date_completed: "2026-04-27"
+  service_type: natural
+  basin: danube
+  paired_with: human_commercial_fishing
+  hub: paired_fisheries
+
+  sources_overview: |
+    1. ICPDR Joint Danube Survey 4 (JDS4) : fish assemblage biological quality elements; ecological status
+    2. IUCN European Red List of Freshwater Fishes : species conservation status, population trends
+    3. ICPDR Danube Sturgeon Task Force : population estimates, spawning monitoring, restocking records
+    4. Eurostat Fishery Statistics FISH : inland freshwater catch by country and species
+    5. FAO AQUASTAT / FishStatJ : basin catch, aquaculture production, consumption statistics
+    6. WWF Danube-Carpathian Sturgeon Programme : spawning surveys, poaching estimates, hatchery data
+    7. EU Habitats Directive Art 17 : conservation status of Annex II fish species
+    8. EEA : water body ecological status assessments; WFD compliance data
+
+  geographic_scope:
+    basin: danube
+    mainstream_countries: 10
+    catchment_countries: 19
+    total_river_length_km: 2860
+    major_tributaries_with_fish_data: 12
+    native_species: 100
+    commercially_important_species: 42
+    critically_endangered_species: 5
+
+  ecological_parameters:
+    total_fishable_biomass_tonnes: 420000
+    annual_sustainable_yield_tonnes: 38000
+    migration_range_blocked_pct: 84
+    dams_blocking_migration: 60
+    floodplain_nursery_loss_pct: 47
+    water_bodies_good_ecological_status_pct: 40
+    sturgeon_decline_vs_1900_pct: 95
+    eel_decline_vs_baseline_pct: 70
+    species_at_threatened_or_near_threatened_pct: 38
+
+  supply_chain_phases:
+    phase_0:
+      id: 0
+      name: "Water Quality and Habitat Suitability"
+      phase_category: Upstream
+      physical_state_in: "River and floodplain water body network"
+      physical_state_out: "Oxygenated, chemically suitable, thermally stable water habitat across the basin"
+      primary_transformation: "Nutrient cycling, oxygen replenishment, thermal regulation, sediment load management"
+      typical_time_scale: "Continuous; ecological status assessed every 6 years (WFD cycle)"
+      transparency_level: High
+      measurable_output: "% water bodies at good or better ecological status; dissolved oxygen (mg/L); nutrient load (mg/L N, P)"
+      output_unit: "percent; mg/L"
+      data_status: POPULATED
+      primary_sources:
+        - "ICPDR JDS4 physico-chemical quality elements"
+        - "EEA WFD Article 5 status assessment"
+        - "ICPDR annual Danube Watch nutrient load monitoring"
+      opacity_score: 1
+      key_values:
+        water_bodies_good_ecological_status_pct: 40
+        dissolved_oxygen_main_channel_mg_l: 9.2
+        total_nitrogen_load_kt_yr: 580
+        total_phosphorus_load_kt_yr: 18.5
+        eutrophication_risk_water_bodies_pct: 42
+        hypoxic_events_black_sea_coast_per_decade: 4
+      notes: >
+        40% of Danube water bodies reach good or better ecological status (WFD target: 100% by 2027;
+        currently unachievable without major investment). The main channel maintains adequate dissolved
+        oxygen for fish, but the lower Danube and tributaries in Hungary, Romania, Serbia, and Bulgaria
+        carry high nitrogen (580 kt/yr) and phosphorus (18.5 kt/yr) loads from agriculture. This drives
+        eutrophication in slow-moving stretches and the Black Sea shelf, with recurring hypoxic events
+        at the delta mouth killing juvenile fish. Transparency High: ICPDR annual monitoring covers
+        all mainstream sections; tributary monitoring frequency varies.
+
+    phase_1:
+      id: 1
+      name: "Habitat and Migration Corridor"
+      phase_category: Upstream
+      physical_state_in: "River morphology, floodplain connectivity, dam and weir network"
+      physical_state_out: "Accessible spawning grounds, migration corridors, and nursery habitat for all life stages"
+      primary_transformation: "Floodplain inundation (nursery habitat), longitudinal connectivity (migration routes), substrate quality (spawning)"
+      typical_time_scale: "Decadal for habitat change; annual for migration season"
+      transparency_level: Medium
+      measurable_output: "% migratory fish range accessible (vs. pre-dam baseline); fish pass operational rate (%); spawning site condition index"
+      output_unit: "percent accessible range; spawning site index 0-1"
+      data_status: PARTIAL
+      primary_sources:
+        - "ICPDR JDS4 hydromorphological assessment"
+        - "ICPDR Sturgeon Task Force spawning site surveys"
+        - "EEA Fish Migration Roadmap : Danube"
+      opacity_score: 2
+      key_values:
+        migration_range_accessible_pct: 16
+        dams_with_operational_fish_pass_pct: 22
+        floodplain_nursery_area_ha_remaining: 85000
+        floodplain_nursery_loss_pct: 47
+        river_length_free_flowing_pct: 38
+        spawning_sites_in_good_condition_pct: 28
+      notes: >
+        This is the primary bottleneck of the fish population cascade at 71% balance. 60 dams on the
+        main stem and major tributaries block or severely impede migration. Only 16% of the historical
+        migratory fish range remains accessible (84% blocked). Only 22% of dams have operational fish
+        passes. The Iron Gate I and II (total installed capacity 2,320 MW) have no functional fish
+        passes for large migratory species (sturgeon, Danube salmon, asp). Without passage at Iron Gate,
+        the upper Danube spawning grounds (in Austria and Bavaria) are permanently inaccessible to
+        anadromous and potamodromous migrants from the lower basin. Floodplain nursery habitat loss
+        (47%) compounds the migration blockage: juveniles that do hatch in accessible reaches face
+        degraded nursery conditions. This structural bottleneck cannot be corrected by fisheries
+        management alone; it requires hydraulic engineering solutions (fish lifts at Iron Gate,
+        fish pass upgrades at smaller dams, floodplain restoration).
+
+    phase_2:
+      id: 2
+      name: "Recruitment and Juvenile Development"
+      phase_category: Midstream
+      physical_state_in: "Accessible spawning habitat with suitable substrate and flow conditions"
+      physical_state_out: "Juvenile fish cohort entering productive river habitat"
+      primary_transformation: "Spawning, egg incubation, larval drift, juvenile growth in floodplain and littoral zones"
+      typical_time_scale: "Annual cohort cycle; 1-5 years to sub-adult depending on species"
+      transparency_level: Medium
+      measurable_output: "Juvenile fish density (fish/100m electrofishing); recruitment index; year-class strength"
+      output_unit: "fish/100m; recruitment index 0-1"
+      data_status: PARTIAL
+      primary_sources:
+        - "ICPDR JDS4 fish sampling electrofishing data"
+        - "National fisheries authorities monitoring programmes (Romania, Hungary, Croatia)"
+        - "ICPDR Sturgeon Task Force restocking records"
+      opacity_score: 2
+      key_values:
+        juvenile_fish_density_main_channel_per_100m: 38
+        juvenile_fish_density_floodplain_per_100m: 112
+        annual_restocking_individuals_sturgeon: 180000
+        proportion_of_sturgeon_cohort_from_restocking_pct: 95
+        year_class_strength_index_carp: 0.72
+        year_class_strength_index_perch: 0.61
+      notes: >
+        Juvenile fish density in connected floodplain areas (112 fish/100m electrofishing) is 3x
+        higher than in the main channel (38/100m), confirming the critical function of floodplain
+        nursery habitat. Wild sturgeon recruitment is functionally absent: 95% of juveniles in
+        monitoring surveys are from hatchery restocking programmes (ICPDR Sturgeon Task Force).
+        This means the natural population dynamic is supported almost entirely by artificial
+        intervention, a fundamental ecological vulnerability. Carp and perch year-class strength
+        indices are moderate (0.72 and 0.61 on a 0-1 scale) but declining in warm, drought years,
+        suggesting climate sensitivity. Non-EU state monitoring programmes (Serbia, Ukraine, Moldova)
+        use inconsistent methodologies, creating data gaps.
+
+    phase_3:
+      id: 3
+      name: "Adult Biomass and Population Dynamics"
+      phase_category: Midstream
+      physical_state_in: "Juvenile cohorts entering adult habitat"
+      physical_state_out: "Harvestable adult stock with sustainable annual yield"
+      primary_transformation: "Growth, natural mortality, predation, density-dependent regulation, overwintering"
+      typical_time_scale: "Annual growth cycle; population assessed every 3-5 years"
+      transparency_level: Medium
+      measurable_output: "Total biomass (tonnes); species composition (%); population abundance index; sustainable yield estimate (tonnes/yr)"
+      output_unit: "tonnes biomass; tonnes/yr yield"
+      data_status: PARTIAL
+      primary_sources:
+        - "Eurostat Fishery Statistics FISH : inland catch as proxy for stock"
+        - "National stock assessment reports (Romania, Hungary)"
+        - "FAO FishStatJ inland capture series"
+      opacity_score: 2
+      key_values:
+        total_fishable_biomass_estimate_tonnes: 420000
+        annual_sustainable_yield_estimate_tonnes: 38000
+        dominant_species_by_biomass: "common carp (Cyprinus carpio), wels catfish (Silurus glanis), pike-perch (Sander lucioperca)"
+        threatened_species_biomass_pct: 8
+        stock_exploitation_rate_est_pct: 58
+        biomass_trend_10yr: declining
+      notes: >
+        Total fishable biomass of approximately 420,000 tonnes is dominated by common carp, wels
+        catfish, and pike-perch. Annual sustainable yield is estimated at 38,000 tonnes/yr based
+        on production/biomass ratios consistent with large European rivers. Current exploitation
+        rate (58%) is above sustainable thresholds for some species. Stock assessments are not
+        basin-wide: Romania and Hungary have the most complete national data; Serbia, Ukraine, and
+        Moldova have significant monitoring gaps. The overall 10-year biomass trend is declining
+        for most commercially important species. The 5 critically endangered species (all sturgeons
+        plus European eel) have seen 95% and 70% population declines respectively and are at the
+        ecological margin of functional extinction in the wild.
+
+    phase_4:
+      id: 4
+      name: "Harvest-Ready Population Stock"
+      phase_category: Downstream
+      physical_state_in: "Adult fish population distributed across accessible river and floodplain habitat"
+      physical_state_out: "Legally harvestable stock with size limits, seasonal closures, and species quotas"
+      primary_transformation: "Fisheries management: quota setting, size/season regulation, stock enhancement, protected species enforcement"
+      typical_time_scale: "Annual management cycle; regulatory framework revised every 3-6 years"
+      transparency_level: Medium
+      measurable_output: "Annual allowable catch (AAC) by species (tonnes); compliance rate (%); stock status (overfished/sustainable/recovering)"
+      output_unit: "tonnes AAC; percent compliant"
+      data_status: PARTIAL
+      primary_sources:
+        - "National fisheries regulation authorities"
+        - "ICPDR Danube Fisheries Working Group"
+        - "TRAFFIC poaching and illegal trade reports"
+      opacity_score: 2
+      key_values:
+        annual_allowable_catch_tonnes: 22000
+        basin_compliance_rate_pct: 72
+        illegal_catch_estimated_pct_of_legal: 21
+        sturgeon_commercial_ban_countries: 10
+        recreational_fishing_licences_basin: 480000
+        stock_status_commercially_important: "60% sustainably managed; 28% overfished; 12% recovering"
+      notes: >
+        The annual allowable catch of 22,000 tonnes represents a reduction of approximately 35%
+        from catches 20 years ago, reflecting declining stocks and tightening regulations. Compliance
+        (72%) is highest in EU member states; non-EU states have weaker enforcement. Illegal catch
+        is estimated at 21% of legal catch volume, concentrated on high-value species (pike-perch,
+        catfish, sturgeon). Sturgeon commercial fishing is banned or strictly limited in all 10
+        mainstream countries (Romania 2006, Bulgaria 2011, Serbia 2019, others progressively),
+        yet illegal poaching and caviar trade seizures continue. The bond opportunity here is a
+        fisheries management performance bond: financing stock monitoring, enforcement infrastructure,
+        fish pass construction, and restocking programmes, with coupon linked to measurable recovery
+        in recruitment indices and compliant catch volumes.
+
+  ndc_derivation:
+    phase_0: {D: 268, C: 264, balance: 83.0, N: 218, sustainability: 0.96}
+    phase_1: {D: 264, C: 220, balance: 71.0, N: 180, sustainability: 0.91}
+    phase_2: {D: 264, C: 244, balance: 79.0, N: 203, sustainability: 0.94}
+    phase_3: {D: 264, C: 248, balance: 80.0, N: 207, sustainability: 0.95}
+    phase_4: {D: 260, C: 244, balance: 77.0, N: 197, sustainability: 0.94}
+
+  coherence_scores:
+    pi: 78.0   # chain avg: (83+71+79+80+77)/5 = 78.0
+    phi: 45.0  # proportional: ecological functions extremely unbalanced; dam blockage severs natural cascade
+    sqrt2: 63.0  # structural: population structure present but fragmented; 5 critically endangered species
+    ln2: 52.0    # growth: declining 10-yr trend; restocking-dependent sturgeon; climate sensitivity
+    e: 18.0      # abstract: very few performance bonds; fisheries management input-based; no outcome-linked instrument
+
+  analyst_notes: |
+    The Danube fish population cascade averages 78.0% balance, the weakest natural system built
+    so far. Phase 1 (Habitat and Migration, 71%) is the structural bottleneck: 84% of migratory
+    range is blocked by 60 dams, and no functional fish pass exists at Iron Gate I and II. This
+    single infrastructure failure propagates downstream through every other phase.
+
+    Phase 4 (Harvest-Ready Stock, 77%) is the management output phase: illegal catch at 21% of
+    legal, stock compliance monitoring fragmented in non-EU states, and sturgeon bans only
+    partially enforced.
+
+    The e-score of 18 is the lowest of any built subproject: there are virtually no outcome-linked
+    financial instruments for freshwater fisheries in the Danube. Most support is input-based
+    (LIFE grants, ERDF fisheries fund, EMFAF) without verified outcome linkage.
+
+    Bond intervention logic: Phase 1 (habitat and migration) is the physical problem; Phase 4
+    (management compliance) is the governance problem. A fisheries performance bond that finances
+    both fish pass construction at priority dams AND monitoring/enforcement infrastructure would
+    address both phases simultaneously. KPI candidates: fish pass operational rate at dams (current
+    22%; target 45% yr5); annual recruitment index for migratory species (currently declining;
+    target stabilisation yr5, recovery yr10); illegal catch rate (current 21%; target 12% yr5).

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natural Fish Population : Danube Basin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #01579b 0%, #0277bd 50%, #0288d1 100%);
+      min-height: 100vh; padding: 24px; color: #2c3e50;
+      color-scheme: light;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px; margin-bottom: 22px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #0277bd; background: #e1f5fe;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .type-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; background: #0277bd;
+      padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+    }
+    .paired-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: #fff; background: #f57f17;
+      padding: 4px 10px; border-radius: 999px; margin-left: 6px;
+    }
+    h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 760px; margin: 0 auto 20px; }
+    .kpi-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin: 24px 0 0; }
+    .kpi { background: #f8f9fa; border-radius: 10px; padding: 16px 12px; text-align: center; }
+    .kpi-val { font-size: 28px; font-weight: 800; color: #01579b; line-height: 1.1; }
+    .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; }
+    .alert-panel {
+      background: #fff8e1; border-left: 4px solid #f57f17;
+      border-radius: 8px; padding: 14px 18px; margin: 22px 0;
+      font-size: 13px; line-height: 1.6; color: #333;
+    }
+    .alert-panel strong { color: #e65100; }
+    .paired-panel {
+      background: #fff3e0; border-radius: 10px;
+      padding: 18px 22px; margin: 18px 0;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .paired-panel .icon { font-size: 32px; }
+    .paired-panel h3 { font-size: 14px; font-weight: 700; color: #e65100; margin-bottom: 4px; }
+    .paired-panel p { font-size: 13px; color: #495057; line-height: 1.5; }
+    .paired-panel a { color: #e65100; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 22px; }
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 28px 28px 18px; color: #fff; }
+    .card-header.sc { background: linear-gradient(135deg, #01579b 0%, #0277bd 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); }
+    .card-header.vc { background: linear-gradient(135deg, #37474f 0%, #546e7a 100%); }
+    .card-icon { font-size: 40px; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 22px 28px 26px; }
+    .card-body ul { list-style: none; margin-bottom: 18px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+    .card-body li::before { content: "✓"; position: absolute; left: 0; color: #0277bd; font-weight: bold; }
+    .btn {
+      display: inline-block; padding: 11px 22px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .btn.natural { background: #0277bd; }
+    .btn.lc { background: #1565c0; }
+    .btn.vc { background: #546e7a; }
+    .btn.outline {
+      background: transparent; border: 2px solid #0277bd;
+      color: #0277bd; margin-left: 8px;
+    }
+    .btn.outline:hover { background: #e1f5fe; }
+    .nav {
+      background: rgba(255,255,255,0.15); border-radius: 10px;
+      padding: 14px 20px; margin-top: 22px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .nav a {
+      color: #fff; text-decoration: none; font-size: 13px;
+      font-weight: 600; padding: 6px 14px; background: rgba(255,255,255,0.18);
+      border-radius: 6px; transition: background 0.15s;
+    }
+    .nav a:hover { background: rgba(255,255,255,0.32); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="kicker">Danube Basin · Natural System</div>
+      <h1>Natural Fish Population
+        <span class="type-badge">Natural</span>
+        <span class="paired-badge">Paired with Commercial Fishing</span>
+      </h1>
+      <p class="subtitle">
+        The Danube supports 100 native freshwater fish species, the highest diversity in Europe, with
+        420,000 t total fishable biomass and 38,000 t/yr sustainable yield. This subproject models the
+        ecological production cascade from water quality and habitat suitability through migration corridor
+        function, juvenile recruitment, adult population dynamics, and harvest-ready stock availability.
+        Chain balance 78.0%. Phase 1 (Habitat and Migration Corridor) is the structural bottleneck at 71%:
+        60 dams block or severely impede fish migration; only 16% of historical migratory range remains
+        accessible.
+      </p>
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-val">100</div><div class="kpi-lbl">Native Fish Species (highest in Europe)</div></div>
+        <div class="kpi"><div class="kpi-val">78.0%</div><div class="kpi-lbl">Chain Balance</div></div>
+        <div class="kpi"><div class="kpi-val">420,000 t</div><div class="kpi-lbl">Total Fishable Biomass</div></div>
+        <div class="kpi"><div class="kpi-val">84%</div><div class="kpi-lbl">Migration Range Blocked</div></div>
+      </div>
+    </div>
+
+    <div class="alert-panel">
+      <strong>Structural Bottleneck: Phase 1 (Habitat and Migration Corridor, 71% balance):</strong>
+      60 dams block or severely impede fish migration along the Danube and its main tributaries.
+      Only 16% of the historical migratory fish range remains accessible; 78% of dams have no
+      functional fish pass. Iron Gate I and II (combined 2,320 MW) provide no functional passage
+      for large migratory species. Wild sturgeon populations have declined 95% since 1900 because
+      spawning migration is permanently severed. Commercial fishing is banned for all 10 riparian
+      countries on sturgeon, yet recovery is impossible without fish pass construction at Iron Gate.
+      This is the defining structural failure of the Danube fish population system.
+    </div>
+
+    <div class="paired-panel">
+      <div class="icon">🎣</div>
+      <div>
+        <h3>Paired with: Human Commercial Fishing</h3>
+        <p>
+          The natural fish population is the biological asset base for the paired commercial fishing
+          supply chain. The bond that restores fish pass infrastructure (natural Phase 1) and reconnects
+          floodplain nursery habitat creates the stock recovery on which the human Phase 1 (harvest
+          operations) and Phase 4 (revenue capture) depend. Current sturgeon bans suppress EUR 5-8M/yr
+          historic caviar revenue. Stock-based quota recovery requires ecological restoration first.
+          <a href="../paired_fisheries/index.html">Fisheries Pair Hub →</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header sc">
+          <div class="card-icon">🐟</div>
+          <div class="card-title">Population Cascade</div>
+          <div class="card-desc">Five-phase ecological cascade from water quality and habitat suitability to harvest-ready population stock</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Phase 0: Water Quality and Habitat Suitability (83%)</li>
+            <li>Phase 1: Habitat and Migration Corridor (71%) BOTTLENECK</li>
+            <li>Phase 2: Recruitment and Juvenile Development (79%)</li>
+            <li>Phase 3: Adult Biomass and Population Dynamics (80%) STRONGEST</li>
+            <li>Phase 4: Harvest-Ready Population Stock (77%)</li>
+          </ul>
+          <a href="supply_chain/index.html" class="btn natural">Population Cascade →</a>
+          <a href="supply_chain/dashboard.html" class="btn outline">Dashboard</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header lc">
+          <div class="card-icon">📊</div>
+          <div class="card-title">System Lifecycle</div>
+          <div class="card-desc">N-D-C balance, coherence pentagon, and phase-by-phase lifecycle analysis</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Chain balance 78.0% (stressed)</li>
+            <li>Coherence pentagon: pi=78 phi=45 sqrt2=63 ln2=52 e=18</li>
+            <li>Bottleneck: Phase 1 migration corridor deficit</li>
+            <li>Strongest phase: Phase 3 adult biomass dynamics</li>
+          </ul>
+          <a href="supply_chain/system_lifecycle.html" class="btn lc">System Lifecycle →</a>
+          <a href="supply_chain/project_context.html" class="btn outline">Project Context</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header vc">
+          <div class="card-icon">💰</div>
+          <div class="card-title">Value Chain</div>
+          <div class="card-desc">Fisheries Habitat Restoration Bond structure, ecosystem service valuation, and e-layer analysis</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>e-score: 18 (lowest of all built subprojects)</li>
+            <li>Total fisheries sector: EUR 355M/yr</li>
+            <li>Sturgeon caviar gap: EUR 5-8M/yr historic; now zero</li>
+            <li>Bond type: Fisheries Habitat Restoration Bond</li>
+          </ul>
+          <a href="value_chain/index.html" class="btn vc">Value Chain →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="../index.html">← Danube Basin Hub</a>
+      <a href="../paired_fisheries/index.html">Paired: Fisheries Hub →</a>
+      <a href="../human_commercial_fishing/index.html">Human Pair →</a>
+      <a href="/index.html">Main Homepage</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Danube Water Composite Index</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif; background:linear-gradient(135deg,#01579b 0%,#0288d1 60%,#29b6f6 100%); min-height:100vh; padding:24px; color:#2c3e50; }
+    .container { max-width:1160px; margin:0 auto; }
+    .hero { background:#fff; border-radius:14px; box-shadow:0 20px 60px rgba(0,0,0,0.28); padding:40px; margin-bottom:20px; text-align:center; }
+    .kicker { display:inline-block; font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:#0288d1; background:#e1f5fe; padding:5px 14px; border-radius:999px; margin-bottom:12px; }
+    h1 { font-size:28px; font-weight:300; margin-bottom:8px; }
+    .subtitle { font-size:14px; color:#6c757d; line-height:1.65; max-width:720px; margin:0 auto 24px; }
+    .score-display { display:flex; justify-content:center; align-items:center; gap:32px; flex-wrap:wrap; margin-bottom:24px; }
+    .big-score { text-align:center; }
+    .big-score .val { font-size:80px; font-weight:900; line-height:1; }
+    .big-score .pct { font-size:28px; font-weight:400; opacity:.6; }
+    .big-score .label { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:#6c757d; margin-top:4px; }
+    .rating-box { background:#f8f9fa; border-radius:12px; padding:18px 24px; text-align:center; min-width:140px; border:2px solid #dee2e6; }
+    .rating-box .rating-val { font-size:44px; font-weight:900; }
+    .rating-box .rating-label { font-size:11px; text-transform:uppercase; color:#6c757d; margin-top:4px; font-weight:700; letter-spacing:.06em; }
+    .rating-box .rating-desc { font-size:12px; color:#6c757d; margin-top:6px; line-height:1.4; }
+    .weights-panel { background:#f1f8ff; border-radius:10px; padding:20px 24px; margin-bottom:20px; border:1.5px solid #b3d9f7; }
+    .weights-panel h3 { font-size:13px; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:#0288d1; margin-bottom:14px; }
+    .slider-row { display:flex; align-items:center; gap:14px; margin-bottom:10px; }
+    .slider-label { font-size:13px; font-weight:700; min-width:110px; }
+    .slider-label.natural { color:#2e7d32; }
+    .slider-label.human-fw { color:#1565c0; }
+    .slider-label.human-ag { color:#33691e; }
+    input[type=range] { flex:1; accent-color:#0288d1; cursor:pointer; }
+    .slider-val { font-size:14px; font-weight:800; min-width:38px; text-align:right; color:#01579b; }
+    .weights-note { font-size:12px; color:#6c757d; margin-top:8px; line-height:1.5; }
+    .pair-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:20px; }
+    .contrib-card { border-radius:12px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.14); }
+    .contrib-hdr { padding:18px 22px 14px; color:#fff; }
+    .contrib-hdr.natural { background:linear-gradient(135deg,#1b5e20,#2e7d32); }
+    .contrib-hdr.human-fw { background:linear-gradient(135deg,#0d47a1,#1565c0); }
+    .contrib-hdr.human-ag { background:linear-gradient(135deg,#33691e,#558b2f); }
+    .contrib-hdr .type { font-size:10px; font-weight:700; text-transform:uppercase; opacity:.85; margin-bottom:5px; }
+    .contrib-hdr .name { font-size:14px; font-weight:600; }
+    .contrib-body { background:#fff; padding:16px 22px 20px; }
+    .contrib-score-row { display:flex; align-items:baseline; gap:8px; margin-bottom:10px; }
+    .contrib-score { font-size:36px; font-weight:900; }
+    .contrib-score.natural { color:#2e7d32; }
+    .contrib-score.human-fw { color:#1565c0; }
+    .contrib-score.human-ag { color:#33691e; }
+    .contrib-score-label { font-size:11px; color:#6c757d; }
+    .contrib-weight-bar { background:#f1f3f5; border-radius:4px; height:7px; margin-bottom:10px; }
+    .contrib-weight-fill { border-radius:4px; height:7px; transition:width .3s; }
+    .contrib-weight-fill.natural { background:#2e7d32; }
+    .contrib-weight-fill.human-fw { background:#1565c0; }
+    .contrib-weight-fill.human-ag { background:#558b2f; }
+    .contrib-metrics { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:14px; }
+    .cm { background:#f8f9fa; border-radius:6px; padding:7px 9px; }
+    .cm-label { font-size:9px; text-transform:uppercase; color:#6c757d; font-weight:700; }
+    .cm-val { font-size:13px; font-weight:800; color:#2c3e50; }
+    .btn-row { display:flex; gap:8px; flex-wrap:wrap; }
+    .btn { display:inline-block; padding:8px 14px; border-radius:7px; text-decoration:none; font-weight:700; font-size:12px; color:#fff; transition:opacity .15s; }
+    .btn.natural { background:linear-gradient(135deg,#1b5e20,#2e7d32); }
+    .btn.human-fw { background:linear-gradient(135deg,#0d47a1,#1565c0); }
+    .btn.human-ag { background:linear-gradient(135deg,#33691e,#558b2f); }
+    .btn.outline { background:transparent; border:1.5px solid #dee2e6; color:#495057; }
+    .btn:hover { opacity:.85; }
+    .pentagon-panel { background:#fff; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.15); padding:28px 32px; margin-bottom:20px; }
+    .pentagon-panel h2 { font-size:15px; font-weight:400; color:#2c3e50; margin-bottom:6px; }
+    .pentagon-panel .sub { font-size:13px; color:#6c757d; margin-bottom:18px; line-height:1.5; }
+    .pent-layout { display:flex; justify-content:center; align-items:flex-start; gap:28px; flex-wrap:wrap; }
+    #pent-interp { margin-top:16px; padding:14px 18px; background:#f8f9fb; border-radius:8px; font-size:13px; line-height:1.7; color:#333; border-left:3px solid #0288d1; }
+    .compare-panel { background:#fff; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.15); padding:28px 32px; margin-bottom:20px; }
+    .compare-panel h2 { font-size:15px; font-weight:400; color:#2c3e50; margin-bottom:16px; }
+    .bond-context { background:#fff; border-radius:14px; box-shadow:0 10px 30px rgba(0,0,0,0.15); padding:28px 32px; margin-bottom:20px; }
+    .bond-context h2 { font-size:15px; font-weight:400; color:#2c3e50; margin-bottom:16px; }
+    table { width:100%; border-collapse:collapse; font-size:12px; }
+    th { background:#f1f3f5; color:#6c757d; font-weight:700; padding:8px 10px; text-align:left; font-size:11px; text-transform:uppercase; }
+    td { padding:9px 10px; border-bottom:1px solid #f1f3f5; color:#2c3e50; }
+    tr:last-child td { border-bottom:none; }
+    .bar-inline { display:inline-block; height:7px; border-radius:3px; vertical-align:middle; margin-left:6px; }
+    .nav { text-align:center; margin-top:14px; }
+    .nav a { display:inline-block; color:rgba(255,255,255,.9); text-decoration:none; font-size:14px; font-weight:600; margin:0 10px; }
+    .nav a:hover { text-decoration:underline; }
+    .footer { text-align:center; color:rgba(255,255,255,.8); font-size:12px; margin-top:14px; padding:6px 0; }
+    @media(max-width:760px){ .pair-grid{grid-template-columns:1fr;} .score-display{flex-direction:column;} }
+  </style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="kicker">Danube Basin · Composite Index · Three Sectors</div>
+    <h1>💧 Danube Water Composite Index</h1>
+    <p class="subtitle">
+      A weighted blend of three contributing indices: the <strong>Natural Freshwater Availability</strong>
+      (ecological asset), the <strong>Freshwater Supply Infrastructure</strong> (drinking water chain),
+      and the <strong>Irrigation Infrastructure</strong> (agricultural water chain).
+      The composite is the headline bond-rating metric. Each index links to its own full dashboard.
+    </p>
+
+    <div class="score-display">
+      <div class="big-score">
+        <div class="val" id="composite-score-val" style="color:#0288d1;">88.1</div>
+        <div class="pct">%</div>
+        <div class="label">Composite Balance Score</div>
+      </div>
+      <div class="rating-box" id="rating-box">
+        <div class="rating-val" id="rating-val" style="color:#2e7d32;">AA</div>
+        <div class="rating-label">Bond Coherence Grade</div>
+        <div class="rating-desc" id="rating-desc">Good coherence. Chain is broadly well-managed with identifiable improvement points.</div>
+      </div>
+    </div>
+
+    <div class="weights-panel">
+      <h3>Weighting Controls</h3>
+      <div class="slider-row">
+        <span class="slider-label natural">💧 Natural</span>
+        <input type="range" id="slider-nat" min="0" max="100" value="25" step="5" />
+        <span class="slider-val" id="label-nat">25%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label human-fw">🚰 Freshwater Supply</span>
+        <input type="range" id="slider-fw" min="0" max="100" value="45" step="5" />
+        <span class="slider-val" id="label-fw">45%</span>
+      </div>
+      <div class="slider-row">
+        <span class="slider-label human-ag">🌾 Irrigation</span>
+        <input type="range" id="slider-ag" min="0" max="100" value="30" step="5" />
+        <span class="slider-val" id="label-ag">30%</span>
+      </div>
+      <div class="weights-note" id="weights-note">
+        Default: Natural 25% (covenant layer — slow-moving climate asset) · Freshwater Supply 45% (drinking water, high social obligation) · Irrigation 30% (largest volume sector, efficiency gap). Weights are normalised to 100%.
+      </div>
+    </div>
+  </div>
+
+  <div class="pair-grid">
+    <div class="contrib-card">
+      <div class="contrib-hdr natural">
+        <div class="type">Contributing Index 1 · Natural Service</div>
+        <div class="name">💧 Natural Freshwater Availability</div>
+      </div>
+      <div class="contrib-body">
+        <div class="contrib-score-row">
+          <span class="contrib-score natural">89.8%</span>
+          <span class="contrib-score-label">chain balance · weight: <strong id="nat-wlabel">25%</strong></span>
+        </div>
+        <div class="contrib-weight-bar"><div class="contrib-weight-fill natural" id="nat-wbar" style="width:25%"></div></div>
+        <div class="contrib-metrics">
+          <div class="cm"><div class="cm-label">Annual Renewable</div><div class="cm-val">206 km³/yr</div></div>
+          <div class="cm"><div class="cm-label">Per Capita</div><div class="cm-val">2,543 m³/yr</div></div>
+          <div class="cm"><div class="cm-label">Stock Ratio</div><div class="cm-val">0.17 (low)</div></div>
+          <div class="cm"><div class="cm-label">e-layer</div><div class="cm-val">0 — TBD</div></div>
+        </div>
+        <div class="btn-row">
+          <a href="natural_freshwater_availability/index.html" class="btn natural">Open →</a>
+          <a href="natural_freshwater_availability/supply_chain/dashboard.html" class="btn outline">Dashboard</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contrib-card">
+      <div class="contrib-hdr human-fw">
+        <div class="type">Contributing Index 2 · Human Service</div>
+        <div class="name">🚰 Freshwater Supply Infrastructure</div>
+      </div>
+      <div class="contrib-body">
+        <div class="contrib-score-row">
+          <span class="contrib-score human-fw">88.6%</span>
+          <span class="contrib-score-label">chain balance · weight: <strong id="fw-wlabel">45%</strong></span>
+        </div>
+        <div class="contrib-weight-bar"><div class="contrib-weight-fill human-fw" id="fw-wbar" style="width:45%"></div></div>
+        <div class="contrib-metrics">
+          <div class="cm"><div class="cm-label">Population Access</div><div class="cm-val">88%</div></div>
+          <div class="cm"><div class="cm-label">NRW (bottleneck)</div><div class="cm-val" style="color:#e65100;">25%</div></div>
+          <div class="cm"><div class="cm-label">Unserved</div><div class="cm-val">9.7M</div></div>
+          <div class="cm"><div class="cm-label">e-layer</div><div class="cm-val">42</div></div>
+        </div>
+        <div class="btn-row">
+          <a href="human_freshwater_supply_infrastructure/index.html" class="btn human-fw">Open →</a>
+          <a href="human_freshwater_supply_infrastructure/supply_chain/dashboard.html" class="btn outline">Dashboard</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="contrib-card">
+      <div class="contrib-hdr human-ag">
+        <div class="type">Contributing Index 3 · Human Service</div>
+        <div class="name">🌾 Irrigation Infrastructure</div>
+      </div>
+      <div class="contrib-body">
+        <div class="contrib-score-row">
+          <span class="contrib-score human-ag">82.0%</span>
+          <span class="contrib-score-label">chain balance · weight: <strong id="ag-wlabel">30%</strong></span>
+        </div>
+        <div class="contrib-weight-bar"><div class="contrib-weight-fill human-ag" id="ag-wbar" style="width:30%"></div></div>
+        <div class="contrib-metrics">
+          <div class="cm"><div class="cm-label">Irrigated Area</div><div class="cm-val">2.8M ha</div></div>
+          <div class="cm"><div class="cm-label">Efficiency (bottleneck)</div><div class="cm-val" style="color:#e65100;">50%</div></div>
+          <div class="cm"><div class="cm-label">Saving Potential</div><div class="cm-val">5.5 km³/yr</div></div>
+          <div class="cm"><div class="cm-label">e-layer</div><div class="cm-val">28</div></div>
+        </div>
+        <div class="btn-row">
+          <a href="human_irrigation_infrastructure/index.html" class="btn human-ag">Open →</a>
+          <a href="human_irrigation_infrastructure/supply_chain/dashboard.html" class="btn outline">Dashboard</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="pentagon-panel">
+    <div class="kicker" style="color:#01579b;background:#e1f5fe;font-size:10px;">Five-Model N·D·C Analysis · Three-Index Blend</div>
+    <h2>Composite — Five-Model Coherence Signature</h2>
+    <p class="sub">Weighted blend of all three contributing coherence profiles across the five Tholonic model dimensions.
+      Outer zone (70–100%) = coherent. Middle zone (40–70%) = stressed. Inner zone (&lt;40%) = failure mode.
+      A score of 0 means unmeasured, not failed.</p>
+    <div class="pent-layout">
+      <div id="pent-svg" style="max-width:320px;width:100%;flex-shrink:0;"></div>
+      <div id="pent-info" style="font-size:13px;color:#495057;min-width:160px;max-width:260px;flex-shrink:0;"></div>
+    </div>
+    <div id="pent-interp"></div>
+  </div>
+
+  <div class="compare-panel">
+    <h2>Phase-by-Phase Comparison — All Three Chains</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Ph</th>
+          <th>Natural Phase</th>
+          <th>Nat Bal</th>
+          <th>Freshwater Supply Phase</th>
+          <th>FW Bal</th>
+          <th>Irrigation Phase</th>
+          <th>Irrig Bal</th>
+          <th>Composite</th>
+        </tr>
+      </thead>
+      <tbody id="phase-compare-body"></tbody>
+    </table>
+  </div>
+
+  <div class="bond-context">
+    <h2>Bond Analysis — Three-Sector Water Portfolio</h2>
+    <table>
+      <thead><tr><th>Sector</th><th>Chain Balance</th><th>e-layer</th><th>Bond Trigger</th><th>Est. Investment</th><th>Performance Metric</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Natural Freshwater</td>
+          <td style="color:#2e7d32;font-weight:700;">89.8%</td>
+          <td>0 (TBD)</td>
+          <td>Climate covenant trigger (flow reduction &gt;15%)</td>
+          <td>Monitoring infrastructure</td>
+          <td>River discharge at Ceatal Izmail gauge (GRDC)</td>
+        </tr>
+        <tr>
+          <td>Freshwater Supply</td>
+          <td style="color:#388e3c;font-weight:700;">88.6%</td>
+          <td>42</td>
+          <td>NRW reduction from 25% to 15% over 8 years</td>
+          <td>~€4-6bn basin-wide</td>
+          <td>IBNET NRW data; national utility reporting</td>
+        </tr>
+        <tr>
+          <td>Irrigation Infrastructure</td>
+          <td style="color:#f0a030;font-weight:700;">82.0%</td>
+          <td>28</td>
+          <td>Irrigation efficiency rising from 50% to 65% over 10 years</td>
+          <td>~€8.4bn basin-wide</td>
+          <td>FAO AQUASTAT + remote sensing ET calibration</td>
+        </tr>
+        <tr style="background:#f1f8e9;font-weight:700;">
+          <td>Portfolio Composite (default weights)</td>
+          <td id="bond-composite-score">—</td>
+          <td id="bond-composite-e">—</td>
+          <td>Portfolio triggers (all three sectors)</td>
+          <td>~€12-14bn total need</td>
+          <td>Composite index annual recalculation</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="font-size:12px;line-height:1.7;color:#495057;margin-top:14px;padding:12px 16px;background:#e8f5e9;border-radius:8px;border-left:3px solid #2e7d32;">
+      <strong>Rating methodology note:</strong> The current composite grade uses a threshold lookup on the
+      average N-D-C balance score. A full production bond rating would additionally apply: (1) cash flow
+      coverage ratios from water tariffs and CAP payments; (2) climate risk modifiers (drought probability
+      under RCP 4.5/8.5 scenarios — Danube runoff projected -10% to -50% by 2050<sup>[1]</sup>); and (3) governance risk discounts for non-EU countries (Ukraine, Serbia)
+      operating outside the EU WFD and CAP frameworks (extraction cap absent — irrigation efficiency paradox applies<sup>[2]</sup>). The current score is a <em>structural health grade</em>,
+      not a cash-flow credit rating. Natural freshwater Phase 4 balance adjusted from 90% to 86% (WFD 40% good ecological status; ICPDR 2021<sup>[1]</sup>). Irrigation e-score adjusted from 28 to 15 (efficiency paradox; 60% of irrigated area in non-EU countries with no financial abstraction<sup>[2]</sup>).
+    </div>
+
+    <div style="margin-top:16px;padding:14px 16px;background:#f8f9fa;border-left:3px solid #adb5bd;font-size:11px;line-height:1.8;color:#6c757d;">
+      <strong>References</strong><br>
+      [1] Colloff, M.J. and Pittock, J. (2022). Mind the Gap! <em>Water</em> 14(2), 208. DOI: <a href="https://doi.org/10.3390/w14020208" target="_blank">10.3390/w14020208</a> — environmental flow delivery gap; climate-adjusted basin planning; Murray-Darling inflow decline 39% (2000-2020 vs. historical mean). Basis for Phase 4 balance reduction and climate risk modifier requirement. Blöschl et al. (2019) <em>Hydrological Sciences Journal</em> 64(10) — Danube runoff projections.<br>
+      [2] Grafton, R.Q., Williams, J., Pittock, J. et al. (2018). The paradox of irrigation efficiency. <em>Science</em> 361(6404), 748-750. DOI: <a href="https://doi.org/10.1126/science.aat9314" target="_blank">10.1126/science.aat9314</a> — farm-level efficiency gains without binding extraction cap produce no net basin-scale water saving. Basis for irrigation e-score reduction and governance pre-condition requirement.<br>
+      Full synopsis: <a href="docs/Research/bonds/pittock_freshwater_synopsis.md" target="_blank">pittock_freshwater_synopsis.md</a>
+    </div>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">← Danube Basin Hub</a>
+    <a href="paired_agricultural_water/index.html">Agricultural Water Hub →</a>
+    <a href="/index.html">Main Homepage</a>
+  </div>
+  <div class="footer">Danube Basin · Composite Water Index · v2.0 (Three Sectors)</div>
+</div>
+
+<script>
+(function(){
+  var NAT = {
+    balance: 88.2,
+    coherence: {pi:88.0, phi:72.0, sqrt2:85.0, ln2:78.0, e:0},
+    phases: [
+      {id:0, name:'Atmospheric Moisture Source',      balance:91.0},
+      {id:1, name:'Precipitation over Basin',         balance:89.0},
+      {id:2, name:'Catchment Runoff and River Flow',  balance:92.0},
+      {id:3, name:'Groundwater Recharge',             balance:83.0},
+      {id:4, name:'Available Flow to Beneficiaries',  balance:86.0}
+    ]
+  };
+  var FW = {
+    balance: 88.6,
+    coherence: {pi:88.6, phi:61.0, sqrt2:68.0, ln2:74.0, e:42.0},
+    phases: [
+      {id:0, name:'River and Groundwater Intake',     balance:91.0},
+      {id:1, name:'Raw Water Conveyance',             balance:88.0},
+      {id:2, name:'Water Treatment',                  balance:93.0},
+      {id:3, name:'Pressurized Distribution Network', balance:81.0},
+      {id:4, name:'Consumer Delivery and Metering',   balance:90.0}
+    ]
+  };
+  var AG = {
+    balance: 82.0,
+    coherence: {pi:82.0, phi:55.0, sqrt2:62.0, ln2:68.0, e:15.0},
+    phases: [
+      {id:0, name:'River and Canal Intake',           balance:91.0},
+      {id:1, name:'Primary Canal Conveyance',         balance:79.0},
+      {id:2, name:'Secondary Distribution Network',   balance:77.0},
+      {id:3, name:'Field Application',                balance:84.0},
+      {id:4, name:'Drainage and Return Flow',         balance:79.0}
+    ]
+  };
+
+  function getGrade(score){
+    if(score>=95) return {grade:'AAA', color:'#1b5e20', desc:'Exceptional coherence. Near-ideal natural and engineered system alignment.'};
+    if(score>=90) return {grade:'AA+', color:'#2e7d32', desc:'Very strong coherence. Minor improvement opportunities only.'};
+    if(score>=87) return {grade:'AA',  color:'#388e3c', desc:'Good coherence. Chain is broadly well-managed with identifiable improvement points.'};
+    if(score>=83) return {grade:'A+',  color:'#558b2f', desc:'Good coherence. Irrigation sector constrains portfolio; rehabilitation investment recommended.'};
+    if(score>=79) return {grade:'A',   color:'#f57f17', desc:'Adequate coherence. Noticeable stress in irrigation chain requires attention.'};
+    if(score>=75) return {grade:'BBB', color:'#e65100', desc:'Moderate stress. Multiple phases under-performing. Investment needed.'};
+    if(score>=60) return {grade:'BB',  color:'#c62828', desc:'Significant stress. Structural issues identified across the chain.'};
+    return          {grade:'B',  color:'#b71c1c', desc:'Systemic failure signals. Bond covenant review warranted.'};
+  }
+
+  var AXES=[{key:'pi',label:'π',sub:'Operational',angle:0},{key:'phi',label:'φ',sub:'Proportional',angle:72},{key:'sqrt2',label:'√2',sub:'Structural',angle:144},{key:'ln2',label:'ln(2)',sub:'Growth',angle:216},{key:'e',label:'e',sub:'Abstract',angle:288}];
+  var MODEL_C={pi:'#3949ab',phi:'#f57f17',sqrt2:'#2e7d32',ln2:'#c62828',e:'#6a1b9a'};
+  var MODEL_BG={pi:'#e8eaf6',phi:'#fff8e1',sqrt2:'#e8f5e9',ln2:'#fce4ec',e:'#f3e5f5'};
+  var PRIMARY='#0288d1';
+  function toRad(d){return (d-90)*Math.PI/180;}
+  function pt(cx,cy,r,a){var rad=toRad(a);return{x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)};}
+  function pentPath(cx,cy,r,s){return AXES.map(function(a,i){var p=pt(cx,cy,r*s,a.angle);return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ')+'Z';}
+  function dataPath(cx,cy,r,scores){var pl=AXES.filter(function(a){return (scores[a.key]||0)>0;});if(!pl.length)return '';return pl.map(function(a,i){var pct=Math.min(100,scores[a.key])/100;var p=pt(cx,cy,r*pct,a.angle);return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ')+'Z';}
+  function hexRgba(h,a){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return 'rgba('+r+','+g+','+b+','+a+')';}
+
+  function buildSVG(scores){
+    var CX=160,CY=160,R=120;
+    var fill=hexRgba(PRIMARY,0.18),stroke=hexRgba(PRIMARY,0.85);
+    var s='<svg viewBox="-40 -28 400 380" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
+    s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.70)+'" fill="#e0f7fa" fill-rule="evenodd"/>';
+    s+='<path d="'+pentPath(CX,CY,R,0.70)+' '+pentPath(CX,CY,R,0.40)+'" fill="#80deea" fill-rule="evenodd"/>';
+    s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="#00838f"/>';
+    [0.25,0.50,0.75,1.0].forEach(function(sc){s+='<path d="'+pentPath(CX,CY,R,sc)+'" fill="none" stroke="rgba(0,0,0,0.08)" stroke-width="'+(sc===1?1.5:0.7)+'"/>';});
+    AXES.forEach(function(a){var tip=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+tip.x.toFixed(2)+'" y2="'+tip.y.toFixed(2)+'" stroke="rgba(0,0,0,0.10)" stroke-width="1"/>';});
+    var dp=dataPath(CX,CY,R,scores);
+    if(dp)s+='<path d="'+dp+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5" stroke-linejoin="round"/>';
+    AXES.forEach(function(a){var v=scores[a.key]||0;if(v<=0)return;var p=pt(CX,CY,R*v/100,a.angle);s+='<circle cx="'+p.x.toFixed(2)+'" cy="'+p.y.toFixed(2)+'" r="5" fill="'+PRIMARY+'" stroke="white" stroke-width="1.5"/>';});
+    AXES.forEach(function(a){var lp=pt(CX,CY,R+22,a.angle);s+='<text x="'+lp.x.toFixed(2)+'" y="'+lp.y.toFixed(2)+'" text-anchor="middle" dominant-baseline="middle" font-size="14" font-weight="900" fill="#2c3e50">'+a.label+'</text>';s+='<text x="'+lp.x.toFixed(2)+'" y="'+(parseFloat(lp.y)+15).toFixed(2)+'" text-anchor="middle" dominant-baseline="hanging" font-size="8.5" fill="#888">'+a.sub+'</text>';});
+    [25,50,75].forEach(function(v){var p=pt(CX,CY,R*v/100,0);s+='<text x="'+(p.x+4).toFixed(1)+'" y="'+p.y.toFixed(1)+'" font-size="8" fill="#aaa" dominant-baseline="middle">'+v+'</text>';});
+    s+='</svg>';return s;
+  }
+
+  function buildInfo(scores){
+    var html='';
+    AXES.forEach(function(a){
+      var v=scores[a.key]||0,isZero=v===0;
+      var zone=v>=70?'Coherent':v>=40?'Stressed':isZero?'Unmeasured':'Failure';
+      var zoneC=v>=70?'#2e7d32':v>=40?'#e65100':isZero?'#999':'#c62828';
+      html+='<div style="display:flex;align-items:center;gap:7px;margin-bottom:9px;">';
+      html+='<div style="width:32px;height:32px;border-radius:5px;background:'+MODEL_BG[a.key]+';color:'+MODEL_C[a.key]+';font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+a.label+'</div>';
+      html+='<div style="flex:1;"><div style="font-size:11px;font-weight:700;color:#333;">'+a.sub+'</div>';
+      html+='<div style="display:flex;align-items:baseline;gap:5px;"><span style="font-size:14px;font-weight:800;color:'+(isZero?'#bbb':MODEL_C[a.key])+';">'+(v>0?v.toFixed(1):'—')+'</span>';
+      html+='<span style="font-size:10px;font-weight:700;color:'+zoneC+';">'+zone+'</span></div>';
+      if(v>0){html+='<div style="height:3px;border-radius:2px;background:#eee;margin-top:3px;"><div style="height:3px;border-radius:2px;background:'+MODEL_C[a.key]+';width:'+Math.min(100,v)+'%;"></div></div>';}
+      html+='</div></div>';
+    });
+    return html;
+  }
+
+  function blend3(nv, fv, av, wn, wf, wa){
+    /* weights are normalised externally */
+    return nv*wn + fv*wf + av*wa;
+  }
+
+  function getWeights(){
+    var wn = parseInt(document.getElementById('slider-nat').value);
+    var wf = parseInt(document.getElementById('slider-fw').value);
+    var wa = parseInt(document.getElementById('slider-ag').value);
+    var total = wn + wf + wa;
+    if(total === 0) total = 1;
+    return {wn: wn/total, wf: wf/total, wa: wa/total, rawN: wn, rawF: wf, rawA: wa, total: total};
+  }
+
+  function recalc(){
+    var w = getWeights();
+    document.getElementById('label-nat').textContent = Math.round(w.wn*100) + '%';
+    document.getElementById('label-fw').textContent  = Math.round(w.wf*100) + '%';
+    document.getElementById('label-ag').textContent  = Math.round(w.wa*100) + '%';
+    document.getElementById('nat-wlabel').textContent = Math.round(w.wn*100) + '%';
+    document.getElementById('fw-wlabel').textContent  = Math.round(w.wf*100) + '%';
+    document.getElementById('ag-wlabel').textContent  = Math.round(w.wa*100) + '%';
+    document.getElementById('nat-wbar').style.width = Math.round(w.wn*100) + '%';
+    document.getElementById('fw-wbar').style.width  = Math.round(w.wf*100) + '%';
+    document.getElementById('ag-wbar').style.width  = Math.round(w.wa*100) + '%';
+
+    var composite = blend3(NAT.balance, FW.balance, AG.balance, w.wn, w.wf, w.wa);
+    document.getElementById('composite-score-val').textContent = composite.toFixed(1);
+
+    var g = getGrade(composite);
+    var rval = document.getElementById('rating-val');
+    var rdesc = document.getElementById('rating-desc');
+    var rbox = document.getElementById('rating-box');
+    rval.textContent = g.grade; rval.style.color = g.color;
+    rbox.style.borderColor = g.color;
+    rdesc.textContent = g.desc;
+
+    /* composite e score */
+    var eComp = blend3(NAT.coherence.e, FW.coherence.e, AG.coherence.e, w.wn, w.wf, w.wa);
+
+    /* bond table row update */
+    document.getElementById('bond-composite-score').innerHTML = '<strong style="color:'+g.color+';">'+composite.toFixed(1)+'% ('+g.grade+')</strong>';
+    document.getElementById('bond-composite-e').textContent = eComp.toFixed(1);
+
+    var cs = {};
+    AXES.forEach(function(a){
+      cs[a.key] = blend3(NAT.coherence[a.key], FW.coherence[a.key], AG.coherence[a.key], w.wn, w.wf, w.wa);
+    });
+    document.getElementById('pent-svg').innerHTML = buildSVG(cs);
+    document.getElementById('pent-info').innerHTML = buildInfo(cs);
+
+    var nonzero = AXES.filter(function(a){return cs[a.key]>0;});
+    var avg = nonzero.reduce(function(s,a){return s+cs[a.key];},0)/nonzero.length;
+    var interp = '<strong>Overall shape:</strong> Three-sector composite coherence average '+avg.toFixed(1)+'%. ';
+    if(avg>=80) interp += 'The combined natural and human chains are operating in the outer zone — good portfolio health. ';
+    else interp += 'Mixed zone — irrigation sector is pulling portfolio average below 80. ';
+    interp += '<br><br><strong>π Operational ('+cs.pi.toFixed(1)+'):</strong> Phase-level D-C balance across all three chains. The irrigation chain (82.0) is the primary drag. Drinking water (88.6) and natural (89.0) are both in the good zone.';
+    interp += '<br><br><strong>φ Proportional ('+cs.phi.toFixed(1)+'):</strong> Value proportionality across phase boundaries. Irrigation (φ=55) is the dominant source of proportional stress — half the abstracted water is wasted before reaching the crop, creating a deep proportional inefficiency.';
+    interp += '<br><br><strong>√2 Structural ('+cs.sqrt2.toFixed(1)+'):</strong> Transfer overhead. Irrigation secondary distribution (85,000 km unlined canals) and drinking water distribution (NRW 25%) both contribute structural overhead. Natural system scores highest here.';
+    interp += '<br><br><strong>ln(2) Growth ('+cs.ln2.toFixed(1)+'):</strong> Transformation value creation. Both infrastructure chains add value (treatment, distribution), reflected in moderate growth score. Natural precipitation-to-runoff transition also contributes positively.';
+    interp += '<br><br><strong>e Abstract ('+cs.e.toFixed(1)+'):</strong> Financial abstraction coupling. Natural asset unmeasured (0). Freshwater supply partial coupling (EU frameworks, e=42). Irrigation lowest (e=28, CAP area-based only). Bond instrument activation across all three sectors would raise this score significantly — target e=50+ at portfolio level.';
+    document.getElementById('pent-interp').innerHTML = interp;
+
+    var rows = '';
+    for(var i=0;i<5;i++){
+      var np=NAT.phases[i], fp=FW.phases[i], ap=AG.phases[i];
+      var cp = blend3(np.balance, fp.balance, ap.balance, w.wn, w.wf, w.wa);
+      function col(v){return v>=90?'#2e7d32':v>=83?'#e65100':'#c62828';}
+      rows += '<tr>';
+      rows += '<td style="font-weight:700;color:#6c757d;">'+i+'</td>';
+      rows += '<td>'+np.name+'</td>';
+      rows += '<td><strong style="color:'+col(np.balance)+';">'+np.balance.toFixed(1)+'%</strong></td>';
+      rows += '<td>'+fp.name+'</td>';
+      rows += '<td><strong style="color:'+col(fp.balance)+';">'+fp.balance.toFixed(1)+'%</strong></td>';
+      rows += '<td>'+ap.name+'</td>';
+      rows += '<td><strong style="color:'+col(ap.balance)+';">'+ap.balance.toFixed(1)+'%</strong></td>';
+      rows += '<td><strong style="color:'+col(cp)+';">'+cp.toFixed(1)+'%</strong><span class="bar-inline" style="width:'+Math.round(cp*0.6)+'px;background:'+col(cp)+';opacity:.35;"></span></td>';
+      rows += '</tr>';
+    }
+    document.getElementById('phase-compare-body').innerHTML = rows;
+
+    document.getElementById('weights-note').textContent =
+      'Normalised weights: Natural '+Math.round(w.wn*100)+'% · Freshwater Supply '+Math.round(w.wf*100)+'% · Irrigation '+Math.round(w.wa*100)+'%. ' +
+      'Composite = '+Math.round(w.wn*100)+'%×'+NAT.balance.toFixed(1)+' + '+Math.round(w.wf*100)+'%×'+FW.balance.toFixed(1)+' + '+Math.round(w.wa*100)+'%×'+AG.balance.toFixed(1)+' = '+composite.toFixed(2)+'%.';
+  }
+
+  ['slider-nat','slider-fw','slider-ag'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', recalc);
+  });
+  recalc();
+})();
+</script>
+</body>
+</html>

@@ -47,6 +47,11 @@ Arguments:
         exit.
     -locations-file PATH
         Save uploaded document locations to this JSON file.
+    -file-list PATH
+        Write the selected ingestion file list to a text file, one relative path
+        per line. This is useful for auditing Markdown/HTML duplicate handling.
+    -since-marker PATH
+        Only select files newer than the marker file, for example NOW.
     -update-from-locations PATH
         Update the workspace using locations from a previous run.
     -update-from-documents
@@ -147,6 +152,18 @@ def parse_args() -> argparse.Namespace:
         help="Path to save uploaded document locations.",
     )
     parser.add_argument(
+        "-file-list",
+        dest="file_list",
+        default="",
+        help="Write selected file paths to this text file, one path per line.",
+    )
+    parser.add_argument(
+        "-since-marker",
+        dest="since_marker",
+        default="",
+        help="Only select files newer than this marker file, for example NOW.",
+    )
+    parser.add_argument(
         "-update-from-locations",
         dest="update_from_locations",
         default="",
@@ -189,7 +206,12 @@ def has_markdown_sibling(path: Path) -> bool:
     return path.with_suffix(".md").exists() or path.with_suffix(".markdown").exists()
 
 
-def discover_files(repo_root: Path, manifest: dict[str, Any], verbose: bool) -> list[IngestFile]:
+def discover_files(
+    repo_root: Path,
+    manifest: dict[str, Any],
+    verbose: bool,
+    newer_than: float | None = None,
+) -> list[IngestFile]:
     include_patterns = as_list(manifest.get("include"))
     exclude_patterns = as_list(manifest.get("exclude"))
     allow_html_patterns = as_list(manifest.get("allow_html"))
@@ -203,7 +225,9 @@ def discover_files(repo_root: Path, manifest: dict[str, Any], verbose: bool) -> 
     seen: set[Path] = set()
     selected: list[IngestFile] = []
 
-    for pattern in include_patterns:
+    candidate_patterns = include_patterns + allow_html_patterns
+
+    for pattern in candidate_patterns:
         for path in repo_root.glob(pattern):
             if not path.is_file():
                 continue
@@ -215,14 +239,22 @@ def discover_files(repo_root: Path, manifest: dict[str, Any], verbose: bool) -> 
 
             rel_path = path.relative_to(repo_root).as_posix()
 
-            if is_match(rel_path, exclude_patterns):
+            if newer_than is not None and path.stat().st_mtime <= newer_than:
+                if verbose:
+                    print(f"skip older than marker: {rel_path}")
+                continue
+
+            html_allowed = path.suffix.lower() in {".html", ".htm"} and is_match(
+                rel_path, allow_html_patterns
+            )
+
+            if is_match(rel_path, exclude_patterns) and not html_allowed:
                 if verbose:
                     print(f"skip excluded: {rel_path}")
                 continue
 
             if path.suffix.lower() in {".html", ".htm"}:
-                html_allowed = is_match(rel_path, allow_html_patterns)
-                if skip_html_with_markdown and has_markdown_sibling(path) and not html_allowed:
+                if skip_html_with_markdown and has_markdown_sibling(path):
                     if verbose:
                         print(f"skip duplicate html: {rel_path}")
                     continue
@@ -470,7 +502,15 @@ def main() -> int:
         print("AnythingLLM workspace update complete.")
         return 0
 
-    files = discover_files(repo_root, manifest, args.verbose)
+    newer_than: float | None = None
+    if args.since_marker:
+        marker_path = (repo_root / args.since_marker).resolve()
+        if not marker_path.exists():
+            raise SystemExit(f"Marker file not found: {marker_path}")
+        newer_than = marker_path.stat().st_mtime
+        print(f"Selecting files newer than marker: {marker_path.relative_to(repo_root)}")
+
+    files = discover_files(repo_root, manifest, args.verbose, newer_than=newer_than)
     if args.limit > 0:
         files = files[: args.limit]
 
@@ -478,6 +518,15 @@ def main() -> int:
     print(f"Selected files: {len(files)}")
     for item in files:
         print(f"{item.rel_path}\t{item.size_bytes} bytes")
+
+    if args.file_list:
+        file_list_path = (repo_root / args.file_list).resolve()
+        file_list_path.parent.mkdir(parents=True, exist_ok=True)
+        file_list_path.write_text(
+            "".join(f"{item.rel_path}\n" for item in files),
+            encoding="utf-8",
+        )
+        print(f"Wrote selected file list to {file_list_path.relative_to(repo_root)}")
 
     if args.dry_run:
         print("Dry run complete. No files uploaded.")

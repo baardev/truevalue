@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Agricultural Water Hub — Danube Basin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #bf360c 0%, #e65100 50%, #f57c00 100%);
+      min-height: 100vh; padding: 24px; color: #2c3e50;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px; margin-bottom: 22px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #e65100; background: #fbe9e7;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .type-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: #fff; background: #e65100;
+      padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+    }
+    h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto 20px; }
+    .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    .kpi { background: #fbe9e7; border-radius: 10px; padding: 14px; border-left: 4px solid #e65100; text-align: left; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; color: #6c757d; font-weight: 700; margin-bottom: 4px; }
+    .kpi-value { font-size: 22px; font-weight: 800; color: #bf360c; }
+    .kpi-sub { font-size: 11px; color: #6c757d; margin-top: 3px; }
+    .kpi.nat { background: #e8f5e9; border-left-color: #2e7d32; }
+    .kpi.nat .kpi-value { color: #1b5e20; }
+    .kpi.hum { background: #f1f8e9; border-left-color: #33691e; }
+    .kpi.hum .kpi-value { color: #33691e; }
+    .composite-panel {
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%);
+      border-radius: 14px; padding: 30px; margin: 22px 0; color: #fff; text-align: center;
+    }
+    .composite-panel h2 { font-size: 22px; font-weight: 300; margin-bottom: 6px; }
+    .composite-panel .score { font-size: 64px; font-weight: 900; line-height: 1; margin: 8px 0; }
+    .composite-panel .rating { font-size: 20px; font-weight: 700; background: rgba(255,255,255,0.25); display: inline-block; padding: 4px 16px; border-radius: 999px; margin-bottom: 8px; }
+    .composite-panel .sub { font-size: 13px; color: rgba(255,255,255,0.8); }
+    .contrib-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    .contrib { background: rgba(0,0,0,0.2); border-radius: 10px; padding: 16px; text-align: left; }
+    .contrib h3 { font-size: 13px; font-weight: 700; color: rgba(255,255,255,0.7); margin-bottom: 6px; text-transform: uppercase; letter-spacing: .05em; }
+    .contrib .cscore { font-size: 28px; font-weight: 900; color: #fff; }
+    .contrib .cbar-track { background: rgba(255,255,255,0.2); border-radius: 4px; height: 6px; margin: 6px 0 4px; }
+    .contrib .cbar-fill { border-radius: 4px; height: 6px; }
+    .contrib .clink { font-size: 11px; color: rgba(255,255,255,0.7); text-decoration: none; }
+    .contrib .clink:hover { color: #fff; text-decoration: underline; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px; }
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 24px 24px 16px; color: #fff; }
+    .card-header.nat { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); }
+    .card-header.hum { background: linear-gradient(135deg, #33691e 0%, #558b2f 100%); }
+    .card-icon { font-size: 36px; margin-bottom: 8px; }
+    .card-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+    .card-desc { font-size: 12px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 18px 24px 22px; }
+    .phase-mini { margin-bottom: 8px; }
+    .phase-mini .label { display: flex; justify-content: space-between; font-size: 11px; color: #495057; margin-bottom: 3px; }
+    .phase-mini .label .bal { font-weight: 700; }
+    .phase-mini .track { background: #f0f4f8; border-radius: 3px; height: 6px; }
+    .phase-mini .fill { border-radius: 3px; height: 6px; }
+    .phase-mini .fill.nat { background: #2e7d32; }
+    .phase-mini .fill.hum { background: #558b2f; }
+    .btn {
+      display: inline-block; padding: 10px 20px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 13px; color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s; margin-top: 14px;
+    }
+    .btn.nat { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); }
+    .btn.hum { background: linear-gradient(135deg, #33691e 0%, #558b2f 100%); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    .alert-panel {
+      background: #fff8e1; border: 1.5px solid #f9a825; border-radius: 10px;
+      padding: 16px 20px; margin-top: 16px; font-size: 13px; line-height: 1.6; color: #333;
+    }
+    .alert-panel strong { color: #e65100; }
+    .nav { text-align: center; margin-top: 14px; }
+    .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+    .nav a:hover { text-decoration: underline; }
+    .footer { text-align: center; color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 18px; padding: 8px 0; }
+    .pent-outer { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-top: 14px; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .kpi-strip { grid-template-columns: 1fr 1fr; } .contrib-row { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="kicker">Danube Basin · Paired Service · Agricultural Water</div>
+      <h1>🌾 Agricultural Water Hub
+        <span class="type-badge">Paired</span>
+      </h1>
+      <p class="subtitle">
+        The paired analysis combining the natural freshwater availability allocated to agriculture
+        with the irrigation infrastructure chain. Largest water sector: 22 km³/yr (63% of basin abstraction).
+        Current system efficiency 50% — half the water never reaches the crop.
+      </p>
+
+      <div class="kpi-strip">
+        <div class="kpi">
+          <div class="kpi-label">Basin Agricultural Abstraction</div>
+          <div class="kpi-value">22 km³/yr</div>
+          <div class="kpi-sub">63% of total 35 km³/yr</div>
+        </div>
+        <div class="kpi nat">
+          <div class="kpi-label">Natural Component Balance</div>
+          <div class="kpi-value">86.4%</div>
+          <div class="kpi-sub">Natural freshwater availability</div>
+        </div>
+        <div class="kpi hum">
+          <div class="kpi-label">Human Component Balance</div>
+          <div class="kpi-value">82.0%</div>
+          <div class="kpi-sub">Irrigation infrastructure chain</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Water Saving Potential</div>
+          <div class="kpi-value">5.5 km³/yr</div>
+          <div class="kpi-sub">if efficiency rises to 75%</div>
+        </div>
+      </div>
+
+      <div class="alert-panel">
+        <strong>Key finding:</strong> The natural hydrological system is in good health (86.4% balance,
+        stock ratio 0.11 for agricultural allocation only). The human irrigation infrastructure is the
+        primary constraint (82.0% balance), particularly Phase 2 (secondary distribution, 77%). The
+        bond opportunity is in the human chain: canal lining, metering rollout, and irrigation method
+        modernisation targeting 5.5 km³/yr water savings. The natural asset does not need direct
+        intervention — it needs the human chain to stop wasting the water it provides.
+      </div>
+    </div>
+
+    <div class="composite-panel">
+      <h2>Agricultural Water Composite Index</h2>
+      <div class="score" id="comp-score">84.0%</div>
+      <div class="rating" id="comp-rating">A+ Bond Grade</div>
+      <p class="sub" id="comp-sub">Weighted composite of natural (60%) and human (40%) component balances</p>
+
+      <div class="contrib-row">
+        <div class="contrib">
+          <h3>🌊 Natural Component</h3>
+          <div class="cscore">86.4%</div>
+          <div class="cbar-track"><div class="cbar-fill nat" style="width:86.4%"></div></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);">Natural freshwater availability · agricultural allocation</div>
+          <a href="../natural_freshwater_availability/index.html" class="clink">→ View natural freshwater project</a>
+        </div>
+        <div class="contrib">
+          <h3>🏗️ Human Component</h3>
+          <div class="cscore">82.0%</div>
+          <div class="cbar-track"><div class="cbar-fill hum" style="width:82.0%"></div></div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.7);">Irrigation infrastructure · 5-phase supply chain</div>
+          <a href="../human_irrigation_infrastructure/index.html" class="clink">→ View irrigation infrastructure project</a>
+        </div>
+      </div>
+
+      <div id="slider-row" style="margin-top:14px;font-size:12px;color:rgba(255,255,255,0.9);">
+        <label>Natural weight: <strong id="wnat-label">60%</strong></label>
+        <input type="range" id="wnat-slider" min="0" max="100" value="60" style="width:140px;vertical-align:middle;margin:0 10px;">
+        <label>Human weight: <strong id="whum-label">40%</strong></label>
+      </div>
+
+      <div id="coherence-summary" style="margin-top:16px;font-size:11px;color:rgba(255,255,255,0.75);">
+        Blended coherence — π: 84.0 · φ: 62.0 · √2: 68.0 · ln2: 73.0 · e: 16.0
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header nat">
+          <div class="card-icon">🌊</div>
+          <div class="card-title">Natural Freshwater Availability</div>
+          <div class="card-desc">Hydrological cycle · 206 km³/yr runoff · Agricultural allocation 22 km³</div>
+        </div>
+        <div class="card-body">
+          <div style="font-size:12px;color:#495057;margin-bottom:12px;">5-phase ecological production cascade:
+            Atmospheric Moisture → Precipitation → Runoff and Flow → Groundwater Recharge → Water Availability
+          </div>
+          <div class="phase-mini"><div class="label"><span>Ph 0 — Atmospheric Moisture</span><span class="bal">90%</span></div><div class="track"><div class="fill nat" style="width:90%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 1 — Precipitation Distribution</span><span class="bal">85%</span></div><div class="track"><div class="fill nat" style="width:85%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 2 — Surface Runoff and Flow</span><span class="bal">89%</span></div><div class="track"><div class="fill nat" style="width:89%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 3 — Groundwater Recharge</span><span class="bal">83%</span></div><div class="track"><div class="fill nat" style="width:83%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 4 — Freshwater Availability</span><span class="bal">85%</span></div><div class="track"><div class="fill nat" style="width:85%"></div></div></div>
+          <a href="../natural_freshwater_availability/index.html" class="btn nat">Open Natural Freshwater →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header hum">
+          <div class="card-icon">🏗️</div>
+          <div class="card-title">Irrigation Infrastructure</div>
+          <div class="card-desc">5-phase engineered chain · 22 km³/yr · 2.8M ha · Efficiency 50%</div>
+        </div>
+        <div class="card-body">
+          <div style="font-size:12px;color:#495057;margin-bottom:12px;">5-phase supply chain:
+            Intake and Pumping → Primary Canal → Secondary Distribution → Field Application → Drainage Return
+          </div>
+          <div class="phase-mini"><div class="label"><span>Ph 0 — River and Canal Intake</span><span class="bal">91%</span></div><div class="track"><div class="fill hum" style="width:91%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 1 — Primary Canal Conveyance</span><span class="bal" style="color:#f0a030;">79%</span></div><div class="track"><div class="fill hum" style="width:79%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 2 — Secondary Distribution ⚠</span><span class="bal" style="color:#ef5350;">77%</span></div><div class="track"><div class="fill hum" style="width:77%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 3 — Field Application</span><span class="bal" style="color:#f0a030;">84%</span></div><div class="track"><div class="fill hum" style="width:84%"></div></div></div>
+          <div class="phase-mini"><div class="label"><span>Ph 4 — Drainage and Return Flow</span><span class="bal" style="color:#f0a030;">79%</span></div><div class="track"><div class="fill hum" style="width:79%"></div></div></div>
+          <a href="../human_irrigation_infrastructure/index.html" class="btn hum">Open Irrigation Infrastructure →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="../index.html">← Danube Basin Hub</a>
+      <a href="../composite_water_index.html">Freshwater Supply Index →</a>
+      <a href="/index.html">Main Homepage</a>
+    </div>
+    <div class="footer">Danube Basin · Agricultural Water · Paired Service · v1.0</div>
+  </div>
+
+<script>
+(function(){
+  var NAT_SCORES = {pi:88.0, phi:72.0, sqrt2:85.0, ln2:78.0, e:0};
+  var HUM_SCORES = {pi:82.0, phi:55.0, sqrt2:62.0, ln2:68.0, e:15.0};
+  var NAT_BAL = 85.6;  // updated: Phase 4 WFD 40% compliance (Pittock 2026); -0.8 from chain avg drop
+  var HUM_BAL = 82.0;
+  var RATING_THRESHOLDS = [
+    {min:95, label:'AAA', grade:'AAA Bond Grade'},
+    {min:90, label:'AA+', grade:'AA+ Bond Grade'},
+    {min:86, label:'AA', grade:'AA Bond Grade'},
+    {min:82, label:'AA-', grade:'AA- Bond Grade'},
+    {min:78, label:'A+', grade:'A+ Bond Grade'},
+    {min:74, label:'A', grade:'A Bond Grade'},
+    {min:70, label:'A-', grade:'A- Bond Grade'},
+    {min:65, label:'BBB+', grade:'BBB+ Bond Grade'},
+    {min:60, label:'BBB', grade:'BBB Bond Grade'},
+    {min:0, label:'BBB-', grade:'BBB- Bond Grade'}
+  ];
+  function getRating(score){ for(var i=0;i<RATING_THRESHOLDS.length;i++){if(score>=RATING_THRESHOLDS[i].min)return RATING_THRESHOLDS[i];} return RATING_THRESHOLDS[RATING_THRESHOLDS.length-1]; }
+  function blend(natVal,humVal,wNat){ return (natVal*wNat + humVal*(100-wNat))/100; }
+  function recalc(){
+    var wNat = parseInt(document.getElementById('wnat-slider').value);
+    var wHum = 100 - wNat;
+    document.getElementById('wnat-label').textContent = wNat+'%';
+    document.getElementById('whum-label').textContent = wHum+'%';
+    var comp = blend(NAT_BAL, HUM_BAL, wNat);
+    document.getElementById('comp-score').textContent = comp.toFixed(1)+'%';
+    var rt = getRating(comp);
+    document.getElementById('comp-rating').textContent = rt.grade;
+    var pi   = blend(NAT_SCORES.pi,   HUM_SCORES.pi,   wNat);
+    var phi  = blend(NAT_SCORES.phi,  HUM_SCORES.phi,  wNat);
+    var sq2  = blend(NAT_SCORES.sqrt2,HUM_SCORES.sqrt2,wNat);
+    var ln2v = blend(NAT_SCORES.ln2,  HUM_SCORES.ln2,  wNat);
+    var ev   = blend(NAT_SCORES.e,    HUM_SCORES.e,    wNat);
+    document.getElementById('coherence-summary').textContent =
+      'Blended coherence — π: '+pi.toFixed(1)+' · φ: '+phi.toFixed(1)+' · √2: '+sq2.toFixed(1)+' · ln2: '+ln2v.toFixed(1)+' · e: '+ev.toFixed(1);
+    document.getElementById('comp-sub').textContent =
+      'Weighted composite of natural ('+wNat+'%) and human ('+wHum+'%) component balances';
+  }
+  document.getElementById('wnat-slider').addEventListener('input', recalc);
+  recalc();
+})();
+</script>
+</body>
+</html>

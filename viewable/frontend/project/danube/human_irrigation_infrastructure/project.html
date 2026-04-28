@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Project</h1>
+        <p class="subtitle">Generated from <strong>project.yaml</strong> (YAML)</p>
+      </div>
+<pre class="pre-wrap">id: human_irrigation_infrastructure
+name: Irrigation Infrastructure
+basin: danube
+type: human
+service_category: provisioning
+teeb_class: provisioning
+description: &#x27;The engineered irrigation supply chain abstracting 22 km³/yr from the
+  Danube system to irrigate ~2.8 million hectares of agricultural land across the
+  basin. The largest single water-use sector — 63% of total basin abstraction. Primary
+  countries: Hungary, Romania, Bulgaria, Serbia, Ukraine. Much of the canal infrastructure
+  is Soviet-era (1950s-1970s), poorly monitored, and operating at 45-55% efficiency.
+  The natural asset paired with this chain is the agricultural allocation from natural_freshwater_availability.
+
+  &#x27;
+paired_with:
+  natural: natural_freshwater_availability
+  hub: paired_agricultural_water
+data_availability: M
+primary_sources:
+- name: FAO AQUASTAT
+  url: https://www.fao.org/aquastat
+  metrics: irrigation water withdrawal by country and sector
+- name: Eurostat Agricultural Statistics
+  url: https://ec.europa.eu/eurostat/web/agriculture
+  metrics: irrigated area by method, EU member states
+- name: EU CAP (Common Agricultural Policy) reporting
+  url: https://agriculture.ec.europa.eu
+  metrics: irrigation investment, agri-environment scheme participation
+- name: FAO AQUASTAT Irrigation and Drainage Paper 66
+  url: https://www.fao.org/3/a-bc596e.pdf
+  metrics: irrigation efficiency by system type and country
+- name: ICPDR Danube Basin Analysis
+  url: https://www.icpdr.org
+  metrics: agricultural pressures and abstraction from WFD reporting
+- name: World Bank IBRD water and agriculture sector assessments
+  url: https://www.worldbank.org
+  metrics: irrigation rehabilitation investment needs
+key_metrics:
+  agricultural_abstraction_km3_yr: 22
+  irrigated_area_ha: 2800000
+  irrigation_efficiency_pct_avg: 50
+  irrigation_efficiency_potential_pct: 75
+  water_saving_potential_km3_yr: 5.5
+  eu_cap_irrigation_support_bn_eur: 2.1
+  primary_irrigation_countries:
+  - Romania
+  - Hungary
+  - Bulgaria
+  - Serbia
+  - Ukraine
+  - Italy (Po-Danube watershed margin)
+infrastructure_age_note: &#x27;60-70% of canal infrastructure was built between 1950 and
+  1975. Significant rehabilitation investment needed across the lower basin. EU Cohesion
+  Fund and CAP provide partial financing for EU member states.
+
+  &#x27;
+ndc_colors:
+  primary: &#x27;#388e3c&#x27;
+  dark: &#x27;#1b5e20&#x27;
+  light: &#x27;#f1f8e9&#x27;
+created: &#x27;2026-04-27&#x27;
+</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>
