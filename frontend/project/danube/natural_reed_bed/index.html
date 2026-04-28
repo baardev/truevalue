@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natural Reed Bed Biomass : Danube Basin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #33691e 0%, #558b2f 50%, #689f38 100%);
+      min-height: 100vh; padding: 24px; color: #2c3e50;
+      color-scheme: light;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px; margin-bottom: 22px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #558b2f; background: #f9fbe7;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .type-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; background: #558b2f;
+      padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+    }
+    .paired-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: #fff; background: #f57f17;
+      padding: 4px 10px; border-radius: 999px; margin-left: 6px;
+    }
+    h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 760px; margin: 0 auto 20px; }
+    .kpi-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin: 24px 0 0; }
+    .kpi { background: #f9fbe7; border-radius: 10px; padding: 16px 12px; text-align: center; }
+    .kpi-val { font-size: 28px; font-weight: 800; color: #33691e; line-height: 1.1; }
+    .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; }
+    .alert-panel {
+      background: #fff8e1; border-left: 4px solid #f57f17;
+      border-radius: 8px; padding: 14px 18px; margin: 22px 0;
+      font-size: 13px; line-height: 1.6; color: #333;
+    }
+    .alert-panel strong { color: #e65100; }
+    .paired-panel {
+      background: #fff3e0; border-radius: 10px;
+      padding: 18px 22px; margin: 18px 0;
+      display: flex; align-items: center; gap: 16px;
+    }
+    .paired-panel .icon { font-size: 32px; }
+    .paired-panel h3 { font-size: 14px; font-weight: 700; color: #e65100; margin-bottom: 4px; }
+    .paired-panel p { font-size: 13px; color: #495057; line-height: 1.5; }
+    .paired-panel a { color: #e65100; font-weight: 700; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 22px; }
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 28px 28px 18px; color: #fff; }
+    .card-header.sc { background: linear-gradient(135deg, #33691e 0%, #558b2f 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); }
+    .card-header.vc { background: linear-gradient(135deg, #37474f 0%, #546e7a 100%); }
+    .card-icon { font-size: 40px; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 22px 28px 26px; }
+    .card-body ul { list-style: none; margin-bottom: 18px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+    .card-body li::before { content: "✓"; position: absolute; left: 0; color: #558b2f; font-weight: bold; }
+    .btn {
+      display: inline-block; padding: 11px 22px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+    .btn.natural { background: #558b2f; }
+    .btn.lc { background: #2e7d32; }
+    .btn.vc { background: #546e7a; }
+    .btn.outline {
+      background: transparent; border: 2px solid #558b2f;
+      color: #558b2f; margin-left: 8px;
+    }
+    .btn.outline:hover { background: #f9fbe7; }
+    .nav {
+      background: rgba(255,255,255,0.15); border-radius: 10px;
+      padding: 14px 20px; margin-top: 22px;
+      display: flex; gap: 16px; flex-wrap: wrap;
+    }
+    .nav a {
+      color: #fff; text-decoration: none; font-size: 13px;
+      font-weight: 600; padding: 6px 14px; background: rgba(255,255,255,0.18);
+      border-radius: 6px; transition: background 0.15s;
+    }
+    .nav a:hover { background: rgba(255,255,255,0.32); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="kicker">Danube Basin · Natural System</div>
+      <h1>Reed Bed Biomass
+        <span class="type-badge">Natural</span>
+        <span class="paired-badge">Paired with Reed Industry</span>
+      </h1>
+      <p class="subtitle">
+        The Danube Delta and lower Danube floodplain support 2,800 km² of reed bed, the largest
+        continuous reed ecosystem in Europe, producing 800,000 t dry biomass annually. This subproject
+        models the ecological service cascade from hydrological regime and nutrient supply through reed
+        establishment, biomass accumulation, standing stock maturation, and ecosystem service delivery.
+        Chain balance 81.4% (near pi=81.0). Phase 4 (Ecosystem Service Delivery) is the structural
+        bottleneck at 74%: only EUR 38M/yr (16%) of the EUR 232M/yr total ecosystem service value is
+        currently captured; EUR 194M/yr remains unmonetised due to the absence of a reed certification
+        standard and active carbon project registration.
+      </p>
+      <div class="kpi-strip">
+        <div class="kpi"><div class="kpi-val">2,800 km²</div><div class="kpi-lbl">Total Reed Bed Area</div></div>
+        <div class="kpi"><div class="kpi-val">81.4%</div><div class="kpi-lbl">Chain Balance</div></div>
+        <div class="kpi"><div class="kpi-val">800,000 t</div><div class="kpi-lbl">Annual Biomass Production</div></div>
+        <div class="kpi"><div class="kpi-val">25%</div><div class="kpi-lbl">Sustainable Quota Utilised</div></div>
+      </div>
+    </div>
+
+    <div class="alert-panel">
+      <strong>Structural Bottleneck: Phase 4 (Ecosystem Service Delivery, 74% balance):</strong>
+      Total ecosystem service value is EUR 232M/yr across harvest, water purification, biodiversity,
+      carbon sequestration, and flood buffer functions. Only EUR 38M/yr (16%) is currently captured
+      through commercial harvest and formal ecosystem service payments. EUR 194M/yr remains unmonetised.
+      The absence of a reed sustainability certification standard and the presence of only 1 active
+      carbon project in the delta prevent financial abstraction from the system's ecological outputs.
+      Bond opportunity: Danube Delta Wetland Ecosystem Bond targeting reed certification, carbon
+      project registration (0.65 Mt CO2/yr sequestration), and processing infrastructure investment.
+    </div>
+
+    <div class="paired-panel">
+      <div class="icon">🌾</div>
+      <div>
+        <h3>Paired with: Human Reed Industry</h3>
+        <p>
+          The natural reed bed is the biological asset base for the paired human reed industry supply
+          chain. The bond that establishes reed sustainability certification (natural Phase 4) and
+          supports processing infrastructure investment (human Phase 2) creates the premium thatching
+          grade product and carbon credit revenue on which the human supply chain depends. Only 25% of
+          the 560,000 t sustainable harvest quota is currently extracted; closing this gap requires
+          both certification and accessible harvest infrastructure.
+          <a href="../human_reed_industry/index.html">Reed Industry Pair →</a>
+          &nbsp;|&nbsp;
+          <a href="../paired_reed_harvesting/index.html">Paired Harvesting Hub →</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="card-header sc">
+          <div class="card-icon">🌿</div>
+          <div class="card-title">Service Cascade</div>
+          <div class="card-desc">Five-phase ecological cascade from hydrological regime and nutrient supply to ecosystem service delivery</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Phase 0: Hydrological Regime and Nutrient Supply (81.0%)</li>
+            <li>Phase 1: Reed Establishment and Colonisation (84.0%)</li>
+            <li>Phase 2: Biomass Accumulation and Stand Maturation (85.0%) STRONGEST</li>
+            <li>Phase 3: Standing Stock and Harvest-Ready Biomass (83.0%)</li>
+            <li>Phase 4: Ecosystem Service Delivery (74.0%) BOTTLENECK</li>
+          </ul>
+          <a href="supply_chain/index.html" class="btn natural">Service Cascade →</a>
+          <a href="supply_chain/dashboard.html" class="btn outline">Dashboard</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header lc">
+          <div class="card-icon">📊</div>
+          <div class="card-title">System Lifecycle</div>
+          <div class="card-desc">N-D-C balance, coherence pentagon, and phase-by-phase lifecycle analysis</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>Chain balance 81.4% (near pi=81.0)</li>
+            <li>Coherence pentagon: pi=81 phi=58 sqrt2=72 ln2=66 e=20</li>
+            <li>Bottleneck: Phase 4 ecosystem service delivery gap</li>
+            <li>Strongest phase: Phase 2 biomass accumulation</li>
+          </ul>
+          <a href="supply_chain/system_lifecycle.html" class="btn lc">System Lifecycle →</a>
+          <a href="supply_chain/project_context.html" class="btn outline">Project Context</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header vc">
+          <div class="card-icon">💰</div>
+          <div class="card-title">Value Chain</div>
+          <div class="card-desc">Danube Delta Wetland Ecosystem Bond structure, total ecosystem value, and e-layer analysis</div>
+        </div>
+        <div class="card-body">
+          <ul>
+            <li>e-score: 20 (second-lowest of all built subprojects)</li>
+            <li>Total ecosystem service value: EUR 232M/yr</li>
+            <li>Currently captured: EUR 38M/yr (16% of TEV)</li>
+            <li>Bond type: Danube Delta Wetland Ecosystem Bond</li>
+          </ul>
+          <a href="value_chain/index.html" class="btn vc">Value Chain →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="../index.html">← Danube Basin Hub</a>
+      <a href="../paired_reed_harvesting/index.html">Paired: Reed Harvesting Hub →</a>
+      <a href="../human_reed_industry/index.html">Human Pair →</a>
+      <a href="/index.html">Main Homepage</a>
+    </div>
+  </div>
+</body>
+</html>

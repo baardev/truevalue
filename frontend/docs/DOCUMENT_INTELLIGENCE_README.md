@@ -603,6 +603,23 @@ RUN_MKDOCS=1 ./scripts/rebuild-site.sh
 
 Use the manifest-driven ingestion script when you want to upload many files into AnythingLLM.
 
+Before ingestion, convert raw inbox files into clean Markdown and CSV outputs:
+
+```bash
+python scripts/convert_inbox_sources.py -dry-run -since-marker NOW
+python scripts/convert_inbox_sources.py -since-marker NOW
+```
+
+To convert one file in place, pass the file path directly. The output is written beside the input with the converted extension:
+
+```bash
+python scripts/convert_inbox_sources.py "NEW/example.docx"
+python scripts/convert_inbox_sources.py "NEW/example.xlsx"
+python scripts/convert_inbox_sources.py -file "NEW/example.docx"
+```
+
+This script converts `.docx`, `.doc`, `.html`, `.xlsx`, and `.xls` files from `NEW/` into curated Markdown source notes and CSV tables. Office conversion for `.doc` and `.xls` requires LibreOffice. Excel conversion requires `openpyxl`, which is included in `requirements-docs.txt`.
+
 The starter manifest is:
 
 ```text
@@ -651,6 +668,19 @@ Process only the first few files while testing:
 
 ```bash
 python scripts/anythingllm_ingest.py -n -l 10
+```
+
+Write the exact ingestion file list to disk for review:
+
+```bash
+python scripts/anythingllm_ingest.py -n -file-list anythingllm_file_list.txt
+```
+
+Ingest only files newer than a marker file such as `NOW`:
+
+```bash
+python scripts/anythingllm_ingest.py -n -since-marker NOW -file-list anythingllm_newer_than_now.txt
+python scripts/anythingllm_ingest.py -since-marker NOW
 ```
 
 List documents that have already been uploaded to AnythingLLM:

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commercial Navigation Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Commercial Navigation Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>commercial_navigation_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">25</span> / 25
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>member_states_danube_commission</td><td>13</td><td>count</td><td>public</td><td>Danube Commission Annual Report 2022</td><td>https://www.danubecom-intern.org</td><td>States party to the 1948 Belgrade Convention and members of the Danube Commission; includes all 10 mainstream countries plus 3 with significant interests</td></tr>
+<tr><td>2</td><td>0</td><td>UNECE</td><td>Danube Basin</td><td>2022-01-01</td><td>harmonised_vessel_registration_pct</td><td>85</td><td>percent</td><td>public</td><td>UNECE Inland Navigation Working Party Review 2022</td><td>https://unece.org</td><td>Share of Danube commercial vessels complying with harmonised technical standards (hull; engine; safety equipment) across all member states</td></tr>
+<tr><td>3</td><td>0</td><td>EU RIS</td><td>Danube Basin</td><td>2022-01-01</td><td>ris_river_information_services_coverage_pct</td><td>78</td><td>percent</td><td>public</td><td>EU Directive 2005/44/EC implementation report 2022</td><td>https://ec.europa.eu/transport</td><td>Share of navigable Danube with operational River Information Services (AIS; fairway depth; lock status; flood warnings)</td></tr>
+<tr><td>4</td><td>1</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>active_commercial_ports</td><td>68</td><td>count</td><td>public</td><td>Danube Commission Port Statistics Database 2022</td><td>https://www.danubecom-intern.org</td><td>Active commercial ports on the navigable Danube and its immediate approaches; includes bulk; container; liquid cargo; and multimodal facilities</td></tr>
+<tr><td>5</td><td>1</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>annual_port_throughput_mt</td><td>34</td><td>Mt/yr</td><td>public</td><td>Danube Commission Navigation Statistics 2022</td><td>https://www.danubecom-intern.org</td><td>Total cargo throughput at all Danube ports combined; bulk (grain; coal; ore) dominates at 70% of total volume</td></tr>
+<tr><td>6</td><td>1</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>port_capacity_utilisation_pct</td><td>45</td><td>percent</td><td>public</td><td>Via Donau Port Capacity Assessment 2022</td><td>https://www.viadonau.org</td><td>Share of total Danube port designed capacity actually used; low utilisation reflects fairway depth constraints preventing full vessel loading</td></tr>
+<tr><td>7</td><td>2</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>dredging_volume_m3_yr</td><td>4500000</td><td>m3/yr</td><td>public</td><td>Via Donau Annual Waterway Maintenance Report 2022</td><td>https://www.viadonau.org</td><td>Total maintenance dredging volume on the Danube navigable reach; primary tool for maintaining minimum fairway depths at critical shallows</td></tr>
+<tr><td>8</td><td>2</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>dredging_cost_eur_mn_yr</td><td>28</td><td>EUR million/yr</td><td>public</td><td>Via Donau Annual Waterway Maintenance Report 2022</td><td>https://www.viadonau.org</td><td>Annual cost of maintenance dredging; rising as climate change extends low-water periods; excludes environmental compensation costs</td></tr>
+<tr><td>9</td><td>2</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>low_water_restriction_days_avg</td><td>42</td><td>days/yr average</td><td>public</td><td>Danube Commission Low Water Event Database 2022</td><td>https://www.danubecom-intern.org</td><td>Mean annual days with fairway depth below TEN-T 2.5 m standard at one or more critical sections; average 2010-2022</td></tr>
+<tr><td>10</td><td>2</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>low_water_restriction_days_2022</td><td>68</td><td>days in 2022</td><td>public</td><td>Danube Commission Annual Report 2022</td><td>https://www.danubecom-intern.org</td><td>Low water restriction days in the severe drought year 2022; highest since 2003; demonstrating climate trend impact on navigation</td></tr>
+<tr><td>11</td><td>2</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>fairway_depth_compliance_pct</td><td>74</td><td>percent</td><td>public</td><td>Via Donau Fairway Performance Report 2022</td><td>https://www.viadonau.org</td><td>Share of operating days per year when all critical sections meet the 2.5 m TEN-T design depth standard; 26% non-compliance days</td></tr>
+<tr><td>12</td><td>2</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>critical_shallow_sections</td><td>7</td><td>count</td><td>public</td><td>Danube Commission Fairway Survey 2022</td><td>https://www.danubecom-intern.org</td><td>Persistently shallow sections where low-water restriction occurs regularly; Iron Gate exit (1.4 m); Bratislava-Budapest reach (various sections)</td></tr>
+<tr><td>13</td><td>2</td><td>Via Donau</td><td>Austria</td><td>2022-01-01</td><td>iron_gate_exit_min_depth_m</td><td>1.4</td><td>m</td><td>public</td><td>Via Donau Channel Profile Survey 2022</td><td>https://www.viadonau.org</td><td>Minimum recorded fairway depth at the Iron Gate gorge exit critical section in low-water conditions; most severe single constraint on the river</td></tr>
+<tr><td>14</td><td>3</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>annual_vessel_passages_iron_gate</td><td>6800</td><td>passages/yr</td><td>public</td><td>Iron Gate I Operating Authority Statistics 2022</td><td>https://www.danubecom-intern.org</td><td>Annual commercial vessel passages through Iron Gate I lock chamber; publicly reported by Romania-Serbia joint operating authority</td></tr>
+<tr><td>15</td><td>3</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>annual_vessel_passages_gabcikovo</td><td>7200</td><td>passages/yr</td><td>public</td><td>Gabcikovo Lock Authority Statistics 2022</td><td>https://www.danubecom-intern.org</td><td>Annual vessel passages through Gabcikovo-Nagymaros hydropower complex lock chambers; highest traffic point on upper navigable Danube</td></tr>
+<tr><td>16</td><td>3</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>avg_lock_waiting_time_hr</td><td>3.2</td><td>hours</td><td>public</td><td>Via Donau RIS Traffic Performance Report 2022</td><td>https://www.viadonau.org</td><td>Average vessel waiting time at Danube lock systems; design target is 2.0 hours; 3.2 hours reflects capacity constraints at peak periods</td></tr>
+<tr><td>17</td><td>3</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>ais_vessel_tracking_coverage_pct</td><td>95</td><td>percent</td><td>public</td><td>Via Donau AIS Monitoring Report 2022</td><td>https://www.viadonau.org</td><td>Share of navigable Danube with AIS vessel tracking coverage; provides near-real-time position; speed; cargo declaration; draft data</td></tr>
+<tr><td>18</td><td>4</td><td>World Bank</td><td>Danube Basin</td><td>2022-01-01</td><td>trade_value_facilitated_eur_bn_yr</td><td>6.5</td><td>EUR billion/yr</td><td>public</td><td>World Bank Danube Inland Waterway Trade Facilitation Study 2022</td><td>https://www.worldbank.org</td><td>Annual trade value carried by Danube inland waterway transport; grain; coal; oil; manufactured goods; construction materials</td></tr>
+<tr><td>19</td><td>4</td><td>World Bank</td><td>Danube Basin</td><td>2022-01-01</td><td>freight_cost_saving_vs_road_eur_mn_yr</td><td>420</td><td>EUR million/yr</td><td>public</td><td>World Bank Danube Inland Waterway Trade Facilitation Study 2022</td><td>https://www.worldbank.org</td><td>Annual freight cost savings from using Danube waterway vs road equivalent; at 34 Mt/yr and estimated EUR 12.4/tonne cost differential</td></tr>
+<tr><td>20</td><td>4</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>port_direct_employment_fte</td><td>28000</td><td>FTE</td><td>public</td><td>Danube Commission Economic Impact Assessment 2022</td><td>https://www.danubecom-intern.org</td><td>Direct employment in Danube ports and waterway services; excludes induced/indirect employment (65000 FTE); across all 10 mainstream countries</td></tr>
+<tr><td>21</td><td>4</td><td>Danube Commission</td><td>Danube Basin</td><td>2022-01-01</td><td>cargo_lost_to_restrictions_mt_yr</td><td>8</td><td>Mt/yr</td><td>public</td><td>Danube Commission Low Water Impact Assessment 2022</td><td>https://www.danubecom-intern.org</td><td>Annual cargo diverted from Danube to road due to low-water fairway restrictions; equivalent to approximately 320000 truck movements</td></tr>
+<tr><td>22</td><td>4</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>investment_backlog_ten_t_eur_bn</td><td>4.2</td><td>EUR billion</td><td>public</td><td>Danube Commission TEN-T Investment Needs Assessment 2023</td><td>https://www.danubecom-intern.org</td><td>Estimated capital investment needed to bring the Danube navigable section to full TEN-T core network standard; fairways; ports; RIS; locks</td></tr>
+<tr><td>23</td><td>1</td><td>Eurostat</td><td>EU</td><td>2022-01-01</td><td>danube_modal_share_of_inland_freight_pct</td><td>4.2</td><td>percent</td><td>public</td><td>Eurostat Inland Waterway Transport Statistics 2022</td><td>https://ec.europa.eu/eurostat</td><td>Danube&#x27;s share of total inland freight transport (all modes) in Danube basin countries; significantly below potential given infrastructure cost</td></tr>
+<tr><td>24</td><td>3</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>co2_per_tonne_km_river_g</td><td>5</td><td>g CO2/tkm</td><td>public</td><td>ICPDR Navigation and Environment Working Group 2022</td><td>https://www.icpdr.org</td><td>CO2 emissions per tonne-kilometre for river freight; compared to road freight at 90 g CO2/tkm and rail at 22 g CO2/tkm</td></tr>
+<tr><td>25</td><td>2</td><td>Danube Commission</td><td>Danube Basin</td><td>2023-01-01</td><td>low_water_days_trend_days_per_yr</td><td>1.5</td><td>days/yr increase</td><td>public</td><td>Danube Commission Climate Adaptation Strategy 2023</td><td>https://www.danubecom-intern.org</td><td>Rate of increase in annual low-water restriction days at critical sections since 2000; driven by climate change reducing summer precipitation and snowmelt</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

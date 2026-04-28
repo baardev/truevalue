@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Project</h1>
+        <p class="subtitle">Generated from <strong>project.yaml</strong> (YAML)</p>
+      </div>
+<pre class="pre-wrap">id: natural_fish_population
+name: Fish Population
+basin: danube
+type: natural
+service_category: provisioning
+teeb_class: provisioning
+description: &#x27;The Danube and its tributaries support approximately 100 native fish
+  species, the highest freshwater fish diversity of any European river system. The
+  natural fish population service cascade runs from habitat provision (spawning grounds,
+  floodplain nurseries, migration corridors) through juvenile recruitment, adult biomass
+  accumulation, and harvest-ready population stock. Total commercial and recreational
+  fishable biomass is estimated at 420,000 tonnes across the basin. The cascade faces
+  four converging pressures: 60 dams blocking migration routes (most critically the
+  Iron Gate I and II), 47% loss of floodplain nursery habitat, heavy eutrophication
+  in the middle and lower basin (40% of water bodies failing WFD good ecological status),
+  and overfishing pressure in the lower basin and delta. The primary bottleneck is
+  Phase 1 (Habitat and Migration), where dam fragmentation has severed 84% of the
+  historical migratory fish range. This subproject pairs with human_commercial_fishing
+  to form the paired_fisheries composite.
+
+  &#x27;
+paired_with:
+  human: human_commercial_fishing
+  hub: paired_fisheries
+data_availability: M
+primary_sources:
+- name: &#x27;ICPDR Joint Danube Survey 4 (JDS4) : Biological Quality Elements&#x27;
+  url: https://www.icpdr.org
+  metrics: Fish assemblage index, ecological status, migratory species presence, species
+    richness
+- name: European Red List of Freshwater Fishes (IUCN)
+  url: https://www.iucnredlist.org
+  metrics: Conservation status by species, population trend, threat classification
+- name: ICPDR Danube Sturgeon Task Force
+  url: https://www.icpdr.org/main/issues/sturgeon
+  metrics: Sturgeon population estimates, catch data, spawning migration monitoring
+- name: Eurostat Fishery Statistics (FISH)
+  url: https://ec.europa.eu/eurostat/statistics-explained/index.php/Fishery_statistics
+  metrics: Inland freshwater catch by country, species breakdown, effort data
+- name: FAO AQUASTAT / FishStatJ
+  url: https://www.fao.org/aquastat
+  metrics: Basin-level inland catch, aquaculture production, fish consumption statistics
+- name: WWF Danube-Carpathian Sturgeon Programme
+  url: https://www.wwf.ro
+  metrics: Spawning site surveys, illegal poaching estimates, hatchery production
+- name: &#x27;EU Habitats Directive Article 17 : Annex II fish species&#x27;
+  url: https://ec.europa.eu/environment/nature
+  metrics: Conservation status of Annex II fish species (European eel, sturgeon spp.,
+    salmon, asp)
+key_metrics:
+  native_fish_species: 100
+  commercially_important_species: 42
+  critically_endangered_species: 5
+  total_fishable_biomass_tonnes: 420000
+  annual_sustainable_yield_tonnes: 38000
+  migration_range_blocked_pct: 84
+  floodplain_nursery_loss_pct: 47
+  water_bodies_good_ecological_status_pct: 40
+  sturgeon_population_decline_vs_1900_pct: 95
+  eel_population_decline_vs_baseline_pct: 70
+  primary_protected_areas: Danube Delta Biosphere Reserve, Kopacski rit, Gemenc, Iron
+    Gate NP
+ndc_colors:
+  primary: &#x27;#0277bd&#x27;
+  dark: &#x27;#01579b&#x27;
+  light: &#x27;#e1f5fe&#x27;
+created: &#x27;2026-04-27&#x27;
+</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

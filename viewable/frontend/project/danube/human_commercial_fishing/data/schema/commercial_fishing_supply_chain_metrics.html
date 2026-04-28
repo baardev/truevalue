@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commercial Fishing Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Commercial Fishing Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>commercial_fishing_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">25</span> / 25
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>National Fisheries Authorities</td><td>Danube Basin</td><td>2022-01-01</td><td>commercial_fishing_licences_basin</td><td>18500</td><td>licences</td><td>public</td><td>National fisheries authorities Romania ANPA + Hungary MOHOSZ + Serbia + others 2022</td><td>https://www.icpdr.org</td><td>Total active commercial fishing licences across 10 mainstream Danube countries; Romania and Ukraine highest share</td></tr>
+<tr><td>2</td><td>0</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>quota_coordination_index</td><td>0.42</td><td>index 0-1</td><td>inferred</td><td>ICPDR Danube Fisheries Working Group coordination assessment 2022</td><td>https://www.icpdr.org</td><td>Basin-wide quota coordination index; 0.42 reflects significant fragmentation between 10 separate national frameworks</td></tr>
+<tr><td>3</td><td>0</td><td>National Authorities</td><td>Danube Basin</td><td>2022-01-01</td><td>countries_using_stock_based_quotas</td><td>5</td><td>count</td><td>public</td><td>ICPDR Danube Fisheries Working Group country report 2022</td><td>https://www.icpdr.org</td><td>Only 5 of 10 mainstream countries set quotas based on independent stock assessments; 5 use effort-based controls</td></tr>
+<tr><td>4</td><td>0</td><td>Eurostat</td><td>Danube Basin</td><td>2022-01-01</td><td>recreational_fishing_licences</td><td>480000</td><td>licences</td><td>public</td><td>Eurostat Fishery Statistics FISH : Recreational fishing 2022</td><td>https://ec.europa.eu/eurostat</td><td>Recreational fishing licence holders; significant economic importance for rural communities; generates EUR 28M/yr in licence revenue</td></tr>
+<tr><td>5</td><td>1</td><td>Eurostat</td><td>Danube Basin</td><td>2022-01-01</td><td>annual_legal_commercial_catch_tonnes</td><td>22000</td><td>tonnes/yr</td><td>public</td><td>Eurostat Fishery Statistics FISH : Inland waters 2022</td><td>https://ec.europa.eu/eurostat</td><td>Annual legal commercial catch across 10 mainstream countries; 35% decline vs 20 years ago reflecting stock depletion and tighter regulation</td></tr>
+<tr><td>6</td><td>1</td><td>FAO</td><td>Romania</td><td>2022-01-01</td><td>romania_annual_catch_tonnes</td><td>7800</td><td>tonnes/yr</td><td>public</td><td>FAO FishStatJ Inland Capture Fisheries Romania 2022</td><td>https://www.fao.org/fishery/en/statistics/software/fishstatj</td><td>Romania largest catch country; includes Danube Delta and lower Danube floodplain; common carp and pike-perch dominant</td></tr>
+<tr><td>7</td><td>1</td><td>FAO</td><td>Hungary</td><td>2022-01-01</td><td>hungary_annual_catch_tonnes</td><td>3200</td><td>tonnes/yr</td><td>public</td><td>FAO FishStatJ Inland Capture Fisheries Hungary 2022</td><td>https://www.fao.org/fishery/en/statistics/software/fishstatj</td><td>Hungary second largest catch; includes Tisza tributary and middle Danube; significant aquaculture complement</td></tr>
+<tr><td>8</td><td>1</td><td>TRAFFIC</td><td>Danube Basin</td><td>2022-01-01</td><td>illegal_catch_estimated_tonnes_yr</td><td>4600</td><td>tonnes/yr</td><td>public</td><td>TRAFFIC Sturgeon and Freshwater Fish Trade Report Danube Basin 2022</td><td>https://www.traffic.org</td><td>Estimated illegal catch at 21% of legal volume; concentrated in lower Danube (Romania; Serbia; Ukraine; Moldova)</td></tr>
+<tr><td>9</td><td>1</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>gear_compliance_mesh_size_pct</td><td>71</td><td>percent</td><td>public</td><td>ICPDR enforcement assessment 2022</td><td>https://www.icpdr.org</td><td>Gear compliance with minimum mesh size regulations protecting juvenile fish; higher in EU states</td></tr>
+<tr><td>10</td><td>2</td><td>World Bank</td><td>Danube Basin</td><td>2022-01-01</td><td>cold_chain_coverage_pct</td><td>58</td><td>percent</td><td>public</td><td>World Bank Post-Harvest Loss Assessment Eastern Europe 2022</td><td>https://www.worldbank.org</td><td>Share of commercial catch transported and stored with refrigeration; 42% of catch moves without cold chain generating 21% post-catch losses</td></tr>
+<tr><td>11</td><td>2</td><td>World Bank</td><td>Danube Basin</td><td>2022-01-01</td><td>post_catch_loss_non_eu_states_pct</td><td>21</td><td>percent</td><td>public</td><td>World Bank Post-Harvest Loss Assessment Eastern Europe 2022</td><td>https://www.worldbank.org</td><td>Post-catch losses in non-EU Danube states (Romania in lower basin; Serbia; Ukraine; Moldova); primarily temperature abuse</td></tr>
+<tr><td>12</td><td>2</td><td>World Bank</td><td>EU Danube states</td><td>2022-01-01</td><td>post_catch_loss_eu_states_pct</td><td>8</td><td>percent</td><td>public</td><td>World Bank Post-Harvest Loss Assessment Eastern Europe 2022</td><td>https://www.worldbank.org</td><td>Post-catch losses in EU member states (Austria; Slovakia; Hungary; Croatia; Bulgaria); much lower due to cold chain infrastructure</td></tr>
+<tr><td>13</td><td>2</td><td>FAO</td><td>Danube Basin</td><td>2022-01-01</td><td>processing_recovery_rate_pct</td><td>62</td><td>percent</td><td>public</td><td>FAO Technical Paper Improving Inland Fisheries Value Chains 2021</td><td>https://www.fao.org</td><td>Edible product weight as share of live catch weight; below EU inland fisheries benchmark of 72% due to small-scale artisanal dominance</td></tr>
+<tr><td>14</td><td>2</td><td>EEA</td><td>Danube Basin</td><td>2022-01-01</td><td>value_lost_to_post_catch_losses_eur_mn_yr</td><td>40</td><td>EUR million/yr</td><td>inferred</td><td>World Bank post-catch loss data applied to EUR 145M catch value</td><td>https://www.worldbank.org</td><td>Estimated annual value destroyed by post-catch deterioration and processing inefficiency; primary bond intervention target for this phase</td></tr>
+<tr><td>15</td><td>3</td><td>Eurostat</td><td>Danube Basin</td><td>2022-01-01</td><td>domestic_consumption_share_pct</td><td>68</td><td>percent</td><td>public</td><td>Eurostat Fishery Statistics FISH : apparent consumption 2022</td><td>https://ec.europa.eu/eurostat</td><td>Share of Danube commercial catch consumed domestically; 32% exported; primarily to Germany and Austria for pike-perch</td></tr>
+<tr><td>16</td><td>3</td><td>Eurostat</td><td>Danube Basin</td><td>2022-01-01</td><td>fish_export_volume_tonnes</td><td>7000</td><td>tonnes/yr</td><td>public</td><td>Eurostat Foreign Trade : fish and fishery products 2022</td><td>https://ec.europa.eu/eurostat</td><td>Annual export volume of Danube freshwater fish products; primarily pike-perch and wels catfish to German and Austrian markets</td></tr>
+<tr><td>17</td><td>3</td><td>Eurostat</td><td>Danube Basin</td><td>2022-01-01</td><td>food_safety_certified_share_pct</td><td>52</td><td>percent</td><td>public</td><td>Eurostat food safety compliance data + national food authority reports 2022</td><td>https://ec.europa.eu/eurostat</td><td>Share of commercial catch volume with full food safety certification; non-certified product sold at steep domestic discount</td></tr>
+<tr><td>18</td><td>3</td><td>National Markets</td><td>Danube Basin</td><td>2022-01-01</td><td>retail_price_common_carp_eur_kg</td><td>3.80</td><td>EUR/kg</td><td>public</td><td>Market survey data from national fisheries authorities 2022</td><td>https://www.icpdr.org</td><td>Retail price for common carp (dominant catch species); low value limits sector income; cultural preference in Central/Eastern Europe</td></tr>
+<tr><td>19</td><td>3</td><td>National Markets</td><td>Danube Basin</td><td>2022-01-01</td><td>retail_price_pike_perch_eur_kg</td><td>9.20</td><td>EUR/kg</td><td>public</td><td>Market survey data from national fisheries authorities 2022</td><td>https://www.icpdr.org</td><td>Retail price for pike-perch (Sander lucioperca); highest-value export species; premium for food-safety certified product</td></tr>
+<tr><td>20</td><td>4</td><td>EEA</td><td>Danube Basin</td><td>2022-01-01</td><td>average_household_fishing_income_eur_yr</td><td>5800</td><td>EUR/yr</td><td>public</td><td>EEA WFD Economic Analysis of Water Uses : fisheries sector 2022</td><td>https://www.eea.europa.eu</td><td>Mean annual income from commercial fishing per household; far below EU rural average of EUR 18000-24000; fishing increasingly secondary livelihood</td></tr>
+<tr><td>21</td><td>4</td><td>European Commission</td><td>EU Danube states</td><td>2022-01-01</td><td>emfaf_allocation_danube_eur_mn_2021_2027</td><td>320</td><td>EUR million</td><td>public</td><td>EMFAF European Maritime Fisheries and Aquaculture Fund 2021-2027 national programme documents</td><td>https://ec.europa.eu/oceans-and-fisheries</td><td>EMFAF allocation for Danube basin EU member states 2021-2027; skewed toward vessel modernisation over stock monitoring or habitat restoration</td></tr>
+<tr><td>22</td><td>4</td><td>FAO</td><td>Danube Basin</td><td>2022-01-01</td><td>aquaculture_production_tonnes</td><td>90000</td><td>tonnes/yr</td><td>public</td><td>FAO Aquaculture Production Statistics 2022</td><td>https://www.fao.org/fishery/en/statistics/global-aquaculture-production</td><td>Danube basin aquaculture production (carp; catfish; trout); predominantly Hungary; Romania; Serbia</td></tr>
+<tr><td>23</td><td>4</td><td>FAO</td><td>Danube Basin</td><td>2022-01-01</td><td>aquaculture_value_eur_mn</td><td>210</td><td>EUR million/yr</td><td>public</td><td>FAO Aquaculture Production Statistics 2022</td><td>https://www.fao.org/fishery/en/statistics/global-aquaculture-production</td><td>Farm gate value of aquaculture production; larger than wild catch in economic terms; carp dominant at EUR 1.50-2.00/kg farm gate</td></tr>
+<tr><td>24</td><td>4</td><td>National Licence Authorities</td><td>Danube Basin</td><td>2022-01-01</td><td>conservation_levy_from_licences_eur_mn_yr</td><td>12</td><td>EUR million/yr</td><td>public</td><td>National fisheries authorities licence fee structures 2022</td><td>https://www.icpdr.org</td><td>Conservation levy component of commercial and recreational fishing licence fees directed to habitat management; only 8% reinvestment rate</td></tr>
+<tr><td>25</td><td>0</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>basin_wide_quota_set_based_on_assessment</td><td>0.42</td><td>index 0-1</td><td>inferred</td><td>ICPDR Danube Fisheries Working Group assessment 2022</td><td>https://www.icpdr.org</td><td>Index measuring whether basin-wide catch totals are set based on integrated stock assessment; 0.42 indicates fragmentation risk</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

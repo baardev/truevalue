@@ -1,0 +1,469 @@
+---
+description: Architecture, file structure, naming conventions, data pipeline, and HTML page requirements for building subprojects under a basin hub (e.g. Danube). Apply whenever scaffolding, populating, or completing a natural, human, or paired ecosystem subproject.
+globs: frontend/project/danube/**,frontend/project/*/index.html,scripts/generate_danube_data.py
+alwaysApply: false
+---
+
+# Basin Ecosystem Subproject Architecture
+
+This rule describes the full process for creating a subproject under a basin hub such as `frontend/project/danube/`. The same pattern applies to any future basin (Amazon, Mekong, Niger, etc.).
+
+---
+
+## 1. Subproject Types and Naming
+
+Every subproject has a **type prefix** in its folder name.
+
+| Type | Prefix | Meaning |
+|------|--------|---------|
+| Natural | `natural_` | Ecological production function. No human infrastructure. Models the ecosystem service cascade. |
+| Human | `human_` | Engineered infrastructure or activity chain. Models the supply chain from intake to delivery. |
+| Paired | `paired_` | Hub page that pairs one natural and one human subproject. Shows composite index and links to both. |
+
+Examples: `natural_freshwater_availability`, `human_irrigation_infrastructure`, `paired_agricultural_water`.
+
+Slugs are lowercase, underscore-separated, and must match the folder name exactly.
+
+---
+
+## 2. Required Folder Structure
+
+### Natural or Human subproject
+
+```
+frontend/project/<basin>/<type_slug>/
+  project.yaml
+  index.html
+  data/
+    PDI_<material>_<basin>_<year>.yaml
+    schema/
+      <slug>_supply_chain_phases.csv
+      <slug>_supply_chain_metrics.csv
+    processed/
+      <slug>_supply_chain_ui.json       (generated)
+      <slug>_system_lifecycle_ndc.json  (generated)
+  supply_chain/
+    index.html
+    dashboard.html
+    project_context.html
+    system_lifecycle.html
+    scenarios.json                      (generated)
+  value_chain/
+    index.html
+```
+
+### Paired hub
+
+```
+frontend/project/<basin>/<type_slug>/
+  index.html   (composite hub — no PDI, no supply chain pages)
+```
+
+The paired hub links to its contributing natural and human subprojects. It does not have its own supply chain or value chain pages.
+
+---
+
+## 3. `project.yaml` — Required Fields
+
+Every natural or human subproject must have a `project.yaml` in its root folder. This is the machine-readable metadata anchor.
+
+```yaml
+id: <slug>
+name: <Human-readable name>
+basin: <basin_id>               # e.g. danube
+type: natural | human
+service_category: provisioning | regulating | habitat | cultural
+teeb_class: <same as above>
+description: >
+  One-paragraph description including key volumes, countries, and relevance to bond analysis.
+paired_with:
+  natural: <natural_slug>       # for human subprojects
+  hub: <paired_slug>
+  # OR
+  human: <human_slug>           # for natural subprojects
+  hub: <paired_slug>
+data_availability: H | M | L   # H = high, M = medium, L = low
+primary_sources:
+  - name: "Source name"
+    url: "https://..."
+    metrics: "what this source provides"
+key_metrics:
+  <metric_slug>: <value>        # key quantitative anchor values
+ndc_colors:
+  primary: "#xxxxxx"
+  dark: "#xxxxxx"
+  light: "#xxxxxx"
+created: "<ISO date>"
+```
+
+Color conventions by type:
+- Natural systems: greens (`#1b5e20`, `#2e7d32`, `#e8f5e9`)
+- Human freshwater: blues (`#0d47a1`, `#1565c0`, `#e3f2fd`)
+- Human agriculture: dark greens (`#33691e`, `#388e3c`, `#f1f8e9`)
+- Human energy/industrial: ambers/oranges
+- Paired hubs: use orange accent (`#e65100`, `#f57f17`, `#fff3e0`)
+
+---
+
+## 4. PDI YAML — Required Structure
+
+File: `data/PDI_<material>_<basin>_<year>.yaml`
+
+The PDI (Phase Discovery Instrument) is the authoritative data source for the subproject. It must contain:
+
+```yaml
+pdi:
+  material: "<basin> <material>"
+  analyst: "<name>"
+  date_completed: "<ISO date>"
+  service_type: natural | human
+  basin: <basin_id>
+  paired_with: <paired_slug>
+  hub: <hub_slug>
+
+  sources_overview: |
+    Numbered list of primary data sources with URLs.
+
+  geographic_scope:
+    basin: <basin>
+    # key quantitative scope values
+
+  # For natural systems: ecological_parameters
+  # For human systems: infrastructure_parameters
+  <type>_parameters:
+    <key_metric>: <value>
+    # ...
+
+  supply_chain_phases:
+    phase_0:
+      id: 0
+      name: "<Phase name>"
+      phase_category: Upstream | Midstream | Downstream
+      physical_state_in: "<description>"
+      physical_state_out: "<description>"
+      primary_transformation: "<description>"
+      typical_time_scale: "<description>"
+      transparency_level: High | Medium | Low
+      measurable_output: "<description>"
+      output_unit: "<unit>"
+      data_status: POPULATED | PARTIAL | OPAQUE
+      primary_sources:
+        - "<source citation>"
+      opacity_score: 0-4
+      key_values:
+        <metric>: <value>
+      notes: >
+        Detailed analyst note. Must include opacity score justification.
+    # phases 1-4 follow same structure (5 phases is the standard for basin subprojects)
+
+  ndc_derivation:
+    # Derived using pdi-to-html-pipeline.mdc formula:
+    # D = 200 + (D_flags × 20) + (boundary_score × 4)
+    # C = 200 + (C_flags × 20) + (opacity × 8)
+    # N = round((D + C) / 2 × (balance / 100))
+    phase_0: {D: <int>, C: <int>, balance: <float>, N: <int>, sustainability: <float>}
+    phase_1: {D: <int>, C: <int>, balance: <float>, N: <int>, sustainability: <float>}
+    phase_2: {D: <int>, C: <int>, balance: <float>, N: <int>, sustainability: <float>}
+    phase_3: {D: <int>, C: <int>, balance: <float>, N: <int>, sustainability: <float>}
+    phase_4: {D: <int>, C: <int>, balance: <float>, N: <int>, sustainability: <float>}
+
+  coherence_scores:
+    pi: <float>       # Operational — chain average balance
+    phi: <float>      # Proportional — value distribution efficiency
+    sqrt2: <float>    # Structural — custody/transfer overhead
+    ln2: <float>      # Growth — value transformation across phases
+    e: <float>        # Abstract — financial abstraction coupling (0 if unmeasured)
+
+  analyst_notes: |
+    Synthesis of structural findings, bottleneck identification, and bond opportunity.
+    Must address: which phase is weakest and why, what the D-C imbalance signal means,
+    and what a bond instrument would target.
+```
+
+### Balance score guidelines by transparency
+
+| Transparency | Balance range | Typical value |
+|---|---|---|
+| High | 88–97% | 91% |
+| Medium | 78–87% | 83% |
+| Low | 65–77% | 70–77% |
+
+### Coherence score interpretation
+
+| Score range | Zone | Meaning |
+|---|---|---|
+| 70–100 | Coherent | System dimension is well-functioning |
+| 40–69 | Stressed | Dimension under pressure; improvement needed |
+| 1–39 | Failure mode | Systemic problem in this dimension |
+| 0 | Unmeasured | Not yet available; not the same as failure |
+
+---
+
+## 5. CSV Schema Files
+
+### `<slug>_supply_chain_phases.csv`
+
+Columns (in order):
+`phase_id, phase_name, phase_category, physical_state_in, physical_state_out, primary_transformation, typical_time_scale, transparency_level, measurable_output, output_unit, D_parameters, C_parameters, data_status, notes`
+
+One row per phase. D_parameters and C_parameters are semicolon-separated lists of constraints and outputs respectively.
+
+### `<slug>_supply_chain_metrics.csv`
+
+Columns (in order):
+`record_id, phase_id, entity, country, date, metric_name, metric_value, unit, source_type, source_name, url, notes`
+
+- `source_type`: `public`, `paid`, `private`, `inferred`
+- `date`: ISO 8601, use most recent data year available
+- Every significant quantitative claim in the PDI must have a corresponding row here
+- Country-level breakdowns are preferred over basin-wide aggregates where available
+
+---
+
+## 6. Data Generation Script
+
+All processed JSON files are generated by `scripts/generate_danube_data.py`.
+
+To add a new subproject:
+
+1. Add an entry to the `NDC_DATA` dict (top of script):
+
+```python
+"<slug>": {
+    "phases": {
+        "0": {"D": <int>, "C": <int>, "balance": <float>, "N": <int>, "sustainability": <float>,
+              "name": "<Phase name>", "transparency": "<High|Medium|Low>"},
+        # phases 1-4 follow same structure
+    },
+    "coherence": {"pi": <float>, "phi": <float>, "sqrt2": <float>, "ln2": <float>, "e": <float>},
+    "type": "natural" | "human",
+    "color_primary": "#xxxxxx",
+    "color_dark": "#xxxxxx",
+    "ecological_stock_ratio": <float> | None,  # natural only: abstraction/renewable ratio
+    "paired_with": "<paired_slug>",
+},
+```
+
+2. Add a corresponding entry to the `PHASE_NOTES` dict:
+
+```python
+"<slug>": {
+    "0": "One-sentence factual summary of Phase 0 data anchor.",
+    "1": "...",
+    # ...
+},
+```
+
+3. Run: `python3 scripts/generate_danube_data.py --subproject <slug>`
+
+This produces three output files:
+- `data/processed/<slug>_supply_chain_ui.json`
+- `data/processed/<slug>_system_lifecycle_ndc.json`
+- `supply_chain/scenarios.json`
+
+To regenerate all subprojects: `python3 scripts/generate_danube_data.py --all`
+
+---
+
+## 7. HTML Pages — Required Set
+
+### 7a. `index.html` (subproject hub)
+
+Must include:
+- Kicker: `<Basin> · <Type> System`
+- Title with type badge (`Natural` / `Human`) and paired badge if applicable
+- Subtitle: one paragraph with key volumes and paired context
+- KPI strip: 4 cards with the most significant quantitative values
+- Alert panel: the key structural issue (bottleneck, opacity gap, D-C imbalance)
+- Paired panel: link to the natural or human counterpart, with stock ratio or efficiency note
+- Three cards: Supply Chain, System Lifecycle, Value Chain (with sub-links to dashboard and sub-pages)
+- Navigation: back to basin hub, to paired subproject, to main homepage
+
+Color scheme: use `project.yaml` `ndc_colors` values throughout.
+
+### 7b. `supply_chain/index.html`
+
+Summary page listing the three supply chain sub-pages. Must describe the chain average balance and the bottleneck phase in the subtitle.
+
+### 7c. `supply_chain/dashboard.html`
+
+Dark-themed analytics dashboard. Must include:
+- Chain summary KPIs (avg balance, avg N, phase count)
+- Bottleneck alert bar (auto-populated from data)
+- Phase D-C-N balance bars (loaded from `_supply_chain_ui.json`)
+- Five-model coherence pentagon (loaded from `scenarios.json` or hardcoded fallback)
+- Phase detail table with transparency badges
+- Bottleneck alert text must explain the structural cause, not just name the phase
+
+Colors: pentagon fill from `project.yaml` primary color. Dark theme (`#0d1117` body, `#161b22` panels).
+
+### 7d. `supply_chain/project_context.html`
+
+Light-themed context page. Must include:
+- System overview KPI strip
+- Supply chain phases table with transparency badges and balance scores
+- At least one country-level breakdown table (use metrics CSV data)
+- Bond opportunity analysis section (performance trigger, use of proceeds, measurement basis, revenue basis, indicative scale)
+- Risk factors table
+- Data sources list with URLs
+
+### 7e. `supply_chain/system_lifecycle.html`
+
+Dark-themed lifecycle page. Loaded from `_system_lifecycle_ndc.json`. Must include:
+- Summary KPI grid (avg balance, avg N, bottleneck phase, strongest phase)
+- Phase lifecycle N-D-C bars for each phase (auto-populated from JSON)
+- Infrastructure lifecycle interpretation (3 paragraphs: structure, bottleneck, bond intervention logic)
+
+Bottleneck threshold: phases below 85% balance are flagged as bottlenecks.
+
+### 7f. `value_chain/index.html`
+
+Light-themed value chain overview. Must include:
+- e-layer score prominently displayed
+- Revenue and cost structure table
+- Bond structure table (type, use of proceeds, performance KPI, measurement basis, revenue basis, tenor, eligible issuers, indicative scale)
+- Five-model value context table (all 5 axes with score and interpretation for value chain implications)
+- Note: if e-layer score is 0 (unmeasured), explain why and what would be needed to activate the financial abstraction layer
+
+---
+
+## 8. Paired Hub Page (`paired_<name>/index.html`)
+
+The paired hub page does NOT have its own PDI, supply chain, or value chain pages. It is a composite view only.
+
+Must include:
+- Composite index score (weighted blend of natural and human component balances)
+- Interactive weighting slider (natural vs. human)
+- Bond grade derived from composite score
+- Two component cards showing phase bars for both contributing subprojects
+- Links to both contributing subprojects
+- Blended coherence summary (recalculated on slider change)
+
+Bond rating thresholds (composite balance score):
+
+| Score | Grade |
+|---|---|
+| ≥95% | AAA |
+| ≥90% | AA+ |
+| ≥86% | AA |
+| ≥82% | AA- |
+| ≥78% | A+ |
+| ≥74% | A |
+| ≥70% | A- |
+| ≥65% | BBB+ |
+| ≥60% | BBB |
+| <60% | BBB- |
+
+---
+
+## 9. Composite Index Page (basin-level)
+
+The basin hub has one composite index page (`composite_water_index.html` or equivalent) that blends all active subprojects.
+
+When adding a new subproject, update the composite index to:
+1. Add the new contributing index data object (balance + coherence + phases)
+2. Add a third (or additional) weight slider, normalised to 100%
+3. Update the contributing card grid (one card per index)
+4. Update the phase comparison table (add a column per new index)
+5. Update the bond analysis table (add a row for the new sector)
+6. Recalculate the default composite score and bond grade in the hub page card
+
+Default weighting guidance:
+- Natural systems: lower weight (covenant/monitoring layer, slow-moving)
+- Human systems with regulatory anchor (drinking water): higher weight
+- Human systems with efficiency gap (irrigation, navigation): medium weight
+
+---
+
+## 10. Basin Hub Page Updates
+
+When a subproject is fully built, update `frontend/project/<basin>/index.html`:
+
+1. Add a new "Active Pilot" section (matching the freshwater pair or agricultural water pair pattern)
+2. In the "Full System Map" section, change the relevant card from `class="coming-card"` to `class="coming-card active"` (for natural/human) or `class="coming-card active-paired"` (for paired)
+3. Update the card label from `"<Type>"` to `"<Type> ✓ Active"`
+4. Update the composite index card to show the new default score and bond grade
+
+The `active` and `active-paired` CSS classes provide green/orange visual distinction for deployed vs. placeholder cards. Do not mark a card active if the page still shows "Not yet available."
+
+---
+
+## 11. Checklist Before Marking a Subproject Complete
+
+- [ ] `project.yaml` exists with all required fields
+- [ ] PDI YAML exists with all 5 phases populated (no OPAQUE phases without explanation)
+- [ ] `ndc_derivation` values in PDI match the values in `generate_danube_data.py` `NDC_DATA`
+- [ ] Both CSV schema files exist with at least one row per phase in metrics CSV
+- [ ] All three JSON files generated successfully (supply_chain_ui, system_lifecycle_ndc, scenarios)
+- [ ] All 6 HTML pages exist (index, supply_chain/index, dashboard, project_context, system_lifecycle, value_chain/index)
+- [ ] Dashboard loads JSON data correctly (no "Loading..." states left in browser)
+- [ ] Bottleneck alert displays the correct phase name and cause
+- [ ] Bond opportunity analysis in project_context.html cites real data sources
+- [ ] Paired panel on index.html links to the correct counterpart
+- [ ] Basin hub index.html has the Active Pilot section for this subproject pair
+- [ ] System map card updated to `active` class
+- [ ] Composite index updated to include this subproject
+- [ ] No em-dashes anywhere in any file (use commas, colons, or separate sentences)
+- [ ] `color-scheme: light` declared in all light-themed pages to prevent browser dark mode override
+
+---
+
+## 12. Bond Prospectus Update Rule
+
+**`frontend/project/danube/danube_basin_bond.html` must be updated every time any of the following change:**
+
+- A new subproject is marked active (adds to the composite basin score)
+- A subproject chain balance or coherence score changes (affects composite basin score)
+- A new KPI is defined or an existing KPI value changes
+- A new paired hub is built (adds a new KPI anchor and nav link)
+- The step-up trigger maximum changes (6 KPIs × 25 bps = 150 bps maximum step-up)
+
+**Fields that require updating when the above occur:**
+
+| Bond page field | Source of truth |
+|---|---|
+| Active KPIs count (hero panel) | Count of KPI cards in KPI grid |
+| Composite Basin Score (hero panel) | Average of all active subproject `pi` scores (chain balance) |
+| Composite Basin Score (Uruguay comparison table) | Same average |
+| Composite score collateral paragraph | Same average; also update subproject count |
+| KPI grid cards | One card per active KPI; add new card for each new paired system |
+| Progress bar JS `KPIS` array | Add new entry for each new KPI |
+| Step-up trigger (prospectus table) | N KPIs × 25 bps = max step-up |
+| KPI framework (prospectus table) | List all active KPIs |
+| Use of proceeds (prospectus table) | Add new bond use for each new subproject category |
+| Non-EU pre-conditions (prospectus table) | Add new pre-condition if new subproject has non-EU governance gap |
+| KPI verification (prospectus table) | Add new data source for each new KPI |
+| Nav links (bottom of page) | Add link for each new active paired hub |
+
+**Composite basin score calculation:**
+```
+composite_score = sum(pi_score for each active subproject) / count(active subprojects)
+```
+Active subproject pi scores (update this list as subprojects are added):
+
+| Subproject | pi score |
+|---|---|
+| natural_freshwater_availability | 88 |
+| human_freshwater_supply_infrastructure | 88.6 |
+| human_irrigation_infrastructure | 82 |
+| natural_delta_biodiversity | 83 |
+| human_cultural_heritage_management | 81 |
+| natural_floodplain_forest_biomass | 81 |
+| human_floodplain_forestry_operations | 76 |
+| natural_fish_population | 78 |
+| human_commercial_fishing | 76 |
+| natural_reed_bed | 81 |
+| human_reed_industry | 78 |
+| natural_river_channel | 79 |
+| human_commercial_navigation | 79 |
+
+Current composite: (88+88.6+82+83+81+81+76+78+76+81+78+79+79) / 13 = **80.8%** (A+ grade; below 82.0% AA- floor)
+
+**Bond grade thresholds:**
+- AA or above: composite >= 85.0%
+- AA- : composite >= 82.0%
+- A+ : composite >= 78.0%
+- A : composite >= 74.0%
+- Below A: composite < 74.0% (requires investor disclosure)
+
+**When the composite drops below 82.0%, add a visible alert panel to the bond page.**

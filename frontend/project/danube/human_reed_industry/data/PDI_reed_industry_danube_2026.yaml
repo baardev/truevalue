@@ -1,0 +1,262 @@
+pdi:
+  material: "Danube reed industry operations"
+  analyst: "Danube Basin Research Team"
+  date_completed: "2026-04-27"
+  service_type: human
+  basin: danube
+  paired_with: natural_reed_bed
+  hub: paired_reed_harvesting
+
+  sources_overview: |
+    1. DDBRA Reed Harvest Permits and Annual Production Data: harvest quotas, actual harvest, species, areas
+    2. Eurostat Agriculture Statistics (reeds and rushes): harvest volumes, agricultural area under reed
+    3. European Thatching Federation / UK Thatch Advisors Committee: market demand, price benchmarks, certification
+    4. FAO Phragmites as renewable biomass resource: global production, end-use breakdown, energy applications
+    5. EEA Biomass Energy Resource Reports: reed energy potential, GHG displacement, sustainability criteria
+    6. World Bank Romania rural development assessments: seasonal employment, rural income, value chain development
+    7. SC Deltaprod SRL public production data and DDBRA concession reports
+
+  geographic_scope:
+    basin: danube
+    primary_country: Romania
+    harvest_countries: [Romania, Ukraine, Moldova]
+    total_annual_harvest_kt: 175
+    sustainable_quota_utilisation_pct: 31
+
+  infrastructure_parameters:
+    annual_harvest_delta_kt: 140
+    annual_harvest_total_basin_kt: 175
+    thatching_market_share_pct: 35
+    bulk_biomass_share_pct: 65
+    seasonal_employment_fte_equiv: 4500
+    thatching_price_eur_per_bundle: 1.50
+    bulk_biomass_price_eur_per_tonne: 42
+    thatching_equivalent_eur_per_tonne: 285
+    total_sector_value_eur_mn: 38
+    premium_market_potential_eur_mn: 85
+    processing_facilities_count: 8
+    cold_storage_capacity_kt: 12
+
+  supply_chain_phases:
+    phase_0:
+      id: 0
+      name: "Harvest Permitting and Zone Planning"
+      phase_category: Upstream
+      physical_state_in: "Annual sustainable harvest quota set by DDBRA based on biomass surveys"
+      physical_state_out: "Issued harvest permits by zone; seasonal access schedule; environmental conditions attached"
+      primary_transformation: "DDBRA permit assessment, zone allocation, environmental impact assessment, machinery access planning"
+      typical_time_scale: "Annual permit cycle (September-November for following season)"
+      transparency_level: High
+      measurable_output: "Permits issued (ha licensed); quota allocation (tonnes); permit compliance rate (%)"
+      output_unit: "ha licensed; tonnes quota; percent compliant"
+      data_status: POPULATED
+      primary_sources:
+        - "DDBRA harvest permit database (public)"
+        - "DDBRA Annual Management Plan"
+        - "Romania Ministry of Environment: DDBRA oversight"
+      opacity_score: 1
+      key_values:
+        annual_harvest_permits_issued_ha: 42000
+        annual_quota_allocated_kt: 200
+        actual_harvest_vs_quota_pct: 70
+        permit_compliance_rate_pct: 88
+        core_zone_protected_from_harvest_ha: 87500
+        buffer_zone_restricted_ha: 35000
+      notes: >
+        The DDBRA harvest permitting system is the most transparent element of the reed industry chain.
+        Annual permits cover 42,000 ha of harvestable reed bed with a quota of 200,000 tonnes. Actual
+        harvest (140,000 tonnes) reaches approximately 70% of the quota, constrained by market demand
+        and processing capacity rather than ecological limits. Permit compliance is 88% (well above
+        the fisheries compliance rate of 72%), reflecting the visibility of harvesting machinery
+        operations and the DDBRA enforcement capacity. Core zone protection (87,500 ha) is effective.
+        Opacity score 1: DDBRA permit data is publicly accessible. Phase balance 84%: strong institutional
+        framework but 12% non-compliance still occurs.
+
+    phase_1:
+      id: 1
+      name: "Reed Harvesting Operations"
+      phase_category: Upstream
+      physical_state_in: "Standing dead reed culms in permitted harvest zones"
+      physical_state_out: "Cut reed bundles or chopped biomass at field margin, ready for transport"
+      primary_transformation: "Mechanical harvesting (Ladog cutters, amphibious harvesters), bundling, field stacking"
+      typical_time_scale: "December-February harvest window; best January-February after frost"
+      transparency_level: Medium
+      measurable_output: "Harvested volume (tonnes); harvest efficiency (t/machine-day); winter ice access days available"
+      output_unit: "tonnes; t/machine-day; ice-access days"
+      data_status: PARTIAL
+      primary_sources:
+        - "DDBRA annual production records"
+        - "SC Deltaprod operational data"
+        - "FAO agricultural machinery statistics"
+      opacity_score: 2
+      key_values:
+        annual_harvest_kt: 140
+        machines_in_operation: 65
+        avg_harvest_efficiency_t_machine_day: 12
+        winter_ice_access_days_avg: 38
+        winter_ice_access_days_declining_trend: "1.8 days/yr reduction since 1990"
+        harvest_labour_seasonal_workers: 820
+        mechanical_harvest_share_pct: 85
+        manual_harvest_share_pct: 15
+      notes: >
+        Reed harvesting is heavily mechanised (85%), with 65 machines operating across DDBRA-permitted
+        zones. Average efficiency is 12 tonnes per machine-day. The primary operational constraint is
+        winter ice access: harvesters enter the reed bed across frozen ground and ice-covered shallow
+        water. Average ice access days have declined from approximately 52 days in 1990 to 38 days
+        currently, a reduction of 1.8 days per year attributable to climate warming. In the 2019-2020
+        and 2021-2022 winters, ice access was less than 15 days, severely restricting harvest. Climate
+        change is therefore a direct and quantifiable threat to the reed industry's harvesting capacity.
+        Manual harvesting (15%) is used in accessible areas and produces higher-quality thatching bundles.
+
+    phase_2:
+      id: 2
+      name: "Processing, Grading, and Bundling"
+      phase_category: Midstream
+      physical_state_in: "Cut reed at field margin or collection point"
+      physical_state_out: "Graded, bundled thatching reed or chopped biomass for energy/board; packaged for transport"
+      primary_transformation: "Sorting, grading by culm quality, hand-tying into standard bundles (60 cm circumference), baling for biomass"
+      typical_time_scale: "Days to weeks post-harvest"
+      transparency_level: Medium
+      measurable_output: "Volume graded to thatching quality (tonnes); bundle count; bale count; grading rejection rate (%)"
+      output_unit: "tonnes thatching; bundle count; percent rejected"
+      data_status: PARTIAL
+      primary_sources:
+        - "SC Deltaprod processing facility records"
+        - "European Thatching Federation grading standards"
+        - "DDBRA value chain study"
+      opacity_score: 2
+      key_values:
+        thatching_grade_share_pct: 35
+        bulk_biomass_grade_share_pct: 65
+        grading_rejection_rate_pct: 8
+        bundles_produced_per_tonne: 36
+        thatching_bundle_standard_weight_kg: 4.2
+        processing_facilities: 8
+        processing_capacity_utilisation_pct: 72
+      notes: >
+        Only 35% of harvested reed reaches thatching quality grade, with 65% processed as bulk
+        biomass for energy, reed board, or mulch. The grading bottleneck is a result of:
+        (a) mixed-quality harvesting without zone-specific quality optimisation; (b) absence of
+        a formal reed sustainability certification that would incentivise quality management;
+        (c) processing equipment calibrated for volume rather than quality. Thatching bundles
+        command EUR 285/tonne equivalent while bulk biomass fetches only EUR 42/tonne,
+        a 6.8x price differential. Increasing the thatching grade share from 35% to 55%
+        (a technically achievable target with better zone management and grading) would increase
+        sector revenue from EUR 38M/yr to approximately EUR 60M/yr without any increase in
+        harvest volume.
+
+    phase_3:
+      id: 3
+      name: "Market Access and Certification"
+      phase_category: Midstream
+      physical_state_in: "Graded reed products ready for domestic and export markets"
+      physical_state_out: "Reed products sold to thatching contractors, construction material suppliers, energy biomass buyers"
+      primary_transformation: "Export documentation, thatching market sales, buyer negotiation, certification compliance (none yet for reed)"
+      typical_time_scale: "Annual sales cycle; thatching orders placed September-November for following season"
+      transparency_level: Medium
+      measurable_output: "Export volume (tonnes); domestic sales (tonnes); export market price premium (%); certification status"
+      output_unit: "tonnes; EUR/bundle; percent premium"
+      data_status: PARTIAL
+      primary_sources:
+        - "European Thatching Federation market data"
+        - "UK Thatch Advisors Committee import statistics"
+        - "Eurostat Foreign Trade: agricultural raw materials"
+      opacity_score: 2
+      key_values:
+        export_volume_thatching_kt: 49
+        domestic_consumption_kt: 91
+        uk_market_share_pct_of_exports: 42
+        germany_netherlands_market_share_pct: 35
+        certification_gap: "no reed-specific sustainability certification; ad hoc buyer audits only"
+        price_premium_certified_vs_uncertified_est_pct: 25
+        market_access_score: 0.42
+      notes: >
+        Phase 3 is the primary bottleneck at 72% balance. No reed-specific sustainability
+        certification equivalent to FSC or PEFC exists. Major thatching markets in the UK,
+        Germany, and Netherlands increasingly require evidence of sustainable harvest, but
+        the only available documentation is DDBRA permits, which buyers cannot independently
+        verify. Estimated price premium for certified reed over uncertified is 25% based on
+        buyer survey data, representing EUR 12M/yr in forgone revenue if certification
+        existed. The UK is the largest export market (42% of thatching exports) and has the
+        strictest sustainability requirements. Market access score of 0.42 reflects significant
+        friction in accessing premium segments. The bond KPI for this phase: establish and
+        certify a reed sustainability standard by year 3 of bond tenor; achieve 60% certified
+        sales by year 5.
+
+    phase_4:
+      id: 4
+      name: "Revenue Capture and Sector Reinvestment"
+      phase_category: Downstream
+      physical_state_in: "Reed product sales revenue"
+      physical_state_out: "Revenue to seasonal workers, processing facilities, and DDBRA conservation levy; reinvested in habitat management"
+      primary_transformation: "Revenue distribution, tax, DDBRA concession fee, conservation levy, rural employment income"
+      typical_time_scale: "Annual revenue cycle"
+      transparency_level: Medium
+      measurable_output: "Seasonal worker income (EUR/season); DDBRA concession revenue (EUR/yr); conservation reinvestment ratio (%)"
+      output_unit: "EUR/season; EUR/yr; reinvestment %"
+      data_status: PARTIAL
+      primary_sources:
+        - "World Bank Romania rural development assessment"
+        - "DDBRA concession and fee database"
+        - "Romania National Statistics Institute seasonal employment"
+      opacity_score: 2
+      key_values:
+        seasonal_worker_income_eur_season: 1850
+        total_seasonal_wages_eur_mn_yr: 8.5
+        ddbra_concession_revenue_eur_mn_yr: 3.2
+        conservation_reinvestment_ratio_pct: 18
+        sector_total_revenue_eur_mn_yr: 38
+        rural_household_dependency_pct: 12
+      notes: >
+        Seasonal worker income of EUR 1,850/season is low (approximately 8 weeks of work at
+        EUR 230/week), providing a meaningful but not dominant income supplement for approximately
+        4,500 workers in Tulcea and Constanta counties. 12% of rural households in the Danube
+        Delta area depend on reed harvesting as a secondary income source. The DDBRA concession
+        revenue of EUR 3.2M/yr finances approximately 18% of the DDBRA annual operating budget.
+        Conservation reinvestment ratio of 18% (reinvestment in habitat management per euro of
+        harvest revenue) is above the fisheries equivalent (8%) but still below the 25% benchmark.
+        A bond design that links a conservation premium payment to verified DDBRA habitat
+        management outcomes would both increase the reinvestment ratio and improve buyer confidence
+        in the sustainability of the reed supply.
+
+  ndc_derivation:
+    phase_0: {D: 268, C: 260, balance: 84.0, N: 225, sustainability: 0.96}
+    phase_1: {D: 268, C: 256, balance: 81.0, N: 213, sustainability: 0.95}
+    phase_2: {D: 264, C: 244, balance: 77.0, N: 197, sustainability: 0.94}
+    phase_3: {D: 264, C: 232, balance: 72.0, N: 183, sustainability: 0.92}
+    phase_4: {D: 260, C: 244, balance: 77.0, N: 197, sustainability: 0.94}
+
+  coherence_scores:
+    pi: 78.0   # chain avg: (84+81+77+72+77)/5 = 78.2; rounded
+    phi: 46.0  # proportional: 35% thatching vs 65% bulk; 6.8x price differential not captured
+    sqrt2: 62.0  # structural: 65 machines; 8 processing facilities; small-scale; no formal certification infrastructure
+    ln2: 60.0    # growth: harvest declining due to climate (ice access -1.8 days/yr); market development slow
+    e: 22.0      # abstract: no reed sustainability certification; DDBRA permits not internationally verifiable; no performance bond
+
+  analyst_notes: |
+    The reed industry chain averages 78.2% balance. The bottleneck structure mirrors the natural
+    counterpart (where Phase 4 at 74% is the delivery gap) but at the human chain level the
+    weakness is in Phase 3 (Market Access and Certification, 72%): there is no reed sustainability
+    certification standard, no internationally verifiable sustainable source claim, and consequently
+    no access to the 25% price premium that certified reed would command.
+
+    The combined bond opportunity is unusually well-defined:
+    - Natural Phase 4 (service delivery gap): EUR 232M/yr ecosystem services, only 16% captured
+    - Human Phase 3 (certification gap): EUR 12M/yr price premium forgone; EUR 47M/yr additional
+      harvest revenue available if sustainable quota utilised
+
+    Both failures are resolvable by the same bond instrument: a Danube Delta Wetland Bond financing:
+    1. Reed sustainability certification standard development (analogous to FSC for timber)
+    2. Processing infrastructure upgrades to increase thatching grade from 35% to 55%
+    3. Wetland carbon project registration (1 active project; up to 0.65 Mt CO2/yr potential)
+    4. DDBRA habitat management funding top-up (climate adaptation for reed beds)
+
+    e-score of 22 reflects the early stage: bond design is completely achievable technically but
+    has not been attempted. The price of premium certified thatching reed (EUR 285/tonne vs
+    EUR 42/tonne for bulk biomass) provides a clear and immediate financial incentive for the
+    bond structure.
+
+    Climate risk: declining ice access days (-1.8 days/yr) is a measurable, current trend that
+    will continue to erode harvesting capacity unless alternative access methods (year-round
+    amphibious harvesting) are financed. A portion of bond proceeds should fund amphibious
+    harvester acquisition, removing the dependence on winter frost.

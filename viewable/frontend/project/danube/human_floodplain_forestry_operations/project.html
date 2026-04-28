@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Project</h1>
+        <p class="subtitle">Generated from <strong>project.yaml</strong> (YAML)</p>
+      </div>
+<pre class="pre-wrap">id: human_floodplain_forestry_operations
+name: Floodplain Forestry Operations
+basin: danube
+type: human
+service_category: provisioning
+teeb_class: provisioning
+description: &#x27;The human management chain covering inventory, sustainable harvesting,
+  timber processing, market access, and revenue reinvestment for Danube floodplain
+  forests. Annual timber harvest from Danube riparian forests is approximately 800,000
+  m3 per year, with a further 60,000 ha of managed poplar and willow short-rotation
+  plantations yielding 10-12 m3/ha/yr. EU member states (Austria, Hungary, Croatia,
+  Romania, Bulgaria) operate under FSC or PEFC certification for approximately 45%
+  of the commercial area. Non-EU states (Serbia, Ukraine, Moldova, Bosnia) have significant
+  illegal logging pressure estimated at 20-30% of harvest volume. Carbon credit potential
+  from verified additionality is approximately 0.8-1.2 Mt CO2/yr at current measurement
+  standards, with EUR 60-80M/yr revenue potential at EU ETS prices. The subproject
+  pairs with natural_floodplain_forest_biomass to form the paired_floodplain_forestry
+  composite. The primary bottleneck is Phase 3 (Market Access and Certification) at
+  73% balance, where only 45% of harvest is certified and carbon markets are underdeveloped
+  for floodplain forests.
+
+  &#x27;
+paired_with:
+  natural: natural_floodplain_forest_biomass
+  hub: paired_floodplain_forestry
+data_availability: M
+primary_sources:
+- name: FAO Global Forest Resources Assessment (FRA)
+  url: https://www.fao.org/forest-resources-assessment
+  metrics: Growing stock, annual harvest volumes, forest ownership, management plans
+    by country
+- name: FAOSTAT Forestry Production and Trade
+  url: https://www.fao.org/faostat
+  metrics: Roundwood production, sawnwood output, wood fuel volumes, trade values
+- name: FSC / PEFC certification databases
+  url: https://info.fsc.org / https://www.pefc.org
+  metrics: Certified forest area by country, chain of custody certificates, annual
+    audits
+- name: EFI European Forest Sector Outlook
+  url: https://www.efi.int
+  metrics: Timber prices, biomass energy demand, forest industry employment
+- name: Verra / Gold Standard (voluntary carbon markets)
+  url: https://verra.org
+  metrics: Verified carbon credits from riparian forest restoration projects
+- name: EU LULUCF Regulation reporting
+  url: https://ec.europa.eu/environment/forests
+  metrics: Forest sink/source accounting, net sequestration by member state
+key_metrics:
+  annual_harvest_m3_yr: 800000
+  poplar_plantation_ha: 60000
+  poplar_yield_m3_ha_yr: 11
+  certified_area_pct: 45
+  illegal_logging_non_eu_pct: 25
+  carbon_credit_potential_mt_co2_yr: 1.0
+  carbon_revenue_potential_eur_mn_yr: 70
+  biomass_energy_gwh_yr: 1200
+  forest_industry_employment_fte: 28000
+  timber_market_value_eur_mn_yr: 420
+ndc_colors:
+  primary: &#x27;#33691e&#x27;
+  dark: &#x27;#1b5e20&#x27;
+  light: &#x27;#f1f8e9&#x27;
+created: &#x27;2026-04-27&#x27;
+</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

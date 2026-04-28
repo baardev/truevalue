@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Irrigation Infrastructure Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Irrigation Infrastructure Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>irrigation_infrastructure_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">33</span> / 33
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>FAO AQUASTAT</td><td>Danube Basin</td><td>2024-01-01</td><td>total_agricultural_abstraction_km3_yr</td><td>22</td><td>km3/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Total agricultural water abstraction across all 19 basin countries; largest single sector (63% of total 35 km3/yr)</td></tr>
+<tr><td>2</td><td>0</td><td>FAO AQUASTAT</td><td>Danube Basin</td><td>2024-01-01</td><td>surface_water_fraction_pct</td><td>78</td><td>percent</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>78% of agricultural abstraction from surface water (rivers and canals); 22% from groundwater</td></tr>
+<tr><td>3</td><td>0</td><td>FAO AQUASTAT</td><td>Romania</td><td>2024-01-01</td><td>romania_agricultural_abstraction_km3_yr</td><td>3.4</td><td>km3/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Largest single-country agricultural abstraction in the basin; mostly Lower Danube Plain; Main East Canal system</td></tr>
+<tr><td>4</td><td>0</td><td>FAO AQUASTAT</td><td>Hungary</td><td>2024-01-01</td><td>hungary_agricultural_abstraction_km3_yr</td><td>1.8</td><td>km3/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Great Hungarian Plain (Alföld); mix of surface water and groundwater; well-established irrigation history</td></tr>
+<tr><td>5</td><td>0</td><td>FAO AQUASTAT</td><td>Bulgaria</td><td>2024-01-01</td><td>bulgaria_agricultural_abstraction_km3_yr</td><td>2.1</td><td>km3/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Danube-Black Sea corridor; significant rehabilitation need identified by World Bank</td></tr>
+<tr><td>6</td><td>0</td><td>FAO AQUASTAT</td><td>Serbia</td><td>2024-01-01</td><td>serbia_agricultural_abstraction_km3_yr</td><td>1.6</td><td>km3/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Vojvodina region (Danube-Tisa-Danube Canal); well-suited to irrigation; significant investment needed</td></tr>
+<tr><td>7</td><td>1</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>primary_canal_length_km</td><td>18000</td><td>km</td><td>inferred</td><td>World Bank / EBRD sector assessments</td><td>https://www.worldbank.org</td><td>Total length of primary irrigation canals across the basin; estimate from national inventory data</td></tr>
+<tr><td>8</td><td>1</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>infrastructure_age_avg_years</td><td>45</td><td>years</td><td>public</td><td>World Bank IBRD water sector assessments</td><td>https://www.worldbank.org</td><td>Average age of primary canal infrastructure; most built 1950-1975; significant deferred maintenance</td></tr>
+<tr><td>9</td><td>1</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>earth_canal_fraction_pct</td><td>60</td><td>percent</td><td>public</td><td>World Bank IBRD water sector assessments</td><td>https://www.worldbank.org</td><td>60% of primary canals unlined earth; subject to seepage losses; 40% concrete-lined</td></tr>
+<tr><td>10</td><td>1</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>primary_conveyance_loss_pct</td><td>18</td><td>percent</td><td>inferred</td><td>World Bank / FAO sector benchmarks</td><td>https://www.worldbank.org</td><td>Average primary conveyance loss; range 10-30% depending on canal lining and condition</td></tr>
+<tr><td>11</td><td>1</td><td>EU CAP</td><td>EU basin members</td><td>2023-01-01</td><td>eu_cap_irrigation_rehabilitation_m_eur</td><td>620</td><td>million EUR</td><td>public</td><td>EU CAP Rural Development Programme reporting</td><td>https://agriculture.ec.europa.eu</td><td>EU CAP Pillar II funding allocated to irrigation rehabilitation in EU basin member states over 2014-2020 programming period</td></tr>
+<tr><td>12</td><td>2</td><td>Eurostat</td><td>EU basin members</td><td>2024-01-01</td><td>farm_metering_coverage_pct_eu</td><td>65</td><td>percent</td><td>public</td><td>Eurostat Farm Structure Survey</td><td>https://ec.europa.eu/eurostat</td><td>Farm-level water metering coverage in EU member states; basis for abstraction billing and monitoring</td></tr>
+<tr><td>13</td><td>2</td><td>World Bank</td><td>Non-EU basin</td><td>2023-01-01</td><td>farm_metering_coverage_pct_noneu</td><td>12</td><td>percent</td><td>inferred</td><td>World Bank water sector assessments</td><td>https://www.worldbank.org</td><td>Very limited farm-level metering in non-EU countries (Ukraine; Serbia; Bosnia); primary data gap</td></tr>
+<tr><td>14</td><td>2</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>secondary_canal_length_km</td><td>85000</td><td>km</td><td>inferred</td><td>World Bank / national inventory data</td><td>https://www.worldbank.org</td><td>Total secondary and tertiary canal length; mostly unlined; primary source of distribution losses</td></tr>
+<tr><td>15</td><td>2</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>secondary_distribution_loss_pct</td><td>15</td><td>percent</td><td>inferred</td><td>World Bank / FAO sector benchmarks</td><td>https://www.worldbank.org</td><td>Average distribution loss in secondary canal network; range 10-22% depending on condition</td></tr>
+<tr><td>16</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>gravity_irrigation_share_pct</td><td>55</td><td>percent</td><td>public</td><td>FAO AQUASTAT; Eurostat Farm Structure Survey</td><td>https://www.fao.org/aquastat</td><td>Share of irrigated area using gravity/flood irrigation; lowest efficiency method; dominant in lower basin</td></tr>
+<tr><td>17</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>sprinkler_irrigation_share_pct</td><td>30</td><td>percent</td><td>public</td><td>FAO AQUASTAT; Eurostat Farm Structure Survey</td><td>https://www.fao.org/aquastat</td><td>Share of irrigated area using sprinkler irrigation; growing adoption in EU member states</td></tr>
+<tr><td>18</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>drip_irrigation_share_pct</td><td>15</td><td>percent</td><td>public</td><td>FAO AQUASTAT; Eurostat Farm Structure Survey</td><td>https://www.fao.org/aquastat</td><td>Share of irrigated area using drip/micro-irrigation; highest efficiency; primarily in horticulture</td></tr>
+<tr><td>19</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>gravity_application_efficiency_pct</td><td>47</td><td>percent</td><td>public</td><td>FAO Irrigation and Drainage Paper No. 66 (Bruinsma 2011)</td><td>https://www.fao.org/3/a-bc596e.pdf</td><td>Application efficiency of gravity/flood irrigation in southeast Europe; benchmark from FAO IP66</td></tr>
+<tr><td>20</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>sprinkler_application_efficiency_pct</td><td>75</td><td>percent</td><td>public</td><td>FAO Irrigation and Drainage Paper No. 66 (Bruinsma 2011)</td><td>https://www.fao.org/3/a-bc596e.pdf</td><td>Application efficiency of sprinkler irrigation in southeast Europe; benchmark from FAO IP66</td></tr>
+<tr><td>21</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>drip_application_efficiency_pct</td><td>88</td><td>percent</td><td>public</td><td>FAO Irrigation and Drainage Paper No. 66 (Bruinsma 2011)</td><td>https://www.fao.org/3/a-bc596e.pdf</td><td>Application efficiency of drip/micro-irrigation in southeast Europe; benchmark from FAO IP66</td></tr>
+<tr><td>22</td><td>3</td><td>FAO</td><td>Danube Basin</td><td>2023-01-01</td><td>weighted_avg_efficiency_pct</td><td>50</td><td>percent</td><td>inferred</td><td>FAO AQUASTAT; FAO IP66; Eurostat</td><td>https://www.fao.org/aquastat</td><td>Weighted average irrigation efficiency based on method mix (55% gravity at 47%; 30% sprinkler at 75%; 15% drip at 88%)</td></tr>
+<tr><td>23</td><td>3</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>water_saving_potential_km3_yr</td><td>5.5</td><td>km3/yr</td><td>inferred</td><td>World Bank water sector assessments; FAO IP66</td><td>https://www.worldbank.org</td><td>Potential water savings if efficiency improves from 50% to 75% on 22 km3/yr abstraction (12 km3 effective delivery vs 16.5 km3 target)</td></tr>
+<tr><td>24</td><td>4</td><td>ICPDR</td><td>Danube Basin</td><td>2023-01-01</td><td>agricultural_return_flow_km3_yr</td><td>6.6</td><td>km3/yr</td><td>inferred</td><td>ICPDR Danube Basin Analysis; AQUASTAT</td><td>https://www.icpdr.org</td><td>Estimated return flow (~30% of abstraction) to groundwater and river system; major pathway for diffuse pollution</td></tr>
+<tr><td>25</td><td>4</td><td>ICPDR</td><td>Danube Basin</td><td>2023-01-01</td><td>nitrate_concentration_avg_mg_l</td><td>18</td><td>mg/l</td><td>public</td><td>ICPDR Joint Danube Survey (JDS4 2019)</td><td>https://www.icpdr.org</td><td>Average nitrate concentration in agricultural drainage zones; well below EU limit (50 mg/l) but elevated vs. background</td></tr>
+<tr><td>26</td><td>4</td><td>ICPDR</td><td>Danube Basin</td><td>2023-01-01</td><td>water_bodies_with_agricultural_pressure_pct</td><td>62</td><td>percent</td><td>public</td><td>ICPDR WFD Article 5 basin analysis</td><td>https://www.icpdr.org</td><td>62% of assessed Danube water bodies with identified agricultural diffuse pollution pressure (nutrients and pesticides)</td></tr>
+<tr><td>27</td><td>4</td><td>EEA</td><td>Danube Basin</td><td>2023-01-01</td><td>total_phosphorus_load_t_yr</td><td>85000</td><td>t/yr</td><td>public</td><td>EEA European Environment Agency water quality reports</td><td>https://www.eea.europa.eu</td><td>Total phosphorus load from agricultural land to Danube water network; primary eutrophication driver</td></tr>
+<tr><td>28</td><td>4</td><td>ICPDR</td><td>Danube Basin</td><td>2023-01-01</td><td>pesticide_detected_water_bodies_pct</td><td>62</td><td>percent</td><td>public</td><td>ICPDR JDS4 (2019)</td><td>https://www.icpdr.org</td><td>Share of monitored Danube water bodies with detected pesticide concentrations; multiple substances; mainly herbicides</td></tr>
+<tr><td>29</td><td>0</td><td>FAO AQUASTAT</td><td>Danube Basin</td><td>2024-01-01</td><td>irrigated_area_ha</td><td>2800000</td><td>ha</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Total irrigated agricultural area across the Danube Basin; Romania and Bulgaria have largest shares</td></tr>
+<tr><td>30</td><td>3</td><td>World Bank</td><td>Danube Basin</td><td>2023-01-01</td><td>rehabilitation_investment_need_bn_eur</td><td>8.4</td><td>billion EUR</td><td>inferred</td><td>World Bank IBRD irrigation sector assessment</td><td>https://www.worldbank.org</td><td>Estimated investment needed to rehabilitate primary and secondary canal systems and upgrade to modern irrigation methods across the basin</td></tr>
+<tr><td>31</td><td>2</td><td>Science/Grafton et al.</td><td>Global/Danube Basin</td><td>2018-01-01</td><td>irrigation_efficiency_paradox_risk</td><td>HIGH</td><td>qualitative</td><td>public</td><td>Grafton R.Q., Williams J., Perry C.J., Pittock J. et al. (2018). The paradox of irrigation efficiency. Science 361(6404) 748-750</td><td>https://doi.org/10.1126/science.aat9314</td><td>Farm-level efficiency gains without basin extraction cap result in demand expansion not water saving; directly applicable to non-EU Danube countries without WFD abstraction limits</td></tr>
+<tr><td>32</td><td>2</td><td>WFD/ICPDR</td><td>Danube Basin</td><td>2024-01-01</td><td>extraction_cap_in_place</td><td>PARTIAL</td><td>qualitative</td><td>public</td><td>ICPDR WFD Article 5 and Article 9 implementation status</td><td>https://www.icpdr.org</td><td>EU member state WFD permits provide partial extraction cap; Ukraine Serbia Moldova lack equivalent binding limits; bond governance pre-condition</td></tr>
+<tr><td>33</td><td>4</td><td>Science/Grafton et al.</td><td>Danube Basin</td><td>2018-01-01</td><td>return_flow_reduction_risk_km3_yr</td><td>6.6</td><td>km3/yr</td><td>inferred</td><td>Grafton et al. 2018; Pittock irrigation return flow framework</td><td>https://doi.org/10.1126/science.aat9314</td><td>Current return flow from inefficient irrigation is 6.6 km3/yr; efficiency investment eliminates this return flow degrading groundwater recharge and downstream baseflow</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

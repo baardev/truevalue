@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Floodplain Forest Biomass Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Floodplain Forest Biomass Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>floodplain_forest_biomass_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Hydrological Connectivity and Flood Pulse</td><td>Upstream</td><td>River channel and floodplain topography</td><td>Annual inundation delivering sediment and nutrients</td><td>Seasonal overbank flooding; sediment deposition; groundwater recharge</td><td>Annual; multi-decadal for connectivity changes</td><td>High</td><td>Inundation frequency (days/yr); sediment deposition; lateral connectivity index</td><td>days/yr inundated; lateral connectivity index 0-1</td><td>Dam regulation constraints; embankment setback limits; WFD hydromorphological status requirements</td><td>Inundated area per year; sediment deposition rate; nutrient delivery to floodplain</td><td>POPULATED</td><td>Flood pulse 40% reduced; 2800 km embankments; lateral connectivity 0.55 vs 0.92 pre-regulation. PRIMARY BOTTLENECK.</td></tr>
+<tr><td>1</td><td>Soil Formation and Nutrient Cycling</td><td>Upstream</td><td>Sediment-loaded floodwater and decomposing organic matter</td><td>Alluvial soil with high organic matter and nutrient-rich substrate</td><td>Sediment settling; organic decomposition; nitrogen cycling; soil profile development</td><td>Annual to decadal</td><td>Medium</td><td>Soil organic carbon (g/kg); N and P availability; soil texture</td><td>g/kg SOC; mg/kg N</td><td>Soil contamination standards; drainage regulations; groundwater quality requirements</td><td>Soil organic carbon content; nitrogen mineralisation rate; nutrient availability to tree roots</td><td>PARTIAL</td><td>Connected sites 28 g/kg SOC vs 16 g/kg disconnected. 22% sites with legacy contamination.</td></tr>
+<tr><td>2</td><td>Tree Establishment and Canopy Formation</td><td>Midstream</td><td>Alluvial seed banks and exposed sediment surfaces</td><td>Multi-age forest stand with pioneer transitional and climax species</td><td>Seed germination; willow/poplar colonisation; oak recruitment</td><td>3-50 years by species</td><td>High</td><td>Forest stand area by age class (ha); species composition; canopy cover (%)</td><td>ha by age class; percent canopy cover</td><td>Species composition guidelines; Natura 2000 habitat targets; invasive species control requirements</td><td>Canopy cover; native species fraction; old-growth area; annual regeneration</td><td>POPULATED</td><td>78% canopy cover in Natura 2000 zones; 18% Robinia invasion; 8500 ha old-growth; 800 ha/yr natural regeneration</td></tr>
+<tr><td>3</td><td>Biomass Accumulation and Carbon Sequestration</td><td>Midstream</td><td>Established forest stands</td><td>Standing biomass and annual net carbon increment</td><td>Photosynthesis; wood formation; litter accumulation; soil carbon building</td><td>Annual increment; 5-10 yr stock assessment</td><td>Medium</td><td>Growing stock (m3/ha); annual increment (m3/ha/yr); carbon stock (tCO2); net sequestration (tCO2/yr)</td><td>m3/ha; tCO2/ha; tCO2/yr</td><td>LULUCF accounting rules; EU forest carbon sink targets; measurement protocols</td><td>Growing stock volume; net annual increment; verified carbon sequestration</td><td>PARTIAL</td><td>120 m3/ha mean growing stock; 5.0 m3/ha/yr increment; 17 Mt CO2 total stock; 1.8 Mt CO2/yr sequestration</td></tr>
+<tr><td>4</td><td>Ecosystem Service Delivery</td><td>Downstream</td><td>Mature forest stands with harvestable biomass and carbon stock</td><td>Provisioned services: timber; carbon credits; flood regulation; biodiversity</td><td>Service quantification; market access; delivery to beneficiaries</td><td>Annual market; generational landscape value</td><td>Medium</td><td>Timber volume (m3/yr); carbon credits (tCO2/yr); flood regulation value (EUR/ha/yr)</td><td>m3/yr; tCO2/yr; EUR/ha/yr</td><td>Market pricing; carbon credit verification standards; TEEB ecosystem service valuation</td><td>Timber sold; carbon credits issued; flood regulation benefit realised; biodiversity maintained</td><td>PARTIAL</td><td>EUR 715M/yr total service value; only 3 active carbon projects capturing 0.05 Mt CO2/yr vs 1.0 Mt potential. Phase bottleneck.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

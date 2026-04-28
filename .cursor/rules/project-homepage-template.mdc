@@ -1,0 +1,40 @@
+---
+description: Template expectations for new project hubs and homepages
+globs: frontend/project/**,frontend/site-index.json,tree.md
+alwaysApply: false
+---
+
+# Project Homepage Template
+
+When creating a new project, follow the mature hub pattern used by Gold, Shea, AUBEB, Singapore NEWater, OCWD, Jackson Water, and ERCOT Uri.
+
+Required project folder shape:
+
+- `frontend/project/<slug>/index.html`
+- `frontend/project/<slug>/supply_chain/index.html`
+- `frontend/project/<slug>/supply_chain/dashboard.html`
+- `frontend/project/<slug>/supply_chain/project_context.html`
+- `frontend/project/<slug>/supply_chain/system_lifecycle.html` when maintenance, stewardship, resilience, or renewal is part of the case
+- `frontend/project/<slug>/value_chain/index.html`, even if the value layer is deferred
+- `frontend/project/<slug>/data/processed/<slug>_supply_chain_ui.json`
+- `frontend/project/<slug>/data/processed/<slug>_system_lifecycle_ndc.json` when a lifecycle page exists
+
+The project homepage should include:
+
+- A hero with kicker, title, and concise subtitle describing the project, phase count, and analytical layer.
+- Four KPI cards when data exists. Use meaningful physical or N-D-C metrics, such as system balance, average N, bottleneck count, transparency gap, energy intensity, recycling share, hectares, or output volume.
+- A short alert or insight panel explaining the defining structural issue, such as handoffs, loop closure, maintenance collapse, winterization failure, opacity, or lifecycle bottleneck.
+- Layer cards for Supply Chain, System Lifecycle, and Value Chain. Use a deferred value-chain card if financial analysis is not ready.
+- A phase strip or explicit phase map for cases with many phases, especially water, grid, infrastructure, or broken-system cases.
+- A phase-level N-D-C radar or spider chart for supply-chain phases.
+- A five-model coherence panel on every project homepage, using the Gold/Shea/AUBEB pattern with π, φ, √2, ln(2), and e axes. If full scenario data is not available yet, derive an explicit baseline from the project's N-D-C data and label it as a baseline rather than leaving the panel out.
+- Navigation links back to the main homepage and related comparison or benchmark projects.
+
+The processed JSON must support the homepage:
+
+- Include `_meta`, `entities.synthetic`, `phase_meta`, `phases.synthetic`, and `system`.
+- Each phase should include `D`, `C`, `balance`, `N`, `sustainability`, `notes`, `data_quality`, and key `metrics`.
+- `phase_meta` should include `name`, `transparency`, and `transformation`.
+- `system` should include `balance`, `average_N`, `bottleneck_phase_ids`, and `interpretation`.
+
+After adding a project, update `frontend/site-index.json`, `tree.md`, validate JSON, check lints, and run `./scripts/rebuild-site.sh`.

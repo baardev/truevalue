@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Project</h1>
+        <p class="subtitle">Generated from <strong>project.yaml</strong> (YAML)</p>
+      </div>
+<pre class="pre-wrap">id: natural_reed_bed
+name: Reed Bed Biomass
+basin: danube
+type: natural
+service_category: provisioning
+teeb_class: provisioning
+description: &#x27;The Danube Delta and associated wetlands contain the largest continuous
+  reed bed in the world, covering approximately 1,750 km2 of Phragmites australis
+  (common reed) within the Danube Delta Biosphere Reserve alone, with a further 850
+  km2 of reed-dominated wetland in the floodplain of the lower Danube and Danube-Black
+  Sea canal zone. Total reed bed area across the basin is estimated at 2,800 km2.
+  The delta reed beds produce approximately 800,000 tonnes of dry reed biomass per
+  year, representing one of the largest renewable biomass resources in Europe. The
+  natural service cascade runs from hydrological connectivity and nutrient loading
+  (Phase 0) through reed establishment and colonisation (Phase 1), biomass accumulation
+  (Phase 2), standing stock maturation (Phase 3), and harvestable biomass delivery
+  (Phase 4). The primary ecological bottleneck is Phase 0: altered hydrology from
+  the Chilia arm regulation and sediment reduction (57% less sediment reaching the
+  delta from Iron Gate dams) is causing lateral reed bed expansion onto previously
+  open water while simultaneously degrading the productivity of older reed stands.
+  This subproject pairs with human_reed_industry to form the paired_reed_harvesting
+  composite.
+
+  &#x27;
+paired_with:
+  human: human_reed_industry
+  hub: paired_reed_harvesting
+data_availability: M
+primary_sources:
+- name: Danube Delta Biosphere Reserve Authority (DDBRA) Annual Reports
+  url: https://www.ddbra.ro
+  metrics: Reed bed area, annual biomass production, harvest quotas, habitat condition
+- name: &#x27;ICPDR JDS4 Biological Quality Elements: macrophytes&#x27;
+  url: https://www.icpdr.org
+  metrics: Macrophyte assemblage status, reed coverage mapping, species composition
+- name: Copernicus Land Service (CORINE + Wetlands layer)
+  url: https://land.copernicus.eu
+  metrics: Wetland area mapping, reed bed extent change, water body coverage
+- name: &#x27;EU Habitats Directive Art 17: Habitats types 7210* and 7230 (reed beds)&#x27;
+  url: https://ec.europa.eu/environment/nature
+  metrics: Conservation status of priority reed bed habitat types, area trends
+- name: WWF Danube-Carpathian Programme wetland restoration
+  url: https://www.wwf.ro
+  metrics: Wetland restoration areas, hydrological reconnection outcomes, biomass
+    surveys
+- name: EEA European Wetland Inventory
+  url: https://www.eea.europa.eu
+  metrics: Wetland area, reed bed classification, loss rates
+key_metrics:
+  total_reed_bed_area_km2: 2800
+  delta_reed_bed_area_km2: 1750
+  annual_dry_biomass_production_kt: 800
+  sustainable_harvest_potential_kt: 560
+  sediment_reduction_iron_gate_pct: 57
+  water_level_variability_reduction_pct: 35
+  biodiversity_species_supported: 320
+  carbon_stock_mt_co2: 8.5
+  annual_sequestration_mt_co2_yr: 0.65
+  natura2000_area_km2: 1980
+  ramsar_site_area_km2: 1030
+ndc_colors:
+  primary: &#x27;#558b2f&#x27;
+  dark: &#x27;#33691e&#x27;
+  light: &#x27;#f9fbe7&#x27;
+created: &#x27;2026-04-27&#x27;
+</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

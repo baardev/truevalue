@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Floodplain Forestry Operations Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Floodplain Forestry Operations Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>floodplain_forestry_operations_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Forest Inventory and Management Planning</td><td>Upstream</td><td>Standing forest resource</td><td>Certified management plan with harvest schedule and biodiversity zones</td><td>Forest inventory survey; silvicultural prescription; EIA; concession allocation</td><td>1-5 years per management plan cycle</td><td>Medium</td><td>Area under management plan (ha); certified area (ha); inventory completion rate</td><td>ha under plan; percent certified</td><td>Forestry law compliance; FSC/PEFC certification requirements; Natura 2000 management plan obligations</td><td>Management plans completed; certified area; biodiversity protection zones mapped</td><td>POPULATED</td><td>140000 ha under management plan; 45% certified; 62% of riparian zones with formal plans</td></tr>
+<tr><td>1</td><td>Timber Harvesting and Extraction</td><td>Upstream</td><td>Permitted standing timber within management plan</td><td>Roundwood at landing: sawlogs; pulpwood; wood fuel; poplar billets</td><td>Tree felling; bucking; skidding; transportation to forest road</td><td>Annual harvest campaigns (autumn/winter)</td><td>Medium</td><td>Roundwood volume harvested (m3/yr); harvest intensity (m3/ha/yr); illegal logging rate</td><td>m3/yr; m3/ha/yr</td><td>Harvesting season restrictions; soil protection standards; EUTR due diligence requirements</td><td>Roundwood volume delivered to landing; harvest intensity records; legal origin documentation</td><td>PARTIAL</td><td>800000 m3/yr total; 25% illegal logging in non-EU states; 35% sites with soil compaction</td></tr>
+<tr><td>2</td><td>Timber Processing and Value Addition</td><td>Midstream</td><td>Roundwood delivered to sawmill or processing facility</td><td>Sawnwood; woodchips; wood pellets; biomass energy feedstock</td><td>Sawing; drying; grading; chipping; pelleting; or combustion</td><td>Days to weeks per run</td><td>Medium</td><td>Sawnwood volume (m3/yr); biomass energy output (GWh/yr); processing recovery rate</td><td>m3/yr sawnwood; GWh/yr energy</td><td>Mill quality standards; energy efficiency regulations; waste timber regulations</td><td>Sawnwood volume produced; energy output; processing recovery rate; value-add ratio</td><td>PARTIAL</td><td>210000 m3/yr sawnwood; 1200 GWh/yr biomass energy; 52% recovery rate; value-add index 1.6</td></tr>
+<tr><td>3</td><td>Market Access and Certification</td><td>Midstream</td><td>Processed timber and biomass products</td><td>Certified sustainable timber and verified carbon credits sold to domestic and export markets</td><td>Chain of custody certification; carbon project registration; ecolabel compliance</td><td>Certification 1-2 yr; carbon registration 2-3 yr</td><td>Medium</td><td>Certified sales volume (m3/yr); verified carbon credits issued (tCO2/yr); export value (EUR/yr)</td><td>m3/yr certified; tCO2/yr credits; EUR/yr exports</td><td>FSC/PEFC chain of custody requirements; EUTR/EUDR due diligence; Verra/Gold Standard VCS methodology</td><td>Certified sales volume; VCUs issued; export market access; EUTR compliance documentation</td><td>PARTIAL</td><td>45% certified sales; 50000 tCO2/yr credits vs 1000000 potential; 95% EUTR compliance EU vs 60% non-EU. PRIMARY BOTTLENECK.</td></tr>
+<tr><td>4</td><td>Revenue Capture and Ecosystem Service Payments</td><td>Downstream</td><td>Revenue from timber; carbon; and biomass sales</td><td>Revenue reinvested in forest management; connectivity restoration; community benefit</td><td>Revenue distribution to owners; reinvestment allocation; PES payment administration</td><td>Annual revenue cycle; 5-10 yr capital reinvestment</td><td>Medium</td><td>Forest owner revenue (EUR/ha/yr); reinvestment ratio; community benefit payments</td><td>EUR/ha/yr; reinvestment ratio %</td><td>Revenue allocation rules; PES scheme eligibility; ERDF programme requirements</td><td>Forest owner income; reinvestment in management; community income; carbon monitoring funded</td><td>PARTIAL</td><td>EUR 48/ha/yr average revenue; 89% timber-dependent; carbon only 2%; PES 9%. Conversion incentive vs EUR 120-250/ha/yr arable</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

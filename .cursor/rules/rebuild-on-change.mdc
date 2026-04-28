@@ -1,0 +1,49 @@
+---
+description: After creating or modifying any HTML page or data file, identify and trigger the rebuild steps needed to keep all cross-references, nav links, and viewable mirrors up to date.
+globs: frontend/**,index.html,index2.html,data/**,frontend/docs/**
+alwaysApply: false
+---
+
+# Rebuild on Page Create or Change
+
+Any time you create a new page or modify an existing one, you **must** determine which rebuild steps are affected and run them before the task is considered complete.
+
+## Step selection table
+
+| What changed | Steps required |
+|---|---|
+| New or renamed file under `frontend/` or `data/` (any type) | `RUN_VIEWABLE=1` |
+| New project added under `frontend/project/<m>/` | `RUN_VIEWABLE=1` + update `index.html` project card + update `tree.md` |
+| Existing HTML page modified (nav links, hrefs, titles) | Check all pages that link to it; update stale hrefs |
+| New or edited `.csv`, `.json`, or `.yaml` data file | `RUN_VIEWABLE=1` |
+| New or edited file under `frontend/docs/` or `mkdocs.yml` | `RUN_MKDOCS=1` |
+| Source CSVs for simulators edited (gold/shea/water schema) | `RUN_GENERATE_UI=1 RUN_VIEWABLE=1` |
+| Full new project (PDI YAML + data + HTML) | `RUN_GENERATE_UI=1 RUN_VIEWABLE=1 RUN_MKDOCS=1` |
+
+## How to run
+
+```bash
+# Viewable only (most common after adding pages or data files)
+./scripts/rebuild-site.sh
+
+# Also regenerate UI JSON from source CSVs
+RUN_GENERATE_UI=1 ./scripts/rebuild-site.sh
+
+# Full rebuild
+RUN_GENERATE_UI=1 ./scripts/rebuild-site.sh
+```
+
+## Cross-reference obligations
+
+When a **new page** is created:
+1. Every page that should link to it must be updated (nav bars, hub index pages, `index.html` homepage cards, `tree.md`).
+2. The new page must link back to its hub (`index.html` of its project) and to the main homepage.
+3. If the page is a new project hub, add a card to `index.html` with the correct class and color.
+
+When an **existing page** is renamed or moved:
+1. Search for all hrefs pointing to the old path and update them.
+2. Re-run `RUN_VIEWABLE=1` so the viewable mirror reflects the new path.
+
+## Never leave the site in a broken state
+
+Do not end a task with dangling links, missing nav entries, or stale viewable mirrors. If a full rebuild is too slow for the current task, at minimum run `RUN_VIEWABLE=1 ./scripts/rebuild-site.sh` and note any remaining steps as explicit follow-up todos.

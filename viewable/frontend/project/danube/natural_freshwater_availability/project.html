@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Project</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Project</h1>
+        <p class="subtitle">Generated from <strong>project.yaml</strong> (YAML)</p>
+      </div>
+<pre class="pre-wrap">id: natural_freshwater_availability
+name: Freshwater Availability
+basin: danube
+type: natural
+service_category: provisioning
+teeb_class: provisioning
+description: &#x27;The hydrological cycle producing freshwater across the Danube Basin
+  through precipitation, catchment runoff, river flow, and groundwater recharge. This
+  is the natural asset — the water itself, produced by ecological and atmospheric
+  processes — that supports ~81 million people and is the substrate for the paired
+  human supply infrastructure.
+
+  &#x27;
+paired_with:
+  human: human_freshwater_supply_infrastructure
+data_availability: H
+primary_sources:
+- name: AQUASTAT (FAO)
+  url: https://www.fao.org/aquastat
+  metrics: water withdrawal, availability by country
+- name: ERA5 reanalysis (Copernicus/ECMWF)
+  url: https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5
+  metrics: precipitation, evapotranspiration, runoff
+- name: GRDC (Global Runoff Data Centre)
+  url: https://www.bafg.de/GRDC
+  metrics: river flow at gauge stations
+- name: GRACE-FO (NASA)
+  url: https://grace.jpl.nasa.gov
+  metrics: groundwater storage anomalies at basin scale
+key_metrics:
+  total_annual_renewable_water_km3: 206
+  population_served: 81000000
+  basin_area_km2: 801463
+  mean_annual_precipitation_mm: 800
+  mean_annual_runoff_mm: 270
+  groundwater_dependent_fraction: 0.35
+ecological_asset:
+  stock_metric: annual renewable freshwater (km3/yr)
+  stock_value: 206
+  regeneration_rate: annual (precipitation-driven, 800mm mean)
+  degradation_factors:
+  - reduced precipitation under climate change
+  - increased evapotranspiration from warming
+  - glacier retreat reducing dry-season flow
+  - wetland drainage reducing aquifer recharge
+  - groundwater over-extraction
+service_cascade:
+- node: atmospheric_moisture
+  description: Water vapor from Atlantic and Mediterranean evaporation
+- node: precipitation
+  description: Rain and snow deposited across 801,463 km2 basin
+- node: catchment_runoff_and_river_flow
+  description: Surface water routing through 2,860 km river network
+- node: groundwater_recharge
+  description: Infiltration into floodplain aquifers and karst systems
+- node: available_flow_to_beneficiaries
+  description: Accessible surface and groundwater for human and ecological use
+ndc_colors:
+  primary: &#x27;#2e7d32&#x27;
+  dark: &#x27;#1b5e20&#x27;
+  light: &#x27;#e8f5e9&#x27;
+created: &#x27;2026-04-27&#x27;
+</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freshwater Supply Infrastructure — Danube Basin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #0d47a1 0%, #1565c0 50%, #1976d2 100%);
+      min-height: 100vh; padding: 24px; color: #2c3e50;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px; margin-bottom: 22px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #1565c0; background: #e3f2fd;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .type-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: #fff; background: #1565c0;
+      padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+    }
+    .paired-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: #fff; background: #f57f17;
+      padding: 4px 10px; border-radius: 999px; margin-left: 6px;
+    }
+    h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 700px; margin: 0 auto 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px; }
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 28px 28px 18px; color: #fff; }
+    .card-header.sc { background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #01579b 0%, #0277bd 100%); }
+    .card-header.vc { background: linear-gradient(135deg, #006064 0%, #00838f 100%); }
+    .card-icon { font-size: 40px; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 22px 28px 26px; }
+    .card-body ul { list-style: none; margin-bottom: 18px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+    .card-body li::before { content: "✓"; position: absolute; left: 0; color: #1565c0; font-weight: bold; }
+    .btn {
+      display: inline-block; padding: 11px 22px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn.sc { background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); }
+    .btn.vc { background: linear-gradient(135deg, #006064 0%, #00838f 100%); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    .sub-links { margin-top: 12px; font-size: 13px; }
+    .sub-links a { color: #2c3e50; font-weight: 600; text-decoration: none; margin-right: 12px; }
+    .sub-links a:hover { text-decoration: underline; }
+    .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px; }
+    .kpi { background: #e3f2fd; border-radius: 10px; padding: 14px; border-left: 4px solid #1565c0; text-align: left; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; color: #6c757d; font-weight: 700; margin-bottom: 4px; }
+    .kpi-value { font-size: 22px; font-weight: 800; color: #0d47a1; }
+    .kpi-sub { font-size: 11px; color: #6c757d; margin-top: 3px; }
+    .alert-panel {
+      background: #fff8e1; border: 1.5px solid #f9a825; border-radius: 10px;
+      padding: 16px 20px; margin-top: 16px; font-size: 13px; line-height: 1.6; color: #333;
+    }
+    .alert-panel strong { color: #e65100; }
+    .paired-panel {
+      background: #fff3e0; border: 1.5px solid #f57f17; border-radius: 10px;
+      padding: 16px 20px; margin-top: 12px; font-size: 13px; line-height: 1.6; color: #333;
+    }
+    .paired-panel strong { color: #e65100; }
+    .nav { text-align: center; margin-top: 14px; }
+    .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+    .nav a:hover { text-decoration: underline; }
+    .footer { text-align: center; color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 18px; padding: 8px 0; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .kpi-strip { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="kicker">Danube Basin · Human Service</div>
+      <h1>🚰 Freshwater Supply Infrastructure
+        <span class="type-badge">Human</span>
+        <span class="paired-badge">Paired</span>
+      </h1>
+      <p class="subtitle">
+        The engineered supply chain extracting, treating, and distributing water to ~81 million people
+        across the Danube Basin. 5-phase chain from intake to consumer metering.
+        Key structural weakness: 25% non-revenue water in the distribution network.
+      </p>
+
+      <div class="kpi-strip">
+        <div class="kpi">
+          <div class="kpi-label">Population with Access</div>
+          <div class="kpi-value">88%</div>
+          <div class="kpi-sub">safely managed water (JMP 2023)</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Annual Abstraction</div>
+          <div class="kpi-value">35 km³</div>
+          <div class="kpi-sub">total (municipal + agri + industrial)</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Non-Revenue Water</div>
+          <div class="kpi-value">25%</div>
+          <div class="kpi-sub">network losses; range 10–40%</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Unserved Population</div>
+          <div class="kpi-value">9.7M</div>
+          <div class="kpi-sub">rural lower basin</div>
+        </div>
+      </div>
+
+      <div class="alert-panel">
+        <strong>Key structural issue:</strong> Phase 3 (Distribution Network) is the chain bottleneck
+        with 81% balance — the lowest in the chain. Non-revenue water averaging 25% (up to 40% in parts of
+        Romania, Moldova, Ukraine) represents both a financial liability and increased pressure on the
+        paired natural asset. Network rehabilitation investment would be the optimal bond-financed intervention.
+      </div>
+
+      <div class="paired-panel">
+        <strong>Paired with:</strong>
+        <a href="../natural_freshwater_availability/index.html" style="color:#e65100;font-weight:700;">
+          Natural Freshwater Availability
+        </a> — the natural hydrological asset this infrastructure draws on.
+        Abstraction (35 km³) vs. renewable (206 km³): stock ratio 0.17 — currently sustainable,
+        but increasing under climate change. Bond risk: drought reduces supply while infrastructure
+        costs remain fixed.
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header sc">
+            <div class="card-icon">🏗️</div>
+            <div class="card-title">Supply Chain</div>
+            <div class="card-desc">5-phase engineered chain · Intake → Metering</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Phase 0–4: Intake → Conveyance → Treatment → Distribution → Consumer</li>
+              <li>N-D-C balance per phase (Phase 3 bottleneck: 81%)</li>
+              <li>WHO/JMP, AQUASTAT, Eurostat, IBNET data anchors</li>
+              <li>Non-revenue water as key D-C imbalance signal</li>
+              <li>Climate and investment scenarios</li>
+            </ul>
+            <a href="supply_chain/index.html" class="btn sc">Open Supply Chain →</a>
+            <div class="sub-links">
+              <a href="supply_chain/dashboard.html">Dashboard</a>
+              <a href="supply_chain/project_context.html">Context</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header lc">
+            <div class="card-icon">🔁</div>
+            <div class="card-title">System Lifecycle</div>
+            <div class="card-desc">Infrastructure lifecycle · Maintenance · Renewal</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Lifecycle N-D-C for water infrastructure system</li>
+              <li>Average pipe age 35 years — renewal backlog visible</li>
+              <li>EU WFD compliance obligations as D constraints</li>
+              <li>Investment scenarios for network rehabilitation</li>
+              <li>Loaded from human_freshwater_supply_infrastructure_system_lifecycle_ndc.json</li>
+            </ul>
+            <a href="supply_chain/system_lifecycle.html" class="btn sc">Open Lifecycle →</a>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header vc">
+            <div class="card-icon">💰</div>
+            <div class="card-title">Value Chain</div>
+            <div class="card-desc">Water tariffs · Infrastructure costs · Bond structure</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Revenue: water tariffs (WHO full-cost recovery principle)</li>
+              <li>Cost: abstraction, treatment, distribution, maintenance</li>
+              <li>e-layer score 42 — partial financial abstraction exists</li>
+              <li>Bond trigger: NRW reduction from 25% to 15%</li>
+              <li>Value chain active — infrastructure has revenue basis</li>
+            </ul>
+            <a href="value_chain/index.html" class="btn vc">Open Value Chain →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="../index.html">← Danube Basin Hub</a>
+      <a href="../natural_freshwater_availability/index.html">Paired: Natural Asset →</a>
+      <a href="/index.html">Main Homepage</a>
+    </div>
+    <div class="footer">Danube Basin · Freshwater Supply Infrastructure · Human Service · v1.0</div>
+  </div>
+</body>
+</html>

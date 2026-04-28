@@ -1,0 +1,300 @@
+# ============================================================
+# Phase Discovery Instrument (PDI) — Human Service Instance
+# Material: Danube Basin Irrigation Infrastructure
+# Service type: Human (engineered supply chain)
+# Basin: Danube
+# Version: 1.0
+# Project: True Value Analytics — Danube Basin Ecosystem Services
+# Date: 2026-04-27
+# ============================================================
+
+pdi:
+  material: "Danube Basin irrigation infrastructure"
+  analyst: "AI (Sonnet 4.6)"
+  date_completed: "2026-04-27"
+  service_type: human
+  basin: danube
+  paired_with: natural_freshwater_availability
+  hub: paired_agricultural_water
+
+  sources_overview: |
+    1. FAO AQUASTAT — irrigation water withdrawal by country and sector.
+       Annual, country-level. Most complete global source for agricultural water.
+       https://www.fao.org/aquastat
+    2. Eurostat Agricultural Statistics — irrigated area by irrigation method (EU members).
+       Annual. https://ec.europa.eu/eurostat/web/agriculture
+    3. FAO Irrigation and Drainage Paper No. 66 (Bruinsma 2011) — irrigation efficiency
+       by system type and country. Widely cited benchmark.
+       https://www.fao.org/3/a-bc596e.pdf
+    4. EU CAP (Common Agricultural Policy) — agri-environment scheme participation,
+       irrigation investment under Rural Development Programme (RDP) Pillar II.
+       https://agriculture.ec.europa.eu
+    5. ICPDR Danube Basin Analysis (WFD Article 5) — agricultural pressures,
+       nitrate and pesticide loads, abstraction volumes by river basin district.
+       https://www.icpdr.org
+    6. World Bank / EBRD sector assessments — irrigation rehabilitation investment
+       needs in Romania, Bulgaria, Ukraine. Project documentation available.
+       https://www.worldbank.org
+
+  geographic_scope:
+    basin: Danube
+    total_abstraction_km3_yr: 22
+    irrigated_area_ha: 2800000
+    primary_countries:
+      - Romania       # largest irrigated area: ~1.0M ha, mostly Lower Danube Plain
+      - Hungary       # ~400,000 ha; Great Hungarian Plain (Alföld)
+      - Bulgaria      # ~600,000 ha; Danube-Black Sea corridor
+      - Serbia        # ~300,000 ha; Vojvodina and Morava valley
+      - Ukraine       # ~280,000 ha; Prut-Danube lowlands; Odessa region
+    secondary_countries:
+      - Germany       # Rhine-Danube headwaters; minor irrigation
+      - Austria       # minor
+      - Slovakia      # Danube plain; minor
+      - Croatia       # Drava and Sava valley; minor
+      - Bosnia        # minor
+
+  infrastructure_parameters:
+    total_abstraction_km3_yr: 22
+    irrigated_area_ha: 2800000
+    irrigation_efficiency_pct_avg: 50
+    irrigation_efficiency_range: "30-85% depending on method and country"
+    irrigation_methods:
+      gravity_flood_pct: 55
+      sprinkler_pct: 30
+      drip_pct: 15
+    infrastructure_age_avg_years: 45
+    major_canal_systems:
+      - "Main East Canal, Romania (Danube-Black Sea)"
+      - "Danube-Tisa-Danube Canal, Serbia"
+      - "Hungarian Great Plain irrigation network"
+      - "North Dobrudja Canal, Romania"
+      - "Yantra-Rositsa, Bulgaria"
+    eu_cap_support_bn_eur: 2.1
+    world_bank_rehabilitation_need_bn_eur_estimated: 8.4
+    water_saving_potential_km3_yr_if_modernised: 5.5
+
+  supply_chain_phases:
+    phase_0:
+      id: 0
+      name: "River and Canal Intake and Pumping"
+      phase_category: "Upstream"
+      physical_state_in: "Natural surface water at river or reservoir"
+      physical_state_out: "Raw water at pump station outlet"
+      primary_transformation: "Abstraction and lift pumping"
+      typical_time_scale: "Seasonal (peak May-September)"
+      transparency_level: "High"
+      measurable_output: "Agricultural abstraction volume (m3/yr)"
+      output_unit: "m3/yr"
+      data_status: "POPULATED"
+      primary_sources:
+        - "AQUASTAT (annual abstraction by sector)"
+        - "WFD abstraction permit registry (EU members)"
+        - "National water authority reporting"
+      opacity_score: 1
+      key_values:
+        total_agricultural_abstraction_km3_yr: 22
+        surface_water_fraction_pct: 78
+        groundwater_fraction_pct: 22
+        seasonal_peak: "June-August (crop water demand peak)"
+        eu_abstraction_permit_required: true
+        largest_single_intake: "Romania — 3.4 km3/yr from Danube main channel"
+      notes: >
+        Agricultural abstraction is the largest water-use sector in the basin
+        (22 km3 = 63% of total 35 km3). EU members require WFD abstraction permits;
+        non-EU members have variable frameworks. AQUASTAT tracks annual abstraction by
+        sector; detailed pumping station data held by national water authorities.
+
+    phase_1:
+      id: 1
+      name: "Primary Canal and Pipeline Conveyance"
+      phase_category: "Upstream"
+      physical_state_in: "Water at pump station outlet"
+      physical_state_out: "Water in primary canal or main pipeline"
+      primary_transformation: "Gravity flow or pressurized transport over tens to hundreds of km"
+      typical_time_scale: "Hours to days"
+      transparency_level: "Medium"
+      measurable_output: "Water delivered to primary distribution hubs (m3/yr)"
+      output_unit: "m3/yr"
+      data_status: "PARTIAL"
+      primary_sources:
+        - "National irrigation authority records"
+        - "EU CAP Rural Development Programme reporting"
+        - "World Bank / EBRD project assessments"
+      opacity_score: 3
+      key_values:
+        major_canal_length_km_total: 18000
+        conveyance_loss_pct_avg: 18
+        infrastructure_age_avg_years: 45
+        concrete_lined_pct: 40
+        earth_canal_pct: 60
+        eu_funding_rehabilitation_m_eur: 620
+      notes: >
+        Primary canals total ~18,000 km across the basin. Average conveyance losses
+        of 18% (unlined earth canals; seepage and evaporation). Much infrastructure
+        built 1950-1975 under Soviet or Yugoslav programmes; significant deferred
+        maintenance. EU CAP Pillar II funds some rehabilitation in EU member states.
+        Non-EU countries (Ukraine, Serbia, Bosnia) have very limited monitoring.
+        Opacity score 3 — poor data in non-EU countries; national data quality varies.
+
+    phase_2:
+      id: 2
+      name: "Secondary Distribution Network"
+      phase_category: "Midstream"
+      physical_state_in: "Water in primary canal"
+      physical_state_out: "Water at farm-gate intake"
+      primary_transformation: "Secondary canal/pipe network distributing to individual farms or irrigation blocks"
+      typical_time_scale: "Hours"
+      transparency_level: "Low"
+      measurable_output: "Water delivered at farm gate (m3/ha/yr)"
+      output_unit: "m3/ha/yr"
+      data_status: "PARTIAL"
+      primary_sources:
+        - "National irrigation authority operational records (where available)"
+        - "Eurostat agricultural water use statistics (EU only)"
+        - "Remote sensing crop water stress estimates (MODIS, Landsat)"
+      opacity_score: 4
+      key_values:
+        distribution_loss_pct_avg: 15
+        farm_metering_coverage_pct: 35
+        eu_farm_metering_coverage_pct: 65
+        non_eu_farm_metering_pct: 12
+        secondary_canal_total_km: 85000
+      notes: >
+        Secondary and tertiary distribution is the least-monitored phase.
+        Farm-level metering covers only ~35% of irrigated area across the basin.
+        Losses of 12-20% typical in unlined secondary canals. In non-EU countries,
+        secondary distribution data is largely absent. Remote sensing (MODIS ET,
+        Landsat NDVI) provides indirect estimates of actual crop water use.
+        Opacity score 4 — most opaque phase in the chain.
+
+    phase_3:
+      id: 3
+      name: "Field Application"
+      phase_category: "Midstream"
+      physical_state_in: "Water at farm-gate intake"
+      physical_state_out: "Water applied to crop root zone"
+      primary_transformation: "Field irrigation by gravity/flood, sprinkler, or drip method"
+      typical_time_scale: "Hours to days per irrigation event"
+      transparency_level: "Medium"
+      measurable_output: "Effective crop water application efficiency (%)"
+      output_unit: "%"
+      data_status: "PARTIAL"
+      primary_sources:
+        - "FAO Irrigation and Drainage Paper No. 66 (Bruinsma 2011)"
+        - "Eurostat farm structure survey (irrigation method by country)"
+        - "FAO AQUASTAT crop water requirement calculations"
+        - "Remote sensing evapotranspiration (GLEAM; SEBS)"
+      opacity_score: 2
+      key_values:
+        application_efficiency_gravity_flood_pct: 47
+        application_efficiency_sprinkler_pct: 75
+        application_efficiency_drip_pct: 88
+        weighted_average_efficiency_pct: 50
+        gravity_flood_share_pct: 55
+        sprinkler_share_pct: 30
+        drip_share_pct: 15
+        modernisation_potential_pct: 75
+      notes: >
+        Gravity/flood irrigation (55% of irrigated area) has application efficiency
+        ~47% — most water is lost to deep percolation, runoff, or evaporation.
+        Sprinkler (30%) achieves ~75%; drip (15%) ~88%. Eurostat tracks irrigation
+        method by country for EU members. FAO Irrigation Paper 66 is the primary
+        benchmark. Overall weighted efficiency ~50% means half the abstracted water
+        does not reach the crop root zone.
+
+    phase_4:
+      id: 4
+      name: "Drainage and Agricultural Return Flow"
+      phase_category: "Downstream"
+      physical_state_in: "Excess water in field drainage"
+      physical_state_out: "Drainage water returning to groundwater or river"
+      primary_transformation: "Gravity drainage to tile drains, ditches, and return canals"
+      typical_time_scale: "Days to weeks (after irrigation events)"
+      transparency_level: "Medium"
+      measurable_output: "Return flow volume (m3/yr); nitrate load (kg/yr)"
+      output_unit: "m3/yr; kg NO3/yr"
+      data_status: "PARTIAL"
+      primary_sources:
+        - "EU Nitrates Directive monitoring (EU members)"
+        - "ICPDR WFD water body status reporting"
+        - "EEA European Environment Agency water quality reports"
+        - "National agricultural environment monitoring"
+      opacity_score: 2
+      key_values:
+        estimated_return_flow_pct: 30
+        return_flow_km3_yr: 6.6
+        nitrate_concentration_mg_l_avg: 18
+        eu_nitrate_threshold_mg_l: 50
+        phosphorus_load_t_yr: 85000
+        pesticide_detected_water_bodies_pct: 62
+      notes: >
+        Agricultural drainage returns ~30% of abstracted water to the basin (6.6 km3/yr).
+        However, this return flow carries nitrates, phosphorus, and pesticide residues.
+        62% of Danube water bodies affected by agricultural pollution (ICPDR WFD
+        reporting). EU Nitrates Directive (91/676/EEC) mandates monitoring in vulnerable
+        zones. Non-EU countries have limited drainage monitoring. The return flow is
+        both a water return (positive D-C) and a pollution source (negative externality).
+
+  ndc_derivation:
+    # D/C/N values derived using PDI-to-HTML pipeline formula.
+    # Note: Phase 2 (secondary distribution) has very low transparency (opacity=4)
+    # pulling balance down. This reflects real infrastructure opacity.
+    phase_0: {D: 276, C: 248, balance: 91.0, N: 238, sustainability: 0.95}
+    phase_1: {D: 264, C: 244, balance: 79.0, N: 201, sustainability: 0.96}
+    phase_2: {D: 240, C: 244, balance: 77.0, N: 186, sustainability: 0.98}
+    phase_3: {D: 268, C: 256, balance: 84.0, N: 220, sustainability: 0.96}
+    phase_4: {D: 244, C: 244, balance: 79.0, N: 193, sustainability: 1.00}
+
+  coherence_scores:
+    pi: 82.0
+    phi: 55.0
+    sqrt2: 62.0
+    ln2: 68.0
+    e: 15.0   # reduced from 28: EU CAP provides coupling for ~40% of irrigated area; 60% (Ukraine/Serbia/Moldova) has no financial abstraction layer; efficiency paradox invalidates area-based payments as performance proxy
+
+  analyst_notes: |
+    Danube Basin irrigation infrastructure is the most structurally challenged of the
+    three water infrastructure systems analysed (drinking water: 88.6%, irrigation: 82.0%).
+
+    The critical structural weaknesses are:
+    1. Phase 2 (secondary distribution, 77% balance) — lowest in the chain. The
+       combination of very low monitoring coverage (farm metering 35%), unlined
+       canals (losses 15%), and absence of data in non-EU countries creates a major
+       opacity gap. D < C signals an under-defined phase where contribution forces
+       exceed constraint capacity — water flows through the system faster than
+       infrastructure can manage it.
+    2. Phase 1 (primary canal conveyance, 79%) — aging infrastructure (avg 45 years),
+       earth canal seepage losses averaging 18%, and minimal telemetry. In Romania,
+       the Main East Canal system (built 1975-1985) requires comprehensive lining
+       and control gate rehabilitation.
+    3. Phase 4 (drainage, 79%) — return flow carries significant agricultural pollution
+       loads. 62% of Danube water bodies show agricultural diffuse pollution pressure.
+       This is a hidden externality not priced into current water tariff structures.
+
+    e (Abstract) score of 28 reflects EU CAP payments as partial financial abstraction,
+    but these are area-based payments not performance-linked. A performance bond would
+    need to create the link between investment (canal rehabilitation, metering rollout,
+    irrigation method modernisation) and measurable outcome (efficiency improvement from
+    50% to 70%, reducing water loss from 11 km3/yr to 6.6 km3/yr).
+
+    Bond opportunity: Irrigation efficiency bond financing canal lining, metering
+    installation, and drip/sprinkler conversion targeting 5.5 km3/yr water savings.
+    Performance trigger: weighted irrigation efficiency rising from 50% to 65% over
+    10 years (measurable via AQUASTAT + remote sensing ET calibration).
+    Revenue basis: EU CAP agri-environment payments; water pricing reform under WFD.
+
+    GOVERNANCE PRE-CONDITION (Pittock caveat): The 5.5 km3/yr saving is only realised
+    at basin scale if a binding extraction cap is enforced alongside efficiency investment.
+    Without a hard abstraction limit, irrigators redirect efficiency gains into expanded
+    irrigated area or increased cropping intensity, producing no net basin-scale water
+    saving — the "irrigation efficiency paradox" (Grafton, Williams, Pittock et al.,
+    Science 361(6404), 2018; DOI: 10.1126/science.aat9314). In non-EU Danube countries
+    (Ukraine, Serbia, Moldova) abstraction permits are absent or unenforced, raising
+    the risk that bond proceeds accelerate demand rather than saving water. The bond
+    instrument must therefore include: (1) a WFD-equivalent basin extraction cap as
+    a pre-condition for disbursement in non-EU jurisdictions, and (2) monitoring of
+    total basin water consumption (not just efficiency ratios) as the primary KPI.
+    A secondary risk is return flow reduction: eliminating drainage from inefficient
+    flood irrigation removes the 6.6 km3/yr return flow that currently sustains
+    groundwater recharge and downstream baseflow, potentially degrading the
+    natural_freshwater_availability asset that the bond is designed to protect.

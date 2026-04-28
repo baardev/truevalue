@@ -3412,6 +3412,16 @@ Corporate materiality filters can miss weak signals that are structurally import
 </code></pre></div>
 <h2 id="16-ingesting-documents-into-anythingllm">16. Ingesting Documents Into AnythingLLM</h2>
 <p>Use the manifest-driven ingestion script when you want to upload many files into AnythingLLM.</p>
+<p>Before ingestion, convert raw inbox files into clean Markdown and CSV outputs:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/convert_inbox_sources.py<span class="w"> </span>-dry-run<span class="w"> </span>-since-marker<span class="w"> </span>NOW
+python<span class="w"> </span>scripts/convert_inbox_sources.py<span class="w"> </span>-since-marker<span class="w"> </span>NOW
+</code></pre></div>
+<p>To convert one file in place, pass the file path directly. The output is written beside the input with the converted extension:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/convert_inbox_sources.py<span class="w"> </span><span class="s2">&quot;NEW/example.docx&quot;</span>
+python<span class="w"> </span>scripts/convert_inbox_sources.py<span class="w"> </span><span class="s2">&quot;NEW/example.xlsx&quot;</span>
+python<span class="w"> </span>scripts/convert_inbox_sources.py<span class="w"> </span>-file<span class="w"> </span><span class="s2">&quot;NEW/example.docx&quot;</span>
+</code></pre></div>
+<p>This script converts <code>.docx</code>, <code>.doc</code>, <code>.html</code>, <code>.xlsx</code>, and <code>.xls</code> files from <code>NEW/</code> into curated Markdown source notes and CSV tables. Office conversion for <code>.doc</code> and <code>.xls</code> requires LibreOffice. Excel conversion requires <code>openpyxl</code>, which is included in <code>requirements-docs.txt</code>.</p>
 <p>The starter manifest is:</p>
 <div class="highlight"><pre><span></span><code>frontend/docs/anythingllm_manifest.yaml
 </code></pre></div>
@@ -3438,6 +3448,13 @@ python<span class="w"> </span>scripts/anythingllm_ingest.py
 </code></pre></div>
 <p>Process only the first few files while testing:</p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/anythingllm_ingest.py<span class="w"> </span>-n<span class="w"> </span>-l<span class="w"> </span><span class="m">10</span>
+</code></pre></div>
+<p>Write the exact ingestion file list to disk for review:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/anythingllm_ingest.py<span class="w"> </span>-n<span class="w"> </span>-file-list<span class="w"> </span>anythingllm_file_list.txt
+</code></pre></div>
+<p>Ingest only files newer than a marker file such as <code>NOW</code>:</p>
+<div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/anythingllm_ingest.py<span class="w"> </span>-n<span class="w"> </span>-since-marker<span class="w"> </span>NOW<span class="w"> </span>-file-list<span class="w"> </span>anythingllm_newer_than_now.txt
+python<span class="w"> </span>scripts/anythingllm_ingest.py<span class="w"> </span>-since-marker<span class="w"> </span>NOW
 </code></pre></div>
 <p>List documents that have already been uploaded to AnythingLLM:</p>
 <div class="highlight"><pre><span></span><code>python<span class="w"> </span>scripts/anythingllm_ingest.py<span class="w"> </span>-list-documents

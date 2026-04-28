@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Freshwater Supply Infrastructure — System Lifecycle</title>
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family:ui-sans-serif,system-ui,sans-serif; background:#0d1117; color:#e6edf3; min-height:100vh; padding:20px; }
+    .container { max-width:1000px; margin:0 auto; }
+    .header { background:linear-gradient(135deg,#0d47a1,#1565c0); border-radius:10px; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+    .header h1 { font-size:18px; font-weight:300; color:#fff; }
+    .header .nav a { color:rgba(255,255,255,.85); text-decoration:none; font-size:13px; font-weight:600; margin-left:14px; }
+    .panel { background:#161b22; border-radius:10px; padding:22px; border:1px solid #30363d; margin-bottom:16px; }
+    .panel h2 { font-size:14px; font-weight:700; color:#8b949e; text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px; }
+    .lifecycle-phase { border:1px solid #30363d; border-radius:8px; padding:16px; margin-bottom:12px; position:relative; overflow:hidden; }
+    .lifecycle-phase::before { content:''; position:absolute; top:0; left:0; bottom:0; width:4px; background:#1565c0; }
+    .lifecycle-phase.bottleneck::before { background:#ef5350; }
+    .lp-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+    .lp-id { font-size:11px; font-weight:900; color:#4fc3f7; text-transform:uppercase; }
+    .lp-balance { font-size:14px; font-weight:800; }
+    .lp-name { font-size:14px; font-weight:600; color:#c9d1d9; margin-bottom:6px; }
+    .lp-bars { display:flex; gap:8px; align-items:center; margin-bottom:5px; }
+    .lp-bar-label { font-size:10px; color:#8b949e; width:14px; font-weight:700; }
+    .lp-bar-track { flex:1; background:#21262d; border-radius:3px; height:7px; }
+    .lp-bar-fill { border-radius:3px; height:7px; }
+    .lp-D { background:#3ecf8e; }
+    .lp-C { background:#ef5350; }
+    .lp-N { background:#4fc3f7; }
+    .lp-note { font-size:12px; color:#8b949e; line-height:1.5; }
+    .lp-meta { display:flex; gap:12px; flex-wrap:wrap; font-size:11px; color:#6e7681; margin-top:6px; }
+    .summary-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
+    .kpi { background:#0d1117; border-radius:8px; padding:12px; border-left:3px solid #1565c0; }
+    .kpi-label { font-size:10px; text-transform:uppercase; color:#8b949e; font-weight:700; margin-bottom:4px; }
+    .kpi-value { font-size:20px; font-weight:800; color:#4fc3f7; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚰 Freshwater Supply Infrastructure — System Lifecycle</h1>
+      <div class="nav">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="../index.html">Hub</a>
+        <a href="../../index.html">Danube</a>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h2>Lifecycle Summary</h2>
+      <div class="summary-grid" id="summary-grid">Loading…</div>
+    </div>
+
+    <div class="panel">
+      <h2>Phase Lifecycle N-D-C</h2>
+      <div id="lifecycle-phases">Loading…</div>
+    </div>
+
+    <div class="panel">
+      <h2>Infrastructure Lifecycle Interpretation</h2>
+      <div style="font-size:13px;line-height:1.7;color:#c9d1d9;">
+        <p style="margin-bottom:10px;">
+          <strong style="color:#4fc3f7;">Lifecycle structure:</strong> The human supply infrastructure
+          lifecycle follows a classic engineering pattern. Phases 0-2 (intake, conveyance, treatment)
+          are mature, well-managed, and high-transparency. Phase 2 (treatment) achieves the highest
+          balance (93%) — the EU regulatory framework creates strong D-C equilibrium.
+        </p>
+        <p style="margin-bottom:10px;">
+          <strong style="color:#f0a030;">Phase 3 bottleneck:</strong> The distribution network (Phase 3,
+          81% balance) is the lifecycle weakness. Medium transparency (commercial sensitivity around
+          network topology) and high non-revenue water (25%) indicate that the D constraints (pipe age,
+          pressure management) exceed the C contribution (efficient delivery). This is the lifecycle
+          point that demands investment.
+        </p>
+        <p>
+          <strong style="color:#3ecf8e;">Bond intervention logic:</strong> A bond financing Phase 3
+          network rehabilitation would directly address the lowest-N lifecycle phase. Performance
+          can be measured via NRW reduction (from 25% to 15% is the stated target), translating
+          directly to increased balance score and N. The e-layer score of 42 provides existing
+          financial infrastructure for the bond instrument.
+        </p>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function(){
+  var DATA_URL='../data/processed/human_freshwater_supply_infrastructure_system_lifecycle_ndc.json';
+  fetch(DATA_URL).then(function(r){return r.json();}).catch(function(){return null;}).then(function(data){
+    if(!data||!data.phases) return;
+    var phases=data.phases;
+    var maxD=Math.max.apply(null,phases.map(function(p){return p.D_total;}));
+    var maxC=Math.max.apply(null,phases.map(function(p){return p.C_total;}));
+    var maxN=Math.max.apply(null,phases.map(function(p){return p.N;}));
+    var maxV=Math.max(maxD,maxC,maxN);
+    var avgBalance=(phases.reduce(function(s,p){return s+p.balance_score;},0)/phases.length).toFixed(1);
+    var avgN=Math.round(phases.reduce(function(s,p){return s+p.N;},0)/phases.length);
+    var weakest=phases.reduce(function(w,p){return p.balance_score<w.balance_score?p:w;});
+    var strongest=phases.reduce(function(b,p){return p.balance_score>b.balance_score?p:b;});
+
+    document.getElementById('summary-grid').innerHTML=
+      '<div class="kpi"><div class="kpi-label">Avg Balance</div><div class="kpi-value">'+avgBalance+'%</div></div>'+
+      '<div class="kpi"><div class="kpi-label">Avg N</div><div class="kpi-value">'+avgN+'</div></div>'+
+      '<div class="kpi"><div class="kpi-label">Bottleneck</div><div class="kpi-value" style="color:#ef5350;">Ph '+weakest.lifecycle_phase_id+'</div><div style="font-size:10px;color:#8b949e;">'+weakest.balance_score.toFixed(1)+'%</div></div>'+
+      '<div class="kpi"><div class="kpi-label">Strongest</div><div class="kpi-value">Ph '+strongest.lifecycle_phase_id+'</div><div style="font-size:10px;color:#8b949e;">'+strongest.balance_score.toFixed(1)+'%</div></div>';
+
+    var html='';
+    phases.forEach(function(p){
+      var dPct=(p.D_total/maxV*100).toFixed(1);
+      var cPct=(p.C_total/maxV*100).toFixed(1);
+      var nPct=(p.N/maxV*100).toFixed(1);
+      var isBottleneck=p.balance_score<85;
+      var balColor=p.balance_score>=90?'#3ecf8e':p.balance_score>=80?'#f0a030':'#ef5350';
+      html+='<div class="lifecycle-phase'+(isBottleneck?' bottleneck':'')+'">'+
+        '<div class="lp-header"><span class="lp-id">Phase '+p.lifecycle_phase_id+(isBottleneck?' ⚠ BOTTLENECK':'')+'</span><span class="lp-balance" style="color:'+balColor+'">'+p.balance_score.toFixed(1)+'%</span></div>'+
+        '<div class="lp-name">'+p.phase_name+'</div>'+
+        '<div class="lp-bars"><span class="lp-bar-label">D</span><div class="lp-bar-track"><div class="lp-bar-fill lp-D" style="width:'+dPct+'%"></div></div><span style="font-size:10px;color:#3ecf8e;min-width:28px;">'+p.D_total+'</span></div>'+
+        '<div class="lp-bars"><span class="lp-bar-label">C</span><div class="lp-bar-track"><div class="lp-bar-fill lp-C" style="width:'+cPct+'%"></div></div><span style="font-size:10px;color:#ef5350;min-width:28px;">'+p.C_total+'</span></div>'+
+        '<div class="lp-bars"><span class="lp-bar-label">N</span><div class="lp-bar-track"><div class="lp-bar-fill lp-N" style="width:'+nPct+'%"></div></div><span style="font-size:10px;color:#4fc3f7;min-width:28px;">'+p.N+'</span></div>'+
+        '<div class="lp-note">'+p.notes+'</div>'+
+        '<div class="lp-meta"><span>Transparency: '+p.transparency_level+'</span><span>Category: '+p.category+'</span></div>'+
+        '</div>';
+    });
+    document.getElementById('lifecycle-phases').innerHTML=html;
+  });
+})();
+</script>
+</body>
+</html>

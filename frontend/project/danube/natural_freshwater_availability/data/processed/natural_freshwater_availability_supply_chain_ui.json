@@ -1,0 +1,161 @@
+{
+  "_meta": {
+    "generated": "2026-04-27T18:38:40.011275",
+    "generator": "scripts/generate_danube_data.py",
+    "material": "natural_freshwater_availability",
+    "basin": "danube",
+    "service_type": "natural",
+    "paired_with": "human_freshwater_supply_infrastructure",
+    "sources": [
+      "frontend/project/danube/natural_freshwater_availability/data/PDI_freshwater_availability_danube_2026.yaml",
+      "frontend/project/danube/natural_freshwater_availability/data/schema/natural_freshwater_availability_supply_chain_phases.csv",
+      "frontend/project/danube/natural_freshwater_availability/data/schema/natural_freshwater_availability_supply_chain_metrics.csv"
+    ],
+    "note": "Synthetic baseline from PDI phase derivation. Re-run generate_danube_data.py to refresh."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "Synthetic Baseline",
+      "description": "PDI-derived baseline for Danube Basin natural freshwater availability. Not tied to a specific operator."
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Atmospheric Moisture",
+      "transparency": "High",
+      "transformation": "ecological_cascade"
+    },
+    "1": {
+      "name": "Precipitation over Basin",
+      "transparency": "High",
+      "transformation": "ecological_cascade"
+    },
+    "2": {
+      "name": "Catchment Runoff and River Flow",
+      "transparency": "High",
+      "transformation": "ecological_cascade"
+    },
+    "3": {
+      "name": "Groundwater Recharge",
+      "transparency": "Medium",
+      "transformation": "ecological_cascade"
+    },
+    "4": {
+      "name": "Available Flow to Beneficiaries",
+      "transparency": "High",
+      "transformation": "ecological_cascade"
+    }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 252,
+        "C": 228,
+        "balance": 91.0,
+        "N": 218,
+        "sustainability": 0.95,
+        "notes": "Atmospheric moisture source: Atlantic and Mediterranean evaporation. ERA5 satellite coverage.",
+        "data_quality": "High",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not provided \u2014 requires separate data input",
+        "scope_quality": "No data",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null,
+        "ecological_stock_ratio": 0.17,
+        "stock_ratio_note": "Ratio of total abstraction to annual renewable freshwater resource"
+      },
+      "1": {
+        "D": 280,
+        "C": 248,
+        "balance": 89.0,
+        "N": 235,
+        "sustainability": 0.94,
+        "notes": "Precipitation 800mm/yr mean over 801,463 km2 = 641 km3/yr total basin input.",
+        "data_quality": "High",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not provided \u2014 requires separate data input",
+        "scope_quality": "No data",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null,
+        "ecological_stock_ratio": 0.17,
+        "stock_ratio_note": "Ratio of total abstraction to annual renewable freshwater resource"
+      },
+      "2": {
+        "D": 276,
+        "C": 248,
+        "balance": 92.0,
+        "N": 241,
+        "sustainability": 0.95,
+        "notes": "River discharge 6,500 m3/s mean at mouth; 206 km3/yr runoff. GRDC gauge network.",
+        "data_quality": "High",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not provided \u2014 requires separate data input",
+        "scope_quality": "No data",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null,
+        "ecological_stock_ratio": 0.17,
+        "stock_ratio_note": "Ratio of total abstraction to annual renewable freshwater resource"
+      },
+      "3": {
+        "D": 244,
+        "C": 236,
+        "balance": 83.0,
+        "N": 199,
+        "sustainability": 0.98,
+        "notes": "Groundwater stores ~88 km3; recharge ~12 km3/yr. GRACE-FO basin-scale monitoring.",
+        "data_quality": "Medium",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not provided \u2014 requires separate data input",
+        "scope_quality": "No data",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null,
+        "ecological_stock_ratio": 0.17,
+        "stock_ratio_note": "Ratio of total abstraction to annual renewable freshwater resource"
+      },
+      "4": {
+        "D": 280,
+        "C": 268,
+        "balance": 86.0,
+        "N": 236,
+        "sustainability": 0.98,
+        "notes": "2,543 m3/person/yr availability; water stress index 0.17 nationally. WFD good ecological status: 40% of water bodies (ICPDR 2021). Phase 4 balance reduced from 90 to 86 to reflect this C-output deficit.",
+        "data_quality": "High",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not provided \u2014 requires separate data input",
+        "scope_quality": "No data",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null,
+        "ecological_stock_ratio": 0.17,
+        "stock_ratio_note": "Ratio of total abstraction to annual renewable freshwater resource"
+      }
+    }
+  },
+  "system": {
+    "synthetic": {
+      "balance": 88.2,
+      "average_N": 226,
+      "bottleneck_phase_ids": [
+        "3"
+      ],
+      "water_recycling_pct": null,
+      "waste_circularity_pct": null,
+      "clean_energy_pct": null,
+      "interpretation": "Chain average balance 88.2%. Strongest phase: Catchment Runoff and River Flow (92.0%). Weakest phase: Groundwater Recharge (83.0%). Bottleneck phases: ['3']."
+    }
+  }
+}

@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Irrigation Infrastructure Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Irrigation Infrastructure Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>irrigation_infrastructure_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>River and Canal Intake and Pumping</td><td>Upstream</td><td>Natural surface water at river or reservoir</td><td>Raw water at pump station outlet</td><td>Abstraction and lift pumping</td><td>Seasonal (peak May-September)</td><td>High</td><td>Agricultural abstraction volume</td><td>m3/yr</td><td>WFD abstraction permit limits; minimum ecological flow requirements; seasonal demand curve; pump station rated capacity</td><td>agricultural demand from ~2.8M ha irrigated area; 78% surface water / 22% groundwater split</td><td>POPULATED</td><td>Total agricultural abstraction 22 km3/yr = 63% of basin total. Largest single intake: Romania (~3.4 km3/yr from Danube main channel). AQUASTAT tracks annual abstraction by sector. EU members require WFD abstraction permits. Seasonal peak June-August. Opacity score 1.</td></tr>
+<tr><td>1</td><td>Primary Canal and Pipeline Conveyance</td><td>Upstream</td><td>Water at pump station outlet</td><td>Water in primary canal or main pipeline</td><td>Gravity flow or pressurized transport over tens to hundreds of km</td><td>Hours to days</td><td>Medium</td><td>Water delivered to primary distribution hubs</td><td>m3/yr</td><td>canal capacity constraints; sediment deposition; infrastructure age (avg 45 years); gradient limitations</td><td>water delivered to multiple irrigation blocks across large geographic areas; Romania; Hungary; Bulgaria; Serbia</td><td>PARTIAL</td><td>Primary canals total ~18000 km across the basin. Average conveyance losses 18% (unlined earth canals; seepage and evaporation). 60% earth canals; 40% concrete-lined. Infrastructure mostly built 1950-1975. EU CAP Pillar II funds some rehabilitation. Non-EU countries (Ukraine; Serbia; Bosnia) have very limited monitoring. Opacity score 3.</td></tr>
+<tr><td>2</td><td>Secondary Distribution Network</td><td>Midstream</td><td>Water in primary canal</td><td>Water at farm-gate intake</td><td>Secondary canal and pipe network distributing to individual farms or irrigation blocks</td><td>Hours</td><td>Low</td><td>Water delivered at farm gate</td><td>m3/ha/yr</td><td>pipe capacity; gate control precision; secondary canal maintenance state; field block boundary</td><td>farm-level delivery for multiple crop types; individual farm allocations</td><td>PARTIAL</td><td>Secondary and tertiary distribution is the least-monitored phase. Farm-level metering covers only ~35% of irrigated area across basin (EU 65%; non-EU 12%). Distribution losses 12-20% in unlined secondary canals. Secondary canal total ~85000 km. Remote sensing (MODIS ET; Landsat NDVI) provides indirect estimates. Opacity score 4 — most opaque phase.</td></tr>
+<tr><td>3</td><td>Field Application</td><td>Midstream</td><td>Water at farm-gate intake</td><td>Water applied to crop root zone</td><td>Field irrigation by gravity/flood; sprinkler; or drip method</td><td>Hours to days per irrigation event</td><td>Medium</td><td>Effective crop water application efficiency</td><td>percent</td><td>crop water requirement (FAO Penman-Monteith); irrigation method efficiency ceiling; soil infiltration rate; scheduling</td><td>crop yield output; multiple crop types: maize (45%); wheat (20%); vegetables (15%); sunflower (10%); sugar beet (10%)</td><td>PARTIAL</td><td>Application efficiency: gravity/flood 47% (55% of area); sprinkler 75% (30%); drip 88% (15%). Weighted average ~50%. FAO Irrigation Paper 66 is primary benchmark. Eurostat tracks irrigation method by country (EU only). Remote sensing ET (GLEAM; SEBS) calibrates actual vs. potential ET. Opacity score 2.</td></tr>
+<tr><td>4</td><td>Drainage and Agricultural Return Flow</td><td>Downstream</td><td>Excess water in field drainage</td><td>Drainage water returning to groundwater or river</td><td>Gravity drainage to tile drains; ditches; and return canals</td><td>Days to weeks (after irrigation events)</td><td>Medium</td><td>Return flow volume and nitrate load</td><td>m3/yr; kg NO3/yr</td><td>drainage network capacity; environmental threshold constraints (EU Nitrates Directive 50 mg/l); phosphorus reduction targets</td><td>return flow of ~6.6 km3/yr (30% of abstraction) to groundwater and river system; nutrient and pesticide load to water bodies</td><td>PARTIAL</td><td>Agricultural drainage returns ~30% of abstracted water (6.6 km3/yr). Return flow carries significant pollution: nitrate avg 18 mg/l; 62% of Danube water bodies with agricultural diffuse pollution (ICPDR). EU Nitrates Directive monitoring in vulnerable zones. Phosphorus load ~85000 t/yr. 62% of monitored water bodies have detected pesticide residues. Opacity score 2.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

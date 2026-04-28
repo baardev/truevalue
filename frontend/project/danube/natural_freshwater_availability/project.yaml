@@ -1,0 +1,61 @@
+id: natural_freshwater_availability
+name: Freshwater Availability
+basin: danube
+type: natural
+service_category: provisioning
+teeb_class: provisioning
+description: >
+  The hydrological cycle producing freshwater across the Danube Basin through
+  precipitation, catchment runoff, river flow, and groundwater recharge.
+  This is the natural asset — the water itself, produced by ecological and
+  atmospheric processes — that supports ~81 million people and is the
+  substrate for the paired human supply infrastructure.
+paired_with:
+  human: human_freshwater_supply_infrastructure
+data_availability: H
+primary_sources:
+  - name: "AQUASTAT (FAO)"
+    url: "https://www.fao.org/aquastat"
+    metrics: "water withdrawal, availability by country"
+  - name: "ERA5 reanalysis (Copernicus/ECMWF)"
+    url: "https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5"
+    metrics: "precipitation, evapotranspiration, runoff"
+  - name: "GRDC (Global Runoff Data Centre)"
+    url: "https://www.bafg.de/GRDC"
+    metrics: "river flow at gauge stations"
+  - name: "GRACE-FO (NASA)"
+    url: "https://grace.jpl.nasa.gov"
+    metrics: "groundwater storage anomalies at basin scale"
+key_metrics:
+  total_annual_renewable_water_km3: 206
+  population_served: 81000000
+  basin_area_km2: 801463
+  mean_annual_precipitation_mm: 800
+  mean_annual_runoff_mm: 270
+  groundwater_dependent_fraction: 0.35
+ecological_asset:
+  stock_metric: "annual renewable freshwater (km3/yr)"
+  stock_value: 206
+  regeneration_rate: "annual (precipitation-driven, 800mm mean)"
+  degradation_factors:
+    - reduced precipitation under climate change
+    - increased evapotranspiration from warming
+    - glacier retreat reducing dry-season flow
+    - wetland drainage reducing aquifer recharge
+    - groundwater over-extraction
+service_cascade:
+  - node: atmospheric_moisture
+    description: Water vapor from Atlantic and Mediterranean evaporation
+  - node: precipitation
+    description: Rain and snow deposited across 801,463 km2 basin
+  - node: catchment_runoff_and_river_flow
+    description: Surface water routing through 2,860 km river network
+  - node: groundwater_recharge
+    description: Infiltration into floodplain aquifers and karst systems
+  - node: available_flow_to_beneficiaries
+    description: Accessible surface and groundwater for human and ecological use
+ndc_colors:
+  primary: "#2e7d32"
+  dark: "#1b5e20"
+  light: "#e8f5e9"
+created: "2026-04-27"

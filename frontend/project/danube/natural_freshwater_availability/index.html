@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Natural Freshwater Availability — Danube Basin</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 50%, #388e3c 100%);
+      min-height: 100vh; padding: 24px; color: #2c3e50;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px; margin-bottom: 22px; text-align: center;
+    }
+    .kicker {
+      display: inline-block; font-size: 12px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: #2e7d32; background: #e8f5e9;
+      padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+    }
+    .type-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: #fff; background: #2e7d32;
+      padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+    }
+    .paired-badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      color: #fff; background: #f57f17;
+      padding: 4px 10px; border-radius: 999px; margin-left: 6px;
+    }
+    h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 700px; margin: 0 auto 20px; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px; }
+    .card {
+      background: #fff; border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 28px 28px 18px; color: #fff; }
+    .card-header.sc { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #33691e 0%, #558b2f 100%); }
+    .card-header.vc { background: linear-gradient(135deg, #795548 0%, #8d6e63 100%); }
+    .card-icon { font-size: 40px; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 22px 28px 26px; }
+    .card-body ul { list-style: none; margin-bottom: 18px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+    .card-body li::before { content: "✓"; position: absolute; left: 0; color: #2e7d32; font-weight: bold; }
+    .btn {
+      display: inline-block; padding: 11px 22px; border-radius: 8px;
+      text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn.sc { background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); }
+    .btn.vc { background: linear-gradient(135deg, #795548 0%, #8d6e63 100%); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    .sub-links { margin-top: 12px; font-size: 13px; }
+    .sub-links a { color: #2c3e50; font-weight: 600; text-decoration: none; margin-right: 12px; }
+    .sub-links a:hover { text-decoration: underline; }
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 20px;
+    }
+    .kpi { background: #f1f8e9; border-radius: 10px; padding: 14px; border-left: 4px solid #2e7d32; text-align: left; }
+    .kpi-label { font-size: 11px; text-transform: uppercase; color: #6c757d; font-weight: 700; margin-bottom: 4px; }
+    .kpi-value { font-size: 22px; font-weight: 800; color: #1b5e20; }
+    .kpi-sub { font-size: 11px; color: #6c757d; margin-top: 3px; }
+    .paired-panel {
+      background: #fff3e0; border: 1.5px solid #f57f17; border-radius: 10px;
+      padding: 16px 20px; margin-top: 20px; font-size: 13px; line-height: 1.6; color: #333;
+    }
+    .paired-panel strong { color: #e65100; }
+    .nav { text-align: center; margin-top: 14px; }
+    .nav a {
+      display: inline-block; color: rgba(255,255,255,0.9);
+      text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px;
+    }
+    .nav a:hover { text-decoration: underline; }
+    .footer { text-align: center; color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 18px; padding: 8px 0; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .kpi-strip { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="hero">
+      <div class="kicker">Danube Basin · Natural Service</div>
+      <h1>💧 Natural Freshwater Availability
+        <span class="type-badge">Natural</span>
+        <span class="paired-badge">Paired</span>
+      </h1>
+      <p class="subtitle">
+        The hydrological cycle producing 206 km³/yr of renewable freshwater across the Danube Basin
+        through precipitation, catchment runoff, and groundwater recharge. This is the natural asset
+        underlying supply to ~81 million people.
+      </p>
+
+      <div class="kpi-strip">
+        <div class="kpi">
+          <div class="kpi-label">Annual Renewable Water</div>
+          <div class="kpi-value">206 km³</div>
+          <div class="kpi-sub">per year basin total</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Population Served</div>
+          <div class="kpi-value">81M</div>
+          <div class="kpi-sub">across 19 countries</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Per Capita Availability</div>
+          <div class="kpi-value">2,543 m³</div>
+          <div class="kpi-sub">per person / year</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Water Stress Index</div>
+          <div class="kpi-value">0.17</div>
+          <div class="kpi-sub">low (threshold: 0.40)</div>
+        </div>
+      </div>
+
+      <div class="paired-panel">
+        <strong>Paired with:</strong> This natural service is the asset underlying
+        <a href="../human_freshwater_supply_infrastructure/index.html" style="color:#e65100;font-weight:700;">
+          Human Freshwater Supply Infrastructure
+        </a>.
+        The natural system produces the water; the human system extracts, treats, and delivers it.
+        Sustainability depends on human abstraction (35 km³/yr) staying within natural renewal (206 km³/yr).
+        Current stock ratio: <strong>0.17</strong> — low stress, but increasing under climate change.
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="card-header sc">
+            <div class="card-icon">🌊</div>
+            <div class="card-title">Service Cascade</div>
+            <div class="card-desc">Ecological production function · 5 phases · Natural asset</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Phase 0–4: Atmosphere → Precipitation → River Flow → Groundwater → Available</li>
+              <li>N-D-C balance per phase (Tholonic model)</li>
+              <li>ERA5, GRDC, GRACE-FO, AQUASTAT data anchors</li>
+              <li>Ecological stock ratio vs. abstraction pressure</li>
+              <li>Climate degradation risk scenarios</li>
+            </ul>
+            <a href="supply_chain/index.html" class="btn sc">Open Service Cascade →</a>
+            <div class="sub-links">
+              <a href="supply_chain/dashboard.html">Dashboard</a>
+              <a href="supply_chain/project_context.html">Context</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header lc">
+            <div class="card-icon">🔁</div>
+            <div class="card-title">System Lifecycle</div>
+            <div class="card-desc">Hydrological cycle · Recharge · Degradation risks</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Lifecycle N-D-C for the natural water production system</li>
+              <li>Seasonal and multi-year variability</li>
+              <li>Climate change degradation pathways</li>
+              <li>Glacier retreat and groundwater depletion risks</li>
+              <li>Loaded from natural_freshwater_availability_system_lifecycle_ndc.json</li>
+            </ul>
+            <a href="supply_chain/system_lifecycle.html" class="btn sc">Open Lifecycle →</a>
+            <div class="sub-links">
+              <a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header vc">
+            <div class="card-icon">📊</div>
+            <div class="card-title">Value Layer</div>
+            <div class="card-desc">Asset valuation · Bond collateral · Deferred</div>
+          </div>
+          <div class="card-body">
+            <ul>
+              <li>Natural asset value not yet formally quantified for bonding</li>
+              <li>Substitution cost approach: cost of engineered alternative</li>
+              <li>e-layer (Abstract) score = 0 — no financial instrument yet</li>
+              <li>Activate when bond structure is defined</li>
+              <li>Pair with human_freshwater_supply_infrastructure value chain</li>
+            </ul>
+            <a href="value_chain/index.html" class="btn vc">View Value Status →</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav">
+      <a href="../index.html">← Danube Basin Hub</a>
+      <a href="../human_freshwater_supply_infrastructure/index.html">Paired: Human Supply →</a>
+      <a href="/index.html">Main Homepage</a>
+    </div>
+    <div class="footer">Danube Basin · Natural Freshwater Availability · Natural Service · v1.0</div>
+  </div>
+</body>
+</html>
