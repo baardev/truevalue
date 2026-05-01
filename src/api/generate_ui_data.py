@@ -28,6 +28,20 @@ from collections import defaultdict
 from datetime import datetime
 from pathlib import Path
 
+# Tholonic zone classification (four-zone PHI framework)
+try:
+    import importlib.util, os
+    _repo = Path(__file__).resolve().parents[2]
+    _spec = importlib.util.spec_from_file_location(
+        "tholonic_engine",
+        _repo / "src" / "simulation" / "tholonic_engine.py"
+    )
+    _mod = importlib.util.module_from_spec(_spec)
+    _spec.loader.exec_module(_mod)
+    _classify_zone = _mod.classify_ndc_balance_zone
+except Exception:
+    _classify_zone = None
+
 # ── Paths ────────────────────────────────────────────────────────────────────
 REPO = Path(__file__).resolve().parents[2]
 
@@ -253,6 +267,35 @@ def inject_scope_emissions(target: dict) -> None:
                 phase[k] = v
 
 
+def inject_balance_zones(target: dict) -> None:
+    """
+    Add PHI four-zone classification fields to every synthetic phase that has a
+    'balance' value. Fields written: balance_zone, balance_zone_label,
+    balance_zone_color, balance_zone_note.
+
+    Zones (from PHI_THRESHOLD_PROJECT_REANALYSIS.pdf):
+      coherent  >= 80%    green
+      stressed  >= 61.8%  amber   (100/phi)
+      failure   >= 38.2%  red     (100 * (1 - 1/phi))
+      breakdown <  38.2%  dark_red
+    """
+    if _classify_zone is None:
+        return
+    phases = target.get("phases", {}).get("synthetic", {})
+    for pid, phase in phases.items():
+        b = phase.get("balance")
+        if b is None:
+            continue
+        try:
+            zone = _classify_zone(float(b))
+        except (TypeError, ValueError):
+            continue
+        phase["balance_zone"]       = zone["zone"]
+        phase["balance_zone_label"] = zone["label"]
+        phase["balance_zone_color"] = zone["color"]
+        phase["balance_zone_note"]  = zone["note"]
+
+
 # ── Gold generator ────────────────────────────────────────────────────────────
 
 def build_gold_ui(dry_run: bool = False):
@@ -355,6 +398,9 @@ def build_gold_ui(dry_run: bool = False):
 
     # ── Energy unit and clean % per phase ─────────────────────────────────────
     inject_energy_data(target)
+
+    # ── PHI four-zone balance classification per phase ─────────────────────────
+    inject_balance_zones(target)
 
     # ── Update _meta ─────────────────────────────────────────────────────────
     target["_meta"] = {
@@ -680,6 +726,9 @@ def build_shea_ui(dry_run: bool = False):
 
     # ── Energy data per phase ──────────────────────────────────────────────────
     inject_shea_energy_data(target)
+
+    # ── PHI four-zone balance classification per phase ─────────────────────────
+    inject_balance_zones(target)
 
     # ── Update _meta ─────────────────────────────────────────────────────────
     target["_meta"] = {

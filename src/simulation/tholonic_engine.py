@@ -1,24 +1,26 @@
 """
 Tholonic Simulation Engine for Gold Supply Chain
 
-Implements C-G-N (Constraints-Growth-Negotiation) dynamics
-based on the Tholonic Framework for complex adaptive systems.
+Implements N-D-C dynamics (Definition, Contribution, Negotiation) for phase
+tholons. Code uses D and C totals as in TVPCI / workspace N-D-C naming.
 
-Core Concepts:
-- C (Constraints):   Boundaries, specifications, limitations  [formerly D]
-- G (Growth):        Integration, connections, flow, relationships  [formerly C]
-- N (Negotiation):   Emergent equilibrium state (actual operational reality)
+Sustainability emerges when D ≈ C (balanced system). Energy cost uses |D - C|².
 
-Sustainability emerges when C ≈ G (balanced system)
-Energy cost = |C - G|² (imbalance penalty)
+Balance score (TVPCI phase balance, exponential, 0 to 100):
+    B_exp = 100 × exp(-2 × |D - C| / max(D, C))
 
-Balance score formula (exponential, 0-100 scale):
-    B = 100 × exp(-2 × |C - G| / max(C, G))
+This matches TVPCI_EXPLAINED_MATH.md §2.1 and phi_engine.py decay shape.
 
-This is consistent with the φ-score decay function used in phi_engine.py
-and matches the TVPCI specification.
+Reconciliation with PHI_SUSTAINABILITY_THRESHOLD.pdf:
+  That paper sets normalized balance to φ⁻¹ and solves for D/C = φ. That step
+  is exact for the *harmonic* proportion 100 × min(D, C) / max(D, C), not for
+  B_exp. Same 61.8% and 38.2% band edges are used in PHI_THRESHOLD_PROJECT_
+  REANALYSIS.pdf as *zone cuts on the reported score* (which is B_exp in this
+  code). For D > C, the D/C ratio at B_exp = 100/φ is ~1.32, not φ (~1.618).
+  Use d_c_ratio_for_exponential_balance() for the exact mapping.
 """
 
+import math
 import numpy as np
 import pandas as pd
 from pathlib import Path
@@ -27,6 +29,89 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# Golden ratio (boundary coherence target in phi_engine / TVPCI §2.2)
+PHI = (1.0 + math.sqrt(5.0)) / 2.0
+
+# N-D-C balance zones on the *exponential* phase score (0 to 100), per
+# PHI_THRESHOLD_PROJECT_REANALYSIS.pdf. Cut percentages are φ-derived
+# complements on the unit interval: 100/φ and 100 × (1 - 1/φ).
+ZONE_COHERENT_MIN_BALANCE = 80.0
+ZONE_STRESSED_MIN_BALANCE = 100.0 / PHI
+ZONE_FAILURE_MIN_BALANCE = 100.0 * (1.0 - 1.0 / PHI)
+
+
+def balance_exponential(d_total: float, c_total: float) -> float:
+    """TVPCI §2.1 phase balance B_exp (same formula as Tholon._calculate_n_state)."""
+    imbalance = abs(d_total - c_total)
+    denom = max(d_total, c_total, 1.0)
+    return 100.0 * math.exp(-2.0 * imbalance / denom)
+
+
+def balance_harmonic(d_total: float, c_total: float) -> float:
+    """
+    Harmonic proportion 100 × min(D,C) / max(D,C).
+
+    PHI_SUSTAINABILITY_THRESHOLD.pdf: balance = φ⁻¹ (61.8%) iff D/C = φ when
+    D > C. Use this score to recover the paper's exact D/C threshold.
+    """
+    denom = max(d_total, c_total, 1e-15)
+    return 100.0 * min(d_total, c_total) / denom
+
+
+def d_c_ratio_for_exponential_balance(balance_pct: float) -> float:
+    """
+    For D > C, let x = D/C. TVPCI formula gives B/100 = exp(-2 × (x - 1) / x).
+    Invert: x = 2 / (2 + ln(B/100)). Returns x for the D-dominant branch.
+
+    For balance_pct = 100/φ, x ≈ 1.318 (not φ). For C > D, use 1/x with the
+    same balance by symmetry of |D - C| / max(D, C).
+    """
+    b = max(balance_pct / 100.0, 1e-15)
+    return 2.0 / (2.0 + math.log(b))
+
+
+# D/C when B_exp equals 100/φ with D > C (~1.318, not φ). For paper D/C = φ, use
+# balance_harmonic == 100/φ.
+D_C_RATIO_AT_SUSTAINABILITY_FLOOR_EXP = d_c_ratio_for_exponential_balance(
+    ZONE_STRESSED_MIN_BALANCE
+)
+
+
+def classify_ndc_balance_zone(balance_pct: float) -> Dict[str, str]:
+    """
+    Four structural zones on exponential phase balance (TVPCI / project reports).
+
+    Coherent / stressed: internal improvement. Failure / breakdown: external
+    intervention or cost export per reanalysis framework.
+    """
+    if balance_pct >= ZONE_COHERENT_MIN_BALANCE:
+        return {
+            "zone": "coherent",
+            "color": "green",
+            "label": "Coherent",
+            "note": "Self-sustaining; optional optimization.",
+        }
+    if balance_pct >= ZONE_STRESSED_MIN_BALANCE:
+        return {
+            "zone": "stressed",
+            "color": "amber",
+            "label": "Stressed",
+            "note": "Self-sustaining but over-constrained; improve D or C in-system.",
+        }
+    if balance_pct >= ZONE_FAILURE_MIN_BALANCE:
+        return {
+            "zone": "failure",
+            "color": "red",
+            "label": "Failure",
+            "note": "Cost export; external policy or infrastructure typically required.",
+        }
+    return {
+        "zone": "breakdown",
+        "color": "dark_red",
+        "label": "Breakdown",
+        "note": "Regulatory or constraint shell dominates contribution.",
+    }
 
 
 class Tholon:
@@ -38,7 +123,7 @@ class Tholon:
         D: Definition parameters (constraints, boundaries)
         C: Contribution parameters (connections, flows)
         N: Negotiation state (emergent equilibrium)
-        balance: D-C balance score
+        balance: D-C balance score (TVPCI exponential B_exp)
         sustainability: Energy efficiency metric
     """
     
@@ -61,19 +146,13 @@ class Tholon:
         """
         Calculate emergent N-state from D and C parameters.
 
-        Balance score — exponential form (0-100), consistent with φ-score decay:
-            B = 100 × exp(-2 × |D - C| / max(D, C))
-            B = 100 when D == C (perfect balance)
-            B → 0 as imbalance grows
+        Balance score: see balance_exponential() (TVPCI §2.1).
 
         N-state — emergent operational capacity:
             N = √(D × C) × (B / 100)
         """
         imbalance = abs(self.D_total - self.C_total)
-        denom = max(self.D_total, self.C_total, 1.0)
-
-        # Exponential balance score (0-100); matches TVPCI spec and phi_engine.py
-        self.balance = 100.0 * np.exp(-2.0 * imbalance / denom)
+        self.balance = balance_exponential(self.D_total, self.C_total)
 
         # Sustainability = 1 / energy_cost; energy cost minimises when D ≈ C
         energy_cost = imbalance ** 2 + self.energy_base
@@ -99,16 +178,33 @@ class Tholon:
             self._calculate_n_state()
     
     def get_state(self) -> Dict:
-        """Return current tholon state"""
+        """Return current tholon state including PHI zone classification on B_exp."""
+        imbalance = abs(self.D_total - self.C_total)
+        if self.C_total > 1e-15:
+            d_c_ratio = self.D_total / self.C_total
+        elif self.D_total > 1e-15:
+            d_c_ratio = float("inf")
+        else:
+            d_c_ratio = 1.0
+
+        b_h = balance_harmonic(self.D_total, self.C_total)
+        zone = classify_ndc_balance_zone(float(self.balance))
+
         return {
             'phase_id': self.phase_id,
             'D_total': self.D_total,
             'C_total': self.C_total,
             'N': self.N,
             'balance': self.balance,
+            'balance_harmonic': b_h,
             'sustainability': self.sustainability,
-            'imbalance': abs(self.D_total - self.C_total),
-            'energy_cost': abs(self.D_total - self.C_total)**2 + self.energy_base
+            'imbalance': imbalance,
+            'energy_cost': imbalance ** 2 + self.energy_base,
+            'd_c_ratio': d_c_ratio,
+            'balance_zone': zone['zone'],
+            'balance_zone_label': zone['label'],
+            'balance_zone_color': zone['color'],
+            'balance_zone_note': zone['note'],
         }
     
     def get_optimization_gradient(self) -> Tuple[float, float]:
