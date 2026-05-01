@@ -1,0 +1,87 @@
+---
+description: Frontend simulator conventions for the Gold Supply Chain dashboard and what-if simulator.
+globs:
+  - "frontend/project/gold/supply_chain/**"
+  - "src/api/**"
+alwaysApply: false
+---
+
+# Frontend Simulator Conventions
+
+## Phase Data Shape
+
+Every phase record must carry these fields:
+
+```javascript
+{
+  id: 0,          // integer 0–7
+  name: String,   // human-readable phase name
+  D: Number,      // Definition value (constraints, capacity, structure)
+  C: Number,      // Contribution value (connections, integration, output)
+  balance: Number, // 0–100, how close D and C are to equilibrium
+  N: Number,      // emergent N-state
+  status: String  // "Excellent" | "Good" | "Fair" | "Poor"
+}
+```
+
+## N-D-C Formulas
+
+```
+balance = 100 - (|D - C| / max(D, C)) * 100
+N       = sqrt(D * C) * (balance / 100)
+sustainability = 100 / ((|D - C|^2) + 10)
+```
+
+- **D (Definition):** boundaries, constraints, specifications, capacity limits.
+- **C (Contribution):** connections, relationships, resources, integration.
+- **N (Negotiation):** emergent observable state. Not directly set; computed from D and C.
+- **Goal:** D ≈ C. Imbalance in either direction increases energy cost and degrades N.
+
+## Color Coding (apply consistently across all views)
+
+| Range | Label | Color |
+|-------|-------|-------|
+| 95–100 | Excellent | Green |
+| 80–94 | Good | Teal |
+| 60–79 | Fair | Orange |
+| < 60 | Poor | Red |
+
+## Visual Encoding Rules
+
+- **Node size:** fixed (represents phase identity, not magnitude).
+- **Node color:** phase health using the color table above.
+- **Edge thickness:** N-value (flow capacity between phases).
+- **Edge color:** upstream phase health.
+- Slider updates must recalculate all dependent metrics in under 100ms.
+
+## D > C vs C > D Interpretation
+
+- **D > C (over-constrained):** capacity exists but integration is lacking. Bottleneck risk.
+- **C > D (over-integrated):** many connections but insufficient structure. Fragility risk.
+- Both are undesirable; the simulator should flag either condition when imbalance exceeds 15%.
+
+## Data Loading Architecture
+
+Hardcoded JS phase data is for mockups only. Production pages must load via fetch:
+
+```javascript
+async function loadPhases() {
+  const response = await fetch('/api/phases');
+  phases = await response.json();
+  renderPhaseControls();
+}
+```
+
+The backend endpoint is `src/api/generate_frontend_data.py`. Phase JSON outputs go to
+`frontend/project/gold/data/processed/`.
+
+## Simulation Endpoint Pattern
+
+What-if scenario changes should POST to `/api/simulate`:
+
+```json
+{ "phase_id": 6, "D": 204, "C": 195 }
+```
+
+Response returns updated full phase array with recalculated balance, N, and system-wide metrics.
+The tholonic engine lives at `src/simulation/tholonic_engine.py`.

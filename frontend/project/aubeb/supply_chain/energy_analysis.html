@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Analysis — AUBEB Supply Chain</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Energy Analysis — AUBEB Supply Chain</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); min-height: 100vh; padding: 20px; }
         .page { max-width: 1400px; margin: 0 auto; background: #f4f6f9; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
@@ -55,55 +56,55 @@
 </head>
 <body>
 <div class="page">
-    <div class="header">
-        <div class="header-left">
-            <h1>⚡ Energy Consumption Analysis — AUBEB Supply Chain</h1>
-            <p>Total consumption · Clean vs fossil split · Per-phase intensity · AUBEB MRV 2030 target tracking</p>
-        </div>
-        <div>
-            <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
-            <a href="emissions_analysis.html" class="nav-link">🌡️ Carbon</a>
-            <a href="water_analysis.html" class="nav-link">💧 Water</a>
-            <a href="/index.html" class="nav-link">🏠 Home</a>
-        </div>
-    </div>
-    <div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading energy data…</span></div>
-    <div class="kpi-strip">
-        <div class="kpi-card"><div class="kpi-label">Total Energy</div><div class="kpi-value" id="kpiTotal" style="color:#6a1b9a;">—</div><div class="kpi-sub">kWh (reference scale)</div></div>
-        <div class="kpi-card"><div class="kpi-label">Clean Energy</div><div class="kpi-value" id="kpiClean" style="color:#2e7d32;">—</div><div class="kpi-sub">renewables / nuclear</div></div>
-        <div class="kpi-card"><div class="kpi-label">Fossil Energy</div><div class="kpi-value" id="kpiFossil" style="color:#bf360c;">—</div><div class="kpi-sub">coal / oil / gas</div></div>
-        <div class="kpi-card"><div class="kpi-label">Clean Mix</div><div class="kpi-value" id="kpiMix" style="color:#1565c0;">—</div><div class="kpi-sub" id="kpiMixSub">vs 60% AUBEB MRV 2030 target</div></div>
-        <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest energy use</div></div>
-        <div class="kpi-card"><div class="kpi-label">Decarbonisation Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs AUBEB MRV 2030 target</div></div>
-    </div>
-    <div class="main-grid">
-        <div class="card">
-            <div class="card-title">📊 Clean vs Fossil Energy by Phase</div>
-            <div class="chart-wrap"><svg class="chart" id="barChart" viewBox="0 0 600 320"></svg></div>
-        </div>
-        <div class="card">
-            <div class="card-title">🎯 Clean Energy % vs AUBEB MRV 2030 Target (60%)</div>
-            <div class="chart-wrap"><svg class="chart" id="targetChart" viewBox="0 0 600 320"></svg></div>
-        </div>
-        <div class="card full-width">
-            <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
-            <table class="phase-table"><thead><tr>
-                <th>Phase</th><th>Total Energy</th><th>Clean</th><th>Fossil</th>
-                <th>Clean %</th><th>% of Chain</th><th>2030 Target Gap</th><th>Data Quality</th><th>Rating</th>
-            </tr></thead><tbody id="phaseTableBody"></tbody></table>
-        </div>
-        <div class="card full-width">
-            <div class="card-title">💡 Key Findings &amp; Analysis</div>
-            <div class="findings-grid" id="findingsGrid"></div>
-        </div>
-        <div class="card full-width">
-            <div class="card-title">🔋 Fossil Energy Reduction Opportunity Ranking</div>
-            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by fossil energy consumption. Reaching 60% clean mix would reduce these figures. Sources: AUBEB MRV Mangrove and Climate 2023, Foran et al. 2005, WATER_WASTE_METHODOLOGY.md.</p>
-            <div id="fossilRanking"></div>
-        </div>
-    </div>
-    <div class="footnote">
-        <strong>Data sources &amp; quality flags:</strong>
+<div class="header">
+<div class="header-left">
+<h1>⚡ Energy Consumption Analysis — AUBEB Supply Chain</h1>
+<p>Total consumption · Clean vs fossil split · Per-phase intensity · AUBEB MRV 2030 target tracking</p>
+</div>
+<div>
+<a class="nav-link" href="what_if_simulator.html">← Back to Simulator</a>
+<a class="nav-link" href="emissions_analysis.html">🌡️ Carbon</a>
+<a class="nav-link" href="water_analysis.html">💧 Water</a>
+<a class="nav-link" href="/index.html">🏠 Home</a>
+</div>
+</div>
+<div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading energy data…</span></div>
+<div class="kpi-strip">
+<div class="kpi-card"><div class="kpi-label">Total Energy</div><div class="kpi-value" id="kpiTotal" style="color:#6a1b9a;">—</div><div class="kpi-sub">kWh (reference scale)</div></div>
+<div class="kpi-card"><div class="kpi-label">Clean Energy</div><div class="kpi-value" id="kpiClean" style="color:#2e7d32;">—</div><div class="kpi-sub">renewables / nuclear</div></div>
+<div class="kpi-card"><div class="kpi-label">Fossil Energy</div><div class="kpi-value" id="kpiFossil" style="color:#bf360c;">—</div><div class="kpi-sub">coal / oil / gas</div></div>
+<div class="kpi-card"><div class="kpi-label">Clean Mix</div><div class="kpi-value" id="kpiMix" style="color:#1565c0;">—</div><div class="kpi-sub" id="kpiMixSub">vs 60% AUBEB MRV 2030 target</div></div>
+<div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest energy use</div></div>
+<div class="kpi-card"><div class="kpi-label">Decarbonisation Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs AUBEB MRV 2030 target</div></div>
+</div>
+<div class="main-grid">
+<div class="card">
+<div class="card-title">📊 Clean vs Fossil Energy by Phase</div>
+<div class="chart-wrap"><svg class="chart" id="barChart" viewbox="0 0 600 320"></svg></div>
+</div>
+<div class="card">
+<div class="card-title">🎯 Clean Energy % vs AUBEB MRV 2030 Target (60%)</div>
+<div class="chart-wrap"><svg class="chart" id="targetChart" viewbox="0 0 600 320"></svg></div>
+</div>
+<div class="card full-width">
+<div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+<table class="phase-table"><thead><tr>
+<th>Phase</th><th>Total Energy</th><th>Clean</th><th>Fossil</th>
+<th>Clean %</th><th>% of Chain</th><th>2030 Target Gap</th><th>Data Quality</th><th>Rating</th>
+</tr></thead><tbody id="phaseTableBody"></tbody></table>
+</div>
+<div class="card full-width">
+<div class="card-title">💡 Key Findings &amp; Analysis</div>
+<div class="findings-grid" id="findingsGrid"></div>
+</div>
+<div class="card full-width">
+<div class="card-title">🔋 Fossil Energy Reduction Opportunity Ranking</div>
+<p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by fossil energy consumption. Reaching 60% clean mix would reduce these figures. Sources: AUBEB MRV Mangrove and Climate 2023, Foran et al. 2005, WATER_WASTE_METHODOLOGY.md.</p>
+<div id="fossilRanking"></div>
+</div>
+</div>
+<div class="footnote">
+<strong>Data sources &amp; quality flags:</strong>
         Phase 1: AUBEB MRV 2023; Foran et al. 2005 (quality: Medium) ·
         Phase 2: AUBEB PDI v1; benchmark estimate — not project-specific (quality: Medium) ·
         Phases 0, 3–8: Inferred from industry benchmarks and WATER_WASTE_METHODOLOGY.md (quality: Low) ·
@@ -360,7 +361,6 @@ async function init() {
 }
 init();
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -435,7 +435,6 @@ init();
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -456,11 +455,7 @@ init();
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -478,7 +473,6 @@ init();
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
@@ -492,14 +486,8 @@ init();
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

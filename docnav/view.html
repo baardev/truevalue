@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>DocNav Viewer</title>
+<link rel="stylesheet" href="pandoc-docnav-theme.css">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    color-scheme: only light;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #ffffff;
+    color: #1f2328;
+  }
+
+  header.docnav-bar {
+    background: #ffffff;
+    border-bottom-color: #d0d7de;
+  }
+  header.docnav-bar a { color: #0969da; }
+  header.docnav-bar #file-path { color: #57606a; }
+  header.docnav-bar #raw-link {
+    color: #57606a;
+    border-color: #d0d7de;
+  }
+  header.docnav-bar #raw-link:hover {
+    color: #1f2328;
+    border-color: #0969da;
+  }
+
+  header.docnav-bar {
+    border-bottom: 1px solid;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  header.docnav-bar a {
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  header.docnav-bar a:hover { text-decoration: underline; }
+
+  #file-path {
+    font-family: "SFMono-Regular", "Cascadia Code", monospace;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #raw-link {
+    margin-left: auto;
+    font-size: 11px;
+    text-decoration: none;
+    padding: 3px 10px;
+    border-radius: 6px;
+    border: 1px solid;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  #content {
+    padding: 16px 12px 48px;
+  }
+
+  /* ── CSV table (not pandoc-themed) ── */
+  #csv-table {
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+  #csv-table th { background: #f6f8fa; border: 1px solid #d0d7de; }
+  #csv-table td { border: 1px solid #d0d7de; color: #1f2328; }
+  #csv-table th {
+    padding: 8px 12px;
+    text-align: left;
+    font-weight: 600;
+  }
+  #csv-table td {
+    padding: 7px 12px;
+    vertical-align: top;
+  }
+
+  /* ── Plain text ── */
+  #plain-text {
+    display: block;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem;
+    font-family: "DejaVu Sans Mono", "Noto Sans Mono", "Liberation Mono", monospace;
+    font-size: 13px;
+    line-height: 1.7;
+    white-space: pre-wrap;
+    word-break: break-word;
+    background: #ffffff;
+    color: #1f2328;
+    border-radius: 8px;
+  }
+
+  /* ── States ── */
+  #loading, #error {
+    text-align: center;
+    padding: 80px 20px;
+    font-size: 15px;
+    color: #57606a;
+  }
+  #error { color: #cf222e; }
+</style>
+</head>
+<body>
+
+<header class="docnav-bar">
+  <a href="index.html">← DocNav</a>
+  <span id="file-path"></span>
+  <a id="raw-link" href="#" target="_blank">Raw file ↗</a>
+</header>
+
+<div id="content">
+  <div id="loading">Loading…</div>
+</div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.css">
+<style id="docnav-force-light">
+  /* Last author stylesheet: beat OS darkening, broken theme loads, and odd UA fills */
+  html {
+    color-scheme: only light !important;
+  }
+  body,
+  #content {
+    background-color: #ffffff !important;
+    color: #121212 !important;
+    -webkit-text-fill-color: #121212 !important;
+  }
+  #content .md-view {
+    background-color: #ffffff !important;
+    color: #121212 !important;
+    -webkit-text-fill-color: #121212 !important;
+    color-scheme: only light !important;
+    opacity: 1 !important;
+    filter: none !important;
+  }
+  #content .md-view h1,
+  #content .md-view h2,
+  #content .md-view h3,
+  #content .md-view h4,
+  #content .md-view h5,
+  #content .md-view h6 {
+    color: #121212 !important;
+    -webkit-text-fill-color: #121212 !important;
+  }
+  #content .md-view p,
+  #content .md-view li,
+  #content .md-view td,
+  #content .md-view th,
+  #content .md-view dt,
+  #content .md-view dd {
+    color: #121212 !important;
+    -webkit-text-fill-color: #121212 !important;
+  }
+  #content .md-view h1 strong,
+  #content .md-view h2 strong,
+  #content .md-view h3 strong,
+  #content .md-view h4 strong,
+  #content .md-view h5 strong,
+  #content .md-view h6 strong {
+    color: #121212 !important;
+    -webkit-text-fill-color: #121212 !important;
+  }
+  #content .md-view a {
+    color: #0969da !important;
+    -webkit-text-fill-color: #0969da !important;
+  }
+  #content .md-view h1 a,
+  #content .md-view h2 a,
+  #content .md-view h3 a,
+  #content .md-view h4 a,
+  #content .md-view h5 a,
+  #content .md-view h6 a {
+    color: inherit !important;
+    -webkit-text-fill-color: inherit !important;
+  }
+  #content .md-view .katex {
+    color: #121212 !important;
+  }
+  #content .md-view nav#TOC > h2 {
+    color: #121212 !important;
+    -webkit-text-fill-color: #121212 !important;
+  }
+  #content .md-view nav#TOC .toc-section-number {
+    color: #57606a !important;
+    -webkit-text-fill-color: #57606a !important;
+  }
+  #content .md-view nav#TOC,
+  #content .md-view nav[role="doc-toc"] {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    padding: 0 !important;
+    border-radius: 0 !important;
+  }
+  @media (prefers-color-scheme: dark) {
+    html {
+      color-scheme: only light !important;
+    }
+    body,
+    #content {
+      background-color: #ffffff !important;
+      color: #121212 !important;
+      -webkit-text-fill-color: #121212 !important;
+    }
+    #content .md-view,
+    #content .md-view h1,
+    #content .md-view h2,
+    #content .md-view h3,
+    #content .md-view h4,
+    #content .md-view h5,
+    #content .md-view h6,
+    #content .md-view p,
+    #content .md-view li {
+      background-color: #ffffff !important;
+      color: #121212 !important;
+      -webkit-text-fill-color: #121212 !important;
+    }
+  }
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js"></script>
+<script>
+(function () {
+  /* DocNav root is the directory containing view.html (e.g. /docnav/) */
+  const path = location.pathname;
+  const idx = path.lastIndexOf("/");
+  const BASE = location.origin + path.slice(0, idx + 1);
+
+  const params = new URLSearchParams(location.search);
+  const filePath = params.get("file") || "";
+
+  if (!filePath) {
+    document.getElementById("content").innerHTML =
+      '<div id="error">No file specified. Use ?file=relative/path/to/file.md</div>';
+    return;
+  }
+
+  const fileUrl = BASE + filePath.split("/").map(encodeURIComponent).join("/");
+  document.title = filePath.split("/").pop() + " | DocNav";
+  document.getElementById("file-path").textContent = filePath;
+  document.getElementById("raw-link").href = fileUrl;
+
+  const ext = filePath.split(".").pop().toLowerCase();
+
+  /** Drop leading YAML --- blocks so the page starts like Pandoc HTML (body content only). */
+  function stripYamlFrontmatter(src) {
+    let t = src.replace(/^\uFEFF/, "");
+    for (;;) {
+      t = t.trimStart();
+      if (!t.startsWith("---")) break;
+      let rest = t.slice(3).replace(/^(\r\n|\n|\r)/, "");
+      const sep = /\r\n---\r\n|\n---\n|\r---\r/;
+      const m = sep.exec(rest);
+      if (!m) break;
+      t = rest.slice(m.index + m[0].length);
+    }
+    return t.trimStart();
+  }
+
+  function mdDirFromFilePath(fp) {
+    const slash = fp.lastIndexOf("/");
+    return slash < 0 ? "" : fp.slice(0, slash + 1);
+  }
+
+  function resolveRelativeToMdDir(rel, mdDir) {
+    const stack = mdDir.split("/").filter(Boolean);
+    for (const seg of rel.split("/")) {
+      if (seg === "" || seg === ".") continue;
+      if (seg === "..") stack.pop();
+      else stack.push(seg);
+    }
+    return stack.join("/");
+  }
+
+  /** Browsers resolve img src relative to view.html; rewrite to absolute docnav URLs. */
+  function rewriteRelativeAssetUrls(rootEl, mdPath) {
+    const mdDir = mdDirFromFilePath(mdPath);
+    rootEl.querySelectorAll("img[src], video[src], audio[src], source[src]").forEach(el => {
+      const raw = (el.getAttribute("src") || "").trim();
+      if (!raw || raw.startsWith("#")) return;
+      if (/^[a-z][a-z0-9+.-]*:/i.test(raw)) return;
+      if (raw.startsWith("//")) return;
+      if (raw.startsWith("/")) {
+        el.setAttribute("src", location.origin + raw);
+        return;
+      }
+      const resolved = resolveRelativeToMdDir(raw, mdDir);
+      el.setAttribute(
+        "src",
+        BASE + resolved.split("/").map(encodeURIComponent).join("/")
+      );
+    });
+  }
+
+  function headingLevel(el) {
+    return parseInt(el.tagName.charAt(1), 10);
+  }
+
+  function slugifyHeadingText(text) {
+    let t = String(text || "").trim().toLowerCase();
+    try {
+      t = t.normalize("NFKD").replace(/[\u0300-\u036f]/g, "");
+    } catch (e) {}
+    t = t.replace(/\s+/g, "-");
+    try {
+      t = t.replace(/[^\p{L}\p{N}]+/gu, "-");
+    } catch (e2) {
+      t = t.replace(/[^a-z0-9]+/gi, "-");
+    }
+    t = t.replace(/-+/g, "-").replace(/^-|-$/g, "");
+    return t || "section";
+  }
+
+  /** Assign stable fragment ids so TOC links match headings (marked has no headerIds here). */
+  function ensureHeadingIds(root) {
+    const idsToNodes = Object.create(null);
+    root.querySelectorAll("[id]").forEach(node => {
+      const id = (node.id || "").trim();
+      if (!id) return;
+      if (!idsToNodes[id]) idsToNodes[id] = [];
+      idsToNodes[id].push(node);
+    });
+
+    root.querySelectorAll("h1, h2, h3, h4, h5, h6").forEach(el => {
+      const id = (el.id || "").trim();
+      if (
+        id &&
+        idsToNodes[id] &&
+        idsToNodes[id].length === 1 &&
+        idsToNodes[id][0] === el
+      ) {
+        return;
+      }
+      const base = slugifyHeadingText(el.textContent || "");
+      let nid = base;
+      let n = 2;
+      while (idsToNodes[nid] && idsToNodes[nid].length) {
+        nid = base + "-" + n++;
+      }
+      if (id && idsToNodes[id]) {
+        idsToNodes[id] = idsToNodes[id].filter(node => node !== el);
+        if (idsToNodes[id].length === 0) delete idsToNodes[id];
+      }
+      el.id = nid;
+      idsToNodes[nid] = [el];
+    });
+  }
+
+  function sectionNumberLabel(nums, level) {
+    return nums.slice(0, level).join(".");
+  }
+
+  /**
+   * Pandoc-like nested TOC (nav#TOC). Omits headings deeper than maxLevel (default 4, like Pandoc omitting h5 or h6 boilerplate).
+   * Disable: ?notoc=1 or ?toc=0  Max depth: ?tocdepth=6
+   */
+  function buildTableOfContents(root, maxLevel) {
+    const headings = Array.from(root.querySelectorAll("h1, h2, h3, h4, h5, h6")).filter(
+      el => headingLevel(el) <= maxLevel
+    );
+    if (headings.length < 2) return null;
+
+    const nums = [0, 0, 0, 0, 0, 0];
+    const entries = headings.map(el => {
+      const L = headingLevel(el);
+      nums[L - 1]++;
+      for (let i = L; i < 6; i++) nums[i] = 0;
+      return { el, level: L, label: sectionNumberLabel(nums, L) };
+    });
+
+    const nav = document.createElement("nav");
+    nav.id = "TOC";
+    nav.setAttribute("role", "doc-toc");
+    const titleEl = document.createElement("h2");
+    titleEl.textContent = "Contents";
+    nav.appendChild(titleEl);
+
+    const rootUl = document.createElement("ul");
+    nav.appendChild(rootUl);
+
+    const stack = [{ level: 0, ul: rootUl }];
+    for (let i = 0; i < entries.length; i++) {
+      const { el, level, label } = entries[i];
+      while (stack.length > 1 && stack[stack.length - 1].level >= level) {
+        stack.pop();
+      }
+      const parentUl = stack[stack.length - 1].ul;
+      const li = document.createElement("li");
+      const a = document.createElement("a");
+      a.href = "#" + el.id;
+      a.id = "toc-" + el.id;
+      const span = document.createElement("span");
+      span.className = "toc-section-number";
+      span.textContent = label;
+      a.appendChild(span);
+      a.appendChild(document.createTextNode(" "));
+      const plainTitle = (el.textContent || "").replace(/\s+/g, " ").trim();
+      a.appendChild(document.createTextNode(plainTitle));
+      li.appendChild(a);
+      parentUl.appendChild(li);
+
+      const next = entries[i + 1];
+      if (next && next.level > level) {
+        const sub = document.createElement("ul");
+        li.appendChild(sub);
+        stack.push({ level, ul: sub });
+      }
+    }
+
+    let removed = true;
+    while (removed) {
+      removed = false;
+      nav.querySelectorAll("ul").forEach(ul => {
+        if (ul.children.length === 0) {
+          ul.remove();
+          removed = true;
+        }
+      });
+    }
+
+    return nav;
+  }
+
+  /* ── LaTeX-safe markdown renderer ─────────────────────────────────────────
+     1. Extract all $...$ and $$...$$ blocks BEFORE marked sees them.
+     2. Replace with unique placeholders so marked cannot mangle them.
+     3. After marked produces HTML, restore placeholders and render with KaTeX.
+  ──────────────────────────────────────────────────────────────────────── */
+  function renderMarkdownWithMath(src) {
+    const stash = [];
+
+    function stashMath(math, display) {
+      stash.push({ math, display });
+      return `\x02MATH${stash.length - 1}\x03`;
+    }
+
+    // Display math: $$...$$ (possibly multiline)
+    src = src.replace(/\$\$([\s\S]*?)\$\$/g, (_, m) => stashMath(m, true));
+    // Inline math: $...$ (single line, non-empty)
+    src = src.replace(/\$([^\$\n][^\$\n]*?)\$/g, (_, m) => stashMath(m, false));
+
+    let html = marked.parse(src);
+
+    html = html.replace(/\x02MATH(\d+)\x03/g, (_, i) => {
+      const { math, display } = stash[parseInt(i)];
+      try {
+        return katex.renderToString(math, {
+          displayMode: display,
+          throwOnError: false,
+          trust: true,
+        });
+      } catch (e) {
+        return `<code class="math-error" title="${esc(e.message)}">${esc(math)}</code>`;
+      }
+    });
+
+    return html;
+  }
+
+  fetch(fileUrl)
+    .then(r => {
+      if (!r.ok) throw new Error(`HTTP ${r.status}`);
+      return r.text();
+    })
+    .then(text => {
+      const content = document.getElementById("content");
+      if (ext === "md" || ext === "markdown") {
+        const bodyMd = stripYamlFrontmatter(text);
+        const main = document.createElement("main");
+        main.className = "md-view";
+        main.innerHTML = renderMarkdownWithMath(bodyMd);
+        ensureHeadingIds(main);
+        const noToc =
+          params.get("notoc") === "1" ||
+          params.get("toc") === "0";
+        let tocDepth = parseInt(params.get("tocdepth") || "4", 10);
+        if (Number.isNaN(tocDepth)) tocDepth = 4;
+        tocDepth = Math.min(6, Math.max(1, tocDepth));
+        if (!noToc) {
+          const tocNav = buildTableOfContents(main, tocDepth);
+          if (tocNav) main.insertBefore(tocNav, main.firstChild);
+        }
+        rewriteRelativeAssetUrls(main, filePath);
+        content.innerHTML = "";
+        content.appendChild(main);
+      } else if (ext === "csv" || ext === "tsv") {
+        const sep = ext === "tsv" ? "\t" : ",";
+        const rows = text.trim().split("\n").map(l => l.split(sep));
+        let html = '<table id="csv-table"><thead><tr>';
+        if (rows.length > 0) {
+          for (const cell of rows[0]) {
+            html += `<th>${esc(cell.replace(/^"|"$/g,""))}</th>`;
+          }
+          html += "</tr></thead><tbody>";
+          for (const row of rows.slice(1)) {
+            html += "<tr>";
+            for (const cell of row) {
+              html += `<td>${esc(cell.replace(/^"|"$/g,""))}</td>`;
+            }
+            html += "</tr>";
+          }
+          html += "</tbody></table>";
+        }
+        content.innerHTML = html;
+      } else {
+        const pre = document.createElement("pre");
+        pre.id = "plain-text";
+        pre.textContent = text;
+        content.innerHTML = "";
+        content.appendChild(pre);
+      }
+    })
+    .catch(err => {
+      document.getElementById("content").innerHTML =
+        `<div id="error">Could not load file.<br><small>${esc(err.message)}</small><br><br>
+        <a href="${esc(fileUrl)}" target="_blank" style="color:#4f8ef7">Try opening directly ↗</a></div>`;
+    });
+
+  function esc(s) {
+    return String(s)
+      .replace(/&/g,"&amp;").replace(/</g,"&lt;")
+      .replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+})();
+</script>
+</body>
+</html>

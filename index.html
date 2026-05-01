@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TrueValue Analytics</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TrueValue Analytics</title>
+<style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
@@ -26,6 +27,14 @@
       color: #e6edf3; margin-bottom: 10px;
     }
     .page-header p { font-size: 15px; color: #8b949e; line-height: 1.6; }
+    .page-header-docnav { margin-top: 14px; font-size: 14px; line-height: 1.5; }
+    .page-header-docnav a {
+      color: #58a6ff;
+      font-weight: 600;
+      text-decoration: none;
+    }
+    .page-header-docnav a:hover { text-decoration: underline; color: #79c0ff; }
+    .page-header-docnav a:nth-of-type(2) { display: inline-block; margin-top: 8px; }
 
     /* ── row label (top-level section divider) ── */
     .row-label {
@@ -106,77 +115,53 @@
     .card-link.pdf:hover { background: rgba(248,113,113,0.1); }
 
     /* ── hub section wrapper — max-width matches proj-grid ── */
-    #hub-research, #hub-reports, #hub-tvpci { max-width: 1100px; margin-bottom: 8px; }
+    #hub-additional { max-width: 1100px; margin-bottom: 8px; }
 
-    /* ── footer nav ── */
-    .nav {
-      text-align: center; margin-top: 48px; padding-top: 28px;
-      border-top: 1px solid #21262d; max-width: 1100px;
-    }
-    .nav a {
-      display: inline-block; color: #8b949e; text-decoration: none;
-      font-size: 14px; font-weight: 600; margin: 0 10px 8px;
-    }
-    .nav a:hover { color: #58a6ff; text-decoration: underline; }
+    /* ── footer ── */
     .footer {
       text-align: center; color: #6e7681; font-size: 13px;
-      margin-top: 14px; padding: 6px 0 8px; max-width: 1100px;
+      margin-top: 48px; padding: 6px 0 8px; max-width: 1100px;
+      border-top: 1px solid #21262d;
+      padding-top: 28px;
     }
   </style>
 </head>
 <body>
-
-  <nav class="breadcrumb">
-    <span>Home</span>
-  </nav>
-
-  <header class="page-header">
-    <h1>TrueValue Analytics</h1>
-    <p>Supply chain &amp; value chain intelligence — select a project or explore research, reports, and TVPCI tools.</p>
-  </header>
-
-  <!-- ── Projects ─────────────────────────────────────────────────── -->
-  <div class="row-label">Projects</div>
-  <div class="proj-grid" id="grid-projects">
-    <div style="color:#6e7681;padding:8px 0;">Loading&hellip;</div>
-  </div>
-
-  <!-- ── Research ──────────────────────────────────────────────────── -->
-  <div class="row-label">Research</div>
-  <div id="hub-research">
-    <p style="color:#6b7280;padding:8px 0;">Loading&hellip;</p>
-  </div>
-
-  <!-- ── Reports & Briefings ───────────────────────────────────────── -->
-  <div class="row-label">Reports &amp; Briefings</div>
-  <div id="hub-reports">
-    <p style="color:#6b7280;padding:8px 0;">Loading&hellip;</p>
-  </div>
-
-  <!-- ── TVPCI ─────────────────────────────────────────────────────── -->
-  <div class="row-label">TVPCI</div>
-  <div id="hub-tvpci">
-    <p style="color:#6b7280;padding:8px 0;">Loading&hellip;</p>
-  </div>
-
-  <div class="nav">
-    <a href="/site/index.html">📚 Documentation wiki</a>
-    <a href="/frontend/csv/index.html">🗂️ Data catalog</a>
-  </div>
-
-  <div class="footer">
+<nav class="breadcrumb">
+<span>Home</span>
+</nav>
+<header class="page-header">
+<h1>TrueValue Analytics</h1>
+<p>Supply chain &amp; value chain intelligence — select a project or browse additional information.</p>
+<p class="page-header-docnav">
+<a href="/docnav/index.html">Document repository · Tagged and searchable (DocNav) →</a><br/>
+<a href="/docnav/csvindex.html">Data Catalog · Project CSV files (searchable) →</a>
+</p>
+</header>
+<!-- ── Projects ─────────────────────────────────────────────────── -->
+<div class="row-label">Projects</div>
+<div class="proj-grid" id="grid-projects">
+<div style="color:#6e7681;padding:8px 0;">Loading…</div>
+</div>
+<!-- ── Additional information (research, reports, TVPCI, etc.) ─── -->
+<div class="row-label">Additional Information</div>
+<div id="hub-additional">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
+<div class="footer">
     TrueValue Analytics · Supply Chain Intelligence Platform · v0.2
   </div>
-
-<script src="/frontend/js/tv-hub.js"></script>
 <script>
-/* ── Projects: simple full-card links ─────────────────────────── */
+/* ── Projects + Additional Information (one site-index fetch; no tv-hub dependency) ── */
 (function () {
+  var SITE_INDEX = '/frontend/site-index.json?v=20260430';
+
   function esc(s) {
     return String(s || '')
       .replace(/&/g, '&amp;').replace(/</g, '&lt;')
       .replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   }
+
   function renderProjCard(item) {
     var accent = item.accent ? 'border-left:4px solid ' + item.accent + ';' : '';
     return '<a href="' + esc(item.hub) + '" class="proj-card" style="' + accent + '">'
@@ -186,22 +171,73 @@
       + '<span class="card-tag">'  + esc(item.tag)   + '</span>'
       + '</a>';
   }
-  fetch('/frontend/site-index.json')
+
+  function renderHubLinks(links) {
+    return (links || []).map(function (l) {
+      var cls = 'card-link' + (l.type === 'pdf' ? ' pdf' : '');
+      return '<a class="' + cls + '" href="' + esc(l.url) + '">' + esc(l.label) + '</a>';
+    }).join('');
+  }
+
+  function renderHubTags(tags) {
+    return (tags || []).map(function (t) {
+      return '<span class="tag ' + esc(t.cls || '') + '">' + esc(t.label) + '</span>';
+    }).join('');
+  }
+
+  function renderHubItem(item) {
+    var featuredCls = item.featured ? ' featured' : '';
+    return '<div class="card' + featuredCls + '">'
+      + '<div class="card-top">'
+      + '<div class="card-icon">' + (item.icon || '') + '</div>'
+      + '<div>'
+      + '<div class="card-title">' + esc(item.title) + '</div>'
+      + '<div class="card-sub">' + esc(item.desc) + '</div>'
+      + '</div>'
+      + '</div>'
+      + (item.tags && item.tags.length ? '<div class="card-tags">' + renderHubTags(item.tags) + '</div>' : '')
+      + (item.links && item.links.length ? '<div class="card-links">' + renderHubLinks(item.links) + '</div>' : '')
+      + '</div>';
+  }
+
+  function collectAdditionalItems(data, keys) {
+    var items = [];
+    (keys || []).forEach(function (key) {
+      var block = data[key];
+      if (!block || !block.sections) return;
+      block.sections.forEach(function (sec) {
+        (sec.items || []).forEach(function (item) {
+          items.push(item);
+        });
+      });
+    });
+    return items;
+  }
+
+  fetch(SITE_INDEX)
     .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
     .then(function (data) {
-      var el = document.getElementById('grid-projects');
-      if (el) el.innerHTML = (data.projects || []).map(renderProjCard).join('');
+      var grid = document.getElementById('grid-projects');
+      if (grid) grid.innerHTML = (data.projects || []).map(renderProjCard).join('');
+
+      var hub = document.getElementById('hub-additional');
+      if (!hub) return;
+      var extra = collectAdditionalItems(data, ['research', 'reports', 'tvpci']);
+      if (!extra.length) {
+        hub.innerHTML =
+          '<p style="color:#6b7280;padding:8px 0;">No additional entries yet. Edit frontend/site-index.json.</p>';
+        return;
+      }
+      hub.innerHTML = '<div class="grid">' + extra.map(renderHubItem).join('') + '</div>';
     })
     .catch(function (err) {
-      var el = document.getElementById('grid-projects');
-      if (el) el.innerHTML = '<p style="color:#f87171;">Could not load projects: ' + esc(err.message) + '</p>';
+      var msg = esc(err.message);
+      var grid = document.getElementById('grid-projects');
+      if (grid) grid.innerHTML = '<p style="color:#f87171;">Could not load projects: ' + msg + '</p>';
+      var hub = document.getElementById('hub-additional');
+      if (hub) hub.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
     });
 })();
-
-/* ── Research / Reports / TVPCI: rich hub cards ───────────────── */
-tvHub.render('research', document.getElementById('hub-research'));
-tvHub.render('reports',  document.getElementById('hub-reports'));
-tvHub.render('tvpci',    document.getElementById('hub-tvpci'));
 </script>
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
@@ -223,11 +259,7 @@ tvHub.render('tvpci',    document.getElementById('hub-tvpci'));
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -245,7 +277,6 @@ tvHub.render('tvpci',    document.getElementById('hub-tvpci'));
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -259,14 +290,10 @@ tvHub.render('tvpci',    document.getElementById('hub-tvpci'));
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+    { label: 'DocNav · Document repository', href: '/docnav/index.html', icon: '📚' },
+    { label: 'Data Catalog · Project CSVs', href: '/docnav/csvindex.html', icon: '🗂️' },
+    { label: 'Five-Model Coherence', href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {
@@ -319,6 +346,5 @@ tvHub.render('tvpci',    document.getElementById('hub-tvpci'));
   else inject();
 })();
 </script>
-
 </body>
 </html>

@@ -5,6 +5,9 @@
  *   tvHub.render('reports', document.getElementById('tv-hub-content'));
  *   tvHub.render('research', document.getElementById('tv-hub-content'));
  *   tvHub.render('tvpci',    document.getElementById('tv-hub-content'));
+ *
+ * Home page: merge non-project hubs into one grid (no section subtitles):
+ *   tvHub.renderMergedFlat(['research','reports','tvpci'], el);
  */
 window.tvHub = (function () {
   var INDEX_URL = '/frontend/site-index.json';
@@ -54,6 +57,20 @@ window.tvHub = (function () {
     }).join('');
   }
 
+  function collectItemsFromKeys(data, keys) {
+    var items = [];
+    (keys || []).forEach(function (key) {
+      var block = data[key];
+      if (!block || !block.sections) return;
+      block.sections.forEach(function (sec) {
+        (sec.items || []).forEach(function (item) {
+          items.push(item);
+        });
+      });
+    });
+    return items;
+  }
+
   function render(key, target) {
     if (!target) return;
     fetch(INDEX_URL)
@@ -71,5 +88,27 @@ window.tvHub = (function () {
       });
   }
 
-  return { render: render };
+  /** One flat grid: all items from site-index keys, in key order then section order. */
+  function renderMergedFlat(keys, target) {
+    if (!target) return;
+    fetch(INDEX_URL)
+      .then(function (r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        var items = collectItemsFromKeys(data, keys);
+        if (!items.length) {
+          target.innerHTML =
+            '<p style="color:#6b7280;padding:8px 0;">No additional entries yet. Edit frontend/site-index.json.</p>';
+          return;
+        }
+        target.innerHTML = '<div class="grid">' + items.map(renderItem).join('') + '</div>';
+      })
+      .catch(function (err) {
+        target.innerHTML = '<p style="color:#f87171;padding:20px 0;">Could not load site-index.json: ' + esc(err.message) + '</p>';
+      });
+  }
+
+  return { render: render, renderMergedFlat: renderMergedFlat };
 })();

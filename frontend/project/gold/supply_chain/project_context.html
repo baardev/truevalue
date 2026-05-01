@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gold – Project context & supply chain</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gold – Project context &amp; supply chain</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -47,63 +48,54 @@
     </style>
 </head>
 <body>
-    <div class="page">
-        <div class="header">
-            <h1>🏅 Gold – Project context &amp; supply chain</h1>
-            <div>
-                <a href="index.html">Supply Chain Home</a>
-                <a href="/index.html">Main Homepage</a>
-                <a href="dashboard.html">Dashboard</a>
-                <a href="system_lifecycle.html">Lifecycle</a>
-                <a href="what_if_simulator.html">Simulator</a>
-                </div>
-        </div>
-        <div class="content">
-
-            <div class="section">
-                <h2>Global scale &amp; significance</h2>
-                <div class="grid2" id="globalKpis"></div>
-                <p class="ndc-note"><strong>N-D-C:</strong> Mine production volume and refinery output map to <strong>C (integration/contribution)</strong>; regulatory compliance, purity standards, and extraction constraints map to <strong>D (definition/constraint)</strong>. Phase balance is shown on the Dashboard.</p>
-            </div>
-
-            <div class="section">
-                <h2>Supply chain phases (0–8)</h2>
-                <p>The gold supply chain is modelled across nine phases from geological occurrence to recycling. Each phase has independently scored D (constraint) and C (integration) parameters.</p>
-                <div class="chain-flow" id="chainFlow"></div>
-            </div>
-
-            <div class="section">
-                <h2>Key producing regions</h2>
-                <div class="grid3" id="regionsList"></div>
-            </div>
-
-            <div class="section">
-                <h2>Structural constraints (D parameters)</h2>
-                <p>Primary constraint categories across the chain:</p>
-                <ul id="constraintsList"></ul>
-            </div>
-
-            <div class="section">
-                <h2>Integration pathways (C parameters)</h2>
-                <p>Primary integration categories across the chain:</p>
-                <ul id="integrationList"></ul>
-            </div>
-
-            <div class="section">
-                <h2>System lifecycle layer</h2>
-                <p>The gold project now separates the maintained physical operating system from the material phase map. The lifecycle layer evaluates resource definition, development, operation, sustaining assurance, and closure or recycling re-entry with its own N-D-C scores, while linking each lifecycle phase back to affected supply-chain phases.</p>
-                <p><a href="system_lifecycle.html">Open the System Lifecycle N-D-C view</a></p>
-            </div>
-
-            <div class="section">
-                <h2>Data sources</h2>
-                <ul class="sources-list" id="sourcesList"></ul>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
+<div class="page">
+<div class="header">
+<h1>🏅 Gold – Project context &amp; supply chain</h1>
+<div>
+<a href="index.html">Supply Chain Home</a>
+<a href="/index.html">Main Homepage</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="system_lifecycle.html">Lifecycle</a>
+<a href="what_if_simulator.html">Simulator</a>
+</div>
+</div>
+<div class="content">
+<div class="section">
+<h2>Global scale &amp; significance</h2>
+<div class="grid2" id="globalKpis"></div>
+<p class="ndc-note"><strong>N-D-C:</strong> Mine production volume and refinery output map to <strong>C (integration/contribution)</strong>; regulatory compliance, purity standards, and extraction constraints map to <strong>D (definition/constraint)</strong>. Phase balance is shown on the Dashboard.</p>
+</div>
+<div class="section">
+<h2>Supply chain phases (0–8)</h2>
+<p>The gold supply chain is modelled across nine phases from geological occurrence to recycling. Each phase has independently scored D (constraint) and C (integration) parameters.</p>
+<div class="chain-flow" id="chainFlow"></div>
+</div>
+<div class="section">
+<h2>Key producing regions</h2>
+<div class="grid3" id="regionsList"></div>
+</div>
+<div class="section">
+<h2>Structural constraints (D parameters)</h2>
+<p>Primary constraint categories across the chain:</p>
+<ul id="constraintsList"></ul>
+</div>
+<div class="section">
+<h2>Integration pathways (C parameters)</h2>
+<p>Primary integration categories across the chain:</p>
+<ul id="integrationList"></ul>
+</div>
+<div class="section">
+<h2>System lifecycle layer</h2>
+<p>The gold project now separates the maintained physical operating system from the material phase map. The lifecycle layer evaluates resource definition, development, operation, sustaining assurance, and closure or recycling re-entry with its own N-D-C scores, while linking each lifecycle phase back to affected supply-chain phases.</p>
+<p><a href="system_lifecycle.html">Open the System Lifecycle N-D-C view</a></p>
+</div>
+<div class="section">
+<h2>Data sources</h2>
+<ul class="sources-list" id="sourcesList"></ul>
+</div>
+</div>
+</div>
+<script>
         const ctx = {
             global: {
                 annual_production_tonnes: 3300,
@@ -190,11 +182,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -212,7 +200,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -226,14 +213,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

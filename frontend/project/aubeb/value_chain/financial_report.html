@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AUBEB Value Chain — Financial Report</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>AUBEB Value Chain — Financial Report</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -121,166 +122,150 @@
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div>
-      <h1>🌿 AUBEB — Carbon Programme Financial Report</h1>
-      <div style="font-size:12px;opacity:0.8;margin-top:3px;">
+<div class="header">
+<div>
+<h1>🌿 AUBEB — Carbon Programme Financial Report</h1>
+<div style="font-size:12px;opacity:0.8;margin-top:3px;">
         Phase-resolved programme income statement · Carbon &amp; ecosystem value layer · NDC TrueValue analysis
       </div>
-    </div>
-    <div class="nav">
-      <a href="./what_if_simulator.html">Simulator</a>
-      <a href="./dashboard.html">Dashboard</a>
-      <a href="./">Value Home</a>
-    </div>
-  </div>
-
-  <div class="toolbar">
-    <div class="ctrl">
-      <label>VCM Price ($/tCO₂e):</label>
-      <input id="vcmSlider" type="range" min="5" max="80" step="1" value="15" style="width:120px;" />
-      <span class="val" id="vcmLbl">$15</span>
-    </div>
-    <div class="ctrl">
-      <label>CORSIA Price ($/tCO₂e):</label>
-      <input id="corsiaSlider" type="range" min="10" max="60" step="1" value="20" style="width:100px;" />
-      <span class="val" id="corsiaLbl">$20</span>
-    </div>
-    <div class="ctrl">
-      <label>Net Sequestration (k tCO₂e/yr):</label>
-      <input id="tco2Slider" type="range" min="1000" max="12000" step="100" value="5640" style="width:120px;" />
-      <span class="val" id="tco2Lbl">5,640k</span>
-    </div>
-    <div class="ctrl">
-      <label>Report Year:</label>
-      <select id="yearSel">
-        <option value="2024">2024</option>
-        <option value="2025">2025</option>
-        <option value="2026">2026</option>
-      </select>
-    </div>
-  </div>
-
-  <div class="body">
-    <div class="kpi-row" id="kpiStrip"></div>
-
-    <div class="grid2">
-      <!-- ── LEFT: Income Statement ─────────────────────── -->
-      <div>
-        <div class="report-title" id="reportTitle">INCOME STATEMENT — Annual 2024</div>
-
-        <div class="section-title">Carbon Revenue</div>
-        <div class="row"><span class="lbl indent">VCM Carbon Credit Price</span><span class="amt" id="r_vcm_price">—</span></div>
-        <div class="row"><span class="lbl indent">× Net Sequestration (tCO₂e/yr)</span><span class="amt" id="r_tco2">—</span></div>
-        <div class="subtotal">
-          <span class="lbl">Gross Carbon Revenue (VCM)</span>
-          <span><span class="amt highlight" id="r_carbon_rev">—</span><span class="pct" id="r_carbon_rev_pct"></span></span>
-        </div>
-
-        <div class="section-title">CORSIA &amp; Co-Benefits</div>
-        <div class="row"><span class="lbl indent">CORSIA-Eligible Premium (over VCM)</span><span class="amt pos" id="r_corsia_prem">—</span></div>
-        <div class="row"><span class="lbl indent">Ecosystem Service Co-Benefits (proxy)</span><span class="amt pos" id="r_esv">—</span></div>
-        <div class="subtotal">
-          <span class="lbl">Total Gross Programme Revenue</span>
-          <span><span class="amt highlight" id="r_gross_rev">—</span></span>
-        </div>
-
-        <div class="section-title">Programme Operating Costs — Phase 1–4 (Setup &amp; Certification)</div>
-        <div class="row"><span class="lbl indent">P1 Custodial formalisation</span><span class="amt neg" id="r_p1">—</span></div>
-        <div class="row"><span class="lbl indent">P2 Baseline remote sensing</span><span class="amt neg" id="r_p2">—</span></div>
-        <div class="row"><span class="lbl indent">P3 Carbon quantification (MRV setup)</span><span class="amt neg" id="r_p3">—</span></div>
-        <div class="row"><span class="lbl indent">P4 Verification &amp; registry fees</span><span class="amt neg" id="r_p4">—</span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Sub-total Phases 1–4</span><span class="amt neg" id="r_p1_4_total">—</span></div>
-
-        <div class="section-title">Programme Operating Costs — Phase 5–10 (Operations &amp; Restoration)</div>
-        <div class="row"><span class="lbl indent">P5 Commercialisation (brokerage, marketing)</span><span class="amt neg" id="r_p5">—</span></div>
-        <div class="row"><span class="lbl indent">P6 Conservation Fund management</span><span class="amt neg" id="r_p6">—</span></div>
-        <div class="row"><span class="lbl indent">P7 CBEMR restoration design</span><span class="amt neg" id="r_p7">—</span></div>
-        <div class="row"><span class="lbl indent">P8 Community co-management wages</span><span class="amt neg" id="r_p8">—</span></div>
-        <div class="row"><span class="lbl indent">P9 Active regeneration (field ops)</span><span class="amt neg" id="r_p9">—</span></div>
-        <div class="row"><span class="lbl indent">P10 Ongoing MRV &amp; certification</span><span class="amt neg" id="r_p10">—</span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Sub-total Phases 5–10</span><span class="amt neg" id="r_p5_10_total">—</span></div>
-
-        <div class="subtotal">
-          <span class="lbl">Total Programme Operating Costs</span>
-          <span><span class="amt neg-hl" id="r_op_total">—</span></span>
-        </div>
-        <div class="subtotal">
-          <span class="lbl" style="color:#16a34a;">Gross Operating Surplus</span>
-          <span><span class="amt highlight" id="r_gross_surplus">—</span><span class="pct" id="r_gross_surplus_pct"></span></span>
-        </div>
-
-        <div class="section-title">Carbon Reserve &amp; Compliance Buffer</div>
-        <div class="row"><span class="lbl indent">Carbon Buffer Pool (10% of credits)</span><span class="amt neg" id="r_buffer">—</span></div>
-        <div class="row"><span class="lbl indent">Programme Management &amp; G&amp;A</span><span class="amt neg" id="r_gna">—</span></div>
-        <div class="subtotal">
-          <span class="lbl" style="color:#16a34a;">Net Programme Surplus</span>
-          <span><span class="amt highlight" id="r_net_surplus">—</span><span class="pct" id="r_net_surplus_pct"></span></span>
-        </div>
-
-        <div class="disclaimer">
-          <strong>Data quality:</strong> All financial figures are synthetic educational estimates derived
+</div>
+<div class="nav">
+<a href="./what_if_simulator.html">Simulator</a>
+<a href="./dashboard.html">Dashboard</a>
+<a href="./">Value Home</a>
+</div>
+</div>
+<div class="toolbar">
+<div class="ctrl">
+<label>VCM Price ($/tCO₂e):</label>
+<input id="vcmSlider" max="80" min="5" step="1" style="width:120px;" type="range" value="15"/>
+<span class="val" id="vcmLbl">$15</span>
+</div>
+<div class="ctrl">
+<label>CORSIA Price ($/tCO₂e):</label>
+<input id="corsiaSlider" max="60" min="10" step="1" style="width:100px;" type="range" value="20"/>
+<span class="val" id="corsiaLbl">$20</span>
+</div>
+<div class="ctrl">
+<label>Net Sequestration (k tCO₂e/yr):</label>
+<input id="tco2Slider" max="12000" min="1000" step="100" style="width:120px;" type="range" value="5640"/>
+<span class="val" id="tco2Lbl">5,640k</span>
+</div>
+<div class="ctrl">
+<label>Report Year:</label>
+<select id="yearSel">
+<option value="2024">2024</option>
+<option value="2025">2025</option>
+<option value="2026">2026</option>
+</select>
+</div>
+</div>
+<div class="body">
+<div class="kpi-row" id="kpiStrip"></div>
+<div class="grid2">
+<!-- ── LEFT: Income Statement ─────────────────────── -->
+<div>
+<div class="report-title" id="reportTitle">INCOME STATEMENT — Annual 2024</div>
+<div class="section-title">Carbon Revenue</div>
+<div class="row"><span class="lbl indent">VCM Carbon Credit Price</span><span class="amt" id="r_vcm_price">—</span></div>
+<div class="row"><span class="lbl indent">× Net Sequestration (tCO₂e/yr)</span><span class="amt" id="r_tco2">—</span></div>
+<div class="subtotal">
+<span class="lbl">Gross Carbon Revenue (VCM)</span>
+<span><span class="amt highlight" id="r_carbon_rev">—</span><span class="pct" id="r_carbon_rev_pct"></span></span>
+</div>
+<div class="section-title">CORSIA &amp; Co-Benefits</div>
+<div class="row"><span class="lbl indent">CORSIA-Eligible Premium (over VCM)</span><span class="amt pos" id="r_corsia_prem">—</span></div>
+<div class="row"><span class="lbl indent">Ecosystem Service Co-Benefits (proxy)</span><span class="amt pos" id="r_esv">—</span></div>
+<div class="subtotal">
+<span class="lbl">Total Gross Programme Revenue</span>
+<span><span class="amt highlight" id="r_gross_rev">—</span></span>
+</div>
+<div class="section-title">Programme Operating Costs — Phase 1–4 (Setup &amp; Certification)</div>
+<div class="row"><span class="lbl indent">P1 Custodial formalisation</span><span class="amt neg" id="r_p1">—</span></div>
+<div class="row"><span class="lbl indent">P2 Baseline remote sensing</span><span class="amt neg" id="r_p2">—</span></div>
+<div class="row"><span class="lbl indent">P3 Carbon quantification (MRV setup)</span><span class="amt neg" id="r_p3">—</span></div>
+<div class="row"><span class="lbl indent">P4 Verification &amp; registry fees</span><span class="amt neg" id="r_p4">—</span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Sub-total Phases 1–4</span><span class="amt neg" id="r_p1_4_total">—</span></div>
+<div class="section-title">Programme Operating Costs — Phase 5–10 (Operations &amp; Restoration)</div>
+<div class="row"><span class="lbl indent">P5 Commercialisation (brokerage, marketing)</span><span class="amt neg" id="r_p5">—</span></div>
+<div class="row"><span class="lbl indent">P6 Conservation Fund management</span><span class="amt neg" id="r_p6">—</span></div>
+<div class="row"><span class="lbl indent">P7 CBEMR restoration design</span><span class="amt neg" id="r_p7">—</span></div>
+<div class="row"><span class="lbl indent">P8 Community co-management wages</span><span class="amt neg" id="r_p8">—</span></div>
+<div class="row"><span class="lbl indent">P9 Active regeneration (field ops)</span><span class="amt neg" id="r_p9">—</span></div>
+<div class="row"><span class="lbl indent">P10 Ongoing MRV &amp; certification</span><span class="amt neg" id="r_p10">—</span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Sub-total Phases 5–10</span><span class="amt neg" id="r_p5_10_total">—</span></div>
+<div class="subtotal">
+<span class="lbl">Total Programme Operating Costs</span>
+<span><span class="amt neg-hl" id="r_op_total">—</span></span>
+</div>
+<div class="subtotal">
+<span class="lbl" style="color:#16a34a;">Gross Operating Surplus</span>
+<span><span class="amt highlight" id="r_gross_surplus">—</span><span class="pct" id="r_gross_surplus_pct"></span></span>
+</div>
+<div class="section-title">Carbon Reserve &amp; Compliance Buffer</div>
+<div class="row"><span class="lbl indent">Carbon Buffer Pool (10% of credits)</span><span class="amt neg" id="r_buffer">—</span></div>
+<div class="row"><span class="lbl indent">Programme Management &amp; G&amp;A</span><span class="amt neg" id="r_gna">—</span></div>
+<div class="subtotal">
+<span class="lbl" style="color:#16a34a;">Net Programme Surplus</span>
+<span><span class="amt highlight" id="r_net_surplus">—</span><span class="pct" id="r_net_surplus_pct"></span></span>
+</div>
+<div class="disclaimer">
+<strong>Data quality:</strong> All financial figures are synthetic educational estimates derived
           from the AUBEB PDI v1 (2026-04-21). Phase costs are indicative benchmarks for mangrove
           restoration programmes (IUCN, TNC, Restbaseline Ocean 2023). Carbon revenue uses PDI pricing anchors.
           Ecosystem service co-benefit proxy uses $50/ha/yr (conservative coastal protection estimate).
           All values are <em>simulated</em> and not real project accounting.
         </div>
-      </div>
-
-      <!-- ── RIGHT: Charts + NDC ────────────────────────── -->
-      <div>
-        <div class="box" style="margin-bottom:16px;">
-          <div class="box-title">Phase Cost Distribution (USD/yr)</div>
-          <div id="costBars"></div>
-        </div>
-
-        <div class="box" style="margin-bottom:16px;">
-          <div class="box-title">NDC Health — Value Layer Balance per Phase</div>
-          <table class="ndc-table" id="ndcTable">
-            <thead>
-              <tr>
-                <th>Phase</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Status</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
-
-        <div class="box">
-          <div class="box-title">Carbon Revenue Scenarios (annual, at programme scale)</div>
-          <div id="scenarioBars"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- ── TrueValue ─────────────────────────────────── -->
-    <div class="trueval-box">
-      <div class="tv-title">TrueValue Analysis — NDC Efficiency Adjustment</div>
-      <div class="trueval-row"><span class="tl">Net Programme Surplus</span><span class="tv highlight" id="tv_surplus">—</span></div>
-      <div class="trueval-row"><span class="tl">Chain Average NDC Balance</span><span class="tv" id="tv_avg_ndc">—</span></div>
-      <div class="trueval-row"><span class="tl">Near-Optimal Benchmark</span><span class="tv">95.0%</span></div>
-      <div class="trueval-row"><span class="tl">Chain Efficiency Gap</span><span class="tv" id="tv_gap">—</span></div>
-      <div class="trueval-row"><span class="tl">NDC Efficiency Discount</span><span class="tv" id="tv_discount">—</span></div>
-      <div class="trueval-row" style="border-bottom:none;"><span class="tl" style="font-weight:900;">TrueValue Programme Surplus (NDC-Adjusted)</span><span class="tv good" id="tv_truevalue">—</span></div>
-      <p style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:12px;line-height:1.5;">
+</div>
+<!-- ── RIGHT: Charts + NDC ────────────────────────── -->
+<div>
+<div class="box" style="margin-bottom:16px;">
+<div class="box-title">Phase Cost Distribution (USD/yr)</div>
+<div id="costBars"></div>
+</div>
+<div class="box" style="margin-bottom:16px;">
+<div class="box-title">NDC Health — Value Layer Balance per Phase</div>
+<table class="ndc-table" id="ndcTable">
+<thead>
+<tr>
+<th>Phase</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Status</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+</div>
+<div class="box">
+<div class="box-title">Carbon Revenue Scenarios (annual, at programme scale)</div>
+<div id="scenarioBars"></div>
+</div>
+</div>
+</div>
+<!-- ── TrueValue ─────────────────────────────────── -->
+<div class="trueval-box">
+<div class="tv-title">TrueValue Analysis — NDC Efficiency Adjustment</div>
+<div class="trueval-row"><span class="tl">Net Programme Surplus</span><span class="tv highlight" id="tv_surplus">—</span></div>
+<div class="trueval-row"><span class="tl">Chain Average NDC Balance</span><span class="tv" id="tv_avg_ndc">—</span></div>
+<div class="trueval-row"><span class="tl">Near-Optimal Benchmark</span><span class="tv">95.0%</span></div>
+<div class="trueval-row"><span class="tl">Chain Efficiency Gap</span><span class="tv" id="tv_gap">—</span></div>
+<div class="trueval-row"><span class="tl">NDC Efficiency Discount</span><span class="tv" id="tv_discount">—</span></div>
+<div class="trueval-row" style="border-bottom:none;"><span class="tl" style="font-weight:900;">TrueValue Programme Surplus (NDC-Adjusted)</span><span class="tv good" id="tv_truevalue">—</span></div>
+<p style="font-size:11px;color:rgba(255,255,255,0.65);margin-top:12px;line-height:1.5;">
         The NDC efficiency discount estimates revenue potential unrealised due to structural imbalances
         across programme phases. If all phases achieved 95% D-C balance, TrueValue surplus would increase
         by the discount amount. <span id="tv_drag_phase">—</span> is the primary drag on chain efficiency.
       </p>
-      <div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
-        <div style="font-size:12px;font-weight:900;color:rgba(255,255,255,0.7);margin-bottom:6px;">Unrealised Value Potential</div>
-        <div class="trueval-row"><span class="tl">If all phases at 95% balance:</span><span class="tv good" id="tv_potential">—</span></div>
-        <div class="trueval-row" style="border-bottom:none;"><span class="tl">Weakest phase alone restored to 95%:</span><span class="tv good" id="tv_single_phase">—</span></div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <div>AUBEB carbon programme financial report · Value layer only · Physical supply-chain layer unchanged</div>
-    <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
-  </div>
+<div style="margin-top:12px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
+<div style="font-size:12px;font-weight:900;color:rgba(255,255,255,0.7);margin-bottom:6px;">Unrealised Value Potential</div>
+<div class="trueval-row"><span class="tl">If all phases at 95% balance:</span><span class="tv good" id="tv_potential">—</span></div>
+<div class="trueval-row" style="border-bottom:none;"><span class="tl">Weakest phase alone restored to 95%:</span><span class="tv good" id="tv_single_phase">—</span></div>
 </div>
-
+</div>
+</div>
+<div class="footer">
+<div>AUBEB carbon programme financial report · Value layer only · Physical supply-chain layer unchanged</div>
+<div>Separation rules</div>
+</div>
+</div>
 <script>
   const PROGRAMME_HA    = 150_000;
   const ESV_PER_HA      = 50;      // $50/ha/yr conservative coastal protection proxy
@@ -460,7 +445,6 @@
   });
   render();
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -514,7 +498,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -535,11 +518,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -557,7 +536,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
@@ -571,14 +549,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

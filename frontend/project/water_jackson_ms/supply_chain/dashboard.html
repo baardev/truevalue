@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jackson Water Dashboard</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Jackson Water Dashboard</title>
+<style>
     * { box-sizing:border-box; margin:0; padding:0; }
     body { font-family:Segoe UI,Tahoma,sans-serif; background:#edf2f7; color:#2d3748; }
     header { background:linear-gradient(135deg,#2d3748,#4a5568); color:#fff; padding:22px 30px; display:flex; justify-content:space-between; align-items:center; }
@@ -24,14 +25,14 @@
   </style>
 </head>
 <body>
-  <header><h1>Jackson Water Supply Chain Dashboard</h1><nav><a href="index.html">Supply Chain</a><a href="system_lifecycle.html">Lifecycle</a><a href="../index.html">Hub</a></nav></header>
-  <main>
-    <div class="stats" id="stats"></div>
-    <div class="card">
-      <table><thead><tr><th>Phase</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Interpretation</th></tr></thead><tbody id="rows"></tbody></table>
-    </div>
-  </main>
-  <script>
+<header><h1>Jackson Water Supply Chain Dashboard</h1><nav><a href="index.html">Supply Chain</a><a href="system_lifecycle.html">Lifecycle</a><a href="../index.html">Hub</a></nav></header>
+<main>
+<div class="stats" id="stats"></div>
+<div class="card">
+<table><thead><tr><th>Phase</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Interpretation</th></tr></thead><tbody id="rows"></tbody></table>
+</div>
+</main>
+<script>
     fetch("../data/processed/water_jackson_ms_supply_chain_ui.json").then(r => r.json()).then(data => {
       const phases = data.phases.synthetic;
       const ids = Object.keys(phases).sort((a, b) => Number(a) - Number(b));

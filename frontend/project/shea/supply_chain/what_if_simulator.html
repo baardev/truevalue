@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What-If Simulator – Shea Supply Chain</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>What-If Simulator – Shea Supply Chain</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -110,114 +111,107 @@
     </style>
 </head>
 <body>
-    <div class="simulator">
-        <div class="header">
-            <h1>🎛️ Shea What-If Simulator</h1>
-            <div>
-                <a href="dashboard.html">← Dashboard</a>
-                <a href="project_context.html">Project context</a>
-                <a href="index.html">Shea Home</a>
-                <a href="/index.html">Main Homepage</a>
-                </div>
-        </div>
-
-        <div class="main-layout">
-            <div class="left-panel">
-                <div class="panel-title">🎚️ Phase controls (7 phases)</div>
-                <div class="scenario-selector">
-                    <label>Quick scenarios</label>
-                    <select id="scenarioSelect" onchange="loadScenario(this.value)">
-                        <option value="current">Current state</option>
-                        <option value="optimize">Auto-optimize all</option>
-                        <option value="export_fix">Fix Export (Phase 4) bottleneck</option>
-                        <option value="collection_fix">Improve Collection (Phase 0) integration</option>
-                        <option value="shock">Simulate supply shock (Processing)</option>
-                    </select>
-                </div>
-                <div id="phaseControls"></div>
-                <div class="action-buttons">
-                    <button class="btn btn-secondary" onclick="resetAll()">↺ Reset</button>
-                    <button class="btn btn-success" onclick="applyChanges()">✓ Apply</button>
-                    <button class="btn btn-primary" onclick="openEmissionsAnalysis()" title="View Scope 1/2/3 carbon analysis" style="background:#6f42c1;border-color:#6f42c1;">🌡️ Carbon</button>
-                    <button class="btn btn-primary" onclick="openWaterAnalysis()"     title="View water consumption analysis" style="background:#0d6efd;border-color:#0d6efd;">💧 Water</button>
-                    <button class="btn btn-primary" onclick="openEnergyAnalysis()"    title="View energy consumption analysis" style="background:#198754;border-color:#198754;">⚡ Energy</button>
-                </div>
-            </div>
-
-            <div class="center-panel">
-                <div class="panel-title">📊 Live impact</div>
-                <div class="metrics-grid">
-                    <div class="metric-card">
-                        <div class="metric-card-label">System balance</div>
-                        <div class="metric-card-value" id="systemBalance">81.6</div>
-                        <div class="metric-card-delta delta-positive" id="balanceDelta">—</div>
+<div class="simulator">
+<div class="header">
+<h1>🎛️ Shea What-If Simulator</h1>
+<div>
+<a href="dashboard.html">← Dashboard</a>
+<a href="project_context.html">Project context</a>
+<a href="index.html">Shea Home</a>
+<a href="/index.html">Main Homepage</a>
+</div>
+</div>
+<div class="main-layout">
+<div class="left-panel">
+<div class="panel-title">🎚️ Phase controls (7 phases)</div>
+<div class="scenario-selector">
+<label>Quick scenarios</label>
+<select id="scenarioSelect" onchange="loadScenario(this.value)">
+<option value="current">Current state</option>
+<option value="optimize">Auto-optimize all</option>
+<option value="export_fix">Fix Export (Phase 4) bottleneck</option>
+<option value="collection_fix">Improve Collection (Phase 0) integration</option>
+<option value="shock">Simulate supply shock (Processing)</option>
+</select>
+</div>
+<div id="phaseControls"></div>
+<div class="action-buttons">
+<button class="btn btn-secondary" onclick="resetAll()">↺ Reset</button>
+<button class="btn btn-success" onclick="applyChanges()">✓ Apply</button>
+<button class="btn btn-primary" onclick="openEmissionsAnalysis()" style="background:#6f42c1;border-color:#6f42c1;" title="View Scope 1/2/3 carbon analysis">🌡️ Carbon</button>
+<button class="btn btn-primary" onclick="openWaterAnalysis()" style="background:#0d6efd;border-color:#0d6efd;" title="View water consumption analysis">💧 Water</button>
+<button class="btn btn-primary" onclick="openEnergyAnalysis()" style="background:#198754;border-color:#198754;" title="View energy consumption analysis">⚡ Energy</button>
+</div>
+</div>
+<div class="center-panel">
+<div class="panel-title">📊 Live impact</div>
+<div class="metrics-grid">
+<div class="metric-card">
+<div class="metric-card-label">System balance</div>
+<div class="metric-card-value" id="systemBalance">81.6</div>
+<div class="metric-card-delta delta-positive" id="balanceDelta">—</div>
+</div>
+<div class="metric-card">
+<div class="metric-card-label">Sustainability</div>
+<div class="metric-card-value" id="sysSustainability">0.88</div>
+<div class="metric-card-delta" id="susDelta">—</div>
+</div>
+<div class="metric-card">
+<div class="metric-card-label">Bottlenecks</div>
+<div class="metric-card-value" id="bottleneckCount">2</div>
+<div class="metric-card-delta" id="bottleneckDelta">—</div>
+</div>
+<div class="metric-card">
+<div class="metric-card-label">N (avg)</div>
+<div class="metric-card-value" id="avgN">208</div>
+<div class="metric-card-delta">Capacity</div>
+</div>
+</div>
+<div class="flow-visualization">
+<svg class="flow-svg" id="flowSvg" viewbox="0 0 900 420"></svg>
+</div>
+</div>
+<div class="right-panel">
+<div class="panel-title">💡 Impact analysis</div>
+<ul class="impact-list" id="impactList"></ul>
+<!-- Carbon Footprint Summary -->
+<div id="carbonSummary" style="margin-top:20px;padding:16px;background:white;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+<div style="font-size:13px;font-weight:700;color:#5c4610;margin-bottom:12px;">🌡️ Carbon Footprint — Chain Total</div>
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
+<div style="text-align:center;padding:10px;background:#fff3cd;border-radius:6px;">
+<div style="font-size:9px;font-weight:600;color:#856404;text-transform:uppercase;margin-bottom:4px;">Total S1</div>
+<div id="totalS1" style="font-size:16px;font-weight:700;color:#856404;">—</div>
+</div>
+<div style="text-align:center;padding:10px;background:#cce5ff;border-radius:6px;">
+<div style="font-size:9px;font-weight:600;color:#004085;text-transform:uppercase;margin-bottom:4px;">Total S2</div>
+<div id="totalS2" style="font-size:16px;font-weight:700;color:#004085;">—</div>
+</div>
+<div style="text-align:center;padding:10px;background:#e2e3e5;border-radius:6px;">
+<div style="font-size:9px;font-weight:600;color:#383d41;text-transform:uppercase;margin-bottom:4px;">Chain Total</div>
+<div id="chainTotal" style="font-size:18px;font-weight:700;">—</div>
+</div>
+<div style="text-align:center;padding:10px;background:#d4edda;border-radius:6px;">
+<div style="font-size:9px;font-weight:600;color:#155724;text-transform:uppercase;margin-bottom:4px;">vs BAU P3</div>
+<div id="bauSaving" style="font-size:14px;font-weight:700;color:#155724;">20× less</div>
+</div>
+</div>
+<div style="font-size:11px;font-weight:600;color:#5c4610;margin-bottom:6px;">S1+S2 cascade ↑ by phase</div>
+<div id="cascadeViz" style="font-size:10px;color:#6c757d;"></div>
+</div>
+<div style="margin-top:15px;padding:18px;background:white;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
+<h3 style="font-size:13px;margin-bottom:12px;">🫒 Shea chain (project data)</h3>
+<div style="font-size:11px;color:#6c757d;line-height:1.5;">
+                        Data: Clarity Cleo True Value; Burkina Faso / West Africa → Cleo retail. N-D-C uses Shea project parameters. Balance improves when D ≈ C.<br/><br/>
+<strong>Phase 3 note:</strong> Simulator shows Serious Shea scenario (100% renewable). BAU firewood = 10.374 kg CO₂e/kg butter — <strong>20× higher</strong>.
                     </div>
-                    <div class="metric-card">
-                        <div class="metric-card-label">Sustainability</div>
-                        <div class="metric-card-value" id="sysSustainability">0.88</div>
-                        <div class="metric-card-delta" id="susDelta">—</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-card-label">Bottlenecks</div>
-                        <div class="metric-card-value" id="bottleneckCount">2</div>
-                        <div class="metric-card-delta" id="bottleneckDelta">—</div>
-                    </div>
-                    <div class="metric-card">
-                        <div class="metric-card-label">N (avg)</div>
-                        <div class="metric-card-value" id="avgN">208</div>
-                        <div class="metric-card-delta">Capacity</div>
-                    </div>
-                </div>
-                <div class="flow-visualization">
-                    <svg class="flow-svg" id="flowSvg" viewBox="0 0 900 420"></svg>
-                </div>
-            </div>
-
-            <div class="right-panel">
-                <div class="panel-title">💡 Impact analysis</div>
-                <ul class="impact-list" id="impactList"></ul>
-
-                <!-- Carbon Footprint Summary -->
-                <div id="carbonSummary" style="margin-top:20px;padding:16px;background:white;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                    <div style="font-size:13px;font-weight:700;color:#5c4610;margin-bottom:12px;">🌡️ Carbon Footprint — Chain Total</div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;">
-                        <div style="text-align:center;padding:10px;background:#fff3cd;border-radius:6px;">
-                            <div style="font-size:9px;font-weight:600;color:#856404;text-transform:uppercase;margin-bottom:4px;">Total S1</div>
-                            <div style="font-size:16px;font-weight:700;color:#856404;" id="totalS1">—</div>
-                        </div>
-                        <div style="text-align:center;padding:10px;background:#cce5ff;border-radius:6px;">
-                            <div style="font-size:9px;font-weight:600;color:#004085;text-transform:uppercase;margin-bottom:4px;">Total S2</div>
-                            <div style="font-size:16px;font-weight:700;color:#004085;" id="totalS2">—</div>
-                        </div>
-                        <div style="text-align:center;padding:10px;background:#e2e3e5;border-radius:6px;">
-                            <div style="font-size:9px;font-weight:600;color:#383d41;text-transform:uppercase;margin-bottom:4px;">Chain Total</div>
-                            <div style="font-size:18px;font-weight:700;" id="chainTotal">—</div>
-                        </div>
-                        <div style="text-align:center;padding:10px;background:#d4edda;border-radius:6px;">
-                            <div style="font-size:9px;font-weight:600;color:#155724;text-transform:uppercase;margin-bottom:4px;">vs BAU P3</div>
-                            <div style="font-size:14px;font-weight:700;color:#155724;" id="bauSaving">20× less</div>
-                        </div>
-                    </div>
-                    <div style="font-size:11px;font-weight:600;color:#5c4610;margin-bottom:6px;">S1+S2 cascade ↑ by phase</div>
-                    <div id="cascadeViz" style="font-size:10px;color:#6c757d;"></div>
-                </div>
-
-                <div style="margin-top:15px;padding:18px;background:white;border-radius:8px;box-shadow:0 2px 4px rgba(0,0,0,0.05);">
-                    <h3 style="font-size:13px;margin-bottom:12px;">🫒 Shea chain (project data)</h3>
-                    <div style="font-size:11px;color:#6c757d;line-height:1.5;">
-                        Data: Clarity Cleo True Value; Burkina Faso / West Africa → Cleo retail. N-D-C uses Shea project parameters. Balance improves when D ≈ C.<br><br>
-                        <strong>Phase 3 note:</strong> Simulator shows Serious Shea scenario (100% renewable). BAU firewood = 10.374 kg CO₂e/kg butter — <strong>20× higher</strong>.
-                    </div>
-                </div>
-
-                <div class="action-buttons" style="margin-top:15px;">
-                    <button class="btn btn-primary" onclick="autoOptimize()">✨ Auto-optimize</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
+</div>
+<div class="action-buttons" style="margin-top:15px;">
+<button class="btn btn-primary" onclick="autoOptimize()">✨ Auto-optimize</button>
+</div>
+</div>
+</div>
+</div>
+<script>
         const DATA_URL = '/frontend/project/shea/data/processed/shea_supply_chain_ui.json';
         let UI_DATA = null;
         let defaultPhases = [];
@@ -605,7 +599,6 @@
 
         init();
     </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -680,7 +673,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -701,11 +693,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -723,7 +711,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -737,14 +724,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

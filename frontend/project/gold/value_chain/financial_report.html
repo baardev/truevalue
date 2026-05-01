@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gold Value Chain — Financial Report</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gold Value Chain — Financial Report</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -124,180 +125,165 @@
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div>
-      <h1>Gold Supply Chain — Value Chain Financial Report</h1>
-      <div style="font-size:12px;opacity:0.8;margin-top:3px;">
+<div class="header">
+<div>
+<h1>Gold Supply Chain — Value Chain Financial Report</h1>
+<div style="font-size:12px;opacity:0.8;margin-top:3px;">
         Phase-resolved income statement · AISC sub-component breakdown · Environmental adjustments · NDC TrueValue analysis
       </div>
-    </div>
-    <div class="nav">
-      <a href="./what_if_simulator.html">Simulator</a>
-      <a href="./dashboard.html">Dashboard</a>
-      <a href="/index.html">Root</a>
-    </div>
-  </div>
-
-  <div class="toolbar">
-    <div class="ctrl">
-      <label>Entity:</label>
-      <select id="entitySel">
-        <option value="E001">Newmont (E001)</option>
-        <option value="E002">Barrick (E002)</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <label>Carbon Price ($/tCO₂e):</label>
-      <input id="carbonSlider" type="range" min="0" max="200" step="5" value="65" style="width:120px;" />
-      <span class="val" id="carbonLbl">$65</span>
-    </div>
-    <div class="ctrl">
-      <label>Gold Price ($/oz):</label>
-      <input id="priceSlider" type="range" min="1400" max="6500" step="25" value="5000" style="width:120px;" />
-      <span class="val" id="priceLbl">$5,000</span>
-    </div>
-  </div>
-
-  <div class="body">
-    <!-- KPI strip -->
-    <div class="kpi-row" id="kpiStrip"></div>
-
-    <div class="grid2">
-      <!-- LEFT: Income Statement -->
-      <div>
-        <div class="report-title" id="reportTitle">INCOME STATEMENT — Annual 2024</div>
-
-        <div class="section-title">Revenue</div>
-        <div class="row"><span class="lbl">Realized Gold Price</span><span class="amt" id="r_price">—</span></div>
-        <div class="row"><span class="lbl indent">× Annual Production</span><span class="amt" id="r_prod">—</span></div>
-        <div class="subtotal"><span class="lbl">Gross Revenue</span><span><span class="amt" id="r_revenue">—</span><span class="pct" id="r_revenue_pct"></span></span></div>
-
-        <div class="section-title">Cost of Sales — Phase 1 Mining</div>
-        <div class="row"><span class="lbl indent">Cash Operating Cost</span><span><span class="amt neg" id="r_cash">—</span><span class="pct" id="r_cash_pct"></span></span></div>
-        <div class="subtotal"><span class="lbl">Gross Operating Profit</span><span><span class="amt highlight" id="r_gross">—</span><span class="pct" id="r_gross_pct"></span></span></div>
-
-        <div class="section-title">Sustaining Costs (AISC Deductions)</div>
-        <div class="row"><span class="lbl indent">Royalties &amp; Production Taxes</span><span><span class="amt neg" id="r_royal">—</span></span></div>
-        <div class="row"><span class="lbl indent">Sustaining Capital Expenditure</span><span><span class="amt neg" id="r_capex">—</span></span></div>
-        <div class="row"><span class="lbl indent">Corporate G&amp;A</span><span><span class="amt neg" id="r_gna">—</span></span></div>
-        <div class="row"><span class="lbl indent">Sustaining Exploration</span><span><span class="amt neg" id="r_expl">—</span></span></div>
-        <div class="row"><span class="lbl indent">Reclamation &amp; Closure Accrual</span><span><span class="amt neg" id="r_reclam">—</span></span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Total Sustaining Costs</span><span class="amt neg" id="r_sustaining_total">—</span></div>
-        <div class="subtotal">
-          <span class="lbl">AISC (All-In Sustaining Cost)</span>
-          <span><span class="amt" id="r_aisc">—</span><span class="pct" id="r_aisc_pct"></span></span>
+</div>
+<div class="nav">
+<a href="./what_if_simulator.html">Simulator</a>
+<a href="./dashboard.html">Dashboard</a>
+<a href="/index.html">Root</a>
+</div>
+</div>
+<div class="toolbar">
+<div class="ctrl">
+<label>Entity:</label>
+<select id="entitySel">
+<option value="E001">Newmont (E001)</option>
+<option value="E002">Barrick (E002)</option>
+</select>
+</div>
+<div class="ctrl">
+<label>Carbon Price ($/tCO₂e):</label>
+<input id="carbonSlider" max="200" min="0" step="5" style="width:120px;" type="range" value="65"/>
+<span class="val" id="carbonLbl">$65</span>
+</div>
+<div class="ctrl">
+<label>Gold Price ($/oz):</label>
+<input id="priceSlider" max="6500" min="1400" step="25" style="width:120px;" type="range" value="5000"/>
+<span class="val" id="priceLbl">$5,000</span>
+</div>
+</div>
+<div class="body">
+<!-- KPI strip -->
+<div class="kpi-row" id="kpiStrip"></div>
+<div class="grid2">
+<!-- LEFT: Income Statement -->
+<div>
+<div class="report-title" id="reportTitle">INCOME STATEMENT — Annual 2024</div>
+<div class="section-title">Revenue</div>
+<div class="row"><span class="lbl">Realized Gold Price</span><span class="amt" id="r_price">—</span></div>
+<div class="row"><span class="lbl indent">× Annual Production</span><span class="amt" id="r_prod">—</span></div>
+<div class="subtotal"><span class="lbl">Gross Revenue</span><span><span class="amt" id="r_revenue">—</span><span class="pct" id="r_revenue_pct"></span></span></div>
+<div class="section-title">Cost of Sales — Phase 1 Mining</div>
+<div class="row"><span class="lbl indent">Cash Operating Cost</span><span><span class="amt neg" id="r_cash">—</span><span class="pct" id="r_cash_pct"></span></span></div>
+<div class="subtotal"><span class="lbl">Gross Operating Profit</span><span><span class="amt highlight" id="r_gross">—</span><span class="pct" id="r_gross_pct"></span></span></div>
+<div class="section-title">Sustaining Costs (AISC Deductions)</div>
+<div class="row"><span class="lbl indent">Royalties &amp; Production Taxes</span><span><span class="amt neg" id="r_royal">—</span></span></div>
+<div class="row"><span class="lbl indent">Sustaining Capital Expenditure</span><span><span class="amt neg" id="r_capex">—</span></span></div>
+<div class="row"><span class="lbl indent">Corporate G&amp;A</span><span><span class="amt neg" id="r_gna">—</span></span></div>
+<div class="row"><span class="lbl indent">Sustaining Exploration</span><span><span class="amt neg" id="r_expl">—</span></span></div>
+<div class="row"><span class="lbl indent">Reclamation &amp; Closure Accrual</span><span><span class="amt neg" id="r_reclam">—</span></span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Total Sustaining Costs</span><span class="amt neg" id="r_sustaining_total">—</span></div>
+<div class="subtotal">
+<span class="lbl">AISC (All-In Sustaining Cost)</span>
+<span><span class="amt" id="r_aisc">—</span><span class="pct" id="r_aisc_pct"></span></span>
+</div>
+<div class="subtotal">
+<span class="lbl" style="color:#16a34a;">AISC Operating Margin</span>
+<span><span class="amt highlight" id="r_aisc_margin">—</span><span class="pct" id="r_aisc_margin_pct"></span></span>
+</div>
+<div class="section-title">Value Chain Phase Costs (Phases 2–8)</div>
+<div class="row"><span class="lbl indent">P2 Ore Processing (toll milling)</span><span class="amt neg" id="r_p2">—</span></div>
+<div class="row"><span class="lbl indent">P3 Smelting &amp; Doré</span><span class="amt neg" id="r_p3">—</span></div>
+<div class="row"><span class="lbl indent">P4 Refining (LBMA)</span><span class="amt neg" id="r_p4">—</span></div>
+<div class="row"><span class="lbl indent">P5 Assay &amp; Certification</span><span class="amt neg" id="r_p5">—</span></div>
+<div class="row"><span class="lbl indent">P6 Logistics &amp; Transport</span><span class="amt neg" id="r_p6">—</span></div>
+<div class="row"><span class="lbl indent">P7 Exchange Registration (COMEX)</span><span class="amt neg" id="r_p7">—</span></div>
+<div class="row"><span class="lbl indent">P8 Fabrication (end-use)</span><span class="amt neg" id="r_p8">—</span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Total Phase 2–8 Costs</span><span class="amt neg" id="r_phase_total">—</span></div>
+<div class="subtotal">
+<span class="lbl">Chain-Level Operating Profit</span>
+<span><span class="amt highlight" id="r_chain_profit">—</span><span class="pct" id="r_chain_profit_pct"></span></span>
+</div>
+<div class="section-title">Environmental Adjustments (at selected carbon price)</div>
+<div class="row"><span class="lbl indent">Scope 1+2 Carbon Liability (all phases)</span><span><span class="amt neg" id="r_carbon">—</span></span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Energy &amp; Water cost components</span><span class="amt neg" id="r_envother">—</span></div>
+<div class="subtotal">
+<span class="lbl" style="color:#16a34a;">Env-Adjusted Chain Profit</span>
+<span><span class="amt highlight" id="r_env_profit">—</span><span class="pct" id="r_env_profit_pct"></span></span>
+</div>
+<div class="disclaimer">
+<strong>Data quality:</strong> Phase 1 financial metrics are synthetic educational seeds (simulated). Phase 2–8 costs are benchmark estimates. Environmental costs calculated from supply chain physical data at selected carbon price. All values marked <em>simulated</em> are not real company data.
         </div>
-        <div class="subtotal">
-          <span class="lbl" style="color:#16a34a;">AISC Operating Margin</span>
-          <span><span class="amt highlight" id="r_aisc_margin">—</span><span class="pct" id="r_aisc_margin_pct"></span></span>
-        </div>
-
-        <div class="section-title">Value Chain Phase Costs (Phases 2–8)</div>
-        <div class="row"><span class="lbl indent">P2 Ore Processing (toll milling)</span><span class="amt neg" id="r_p2">—</span></div>
-        <div class="row"><span class="lbl indent">P3 Smelting &amp; Doré</span><span class="amt neg" id="r_p3">—</span></div>
-        <div class="row"><span class="lbl indent">P4 Refining (LBMA)</span><span class="amt neg" id="r_p4">—</span></div>
-        <div class="row"><span class="lbl indent">P5 Assay &amp; Certification</span><span class="amt neg" id="r_p5">—</span></div>
-        <div class="row"><span class="lbl indent">P6 Logistics &amp; Transport</span><span class="amt neg" id="r_p6">—</span></div>
-        <div class="row"><span class="lbl indent">P7 Exchange Registration (COMEX)</span><span class="amt neg" id="r_p7">—</span></div>
-        <div class="row"><span class="lbl indent">P8 Fabrication (end-use)</span><span class="amt neg" id="r_p8">—</span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Total Phase 2–8 Costs</span><span class="amt neg" id="r_phase_total">—</span></div>
-        <div class="subtotal">
-          <span class="lbl">Chain-Level Operating Profit</span>
-          <span><span class="amt highlight" id="r_chain_profit">—</span><span class="pct" id="r_chain_profit_pct"></span></span>
-        </div>
-
-        <div class="section-title">Environmental Adjustments (at selected carbon price)</div>
-        <div class="row"><span class="lbl indent">Scope 1+2 Carbon Liability (all phases)</span><span><span class="amt neg" id="r_carbon">—</span></span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Energy &amp; Water cost components</span><span class="amt neg" id="r_envother">—</span></div>
-        <div class="subtotal">
-          <span class="lbl" style="color:#16a34a;">Env-Adjusted Chain Profit</span>
-          <span><span class="amt highlight" id="r_env_profit">—</span><span class="pct" id="r_env_profit_pct"></span></span>
-        </div>
-
-        <div class="disclaimer">
-          <strong>Data quality:</strong> Phase 1 financial metrics are synthetic educational seeds (simulated). Phase 2–8 costs are benchmark estimates. Environmental costs calculated from supply chain physical data at selected carbon price. All values marked <em>simulated</em> are not real company data.
-        </div>
-      </div>
-
-      <!-- RIGHT: NDC Health + Charts -->
-      <div>
-        <div class="box" style="margin-bottom:14px;">
-          <div class="box-title">Phase Cost Distribution ($/oz)</div>
-          <div id="phaseCostBars"></div>
-        </div>
-
-        <div class="box" style="margin-bottom:14px;">
-          <div class="box-title">NDC Health — Supply Chain Balance per Phase</div>
-          <table class="ndc-table" id="ndcTable">
-            <thead>
-              <tr>
-                <th>Phase</th><th>D</th><th>C</th><th>N</th>
-                <th>Balance</th><th>Sustain.</th><th>Status</th>
-              </tr>
-            </thead>
-            <tbody id="ndcBody"></tbody>
-          </table>
-        </div>
-
-        <div class="box" style="margin-bottom:14px;">
-          <div class="box-title">Carbon Liability by Phase ($/oz at selected price)</div>
-          <div id="carbonBars"></div>
-        </div>
-
-        <!-- TrueValue Box -->
-        <div class="trueval-box">
-          <div class="tv-title">TrueValue Analysis — NDC Efficiency Adjustment</div>
-          <div class="trueval-row">
-            <span class="tl">Env-Adjusted Chain Profit</span>
-            <span class="tv" id="tv_base">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Chain Average NDC Balance</span>
-            <span class="tv" id="tv_avgbal">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Near-Optimal Benchmark (95%)</span>
-            <span class="tv">95.0%</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Chain Efficiency Gap</span>
-            <span class="tv" id="tv_gap">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">NDC Efficiency Discount (gap × AISC)</span>
-            <span class="tv" id="tv_discount">—</span>
-          </div>
-          <div class="trueval-row" style="border-bottom:none; padding-top:8px; margin-top:4px; border-top:1px solid rgba(255,255,255,0.25);">
-            <span class="tl" style="color:#fbbf24; font-weight:900;">TrueValue Profit (NDC-Adjusted)</span>
-            <span class="tv highlight" id="tv_trueval">—</span>
-          </div>
-          <div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.5;">
+</div>
+<!-- RIGHT: NDC Health + Charts -->
+<div>
+<div class="box" style="margin-bottom:14px;">
+<div class="box-title">Phase Cost Distribution ($/oz)</div>
+<div id="phaseCostBars"></div>
+</div>
+<div class="box" style="margin-bottom:14px;">
+<div class="box-title">NDC Health — Supply Chain Balance per Phase</div>
+<table class="ndc-table" id="ndcTable">
+<thead>
+<tr>
+<th>Phase</th><th>D</th><th>C</th><th>N</th>
+<th>Balance</th><th>Sustain.</th><th>Status</th>
+</tr>
+</thead>
+<tbody id="ndcBody"></tbody>
+</table>
+</div>
+<div class="box" style="margin-bottom:14px;">
+<div class="box-title">Carbon Liability by Phase ($/oz at selected price)</div>
+<div id="carbonBars"></div>
+</div>
+<!-- TrueValue Box -->
+<div class="trueval-box">
+<div class="tv-title">TrueValue Analysis — NDC Efficiency Adjustment</div>
+<div class="trueval-row">
+<span class="tl">Env-Adjusted Chain Profit</span>
+<span class="tv" id="tv_base">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Chain Average NDC Balance</span>
+<span class="tv" id="tv_avgbal">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Near-Optimal Benchmark (95%)</span>
+<span class="tv">95.0%</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Chain Efficiency Gap</span>
+<span class="tv" id="tv_gap">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">NDC Efficiency Discount (gap × AISC)</span>
+<span class="tv" id="tv_discount">—</span>
+</div>
+<div class="trueval-row" style="border-bottom:none; padding-top:8px; margin-top:4px; border-top:1px solid rgba(255,255,255,0.25);">
+<span class="tl" style="color:#fbbf24; font-weight:900;">TrueValue Profit (NDC-Adjusted)</span>
+<span class="tv highlight" id="tv_trueval">—</span>
+</div>
+<div style="margin-top:12px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.5;">
             The NDC efficiency discount estimates the value lost to structural imbalance across the supply chain.
             If all phases achieved 95% D-C balance, the TrueValue profit would increase by the discount amount.
             Phase 6 (Logistics) is the primary drag at <span id="tv_p6bal" style="color:#fbbf24;">—</span> balance.
           </div>
-          <div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
-            <div style="font-size:11px; font-weight:900; color:#fbbf24; margin-bottom:6px;">Unrealized Value Potential</div>
-            <div class="trueval-row">
-              <span class="tl" style="font-size:11px;">If all phases at 95% balance:</span>
-              <span class="tv good" id="tv_potential">—</span>
-            </div>
-            <div class="trueval-row" style="border-bottom:none;">
-              <span class="tl" style="font-size:11px;">Phase 6 alone restored to 95%:</span>
-              <span class="tv" id="tv_p6fix" style="color:#4ade80;">—</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <span>Gold value chain financial report · Value layer only · Physical supply chain layer unchanged</span>
-    <a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a>
-  </div>
+<div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
+<div style="font-size:11px; font-weight:900; color:#fbbf24; margin-bottom:6px;">Unrealized Value Potential</div>
+<div class="trueval-row">
+<span class="tl" style="font-size:11px;">If all phases at 95% balance:</span>
+<span class="tv good" id="tv_potential">—</span>
 </div>
-
+<div class="trueval-row" style="border-bottom:none;">
+<span class="tl" style="font-size:11px;">Phase 6 alone restored to 95%:</span>
+<span class="tv" id="tv_p6fix" style="color:#4ade80;">—</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<span>Gold value chain financial report · Value layer only · Physical supply chain layer unchanged</span>
+Separation rules
+</div>
+</div>
 <script>
 // ── Inline fallback data ────────────────────────────────────────────────────
 const FALLBACK_METRICS = {
@@ -593,7 +579,6 @@ async function main() {
 
 main();
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -668,7 +653,6 @@ main();
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -689,11 +673,7 @@ main();
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -711,7 +691,6 @@ main();
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -725,14 +704,8 @@ main();
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

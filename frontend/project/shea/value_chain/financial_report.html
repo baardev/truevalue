@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shea Value Chain — Financial Report</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shea Value Chain — Financial Report</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -118,187 +119,172 @@
 </head>
 <body>
 <div class="app">
-  <div class="header">
-    <div>
-      <h1>Shea Butter Supply Chain — Value Chain Financial Report</h1>
-      <div style="font-size:12px;opacity:0.8;margin-top:3px;">
+<div class="header">
+<div>
+<h1>Shea Butter Supply Chain — Value Chain Financial Report</h1>
+<div style="font-size:12px;opacity:0.8;margin-top:3px;">
         Value distribution statement · BAU vs Serious Shea · Carbon credit premium · NDC TrueValue analysis
       </div>
-    </div>
-    <div class="nav">
-      <a href="./what_if_simulator.html">Simulator</a>
-      <a href="./dashboard.html">Dashboard</a>
-      <a href="/index.html">Root</a>
-    </div>
-  </div>
-
-  <div class="toolbar">
-    <div class="ctrl">
-      <label>Entity / Scenario:</label>
-      <select id="entitySel">
-        <option value="S001">Serious Shea Current (S001)</option>
-        <option value="S002">Cleo 10% Share (S002)</option>
-      </select>
-    </div>
-    <div class="ctrl">
-      <label>Carbon Credit Price ($/tCO₂e):</label>
-      <input id="carbonSlider" type="range" min="0" max="50" step="1" value="12" style="width:120px;" />
-      <span class="val" id="carbonLbl">$12</span>
-    </div>
-    <div class="ctrl">
-      <label>Shea Butter Input Price ($/MT):</label>
-      <input id="priceSlider" type="range" min="1000" max="15000" step="100" value="4000" style="width:120px;" />
-      <span class="val" id="priceLbl">$4,000</span>
-    </div>
-  </div>
-
-  <div class="body">
-    <div class="kpi-row" id="kpiStrip"></div>
-
-    <div class="grid2">
-      <!-- LEFT: Value Distribution Statement -->
-      <div>
-        <div class="report-title">VALUE DISTRIBUTION STATEMENT — Annual 2024</div>
-
-        <div class="section-title">Phase 3 — Extraction / Processing</div>
-        <div class="row"><span class="lbl">Input: Shea Nuts Cost</span><span class="amt neg" id="r_nuts">—</span></div>
-        <div class="row"><span class="lbl">Processing Cost (energy, labor, materials)</span><span class="amt neg" id="r_proc_cost">—</span></div>
-        <div class="row"><span class="lbl pos">Carbon Credit Revenue (Serious Shea)</span><span class="amt pos" id="r_credit">—</span></div>
-        <div class="subtotal">
-          <span class="lbl">Net Cost to Produce 1 MT Butter</span>
-          <span><span class="amt" id="r_net_proc">—</span></span>
+</div>
+<div class="nav">
+<a href="./what_if_simulator.html">Simulator</a>
+<a href="./dashboard.html">Dashboard</a>
+<a href="/index.html">Root</a>
+</div>
+</div>
+<div class="toolbar">
+<div class="ctrl">
+<label>Entity / Scenario:</label>
+<select id="entitySel">
+<option value="S001">Serious Shea Current (S001)</option>
+<option value="S002">Cleo 10% Share (S002)</option>
+</select>
+</div>
+<div class="ctrl">
+<label>Carbon Credit Price ($/tCO₂e):</label>
+<input id="carbonSlider" max="50" min="0" step="1" style="width:120px;" type="range" value="12"/>
+<span class="val" id="carbonLbl">$12</span>
+</div>
+<div class="ctrl">
+<label>Shea Butter Input Price ($/MT):</label>
+<input id="priceSlider" max="15000" min="1000" step="100" style="width:120px;" type="range" value="4000"/>
+<span class="val" id="priceLbl">$4,000</span>
+</div>
+</div>
+<div class="body">
+<div class="kpi-row" id="kpiStrip"></div>
+<div class="grid2">
+<!-- LEFT: Value Distribution Statement -->
+<div>
+<div class="report-title">VALUE DISTRIBUTION STATEMENT — Annual 2024</div>
+<div class="section-title">Phase 3 — Extraction / Processing</div>
+<div class="row"><span class="lbl">Input: Shea Nuts Cost</span><span class="amt neg" id="r_nuts">—</span></div>
+<div class="row"><span class="lbl">Processing Cost (energy, labor, materials)</span><span class="amt neg" id="r_proc_cost">—</span></div>
+<div class="row"><span class="lbl pos">Carbon Credit Revenue (Serious Shea)</span><span class="amt pos" id="r_credit">—</span></div>
+<div class="subtotal">
+<span class="lbl">Net Cost to Produce 1 MT Butter</span>
+<span><span class="amt" id="r_net_proc">—</span></span>
+</div>
+<div class="section-title">Phase 4 — Logistics &amp; Export</div>
+<div class="row"><span class="lbl indent">Burkina Faso / Senegal Export Value (mid-range)</span><span class="amt" id="r_export_mid">—</span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Range (FAO 2017 Chen):</span><span class="amt" id="r_export_range">—</span></div>
+<div class="section-title">Phase 5 — Manufacturing (Cleo)</div>
+<div class="row"><span class="lbl indent">Cleo Input Cost (bulk shea butter)</span><span class="amt neg" id="r_cleo_input">—</span></div>
+<div class="row"><span class="lbl indent">Cleo Manufacturing &amp; Overhead</span><span class="amt neg" id="r_cleo_oh">—</span></div>
+<div class="row"><span class="lbl indent">Total Cleo Cost Base</span><span class="amt neg" id="r_cleo_total_cost">—</span></div>
+<div class="row"><span class="lbl indent pos">Cleo Retail Revenue</span><span class="amt pos" id="r_cleo_retail">—</span></div>
+<div class="subtotal">
+<span class="lbl">Cleo Gross Margin</span>
+<span><span class="amt highlight" id="r_cleo_margin">—</span><span class="pct" id="r_cleo_margin_pct"></span></span>
+</div>
+<div class="section-title">Phase 6 — Retail &amp; Value Distribution</div>
+<div class="row"><span class="lbl indent">Price to Women's Groups (Serious Shea)</span><span class="amt" id="r_price_women">—</span></div>
+<div class="row"><span class="lbl indent pos">Carbon Credit Premium</span><span class="amt pos" id="r_credit_prem">—</span></div>
+<div class="subtotal">
+<span class="lbl highlight" style="color:#16a34a;">Effective Value to Women</span>
+<span><span class="amt highlight" id="r_eff_women">—</span></span>
+</div>
+<div class="row"><span class="lbl indent">Cleo Retail Value (per MT butter equiv.)</span><span class="amt" id="r_cleo_retail2">—</span></div>
+<div class="row" style="font-size:11px;"><span class="lbl indent2">Uplift ratio (retail/women price)</span><span class="amt" id="r_uplift">—</span></div>
+<div class="section-title">Value Distribution (% of Cleo Retail)</div>
+<div class="row"><span class="lbl indent">→ Women's groups (effective value)</span><span class="amt pos" id="r_women_pct">—</span></div>
+<div class="row"><span class="lbl indent">→ Cleo gross margin</span><span class="amt" id="r_cleo_pct">—</span></div>
+<div class="row"><span class="lbl indent">→ Environmental costs (supply chain)</span><span class="amt neg" id="r_env_pct">—</span></div>
+<div class="disclaimer">
+<strong>Data quality:</strong> Price-to-women and retail price data are from Clarity/Cleo outline (public). Manufacturing costs, overhead, and retail revenue are synthetic educational estimates. Export values from FAO 2017 Chen (public). Carbon credit revenue calculated at selected VCM price.
         </div>
-
-        <div class="section-title">Phase 4 — Logistics &amp; Export</div>
-        <div class="row"><span class="lbl indent">Burkina Faso / Senegal Export Value (mid-range)</span><span class="amt" id="r_export_mid">—</span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Range (FAO 2017 Chen):</span><span class="amt" id="r_export_range">—</span></div>
-
-        <div class="section-title">Phase 5 — Manufacturing (Cleo)</div>
-        <div class="row"><span class="lbl indent">Cleo Input Cost (bulk shea butter)</span><span class="amt neg" id="r_cleo_input">—</span></div>
-        <div class="row"><span class="lbl indent">Cleo Manufacturing &amp; Overhead</span><span class="amt neg" id="r_cleo_oh">—</span></div>
-        <div class="row"><span class="lbl indent">Total Cleo Cost Base</span><span class="amt neg" id="r_cleo_total_cost">—</span></div>
-        <div class="row"><span class="lbl indent pos">Cleo Retail Revenue</span><span class="amt pos" id="r_cleo_retail">—</span></div>
-        <div class="subtotal">
-          <span class="lbl">Cleo Gross Margin</span>
-          <span><span class="amt highlight" id="r_cleo_margin">—</span><span class="pct" id="r_cleo_margin_pct"></span></span>
-        </div>
-
-        <div class="section-title">Phase 6 — Retail &amp; Value Distribution</div>
-        <div class="row"><span class="lbl indent">Price to Women's Groups (Serious Shea)</span><span class="amt" id="r_price_women">—</span></div>
-        <div class="row"><span class="lbl indent pos">Carbon Credit Premium</span><span class="amt pos" id="r_credit_prem">—</span></div>
-        <div class="subtotal">
-          <span class="lbl highlight" style="color:#16a34a;">Effective Value to Women</span>
-          <span><span class="amt highlight" id="r_eff_women">—</span></span>
-        </div>
-        <div class="row"><span class="lbl indent">Cleo Retail Value (per MT butter equiv.)</span><span class="amt" id="r_cleo_retail2">—</span></div>
-        <div class="row" style="font-size:11px;"><span class="lbl indent2">Uplift ratio (retail/women price)</span><span class="amt" id="r_uplift">—</span></div>
-
-        <div class="section-title">Value Distribution (% of Cleo Retail)</div>
-        <div class="row"><span class="lbl indent">→ Women's groups (effective value)</span><span class="amt pos" id="r_women_pct">—</span></div>
-        <div class="row"><span class="lbl indent">→ Cleo gross margin</span><span class="amt" id="r_cleo_pct">—</span></div>
-        <div class="row"><span class="lbl indent">→ Environmental costs (supply chain)</span><span class="amt neg" id="r_env_pct">—</span></div>
-
-        <div class="disclaimer">
-          <strong>Data quality:</strong> Price-to-women and retail price data are from Clarity/Cleo outline (public). Manufacturing costs, overhead, and retail revenue are synthetic educational estimates. Export values from FAO 2017 Chen (public). Carbon credit revenue calculated at selected VCM price.
-        </div>
-      </div>
-
-      <!-- RIGHT: BAU vs SS + NDC -->
-      <div>
-        <div class="hero-bau">
-          <div class="hero-title">Phase 3 — The Transformation: BAU vs Serious Shea</div>
-          <div class="compare-grid">
-            <div class="compare-box" style="background:#fee2e2;">
-              <div style="font-size:11px; color:#991b1b; font-weight:900;">BAU (Firewood)</div>
-              <div class="cv" style="color:#dc2626;">10.374 kg CO₂e/kg</div>
-              <div style="font-size:11px; color:#7f1d1d;">20 kg firewood/kg butter</div>
-            </div>
-            <div class="compare-box" style="background:#dcfce7;">
-              <div style="font-size:11px; color:#166534; font-weight:900;">Serious Shea (Renewable)</div>
-              <div class="cv" style="color:#16a34a;">0.519 kg CO₂e/kg</div>
-              <div style="font-size:11px; color:#14532d;">100% renewable energy</div>
-            </div>
-          </div>
-          <div style="margin-top:10px; font-size:12px;">
-            <strong>Carbon savings:</strong> 9.855 tCO₂e/MT ·
+</div>
+<!-- RIGHT: BAU vs SS + NDC -->
+<div>
+<div class="hero-bau">
+<div class="hero-title">Phase 3 — The Transformation: BAU vs Serious Shea</div>
+<div class="compare-grid">
+<div class="compare-box" style="background:#fee2e2;">
+<div style="font-size:11px; color:#991b1b; font-weight:900;">BAU (Firewood)</div>
+<div class="cv" style="color:#dc2626;">10.374 kg CO₂e/kg</div>
+<div style="font-size:11px; color:#7f1d1d;">20 kg firewood/kg butter</div>
+</div>
+<div class="compare-box" style="background:#dcfce7;">
+<div style="font-size:11px; color:#166534; font-weight:900;">Serious Shea (Renewable)</div>
+<div class="cv" style="color:#16a34a;">0.519 kg CO₂e/kg</div>
+<div style="font-size:11px; color:#14532d;">100% renewable energy</div>
+</div>
+</div>
+<div style="margin-top:10px; font-size:12px;">
+<strong>Carbon savings:</strong> 9.855 tCO₂e/MT ·
             <strong>At <span id="hero_price">$12</span>/tCO₂e:</strong>
-            <span style="color:#166534; font-weight:900;" id="hero_credit">$118.26/MT</span> carbon credit revenue
+<span id="hero_credit" style="color:#166534; font-weight:900;">$118.26/MT</span> carbon credit revenue
           </div>
-        </div>
-
-        <div class="box">
-          <div class="box-title">Value Distribution ($/MT at selected scenario)</div>
-          <div id="valueDistBars"></div>
-        </div>
-
-        <div class="box">
-          <div class="box-title">NDC Health — Shea Supply Chain per Phase</div>
-          <table class="ndc-table" id="ndcTable">
-            <thead><tr>
-              <th>Phase</th><th>D</th><th>C</th><th>N</th>
-              <th>Balance</th><th>Sustain.</th><th>Status</th>
-            </tr></thead>
-            <tbody id="ndcBody"></tbody>
-          </table>
-        </div>
-
-        <!-- TrueValue Box -->
-        <div class="trueval-box">
-          <div class="tv-title">TrueValue Analysis — NDC Efficiency &amp; Carbon Uplift</div>
-          <div class="trueval-row">
-            <span class="tl">Price to Women (base)</span>
-            <span class="tv" id="tv_base">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Carbon Credit Premium</span>
-            <span class="tv good" id="tv_credit">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Effective Value to Women</span>
-            <span class="tv highlight" id="tv_effective">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Chain Average NDC Balance</span>
-            <span class="tv" id="tv_avgbal">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">NDC Efficiency Gap (vs 95% benchmark)</span>
-            <span class="tv" id="tv_gap">—</span>
-          </div>
-          <div class="trueval-row">
-            <span class="tl">Phase 4 (Export/Logistics) — biggest drag</span>
-            <span class="tv" id="tv_p4bal">—</span>
-          </div>
-          <div class="trueval-row" style="border-bottom:none; padding-top:8px; margin-top:4px; border-top:1px solid rgba(255,255,255,0.25);">
-            <span class="tl" style="color:#fbbf24; font-weight:900;">TrueValue to Women (NDC-Adjusted)</span>
-            <span class="tv highlight" id="tv_trueval">—</span>
-          </div>
-          <div style="margin-top:10px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.5;">
+</div>
+<div class="box">
+<div class="box-title">Value Distribution ($/MT at selected scenario)</div>
+<div id="valueDistBars"></div>
+</div>
+<div class="box">
+<div class="box-title">NDC Health — Shea Supply Chain per Phase</div>
+<table class="ndc-table" id="ndcTable">
+<thead><tr>
+<th>Phase</th><th>D</th><th>C</th><th>N</th>
+<th>Balance</th><th>Sustain.</th><th>Status</th>
+</tr></thead>
+<tbody id="ndcBody"></tbody>
+</table>
+</div>
+<!-- TrueValue Box -->
+<div class="trueval-box">
+<div class="tv-title">TrueValue Analysis — NDC Efficiency &amp; Carbon Uplift</div>
+<div class="trueval-row">
+<span class="tl">Price to Women (base)</span>
+<span class="tv" id="tv_base">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Carbon Credit Premium</span>
+<span class="tv good" id="tv_credit">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Effective Value to Women</span>
+<span class="tv highlight" id="tv_effective">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Chain Average NDC Balance</span>
+<span class="tv" id="tv_avgbal">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">NDC Efficiency Gap (vs 95% benchmark)</span>
+<span class="tv" id="tv_gap">—</span>
+</div>
+<div class="trueval-row">
+<span class="tl">Phase 4 (Export/Logistics) — biggest drag</span>
+<span class="tv" id="tv_p4bal">—</span>
+</div>
+<div class="trueval-row" style="border-bottom:none; padding-top:8px; margin-top:4px; border-top:1px solid rgba(255,255,255,0.25);">
+<span class="tl" style="color:#fbbf24; font-weight:900;">TrueValue to Women (NDC-Adjusted)</span>
+<span class="tv highlight" id="tv_trueval">—</span>
+</div>
+<div style="margin-top:10px; font-size:11px; color:rgba(255,255,255,0.6); line-height:1.5;">
             Phase 4 (Export logistics) at <span id="tv_p4note" style="color:#fbbf24;">64.0%</span> balance is the structural bottleneck.
             Improving export-phase balance could unlock additional value transfer to women's groups.
           </div>
-          <div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
-            <div style="font-size:11px; font-weight:900; color:#fbbf24; margin-bottom:6px;">Annual Impact at 1,000 MT Production</div>
-            <div class="trueval-row">
-              <span class="tl" style="font-size:11px;">Carbon credit revenue:</span>
-              <span class="tv good" id="tv_ann_credit">—</span>
-            </div>
-            <div class="trueval-row" style="border-bottom:none;">
-              <span class="tl" style="font-size:11px;">Effective value to women (total):</span>
-              <span class="tv highlight" id="tv_ann_total">—</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="footer">
-    <span>Shea value chain financial report · Value layer only · Supply chain layer unchanged</span>
-    <a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a>
-  </div>
+<div style="margin-top:10px; border-top:1px solid rgba(255,255,255,0.15); padding-top:10px;">
+<div style="font-size:11px; font-weight:900; color:#fbbf24; margin-bottom:6px;">Annual Impact at 1,000 MT Production</div>
+<div class="trueval-row">
+<span class="tl" style="font-size:11px;">Carbon credit revenue:</span>
+<span class="tv good" id="tv_ann_credit">—</span>
 </div>
-
+<div class="trueval-row" style="border-bottom:none;">
+<span class="tl" style="font-size:11px;">Effective value to women (total):</span>
+<span class="tv highlight" id="tv_ann_total">—</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<span>Shea value chain financial report · Value layer only · Supply chain layer unchanged</span>
+Separation rules
+</div>
+</div>
 <script>
 const BAU_CO2E = 10.374;
 const SS_CO2E  = 0.5187;
@@ -477,7 +463,6 @@ async function main() {
 
 main();
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -552,7 +537,6 @@ main();
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -573,11 +557,7 @@ main();
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -595,7 +575,6 @@ main();
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -609,14 +588,8 @@ main();
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

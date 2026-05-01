@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lighter – Supply &amp; Value Chain Hub</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #e05c00 0%, #a03e00 50%, #2c1a00 100%);
+      min-height: 100vh;
+      padding: 24px;
+      color: #2c3e50;
+    }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .hero {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px;
+      margin-bottom: 22px;
+      text-align: center;
+    }
+    .kicker {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e05c00;
+      background: #fff3ec;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+    .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 700px; margin: 0 auto; }
+    .kpi-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 28px;
+    }
+    .kpi {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 16px 14px;
+      text-align: center;
+      border-left: 3px solid #e05c00;
+    }
+    .kpi-value { font-size: 24px; font-weight: 800; color: #e05c00; line-height: 1; }
+    .kpi-label { font-size: 11px; color: #6c757d; margin-top: 5px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 20px;
+      margin-top: 30px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-5px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+    .card-header { padding: 28px 28px 18px; color: #fff; }
+    .card-header.sc { background: linear-gradient(135deg, #2c1a00 0%, #a03e00 100%); }
+    .card-header.lc { background: linear-gradient(135deg, #1a0f00 0%, #703000 100%); }
+    .card-header.vc { background: linear-gradient(135deg, #a03e00 0%, #e05c00 100%); }
+    .card-icon { font-size: 40px; margin-bottom: 10px; }
+    .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
+    .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+    .card-body { padding: 22px 28px 26px; }
+    .card-body ul { list-style: none; margin-bottom: 18px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+    .card-body li::before { content: "✓"; position: absolute; left: 0; color: #28a745; font-weight: bold; }
+    .btn {
+      display: inline-block;
+      padding: 11px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+    .btn.sc { background: linear-gradient(135deg, #2c1a00 0%, #a03e00 100%); }
+    .btn.lc { background: linear-gradient(135deg, #1a0f00 0%, #703000 100%); }
+    .btn.vc { background: linear-gradient(135deg, #a03e00 0%, #e05c00 100%); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+    .sub-links { margin-top: 12px; font-size: 13px; }
+    .sub-links a { color: #2c3e50; font-weight: 600; text-decoration: none; margin-right: 12px; }
+    .sub-links a:hover { text-decoration: underline; }
+    .alert-panel {
+      background: #fff3ec;
+      border-left: 4px solid #e05c00;
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-top: 24px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #4a2c00;
+      text-align: left;
+    }
+    .alert-panel strong { color: #e05c00; }
+    .footer { text-align: center; color: rgba(255,255,255,0.85); font-size: 13px; margin-top: 18px; padding: 8px 0; }
+    .nav { text-align: center; margin-top: 14px; }
+    .nav a {
+      display: inline-block;
+      color: rgba(255,255,255,0.9);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 600;
+      margin: 0 10px;
+    }
+    .nav a:hover { text-decoration: underline; }
+    @media (max-width: 700px) { .grid { grid-template-columns: 1fr; } .kpi-strip { grid-template-columns: 1fr 1fr; } }
+  </style>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+<div class="kicker">Lighter · Commodity Hub · True Value</div>
+<h1>🔥 Lighter Supply &amp; Value Chain</h1>
+<p class="subtitle">
+        The disposable lighter: 30+ precision-engineered components, pressurized butane, ISO 9994 safety certification,
+        and a 10,000-mile ocean voyage — all compressed into a $0.15 factory gate price.
+        Choose a layer to explore the <strong>Supply Chain</strong> (9 phases, raw material through end-of-life),
+        the <strong>System Lifecycle</strong> (manufacturing efficiency vs. disposal failure),
+        or the <strong>Value Chain</strong> (where the BIC brand premium is the only available rent).
+      </p>
+<div class="kpi-strip">
+<div class="kpi">
+<div class="kpi-value">10B</div>
+<div class="kpi-label">Units/Year Global</div>
+</div>
+<div class="kpi">
+<div class="kpi-value">$0.12</div>
+<div class="kpi-label">FOB Factory Gate</div>
+</div>
+<div class="kpi">
+<div class="kpi-value">30+</div>
+<div class="kpi-label">Precision Components</div>
+</div>
+<div class="kpi">
+<div class="kpi-value">79.1%</div>
+<div class="kpi-label">Chain Balance (N-D-C)</div>
+</div>
+</div>
+<p class="subtitle" style="margin-top:18px;border-top:1px solid #f0e8e0;padding-top:16px;">
+        The disposable lighter supply chain is worth studying because it represents a near-limit case of optimization,
+        where extreme cost constraints force innovation across materials, design, logistics, and production.
+        By compressing a complex, safety-critical device into a few cents, it reveals how marginal gains at every step
+        compound into overwhelming competitive advantage, offering a clear, real-world model of efficiency,
+        scalability, and survival in global manufacturing.
+      </p>
+<div class="alert-panel">
+<strong>Key structural finding:</strong>
+        The lighter supply chain is compressed to the physical and economic limit.
+        The Wenzhou manufacturing cluster (approximately 3,000 factories; 200,000 workers) has eliminated every fraction of a cent from the production cost.
+        The only rent remaining in the entire chain is the <strong>BIC brand premium: $0.60 per unit at a 67% markup over a functionally identical generic OEM product</strong>.
+        This is the canonical TVPCI example: extreme supply chain optimization leaves brand abstraction as the sole available value extraction point.
+        Primary chain bottleneck is Phase 8 (End-of-Life and Waste Management, 56.7% balance): 10 billion lighters per year with &lt;1% recycling, 50,000 MT PP plastic waste, and 14,500 MT CO2e butane venting. No producer take-back programme. No EPR obligation for the device in any market except France (packaging only). Secondary bottlenecks: Phase 1 (Component Manufacturing, 70.0%) and Phase 2 (Lighter Assembly, 72.0%) — both opaque, private, sub-cent margin.
+      </div>
+<div class="grid">
+<div class="card">
+<div class="card-header lc">
+<div class="card-icon">♻️</div>
+<div class="card-title">System Lifecycle</div>
+<div class="card-desc">Pre-operation · Operations · Disposal</div>
+</div>
+<div class="card-body">
+<ul>
+<li>5 lifecycle phases from feedstock sourcing to disposal</li>
+<li>Manufacturing bottleneck: Phase 1-2 at 70-72% balance</li>
+<li>End-of-life failure: Phase 8 at 56.7% balance (primary chain bottleneck; sustainability index 0.03)</li>
+<li>50,000 MT PP plastic waste per year; 14,500 MT CO2e butane venting; &lt;1% recycling</li>
+<li>Tholonic interpretation of the circular economy gap</li>
+</ul>
+<a class="btn lc" href="supply_chain/system_lifecycle.html">Open Lifecycle →</a>
+<div class="sub-links">
+<a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+<a href="supply_chain/project_context.html">Project Context</a>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header sc">
+<div class="card-icon">🏭</div>
+<div class="card-title">Supply Chain</div>
+<div class="card-desc">Physical flow · Custody · Constraints · 9 phases</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Phase 0–7: Raw material extraction → Retail</li>
+<li>N-D-C balance per phase using Tholonic model</li>
+<li>Sources: UN Comtrade HS 9613; BIC Annual Report; NACS; WLPGA; ISO</li>
+<li>Bottleneck at Phase 1 (70.0%) and Phase 2 (72.0%)</li>
+<li>Scenario explorer: Wenzhou disruption; tariff shock; circular economy</li>
+</ul>
+<a class="btn sc" href="supply_chain/index.html">Open Supply Chain →</a>
+<div class="sub-links">
+<a href="supply_chain/project_context.html">Project Context</a>
+<a href="supply_chain/dashboard.html">Dashboard</a>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header vc">
+<div class="card-icon">💹</div>
+<div class="card-title">Value Chain</div>
+<div class="card-desc">Margins · Brand premium · E-layer · Micro-economics</div>
+</div>
+<div class="card-body">
+<ul>
+<li>FOB $0.12 → Retail $0.89 (generic) and $1.49 (BIC)</li>
+<li>BIC brand premium: $0.60/unit; E-layer coupling 0.60</li>
+<li>Distributor margin 22%; retail margin 38% (NACS SOTI 2023)</li>
+<li>BIC Lighters segment revenue: $2.24B/year (1.5B units)</li>
+<li>Strict separation from physical supply-chain data</li>
+</ul>
+<a class="btn vc" href="value_chain/index.html">Open Value Chain →</a>
+</div>
+</div>
+</div>
+</div>
+<!-- Five-Model Coherence Panel -->
+<div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+<div class="kicker" style="color:#e05c00;background:transparent;padding:0 0 4px;font-size:11px;">Five-Model N·D·C Analysis</div>
+<h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Lighter — Five-Model Coherence Signature</h2>
+<p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:700px;line-height:1.55;">
+        Each vertex represents a Tholonic model derived from a mathematical constant.
+        The <strong>outer zone (70–100%)</strong> is coherent; the <strong>middle zone (40–70%)</strong> is stressed;
+        the <strong>inner zone (&lt;40%)</strong> indicates systemic failure in that dimension.
+        A score of 0 means <em>unmeasured</em>, not failed.
+      </p>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:28px;flex-wrap:wrap;">
+<div id="pent-svg-lighter" style="flex-shrink:0;max-width:340px;width:100%;"></div>
+<div id="pent-info-lighter" style="min-width:180px;max-width:280px;flex-shrink:0;font-size:13px;color:#495057;"></div>
+</div>
+<div id="pent-interp-lighter" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:800px;border-left:3px solid #e05c00;"></div>
+</div>
+<script>
+    (function() {
+      var SCEN_URL = "supply_chain/scenarios.json";
+      var CHAIN    = "lighter";
+      var PRIMARY  = "#e05c00";
+      var AXES = [
+        {key:"pi",    label:"π",     sub:"Operational",  angle:0  },
+        {key:"phi",   label:"φ",     sub:"Proportional", angle:72 },
+        {key:"sqrt2", label:"√2",    sub:"Structural",   angle:144},
+        {key:"ln2",   label:"ln(2)", sub:"Growth",       angle:216},
+        {key:"e",     label:"e",     sub:"Abstract",     angle:288},
+      ];
+      var MODEL_C = {pi:"#3949ab",phi:"#f57f17",sqrt2:"#2e7d32",ln2:"#c62828",e:"#6a1b9a"};
+      var MODEL_BG= {pi:"#e8eaf6",phi:"#fff8e1",sqrt2:"#e8f5e9",ln2:"#fce4ec",e:"#f3e5f5"};
+
+      function toRad(d){ return (d-90)*Math.PI/180; }
+      function pt(cx,cy,r,a){ var rad=toRad(a); return {x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}; }
+      function pentPath(cx,cy,r,s){
+        return AXES.map(function(a,i){var p=pt(cx,cy,r*s,a.angle);return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ')+'Z';
+      }
+      function dataPath(cx,cy,r,scores){
+        var pl=AXES.filter(function(a){return (scores[a.key]||0)>0;});
+        if(!pl.length) return '';
+        return pl.map(function(a,i){var pct=Math.min(100,scores[a.key])/100;var p=pt(cx,cy,r*pct,a.angle);return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ')+'Z';
+      }
+      function hexRgba(h,a){var r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return 'rgba('+r+','+g+','+b+','+a+')';}
+
+      function buildSVG(scores){
+        var CX=170,CY=170,R=128;
+        var fill=hexRgba(PRIMARY,0.18), stroke=hexRgba(PRIMARY,0.85);
+        var s='<svg viewBox="-40 -28 380 392" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
+        s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.70)+'" fill="#fff3ec" fill-rule="evenodd"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.70)+' '+pentPath(CX,CY,R,0.40)+'" fill="#ffccaa" fill-rule="evenodd"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="#a03e00"/>';
+        [0.25,0.50,0.75,1.0].forEach(function(sc){s+='<path d="'+pentPath(CX,CY,R,sc)+'" fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="'+(sc===1?1.5:0.7)+'"/>';});
+        s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.70)+'" fill="none" stroke="rgba(160,62,0,0.4)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+        AXES.forEach(function(a){var tip=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+tip.x.toFixed(2)+'" y2="'+tip.y.toFixed(2)+'" stroke="rgba(0,0,0,0.14)" stroke-width="1"/>';});
+        var dp=dataPath(CX,CY,R,scores);
+        if(dp) s+='<path d="'+dp+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5" stroke-linejoin="round"/>';
+        AXES.forEach(function(a){var v=scores[a.key]||0;if(v<=0)return;var p=pt(CX,CY,R*v/100,a.angle);s+='<circle cx="'+p.x.toFixed(2)+'" cy="'+p.y.toFixed(2)+'" r="5" fill="'+PRIMARY+'" stroke="white" stroke-width="1.5"/>';});
+        AXES.forEach(function(a){var lp=pt(CX,CY,R+20,a.angle);s+='<text x="'+lp.x.toFixed(2)+'" y="'+lp.y.toFixed(2)+'" text-anchor="middle" dominant-baseline="middle" font-size="15" font-weight="900" fill="#2c3e50">'+a.label+'</text>';s+='<text x="'+lp.x.toFixed(2)+'" y="'+(parseFloat(lp.y)+15).toFixed(2)+'" text-anchor="middle" dominant-baseline="hanging" font-size="8.5" fill="#888">'+a.sub+'</text>';});
+        [25,50,75].forEach(function(v){var p=pt(CX,CY,R*v/100,0);s+='<text x="'+(p.x+4).toFixed(1)+'" y="'+p.y.toFixed(1)+'" font-size="8" fill="#aaa" dominant-baseline="middle">'+v+'</text>';});
+        s+='</svg>';
+        return s;
+      }
+
+      function buildInfo(scores){
+        var html='';
+        AXES.forEach(function(a){
+          var v=scores[a.key]||0;
+          var isZero=v===0;
+          var zone=v>=70?'Coherent':v>=40?'Stressed':isZero?'Unmeasured':'Failure';
+          var zoneC=v>=70?'#2e7d32':v>=40?'#e65100':isZero?'#999':'#c62828';
+          html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;">';
+          html+='<div style="width:34px;height:34px;border-radius:6px;background:'+MODEL_BG[a.key]+';color:'+MODEL_C[a.key]+';font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+a.label+'</div>';
+          html+='<div style="flex:1;">';
+          html+='<div style="display:flex;align-items:baseline;gap:6px;">';
+          html+='<span style="font-size:12px;font-weight:700;color:#333;">'+a.sub+'</span>';
+          html+='<span style="font-size:15px;font-weight:800;color:'+(isZero?'#bbb':MODEL_C[a.key])+';">'+(v>0?v.toFixed(1):'—')+'</span>';
+          html+='<span style="font-size:10px;font-weight:700;color:'+zoneC+';">'+zone+'</span>';
+          html+='</div>';
+          if(v>0){html+='<div style="height:4px;border-radius:2px;background:#eee;margin-top:3px;"><div style="height:4px;border-radius:2px;background:'+MODEL_C[a.key]+';width:'+Math.min(100,v)+'%;"></div></div>';}
+          html+='</div></div>';
+        });
+        return html;
+      }
+
+      function buildInterpretation(scores){
+        var lines=[];
+        var measured=AXES.filter(function(a){return (scores[a.key]||0)>0;});
+        var avg=measured.length?measured.reduce(function(s,a){return s+scores[a.key];},0)/measured.length:0;
+        var strongest=measured.length?measured.reduce(function(best,a){return scores[a.key]>scores[best.key]?a:best;}):null;
+        var weakest=measured.length?measured.reduce(function(w,a){return scores[a.key]<scores[w.key]?a:w;}):null;
+
+        if(avg>=70) lines.push('<strong>Overall shape:</strong> The lighter chain sits predominantly in the outer coherent zone. The pentagon is broad and moderately symmetric, reflecting a well-optimized industrial system that has been compressed to the physical and economic limit.');
+        else lines.push('<strong>Overall shape:</strong> Mixed coherence. The chain shows significant stress in one or more dimensions.');
+
+        var pi=scores.pi||0,phi=scores.phi||0,sq=scores.sqrt2||0,ln=scores.ln2||0,e=scores.e||0;
+        lines.push('<strong>π Operational ('+pi.toFixed(1)+'):</strong> Phase-level D-C balance is 79.1% across 9 phases. The primary bottleneck is Phase 8 (End-of-Life and Waste Management, 56.7%): a catastrophic D-C imbalance where regulatory constraints (hazardous waste classification, no recycling stream) vastly exceed circularity infrastructure (near-zero take-back, no EPR obligation for the device). Secondary bottlenecks: Component Manufacturing (70.0%) and Assembly (72.0%), both structurally opaque. All other phases are 80% or above.');
+        lines.push('<strong>φ Proportional ('+phi.toFixed(1)+'):</strong> Value does not scale proportionally through phase boundaries. The Wenzhou cluster earns $0.02-$0.04 manufacturing a component set that retails at $1.49 as a BIC lighter. The golden-ratio test reveals where value is captured: exclusively at the brand boundary (Phase 7). All upstream phases are near-zero margin.');
+        lines.push('<strong>√2 Structural ('+sq.toFixed(1)+'):</strong> Structural load is partially asymmetric. The geographic concentration of manufacturing in Wenzhou creates a single-point custody risk. Ocean freight (Phase 5) is a well-functioning neutral conduit. The main structural stress is at the manufacturing-to-export boundary.');
+        lines.push('<strong>ln(2) Growth ('+ln.toFixed(1)+'):</strong> Transformation phases show moderate growth constraint. Certification (Phase 3) and retail (Phase 7) are the only meaningful value transformation nodes. Phase 8 (End-of-Life) is a growth-negative phase: it destroys 80% of the product\'s theoretically recoverable material value (PP, steel, ferrocerium) without recovery, and generates liability (hazardous waste, CO2e emissions). The growth score of 68.0 reflects a chain where transformation is compressed by competition and micro-margin optimization at the production end, and by regulatory and infrastructure failure at the disposal end.');
+        if(e>0) lines.push('<strong>e Abstract ('+e.toFixed(1)+'):</strong> Abstract coupling is moderate. LPG futures and letters of credit are well-coupled (0.90-0.95). The BIC brand premium (coupling ratio 0.60) is the only significant abstract decoupling: $0.60/unit of brand value sits above a physical cost of $0.89. This is the PRIMARY E-LAYER FINDING: in a supply chain this price-compressed, the only available rent is brand abstraction at the consumer endpoint.');
+        if(strongest&&weakest&&strongest.key!==weakest.key) lines.push('<strong>Primary risk:</strong> The gap between the strongest axis (<em>'+strongest.sub+', '+scores[strongest.key].toFixed(1)+'</em>) and the weakest (<em>'+weakest.sub+', '+scores[weakest.key].toFixed(1)+'</em>) defines the chain vulnerability. The Growth and Abstract dimensions are weakest: Phase 8 (End-of-Life) contributes near-zero circularity, dragging the growth score down. The immediate policy lever is EPR legislation for the lighter device itself — currently absent in all markets except France (packaging only).');
+        return lines.join('<br><br>');
+      }
+
+      fetch(SCEN_URL)
+        .then(function(r){return r.json();})
+        .catch(function(){return null;})
+        .then(function(data){
+          var scores;
+          if(data&&data.coherence_scores&&data.coherence_scores.scenarios&&data.coherence_scores.scenarios.current){
+            scores=data.coherence_scores.scenarios.current;
+          } else {
+            scores={pi:79.1,phi:73.0,sqrt2:76.0,ln2:68.0,e:70.0};
+          }
+          var se=document.getElementById('pent-svg-'+CHAIN);
+          var ie=document.getElementById('pent-info-'+CHAIN);
+          var te=document.getElementById('pent-interp-'+CHAIN);
+          if(se) se.innerHTML=buildSVG(scores);
+          if(ie) ie.innerHTML=buildInfo(scores);
+          if(te) te.innerHTML=buildInterpretation(scores);
+        });
+    })();
+    </script>
+<!-- Phase N-D-C Radar Panel -->
+<div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+<div class="kicker" style="color:#e05c00;background:transparent;padding:0 0 4px;font-size:11px;">Phase-Level Detail</div>
+<h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Lighter — Phase-by-Phase N·D·C Profile</h2>
+<p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:700px;line-height:1.55;">
+        Each axis is one supply chain phase. The three polygons show
+        <strong style="color:#3ecf8e;">Definition (D)</strong>,
+        <strong style="color:#ef5350;">Contribution (C)</strong>, and
+        <strong style="color:#4fc3f7;">Negotiation (N)</strong> at each phase.
+        Where D and C are far apart, the phase is under stress. The bottleneck phases (1 and 2) show the narrowest N polygon.
+      </p>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
+<canvas height="700" id="ndc-radar-lighter" style="max-width:100%;flex-shrink:0;" width="700"></canvas>
+<div id="ndc-radar-info-lighter" style="font-size:13px;color:#495057;min-width:180px;max-width:260px;flex-shrink:0;"></div>
+</div>
+<div id="ndc-radar-interp-lighter" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:800px;border-left:3px solid #e05c00;"></div>
+</div>
+<script>
+    (function() {
+      var DATA_URL = "/frontend/project/lighter/data/processed/lighter_supply_chain_ui.json";
+      fetch(DATA_URL)
+        .then(function(r){return r.json();})
+        .catch(function(){return null;})
+        .then(function(data){
+          if(!data) return;
+          var rawPhases = data.phases && data.phases.synthetic ? data.phases.synthetic : (data.phases || {});
+          var phaseMeta = data.phase_meta || {};
+          var ids = Object.keys(rawPhases).filter(function(k){return /^\d+$/.test(k);}).sort(function(a,b){return +a-+b;});
+          if(ids.length < 3) return;
+
+          var labels = ids.map(function(id){
+            var m = phaseMeta[id] || {};
+            var n = m.name || ('Phase '+id);
+            return n.length > 14 ? n.slice(0,12)+'…' : n;
+          });
+          var Dvals = ids.map(function(id){return rawPhases[id].D || 0;});
+          var Cvals = ids.map(function(id){return rawPhases[id].C || 0;});
+          var Nvals = ids.map(function(id){return rawPhases[id].N || 0;});
+
+          var canvas = document.getElementById('ndc-radar-lighter');
+          if(!canvas) return;
+          var ctx = canvas.getContext('2d');
+          var W = canvas.width, H = canvas.height;
+          var CX = W/2, CY = H/2, R = Math.min(W,H)*0.38;
+          var n = ids.length;
+          var maxV = Math.max.apply(null, Dvals.concat(Cvals).concat(Nvals).concat([300]));
+
+          function angleFor(i){ return (i/n)*2*Math.PI - Math.PI/2; }
+          function polarPoint(i,v){ var a=angleFor(i),r2=(v/maxV)*R; return {x:CX+r2*Math.cos(a),y:CY+r2*Math.sin(a)}; }
+
+          ctx.clearRect(0,0,W,H);
+          // Grid rings
+          [0.25,0.5,0.75,1.0].forEach(function(f){
+            ctx.beginPath();
+            for(var i=0;i<n;i++){var p=polarPoint(i,maxV*f);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);}
+            ctx.closePath();
+            ctx.strokeStyle='rgba(0,0,0,0.08)';
+            ctx.lineWidth=f===1?1.5:0.7;
+            ctx.stroke();
+          });
+          // Spokes
+          for(var i=0;i<n;i++){
+            var tip=polarPoint(i,maxV);
+            ctx.beginPath();ctx.moveTo(CX,CY);ctx.lineTo(tip.x,tip.y);
+            ctx.strokeStyle='rgba(0,0,0,0.1)';ctx.lineWidth=1;ctx.stroke();
+          }
+
+          function drawPolygon(vals,color,alpha){
+            ctx.beginPath();
+            vals.forEach(function(v,i){var p=polarPoint(i,v);i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
+            ctx.closePath();
+            ctx.fillStyle=color.replace(')',','+alpha+')').replace('rgb(','rgba(');
+            ctx.fill();
+            ctx.strokeStyle=color;ctx.lineWidth=2;ctx.stroke();
+          }
+
+          drawPolygon(Dvals,'rgb(62,207,142)',0.15);
+          drawPolygon(Cvals,'rgb(239,83,80)',0.15);
+          drawPolygon(Nvals,'rgb(79,195,247)',0.20);
+
+          // Dots
+          function drawDots(vals,color){
+            vals.forEach(function(v,i){
+              var p=polarPoint(i,v);
+              ctx.beginPath();ctx.arc(p.x,p.y,5,0,2*Math.PI);
+              ctx.fillStyle=color;ctx.fill();
+              ctx.strokeStyle='white';ctx.lineWidth=1.5;ctx.stroke();
+            });
+          }
+          drawDots(Dvals,'#3ecf8e');
+          drawDots(Cvals,'#ef5350');
+          drawDots(Nvals,'#4fc3f7');
+
+          // Labels
+          ctx.font='bold 13px ui-sans-serif,system-ui,sans-serif';
+          ctx.textAlign='center';
+          for(var i=0;i<n;i++){
+            var lp=polarPoint(i,maxV*1.18);
+            var bal=rawPhases[ids[i]].balance||0;
+            var bc=bal>=80?'#2e7d32':bal>=70?'#e65100':'#c62828';
+            ctx.fillStyle='#2c3e50';ctx.fillText(labels[i],lp.x,lp.y);
+            ctx.font='11px ui-sans-serif,system-ui,sans-serif';
+            ctx.fillStyle=bc;ctx.fillText(bal.toFixed(1)+'%',lp.x,lp.y+15);
+            ctx.font='bold 13px ui-sans-serif,system-ui,sans-serif';
+          }
+
+          // Info panel
+          var info=document.getElementById('ndc-radar-info-lighter');
+          if(info){
+            var html='<div style="margin-bottom:12px;font-weight:700;color:#2c3e50;">Phase Balance Summary</div>';
+            ids.forEach(function(id){
+              var ph=rawPhases[id];
+              var m=phaseMeta[id]||{};
+              var bal=ph.balance||0;
+              var bc=bal>=80?'#2e7d32':bal>=70?'#e65100':'#c62828';
+              html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">';
+              html+='<span style="font-size:11px;color:#888;width:18px;text-align:right;">'+id+'</span>';
+              html+='<div style="flex:1;">';
+              html+='<div style="display:flex;justify-content:space-between;"><span style="font-size:11px;color:#495057;">'+(m.name||'Phase '+id).replace(/\s&\s/,' & ')+'</span>';
+              html+='<span style="font-size:12px;font-weight:800;color:'+bc+';">'+bal.toFixed(1)+'%</span></div>';
+              html+='<div style="height:4px;border-radius:2px;background:#eee;margin-top:2px;"><div style="height:4px;border-radius:2px;background:'+bc+';width:'+Math.min(100,bal)+'%;"></div></div>';
+              html+='</div></div>';
+            });
+            info.innerHTML=html;
+          }
+
+          // Interpretation
+          var interp=document.getElementById('ndc-radar-interp-lighter');
+          if(interp){
+            interp.innerHTML='<strong>Phase radar interpretation:</strong> The three polygons reveal where D (constraint) and C (contribution) diverge. Phase 8 (End-of-Life) shows the most severe D-C divergence in the chain: D=215 (regulatory barriers: hazardous waste classification, no recycling stream) vs C=85 (near-zero circularity contribution). This is the primary bottleneck at 56.7% balance and sustainability index 0.03. At Phase 1 (Component Manufacturing) and Phase 2 (Lighter Assembly), the N polygon also narrows significantly: ISO tolerances and child-resistance geometry are extreme D-constraints, while C-contribution is fragmented across 3,000 private Wenzhou manufacturers. Phases 5 (Ocean Freight) and 7 (Retail) show the broadest N polygons, consistent with High transparency and well-documented economics. The D-C gap at Phase 7 is notable but positive: the BIC brand premium ($0.60/unit C-contribution) exceeds the MAP and compliance D-constraints.';
+          }
+        });
+    })();
+    </script>
+<div class="nav">
+<a href="../../../index.html">← Main Homepage</a>
+<a href="../gold/index.html">Gold Hub</a>
+<a href="../shea/index.html">Shea Hub</a>
+</div>
+<div class="footer">
+      Lighter Supply Chain · TrueValue Analytics · Data: BIC Annual Report 2023; UN Comtrade HS 9613; NACS SOTI 2023; WLPGA 2023; ISO 9994
+    </div>
+</div>
+</body>
+</html>

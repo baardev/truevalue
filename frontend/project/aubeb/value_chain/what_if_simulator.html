@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Value Chain What‑If Simulator — AUBEB</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Value Chain What‑If Simulator — AUBEB</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -178,197 +179,183 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div>
-        <h1>🌿 AUBEB Value Chain — What‑If Simulator</h1>
-        <div style="font-size:12px; opacity:0.85; margin-top:4px;">Carbon credit &amp; ecosystem service scenario explorer • value layer only</div>
-      </div>
-      <div class="nav">
-        <a href="./dashboard.html">← Dashboard</a>
-        <a href="./financial_report.html">📊 Financial Report</a>
-        <a href="./">Value Home</a>
-      </div>
-    </div>
-
-    <div class="layout">
-      <!-- ── LEFT: Controls ─────────────────────────────── -->
-      <div class="left">
-        <div class="title">
-          <span>Market Controls</span>
-          <select id="periodSelect">
-            <option value="quarterly">Quarterly</option>
-            <option value="annual">Annual</option>
-          </select>
-        </div>
-
-        <div class="box">
-          <div class="control">
-            <div class="row"><span>VCM Carbon Credit Price (USD/tCO₂e)</span><span id="vcmLabel">$15</span></div>
-            <input id="vcmSlider" type="range" min="5" max="80" step="1" value="15" />
-            <div class="hint">Voluntary carbon market floor price. AUBEB PDI baseline: $15/tCO₂e.</div>
-          </div>
-
-          <div class="control">
-            <div class="row"><span>CORSIA Floor (USD/tCO₂e)</span><span id="corsiaLabel">$20</span></div>
-            <input id="corsiaSlider" type="range" min="10" max="60" step="1" value="20" />
-            <div class="hint">Compliance market floor. Typically above VCM. AUBEB PDI baseline: $20/tCO₂e.</div>
-          </div>
-
-          <div class="control">
-            <div class="row"><span>Net Sequestration (k tCO₂e/yr)</span><span id="tco2Label">5,640</span></div>
-            <input id="tco2Slider" type="range" min="1000" max="12000" step="100" value="5640" />
-            <div class="hint">Annual net carbon sequestration. PDI estimate: 5.64M tCO₂e/yr across 150,000 ha.</div>
-          </div>
-
-          <div class="control">
-            <div class="row"><span>Restoration Cost (USD/ha/yr)</span><span id="costHaLabel">$120</span></div>
-            <input id="costHaSlider" type="range" min="20" max="600" step="5" value="120" />
-            <div class="hint">Annual per-hectare programme cost (monitoring, community wages, admin).</div>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Tholonic N‑D‑C Controls (Value Layer)</div>
-          <div class="control">
-            <div class="row"><span>D (Definition — regulatory constraints)</span><span id="dLabel">—</span></div>
-            <input id="dSlider" type="range" min="150" max="420" step="1" />
-            <div class="hint">Degree of formal obligations, reporting, and verification burden.</div>
-          </div>
-          <div class="control">
-            <div class="row"><span>C (Contribution — market integration)</span><span id="cLabel">—</span></div>
-            <input id="cSlider" type="range" min="150" max="420" step="1" />
-            <div class="hint">Breadth of buyers, co-benefits recognised, and flexibility to access markets.</div>
-          </div>
-          <div class="btns">
-            <button class="btn-reset" id="resetBtn">Reset</button>
-            <button class="btn-apply" id="applyBtn">Apply</button>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Phase Reference</div>
-          <select id="phaseSelect" style="width:100%;margin-bottom:8px;"></select>
-          <div class="hint">Loads baseline D/C from the selected phase's value-layer NDC record.</div>
-        </div>
-      </div>
-
-      <!-- ── CENTER: Outputs ────────────────────────────── -->
-      <div class="center">
-        <div class="metric-grid">
-          <div class="metric">
-            <div class="label">Annual Carbon Revenue</div>
-            <div class="value" id="revenueValue">—</div>
-            <div class="delta" id="revenueDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Net Programme Revenue</div>
-            <div class="value" id="netRevenueValue">—</div>
-            <div class="delta" id="netRevenueDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">CORSIA Premium</div>
-            <div class="value" id="premiumValue">—</div>
-            <div class="delta" id="premiumDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Programme Resilience</div>
-            <div class="value" id="resilienceValue">—</div>
-            <div class="delta" id="resilienceDelta">—</div>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Tholonic N‑D‑C Outputs (Value Layer)</div>
-          <div class="metric-grid" style="margin-bottom:0; grid-template-columns: repeat(4,1fr);">
-            <div class="metric" style="background:#134e4a;">
-              <div class="label">N (Negotiation)</div>
-              <div class="value" id="ndcNValue">—</div>
-              <div class="delta" id="ndcNDelta">—</div>
-            </div>
-            <div class="metric" style="background:#134e4a;">
-              <div class="label">Balance Score</div>
-              <div class="value" id="ndcBalanceValue">—</div>
-              <div class="delta" id="ndcBalanceDelta">—</div>
-            </div>
-            <div class="metric" style="background:#134e4a;">
-              <div class="label">Sustainability</div>
-              <div class="value" id="ndcSustainValue">—</div>
-              <div class="delta" id="ndcSustainDelta">—</div>
-            </div>
-            <div class="metric" style="background:#134e4a;">
-              <div class="label">Imbalance |D−C|</div>
-              <div class="value" id="ndcImbalanceValue">—</div>
-              <div class="delta" id="ndcImbalanceDelta">—</div>
-            </div>
-          </div>
-          <div class="hint" style="margin-top:10px;">
+<div class="app">
+<div class="header">
+<div>
+<h1>🌿 AUBEB Value Chain — What‑If Simulator</h1>
+<div style="font-size:12px; opacity:0.85; margin-top:4px;">Carbon credit &amp; ecosystem service scenario explorer • value layer only</div>
+</div>
+<div class="nav">
+<a href="./dashboard.html">← Dashboard</a>
+<a href="./financial_report.html">📊 Financial Report</a>
+<a href="./">Value Home</a>
+</div>
+</div>
+<div class="layout">
+<!-- ── LEFT: Controls ─────────────────────────────── -->
+<div class="left">
+<div class="title">
+<span>Market Controls</span>
+<select id="periodSelect">
+<option value="quarterly">Quarterly</option>
+<option value="annual">Annual</option>
+</select>
+</div>
+<div class="box">
+<div class="control">
+<div class="row"><span>VCM Carbon Credit Price (USD/tCO₂e)</span><span id="vcmLabel">$15</span></div>
+<input id="vcmSlider" max="80" min="5" step="1" type="range" value="15"/>
+<div class="hint">Voluntary carbon market floor price. AUBEB PDI baseline: $15/tCO₂e.</div>
+</div>
+<div class="control">
+<div class="row"><span>CORSIA Floor (USD/tCO₂e)</span><span id="corsiaLabel">$20</span></div>
+<input id="corsiaSlider" max="60" min="10" step="1" type="range" value="20"/>
+<div class="hint">Compliance market floor. Typically above VCM. AUBEB PDI baseline: $20/tCO₂e.</div>
+</div>
+<div class="control">
+<div class="row"><span>Net Sequestration (k tCO₂e/yr)</span><span id="tco2Label">5,640</span></div>
+<input id="tco2Slider" max="12000" min="1000" step="100" type="range" value="5640"/>
+<div class="hint">Annual net carbon sequestration. PDI estimate: 5.64M tCO₂e/yr across 150,000 ha.</div>
+</div>
+<div class="control">
+<div class="row"><span>Restoration Cost (USD/ha/yr)</span><span id="costHaLabel">$120</span></div>
+<input id="costHaSlider" max="600" min="20" step="5" type="range" value="120"/>
+<div class="hint">Annual per-hectare programme cost (monitoring, community wages, admin).</div>
+</div>
+</div>
+<div class="box">
+<div class="title">Tholonic N‑D‑C Controls (Value Layer)</div>
+<div class="control">
+<div class="row"><span>D (Definition — regulatory constraints)</span><span id="dLabel">—</span></div>
+<input id="dSlider" max="420" min="150" step="1" type="range"/>
+<div class="hint">Degree of formal obligations, reporting, and verification burden.</div>
+</div>
+<div class="control">
+<div class="row"><span>C (Contribution — market integration)</span><span id="cLabel">—</span></div>
+<input id="cSlider" max="420" min="150" step="1" type="range"/>
+<div class="hint">Breadth of buyers, co-benefits recognised, and flexibility to access markets.</div>
+</div>
+<div class="btns">
+<button class="btn-reset" id="resetBtn">Reset</button>
+<button class="btn-apply" id="applyBtn">Apply</button>
+</div>
+</div>
+<div class="box">
+<div class="title">Phase Reference</div>
+<select id="phaseSelect" style="width:100%;margin-bottom:8px;"></select>
+<div class="hint">Loads baseline D/C from the selected phase's value-layer NDC record.</div>
+</div>
+</div>
+<!-- ── CENTER: Outputs ────────────────────────────── -->
+<div class="center">
+<div class="metric-grid">
+<div class="metric">
+<div class="label">Annual Carbon Revenue</div>
+<div class="value" id="revenueValue">—</div>
+<div class="delta" id="revenueDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Net Programme Revenue</div>
+<div class="value" id="netRevenueValue">—</div>
+<div class="delta" id="netRevenueDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">CORSIA Premium</div>
+<div class="value" id="premiumValue">—</div>
+<div class="delta" id="premiumDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Programme Resilience</div>
+<div class="value" id="resilienceValue">—</div>
+<div class="delta" id="resilienceDelta">—</div>
+</div>
+</div>
+<div class="box">
+<div class="title">Tholonic N‑D‑C Outputs (Value Layer)</div>
+<div class="metric-grid" style="margin-bottom:0; grid-template-columns: repeat(4,1fr);">
+<div class="metric" style="background:#134e4a;">
+<div class="label">N (Negotiation)</div>
+<div class="value" id="ndcNValue">—</div>
+<div class="delta" id="ndcNDelta">—</div>
+</div>
+<div class="metric" style="background:#134e4a;">
+<div class="label">Balance Score</div>
+<div class="value" id="ndcBalanceValue">—</div>
+<div class="delta" id="ndcBalanceDelta">—</div>
+</div>
+<div class="metric" style="background:#134e4a;">
+<div class="label">Sustainability</div>
+<div class="value" id="ndcSustainValue">—</div>
+<div class="delta" id="ndcSustainDelta">—</div>
+</div>
+<div class="metric" style="background:#134e4a;">
+<div class="label">Imbalance |D−C|</div>
+<div class="value" id="ndcImbalanceValue">—</div>
+<div class="delta" id="ndcImbalanceDelta">—</div>
+</div>
+</div>
+<div class="hint" style="margin-top:10px;">
             N-D-C applied within the value layer only: D = regulatory constraints, C = market integration, N = emergent programme value.
           </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Revenue by Phase — Annual Carbon Value (at selected VCM price)</div>
-          <div class="hint" style="margin-bottom:10px;">
+</div>
+<div class="box">
+<div class="title">Revenue by Phase — Annual Carbon Value (at selected VCM price)</div>
+<div class="hint" style="margin-bottom:10px;">
             Estimated annual carbon value contribution per programme phase,
             based on phase D/C balance and proportional sequestration weight.
           </div>
-          <div id="phaseBreakdown"></div>
-          <div style="margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0;">
-            <div style="font-size:12px; font-weight:900; margin-bottom:6px;">Programme Totals</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <span class="badge b-carbon" id="totalCarbonRev">—</span>
-              <span class="badge b-corsia"  id="totalCorsiaRev">—</span>
-              <span class="badge b-esv"     id="totalEsvRev">—</span>
-              <span class="badge b-total"   id="totalNetRev">—</span>
-            </div>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Interpretation (Value Layer)</div>
-          <div class="hint">
+<div id="phaseBreakdown"></div>
+<div style="margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0;">
+<div style="font-size:12px; font-weight:900; margin-bottom:6px;">Programme Totals</div>
+<div style="display:flex; gap:8px; flex-wrap:wrap;">
+<span class="badge b-carbon" id="totalCarbonRev">—</span>
+<span class="badge b-corsia" id="totalCorsiaRev">—</span>
+<span class="badge b-esv" id="totalEsvRev">—</span>
+<span class="badge b-total" id="totalNetRev">—</span>
+</div>
+</div>
+</div>
+<div class="box">
+<div class="title">Interpretation (Value Layer)</div>
+<div class="hint">
             This simulator explores how carbon price, sequestration volume, and restoration costs
             interact to shape AUBEB programme economics. It operates strictly within the value layer
             and does not represent physical supply-chain flows or community income streams directly.
             All data is synthetic/educational. OPAQUE commercial data should be recorded separately.
           </div>
-        </div>
-      </div>
-
-      <!-- ── RIGHT: Impact analysis ─────────────────────── -->
-      <div class="right">
-        <div class="title">Impact Analysis</div>
-        <ul class="list" id="impactList"></ul>
-        <div class="box">
-          <div class="title">Key Parameters</div>
-          <div class="hint" style="line-height:1.8;">
-            Programme area: <strong>150,000 ha</strong><br>
-            Crediting period: <strong>30 years</strong><br>
-            PDI VCM floor: <strong>$15/tCO₂e</strong><br>
-            PDI CORSIA floor: <strong>$20/tCO₂e</strong><br>
+</div>
+</div>
+<!-- ── RIGHT: Impact analysis ─────────────────────── -->
+<div class="right">
+<div class="title">Impact Analysis</div>
+<ul class="list" id="impactList"></ul>
+<div class="box">
+<div class="title">Key Parameters</div>
+<div class="hint" style="line-height:1.8;">
+            Programme area: <strong>150,000 ha</strong><br/>
+            Crediting period: <strong>30 years</strong><br/>
+            PDI VCM floor: <strong>$15/tCO₂e</strong><br/>
+            PDI CORSIA floor: <strong>$20/tCO₂e</strong><br/>
             PDI net sequestration: <strong>5.64M tCO₂e/yr</strong>
-          </div>
-        </div>
-        <div class="box">
-          <div class="title">Data Source</div>
-          <div class="hint">
+</div>
+</div>
+<div class="box">
+<div class="title">Data Source</div>
+<div class="hint">
             Baseline D/C loaded from
             <code>/frontend/project/aubeb/data/processed/aubeb_value_ndc_metrics.json</code>.
             Market parameters are user-adjustable. All current records are marked
             <strong>simulated</strong>.
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>AUBEB value chain simulator • value layer only • separate from supply-chain logic</div>
-      <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
-    </div>
-  </div>
-
-  <script>
+</div>
+</div>
+</div>
+<div class="footer">
+<div>AUBEB value chain simulator • value layer only • separate from supply-chain logic</div>
+<div>Separation rules</div>
+</div>
+</div>
+<script>
     const PROGRAMME_HA     = 150_000;
     const CREDITING_YEARS  = 30;
     const PDI_VCM_FLOOR    = 15;
@@ -640,7 +627,6 @@
 
     main().catch(console.error);
   </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -700,7 +686,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -721,11 +706,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -743,7 +724,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_phases.csv',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html',         icon: '🗂️' },
     ]);
   }
@@ -757,14 +737,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Five-Model N-D-C Coherence — Supply Chain Analysis</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Five-Model N-D-C Coherence — Supply Chain Analysis</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -179,213 +180,178 @@
 </head>
 <body>
 <div class="page">
-
-    <!-- Header -->
-    <div class="header">
-        <h1>Five-Model N-D-C Coherence Analysis</h1>
-        <p class="sub">
-            Each supply chain is simultaneously analyzed across five orthogonal dimensions derived from the Tholonic N-D-C framework.<br>
+<!-- Header -->
+<div class="header">
+<h1>Five-Model N-D-C Coherence Analysis</h1>
+<p class="sub">
+            Each supply chain is simultaneously analyzed across five orthogonal dimensions derived from the Tholonic N-D-C framework.<br/>
             Together they form a coherence signature — a 5D vector whose shape reveals the nature and location of systemic failure.
         </p>
-        <div class="header-nav">
-            <a href="/frontend/project/gold/supply_chain/index.html">🏅 Gold Supply Chain</a>
-            <a href="/frontend/project/gold/supply_chain/dashboard.html">π Gold</a>
-            <a href="/frontend/project/gold/supply_chain/phi_dashboard.html">φ Gold</a>
-            <a href="/frontend/project/gold/supply_chain/sqrt2_dashboard.html">√2 Gold</a>
-            <a href="/frontend/project/gold/supply_chain/ln2_dashboard.html">ln(2) Gold</a>
-            <a href="/frontend/project/gold/supply_chain/e_dashboard.html">e Gold</a>
-            <a href="/frontend/project/shea/supply_chain/index.html">🫒 Shea Supply Chain</a>
-            <a href="/frontend/project/shea/supply_chain/sqrt2_dashboard.html">√2 Shea</a>
-            <a href="/frontend/project/shea/supply_chain/ln2_dashboard.html">ln(2) Shea</a>
-            <a href="/frontend/project/aubeb/supply_chain/index.html">🌿 AUBEB Supply Chain</a>
-            <a href="/index.html">🏠 Home</a>
-        </div>
-    </div>
-
-    <!-- Model layer strip -->
-    <div class="model-strip">
-        <div class="model-pill pi-active">π<br><span style="font-size:10px;font-weight:400;">Operational</span></div>
-        <div class="model-pill phi-active">φ<br><span style="font-size:10px;font-weight:400;">Proportional</span></div>
-        <div class="model-pill s2-active">√2<br><span style="font-size:10px;font-weight:400;">Structural</span></div>
-        <div class="model-pill ln2-active">ln(2)<br><span style="font-size:10px;font-weight:400;">Growth</span></div>
-        <div class="model-pill disabled" style="cursor:pointer;" onclick="window.location='/frontend/project/gold/supply_chain/e_dashboard.html'">e<br><span style="font-size:10px;font-weight:400;">Abstract</span></div>
-        <div class="model-pill active" style="background:#2a2a4a;color:#aaa;font-weight:400;font-size:11px;">All 5 models computed · Select scenario below to update charts</div>
-    </div>
-
-    <!-- Chain + Scenario selectors -->
-    <div style="background:#12122a; border-bottom:2px solid #4a4a8a; padding:10px 20px; display:flex; flex-wrap:wrap; align-items:center; gap:16px;">
-        <div class="chain-selector" style="margin:0; padding:0; background:none; border:none;">
-            <button class="chain-btn gold active" onclick="setChain('gold')">🏅 Gold Supply Chain</button>
-            <button class="chain-btn shea" onclick="setChain('shea')">🫒 Shea Supply Chain</button>
-            <button class="chain-btn" style="border-color:#1a8a7a;color:#1a8a7a;" onclick="setChain('aubeb')">🌿 AUBEB</button>
-            <button class="chain-btn both" onclick="setChain('both')">⚖️ Compare All</button>
-        </div>
-        <div style="width:1px; height:28px; background:#333; flex-shrink:0;"></div>
-        <div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
-            <span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#9090c0; white-space:nowrap;">Scenario:</span>
-            <div style="display:flex; gap:6px; flex-wrap:wrap;" id="scenario-btns"></div>
-            <span id="scenario-desc" style="font-size:11px; color:#606088; font-style:italic;"></span>
-        </div>
-    </div>
-
-    <!-- Spider charts -->
-    <div class="main-grid" id="charts-grid">
-        <!-- Rendered by JS -->
-    </div>
-
-    <!-- Data note -->
-    <div class="data-note-panel">
-        <h3>⚠️ Note on Pending Data — e (Abstract) Model</h3>
-        <p>
+<div class="header-nav">
+<a href="/frontend/project/gold/supply_chain/index.html">🏅 Gold Supply Chain</a>
+<a href="/frontend/project/gold/supply_chain/dashboard.html">π Gold</a>
+<a href="/frontend/project/gold/supply_chain/phi_dashboard.html">φ Gold</a>
+<a href="/frontend/project/gold/supply_chain/sqrt2_dashboard.html">√2 Gold</a>
+<a href="/frontend/project/gold/supply_chain/ln2_dashboard.html">ln(2) Gold</a>
+<a href="/frontend/project/gold/supply_chain/e_dashboard.html">e Gold</a>
+<a href="/frontend/project/shea/supply_chain/index.html">🫒 Shea Supply Chain</a>
+<a href="/frontend/project/shea/supply_chain/sqrt2_dashboard.html">√2 Shea</a>
+<a href="/frontend/project/shea/supply_chain/ln2_dashboard.html">ln(2) Shea</a>
+<a href="/frontend/project/aubeb/supply_chain/index.html">🌿 AUBEB Supply Chain</a>
+<a href="/index.html">🏠 Home</a>
+</div>
+</div>
+<!-- Model layer strip -->
+<div class="model-strip">
+<div class="model-pill pi-active">π<br/><span style="font-size:10px;font-weight:400;">Operational</span></div>
+<div class="model-pill phi-active">φ<br/><span style="font-size:10px;font-weight:400;">Proportional</span></div>
+<div class="model-pill s2-active">√2<br/><span style="font-size:10px;font-weight:400;">Structural</span></div>
+<div class="model-pill ln2-active">ln(2)<br/><span style="font-size:10px;font-weight:400;">Growth</span></div>
+<div class="model-pill disabled" onclick="window.location='/frontend/project/gold/supply_chain/e_dashboard.html'" style="cursor:pointer;">e<br/><span style="font-size:10px;font-weight:400;">Abstract</span></div>
+<div class="model-pill active" style="background:#2a2a4a;color:#aaa;font-weight:400;font-size:11px;">All 5 models computed · Select scenario below to update charts</div>
+</div>
+<!-- Chain + Scenario selectors -->
+<div style="background:#12122a; border-bottom:2px solid #4a4a8a; padding:10px 20px; display:flex; flex-wrap:wrap; align-items:center; gap:16px;">
+<div class="chain-selector" style="margin:0; padding:0; background:none; border:none;">
+<button class="chain-btn gold active" onclick="setChain('gold')">🏅 Gold Supply Chain</button>
+<button class="chain-btn shea" onclick="setChain('shea')">🫒 Shea Supply Chain</button>
+<button class="chain-btn" onclick="setChain('aubeb')" style="border-color:#1a8a7a;color:#1a8a7a;">🌿 AUBEB</button>
+<button class="chain-btn both" onclick="setChain('both')">⚖️ Compare All</button>
+</div>
+<div style="width:1px; height:28px; background:#333; flex-shrink:0;"></div>
+<div style="display:flex; align-items:center; gap:8px; flex-wrap:wrap;">
+<span style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:#9090c0; white-space:nowrap;">Scenario:</span>
+<div id="scenario-btns" style="display:flex; gap:6px; flex-wrap:wrap;"></div>
+<span id="scenario-desc" style="font-size:11px; color:#606088; font-style:italic;"></span>
+</div>
+</div>
+<!-- Spider charts -->
+<div class="main-grid" id="charts-grid">
+<!-- Rendered by JS -->
+</div>
+<!-- Data note -->
+<div class="data-note-panel">
+<h3>⚠️ Note on Pending Data — e (Abstract) Model</h3>
+<p>
             All five models are now computed: <strong>π, φ, √2, ln(2), and e</strong> all have scored dashboards with interactive simulators for both gold and shea.
             The <strong>e (Abstract)</strong> axis remains at <strong>0</strong> because the data required — a claims register tracking paper claims vs. physical holdings (rehypothecation ratios, unallocated account ratios, derivatives leverage) — does not yet exist in the project schema.
-            <br><br>
+            <br/><br/>
             For gold: relevant data would include LBMA unallocated account volumes, COMEX open interest vs. registered inventory, ETF holdings vs. allocated backing.
             For shea: Acorn carbon credit issuance (4.2M tCO2e) vs. verified physical sequestration — but a schema to track this is not yet built.
             A score of 0 on the e axis means <em>"unmeasured"</em>, not <em>"failed"</em>. The current pentagon shape (four axes computed, one at zero) reflects actual data availability.
         </p>
-    </div>
-
-    <!-- Model descriptions -->
-    <div class="descriptions">
-        <div class="desc-header">
-            <h2>What Each Model Measures — and Why It Matters</h2>
-            <p>Five orthogonal perspectives on the same supply chain. Each reveals a different class of failure that the others cannot see.</p>
-        </div>
-        <div class="desc-grid">
-
-            <div class="desc-card" style="border-top: 4px solid #3949ab;">
-                <div class="desc-icon">π</div>
-                <div class="desc-name" style="color:#3949ab;">π Model</div>
-                <div class="desc-layer" style="color:#3949ab;">Layer 1 — Operational</div>
-                <div class="desc-config" style="background:#e8eaf6;color:#3949ab;">D=3, C=5 → π (3.14159…)</div>
-
-                <h4>What it measures</h4>
-                <p>The D-C balance within each individual phase. Is this phase over-constrained or under-integrated? Are the specific operational requirements (D) matched by the available connections and outputs (C)?</p>
-
-                <h4>Why it matters</h4>
-                <p>This is the most physically grounded layer — it measures operational sustainability. A phase with D >> C is choking; one with C >> D is unstable. The π constant emerges because the Leibniz series (1 − 1/3 + 1/5 − …) embeds the exact same 3 and 5 values as D and C.</p>
-
-                <h4>What a high score means</h4>
-                <ul>
-                    <li>Phase operates near peak sustainability</li>
-                    <li>Constraints matched by integration capacity</li>
-                    <li>Minimal energy cost to maintain equilibrium</li>
-                </ul>
-
-                <div class="failure-box" style="background:#ede7f6;border-color:#3949ab;">
-                    <strong>Failure mode:</strong> D-C imbalance at phase level — over-constrained (D >> C) or over-integrated (C >> D). The physical operation is stressed.
+</div>
+<!-- Model descriptions -->
+<div class="descriptions">
+<div class="desc-header">
+<h2>What Each Model Measures — and Why It Matters</h2>
+<p>Five orthogonal perspectives on the same supply chain. Each reveals a different class of failure that the others cannot see.</p>
+</div>
+<div class="desc-grid">
+<div class="desc-card" style="border-top: 4px solid #3949ab;">
+<div class="desc-icon">π</div>
+<div class="desc-name" style="color:#3949ab;">π Model</div>
+<div class="desc-layer" style="color:#3949ab;">Layer 1 — Operational</div>
+<div class="desc-config" style="background:#e8eaf6;color:#3949ab;">D=3, C=5 → π (3.14159…)</div>
+<h4>What it measures</h4>
+<p>The D-C balance within each individual phase. Is this phase over-constrained or under-integrated? Are the specific operational requirements (D) matched by the available connections and outputs (C)?</p>
+<h4>Why it matters</h4>
+<p>This is the most physically grounded layer — it measures operational sustainability. A phase with D &gt;&gt; C is choking; one with C &gt;&gt; D is unstable. The π constant emerges because the Leibniz series (1 − 1/3 + 1/5 − …) embeds the exact same 3 and 5 values as D and C.</p>
+<h4>What a high score means</h4>
+<ul>
+<li>Phase operates near peak sustainability</li>
+<li>Constraints matched by integration capacity</li>
+<li>Minimal energy cost to maintain equilibrium</li>
+</ul>
+<div class="failure-box" style="background:#ede7f6;border-color:#3949ab;">
+<strong>Failure mode:</strong> D-C imbalance at phase level — over-constrained (D &gt;&gt; C) or over-integrated (C &gt;&gt; D). The physical operation is stressed.
                 </div>
-            </div>
-
-            <div class="desc-card" style="border-top: 4px solid #f57f17;">
-                <div class="desc-icon">φ</div>
-                <div class="desc-name" style="color:#f57f17;">φ Model</div>
-                <div class="desc-layer" style="color:#f57f17;">Layer 2 — Proportional</div>
-                <div class="desc-config" style="background:#fff8e1;color:#f57f17;">D=2, C=3 → φ (1.61803…)</div>
-
-                <h4>What it measures</h4>
-                <p>The ratio of N-values between adjacent phases. Does value grow at the natural golden-ratio rate as it moves through the chain? Are phase-to-phase transitions proportionally harmonious?</p>
-
-                <h4>Why it matters</h4>
-                <p>A chain can be operationally healthy at every phase (π coherent) while one phase still systematically extracts disproportionate value from its neighbors. The φ model catches exactly this. φ emerges because D+C = 2+3 = 5, the next Fibonacci term — the structural link to the golden ratio's recursive self-similarity.</p>
-
-                <h4>What a high score means</h4>
-                <ul>
-                    <li>Value flows naturally through phase boundaries</li>
-                    <li>No phase captures more than its structural role warrants</li>
-                    <li>Chain scales harmoniously — Fibonacci-like growth</li>
-                </ul>
-
-                <div class="failure-box" style="background:#fff8e1;border-color:#f57f17;">
-                    <strong>Failure mode:</strong> Disproportional value capture. One phase's N-value collapses or surges relative to neighbors — the signature of extraction, bottleneck, or monopoly power.
+</div>
+<div class="desc-card" style="border-top: 4px solid #f57f17;">
+<div class="desc-icon">φ</div>
+<div class="desc-name" style="color:#f57f17;">φ Model</div>
+<div class="desc-layer" style="color:#f57f17;">Layer 2 — Proportional</div>
+<div class="desc-config" style="background:#fff8e1;color:#f57f17;">D=2, C=3 → φ (1.61803…)</div>
+<h4>What it measures</h4>
+<p>The ratio of N-values between adjacent phases. Does value grow at the natural golden-ratio rate as it moves through the chain? Are phase-to-phase transitions proportionally harmonious?</p>
+<h4>Why it matters</h4>
+<p>A chain can be operationally healthy at every phase (π coherent) while one phase still systematically extracts disproportionate value from its neighbors. The φ model catches exactly this. φ emerges because D+C = 2+3 = 5, the next Fibonacci term — the structural link to the golden ratio's recursive self-similarity.</p>
+<h4>What a high score means</h4>
+<ul>
+<li>Value flows naturally through phase boundaries</li>
+<li>No phase captures more than its structural role warrants</li>
+<li>Chain scales harmoniously — Fibonacci-like growth</li>
+</ul>
+<div class="failure-box" style="background:#fff8e1;border-color:#f57f17;">
+<strong>Failure mode:</strong> Disproportional value capture. One phase's N-value collapses or surges relative to neighbors — the signature of extraction, bottleneck, or monopoly power.
                 </div>
-            </div>
-
-            <div class="desc-card" style="border-top: 4px solid #2e7d32;">
-                <div class="desc-icon">√2</div>
-                <div class="desc-name" style="color:#2e7d32;">√2 Model</div>
-                <div class="desc-layer" style="color:#2e7d32;">Layer 3 — Structural</div>
-                <div class="desc-config" style="background:#e8f5e9;color:#2e7d32;">D=2, C=2 → √2 (1.41421…)</div>
-
-                <h4>What it measures</h4>
-                <p>Whether custody transfer phases (logistics, assay, vaulting) preserve structural balance. What enters a transfer phase should exit in equivalent form — the irreducible overhead of crossing a balanced boundary is √2 (~41% above input).</p>
-
-                <h4>Why it matters</h4>
-                <p>√2 is the diagonal of a unit square — the most physically realizable irrational, constructible with compass and straightedge. Any boundary crossing imposes this overhead naturally. When a transfer phase imposes more, it has become an extraction point masquerading as a pass-through.</p>
-
-                <h4>What a high score means</h4>
-                <ul>
-                    <li>Transfer phases are symmetric — input equals output in kind</li>
-                    <li>Custody handoffs, logistics, and assay phases impose only natural overhead</li>
-                    <li>No intermediary rent-extraction at phase boundaries</li>
-                </ul>
-
-                <div class="failure-box" style="background:#e8f5e9;border-color:#2e7d32;">
-                    <strong>Failure mode:</strong> Transfer asymmetry — a phase that should be a neutral conduit imposes overhead far exceeding √2. The boundary has become a toll gate.
+</div>
+<div class="desc-card" style="border-top: 4px solid #2e7d32;">
+<div class="desc-icon">√2</div>
+<div class="desc-name" style="color:#2e7d32;">√2 Model</div>
+<div class="desc-layer" style="color:#2e7d32;">Layer 3 — Structural</div>
+<div class="desc-config" style="background:#e8f5e9;color:#2e7d32;">D=2, C=2 → √2 (1.41421…)</div>
+<h4>What it measures</h4>
+<p>Whether custody transfer phases (logistics, assay, vaulting) preserve structural balance. What enters a transfer phase should exit in equivalent form — the irreducible overhead of crossing a balanced boundary is √2 (~41% above input).</p>
+<h4>Why it matters</h4>
+<p>√2 is the diagonal of a unit square — the most physically realizable irrational, constructible with compass and straightedge. Any boundary crossing imposes this overhead naturally. When a transfer phase imposes more, it has become an extraction point masquerading as a pass-through.</p>
+<h4>What a high score means</h4>
+<ul>
+<li>Transfer phases are symmetric — input equals output in kind</li>
+<li>Custody handoffs, logistics, and assay phases impose only natural overhead</li>
+<li>No intermediary rent-extraction at phase boundaries</li>
+</ul>
+<div class="failure-box" style="background:#e8f5e9;border-color:#2e7d32;">
+<strong>Failure mode:</strong> Transfer asymmetry — a phase that should be a neutral conduit imposes overhead far exceeding √2. The boundary has become a toll gate.
                 </div>
-            </div>
-
-            <div class="desc-card" style="border-top: 4px solid #c62828;">
-                <div class="desc-icon" style="font-size:22px;margin-top:4px;">ln(2)</div>
-                <div class="desc-name" style="color:#c62828;">ln(2) Model</div>
-                <div class="desc-layer" style="color:#c62828;">Layer 4 — Growth</div>
-                <div class="desc-config" style="background:#fce4ec;color:#c62828;">D=1, C=2 → ln(2) (0.69315…)</div>
-
-                <h4>What it measures</h4>
-                <p>Whether transformation phases (processing, refining) double value at the natural rate. ln(2) is the doubling constant — how many natural steps it takes for a continuously compounding process to double. Its series oscillates toward equilibrium: 1 − 1/2 + 1/3 − 1/4 + …</p>
-
-                <h4>Why it matters</h4>
-                <p>Processing phases are the natural growth conduits of a supply chain — raw material enters and a transformed, more valuable product exits. When artificial D-institutional constraints are imposed on these phases, they suppress natural doubling and convert a growth engine into a rent-extraction bottleneck.</p>
-
-                <h4>What a high score means</h4>
-                <ul>
-                    <li>Transformation phases multiply value at the natural rate</li>
-                    <li>Minimal artificial constraints imposed on growth conduits</li>
-                    <li>Processing phases function as intended — value engines, not toll gates</li>
-                </ul>
-
-                <div class="failure-box" style="background:#fce4ec;border-color:#c62828;">
-                    <strong>Failure mode:</strong> Conduit capture — artificial constraints (firewood cost, lack of buyer commitment, certification barriers) imposed on phases that should double value naturally. Each constraint damps the oscillatory convergence.
+</div>
+<div class="desc-card" style="border-top: 4px solid #c62828;">
+<div class="desc-icon" style="font-size:22px;margin-top:4px;">ln(2)</div>
+<div class="desc-name" style="color:#c62828;">ln(2) Model</div>
+<div class="desc-layer" style="color:#c62828;">Layer 4 — Growth</div>
+<div class="desc-config" style="background:#fce4ec;color:#c62828;">D=1, C=2 → ln(2) (0.69315…)</div>
+<h4>What it measures</h4>
+<p>Whether transformation phases (processing, refining) double value at the natural rate. ln(2) is the doubling constant — how many natural steps it takes for a continuously compounding process to double. Its series oscillates toward equilibrium: 1 − 1/2 + 1/3 − 1/4 + …</p>
+<h4>Why it matters</h4>
+<p>Processing phases are the natural growth conduits of a supply chain — raw material enters and a transformed, more valuable product exits. When artificial D-institutional constraints are imposed on these phases, they suppress natural doubling and convert a growth engine into a rent-extraction bottleneck.</p>
+<h4>What a high score means</h4>
+<ul>
+<li>Transformation phases multiply value at the natural rate</li>
+<li>Minimal artificial constraints imposed on growth conduits</li>
+<li>Processing phases function as intended — value engines, not toll gates</li>
+</ul>
+<div class="failure-box" style="background:#fce4ec;border-color:#c62828;">
+<strong>Failure mode:</strong> Conduit capture — artificial constraints (firewood cost, lack of buyer commitment, certification barriers) imposed on phases that should double value naturally. Each constraint damps the oscillatory convergence.
                 </div>
-            </div>
-
-            <div class="desc-card" style="border-top: 4px solid #6a1b9a; border-right: none;">
-                <div class="desc-icon">e</div>
-                <div class="desc-name" style="color:#6a1b9a;">e Model</div>
-                <div class="desc-layer" style="color:#6a1b9a;">Layer 5 — Abstract</div>
-                <div class="desc-config" style="background:#f3e5f5;color:#6a1b9a;">D=1, C=1 → e (2.71828…)</div>
-
-                <h4>What it measures</h4>
-                <p>Whether abstract and financial claims on the supply chain remain coupled to physical reality. Paper gold, carbon credits, sustainability certifications, and financial derivatives all represent abstract claims. The e model measures the ratio of physical holdings to abstract claims — the coupling coefficient.</p>
-
-                <h4>Why it matters</h4>
-                <p>e is the base of natural logarithm — the constant of continuous compounding. The abstract layer compounds independently of physical constraints. When it decouples (paper claims grow faster than physical holdings), the abstract system has escaped physical reality. This is the most dangerous failure mode: the financial architecture appears healthy while the physical foundation it claims to represent is failing.</p>
-
-                <h4>What a high score means</h4>
-                <ul>
-                    <li>Paper claims backed by physical holdings in correct proportion</li>
-                    <li>Financial instruments remain tethered to supply chain reality</li>
-                    <li>Abstract compounding and physical growth move together</li>
-                </ul>
-
-                <div class="failure-box" style="background:#f3e5f5;border-color:#6a1b9a;">
-                    <strong>Failure mode:</strong> Decoupling — rehypothecation, unallocated gold accounts, uncertified carbon credits, and paper claims multiply beyond what the physical chain supports. The abstract system floats free.
+</div>
+<div class="desc-card" style="border-top: 4px solid #6a1b9a; border-right: none;">
+<div class="desc-icon">e</div>
+<div class="desc-name" style="color:#6a1b9a;">e Model</div>
+<div class="desc-layer" style="color:#6a1b9a;">Layer 5 — Abstract</div>
+<div class="desc-config" style="background:#f3e5f5;color:#6a1b9a;">D=1, C=1 → e (2.71828…)</div>
+<h4>What it measures</h4>
+<p>Whether abstract and financial claims on the supply chain remain coupled to physical reality. Paper gold, carbon credits, sustainability certifications, and financial derivatives all represent abstract claims. The e model measures the ratio of physical holdings to abstract claims — the coupling coefficient.</p>
+<h4>Why it matters</h4>
+<p>e is the base of natural logarithm — the constant of continuous compounding. The abstract layer compounds independently of physical constraints. When it decouples (paper claims grow faster than physical holdings), the abstract system has escaped physical reality. This is the most dangerous failure mode: the financial architecture appears healthy while the physical foundation it claims to represent is failing.</p>
+<h4>What a high score means</h4>
+<ul>
+<li>Paper claims backed by physical holdings in correct proportion</li>
+<li>Financial instruments remain tethered to supply chain reality</li>
+<li>Abstract compounding and physical growth move together</li>
+</ul>
+<div class="failure-box" style="background:#f3e5f5;border-color:#6a1b9a;">
+<strong>Failure mode:</strong> Decoupling — rehypothecation, unallocated gold accounts, uncertified carbon credits, and paper claims multiply beyond what the physical chain supports. The abstract system floats free.
                 </div>
-            </div>
-
-        </div>
-    </div>
-
-    <div class="footer">
-        <p>Five-Model N-D-C Coherence — Tholonic Framework &nbsp;|&nbsp;
-        <a href="/frontend/project/gold/supply_chain/index.html">Gold Hub</a> &nbsp;|&nbsp;
-        <a href="/frontend/project/shea/supply_chain/index.html">Shea Hub</a> &nbsp;|&nbsp;
-        <a href="/docs/Repos/intra/PDI/NDC_QUALITATIVE_D_AND_C_MAPPING_BY_PHASE.md">Framework Docs</a></p>
-    </div>
-
+</div>
+</div>
+</div>
+<div class="footer">
+<p>Five-Model N-D-C Coherence — Tholonic Framework  | 
+        <a href="/frontend/project/gold/supply_chain/index.html">Gold Hub</a>  | 
+        <a href="/frontend/project/shea/supply_chain/index.html">Shea Hub</a>  | 
+        Framework Docs</p>
+</div>
 </div><!-- /page -->
-
 <script>
 // ── Data ────────────────────────────────────────────────────────────────────
 const CHAIN_DATA = {
@@ -764,7 +730,6 @@ Promise.all([
     render();
 });
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -812,8 +777,6 @@ Promise.all([
   else inject();
 })();
 </script>
-
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -834,11 +797,7 @@ Promise.all([
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -856,7 +815,6 @@ Promise.all([
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -870,14 +828,8 @@ Promise.all([
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {
@@ -930,6 +882,5 @@ Promise.all([
   else inject();
 })();
 </script>
-
 </body>
 </html>
