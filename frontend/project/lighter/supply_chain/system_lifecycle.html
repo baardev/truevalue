@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lighter – System Lifecycle</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial; background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 24px; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    .kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #e05c00; margin-bottom: 6px; }
+    h1 { font-size: 26px; font-weight: 300; color: #e6edf3; margin-bottom: 6px; }
+    .subtitle { font-size: 13px; color: #8b949e; margin-bottom: 24px; line-height: 1.5; }
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+    .kpi { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 16px; border-left: 3px solid #e05c00; }
+    .kpi-value { font-size: 22px; font-weight: 800; color: #e05c00; }
+    .kpi-label { font-size: 11px; color: #8b949e; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+    .kpi-value.weak { color: #c62828; }
+    .kpi-value.strong { color: #4caf50; }
+    .panel { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 22px; margin-bottom: 18px; }
+    .panel-title { font-size: 13px; font-weight: 700; color: #8b949e; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 18px; }
+    .lc-phase { margin-bottom: 22px; padding-bottom: 22px; border-bottom: 1px solid #21262d; }
+    .lc-phase:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+    .lc-phase-header { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+    .lc-phase-id { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 900; flex-shrink: 0; }
+    .lc-phase-name { font-size: 15px; font-weight: 600; color: #e6edf3; }
+    .lc-phase-cat { font-size: 11px; color: #8b949e; margin-top: 2px; }
+    .bar-section { margin-bottom: 10px; }
+    .bar-label { font-size: 11px; color: #8b949e; margin-bottom: 4px; display: flex; justify-content: space-between; }
+    .bar-bg { height: 10px; border-radius: 5px; background: #21262d; }
+    .bar-fill { height: 10px; border-radius: 5px; }
+    .d-bar { background: #3ecf8e; }
+    .c-bar { background: #ef5350; }
+    .n-bar { background: #4fc3f7; }
+    .bal-bar { background: #e05c00; }
+    .lc-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+    .lc-metric { background: #0d1117; border-radius: 6px; padding: 10px; text-align: center; }
+    .lc-metric-val { font-size: 16px; font-weight: 800; color: #e05c00; }
+    .lc-metric-label { font-size: 10px; color: #6e7681; margin-top: 3px; }
+    .lc-notes { font-size: 12px; color: #8b949e; line-height: 1.6; margin-top: 10px; padding: 10px 14px; background: #0d1117; border-radius: 6px; border-left: 3px solid #30363d; }
+    .lc-notes.bottleneck { border-left-color: #c62828; }
+    .badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; margin-left: 8px; }
+    .b-bottleneck { background: #3a0000; color: #ef5350; }
+    .b-strong { background: #1a3a1a; color: #4caf50; }
+    .interp { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 22px; margin-bottom: 18px; font-size: 13px; line-height: 1.8; color: #c9d1d9; }
+    .interp h2 { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 14px; }
+    .interp p { margin-bottom: 12px; }
+    .interp strong { color: #e05c00; }
+    .nav { margin-top: 20px; font-size: 13px; }
+    .nav a { color: #e05c00; text-decoration: none; margin-right: 16px; font-weight: 600; }
+    .nav a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="container">
+<div class="kicker">Lighter · System Lifecycle · N-D-C Analysis</div>
+<h1>♻️ Lighter — System Lifecycle</h1>
+<div class="subtitle">5 lifecycle phases from resource definition through disposal. Average balance: 77.6%. Lifecycle bottleneck: Phase 4 (Disposal &amp; Circularity) at 62.0% balance and sustainability index 0.05.</div>
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-value">77.6%</div><div class="kpi-label">Avg Lifecycle Balance</div></div>
+<div class="kpi"><div class="kpi-value">189</div><div class="kpi-label">Average N</div></div>
+<div class="kpi"><div class="kpi-value weak">62.0%</div><div class="kpi-label">Disposal Balance (bottleneck)</div></div>
+<div class="kpi"><div class="kpi-value weak">0.05</div><div class="kpi-label">Disposal Sustainability Index</div></div>
+</div>
+<div class="panel" id="lc-panel">
+<div class="panel-title">Lifecycle Phase N-D-C Profile</div>
+<div id="lc-phases">Loading…</div>
+</div>
+<div class="interp">
+<h2>Lifecycle Interpretation</h2>
+<p>
+<strong>Structure:</strong> The lighter lifecycle is operationally efficient in its production and distribution phases (Phases 0-2 averaging 79.3% balance) and performs reliably during use (Phase 3 at 88.0%). The entire system collapses at the end-of-life boundary: Phase 4 (Disposal &amp; Circularity) scores 62.0% balance with a sustainability index of 0.05, the lowest in the system. This is not a regulatory gap. It is a designed feature of the micro-margin manufacturing model.
+      </p>
+<p>
+<strong>Bottleneck — Phase 4 (Disposal &amp; Circularity):</strong>
+        The lighter is effectively a non-circular product at scale. More than 99% of the 10 billion units produced annually end up in landfill. The PP polymer body (5 grams per unit, approximately 50,000 MT per year globally) is technically recyclable but is not collected in any household recycling stream. The presence of residual butane classifies the product as hazardous waste in many jurisdictions unless fully exhausted before disposal, which consumers rarely do. No major lighter manufacturer operates a take-back program at scale. The D-C imbalance at Phase 4 (D=220, C=190) reveals the structural cause: regulatory constraints classify the lighter as hazardous (D), while the contribution pathways for circularity are near-zero (C).
+      </p>
+<p>
+<strong>Tholonic model interpretation:</strong>
+        In the Tholonic framework, Phase 4 represents a broken parent-N to child-N transition. The parent N is the physical lighter at end of useful life. The child N should be a recovered material: recycled PP polymer, recovered ferrocerium, reclaimed steel. But no tholonic boundary has been established between use and recovery. The lighter's physical substance (PP, ferrocerium, steel, butane) cannot transition to a next-level N because no infrastructure exists to negotiate that transition. The result is systemic D-C collapse at the disposal boundary: the most constrained phase (D=220) with the least contribution capacity (C=190) in the entire lifecycle.
+      </p>
+<p>
+<strong>Bond opportunity analysis:</strong>
+        A performance bond linked to lighter circularity would target the disposal bottleneck directly. Use of proceeds: fund manufacturer take-back infrastructure and refillable lighter pilot programs. Performance KPI: lighter recycling rate (baseline &lt;1%; target 10% by Year 5). Revenue basis: recycled PP polymer sales and avoided landfill tipping fees. Indicative scale: $50-$200M per major market (US, EU). Eligible issuers: BIC Group (only major public company in the sector); large-scale distributor groups. The BIC brand premium ($0.60/unit) provides the economic headroom to fund circularity infrastructure without collapsing factory gate margins.
+      </p>
+</div>
+<div class="nav">
+<a href="../index.html">← Lighter Hub</a>
+<a href="index.html">Supply Chain Index</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="project_context.html">Project Context</a>
+<a href="../value_chain/index.html">Value Chain →</a>
+</div>
+</div>
+<script>
+  (function(){
+    var DATA_URL = "/frontend/project/lighter/data/processed/lighter_system_lifecycle_ndc.json";
+    var PRIMARY = "#e05c00";
+
+    var PHASE_ICONS = ["⛏️","🏭","🚢","🔥","🗑️"];
+    var PHASE_COLORS = ["#e05c00","#c62828","#e05c00","#2e7d32","#c62828"];
+
+    fetch(DATA_URL).then(function(r){return r.json();}).catch(function(){return null;}).then(function(data){
+      if(!data) return;
+      var phases = data.lifecycle_phases || {};
+      var container = document.getElementById('lc-phases');
+      if(!container) return;
+      var html = '';
+      var maxV = 290;
+
+      Object.keys(phases).sort(function(a,b){return +a-+b;}).forEach(function(id){
+        var ph = phases[id];
+        var D=ph.D||0, C=ph.C||0, N=ph.N||0, bal=ph.balance||0, sus=ph.sustainability_index||0;
+        var dPct=(D/maxV*100).toFixed(1);
+        var cPct=(C/maxV*100).toFixed(1);
+        var nPct=(N/maxV*100).toFixed(1);
+        var balPct=Math.min(100,bal).toFixed(1);
+        var bc=bal>=80?'#4caf50':bal>=70?'#ff9800':'#ef5350';
+        var idNum=parseInt(id);
+        var icon=PHASE_ICONS[idNum]||'📦';
+        var circColor=PHASE_COLORS[idNum]||PRIMARY;
+        var isBottleneck = idNum===4;
+        var isStrongest = idNum===3;
+
+        html += '<div class="lc-phase">';
+        html += '<div class="lc-phase-header">';
+        html += '<div class="lc-phase-id" style="background:'+circColor+';color:#fff;">'+icon+'</div>';
+        html += '<div>';
+        html += '<div class="lc-phase-name">'+ph.name+(isBottleneck?'<span class="badge b-bottleneck">BOTTLENECK</span>':'')+(isStrongest?'<span class="badge b-strong">STRONGEST</span>':'')+'</div>';
+        html += '<div class="lc-phase-cat">'+ph.category+' &nbsp;·&nbsp; Transparency: '+ph.transparency+' &nbsp;·&nbsp; Status: '+ph.data_status+'</div>';
+        html += '</div></div>';
+
+        html += '<div class="bar-section"><div class="bar-label"><span>D (Definition)</span><span>'+D+' / '+maxV+'</span></div><div class="bar-bg"><div class="bar-fill d-bar" style="width:'+dPct+'%;"></div></div></div>';
+        html += '<div class="bar-section"><div class="bar-label"><span>C (Contribution)</span><span>'+C+' / '+maxV+'</span></div><div class="bar-bg"><div class="bar-fill c-bar" style="width:'+cPct+'%;"></div></div></div>';
+        html += '<div class="bar-section"><div class="bar-label"><span>N (Negotiation)</span><span>'+N+' / '+maxV+'</span></div><div class="bar-bg"><div class="bar-fill n-bar" style="width:'+nPct+'%;"></div></div></div>';
+        html += '<div class="bar-section"><div class="bar-label"><span style="font-weight:700;color:'+bc+';">Balance</span><span style="font-weight:700;color:'+bc+';">'+balPct+'%</span></div><div class="bar-bg"><div class="bar-fill bal-bar" style="width:'+balPct+'%;background:'+bc+';"></div></div></div>';
+
+        html += '<div class="lc-metrics">';
+        html += '<div class="lc-metric"><div class="lc-metric-val">'+D+'</div><div class="lc-metric-label">D</div></div>';
+        html += '<div class="lc-metric"><div class="lc-metric-val">'+C+'</div><div class="lc-metric-label">C</div></div>';
+        html += '<div class="lc-metric"><div class="lc-metric-val">'+N+'</div><div class="lc-metric-label">N</div></div>';
+        html += '<div class="lc-metric"><div class="lc-metric-val" style="color:'+bc+';">'+balPct+'%</div><div class="lc-metric-label">Balance</div></div>';
+        html += '</div>';
+
+        html += '<div class="lc-notes'+(isBottleneck?' bottleneck':'')+'">'+ph.notes+'</div>';
+        html += '</div>';
+      });
+      container.innerHTML = html;
+    });
+  })();
+  </script>
+</body>
+</html>

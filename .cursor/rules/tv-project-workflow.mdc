@@ -1,0 +1,122 @@
+---
+description: TV repo overview, commands, architecture, and links to methodology rules
+alwaysApply: true
+---
+
+# TrueValue project workflow (from former CLAUDE.md)
+
+## Project overview
+
+Quantitative, phase-resolved, physically grounded gold supply chain model (geology through COMEX registration), with a parallel shea instance. This repo is a data pipeline plus static web simulator, not a traditional web app.
+
+## Writing style
+
+Do not use em-dashes anywhere in output, documentation, or generated content. Use colons, commas, or rephrase. (See also `punctuation.mdc` for LaTeX delimiter rules.)
+
+## Methodology and AI operating rules
+
+Separation of supply chain, value chain, and financial layers; phase-based modeling; data-first discipline; transparency classification; custody awareness; COMEX as anchor; schema-first work; deferred interpretation; auditability; and the full Tholonic N-D-C framework with mathematical grounding: follow **`.cursorrules`** (workspace rules). Those rules are non-negotiable for this project.
+
+## Common commands
+
+### Dev server (site root is repo root)
+
+```bash
+# Run from the repository root
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+Use Nginx in front when you need TLS, routing, or password gates. If the MkDocs `site/` tree was moved elsewhere, skip wiki-only helpers or rebuild into the path your server uses.
+
+### Frontend entry examples
+
+- Gold hub: `http://localhost:8000/frontend/project/gold/index.html`
+- Gold supply chain: `http://localhost:8000/frontend/project/gold/supply_chain/index.html`
+- Shea hub: `http://localhost:8000/frontend/project/shea/index.html`
+
+### Systemd (production pattern)
+
+```bash
+sudo cp deploy/tv-web.service /etc/systemd/system/
+sudo systemctl daemon-reload && sudo systemctl enable --now tv-web.service
+```
+
+A second unit for docs (`tv-docs.service`) is mentioned in older docs but may not exist under `deploy/`; add or copy only what is in the repo.
+
+### AUBEB password gate
+
+See `deploy/README-aubeb-nginx.md`. Bind the Python static server to `127.0.0.1:8000` so browsers cannot bypass Nginx for protected paths.
+
+### Generate frontend JSON from schemas
+
+```bash
+python3 src/api/generate_frontend_data.py
+python3 src/api/generate_ui_data.py
+```
+
+Outputs depend on script configuration; many UI JSON files live under `frontend/project/*/data/processed/` after generation.
+
+### COMEX scrape (phase 7 anchor)
+
+```bash
+python3 src/ingest/comex_scraper.py
+```
+
+### Health check
+
+```bash
+python3 scripts/health_check.py
+```
+
+### MkDocs wiki (optional)
+
+```bash
+pip install -r requirements-docs.txt
+mkdocs serve -f scripts/mkdocs.yml
+```
+
+### Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+There is no dedicated test suite; validation includes logic in `src/ingest/data_importer.py`.
+
+## Architecture
+
+### Data flow
+
+```
+schema/ (CSV schemas)
+  -> src/api/generate_frontend_data.py
+  -> data/processed/ and/or frontend/project/*/data/processed/ (JSON)
+  -> frontend/ (HTML/JS reads JSON)
+
+src/ingest/comex_scraper.py -> data/raw/ -> pipeline outputs
+```
+
+### Analytical layers
+
+1. **Supply chain**: physical flow, custody, constraints (phases 0 to 7).
+2. **Value chain**: profit, pricing, margins (do not mix into supply chain work).
+3. **Financial abstraction**: paper claims, leverage (out of scope until physical chain is mapped).
+
+Phase 7 (exchange registration) is the high-transparency anchor. Phase 6 (vaulting): document opacity structurally, do not speculate.
+
+Required shape per phase: `Phase -> Metric -> Unit -> Source -> Custodian`.
+
+### Schema-first
+
+`schema/` is the source of truth for field definitions. Narrative must map to tabular schema. If it cannot be tabulated, it does not exist for this project.
+
+### Simulation code (`src/simulation/`)
+
+- `tholonic_engine.py`: N-D-C triadic model
+- `phi_engine.py`: golden ratio optimization
+- `ln2_engine.py`: balance calculations
+- `balance_optimizer.py`: bottleneck detection
+
+### Frontend
+
+Static HTML and JavaScript; no bundler required for core pages. Prefer paths and data loading patterns already used in existing project hubs.

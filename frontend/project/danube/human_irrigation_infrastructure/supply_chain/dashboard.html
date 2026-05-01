@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Irrigation Infrastructure — N-D-C Dashboard</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Irrigation Infrastructure — N-D-C Dashboard</title>
+<style>
     * { margin:0; padding:0; box-sizing:border-box; }
     body { font-family: ui-sans-serif,system-ui,sans-serif; background:#0d1117; color:#e6edf3; min-height:100vh; padding:20px; }
     .container { max-width:1200px; margin:0 auto; }
@@ -47,77 +48,72 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1>🌾 Irrigation Infrastructure — N-D-C Dashboard</h1>
-      <div class="nav">
-        <a href="index.html">Supply Chain</a>
-        <a href="project_context.html">Context</a>
-        <a href="../index.html">Hub</a>
-        <a href="../../index.html">Danube</a>
-      </div>
-    </div>
-
-    <div class="bottleneck-alert" id="bottleneck-alert">
+<div class="container">
+<div class="header">
+<h1>🌾 Irrigation Infrastructure — N-D-C Dashboard</h1>
+<div class="nav">
+<a href="index.html">Supply Chain</a>
+<a href="project_context.html">Context</a>
+<a href="../index.html">Hub</a>
+<a href="../../index.html">Danube</a>
+</div>
+</div>
+<div class="bottleneck-alert" id="bottleneck-alert">
       Bottleneck detected — loading…
     </div>
-
-    <div class="grid3">
-      <div class="panel">
-        <h2>Chain Summary</h2>
-        <div class="kpi-row">
-          <div class="kpi"><div class="kpi-label">Avg Balance</div><div class="kpi-value" id="avg-balance">—</div></div>
-          <div class="kpi"><div class="kpi-label">Avg N</div><div class="kpi-value" id="avg-n">—</div></div>
-          <div class="kpi"><div class="kpi-label">Phases</div><div class="kpi-value">5</div></div>
-        </div>
-      </div>
-      <div class="panel">
-        <h2>Bottleneck Phase</h2>
-        <div class="kpi-row">
-          <div class="kpi alert"><div class="kpi-label">Weakest Phase</div><div class="kpi-value" id="weak-phase">—</div><div class="kpi-sub" id="weak-name">—</div></div>
-          <div class="kpi"><div class="kpi-label">Best Phase</div><div class="kpi-value" id="best-phase">—</div><div class="kpi-sub" id="best-name">—</div></div>
-        </div>
-      </div>
-      <div class="panel">
-        <h2>Infrastructure KPIs</h2>
-        <div class="kpi-row">
-          <div class="kpi alert"><div class="kpi-label">Irrigation Efficiency</div><div class="kpi-value">50%</div><div class="kpi-sub">weighted avg (target 75%)</div></div>
-          <div class="kpi"><div class="kpi-label">Saving Potential</div><div class="kpi-value">5.5 km³</div><div class="kpi-sub">if modernised</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="grid2">
-      <div class="panel">
-        <h2>Phase D-C-N Balance</h2>
-        <div class="legend">
-          <span><div class="dot" style="background:#3ecf8e"></div> D (Definition)</span>
-          <span><div class="dot" style="background:#ef5350"></div> C (Contribution)</span>
-          <span><div class="dot" style="background:#4fc3f7"></div> N (Negotiation)</span>
-        </div>
-        <div id="phase-bars">Loading…</div>
-      </div>
-      <div class="panel">
-        <h2>Five-Model Coherence</h2>
-        <div id="pent-wrap">
-          <div id="pent-svg" style="max-width:260px;width:100%;"></div>
-          <div id="pent-info" style="font-size:12px;color:#c9d1d9;min-width:140px;max-width:200px;"></div>
-        </div>
-        <div id="pent-interp" style="margin-top:12px;font-size:12px;line-height:1.6;color:#8b949e;border-left:3px solid #2e7d32;padding-left:12px;"></div>
-      </div>
-    </div>
-
-    <div class="panel">
-      <h2>Phase Detail Table</h2>
-      <table>
-        <thead>
-          <tr><th>Phase</th><th>Name</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Transparency</th><th>Notes</th></tr>
-        </thead>
-        <tbody id="phase-table"><tr><td colspan="8">Loading…</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-
+<div class="grid3">
+<div class="panel">
+<h2>Chain Summary</h2>
+<div class="kpi-row">
+<div class="kpi"><div class="kpi-label">Avg Balance</div><div class="kpi-value" id="avg-balance">—</div></div>
+<div class="kpi"><div class="kpi-label">Avg N</div><div class="kpi-value" id="avg-n">—</div></div>
+<div class="kpi"><div class="kpi-label">Phases</div><div class="kpi-value">5</div></div>
+</div>
+</div>
+<div class="panel">
+<h2>Bottleneck Phase</h2>
+<div class="kpi-row">
+<div class="kpi alert"><div class="kpi-label">Weakest Phase</div><div class="kpi-value" id="weak-phase">—</div><div class="kpi-sub" id="weak-name">—</div></div>
+<div class="kpi"><div class="kpi-label">Best Phase</div><div class="kpi-value" id="best-phase">—</div><div class="kpi-sub" id="best-name">—</div></div>
+</div>
+</div>
+<div class="panel">
+<h2>Infrastructure KPIs</h2>
+<div class="kpi-row">
+<div class="kpi alert"><div class="kpi-label">Irrigation Efficiency</div><div class="kpi-value">50%</div><div class="kpi-sub">weighted avg (target 75%)</div></div>
+<div class="kpi"><div class="kpi-label">Saving Potential</div><div class="kpi-value">5.5 km³</div><div class="kpi-sub">if modernised</div></div>
+</div>
+</div>
+</div>
+<div class="grid2">
+<div class="panel">
+<h2>Phase D-C-N Balance</h2>
+<div class="legend">
+<span><div class="dot" style="background:#3ecf8e"></div> D (Definition)</span>
+<span><div class="dot" style="background:#ef5350"></div> C (Contribution)</span>
+<span><div class="dot" style="background:#4fc3f7"></div> N (Negotiation)</span>
+</div>
+<div id="phase-bars">Loading…</div>
+</div>
+<div class="panel">
+<h2>Five-Model Coherence</h2>
+<div id="pent-wrap">
+<div id="pent-svg" style="max-width:260px;width:100%;"></div>
+<div id="pent-info" style="font-size:12px;color:#c9d1d9;min-width:140px;max-width:200px;"></div>
+</div>
+<div id="pent-interp" style="margin-top:12px;font-size:12px;line-height:1.6;color:#8b949e;border-left:3px solid #2e7d32;padding-left:12px;"></div>
+</div>
+</div>
+<div class="panel">
+<h2>Phase Detail Table</h2>
+<table>
+<thead>
+<tr><th>Phase</th><th>Name</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Transparency</th><th>Notes</th></tr>
+</thead>
+<tbody id="phase-table"><tr><td colspan="8">Loading…</td></tr></tbody>
+</table>
+</div>
+</div>
 <script>
 (function(){
   var DATA_URL='../data/processed/human_irrigation_infrastructure_supply_chain_ui.json';

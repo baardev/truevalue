@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Value Chain What‑If Simulator</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Value Chain What‑If Simulator</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -182,184 +183,169 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div>
-        <h1>Value Chain What‑If Simulator</h1>
-        <div style="font-size:12px; opacity:0.85; margin-top:4px;">Value-only scenario exploration • separate from supply-chain logic</div>
-      </div>
-      <div class="nav">
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./financial_report.html">📊 Financial Report</a>
-        <a href="./">Value Home</a>
-        <a href="/index.html">Server Root</a>
-      </div>
-    </div>
-
-    <div class="layout">
-      <div class="left">
-        <div class="title">
-          <span>Controls (Phase 1)</span>
-          <select id="entitySelect"></select>
-        </div>
-
-        <div class="box">
-          <div class="control">
-            <div class="row"><span>AISC (USD/oz)</span><span id="aiscLabel">—</span></div>
-            <input id="aiscSlider" type="range" min="900" max="2200" step="5" />
-            <div class="hint">All‑in sustaining cost. Lower is better for margin resilience.</div>
-          </div>
-
-          <div class="control">
-            <div class="row"><span>Cash Cost (USD/oz)</span><span id="cashLabel">—</span></div>
-            <input id="cashSlider" type="range" min="600" max="1800" step="5" />
-            <div class="hint">Direct cash cost. Typically below AISC.</div>
-          </div>
-
-          <div class="control">
-            <div class="row"><span>Realized Price (USD/oz)</span><span id="priceLabel">—</span></div>
-            <input id="priceSlider" type="range" min="1200" max="6500" step="5" />
-            <div class="hint">Value-layer price input (do not mix into supply-chain layer).</div>
-          </div>
-
-          <div style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
-            <div class="title" style="margin-bottom: 10px;"><span>Tholonic N‑D‑C Controls (Value)</span></div>
-            <div class="control">
-              <div class="row"><span>D (Definition)</span><span id="dLabel">—</span></div>
-              <input id="dSlider" type="range" min="150" max="450" step="1" />
-              <div class="hint">Value constraints (rigidity, obligations, cost burden).</div>
-            </div>
-            <div class="control">
-              <div class="row"><span>C (Contribution)</span><span id="cLabel">—</span></div>
-              <input id="cSlider" type="range" min="150" max="450" step="1" />
-              <div class="hint">Value integration (optionality, counterparties, flexibility).</div>
-            </div>
-          </div>
-
-          <div class="btns">
-            <button class="btn-reset" id="resetBtn">Reset</button>
-            <button class="btn-apply" id="applyBtn">Apply</button>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title"><span>Period</span><select id="periodSelect"><option value="quarterly">Quarterly</option><option value="annual">Annual</option></select></div>
-          <div class="hint">This simulator initializes from the latest value-chain record for the selected entity + period.</div>
-        </div>
-
-        <div class="box">
-          <div class="title">Environmental Cost Scenario</div>
-          <div class="control">
-            <div class="row"><span>Carbon Price (USD/tCO₂e)</span><span id="carbonPriceLabel">$65</span></div>
-            <input id="carbonPriceSlider" type="range" min="0" max="200" step="5" value="65" />
-            <div class="hint">Adjust to see how carbon pricing affects per-oz cost and % of AISC. Reference: EU ETS ~$65/tCO₂e (2024).</div>
-          </div>
-          <div style="margin-top: 8px;">
-            <span class="env-badge env-carbon" id="carbonPerOzBadge">—</span>
-            <span class="env-badge env-total" id="envPctAiscBadge">—</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="center">
-        <div class="metric-grid">
-          <div class="metric">
-            <div class="label">Gross Margin Proxy</div>
-            <div class="value" id="marginValue">—</div>
-            <div class="delta" id="marginDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Breakeven Price (AISC)</div>
-            <div class="value" id="breakevenValue">—</div>
-            <div class="delta" id="breakevenDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Cost Spread (AISC−Cash)</div>
-            <div class="value" id="spreadValue">—</div>
-            <div class="delta" id="spreadDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Stability Index</div>
-            <div class="value" id="stabilityValue">—</div>
-            <div class="delta" id="stabilityDelta">—</div>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Tholonic N‑D‑C Outputs (Value)</div>
-          <div class="metric-grid" style="margin-bottom:0;">
-            <div class="metric" style="background:#1f2937;">
-              <div class="label">N (Negotiation)</div>
-              <div class="value" id="ndcNValue">—</div>
-              <div class="delta" id="ndcNDelta">—</div>
-            </div>
-            <div class="metric" style="background:#1f2937;">
-              <div class="label">Balance Score</div>
-              <div class="value" id="ndcBalanceValue">—</div>
-              <div class="delta" id="ndcBalanceDelta">—</div>
-            </div>
-            <div class="metric" style="background:#1f2937;">
-              <div class="label">Sustainability</div>
-              <div class="value" id="ndcSustainValue">—</div>
-              <div class="delta" id="ndcSustainDelta">—</div>
-            </div>
-            <div class="metric" style="background:#1f2937;">
-              <div class="label">Imbalance |D−C|</div>
-              <div class="value" id="ndcImbalanceValue">—</div>
-              <div class="delta" id="ndcImbalanceDelta">—</div>
-            </div>
-          </div>
-          <div class="hint" style="margin-top:10px;">
+<div class="app">
+<div class="header">
+<div>
+<h1>Value Chain What‑If Simulator</h1>
+<div style="font-size:12px; opacity:0.85; margin-top:4px;">Value-only scenario exploration • separate from supply-chain logic</div>
+</div>
+<div class="nav">
+<a href="./dashboard.html">Dashboard</a>
+<a href="./financial_report.html">📊 Financial Report</a>
+<a href="./">Value Home</a>
+<a href="/index.html">Server Root</a>
+</div>
+</div>
+<div class="layout">
+<div class="left">
+<div class="title">
+<span>Controls (Phase 1)</span>
+<select id="entitySelect"></select>
+</div>
+<div class="box">
+<div class="control">
+<div class="row"><span>AISC (USD/oz)</span><span id="aiscLabel">—</span></div>
+<input id="aiscSlider" max="2200" min="900" step="5" type="range"/>
+<div class="hint">All‑in sustaining cost. Lower is better for margin resilience.</div>
+</div>
+<div class="control">
+<div class="row"><span>Cash Cost (USD/oz)</span><span id="cashLabel">—</span></div>
+<input id="cashSlider" max="1800" min="600" step="5" type="range"/>
+<div class="hint">Direct cash cost. Typically below AISC.</div>
+</div>
+<div class="control">
+<div class="row"><span>Realized Price (USD/oz)</span><span id="priceLabel">—</span></div>
+<input id="priceSlider" max="6500" min="1200" step="5" type="range"/>
+<div class="hint">Value-layer price input (do not mix into supply-chain layer).</div>
+</div>
+<div style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+<div class="title" style="margin-bottom: 10px;"><span>Tholonic N‑D‑C Controls (Value)</span></div>
+<div class="control">
+<div class="row"><span>D (Definition)</span><span id="dLabel">—</span></div>
+<input id="dSlider" max="450" min="150" step="1" type="range"/>
+<div class="hint">Value constraints (rigidity, obligations, cost burden).</div>
+</div>
+<div class="control">
+<div class="row"><span>C (Contribution)</span><span id="cLabel">—</span></div>
+<input id="cSlider" max="450" min="150" step="1" type="range"/>
+<div class="hint">Value integration (optionality, counterparties, flexibility).</div>
+</div>
+</div>
+<div class="btns">
+<button class="btn-reset" id="resetBtn">Reset</button>
+<button class="btn-apply" id="applyBtn">Apply</button>
+</div>
+</div>
+<div class="box">
+<div class="title"><span>Period</span><select id="periodSelect"><option value="quarterly">Quarterly</option><option value="annual">Annual</option></select></div>
+<div class="hint">This simulator initializes from the latest value-chain record for the selected entity + period.</div>
+</div>
+<div class="box">
+<div class="title">Environmental Cost Scenario</div>
+<div class="control">
+<div class="row"><span>Carbon Price (USD/tCO₂e)</span><span id="carbonPriceLabel">$65</span></div>
+<input id="carbonPriceSlider" max="200" min="0" step="5" type="range" value="65"/>
+<div class="hint">Adjust to see how carbon pricing affects per-oz cost and % of AISC. Reference: EU ETS ~$65/tCO₂e (2024).</div>
+</div>
+<div style="margin-top: 8px;">
+<span class="env-badge env-carbon" id="carbonPerOzBadge">—</span>
+<span class="env-badge env-total" id="envPctAiscBadge">—</span>
+</div>
+</div>
+</div>
+<div class="center">
+<div class="metric-grid">
+<div class="metric">
+<div class="label">Gross Margin Proxy</div>
+<div class="value" id="marginValue">—</div>
+<div class="delta" id="marginDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Breakeven Price (AISC)</div>
+<div class="value" id="breakevenValue">—</div>
+<div class="delta" id="breakevenDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Cost Spread (AISC−Cash)</div>
+<div class="value" id="spreadValue">—</div>
+<div class="delta" id="spreadDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Stability Index</div>
+<div class="value" id="stabilityValue">—</div>
+<div class="delta" id="stabilityDelta">—</div>
+</div>
+</div>
+<div class="box">
+<div class="title">Tholonic N‑D‑C Outputs (Value)</div>
+<div class="metric-grid" style="margin-bottom:0;">
+<div class="metric" style="background:#1f2937;">
+<div class="label">N (Negotiation)</div>
+<div class="value" id="ndcNValue">—</div>
+<div class="delta" id="ndcNDelta">—</div>
+</div>
+<div class="metric" style="background:#1f2937;">
+<div class="label">Balance Score</div>
+<div class="value" id="ndcBalanceValue">—</div>
+<div class="delta" id="ndcBalanceDelta">—</div>
+</div>
+<div class="metric" style="background:#1f2937;">
+<div class="label">Sustainability</div>
+<div class="value" id="ndcSustainValue">—</div>
+<div class="delta" id="ndcSustainDelta">—</div>
+</div>
+<div class="metric" style="background:#1f2937;">
+<div class="label">Imbalance |D−C|</div>
+<div class="value" id="ndcImbalanceValue">—</div>
+<div class="delta" id="ndcImbalanceDelta">—</div>
+</div>
+</div>
+<div class="hint" style="margin-top:10px;">
             Computed using the same equations as the supply-chain N‑D‑C framework, but applied strictly within the value layer.
           </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Interpretation (Value Layer)</div>
-          <div class="hint">
+</div>
+<div class="box">
+<div class="title">Interpretation (Value Layer)</div>
+<div class="hint">
             This page is educational: it shows how value-chain parameters interact. It does not make claims about physical production,
             custody, or flow. Any missing/opaque commercial data should be recorded as OPAQUE in the value-chain store.
           </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Environmental Cost Breakdown — Per Phase (at selected carbon price)</div>
-          <div class="hint" style="margin-bottom:10px;">
+</div>
+<div class="box">
+<div class="title">Environmental Cost Breakdown — Per Phase (at selected carbon price)</div>
+<div class="hint" style="margin-bottom:10px;">
             Carbon cost per troy oz by supply chain phase, derived from Scope 1+2 emissions in the supply chain layer.
             Energy and water costs use reference tariff rates. Scope 3 shows inherited upstream liability.
           </div>
-          <div id="envPhaseBreakdown"></div>
-          <div style="margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0;">
-            <div style="font-size:12px; font-weight:900; margin-bottom:6px;">Chain Totals</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <span class="env-badge env-carbon" id="totalCarbonCost">—</span>
-              <span class="env-badge env-energy" id="totalEnergyCost">—</span>
-              <span class="env-badge env-water" id="totalWaterCost">—</span>
-              <span class="env-badge env-total" id="totalEnvPerOz">—</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="right">
-        <div class="title">Impact Analysis</div>
-        <ul class="list" id="impactList"></ul>
-        <div class="box">
-          <div class="title">Data Source</div>
-          <div class="hint">
+<div id="envPhaseBreakdown"></div>
+<div style="margin-top:12px; padding-top:10px; border-top:1px solid #e2e8f0;">
+<div style="font-size:12px; font-weight:900; margin-bottom:6px;">Chain Totals</div>
+<div style="display:flex; gap:8px; flex-wrap:wrap;">
+<span class="env-badge env-carbon" id="totalCarbonCost">—</span>
+<span class="env-badge env-energy" id="totalEnergyCost">—</span>
+<span class="env-badge env-water" id="totalWaterCost">—</span>
+<span class="env-badge env-total" id="totalEnvPerOz">—</span>
+</div>
+</div>
+</div>
+</div>
+<div class="right">
+<div class="title">Impact Analysis</div>
+<ul class="list" id="impactList"></ul>
+<div class="box">
+<div class="title">Data Source</div>
+<div class="hint">
             Loaded from <code>/frontend/project/gold/data/processed/gold_value_metrics.json</code>. Current sample rows are marked <strong>simulated</strong>.
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>Value chain simulator • separate by design</div>
-      <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
-    </div>
-  </div>
-
-  <script>
+</div>
+</div>
+</div>
+<div class="footer">
+<div>Value chain simulator • separate by design</div>
+<div>Separation rules</div>
+</div>
+</div>
+<script>
     const ENTITIES = [
       { entity_id: "E001", label: "Newmont (E001)" },
       { entity_id: "E002", label: "Barrick (E002)" }
@@ -708,7 +694,6 @@
       renderEnvBreakdown(65);
     });
   </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -783,7 +768,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -804,11 +788,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -826,7 +806,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -840,14 +819,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

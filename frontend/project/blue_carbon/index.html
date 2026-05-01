@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Blue Carbon, Preliminary cTVF Gap Analysis</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Blue Carbon, Preliminary cTVF Gap Analysis</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -141,338 +142,318 @@
   </style>
 </head>
 <body>
-  <div class="container">
-
-    <div class="nav">
-      <a href="/frontend/index.html">Home</a>
-      <a href="/frontend/research/index.html">Research</a>
-    </div>
-
-    <!-- HERO -->
-    <section class="hero">
-      <div class="kicker">Blue Carbon, Preliminary Project</div>
-      <h1>🌊 Blue Carbon cTVF Gap Analysis</h1>
-      <p class="subtitle">
+<div class="container">
+<div class="nav">
+Home
+Research
+</div>
+<!-- HERO -->
+<section class="hero">
+<div class="kicker">Blue Carbon, Preliminary Project</div>
+<h1>🌊 Blue Carbon cTVF Gap Analysis</h1>
+<p class="subtitle">
         Early scoping workspace for blue finance, blended finance, ecosystem-service value,
         coastal community market access, and investor-readiness questions.
       </p>
-      <div class="notice">
-        <p>
-          <strong>Preliminary status:</strong> this is not a completed cTVF model. The current evidence base is mostly
+<div class="notice">
+<p>
+<strong>Preliminary status:</strong> this is not a completed cTVF model. The current evidence base is mostly
           contextual, drawn from a blue-finance article on the 3Cs and blended finance.
           It is sufficient for identifying due-diligence questions and gap structure, but is
           not sufficient for final cTVF scoring, TVPCI scoring, coupon-structure advice, or
           quantified investment conclusions. The project remains in draft status until
           project-specific ecological, social, governance, market, and finance data are available.
         </p>
-      </div>
-    </section>
-
-    <!-- SCOPING CALCULATOR -->
-    <section class="panel">
-      <h2>Project Scoping Calculator</h2>
-      <p>
+</div>
+</section>
+<!-- SCOPING CALCULATOR -->
+<section class="panel">
+<h2>Project Scoping Calculator</h2>
+<p>
         Enter a project area and ecosystem type. The calculator uses peer-reviewed sequestration rates and
         current voluntary carbon market prices to estimate annual carbon yield, revenue range, project cost range,
         and blended capital gap. All outputs are planning-level ranges only. Site baselines will differ.
       </p>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:20px;">
-        <div>
-          <div class="card-title" style="margin-bottom:14px;">Inputs</div>
-          <label style="display:block; margin-bottom:6px; font-weight:700; font-size:14px; color:#043b4a;">Project area (hectares)</label>
-          <input id="calc-ha" type="number" min="1" max="500000" value="500" step="50"
-            style="width:100%; padding:10px 14px; font-size:18px; border:2px solid #d0eaf0; border-radius:8px; outline:none; color:#043b4a;" />
-
-          <label style="display:block; margin:16px 0 6px; font-weight:700; font-size:14px; color:#043b4a;">Ecosystem type</label>
-          <select id="calc-eco" style="width:100%; padding:10px 14px; font-size:15px; border:2px solid #d0eaf0; border-radius:8px; outline:none; color:#043b4a;">
-            <option value="mangrove">Mangrove (restoration)</option>
-            <option value="seagrass">Seagrass</option>
-            <option value="saltmarsh">Salt marsh</option>
-          </select>
-
-          <label style="display:block; margin:16px 0 6px; font-weight:700; font-size:14px; color:#043b4a;">Carbon price assumption ($/tCO₂e)</label>
-          <input id="calc-price" type="range" min="10" max="50" value="29" step="1"
-            style="width:100%; accent-color:#086375;" oninput="document.getElementById('price-display').textContent=this.value" />
-          <div style="font-size:22px; font-weight:800; color:#086375; margin-top:4px;">$<span id="price-display">29</span> / tCO₂e</div>
-          <div style="font-size:12px; color:#999; margin-top:2px;">Market range: $26-32 (record high $29.30, Aug 2025)</div>
-
-          <button onclick="runCalc()"
-            style="margin-top:20px; width:100%; padding:14px; background:#086375; color:#fff; border:none; border-radius:10px; font-size:16px; font-weight:800; cursor:pointer; letter-spacing:0.04em;">
+<div style="display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:20px;">
+<div>
+<div class="card-title" style="margin-bottom:14px;">Inputs</div>
+<label style="display:block; margin-bottom:6px; font-weight:700; font-size:14px; color:#043b4a;">Project area (hectares)</label>
+<input id="calc-ha" max="500000" min="1" step="50" style="width:100%; padding:10px 14px; font-size:18px; border:2px solid #d0eaf0; border-radius:8px; outline:none; color:#043b4a;" type="number" value="500"/>
+<label style="display:block; margin:16px 0 6px; font-weight:700; font-size:14px; color:#043b4a;">Ecosystem type</label>
+<select id="calc-eco" style="width:100%; padding:10px 14px; font-size:15px; border:2px solid #d0eaf0; border-radius:8px; outline:none; color:#043b4a;">
+<option value="mangrove">Mangrove (restoration)</option>
+<option value="seagrass">Seagrass</option>
+<option value="saltmarsh">Salt marsh</option>
+</select>
+<label style="display:block; margin:16px 0 6px; font-weight:700; font-size:14px; color:#043b4a;">Carbon price assumption ($/tCO₂e)</label>
+<input id="calc-price" max="50" min="10" oninput="document.getElementById('price-display').textContent=this.value" step="1" style="width:100%; accent-color:#086375;" type="range" value="29"/>
+<div style="font-size:22px; font-weight:800; color:#086375; margin-top:4px;">$<span id="price-display">29</span> / tCO₂e</div>
+<div style="font-size:12px; color:#999; margin-top:2px;">Market range: $26-32 (record high $29.30, Aug 2025)</div>
+<button onclick="runCalc()" style="margin-top:20px; width:100%; padding:14px; background:#086375; color:#fff; border:none; border-radius:10px; font-size:16px; font-weight:800; cursor:pointer; letter-spacing:0.04em;">
             Calculate
           </button>
-        </div>
-
-        <div id="calc-results" style="background:#f4fafc; border-radius:12px; border:1px solid #d0eaf0; padding:22px; display:flex; flex-direction:column; justify-content:center;">
-          <div style="color:#aaa; text-align:center; font-size:15px;">Enter values and press Calculate.</div>
-        </div>
-      </div>
-
-      <div id="calc-interpretation" style="display:none; margin-top:18px; padding:18px 22px; border-radius:10px; background:#e8f5e9; border-left:5px solid #2e7d32;">
-      </div>
-
-      <p style="margin-top:16px; font-size:12px; color:#9aafb5;">
+</div>
+<div id="calc-results" style="background:#f4fafc; border-radius:12px; border:1px solid #d0eaf0; padding:22px; display:flex; flex-direction:column; justify-content:center;">
+<div style="color:#aaa; text-align:center; font-size:15px;">Enter values and press Calculate.</div>
+</div>
+</div>
+<div id="calc-interpretation" style="display:none; margin-top:18px; padding:18px 22px; border-radius:10px; background:#e8f5e9; border-left:5px solid #2e7d32;">
+</div>
+<p style="margin-top:16px; font-size:12px; color:#9aafb5;">
         Sequestration rates: mangrove 174 g C m⁻² yr⁻¹ (Anthropocene synthesis 2026), seagrass 190 g C m⁻² yr⁻¹ (Nature Comms 2025),
         salt marsh 200 g C m⁻² yr⁻¹ (Springer 2026). Cost ranges from Frontiers 2025 cost modeling.
         CO₂ equivalent conversion: multiply C by 3.667. All figures are public benchmarks; site measurement is required.
       </p>
-    </section>
-
-    <!-- LAYER STATUS -->
-    <section class="panel">
-      <h2>Layer Coverage</h2>
-      <p>
+</section>
+<!-- LAYER STATUS -->
+<section class="panel">
+<h2>Layer Coverage</h2>
+<p>
         The current evidence base is strongest in the financial-abstraction layer. The ecological and physical layers are conceptual only.
       </p>
-      <table>
-        <thead>
-          <tr><th>Analytical Layer</th><th>Current Evidence</th><th>Status</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Supply chain (physical)</td>
-            <td>No phase-resolved site, habitat, custody, or restoration data</td>
-            <td><span class="badge-opaque">OPAQUE</span></td>
-          </tr>
-          <tr>
-            <td>Ecological system lifecycle</td>
-            <td>Conceptual: mangroves, blue carbon, fisheries, resilience, ecosystem services</td>
-            <td><span class="badge-partial">PARTIAL</span></td>
-          </tr>
-          <tr>
-            <td>Value chain</td>
-            <td>Conceptual: carbon credits, tourism, fisheries, resilience value</td>
-            <td><span class="badge-partial">PARTIAL</span></td>
-          </tr>
-          <tr>
-            <td>Financial abstraction</td>
-            <td>Strongest: Character, Capacity, Collateral, Consistency, blended finance</td>
-            <td><span class="badge-partial">PARTIAL</span></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- EVIDENCE BASE -->
-    <section class="panel">
-      <h2>Current Evidence Base</h2>
-      <div class="grid3">
-        <div class="card">
-          <div class="card-title">What We Can Assess</div>
-          <ul>
-            <li>Investor-readiness categories</li>
-            <li>Blended-finance rationale</li>
-            <li>Potential ecosystem-service revenue types</li>
-            <li>Market-access and capacity-building gaps</li>
-            <li>Verification and governance questions</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-title">What We Cannot Yet Score</div>
-          <ul>
-            <li>Carbon stock and sequestration baselines</li>
-            <li>Specific site or habitat condition</li>
-            <li>Fisheries, livelihood, and biodiversity outcomes</li>
-            <li>Bond coupon structure or term sheet quality</li>
-            <li>Full cTVF, TVPCI, or N-D-C phase scores</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-title">Top Missing Data</div>
-          <ul>
-            <li>Project geography and phase map</li>
-            <li>Ecosystem-service baselines</li>
-            <li>MRV and verification methodology</li>
-            <li>Governance and counterparties</li>
-            <li>Market access and financing mechanism</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- CTVF GAP TABLE -->
-    <section class="panel">
-      <h2>Preliminary cTVF Gap Table</h2>
-      <table>
-        <thead>
-          <tr>
-            <th>cTVF Dimension</th>
-            <th>Article Signal</th>
-            <th>Current Data Quality</th>
-            <th>Missing Evidence</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Character</strong></td>
-            <td>Trust, preparation, execution history, credibility</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>Sponsor record, delivery partners, community governance, legal authority</td>
-          </tr>
-          <tr>
-            <td><strong>Capacity</strong></td>
-            <td>Technical feasibility, economic viability, pipeline capacity</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>Site-level ecological capacity, restoration plan, institutional capacity, operating budget</td>
-          </tr>
-          <tr>
-            <td><strong>Collateral</strong></td>
-            <td>Supports investment after Character and Capacity are credible</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>Guarantees, pledges, offtake agreements, revenue rights, reserve accounts</td>
-          </tr>
-          <tr>
-            <td><strong>Consistency or Certainty</strong></td>
-            <td>Stable standards, governance, policies, market access</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>Policy eligibility, buyer demand, registry rules, long-term governance</td>
-          </tr>
-          <tr>
-            <td><strong>Ecosystem-Service Value</strong></td>
-            <td>Blue carbon, fisheries, coastal protection, tourism, resilience</td>
-            <td><span class="badge-missing">Named categories only</span></td>
-            <td>Measurable baselines, units, methods, attribution, double-counting controls</td>
-          </tr>
-          <tr>
-            <td><strong>MRV and Verification</strong></td>
-            <td>AI and monitoring can support biomass and carbon measurement</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>MRV protocol, third-party verifier, sampling design, remote sensing, audit cycle</td>
-          </tr>
-          <tr>
-            <td><strong>Market Access</strong></td>
-            <td>Coastal communities have stewardship skills but lack market access</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>Buyer channels, aggregator model, transaction platform, price discovery</td>
-          </tr>
-          <tr>
-            <td><strong>Financial Mechanism</strong></td>
-            <td>Blended finance may de-risk early projects and build track record</td>
-            <td><span class="badge-missing">Conceptual only</span></td>
-            <td>Instrument type, counterparties, tenor, coupon logic, guarantee structure</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- DUE DILIGENCE QUESTIONS -->
-    <section class="panel">
-      <h2>Due-Diligence Questions</h2>
-      <div class="dd-grid">
-        <div class="dd-col">
-          <h3>Character</h3>
-          <ul>
-            <li>Who is the issuer or sponsor?</li>
-            <li>Who has legal authority to represent the project?</li>
-            <li>What is the delivery history of the sponsor, local partners, and technical providers?</li>
-            <li>Can the project explain its ecological, social, financial, and governance model clearly to investors?</li>
-          </ul>
-          <h3>Capacity</h3>
-          <ul>
-            <li>Is the restoration or conservation intervention technically feasible?</li>
-            <li>Which organizations will perform implementation, monitoring, verification, community engagement, and reporting?</li>
-            <li>Does the project have enough operating budget and technical staff to maintain outcomes over time?</li>
-            <li>Which capacity gaps require grant, concessional, or technical-assistance support?</li>
-          </ul>
-        </div>
-        <div class="dd-col">
-          <h3>Collateral</h3>
-          <ul>
-            <li>Are any guarantees, reserve accounts, offtake agreements, or concessional tranches available?</li>
-            <li>Are ecosystem-service revenue rights legally clear?</li>
-            <li>Are carbon or resilience claims transferable, pledgeable, or usable as repayment support?</li>
-            <li>Which collateral claims are real, and which are only narrative?</li>
-          </ul>
-          <h3>Consistency Or Certainty</h3>
-          <ul>
-            <li>Which standards, registries, or frameworks govern the blue carbon claims?</li>
-            <li>Are national policies, NDCs, NAPs, and coastal-zone rules aligned?</li>
-            <li>Is buyer demand stable enough to support long-term revenue?</li>
-            <li>Are monitoring, reporting, and verification rules stable enough for investors?</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- COUPON STRUCTURE -->
-    <section class="panel">
-      <h2>Coupon-Structure Implication</h2>
-      <p>
+<table>
+<thead>
+<tr><th>Analytical Layer</th><th>Current Evidence</th><th>Status</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Supply chain (physical)</td>
+<td>No phase-resolved site, habitat, custody, or restoration data</td>
+<td><span class="badge-opaque">OPAQUE</span></td>
+</tr>
+<tr>
+<td>Ecological system lifecycle</td>
+<td>Conceptual: mangroves, blue carbon, fisheries, resilience, ecosystem services</td>
+<td><span class="badge-partial">PARTIAL</span></td>
+</tr>
+<tr>
+<td>Value chain</td>
+<td>Conceptual: carbon credits, tourism, fisheries, resilience value</td>
+<td><span class="badge-partial">PARTIAL</span></td>
+</tr>
+<tr>
+<td>Financial abstraction</td>
+<td>Strongest: Character, Capacity, Collateral, Consistency, blended finance</td>
+<td><span class="badge-partial">PARTIAL</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- EVIDENCE BASE -->
+<section class="panel">
+<h2>Current Evidence Base</h2>
+<div class="grid3">
+<div class="card">
+<div class="card-title">What We Can Assess</div>
+<ul>
+<li>Investor-readiness categories</li>
+<li>Blended-finance rationale</li>
+<li>Potential ecosystem-service revenue types</li>
+<li>Market-access and capacity-building gaps</li>
+<li>Verification and governance questions</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">What We Cannot Yet Score</div>
+<ul>
+<li>Carbon stock and sequestration baselines</li>
+<li>Specific site or habitat condition</li>
+<li>Fisheries, livelihood, and biodiversity outcomes</li>
+<li>Bond coupon structure or term sheet quality</li>
+<li>Full cTVF, TVPCI, or N-D-C phase scores</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">Top Missing Data</div>
+<ul>
+<li>Project geography and phase map</li>
+<li>Ecosystem-service baselines</li>
+<li>MRV and verification methodology</li>
+<li>Governance and counterparties</li>
+<li>Market access and financing mechanism</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- CTVF GAP TABLE -->
+<section class="panel">
+<h2>Preliminary cTVF Gap Table</h2>
+<table>
+<thead>
+<tr>
+<th>cTVF Dimension</th>
+<th>Article Signal</th>
+<th>Current Data Quality</th>
+<th>Missing Evidence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Character</strong></td>
+<td>Trust, preparation, execution history, credibility</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>Sponsor record, delivery partners, community governance, legal authority</td>
+</tr>
+<tr>
+<td><strong>Capacity</strong></td>
+<td>Technical feasibility, economic viability, pipeline capacity</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>Site-level ecological capacity, restoration plan, institutional capacity, operating budget</td>
+</tr>
+<tr>
+<td><strong>Collateral</strong></td>
+<td>Supports investment after Character and Capacity are credible</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>Guarantees, pledges, offtake agreements, revenue rights, reserve accounts</td>
+</tr>
+<tr>
+<td><strong>Consistency or Certainty</strong></td>
+<td>Stable standards, governance, policies, market access</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>Policy eligibility, buyer demand, registry rules, long-term governance</td>
+</tr>
+<tr>
+<td><strong>Ecosystem-Service Value</strong></td>
+<td>Blue carbon, fisheries, coastal protection, tourism, resilience</td>
+<td><span class="badge-missing">Named categories only</span></td>
+<td>Measurable baselines, units, methods, attribution, double-counting controls</td>
+</tr>
+<tr>
+<td><strong>MRV and Verification</strong></td>
+<td>AI and monitoring can support biomass and carbon measurement</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>MRV protocol, third-party verifier, sampling design, remote sensing, audit cycle</td>
+</tr>
+<tr>
+<td><strong>Market Access</strong></td>
+<td>Coastal communities have stewardship skills but lack market access</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>Buyer channels, aggregator model, transaction platform, price discovery</td>
+</tr>
+<tr>
+<td><strong>Financial Mechanism</strong></td>
+<td>Blended finance may de-risk early projects and build track record</td>
+<td><span class="badge-missing">Conceptual only</span></td>
+<td>Instrument type, counterparties, tenor, coupon logic, guarantee structure</td>
+</tr>
+</tbody>
+</table>
+</section>
+<!-- DUE DILIGENCE QUESTIONS -->
+<section class="panel">
+<h2>Due-Diligence Questions</h2>
+<div class="dd-grid">
+<div class="dd-col">
+<h3>Character</h3>
+<ul>
+<li>Who is the issuer or sponsor?</li>
+<li>Who has legal authority to represent the project?</li>
+<li>What is the delivery history of the sponsor, local partners, and technical providers?</li>
+<li>Can the project explain its ecological, social, financial, and governance model clearly to investors?</li>
+</ul>
+<h3>Capacity</h3>
+<ul>
+<li>Is the restoration or conservation intervention technically feasible?</li>
+<li>Which organizations will perform implementation, monitoring, verification, community engagement, and reporting?</li>
+<li>Does the project have enough operating budget and technical staff to maintain outcomes over time?</li>
+<li>Which capacity gaps require grant, concessional, or technical-assistance support?</li>
+</ul>
+</div>
+<div class="dd-col">
+<h3>Collateral</h3>
+<ul>
+<li>Are any guarantees, reserve accounts, offtake agreements, or concessional tranches available?</li>
+<li>Are ecosystem-service revenue rights legally clear?</li>
+<li>Are carbon or resilience claims transferable, pledgeable, or usable as repayment support?</li>
+<li>Which collateral claims are real, and which are only narrative?</li>
+</ul>
+<h3>Consistency Or Certainty</h3>
+<ul>
+<li>Which standards, registries, or frameworks govern the blue carbon claims?</li>
+<li>Are national policies, NDCs, NAPs, and coastal-zone rules aligned?</li>
+<li>Is buyer demand stable enough to support long-term revenue?</li>
+<li>Are monitoring, reporting, and verification rules stable enough for investors?</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- COUPON STRUCTURE -->
+<section class="panel">
+<h2>Coupon-Structure Implication</h2>
+<p>
         The current evidence is not enough to recommend a final coupon structure. cTVF can only say that coupon
         advice depends on KPI quality, ecosystem-service measurement, verification credibility, and financial
         mechanism design.
       </p>
-      <div class="coupon-card">
-        <p><strong>Defensible at this stage:</strong></p>
-        <ul>
-          <li>Fixed coupon blue bond with use-of-proceeds restrictions</li>
-          <li>Blended or concessional structure that reduces early-stage risk</li>
-          <li>Guarantee-enhanced structure if a development bank or guarantor participates</li>
-        </ul>
-      </div>
-      <div class="wait-card">
+<div class="coupon-card">
+<p><strong>Defensible at this stage:</strong></p>
+<ul>
+<li>Fixed coupon blue bond with use-of-proceeds restrictions</li>
+<li>Blended or concessional structure that reduces early-stage risk</li>
+<li>Guarantee-enhanced structure if a development bank or guarantor participates</li>
+</ul>
+</div>
+<div class="wait-card">
         Step-up, step-down, and outcome-linked coupons should wait until KPI definitions,
         MRV, verification, and investor eligibility are credible and documented.
       </div>
-    </section>
-
-    <!-- MARKET BENCHMARKS -->
-    <section class="panel">
-      <h2>Market Benchmarks (Live Research, April 2026)</h2>
-      <p>
+</section>
+<!-- MARKET BENCHMARKS -->
+<section class="panel">
+<h2>Market Benchmarks (Live Research, April 2026)</h2>
+<p>
         The following quantitative data was retrieved from peer-reviewed literature and market intelligence sources.
         These are public ranges, not project-specific measurements. Site-level baselines are still required.
       </p>
-      <h3>Carbon Sequestration Rates</h3>
-      <table>
-        <thead>
-          <tr><th>Ecosystem</th><th>Sequestration Rate</th><th>Carbon Stock</th><th>Source</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Mangrove (global mean)</td>
-            <td>174 g C m⁻² yr⁻¹ (range 95-235)</td>
-            <td>up to 1,745 Mg C ha⁻¹</td>
-            <td>Anthropocene synthesis 2026</td>
-          </tr>
-          <tr>
-            <td>Mangrove (regional range)</td>
-            <td>0.6-9 t C ha⁻¹ yr⁻¹</td>
-            <td>Belowground up to 1,023 Mg C ha⁻¹</td>
-            <td>Multiple meta-analyses</td>
-          </tr>
-          <tr>
-            <td>Seagrass (sequestration)</td>
-            <td>160-221 g C m⁻² yr⁻¹</td>
-            <td>1,551 kg C ha⁻¹ biomass; soil risk ~5.25 Mg C ha⁻¹</td>
-            <td>Nature Comms 2025</td>
-          </tr>
-          <tr>
-            <td>Salt marsh</td>
-            <td>150-250 g C m⁻² yr⁻¹</td>
-            <td>8,000-12,000 kg C ha⁻¹</td>
-            <td>Springer 2026</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <h3>Voluntary Carbon Market Prices (2024-2025)</h3>
-      <table>
-        <thead>
-          <tr><th>Metric</th><th>Value</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Mangrove restoration credits average</td><td>$26-32 / tCO₂e</td></tr>
-          <tr><td>Platts DBC-1 benchmark record (Aug 2025)</td><td>$29.30 / tCO₂e</td></tr>
-          <tr><td>All VCM credits average (2023)</td><td>$6.63 / tCO₂e</td></tr>
-          <tr><td>Blue carbon removal premium over reductions</td><td>+381%</td></tr>
-          <tr><td>Active projects globally (Mar 2025)</td><td>~81 projects, ~2.0M ha, 20.4 MtCO₂e/yr</td></tr>
-          <tr><td>Blue carbon share of total VCM issuances</td><td>~0.35% (severely supply-constrained)</td></tr>
-          <tr><td>Projects financially viable at $30/t without blended capital</td><td>12% (Frontiers 2025 cost modeling)</td></tr>
-        </tbody>
-      </table>
-
-      <h3>MRV Standard</h3>
-      <p>
+<h3>Carbon Sequestration Rates</h3>
+<table>
+<thead>
+<tr><th>Ecosystem</th><th>Sequestration Rate</th><th>Carbon Stock</th><th>Source</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Mangrove (global mean)</td>
+<td>174 g C m⁻² yr⁻¹ (range 95-235)</td>
+<td>up to 1,745 Mg C ha⁻¹</td>
+<td>Anthropocene synthesis 2026</td>
+</tr>
+<tr>
+<td>Mangrove (regional range)</td>
+<td>0.6-9 t C ha⁻¹ yr⁻¹</td>
+<td>Belowground up to 1,023 Mg C ha⁻¹</td>
+<td>Multiple meta-analyses</td>
+</tr>
+<tr>
+<td>Seagrass (sequestration)</td>
+<td>160-221 g C m⁻² yr⁻¹</td>
+<td>1,551 kg C ha⁻¹ biomass; soil risk ~5.25 Mg C ha⁻¹</td>
+<td>Nature Comms 2025</td>
+</tr>
+<tr>
+<td>Salt marsh</td>
+<td>150-250 g C m⁻² yr⁻¹</td>
+<td>8,000-12,000 kg C ha⁻¹</td>
+<td>Springer 2026</td>
+</tr>
+</tbody>
+</table>
+<h3>Voluntary Carbon Market Prices (2024-2025)</h3>
+<table>
+<thead>
+<tr><th>Metric</th><th>Value</th></tr>
+</thead>
+<tbody>
+<tr><td>Mangrove restoration credits average</td><td>$26-32 / tCO₂e</td></tr>
+<tr><td>Platts DBC-1 benchmark record (Aug 2025)</td><td>$29.30 / tCO₂e</td></tr>
+<tr><td>All VCM credits average (2023)</td><td>$6.63 / tCO₂e</td></tr>
+<tr><td>Blue carbon removal premium over reductions</td><td>+381%</td></tr>
+<tr><td>Active projects globally (Mar 2025)</td><td>~81 projects, ~2.0M ha, 20.4 MtCO₂e/yr</td></tr>
+<tr><td>Blue carbon share of total VCM issuances</td><td>~0.35% (severely supply-constrained)</td></tr>
+<tr><td>Projects financially viable at $30/t without blended capital</td><td>12% (Frontiers 2025 cost modeling)</td></tr>
+</tbody>
+</table>
+<h3>MRV Standard</h3>
+<p>
         Verra VCS dominates, accounting for approximately 99% of all blue carbon issuances. The primary methodology
         is <strong>VM0033</strong> (Tidal Wetland and Seagrass Restoration), currently being revised to v2.0 to
         include conservation activities (Step 3 draft, Silvestrum Climate Associates). Other active standards include
@@ -480,86 +461,81 @@
         Projects should target both registry certification and ICVCM Core Carbon Principles (CCP) approval for
         the highest-integrity supply pathway.
       </p>
-
-      <h3>Blue Bond Precedents</h3>
-      <table>
-        <thead>
-          <tr><th>Issuer</th><th>Year</th><th>Size</th><th>Coupon</th><th>Key Features</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Seychelles (sovereign)</td>
-            <td>2018</td>
-            <td>$15M, 10-year</td>
-            <td>6.5% fixed</td>
-            <td>World Bank $5M guarantee + $5M concessional interest-support loan; use-of-proceeds for MPAs and fisheries</td>
-          </tr>
-          <tr>
-            <td>Ørsted (corporate)</td>
-            <td>2023</td>
-            <td>EUR 100M, 5-year</td>
-            <td>3.625% fixed</td>
-            <td>Private placement; IFC Blue Finance Guidelines; marine restoration and sustainable shipping</td>
-          </tr>
-          <tr>
-            <td>Indonesia Coral Bond (World Bank)</td>
-            <td>2024-2025</td>
-            <td>$10M coupon channeled + $13.76M GEF reserve</td>
-            <td>Outcome-based; Conservation Success Payments triggered by KPI</td>
-            <td>First outcome-based marine bond; KPI is coral reef biodiversity indicator (IUCN Green List); 2.2M ha in Raja Ampat</td>
-          </tr>
-        </tbody>
-      </table>
-      <p style="margin-top:12px; font-size:13px; color:#6c8a90;">
-        Source note: <a href="/frontend/docs/Research/source_notes/BLUE_CARBON_MARKET_DATA_2025_SOURCE_NOTE.md" style="color:#086375;">BLUE_CARBON_MARKET_DATA_2025_SOURCE_NOTE.md</a>.
+<h3>Blue Bond Precedents</h3>
+<table>
+<thead>
+<tr><th>Issuer</th><th>Year</th><th>Size</th><th>Coupon</th><th>Key Features</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Seychelles (sovereign)</td>
+<td>2018</td>
+<td>$15M, 10-year</td>
+<td>6.5% fixed</td>
+<td>World Bank $5M guarantee + $5M concessional interest-support loan; use-of-proceeds for MPAs and fisheries</td>
+</tr>
+<tr>
+<td>Ørsted (corporate)</td>
+<td>2023</td>
+<td>EUR 100M, 5-year</td>
+<td>3.625% fixed</td>
+<td>Private placement; IFC Blue Finance Guidelines; marine restoration and sustainable shipping</td>
+</tr>
+<tr>
+<td>Indonesia Coral Bond (World Bank)</td>
+<td>2024-2025</td>
+<td>$10M coupon channeled + $13.76M GEF reserve</td>
+<td>Outcome-based; Conservation Success Payments triggered by KPI</td>
+<td>First outcome-based marine bond; KPI is coral reef biodiversity indicator (IUCN Green List); 2.2M ha in Raja Ampat</td>
+</tr>
+</tbody>
+</table>
+<p style="margin-top:12px; font-size:13px; color:#6c8a90;">
+        Source note: BLUE_CARBON_MARKET_DATA_2025_SOURCE_NOTE.md.
         All figures from public sources; site-level data still required before project-specific conclusions can be drawn.
       </p>
-    </section>
-
-    <!-- DATA REQUIREMENTS SUMMARY -->
-    <section class="panel">
-      <h2>Required Data (36 Items Tracked)</h2>
-      <p>
+</section>
+<!-- DATA REQUIREMENTS SUMMARY -->
+<section class="panel">
+<h2>Required Data (36 Items Tracked)</h2>
+<p>
         A full data requirements checklist is maintained in the project data folder.
         The most critical missing categories are listed below.
       </p>
-      <div class="grid2">
-        <div class="card">
-          <div class="card-title">Ecological and Physical</div>
-          <ul>
-            <li>Project geography and habitat boundaries</li>
-            <li>Baseline ecosystem condition</li>
-            <li>Carbon stock, sequestration, and permanence</li>
-            <li>Fisheries and livelihood baseline</li>
-            <li>Women livelihood metrics if KPI-linked</li>
-          </ul>
-        </div>
-        <div class="card">
-          <div class="card-title">Governance and Finance</div>
-          <ul>
-            <li>MRV protocol and verification provider</li>
-            <li>Governance, ownership, custody, and rights</li>
-            <li>Market access channels for communities</li>
-            <li>Financial mechanism design</li>
-            <li>KPI definitions, baselines, and trigger thresholds</li>
-          </ul>
-        </div>
-      </div>
-      <div class="panel-links" style="margin-top:18px;">
-        <a href="/frontend/project/blue_carbon/data/blue_carbon_data_requirements.csv">Full data requirements CSV</a>
-        <a href="/frontend/docs/Research/blue_carbon/BLUE_CARBON_CTVF_GAP_ANALYSIS.html" class="secondary">Full gap-analysis report</a>
-        <a href="/frontend/docs/Research/source_notes/BLUE_FINANCE_3CS_BLENDED_FINANCE_SOURCE_NOTE.md" class="secondary">Blue finance source note</a>
-        <a href="/frontend/docs/PDI/AUBEB_PDI_FEEDBACK_SOURCE_NOTE.md" class="secondary">AUBEB PDI feedback note</a>
-      </div>
-    </section>
-
-    <div class="footer">
+<div class="grid2">
+<div class="card">
+<div class="card-title">Ecological and Physical</div>
+<ul>
+<li>Project geography and habitat boundaries</li>
+<li>Baseline ecosystem condition</li>
+<li>Carbon stock, sequestration, and permanence</li>
+<li>Fisheries and livelihood baseline</li>
+<li>Women livelihood metrics if KPI-linked</li>
+</ul>
+</div>
+<div class="card">
+<div class="card-title">Governance and Finance</div>
+<ul>
+<li>MRV protocol and verification provider</li>
+<li>Governance, ownership, custody, and rights</li>
+<li>Market access channels for communities</li>
+<li>Financial mechanism design</li>
+<li>KPI definitions, baselines, and trigger thresholds</li>
+</ul>
+</div>
+</div>
+<div class="panel-links" style="margin-top:18px;">
+<a href="/frontend/project/blue_carbon/data/blue_carbon_data_requirements.csv">Full data requirements CSV</a>
+Full gap-analysis report
+Blue finance source note
+AUBEB PDI feedback note
+</div>
+</section>
+<div class="footer">
       Blue Carbon project, preliminary cTVF gap analysis. Use only as a scoping workspace until project-specific data exists.
     </div>
-
-  </div>
-
-  <script>
+</div>
+<script>
     // Sequestration parameters from peer-reviewed literature (2025-2026)
     // All rates in g C m⁻² yr⁻¹; converted to tCO₂e ha⁻¹ yr⁻¹ = rate × 10000 / 1e6 × 3.667
     const ECO = {

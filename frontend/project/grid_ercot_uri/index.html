@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ERCOT Winter Storm Uri Grid - Broken System Case</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ERCOT Winter Storm Uri Grid - Broken System Case</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -77,139 +78,132 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="hero">
-      <div class="kicker">Broken Electrical Grid Case · Texas ERCOT</div>
-      <h1>⚡ ERCOT Grid During Winter Storm Uri</h1>
-      <p class="subtitle">
+<div class="container">
+<div class="hero">
+<div class="kicker">Broken Electrical Grid Case · Texas ERCOT</div>
+<h1>⚡ ERCOT Grid During Winter Storm Uri</h1>
+<p class="subtitle">
         A 12-phase real-time grid cascade model: from weather forecast and fuel supply through gas-electric dependency,
         generation winterization, dispatch, transmission, frequency balancing, load shedding, distribution outages,
         critical services, customer exposure, and emergency restoration.
       </p>
-      <div class="kpis">
-        <div class="kpi">
-          <div class="kpi-label">System Balance</div>
-          <div class="kpi-value">48.7%</div>
-          <div class="kpi-sub">12-phase N-D-C baseline</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Average N</div>
-          <div class="kpi-value">116</div>
-          <div class="kpi-sub">degraded grid state</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Bottlenecks</div>
-          <div class="kpi-value">8</div>
-          <div class="kpi-sub">fuel, winterization, dispatch, load</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-label">Low Transparency</div>
-          <div class="kpi-value">1</div>
-          <div class="kpi-sub">gas-electric dependency layer</div>
-        </div>
-      </div>
-
-      <div class="failure-alert">
+<div class="kpis">
+<div class="kpi">
+<div class="kpi-label">System Balance</div>
+<div class="kpi-value">48.7%</div>
+<div class="kpi-sub">12-phase N-D-C baseline</div>
+</div>
+<div class="kpi">
+<div class="kpi-label">Average N</div>
+<div class="kpi-value">116</div>
+<div class="kpi-sub">degraded grid state</div>
+</div>
+<div class="kpi">
+<div class="kpi-label">Bottlenecks</div>
+<div class="kpi-value">8</div>
+<div class="kpi-sub">fuel, winterization, dispatch, load</div>
+</div>
+<div class="kpi">
+<div class="kpi-label">Low Transparency</div>
+<div class="kpi-value">1</div>
+<div class="kpi-sub">gas-electric dependency layer</div>
+</div>
+</div>
+<div class="failure-alert">
         ⚠️ <strong>Failure signature:</strong>
         ERCOT Uri was not a single generator outage. The phase map shows a coupled D-C split across fuel supply,
         gas-electric dependency, winterization, generation dispatch, frequency balancing, load shedding, distribution,
         critical services, and customer exposure. Forecasting was visible, but visibility did not become physical readiness.
       </div>
-
-      <div class="phase-strip">
-        <div class="phase-chip"><strong>P0</strong>Forecast</div>
-        <div class="phase-chip weak"><strong>P1</strong>Fuel supply</div>
-        <div class="phase-chip weak"><strong>P2</strong>Gas-electric</div>
-        <div class="phase-chip weak"><strong>P3</strong>Winterization</div>
-        <div class="phase-chip weak"><strong>P4</strong>Generation</div>
-        <div class="phase-chip"><strong>P5</strong>Transmission</div>
-        <div class="phase-chip weak"><strong>P6</strong>Balancing</div>
-        <div class="phase-chip weak"><strong>P7</strong>Load shed</div>
-        <div class="phase-chip weak"><strong>P8</strong>Distribution</div>
-        <div class="phase-chip weak"><strong>P9</strong>Critical services</div>
-        <div class="phase-chip weak"><strong>P10</strong>Customer exposure</div>
-        <div class="phase-chip"><strong>P11</strong>Restoration</div>
-      </div>
-
-      <div class="grid">
-        <div class="card">
-          <div class="card-header sc">
-            <div class="card-icon">⚡</div>
-            <div class="card-title">Supply Chain</div>
-            <div class="card-desc">Fuel · Generation · Transmission · Balancing · Load · Restoration</div>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li>Phase 0-11: forecast -> fuel -> generation -> balancing -> customer outage -> restoration</li>
-              <li>N-D-C balance per phase using the same chart pattern as the water models</li>
-              <li>Gas-electric dependency and winterization separated as explicit physical phases</li>
-              <li>Critical services and customer exposure mapped as downstream load phases</li>
-              <li>Dashboard renders the same processed JSON phase map used by this hub</li>
-            </ul>
-            <a href="supply_chain/index.html" class="btn sc">Open Supply Chain →</a>
-            <div class="sub-links">
-              <a href="supply_chain/dashboard.html">Dashboard</a>
-              <a href="supply_chain/project_context.html">Context</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header lc">
-            <div class="card-icon">❄️</div>
-            <div class="card-title">System Lifecycle</div>
-            <div class="card-desc">Plan · Build · Operate · Winterize · Stress-test · Restore · Adapt</div>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li>Lifecycle N-D-C model for cold-weather reliability collapse</li>
-              <li>Winterization and stress testing are separated from emergency response</li>
-              <li>Real-time operations are treated as an emergency N-state failure</li>
-              <li>Post-event adaptation is tracked but not assumed successful</li>
-              <li>Links physical bottlenecks back to planning, maintenance, and rule gaps</li>
-            </ul>
-            <a href="supply_chain/system_lifecycle.html" class="btn lc">Open Lifecycle →</a>
-            <div class="sub-links">
-              <a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-header vc">
-            <div class="card-icon">📊</div>
-            <div class="card-title">Value Chain</div>
-            <div class="card-desc">Deferred market layer · Scarcity pricing · Outage cost</div>
-          </div>
-          <div class="card-body">
-            <ul>
-              <li>Market design and scarcity pricing analysis intentionally deferred</li>
-              <li>Outage cost, settlement, insurance, and fuel procurement data belong here</li>
-              <li>Kept separate from physical grid reliability</li>
-              <li>Requires audited market, settlement, and customer-loss inputs</li>
-              <li>Future TVPCI layer can compare reliability value against weatherization cost</li>
-            </ul>
-            <a href="value_chain/index.html" class="btn vc">Open Value Layer →</a>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
-      <div class="kicker" style="color:#c2410c;background:transparent;padding:0 0 4px;font-size:11px;">Phase-Level Detail</div>
-      <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#1f2937;">ERCOT Uri - Phase-by-Phase N·D·C Profile</h2>
-      <p style="font-size:13px;color:#6b7280;margin-bottom:20px;max-width:760px;line-height:1.55;">
+<div class="phase-strip">
+<div class="phase-chip"><strong>P0</strong>Forecast</div>
+<div class="phase-chip weak"><strong>P1</strong>Fuel supply</div>
+<div class="phase-chip weak"><strong>P2</strong>Gas-electric</div>
+<div class="phase-chip weak"><strong>P3</strong>Winterization</div>
+<div class="phase-chip weak"><strong>P4</strong>Generation</div>
+<div class="phase-chip"><strong>P5</strong>Transmission</div>
+<div class="phase-chip weak"><strong>P6</strong>Balancing</div>
+<div class="phase-chip weak"><strong>P7</strong>Load shed</div>
+<div class="phase-chip weak"><strong>P8</strong>Distribution</div>
+<div class="phase-chip weak"><strong>P9</strong>Critical services</div>
+<div class="phase-chip weak"><strong>P10</strong>Customer exposure</div>
+<div class="phase-chip"><strong>P11</strong>Restoration</div>
+</div>
+<div class="grid">
+<div class="card">
+<div class="card-header sc">
+<div class="card-icon">⚡</div>
+<div class="card-title">Supply Chain</div>
+<div class="card-desc">Fuel · Generation · Transmission · Balancing · Load · Restoration</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Phase 0-11: forecast -&gt; fuel -&gt; generation -&gt; balancing -&gt; customer outage -&gt; restoration</li>
+<li>N-D-C balance per phase using the same chart pattern as the water models</li>
+<li>Gas-electric dependency and winterization separated as explicit physical phases</li>
+<li>Critical services and customer exposure mapped as downstream load phases</li>
+<li>Dashboard renders the same processed JSON phase map used by this hub</li>
+</ul>
+<a class="btn sc" href="supply_chain/index.html">Open Supply Chain →</a>
+<div class="sub-links">
+<a href="supply_chain/dashboard.html">Dashboard</a>
+<a href="supply_chain/project_context.html">Context</a>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header lc">
+<div class="card-icon">❄️</div>
+<div class="card-title">System Lifecycle</div>
+<div class="card-desc">Plan · Build · Operate · Winterize · Stress-test · Restore · Adapt</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Lifecycle N-D-C model for cold-weather reliability collapse</li>
+<li>Winterization and stress testing are separated from emergency response</li>
+<li>Real-time operations are treated as an emergency N-state failure</li>
+<li>Post-event adaptation is tracked but not assumed successful</li>
+<li>Links physical bottlenecks back to planning, maintenance, and rule gaps</li>
+</ul>
+<a class="btn lc" href="supply_chain/system_lifecycle.html">Open Lifecycle →</a>
+<div class="sub-links">
+<a href="supply_chain/system_lifecycle.html">Lifecycle N-D-C</a>
+</div>
+</div>
+</div>
+<div class="card">
+<div class="card-header vc">
+<div class="card-icon">📊</div>
+<div class="card-title">Value Chain</div>
+<div class="card-desc">Deferred market layer · Scarcity pricing · Outage cost</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Market design and scarcity pricing analysis intentionally deferred</li>
+<li>Outage cost, settlement, insurance, and fuel procurement data belong here</li>
+<li>Kept separate from physical grid reliability</li>
+<li>Requires audited market, settlement, and customer-loss inputs</li>
+<li>Future TVPCI layer can compare reliability value against weatherization cost</li>
+</ul>
+<a class="btn vc" href="value_chain/index.html">Open Value Layer →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+<div class="kicker" style="color:#c2410c;background:transparent;padding:0 0 4px;font-size:11px;">Phase-Level Detail</div>
+<h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#1f2937;">ERCOT Uri - Phase-by-Phase N·D·C Profile</h2>
+<p style="font-size:13px;color:#6b7280;margin-bottom:20px;max-width:760px;line-height:1.55;">
         Each axis is one grid cascade phase (0-11). The deepest visible D-C gaps occur at gas-electric dependency,
         winterization, generation dispatch, balancing, load shedding, distribution, critical services, and customer exposure.
       </p>
-      <div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
-        <canvas id="ndc-radar-ercot" width="700" height="700" style="max-width:100%;flex-shrink:0;"></canvas>
-        <div id="ndc-radar-info-ercot" style="font-size:13px;color:#4b5563;min-width:180px;max-width:260px;flex-shrink:0;"></div>
-      </div>
-      <div id="ndc-radar-interp-ercot" style="margin-top:18px;padding:14px 18px;background:#f8fafc;border-radius:8px;font-size:13px;line-height:1.7;color:#1f2937;max-width:850px;border-left:3px solid #ea580c;"></div>
-    </div>
-
-    <script>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
+<canvas height="700" id="ndc-radar-ercot" style="max-width:100%;flex-shrink:0;" width="700"></canvas>
+<div id="ndc-radar-info-ercot" style="font-size:13px;color:#4b5563;min-width:180px;max-width:260px;flex-shrink:0;"></div>
+</div>
+<div id="ndc-radar-interp-ercot" style="margin-top:18px;padding:14px 18px;background:#f8fafc;border-radius:8px;font-size:13px;line-height:1.7;color:#1f2937;max-width:850px;border-left:3px solid #ea580c;"></div>
+</div>
+<script>
     (function() {
       var DATA_URL = "/frontend/project/grid_ercot_uri/data/processed/grid_ercot_uri_supply_chain_ui.json";
       var ENTITY = "synthetic";
@@ -335,23 +329,22 @@
       });
     })();
     </script>
-
-    <div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
-      <div class="kicker" style="color:#c2410c;background:transparent;padding:0 0 4px;font-size:11px;">Five-Model N·D·C Analysis</div>
-      <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#1f2937;">ERCOT Uri - Five-Model Coherence Signature</h2>
-      <p style="font-size:13px;color:#6b7280;margin-bottom:20px;max-width:720px;line-height:1.55;">
+<div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+<div class="kicker" style="color:#c2410c;background:transparent;padding:0 0 4px;font-size:11px;">Five-Model N·D·C Analysis</div>
+<h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#1f2937;">ERCOT Uri - Five-Model Coherence Signature</h2>
+<p style="font-size:13px;color:#6b7280;margin-bottom:20px;max-width:720px;line-height:1.55;">
         Baseline five-model score derived from the ERCOT Uri phase N-D-C profile. The outer zone is coherent, the middle zone is stressed, and the inner zone indicates failure or missing measurement.
       </p>
-      <div style="display:flex;justify-content:center;align-items:flex-start;gap:28px;flex-wrap:wrap;">
-        <div id="five-svg-ercot" style="flex-shrink:0;max-width:360px;width:100%;"></div>
-        <div id="five-info-ercot" style="min-width:190px;max-width:300px;flex-shrink:0;font-size:13px;color:#4b5563;"></div>
-      </div>
-      <div id="five-interp-ercot" style="margin-top:18px;padding:14px 18px;background:#f8fafc;border-radius:8px;font-size:13px;line-height:1.7;color:#1f2937;max-width:850px;border-left:3px solid #ea580c;"></div>
-      <div style="margin-top:10px;text-align:right;">
-        <a href="/frontend/project/five_model_coherence.html" style="font-size:12px;color:#ea580c;font-weight:700;text-decoration:none;">View full five-model analysis and scenario explorer -></a>
-      </div>
-    </div>
-    <script>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:28px;flex-wrap:wrap;">
+<div id="five-svg-ercot" style="flex-shrink:0;max-width:360px;width:100%;"></div>
+<div id="five-info-ercot" style="min-width:190px;max-width:300px;flex-shrink:0;font-size:13px;color:#4b5563;"></div>
+</div>
+<div id="five-interp-ercot" style="margin-top:18px;padding:14px 18px;background:#f8fafc;border-radius:8px;font-size:13px;line-height:1.7;color:#1f2937;max-width:850px;border-left:3px solid #ea580c;"></div>
+<div style="margin-top:10px;text-align:right;">
+<a href="/frontend/project/five_model_coherence.html" style="font-size:12px;color:#ea580c;font-weight:700;text-decoration:none;">View full five-model analysis and scenario explorer -&gt;</a>
+</div>
+</div>
+<script>
     (function(){
       var CHART_ID = "ercot";
       var scores = [
@@ -382,11 +375,10 @@
       document.getElementById("five-interp-"+CHART_ID).innerHTML = "<strong>Interpretation:</strong> ERCOT Uri shows a real-time cascade failure. Operational and structural dimensions are stressed, while proportional, growth, and abstraction scores fall into failure because winterization, gas-electric dependency, and emergency load shedding did not sustain a coherent grid state.";
     })();
     </script>
-
-    <div class="nav">
-      <a href="/index.html">🏠 Main Homepage</a>
-    </div>
-    <div class="footer">ERCOT Uri Grid · Broken System Intelligence Platform · v0.2</div>
-  </div>
+<div class="nav">
+<a href="/index.html">🏠 Main Homepage</a>
+</div>
+<div class="footer">ERCOT Uri Grid · Broken System Intelligence Platform · v0.2</div>
+</div>
 </body>
 </html>

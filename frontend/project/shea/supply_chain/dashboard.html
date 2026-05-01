@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shea Supply Chain – Dashboard</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shea Supply Chain – Dashboard</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -164,87 +165,81 @@
     </style>
 </head>
 <body>
-    <div class="dashboard">
-        <div class="header">
-            <h1>🫒 Shea Supply Chain – π Dashboard</h1>
-            <div>
-                <a href="phi_dashboard.html" style="color:#95d5b2;font-weight:700;">φ Proportional →</a>
-                <a href="project_context.html">Project context</a>
-                <a href="index.html">Home</a>
-                <a href="/index.html">Main Homepage</a>
-                <a href="what_if_simulator.html">What-If Simulator</a>
-                </div>
-        </div>
-
-        <!-- Model layer strip -->
-        <div class="model-strip">
-            <span class="model-tab active">π Operational ← current</span>
-            <a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
-            <a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
-            <a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
-            <a class="model-tab" href="e_dashboard.html">e Abstract</a>
-        </div>
-
-        <!-- Scenario selector -->
-        <div class="scenario-bar">
-            <span class="scenario-label">Scenario:</span>
-            <div class="scenario-btns" id="scenario-btns-container"></div>
-            <span class="scenario-desc" id="scenario-desc"></span>
-        </div>
-
-        <div class="score-cards">
-            <div class="card good" id="cardBalance">
-                <div class="card-label">System Balance</div>
-                <div class="card-value" id="sysBalance">—</div>
-                <div class="card-bar"><div class="card-bar-fill" id="sysBalanceBar" style="width:0%; background: linear-gradient(90deg, #28a745, #20c997);"></div></div>
-            </div>
-            <div class="card good">
-                <div class="card-label">Sustainability Index</div>
-                <div class="card-value" id="sysSustainability">—</div>
-                <div class="card-bar"><div class="card-bar-fill" id="sysSusBar" style="width:0%; background: #17a2b8;"></div></div>
-            </div>
-            <div class="card poor">
-                <div class="card-label">Bottleneck Count</div>
-                <div class="card-value" id="bottleneckCount">—</div>
-                <div class="card-bar"><div class="card-bar-fill" id="bottleneckBar" style="width:0%; background: #dc3545;"></div></div>
-            </div>
-            <div class="card good">
-                <div class="card-label">Phases</div>
-                <div class="card-value">7</div>
-                <div class="card-bar"><div class="card-bar-fill" style="width:78%; background: #c9a227;"></div></div>
-                <div style="font-size:12px; color:#6c757d; margin-top:5px;">Collection → Retail</div>
-            </div>
-        </div>
-
-        <div class="main-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
-                <div class="section-title" style="margin-bottom: 0;">Supply chain flow (Burkina Faso / West Africa → Cleo retail)</div>
-                <a href="project_context.html" style="padding: 10px 18px; background: #5c4610; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;">📋 Senegal project context & impact</a>
-            </div>
-            <div style="background: #f0e6d3; padding: 14px 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c9a227;">
-                <strong>Project context (N-D-C):</strong> Senegal pilot 50 farmers, 100k potential participants, 31 plantation sites (EP Carbon). Barriers → D-constraints; scale → C-integration. <a href="project_context.html" style="color: #5c4610; font-weight: 600;">See full context & sources →</a>
-            </div>
-            <div class="flow-chart">
-                <div class="phases" id="phasesContainer"></div>
-                <div class="legend">
-                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #28a745, #20c997);"></div><span>Excellent (95–100)</span></div>
-                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #20c997, #17a2b8);"></div><span>Good (80–95)</span></div>
-                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #ffc107, #fd7e14);"></div><span>Fair (60–80)</span></div>
-                    <div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #dc3545, #c82333);"></div><span>Poor (&lt;60)</span></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="phaseModal">
-        <div class="modal-content">
-            <span class="modal-close" onclick="closeModal()">&times;</span>
-            <h2 id="modalTitle">Phase</h2>
-            <div id="modalBody"></div>
-        </div>
-    </div>
-
-    <script>
+<div class="dashboard">
+<div class="header">
+<h1>🫒 Shea Supply Chain – π Dashboard</h1>
+<div>
+<a href="phi_dashboard.html" style="color:#95d5b2;font-weight:700;">φ Proportional →</a>
+<a href="project_context.html">Project context</a>
+<a href="index.html">Home</a>
+<a href="/index.html">Main Homepage</a>
+<a href="what_if_simulator.html">What-If Simulator</a>
+</div>
+</div>
+<!-- Model layer strip -->
+<div class="model-strip">
+<span class="model-tab active">π Operational ← current</span>
+<a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
+<a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+<a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
+<a class="model-tab" href="e_dashboard.html">e Abstract</a>
+</div>
+<!-- Scenario selector -->
+<div class="scenario-bar">
+<span class="scenario-label">Scenario:</span>
+<div class="scenario-btns" id="scenario-btns-container"></div>
+<span class="scenario-desc" id="scenario-desc"></span>
+</div>
+<div class="score-cards">
+<div class="card good" id="cardBalance">
+<div class="card-label">System Balance</div>
+<div class="card-value" id="sysBalance">—</div>
+<div class="card-bar"><div class="card-bar-fill" id="sysBalanceBar" style="width:0%; background: linear-gradient(90deg, #28a745, #20c997);"></div></div>
+</div>
+<div class="card good">
+<div class="card-label">Sustainability Index</div>
+<div class="card-value" id="sysSustainability">—</div>
+<div class="card-bar"><div class="card-bar-fill" id="sysSusBar" style="width:0%; background: #17a2b8;"></div></div>
+</div>
+<div class="card poor">
+<div class="card-label">Bottleneck Count</div>
+<div class="card-value" id="bottleneckCount">—</div>
+<div class="card-bar"><div class="card-bar-fill" id="bottleneckBar" style="width:0%; background: #dc3545;"></div></div>
+</div>
+<div class="card good">
+<div class="card-label">Phases</div>
+<div class="card-value">7</div>
+<div class="card-bar"><div class="card-bar-fill" style="width:78%; background: #c9a227;"></div></div>
+<div style="font-size:12px; color:#6c757d; margin-top:5px;">Collection → Retail</div>
+</div>
+</div>
+<div class="main-content">
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+<div class="section-title" style="margin-bottom: 0;">Supply chain flow (Burkina Faso / West Africa → Cleo retail)</div>
+<a href="project_context.html" style="padding: 10px 18px; background: #5c4610; color: white; text-decoration: none; border-radius: 6px; font-size: 13px; font-weight: 600;">📋 Senegal project context &amp; impact</a>
+</div>
+<div style="background: #f0e6d3; padding: 14px 20px; border-radius: 8px; margin-bottom: 20px; border-left: 4px solid #c9a227;">
+<strong>Project context (N-D-C):</strong> Senegal pilot 50 farmers, 100k potential participants, 31 plantation sites (EP Carbon). Barriers → D-constraints; scale → C-integration. <a href="project_context.html" style="color: #5c4610; font-weight: 600;">See full context &amp; sources →</a>
+</div>
+<div class="flow-chart">
+<div class="phases" id="phasesContainer"></div>
+<div class="legend">
+<div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #28a745, #20c997);"></div><span>Excellent (95–100)</span></div>
+<div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #20c997, #17a2b8);"></div><span>Good (80–95)</span></div>
+<div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #ffc107, #fd7e14);"></div><span>Fair (60–80)</span></div>
+<div class="legend-item"><div class="legend-color" style="background: linear-gradient(135deg, #dc3545, #c82333);"></div><span>Poor (&lt;60)</span></div>
+</div>
+</div>
+</div>
+</div>
+<div class="modal" id="phaseModal">
+<div class="modal-content">
+<span class="modal-close" onclick="closeModal()">×</span>
+<h2 id="modalTitle">Phase</h2>
+<div id="modalBody"></div>
+</div>
+</div>
+<script>
         // ── Data-driven: all phase data loaded from JSON at startup ──
         const DATA_URL = '/frontend/project/shea/data/processed/shea_supply_chain_ui.json';
         let UI_DATA    = null;
@@ -455,7 +450,6 @@
 
         init();
     </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -530,7 +524,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -551,11 +544,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -573,7 +562,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -587,14 +575,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

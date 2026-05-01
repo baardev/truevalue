@@ -1,0 +1,13 @@
+#!/usr/bin/env sh
+# Regenerate DocNav excerpt dump, manifest TSV, and catalog.json.
+# Run from the repository root:  sh docnav/REFRESH
+
+set -e
+ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$ROOT"
+
+python3 docnav/docnav_extract_excerpts.py > docnav/entries_for_ai.txt
+python3 docnav/docnav_manifest_from_entries.py
+python3 docnav/docnav_build_catalog_json.py
+
+wc -l docnav/entries_for_ai.txt docnav/docnav_manifest.tsv | tail -1

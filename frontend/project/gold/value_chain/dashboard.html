@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Value Chain Dashboard</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Value Chain Dashboard</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -155,108 +156,101 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div>
-        <h1>Value Chain Dashboard</h1>
-        <div class="sub">Standalone value layer • costs/fees/margins only • no physical supply-chain mixing</div>
-      </div>
-      <div class="right">
-        <span class="pill">Layer: Value Chain</span>
-        <span class="pill" id="dataQualityPill">Data: …</span>
-        <select id="entitySelect"></select>
-        <select id="periodSelect">
-          <option value="quarterly">Quarterly</option>
-          <option value="annual">Annual</option>
-        </select>
-      </div>
-    </div>
-
-    <div class="content">
-      <div class="cards">
-        <div class="card">
-          <div class="label">AISC (Phase 1)</div>
-          <div class="value" id="aiscValue">—</div>
-          <div class="hint">All‑in sustaining cost (USD/oz)</div>
-        </div>
-        <div class="card">
-          <div class="label">Cash Cost (Phase 1)</div>
-          <div class="value" id="cashCostValue">—</div>
-          <div class="hint">Direct cash cost (USD/oz)</div>
-        </div>
-        <div class="card">
-          <div class="label">Spread (AISC − Cash)</div>
-          <div class="value" id="spreadValue">—</div>
-          <div class="hint">Proxy for sustaining overhead/capex burden</div>
-        </div>
-        <div class="card">
-          <div class="label">Records (Value Phase 1)</div>
-          <div class="value" id="recordCount">—</div>
-          <div class="hint">Rows in `gold_value_metrics.json` for this filter</div>
-        </div>
-      </div>
-
-      <div class="grid">
-        <div class="panel">
-          <h2>Phase 1 Time Series</h2>
-          <table class="table" id="seriesTable">
-            <thead>
-              <tr>
-                <th>Period End</th>
-                <th>Period Type</th>
-                <th>Metric</th>
-                <th>Value</th>
-                <th>Unit</th>
-                <th>Source</th>
-              </tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-          <div class="muted" style="margin-top: 10px; font-size: 12px;">
+<div class="app">
+<div class="header">
+<div>
+<h1>Value Chain Dashboard</h1>
+<div class="sub">Standalone value layer • costs/fees/margins only • no physical supply-chain mixing</div>
+</div>
+<div class="right">
+<span class="pill">Layer: Value Chain</span>
+<span class="pill" id="dataQualityPill">Data: …</span>
+<select id="entitySelect"></select>
+<select id="periodSelect">
+<option value="quarterly">Quarterly</option>
+<option value="annual">Annual</option>
+</select>
+</div>
+</div>
+<div class="content">
+<div class="cards">
+<div class="card">
+<div class="label">AISC (Phase 1)</div>
+<div class="value" id="aiscValue">—</div>
+<div class="hint">All‑in sustaining cost (USD/oz)</div>
+</div>
+<div class="card">
+<div class="label">Cash Cost (Phase 1)</div>
+<div class="value" id="cashCostValue">—</div>
+<div class="hint">Direct cash cost (USD/oz)</div>
+</div>
+<div class="card">
+<div class="label">Spread (AISC − Cash)</div>
+<div class="value" id="spreadValue">—</div>
+<div class="hint">Proxy for sustaining overhead/capex burden</div>
+</div>
+<div class="card">
+<div class="label">Records (Value Phase 1)</div>
+<div class="value" id="recordCount">—</div>
+<div class="hint">Rows in `gold_value_metrics.json` for this filter</div>
+</div>
+</div>
+<div class="grid">
+<div class="panel">
+<h2>Phase 1 Time Series</h2>
+<table class="table" id="seriesTable">
+<thead>
+<tr>
+<th>Period End</th>
+<th>Period Type</th>
+<th>Metric</th>
+<th>Value</th>
+<th>Unit</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<div class="muted" style="margin-top: 10px; font-size: 12px;">
             Note: This dashboard is intentionally value-only. Do not interpret physical flow from these values.
           </div>
-        </div>
-
-              </div>
-
-      <div class="panel" id="ndcPanel" style="margin-top: 16px;">
-        <h2>Tholonic N‑D‑C (Value Layer) — Phase 1</h2>
-        <div class="cards" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 12px;">
-          <div class="card"><div class="label">D</div><div class="value" id="ndcD">—</div><div class="hint">Definition (constraints)</div></div>
-          <div class="card"><div class="label">C</div><div class="value" id="ndcC">—</div><div class="hint">Contribution (integration)</div></div>
-          <div class="card"><div class="label">N</div><div class="value" id="ndcN">—</div><div class="hint">Negotiation (emergent)</div></div>
-          <div class="card"><div class="label">Balance</div><div class="value" id="ndcBal">—</div><div class="hint">0–100</div></div>
-          <div class="card"><div class="label">Sustainability</div><div class="value" id="ndcSus">—</div><div class="hint">Index</div></div>
-        </div>
-
-        <table class="table" id="ndcTable">
-          <thead>
-            <tr>
-              <th>Period End</th>
-              <th>Period</th>
-              <th>D</th>
-              <th>C</th>
-              <th>N</th>
-              <th>Balance</th>
-              <th>Sustainability</th>
-              <th>Source</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-        <div class="muted" style="margin-top: 10px; font-size: 12px;">
+</div>
+</div>
+<div class="panel" id="ndcPanel" style="margin-top: 16px;">
+<h2>Tholonic N‑D‑C (Value Layer) — Phase 1</h2>
+<div class="cards" style="grid-template-columns: repeat(5, 1fr); margin-bottom: 12px;">
+<div class="card"><div class="label">D</div><div class="value" id="ndcD">—</div><div class="hint">Definition (constraints)</div></div>
+<div class="card"><div class="label">C</div><div class="value" id="ndcC">—</div><div class="hint">Contribution (integration)</div></div>
+<div class="card"><div class="label">N</div><div class="value" id="ndcN">—</div><div class="hint">Negotiation (emergent)</div></div>
+<div class="card"><div class="label">Balance</div><div class="value" id="ndcBal">—</div><div class="hint">0–100</div></div>
+<div class="card"><div class="label">Sustainability</div><div class="value" id="ndcSus">—</div><div class="hint">Index</div></div>
+</div>
+<table class="table" id="ndcTable">
+<thead>
+<tr>
+<th>Period End</th>
+<th>Period</th>
+<th>D</th>
+<th>C</th>
+<th>N</th>
+<th>Balance</th>
+<th>Sustainability</th>
+<th>Source</th>
+</tr>
+</thead>
+<tbody></tbody>
+</table>
+<div class="muted" style="margin-top: 10px; font-size: 12px;">
           These N‑D‑C values are value‑layer only (separate from physical supply-chain NDC).
         </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>Value chain UI • <span class="muted" style="color:rgba(255,255,255,0.75)">separate datastore</span></div>
-      <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
-    </div>
-  </div>
-
-  <script>
+</div>
+</div>
+<div class="footer">
+<div>Value chain UI • <span class="muted" style="color:rgba(255,255,255,0.75)">separate datastore</span></div>
+<div>Separation rules</div>
+</div>
+</div>
+<script>
     const ENTITIES = [
       { entity_id: "E001", label: "Newmont (E001)" },
       { entity_id: "E002", label: "Barrick (E002)" }
@@ -411,7 +405,6 @@
       alert("Value Chain Dashboard failed to load data. Check that value_metrics.json and value_ndc_metrics.json exist in data/value_chain/processed/.");
     });
   </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -486,7 +479,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -507,11 +499,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -529,7 +517,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -543,14 +530,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

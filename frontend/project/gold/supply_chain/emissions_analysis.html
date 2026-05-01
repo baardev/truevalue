@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emissions Analysis — Gold Supply Chain</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emissions Analysis — Gold Supply Chain</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
@@ -172,117 +173,106 @@
 </head>
 <body>
 <div class="page">
-
-    <!-- Header -->
-    <div class="header">
-        <div class="header-left">
-            <h1>🌡️ Carbon Emissions Analysis — Gold Supply Chain</h1>
-            <p>Scope 1, 2, and 3 cascade · Phase-resolved · What-If aware</p>
-        </div>
-        <div>
-            <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
-            <a href="dashboard.html" class="nav-link">Dashboard</a>
-            <a href="/index.html" class="nav-link">🏠 Home</a>
-        </div>
-    </div>
-
-    <!-- Source banner -->
-    <div id="sourceBanner">
-        <span>ℹ️</span>
-        <span id="sourceText">Loading emissions data…</span>
-    </div>
-
-    <!-- KPI strip -->
-    <div class="kpi-strip">
-        <div class="kpi-card">
-            <div class="kpi-label">Scope 1 — Direct</div>
-            <div class="kpi-value" id="kpiS1" style="color:#856404;">—</div>
-            <div class="kpi-sub">combustion tCO₂e</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-label">Scope 2 — Electricity</div>
-            <div class="kpi-value" id="kpiS2" style="color:#004085;">—</div>
-            <div class="kpi-sub">purchased power tCO₂e</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-label">Chain Total (S1+S2)</div>
-            <div class="kpi-value" id="kpiTotal" style="color:#2c3e50;">—</div>
-            <div class="kpi-sub">annual global estimate</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-label">Intensity</div>
-            <div class="kpi-value" id="kpiPerOz" style="color:#6f42c1;">—</div>
-            <div class="kpi-sub">tCO₂e per troy oz</div>
-        </div>
-        <div class="kpi-card">
-            <div class="kpi-label">Chain Rating</div>
-            <div class="kpi-value" id="kpiGrade">—</div>
-            <div class="kpi-sub" id="kpiGradeSub">vs WGC benchmarks</div>
-        </div>
-    </div>
-
-    <!-- Charts row -->
-    <div class="main-grid">
-
-        <!-- Stacked bar chart -->
-        <div class="card">
-            <div class="card-title">📊 S1 &amp; S2 by Phase</div>
-            <div class="chart-wrap">
-                <svg class="chart" id="barChart" viewBox="0 0 600 320"></svg>
-            </div>
-        </div>
-
-        <!-- Scope 3 cascade chart -->
-        <div class="card">
-            <div class="card-title">📈 Scope 3 Cascade — Cumulative Burden</div>
-            <div class="chart-wrap">
-                <svg class="chart" id="cascadeChart" viewBox="0 0 600 320"></svg>
-            </div>
-        </div>
-
-        <!-- Phase detail table -->
-        <div class="card full-width">
-            <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
-            <table class="phase-table" id="phaseTable">
-                <thead>
-                    <tr>
-                        <th>Phase</th>
-                        <th>Scope 1</th>
-                        <th>Scope 2</th>
-                        <th>Phase Total</th>
-                        <th>% of Chain</th>
-                        <th>Scope 3↑ Inherited</th>
-                        <th>S2 Ratio</th>
-                        <th>Decarb Opportunity</th>
-                        <th>N-D-C Balance</th>
-                        <th>Rating</th>
-                    </tr>
-                </thead>
-                <tbody id="phaseTableBody"></tbody>
-            </table>
-        </div>
-
-        <!-- Key findings -->
-        <div class="card full-width">
-            <div class="card-title">💡 Key Findings &amp; Analysis</div>
-            <div class="findings-grid" id="findingsGrid"></div>
-        </div>
-
-        <!-- Decarbonization ranking -->
-        <div class="card full-width">
-            <div class="card-title">⚡ Decarbonization Opportunity Ranking</div>
-            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<h1>🌡️ Carbon Emissions Analysis — Gold Supply Chain</h1>
+<p>Scope 1, 2, and 3 cascade · Phase-resolved · What-If aware</p>
+</div>
+<div>
+<a class="nav-link" href="what_if_simulator.html">← Back to Simulator</a>
+<a class="nav-link" href="dashboard.html">Dashboard</a>
+<a class="nav-link" href="/index.html">🏠 Home</a>
+</div>
+</div>
+<!-- Source banner -->
+<div id="sourceBanner">
+<span>ℹ️</span>
+<span id="sourceText">Loading emissions data…</span>
+</div>
+<!-- KPI strip -->
+<div class="kpi-strip">
+<div class="kpi-card">
+<div class="kpi-label">Scope 1 — Direct</div>
+<div class="kpi-value" id="kpiS1" style="color:#856404;">—</div>
+<div class="kpi-sub">combustion tCO₂e</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Scope 2 — Electricity</div>
+<div class="kpi-value" id="kpiS2" style="color:#004085;">—</div>
+<div class="kpi-sub">purchased power tCO₂e</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Chain Total (S1+S2)</div>
+<div class="kpi-value" id="kpiTotal" style="color:#2c3e50;">—</div>
+<div class="kpi-sub">annual global estimate</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Intensity</div>
+<div class="kpi-value" id="kpiPerOz" style="color:#6f42c1;">—</div>
+<div class="kpi-sub">tCO₂e per troy oz</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Chain Rating</div>
+<div class="kpi-value" id="kpiGrade">—</div>
+<div class="kpi-sub" id="kpiGradeSub">vs WGC benchmarks</div>
+</div>
+</div>
+<!-- Charts row -->
+<div class="main-grid">
+<!-- Stacked bar chart -->
+<div class="card">
+<div class="card-title">📊 S1 &amp; S2 by Phase</div>
+<div class="chart-wrap">
+<svg class="chart" id="barChart" viewbox="0 0 600 320"></svg>
+</div>
+</div>
+<!-- Scope 3 cascade chart -->
+<div class="card">
+<div class="card-title">📈 Scope 3 Cascade — Cumulative Burden</div>
+<div class="chart-wrap">
+<svg class="chart" id="cascadeChart" viewbox="0 0 600 320"></svg>
+</div>
+</div>
+<!-- Phase detail table -->
+<div class="card full-width">
+<div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+<table class="phase-table" id="phaseTable">
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope 1</th>
+<th>Scope 2</th>
+<th>Phase Total</th>
+<th>% of Chain</th>
+<th>Scope 3↑ Inherited</th>
+<th>S2 Ratio</th>
+<th>Decarb Opportunity</th>
+<th>N-D-C Balance</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody id="phaseTableBody"></tbody>
+</table>
+</div>
+<!-- Key findings -->
+<div class="card full-width">
+<div class="card-title">💡 Key Findings &amp; Analysis</div>
+<div class="findings-grid" id="findingsGrid"></div>
+</div>
+<!-- Decarbonization ranking -->
+<div class="card full-width">
+<div class="card-title">⚡ Decarbonization Opportunity Ranking</div>
+<p style="font-size:12px;color:#6c757d;margin-bottom:14px;">
                 Phases ranked by near-term decarbonization potential. High S2 ratio = can switch to clean energy.
                 High S1 = requires electrification or operational change.
             </p>
-            <div id="decarbRanking"></div>
-        </div>
-
-    </div>
-
-    <!-- Footnote -->
-    <div class="footnote">
-        <strong>Data sources &amp; quality flags:</strong>
+<div id="decarbRanking"></div>
+</div>
+</div>
+<!-- Footnote -->
+<div class="footnote">
+<strong>Data sources &amp; quality flags:</strong>
         Phase 1–2 values: WGC Gold and Climate 2023; Foran et al. 2005 <em>Balancing Act</em> Vol.2 (quality: Medium) ·
         Phases 0, 3–8: Inferred from smelting, ICCT transport, LBMA refinery, and GHG Protocol financial sector benchmarks (quality: Low) ·
         Annual production basis: ~3,300 t Au / 106M troy oz (WGC 2023) ·
@@ -290,9 +280,7 @@
         All figures are annual global estimates in tCO₂e. Imbalance penalty: +15% S1 / +25% S2 per unit of N-D-C imbalance factor.
         This page reads live state from the What-If Simulator if opened via the "Emissions Analysis" button; otherwise uses JSON baseline.
     </div>
-
 </div>
-
 <script>
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -794,7 +782,6 @@ async function init() {
 
 init();
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -869,7 +856,6 @@ init();
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -890,11 +876,7 @@ init();
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -912,7 +894,6 @@ init();
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -926,14 +907,8 @@ init();
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

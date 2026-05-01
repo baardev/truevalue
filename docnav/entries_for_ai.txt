@@ -1,0 +1,5000 @@
+ENTRY_START
+relative_path: AI_PROMPT_DOCNAV_MANIFEST.md
+extension: .md
+excerpt:
+# AI prompt: generate `docnav_manifest.tsv` for DocNav / TiddlyWiki index
+
+This document describes the manifest schema and tagging rules for DocNav. The **canonical implementation** is `docnav_manifest_from_entries.py`: run that script after `entries_for_ai.txt` is regenerated so output stays consistent.
+
+Use this file when you want an AI (or a human) to understand how rows are built **without** reading Python. For routine updates, you do **not** need to ask an AI to write the TSV: run `sh docnav/REFRESH`.
+
+---
+
+## Inputs
+
+1. **`entries_for_ai.txt`**, produced by `docnav_extract_excerpts.py`. Each file under `docnav/` becomes one block:
+
+```
+ENTRY_START
+relative_path: Repos/example/note.md
+extension: .md
+excerpt:
+<first ~800 chars of cleaned text, or OPAQUE …>
+ENTRY_END
+```
+
+2. Parse **onl
+ENTRY_END
+
+ENTRY_START
+relative_path: CSV_REFRESH
+extension: (none)
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: broken_image_links.json
+extension: .json
+excerpt:
+{
+ "summary": {
+ "docnav_root": "/home/jw/src/tv/docnav",
+ "markdown_files_scanned": 132,
+ "image_ref_occurrences": 94,
+ "local_paths_checked": 94,
+ "broken_local_count": 95,
+ "report_tsv": "/home/jw/src/tv/docnav/broken_image_links_report.tsv"
+ },
+ "broken": [
+ {
+ "markdown_file": "Repos/intra/TVPCI/TVPCI_FOUNDATION.md",
+ "reference": "dimension-grid.png",
+ "resolved_path": "/home/jw/src/tv/docnav/Repos/intra/TVPCI/dimension-grid.png",
+ "reason": "missing_file"
+ },
+ {
+ "markdown_file": "Repos/intra/TVPCI/TVPCI_FOUNDATION.md",
+ "reference": "fig1_tetrahedron.png",
+ "resolved_path": "/home/jw/src/tv/docnav/Repos/intra/TVPCI/fig1_tetrahedron.png",
+ "reason": "missing_file"
+ },
+ {
+ "markdown_file": "Repos/intra/TVPCI/TVPCI_FOUNDATION.md",
+ "reference": "fig2_tholonic_triad.png",
+ "resolved_pa
+ENTRY_END
+
+ENTRY_START
+relative_path: broken_image_links_report.tsv
+extension: .tsv
+excerpt:
+markdown_file reference resolved_path reason
+ENTRY_END
+
+ENTRY_START
+relative_path: catalog.json
+extension: .json
+excerpt:
+[
+ {
+ "title": "docnav: 023-C1-Tholonic_Math.md",
+ "path": "Repos/intra/TVPCI/archive/023-C1-Tholonic_Math.md",
+ "tags": [
+ "topic/tvpci",
+ "fmt/md"
+ ],
+ "summary": "--- doc_id: frontend_docs_repos_intra_tvpci_archive_023_c1_tholonic_math title: 'Appendix C1: Tholonic Math — Numbers, Archetypes, and π' type: documentation status: archived domain: tvpci layer: methodology projects: [] tags: -…",
+ "url": "https://tvf.tholonia.com/docnav/Repos/intra/TVPCI/archive/023-C1-Tholonic_Math.md"
+ },
+ {
+ "title": "docnav: 024-C2-Squares_Primes.md",
+ "path": "Repos/intra/TVPCI/archive/024-C2-Squares_Primes.md",
+ "tags": [
+ "topic/tvpci",
+ "fmt/md"
+ ],
+ "summary": "--- doc_id: frontend_docs_repos_intra_tvpci_archive_024_c2_squares_primes title: 'Appendix C2: Tholonic Math — Squares, Roots, and Prime Num
+ENTRY_END
+
+ENTRY_START
+relative_path: catalog_exclude.txt
+extension: .txt
+excerpt:
+# Paths under docnav/ that must not appear as cards on the catalog page (index.html).
+# Format:
+# One path per line, relative to docnav/, using forward slashes.
+# Exact match against each file's manifest path (e.g. Notes/foo.md).
+# Lines starting with # are ignored.
+# Blank lines are ignored.
+#
+# Glob patterns (optional): if a line contains * or ?, it is matched with fnmatch
+# against the full relative path (e.g. scratch/**/*.md).
+#
+index.html
+catalog.html
+view.html
+catalog.json
+entries_for_ai.txt
+docnav_manifest.tsv
+catalog_exclude.txt
+REFRESH
+docnav_extract_excerpts.py
+docnav_manifest_from_entries.py
+docnav_build_catalog_json.py
+csvindex.html
+csv_catalog.json
+CSV_REFRESH
+docnav_build_csv_catalog_json.py
+ENTRY_END
+
+ENTRY_START
+relative_path: check_docnav_md_images.py
+extension: .py
+excerpt:
+#!/usr/bin/env python3
+"""
+Scan Markdown under docnav/ for image references and report broken local targets.
+
+Checks:
+ - ![alt](url)
+ - ![alt](url "title")
+ - <img src="...">
+
+Relative URLs resolve from the directory containing the .md file.
+http/https and mailto: are skipped (not verified).
+Fragment-only (#...) skipped.
+
+Usage:
+ python3 scripts/check_docnav_md_images.py
+ python3 scripts/check_docnav_md_images.py --json docnav/broken_image_links.json
+"""
+
+from __future__ import annotations
+
+import argparse
+import json
+import os
+import re
+import sys
+from pathlib import Path
+
+DOCNAV = Path(__file__).resolve().parent.parent / "docnav"
+
+# ![ ... ]( ... )
+MD_IMG = re.compile(r"!\[[^\]]*\]\(([^)]+)\)")
+# <img ... src="..." ...>
+HTML_IMG_SRC = re.compile(
+ r"<img\b[^>]*\bsrc\s*=\s*(?:\"([^\"]*)\"
+ENTRY_END
+
+ENTRY_START
+relative_path: csv_catalog.json
+extension: .json
+excerpt:
+[
+ {
+ "title": "csv (aubeb): aubeb_scenario_baseline.csv",
+ "path": "../frontend/project/aubeb/data/processed/aubeb_scenario_baseline.csv",
+ "tags": [
+ "fmt/csv",
+ "topic/aubeb",
+ "kind/processed"
+ ],
+ "summary": "Header: record_id, phase_id, entity, country, date, metric_type, metric_category, d_value, c_value, n_value, balance_score, sustainability_index, unit, source_type, source_name, url, notes · Sample row: 1, 0, Pre-commercial: degraded ecosystem_Entity, Nigeria, 2025-01-01, daily_state, ndc_balance, 207.66, 204.2, 147.54, …",
+ "url": "https://tvf.tholonia.com/frontend/project/aubeb/data/processed/aubeb_scenario_baseline.csv"
+ },
+ {
+ "title": "csv (aubeb): aubeb_system_lifecycle_metrics.csv",
+ "path": "../frontend/project/aubeb/data/aubeb_system_lifecycle_metrics.csv",
+ "tags": [
+ "
+ENTRY_END
+
+ENTRY_START
+relative_path: csvindex.html
+extension: .html
+excerpt:
+DocNav — Project CSV Catalog
+ENTRY_END
+
+ENTRY_START
+relative_path: docnav_build_csv_catalog_json.py
+extension: .py
+excerpt:
+#!/usr/bin/env python3
+"""
+Build csv_catalog.json listing CSV files under frontend/project/.
+
+Paths in JSON are relative to docnav/ (e.g. ../frontend/project/gold/data/foo.csv)
+so docnav/view.html can fetch them when the site root is the repository root.
+
+Typical usage (from repository root):
+
+ python3 docnav/docnav_build_csv_catalog_json.py
+"""
+
+from __future__ import annotations
+
+import argparse
+import csv
+import json
+import os
+
+DEFAULT_SITE_BASE = "https://tvf.tholonia.com/"
+PROJECT_REL = os.path.join("frontend", "project")
+
+def _repo_root_from_docnav(docnav_dir: str) -> str:
+ return os.path.abspath(os.path.join(docnav_dir, ".."))
+
+def _path_for_viewer(docnav_dir: str, abs_csv: str) -> str:
+ rel = os.path.relpath(abs_csv, docnav_dir)
+ return rel.replace("\\", "/")
+
+def _url_public(site_
+ENTRY_END
+
+ENTRY_START
+relative_path: docnav_manifest.tsv
+extension: .tsv
+excerpt:
+relative_path title tags summary notes
+api/FRONTEND_API.md docnav: FRONTEND_API.md topic/supply-chain fmt/md --- doc_id: frontend_docs_api_frontend_api title: Gold Supply Chain Simulator - Frontend Data Contract type: api_reference status: active domain: gold_supply_chain layer: supply_chain projects: [] tags: - api - gold - gold_supply_chain -… 
+archives/WhatsApp_Ptt_2026-03-28_at_09.01.03.ogg docnav: WhatsApp_Ptt_2026-03-28_at_09.01.03.ogg topic/generic-doc fmt/binary-other meta/low-confidence OPAQUE (image or binary; no text extracted) needs_manual_review
+broken_image_links.json docnav: broken_image_links.json topic/tvpci fmt/json { 'summary': { 'docnav_root': '/home/jw/src/tv/docnav', 'markdown_files_scanned': 132, 'image_ref_occurrences': 94, 'local_paths_checked': 94, 'broken_local_c
+ENTRY_END
+
+ENTRY_START
+relative_path: docnav_tiddlers_import.json
+extension: .json
+excerpt:
+[
+ {
+ "title": "docnav: adaptive_system_data.md",
+ "tags": "topic/tholonic-ndc fmt/md",
+ "text": "[[Open file|http://127.0.0.1:8000/docnav/ai_notes/concept_notes/adaptive_system_data.md]]\n\nSummary: # Adaptive System Data ## Definition Signals inside a living, ecological, social, infrastructure, or institutional system that describe feedback, resilience, maintenance, phase dependency, or coherence before those signals become monetized…\n\nPath: `ai_notes/concept_notes/adaptive_system_data.md`"
+ },
+ {
+ "title": "docnav: ai_costs.md",
+ "tags": "topic/tholonic-ndc fmt/md",
+ "text": "[[Open file|http://127.0.0.1:8000/docnav/ai_notes/concept_notes/ai_costs.md]]\n\nSummary: # AI Costs ## Definition The computational, API, infrastructure, and operational costs of using AI systems for document, d
+ENTRY_END
+
+ENTRY_START
+relative_path: entries_for_ai.txt
+extension: .txt
+excerpt:
+ENTRY_START
+relative_path: AI_PROMPT_DOCNAV_MANIFEST.md
+extension: .md
+excerpt:
+# AI prompt: generate `docnav_manifest.tsv` for DocNav / TiddlyWiki index
+
+This document describes the manifest schema and tagging rules for DocNav. The **canonical implementation** is `docnav_manifest_from_entries.py`: run that script after `entries_for_ai.txt` is regenerated so output stays consistent.
+
+Use this file when you want an AI (or a human) to understand how rows are built **without** reading Python. For routine updates, you do **not** need to ask an AI to write the TSV: run `sh docnav/REFRESH`.
+
+---
+
+## Inputs
+
+1. **`entries_for_ai.txt`**, produced by `docnav_extract_excerpts.py`. Each file under `docnav/` becomes one block:
+
+```
+ENTRY_START
+relative_path: Repos/example/note.md
+extension: .md
+excerp
+ENTRY_END
+
+ENTRY_START
+relative_path: index.html
+extension: .html
+excerpt:
+DocNav — Document Catalog
+ENTRY_END
+
+ENTRY_START
+relative_path: pandoc-docnav-theme.css
+extension: .css
+excerpt:
+/*
+ * Pandoc export typography (from Repos/intra/TVPCI/archive/023-C1-Tholonic_Math.html).
+ * Scoped under .md-view for DocNav view.html.
+ */
+.md-view {
+ color-scheme: only light;
+ --bg: #ffffff;
+ --fg: #121212;
+ --muted: #57606a;
+ --link: #0969da;
+ --border: #d0d7de;
+ --code-bg: #f6f8fa;
+ --quote: #656d76;
+ --maxw: 900px;
+}
+
+.md-view {
+ font-size: 18px;
+ background: var(--bg) !important;
+ color: var(--fg) !important;
+ font-family: Georgia, "Times New Roman", serif;
+ line-height: 1.65;
+ max-width: var(--maxw);
+ margin: 0 auto;
+ padding: 2.5rem 1.25rem 4rem;
+ border-radius: 8px;
+}
+
+.md-view header {
+ margin-bottom: 2rem;
+ border-bottom: 1px solid var(--border);
+ padding-bottom: 1rem;
+}
+
+.md-view p {
+ margin: 0.9em 0;
+}
+
+.md-view ul,
+.md-view ol {
+ padding-left: 1.8em;
+ margin: 0.9em 0;
+}
+
+.
+ENTRY_END
+
+ENTRY_START
+relative_path: view.html
+extension: .html
+excerpt:
+DocNav Viewer
+
+Loading…
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/SCPI-SME.html
+extension: .html
+excerpt:
+SCPI-SME — Supply Chain Profile Instrument · Small Business Edition
+
+Supply Chain Profile Instrument — Small Business Edition
+
+🔗 SCPI-SME 
+Chain Mapper
+
+Map your supply chain in plain language. Identify bottlenecks, blind spots, and cost pressure points. No jargon required. Complete Sections 1–3 in order; Sections 4–6 update automatically as you go.
+
+Your Business Name / Product
+
+Analyst / Completed By
+
+Date
+
+Industry Sector
+
+Select sector…
+
+Food & Beverage
+
+Consumer Goods / FMCG
+
+Apparel & Textiles
+
+Electronics & Hardware
+
+Health & Beauty
+
+Agriculture & Farming
+
+Manufacturing (Other)
+
+Retail & Distribution
+
+Services
+
+Other
+
+Annual Scale
+
+Section 1
+
+Business Profile — Anchoring Your Chain
+
+Define the start and end of your supply chain before mapping the steps in between.
+
+Why this matters:
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Acorn/080523-Acorn-Project-Summary-Completed.md
+extension: .md
+excerpt:
+---
+doc_id: 080523_acorn_project_summary_completed_source_note
+title: 080523 Acorn Project Summary Completed
+type: source_note
+status: draft
+domain: research
+layer: methodology
+projects:
+ - unassigned
+tags:
+ - converted_docx
+ - source_note
+related_docs: []
+key_claims: []
+source_file: frontend/docs/Repos/extra/Acorn/080523-Acorn-Project-Summary-Completed.docx
+source_type: private
+created: 2026-04-26
+---
+
+# 080523 Acorn Project Summary Completed
+
+## Source Context
+
+Generated from `frontend/docs/Repos/extra/Acorn/080523-Acorn-Project-Summary-Completed.docx` by `scripts/convert_inbox_sources.py`.
+
+## Extracted Text
+
+Date of Submission: Tuesday, 16 May 2023Date of Submission: Tuesday, 16 May 2023 Golden Organics/SeriousShea Project SummaryGolden Organics/SeriousShea Project Summary
+
+Date of Sub
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Acorn/Acorn-Local-Partner-Onboarding-Process.pdf
+extension: .pdf
+excerpt:
+What is the role of the Local Partner in the Acorn onboarding process
+Local partners
+Blk It
+Acorn.Rabobank.com2
+Local Partner and Project onboarding process
+There are several application steps to complete via our 
+online portal or other channels
+Via Portal
+Via meetings or fieldwork
+No involvement from Local Partner
+Eligibility & 
+Additionality
+Agroforestry 
+design & BC
+Farmer 
+Onboarding
+Selling and 
+monitoring
+Ground truth data collection
+Eligibility checklist
+Project summary
+Map - area of 
+interest
+Additionality 
+assessment
+Subcontractor 
+responsibilities 
+overview
+Land tenure 
+documentation
+Project councils 
+with farmers
+100 plots of 1ha 
+each per 
+ecoregion
+Participant 
+agreement
+LiDAR request
+Agroforestry 
+design template
+Business case 
+template
+Farm(er) data 
+collection (incl. 
+polyg
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Deutsche/The Measurement Gap in Transition Finance — TrueValue Analytics · Deutsche Bank Strategic Alignment Brief.pdf
+extension: .pdf
+excerpt:
+STRATEGIC ALIGNMENT BRIEF  ·  TRANSITION FINANCE & NATURAL
+RESOURCES FINANCE
+The Measurement Gap in
+Transition Finance
+How the TrueValue Framework provides the phase-resolved supply chain analytics that
+Deutsche Bank's Transition Finance thesis requires — validated at every phase using
+Deutsche Bank's own published critical minerals and commodities research.
+NATURAL RESOURCES FINANCE SUSTAINABLE SUPPLY CHAIN FINANCE
+TRANSITION FINANCE FRAMEWORK · PARAMETER 1 & 3
+SUPPLY CHAIN DUE DILIGENCE AFRICA & EMERGING MARKETS
+Analytical Framework
+TrueValue Supply Chain
+Analytics
+Primary Case Study
+Gold Supply Chain (9
+phases)
+Contrast Case
+Shea Value Chain
+(West Africa)
+Date
+April
+2026
+This report presents a structural demonstration using phase-architecture data and simulated projections. It is intend
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Deutsche/db_investor_report.html
+extension: .html
+excerpt:
+The Measurement Gap in Transition Finance — TrueValue Analytics · Deutsche Bank Strategic Alignment Brief
+
+Strategic Alignment Brief  ·  Transition Finance & Natural Resources Finance
+
+The 
+Measurement Gap
+ in
+Transition Finance
+
+How the TrueValue Framework provides the phase-resolved supply chain analytics that Deutsche Bank's Transition Finance thesis requires — validated at every phase using Deutsche Bank's own published critical minerals and commodities research.
+
+Natural Resources Finance
+
+Sustainable Supply Chain Finance
+
+Transition Finance Framework · Parameter 1 & 3
+
+Supply Chain Due Diligence
+
+Africa & Emerging Markets
+
+Analytical Framework
+
+TrueValue Supply Chain Analytics
+
+Primary Case Study
+
+Gold Supply Chain (9 phases)
+
+Contrast Case
+
+Shea Value Chain (West Africa)
+
+Date
+
+Apri
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Generic/The TrueValue Framework — Investor Report.pdf
+extension: .pdf
+excerpt:
+S T R U C T U R A L S U P P LY C H A I N A N A LY T I C S  ·  I N V E S T O R I N T E L L I G E N C E
+S E R I E S
+Sustainable Supply Chains
+Generate Superior Long-Term
+Returns
+A quantitative case for the TrueValue Framework: measuring structural
+balance across supply chain phases to unlock compounding performance
+advantage.
+Framework
+TrueValue Supply
+Chain Analytics
+Primary Case Study
+Gold Supply Chain
+(9 phases)
+Contrast Case
+Shea Value Chain
+(West Africa)
+Report
+Date
+March
+2026
+This report presents a structural demonstration using phase-architecture data and simulated projections. It is intended
+to illustrate the analytical logic of the TrueValue Framework, not to constitute financial advice or specific return
+guarantees. See Appendix for full methodology disclosure.
+The TrueValue Framew
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Generic/TrueValue Framework — Gap Analysis & Research Agenda.pdf
+extension: .pdf
+excerpt:
+T R U E VA L U E A N A LY T I C S  ·  I N T E R N A L W O R K I N G D O C U M E N T
+From Illustrative to Investor-
+Ready:
+What We Still Need to Know
+A gap analysis and research agenda identifying every claim, score, projection,
+and assumption in the Investor Report that requires real data, validation, or
+policy research before the report can be presented without qualification to
+institutional investors.
+Document Type
+Gap Analysis / Research Agenda
+Subject Report
+investor_report.html (March 2026)
+Audiences
+Non-technical & Technical
+Status
+Working Draft — Internal Only
+This document is a frank internal assessment of what is currently synthetic, estimated, or unvalidated in the
+Investor Report. It is not for external distribution. Its purpose is to create a clear research agenda for moving th
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Generic/TrueValue Framework — Implementation Cost & Deployment Analysis.pdf
+extension: .pdf
+excerpt:
+T R U E VA L U E A N A LY T I C S  ·  I M P L E M E N TAT I O N I N T E L L I G E N C E S E R I E S
+What Does It Cost to Build a
+TrueValue Framework?
+A phase-resolved cost, time, and resource estimate for deploying the
+TrueValue Framework across a commodity supply chain — using gold and
+shea as primary case studies.
+Document Type
+Implementation Cost Analysis
+Primary Case
+Gold Supply Chain (9 phases)
+Comparative Case
+Shea Value Chain (West Africa)
+Horizon
+5 Years (Gold) / 3 Years (Shea)
+Date
+March 2026
+All cost estimates presented in this report are order-of-magnitude ranges derived from analogous framework deployment data,
+industry staffing benchmarks, and structural analysis of supply chain complexity. They are not quotes, contracts, or financial
+projections. Actual implementation costs w
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Generic/gap_analysis_report.html
+extension: .html
+excerpt:
+TrueValue Framework — Gap Analysis & Research Agenda
+
+TrueValue Analytics  ·  Internal Working Document
+
+From Illustrative to 
+Investor-Ready
+:
+What We Still Need to Know
+
+A gap analysis and research agenda identifying every claim, score, projection, and assumption in the Investor Report that requires real data, validation, or policy research before the report can be presented without qualification to institutional investors.
+
+Document Type
+Gap Analysis / Research Agenda
+
+Subject Report
+investor_report.html (March 2026)
+
+Audiences
+Non-technical & Technical
+
+Status
+Working Draft — Internal Only
+
+This document is a frank internal assessment of what is currently synthetic, estimated, or unvalidated in the Investor Report. It is not for external distribution. Its purpose is to create a clear r
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Generic/implementation_cost_report.html
+extension: .html
+excerpt:
+TrueValue Framework — Implementation Cost & Deployment Analysis
+
+TrueValue Analytics  ·  Implementation Intelligence Series
+
+What Does It Cost to Build a
+TrueValue Framework
+?
+
+A phase-resolved cost, time, and resource estimate for deploying the TrueValue Framework across a commodity supply chain — using gold and shea as primary case studies.
+
+Document Type
+Implementation Cost Analysis
+
+Primary Case
+Gold Supply Chain (9 phases)
+
+Comparative Case
+Shea Value Chain (West Africa)
+
+Horizon
+5 Years (Gold) / 3 Years (Shea)
+
+Date
+March 2026
+
+All cost estimates presented in this report are order-of-magnitude ranges derived from analogous framework deployment data, industry staffing benchmarks, and structural analysis of supply chain complexity. They are not quotes, contracts, or financial projectio
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Generic/investor_report.html
+extension: .html
+excerpt:
+The TrueValue Framework — Investor Report
+
+Structural Supply Chain Analytics  ·  Investor Intelligence Series
+
+Sustainable Supply Chains
+Generate 
+Superior
+ Long-Term Returns
+
+A quantitative case for the TrueValue Framework: measuring structural balance across supply chain phases to unlock compounding performance advantage.
+
+Framework
+
+TrueValue Supply Chain Analytics
+
+Primary Case Study
+
+Gold Supply Chain (9 phases)
+
+Contrast Case
+
+Shea Value Chain (West Africa)
+
+Report Date
+
+March 2026
+
+This report presents a structural demonstration using phase-architecture data and simulated projections. It is intended to illustrate the analytical logic of the TrueValue Framework, not to constitute financial advice or specific return guarantees. See Appendix for full methodology disclosure.
+
+Executive 
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/HORIZON_EUROPE_GRANT_PROPOSAL_CIRCBIO09.docx
+extension: .docx
+excerpt:
+HORIZON-CL6-2026-01-CIRCBIO-09 
+ 
+ Proposal: TRUE VALUE CHAINS — Balancing Bioeconomy, Food Security, Climate and Biodiversity Through Phase-Resolved Supply Chain Analytics 
+ Call: HORIZON-CL6-2026-01-CIRCBIO-09 Call Title: Balancing food security, bioeconomy, climate and biodiversity objectives to unlock sustainable value chains Action Type: Research and Innovation Action (RIA) Opening Date: 17 April 2026 Deadline: 17 September 2026, 17:00 Brussels time Indicative Budget Request: €6,000,000 Total Call Budget: €12,000,000 Project Acronym (provisional): TrueVal-Chains Status: DRAFT v0.1 — April 2026 Lead Author: SNJ Action required from: April 2026 
+ 
+ 
+ 
+ EXECUTIVE SUMMARY 
+ TrueVal-Chains is a 54-month, €6 million Research and Innovation Action (RIA) submitted under Horizon Europe Call HO
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/HORIZON_EUROPE_GRANT_PROPOSAL_CIRCBIO09.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_extra_horizon_horizon_europe_grant_proposal_circbio09
+title: HORIZON-CL6-2026-01-CIRCBIO-09
+type: documentation
+status: active
+domain: project_documentation
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - project_documentation
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# HORIZON-CL6-2026-01-CIRCBIO-09
+## Proposal: TRUE VALUE CHAINS — Balancing Bioeconomy, Food Security, Climate and Biodiversity Through Phase-Resolved Supply Chain Analytics
+
+**Call:** HORIZON-CL6-2026-01-CIRCBIO-09 
+**Call Title:** Balancing food security, bioeconomy, climate and biodiversity objectives to unlock sustainable value chains 
+**Action Type:** Research and Innovation Action (RIA) 
+**Opening Date:** 17 April 2026 
+**Deadline:** 17 September 2026, 17:00 Brussels time 
+**Indicat
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/HORIZON_EUROPE_GRANT_PROPOSAL_CIRCBIO09_2.md
+extension: .md
+excerpt:
+---
+doc_id: horizon_europe_grant_proposal_circbio09_source_note
+title: Horizon Europe Grant Proposal Circbio09
+type: source_note
+status: draft
+domain: research
+layer: methodology
+projects:
+ - unassigned
+tags:
+ - converted_docx
+ - source_note
+related_docs: []
+key_claims: []
+source_file: frontend/docs/Repos/extra/Horizon/HORIZON_EUROPE_GRANT_PROPOSAL_CIRCBIO09.docx
+source_type: private
+created: 2026-04-26
+---
+
+# Horizon Europe Grant Proposal Circbio09
+
+## Source Context
+
+Generated from `frontend/docs/Repos/extra/Horizon/HORIZON_EUROPE_GRANT_PROPOSAL_CIRCBIO09.docx` by `scripts/convert_inbox_sources.py`.
+
+## Extracted Text
+
+HORIZON-CL6-2026-01-CIRCBIO-09
+
+Proposal: TRUE VALUE CHAINS — Balancing Bioeconomy, Food Security, Climate and Biodiversity Through Phase-Resolved Supply Chain Analytics
+
+
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/UBS/What Your Gold Forecast Doesn't Show — TrueValue Analytics · UBS Strategic Alignment Brief.pdf
+extension: .pdf
+excerpt:
+STRATEGIC ALIGNMENT BRIEF  ·  CHIEF INVESTMENT OFFICE  ·  WEALTH
+MANAGEMENT
+What Your Gold Forecast
+Doesn't Show
+UBS forecasts gold at $5,000–6,200/oz on supply stagnation and structural demand.
+The TrueValue Framework shows precisely where in the supply chain that stagnation is
+concentrated — and what it means for portfolio risk, sustainable investing compliance,
+and the Power & Resources structural theme.
+CHIEF INVESTMENT OFFICE POWER & RESOURCES THEME
+SUSTAINABLE INVESTING · $3.9T AUM DECARBONIZATION · 5DS FRAMEWORK
+SWISS ORDINANCE · CONFLICT MINERALS DUE DILIGENCE
+Analytical Framework
+TrueValue Supply Chain
+Analytics
+Primary Case Study
+Gold Supply Chain (9
+phases)
+Contrast Case
+Shea Value Chain
+(West Africa)
+Date
+April
+2026
+This report presents a structural demonstration using phase-ar
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/UBS/ubs_investor_report.html
+extension: .html
+excerpt:
+What Your Gold Forecast Doesn't Show — TrueValue Analytics · UBS Strategic Alignment Brief
+
+Strategic Alignment Brief  ·  Chief Investment Office  ·  Wealth Management
+
+What Your Gold Forecast
+Doesn't 
+Show
+
+UBS forecasts gold at $5,000–6,200/oz on supply stagnation and structural demand. The TrueValue Framework shows precisely where in the supply chain that stagnation is concentrated — and what it means for portfolio risk, sustainable investing compliance, and the Power & Resources structural theme.
+
+Chief Investment Office
+
+Power & Resources Theme
+
+Sustainable Investing · $3.9T AUM
+
+Decarbonization · 5Ds Framework
+
+Swiss Ordinance · Conflict Minerals Due Diligence
+
+Analytical Framework
+
+TrueValue Supply Chain Analytics
+
+Primary Case Study
+
+Gold Supply Chain (9 phases)
+
+Contrast Case
+
+She
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE.md
+extension: .md
+excerpt:
+---
+doc_id: abstract_supply_chain_phase_template
+title: Abstract Supply Chain Phase Template
+type: template
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ - gold
+ - shea
+tags:
+ - pdi
+ - template
+ - supply_chain
+ - phase_mapping
+ - ndc
+related_docs:
+ - abstract_value_chain_phase_template
+ - gold_supply_chain_phase_instance
+ - shea_supply_chain_phase_instance
+key_claims:
+ - phase_must_have_physical_state_transformation_output
+source_role: phase_template
+---
+
+# Abstract Supply Chain Phase Template
+
+Product-agnostic supply chain phase model (phases 0–8) and information categories per phase, with **N-D-C tagging** and example metric types. Use this template to build instances for specific commodities (e.g. [shea butter](SHEA_VALUE_CHAIN_PHASE_INSTANCE.md), [gold](ABSTRACT_SUPPLY_CHAI
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE_GOLD_INSTANCE.md
+extension: .md
+excerpt:
+---
+doc_id: gold_supply_chain_phase_instance
+title: "Abstract Supply Chain Phase Template — Gold Instance"
+type: template
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ - gold
+tags:
+ - gold
+ - pdi
+ - phase_mapping
+ - supply_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Abstract Supply Chain Phase Template — Gold Instance
+
+This document provides the **gold supply chain instance** of the same abstract phase template. The full abstract template (phases 0–8, categories, N-D-C tagging, example metric types) is in **[Abstract Supply Chain Phase Template](ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE.md)**. **Value chain** (revenue, cost, margin, fees): [Gold value chain instance](GOLD_VALUE_CHAIN_PHASE_INSTANCE.md).
+
+**N-D-C:** **D** = Definition (constraints, boundaries, specs). **C** = Cont
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE.md
+extension: .md
+excerpt:
+---
+doc_id: abstract_value_chain_phase_template
+title: Abstract Value Chain Phase Template
+type: template
+status: active
+domain: pdi
+layer: value_chain
+projects:
+ - gold
+ - shea
+tags:
+ - pdi
+ - template
+ - value_chain
+ - phase_mapping
+ - ndc
+related_docs:
+ - abstract_supply_chain_phase_template
+ - gold_value_chain_phase_instance
+ - shea_value_chain_phase_instance
+key_claims:
+ - value_chain_aligns_to_supply_chain_by_phase_id
+source_role: phase_template
+---
+
+# Abstract Value Chain Phase Template
+
+Product-agnostic **value chain** phase model (phases 0–8) aligned with the [Abstract Supply Chain Phase Template](ABSTRACT_SUPPLY_CHAIN_PHASE_TEMPLATE.md). Each **value_phase_id** corresponds to the same logical stage as supply **phase_id**; linkage is by identifier only—no mixing of physical and va
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/GOLD_VALUE_CHAIN_PHASE_INSTANCE.md
+extension: .md
+excerpt:
+---
+doc_id: gold_value_chain_phase_instance
+title: "Gold — Value Chain Phase Instance"
+type: documentation
+status: active
+domain: pdi
+layer: value_chain
+projects:
+ - gold
+tags:
+ - gold
+ - pdi
+ - phase_mapping
+ - value_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Gold — Value Chain Phase Instance
+
+**Template reference:** This instance follows the [Abstract Value Chain Phase Template](ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE.md). Value phases align with supply chain phases via `value_phase_id` = `phase_id`; only identifiers link the two layers.
+
+Current project data: schema (`value_chain_phases_ndc.csv`, `value_chain_metric_definitions.csv`, `value_chain_data_sources.csv`) and synthetic N-D-C indices in `value_chain_metrics_ndc.csv`. **Actual value metrics** (revenue_usd, aisc_usd_per_oz, refin
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/NDC_CONCEPTS_PARAMETERS_AND_SOURCES_REFERENCE.md
+extension: .md
+excerpt:
+---
+doc_id: ndc_concepts_parameters_sources_reference
+title: N-D-C Definitions Reference Guide
+type: documentation
+status: active
+domain: pdi
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - ndc
+ - pdi
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# N-D-C Definitions Reference Guide
+
+**How the D (Definition) and C (Contribution) values are defined, where they come from, and how to research them further.**
+
+This document is written for someone who wants to understand the intellectual and data sources behind the N-D-C model in this project, audit the current values, or extend the model with real empirical data.
+
+---
+
+## The Short Version
+
+| What | Where |
+|---|---|
+| What D and C *mean* conceptually for each phase | `docs/Research/NDC_QUALITATIVE_D_AND_C_MAPPING_BY_PHASE.md` |
+| The named D
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/NDC_D_C_N_METRICS_CALCULATION_REFERENCE.md
+extension: .md
+excerpt:
+---
+doc_id: ndc_metrics_calculation_reference
+title: N-D-C Value Calculation Reference
+type: documentation
+status: active
+domain: pdi
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - ndc
+ - pdi
+ - value_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# N-D-C Value Calculation Reference
+
+## Quick Reference Guide
+
+This document explains exactly how D_value, C_value, and N_value are calculated in the gold supply chain model.
+
+---
+
+## TL;DR
+
+- **D_value** = Sum of constraint parameters (0-100 each) → typical total: 150-350
+- **C_value** = Sum of integration parameters (0-100 each) → typical total: 150-350
+- **N_value** = `√(D × C) × (balance_score/100)` → typical: 120-280
+- **Scale**: Dimensionless index (relative, not absolute units)
+- **Purpose**: Compare balance, identify bottlenecks, 
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/NDC_QUALITATIVE_D_AND_C_MAPPING_BY_PHASE.md
+extension: .md
+excerpt:
+---
+doc_id: ndc_qualitative_mapping_by_phase
+title: "N-D-C Qualitative Mapping: Supply Chain Applications"
+type: documentation
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ []
+tags:
+ - ndc
+ - pdi
+ - phase_mapping
+ - supply_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# N-D-C Qualitative Mapping: Supply Chain Applications
+
+**Related documents:** [Tholonic Integration Guide](../../../Research/modeling/THOLONIC_FRAMEWORK_SUPPLY_AND_VALUE_CHAIN_APPLICATION.md) | [Tholonic Framework Application](../../../Research/modeling/THOLONIC_FRAMEWORK_SUPPLY_AND_VALUE_CHAIN_APPLICATION.md)
+
+---
+
+## Overview
+
+This document demonstrates how the Tholonic N-D-C framework maps qualitatively onto real supply chains using the intrinsic mathematical character of the first three prime numbers. The fram
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI.html
+extension: .html
+excerpt:
+Phase Discovery Instrument — Supply Chain Phase Mapping
+
+Phase Discovery Instrument
+
+A material-agnostic supply chain phase mapping protocol — the phases are outputs, not inputs.
+
+Material / Product Being Analyzed
+
+Module 1
+
+Anchor the Chain
+
+Answer these seven questions once, before identifying any events.
+
+When to use:
+ Once, at the start — before listing events.
+
+What it does:
+ Establishes the two fixed endpoints of the chain (origin and market), identifies units at each end, and produces your first-pass list of physical forms and actor classes.
+
+How:
+ Answer precisely. Resist the urge to describe processes — that happens in Module 2. This module is only about naming states and actors.
+ 
+
+▶ Show example answers (Drinking water)
+
+Example — Drinking water (municipal supply)
+
+A1:
+ Rainwate
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_ECOSYSTEM_CASE_MANGO_COASTAL_Q_AND_A.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_pdi_pdi_ecosystem_case_mango_coastal_q_and_a
+title: "PDI Ecosystem Supply Chain — Questions & Answers"
+type: pdi_status
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ []
+tags:
+ - pdi
+ - supply_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# PDI Ecosystem Supply Chain — Questions & Answers
+### Coastal Mango Restoration Use Case
+### Clarity True Value Framework (CTVF) Alignment
+
+**Context:** These questions arose during evaluation of how the Phase Discovery Instrument (PDI) can be applied to quantify the supply chain of planting mango trees near the coast to recover and preserve the ecosystem, reduce carbon, and measurably improve the coastal environment. The ultimate product of this supply chain is more mango trees on the coast — making it a r
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_ECOSYSTEM_CASE_MANGO_COASTAL_Q_AND_A.pdf
+extension: .pdf
+excerpt:
+A1 Mango seed or rootstock (ungerminated, held in nursery stock or collected from parent trees)
+A2 Established coastal mango tree (canopy-closed, root-anchored, measurable by count per hectare
+or canopy area)
+Event B1 (entering) B2 (leaving) B3 flag?
+Germination Seed Germinated seedling Yes
+Nursery hardening Seedling Hardened transplant-ready stock Yes
+Field planting Nursery stock Transplanted sapling (in situ) Yes
+Establishment Juvenile sapling Rooted young tree (survival confirmed) Yes
+PDI Ecosystem Supply Chain — Questions & 
+Answers
+ 
+Coastal Mango Restoration Use Case 
+Clarity True Value Framework (CTVF) Alignment 
+Context: These questions arose during evaluation of how the Phase Discovery Instrument (PDI) can be applied 
+to quantify the supply chain of planting mango trees near the c
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_pdi_pdi_material_agnostic_phase_mapping_protocol
+title: "Phase Discovery Instrument (PDI)"
+type: pdi_status
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ []
+tags:
+ - pdi
+ - phase_mapping
+ - supply_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Phase Discovery Instrument (PDI)
+### A Material-Agnostic Supply Chain Phase Mapping Protocol
+
+**Version 1.0**
+**Project: True Value Analytics — Supply Chain Intelligence**
+
+---
+
+## Purpose
+
+This instrument is used to determine the phase structure of any material supply chain from first principles. It does not assume any prior knowledge of the industry or commodity. The phases are not inputs to this process — they are **outputs** of it.
+
+You bring:
+- Knowledge of what the material is
+- Willingness to t
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.pdf
+extension: .pdf
+excerpt:
+Module Name What you do What you get
+1 Anchor the ChainAnswer seven questions once, about the whole chainTwo fixed endpoints; a list of candidate events
+2 Event InventoryFor each candidate event, answer twelve questionsA scored record for every change event
+3 Boundary ScoringApply the scoring rule to each event recordA confirmed, numbered phase map
+4 Opacity Tagging Answer four questions per confirmed phaseA transparency classification for each phase
+Phase Discovery Instrument (PDI) 
+A Material-Agnostic Supply Chain Phase Mapping Protocol 
+Version 1.0
+Project: True Value Analytics — Supply Chain Intelligence
+Purpose 
+This instrument is used to determine the phase structure of any material supply chain from first principles. It does not assume any prior 
+knowledge of the industry or commodi
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_SCPI-SME.html
+extension: .html
+excerpt:
+SCPI-SME — Supply Chain Profile Instrument · Small Business Edition
+
+Supply Chain Profile Instrument — Small Business Edition
+
+🔗 SCPI-SME 
+Chain Mapper
+
+Map your supply chain in plain language. Identify bottlenecks, blind spots, and cost pressure points. No jargon required. Complete Sections 1–3 in order; Sections 4–6 update automatically as you go.
+
+Your Business Name / Product
+
+Analyst / Completed By
+
+Date
+
+Industry Sector
+
+Select sector…
+
+Food & Beverage
+
+Consumer Goods / FMCG
+
+Apparel & Textiles
+
+Electronics & Hardware
+
+Health & Beauty
+
+Agriculture & Farming
+
+Manufacturing (Other)
+
+Retail & Distribution
+
+Services
+
+Other
+
+Annual Scale
+
+Section 1
+
+Business Profile — Anchoring Your Chain
+
+Define the start and end of your supply chain before mapping the steps in between.
+
+Why this matters:
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_TEMPLATE.yaml
+extension: .yaml
+excerpt:
+# ============================================================
+# Phase Discovery Instrument (PDI) — AI Completion Template
+# Version 1.0
+# Project: True Value Analytics — Supply Chain Intelligence
+# ============================================================
+#
+# INSTRUCTIONS FOR AI USE
+# -----------------------
+# 1. Copy this file and rename it: PDI_<material>_<date>.yaml
+# e.g. PDI_olive_oil_2026-04-21.yaml
+# 2. Fill in every field. Do not delete fields.
+# 3. Where a value is genuinely unknown, write: UNKNOWN
+# and add a comment on the next line explaining why.
+# 4. For boolean fields (true/false), use lowercase true or false only.
+# 5. For multi-line text fields (marked with |), write freely across
+# as many lines as needed. Preserve the two-space indent.
+# 6. For list fields, add items
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_WORKED_EXAMPLE_GOLD_SUPPLY_CHAIN.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_pdi_pdi_worked_example_gold_supply_chain
+title: "Phase Discovery Instrument (PDI) — Gold Supply Chain"
+type: pdi_status
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ - gold
+tags:
+ - gold
+ - pdi
+ - phase_mapping
+ - supply_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Phase Discovery Instrument (PDI) — Gold Supply Chain
+### Worked Example: Primary Gold — Geological Origin to Exchange-Registered Bullion
+
+**Version 1.0 — Completed Example**
+**Project: True Value Analytics — Supply Chain Intelligence**
+**Based on:** PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md v1.0
+
+> **How to read this document:** This is a fully completed example of the PDI applied to the gold supply chain. All fields are filled in. Checkbox states are shown as `[x]` (sele
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_WORKED_EXAMPLE_GOLD_SUPPLY_CHAIN.pdf
+extension: .pdf
+excerpt:
+Module Name What you do What you get
+1 Anchor the ChainAnswer seven questions once, about the whole chainTwo fixed endpoints; a list of candidate events
+2 Event InventoryFor each candidate event, answer twelve questionsA scored record for every change event
+3 Boundary ScoringApply the scoring rule to each event recordA confirmed, numbered phase map
+4 Opacity Tagging Answer four questions per confirmed phaseA transparency classification for each phase
+Phase Discovery Instrument (PDI) — Gold 
+Supply Chain
+ 
+Worked Example: Primary Gold — Geological Origin to Exchange-Registered Bullion 
+Version 1.0 — Completed Example
+Project: True Value Analytics — Supply Chain Intelligence
+Based on: PHASE_DISCOVERY_INSTRUMENT.md v1.0
+How to read this document: This is a fully completed example of the PDI a
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/PDI_WORKED_EXAMPLE_MUNICIPAL_WATER_SUPPLY.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_pdi_pdi_worked_example_municipal_water_supply
+title: "Phase Discovery Instrument (PDI) — Municipal Drinking Water"
+type: pdi_status
+status: active
+domain: pdi
+layer: supply_chain
+projects:
+ []
+tags:
+ - pdi
+ - phase_mapping
+ - supply_chain
+ - water
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Phase Discovery Instrument (PDI) — Municipal Drinking Water
+### Worked Example: Simplest Possible Supply Chain
+
+**Version 1.0 — Completed Example**
+**Project: True Value Analytics — Supply Chain Intelligence**
+**Based on:** PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md v1.0
+
+> **Purpose of this document:** This is the simplest possible completed example of the PDI. It uses municipal drinking water — a chain every person on earth interacts with daily — to demonstrate 
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/PDI/SHEA_VALUE_CHAIN_PHASE_INSTANCE.md
+extension: .md
+excerpt:
+---
+doc_id: shea_value_chain_phase_instance
+title: "Shea Butter — Value Chain Phase Instance"
+type: documentation
+status: active
+domain: pdi
+layer: value_chain
+projects:
+ - shea
+tags:
+ - pdi
+ - phase_mapping
+ - shea
+ - value_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Shea Butter — Value Chain Phase Instance
+
+**Template reference:** This instance follows the [Abstract Value Chain Phase Template](ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE.md). Shea value phases map to shea supply phases: 0 Collection, 1 First sale, 2 Trading, 3 Processing, 4 Export, 5 Manufacturing, 6 Retail. Certification (abstract 5) and Circular (8) have no dedicated shea value phase here.
+
+Data from: `frontend/project/shea/data/shea_phase_metrics.csv`, `frontend/project/shea/data/Clarity_Cleo_Shea_Value_Chain_Outline.md`, `
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_EXPLAINED_MATH.md
+extension: .md
+excerpt:
+---
+doc_id: tvpci_explained_math
+title: TVPCI Explained Math
+type: mathematical_reference
+status: active
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - tvpci
+ - math
+ - constants
+ - ndc
+related_docs:
+ - tvpci_foundation
+ - tvpci_specification
+key_claims:
+ - five_constants_provide_coherence_reference_points
+source_role: mathematical_explainer
+---
+
+# The True Value Pricing Convergence Index (TVPCI)
+### *An Introduction with Mechanics, Mathematics, and Interpretation*
+
+---
+
+## Preface
+
+This document explains the **True Value Pricing Convergence Index (TVPCI)**: what it measures, how it is calculated, and what it means for price interpretation. It assumes familiarity with the True Value Framework (TVF) and the N-D-C phase analysis that underpins it. If you haven't read the TVF college
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION.md
+extension: .md
+excerpt:
+---
+doc_id: tvpci_foundation
+title: TVPCI Foundation
+type: mathematical_reference
+status: active
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - tvpci
+ - mathematics
+ - tholonic
+ - constants
+related_docs:
+ - tvpci_specification
+ - tvpci_explained_math
+key_claims:
+ - tholonic_structure_is_grounded_in_first_principles
+source_role: theoretical_foundation
+---
+
+# True Value: From First Principles to the Pricing Convergence Index
+
+## A Ground-Up Derivation of the Tholonic Model and Its Application to Value
+
+---
+
+## Part I: The Tholonic Model and the Significance of 2, 3, and 5
+
+### 1.1 Starting from Nothing
+
+The Tholonic model begins where every rigorous framework must: with the simplest possible state.
+
+That state is **nothingness**, represented as zero. Zero is not an absence of meanin
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION_INTRO.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_tvpci_tvpci_foundation_intro
+title: The Tholonic Model and the True Value Pricing Convergence Index
+type: mathematical_reference
+status: active
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - tholonic
+ - tvpci
+ - value_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# The Tholonic Model and the True Value Pricing Convergence Index
+
+## A Four-Page Introduction
+
+---
+
+## The Problem with Commodity Prices
+
+When gold trades at a given price on a commodity exchange, that price reflects everything the market knows at that moment: supply and demand signals, futures positions, macroeconomic expectations, and speculative flows. What it does not reflect is the structural reality of the chain that produced the gold. The exchange has no visibili
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION_SIMPLE.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_tvpci_tvpci_foundation_simple
+title: The TrueValue Pricing Convergence Index
+type: mathematical_reference
+status: active
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - tvpci
+ - value_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# The TrueValue Pricing Convergence Index
+
+*A plain-language explanation*
+
+---
+
+## The Problem: Prices Carry No Structural Information
+
+When a kilogram of shea butter concentrate leaves a collector in Burkina Faso for \$0.15 and
+arrives on a European shelf as body butter worth \$47.50, something significant happened in
+between. Six or seven supply chain steps added processing, logistics, packaging, branding, and
+retail margin. The price at each end is real. But the price at the retail end tells you nothin
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX.md
+extension: .md
+excerpt:
+---
+doc_id: tvpci_specification
+title: TVPCI True Value Pricing Convergence Index
+type: methodology
+status: active
+domain: tvpci
+layer: methodology
+projects:
+ - gold
+ - shea
+ - aubeb
+tags:
+ - tvpci
+ - "true_value"
+ - pricing
+ - convergence
+ - ndc
+related_docs:
+ - tvpci_foundation
+ - tvpci_explained_math
+key_claims:
+ - pricing_convergence_can_be_evaluated_against_tholonic_balance
+source_role: tvpci_methodology
+---
+
+# True Value Pricing Convergence Index (TVPCI)
+## Technical Specification and Methodology
+
+**Version**: 1.0 
+**Status**: Specification 
+**Applies to**: Gold supply chain (Phase 0–7), Shea supply chain (Phase 0–6) 
+**Framework**: TrueValue Analytics — C-G-N TrueValue model 
+
+---
+
+## 1. Purpose
+
+The **True Value Pricing Convergence Index (TVPCI)** is a dimensionless composite index
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/dimension-grid.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig1_tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig2_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig3_embedded_child.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig4_convergence_curves.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig6_gaussian_dc_axis.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig7_tvpci_radar.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig8_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/fig_formula_trigram-4s.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/tholonic_constants_original.py
+extension: .py
+excerpt:
+#!/usr/bin/env python3
+
+from functools import partial
+
+def x_pi_over_4(max_iter: int, seeds: tuple, istep: int = 2) -> float:
+ N, D, C = seeds
+ d_step = istep**2
+ c_step = istep * 2
+ for _ in range(max_iter):
+ N = N - (1.0 / D) + (1.0 / C)
+ D += d_step
+ C += c_step
+ return N
+
+def x_phi(max_iter: int, seeds: tuple) -> float:
+ N, D, C = seeds
+ for _ in range(max_iter):
+ N = 1.0 + (1.0 / N)
+ return N
+
+def x_e(max_iter: int, seeds: tuple) -> float:
+ N, D, C = seeds
+ N = D / C
+ C = D
+ for count in range(1, max_iter):
+ C *= count
+ N += D / C
+ return N
+
+def x_sqrt2(max_iter: int, seeds: tuple) -> float:
+ N, D, C = seeds
+ for _ in range(max_iter):
+ N = (N + (D / N)) / C
+ return N
+
+def x_ln2(max_iter: int, seeds: tuple) -> float:
+ N, D, C = seeds
+ for count in range(max_iter):
+ term = D / (count + 
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/092-two2Dmaps.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/10orders.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/111-color-merged-3a.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/123xsums.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/12spectrum.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/25pair.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/2squares.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/2tris.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/3groups.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/63treenuns.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/CSHS-sm.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/TRIBIN.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/TRIBIN10.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/TRIBINoct.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/TRIBINprime2.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/arxiv-tritest.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/bases.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/bin2dec.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/cals.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/coordsbindec.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/coordsbindec_lines-red.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/curve-H.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/di-eq-di.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/di-eq-eq.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/eq-ti-ti.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/family-3.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/forms_spectrum.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/harmonic-shell.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/hiprimes1.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/insert_1_full.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/insert_1_half.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/lambda-tri-1.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/left-div.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/leibnix-pi-tho.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/matter_0017.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/maxw4.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/metals_ratios.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/num_entropy.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/num_func_list.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/numcoltree.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/ohm-numbers.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/order.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/papersize.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/platonics.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/pp_123456.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/pp_3col.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/pp_60all.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/pp_exponents.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/pp_interesting.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/pp_primes.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/prime_stripes.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/primechart.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/primechart_tri.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/primes_vs_prods.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/prototree_parent.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/right-div.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/squares.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/tcurve.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/tt-up-dn.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/tvoids.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/300.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/307.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/309.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/311.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/315.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/316.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/317.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/324.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/326.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/330.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/345.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/357.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/378.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/379.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/380.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/381.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/383.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Images/math/384.svg
+extension: .svg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/dimension-grid.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig1_tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig2_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig3_embedded_child.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig4_convergence_curves.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig6_gaussian_dc_axis.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig7_tvpci_radar.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig8_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/fig_formula_trigram-4s.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/bottom.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/curve.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/dimension-grid.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig1_tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig1_tetrahedron.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig2_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig2_tholonic_triad.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig3_embedded_child.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig3_embedded_child.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig3_embedded_child_fin.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig3_embedded_child_fin.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig4_convergence_curves.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig4_convergence_curves.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig5_vertex_map.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig6_gaussian_dc_axis.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig7_tvpci_radar.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig8_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig8_tholonic_triad.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_edge_groupings.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_formula_trigram-4s.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_formula_trigram-4s.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_formula_trigrams.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_formula_trigrams.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_tholonic_vertex_map.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/fig_user_tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/front.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/left.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/right.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/tri-base.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/tri-front.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/tri-left.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/tri-left.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/TVPCI_FOUNDATION/archive/tri-right.psd
+extension: .psd
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/023-C1-Tholonic_Math.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_tvpci_archive_023_c1_tholonic_math
+title: "Appendix C1: Tholonic Math — Numbers, Archetypes, and π"
+type: documentation
+status: archived
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - tholonic
+ - tvpci
+related_docs:
+ []
+key_claims:
+ []
+---
+
+---
+creator:
+- role: author
+ text: Duncan Stroud
+contributor:
+- role: author
+ text: Jeff Milton
+subtitle: The Existential Mechanics of Awareness
+pubdate: January 15, 2020
+title: THOLONIA
+author: Duncan Stroud
+ISBN-13: 978-1-6780-2532-8
+rights: Copyright ©2020 Duncan Stroud CC BY-NC-SA 4.0
+rights-desc: 'This book is an open sourced book. This means that anyone can contribute changes or updates. Instructions and more information at <https://tholonia.github.io/the-book> (or contact the author at
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/024-C2-Squares_Primes.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_tvpci_archive_024_c2_squares_primes
+title: "Appendix C2: Tholonic Math — Squares, Roots, and Prime Numbers"
+type: documentation
+status: archived
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - tholonic
+ - tvpci
+related_docs:
+ []
+key_claims:
+ []
+---
+
+---
+creator:
+- role: author
+ text: Duncan Stroud
+contributor:
+- role: author
+ text: Jeff Milton
+subtitle: The Existential Mechanics of Awareness
+pubdate: January 15, 2020
+title: THOLONIA
+author: Duncan Stroud
+ISBN-13: 978-1-6780-2532-8
+rights: Copyright ©2020 Duncan Stroud CC BY-NC-SA 4.0
+rights-desc: 'This book is an open sourced book. This means that anyone can contribute changes or updates. Instructions and more information at <https://tholonia.github.io/the-book> (or contact the a
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/025-C3-Constants_Entropy.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_tvpci_archive_025_c3_constants_entropy
+title: "Appendix C3: Tholonic Math — Constants, Entropy, and Structure"
+type: documentation
+status: archived
+domain: tvpci
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - tholonic
+ - tvpci
+related_docs:
+ []
+key_claims:
+ []
+---
+
+---
+creator:
+- role: author
+ text: Duncan Stroud
+contributor:
+- role: author
+ text: Jeff Milton
+subtitle: The Existential Mechanics of Awareness
+pubdate: January 15, 2020
+title: THOLONIA
+author: Duncan Stroud
+ISBN-13: 978-1-6780-2532-8
+rights: Copyright ©2020 Duncan Stroud CC BY-NC-SA 4.0
+rights-desc: 'This book is an open sourced book. This means that anyone can contribute changes or updates. Instructions and more information at <https://tholonia.github.io/the-book> (or contact th
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/036-tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/Thumbs.db:encryptable
+extension: .db:encryptable
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/binary_shapes-1.xlsx
+extension: .xlsx
+excerpt:
+# Aspect Point (0D) Line (1D)&#10;(x) Triangle (2D)&#10;(x,y) Tetrahedron (3D)&#10;(x,y,z) 4-Simplex (4D)&#10;(w,x,y,z) Position Length Area Volume Hypervolume Dimensions (axes) Bits per coordinate Number of binary states Number of vertices (shape) Max combinations 1 (2 0 ) 2 (2 1 ) 4 (2 2 ) 8 (2 3 ) 16 (2 4 ) Hex values (all) 00 00, 01 00, 01, 02, 03 00, 01, 02, 03&#10;04, 05, 06, 07 00, 01, 02, 03&#10;04, 05, 06, 07&#10;08, 09, 0A, 0B&#10;0C, 0D, 0E, 0F Vertices used (min shape) 00, 01, 02 00, 01, 02, 04 00, 01, 02, 04, 08
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/binary_shapes.xlsx
+extension: .xlsx
+excerpt:
+Aspect Point (0D) Line (1D)&#10;(x) Triangle (2D)&#10;(x,y) Tetrahedron (3D)&#10;(x,y,z) 4-Simplex (4D)&#10;(w,x,y,z) Position Length Area Volume Hypervolume Dimensions (axes) Bits per coordinate Number of binary states Number of vertices (shape) Max combinations 1 (2 0 ) 2 (2 1 ) 4 (2 2 ) 8 (2 3 ) 16 (2 4 ) Hex values (all) 0, 1 0, 1, 2, 3 0, 1, 2, 3, 4, 5, 6, 7 0, 1, 2, 3, 4, 5, 6, 7&#10;8, 9, A, B, C, D, E, F Vertices used (min shape) 0, 1, 2 0, 1, 2, 4 0, 1, 2, 4, 8 Binary values (all combinations) 0 , 1 00 , 01 , 10 , 11 000 , 001 , 010 , 011&#10; 100 , 101, 110, 111 0000 , 0001 , 0010 , 0011&#10; 0100 , 0101, 0110, 0111&#10; 1000 , 1001, 1010, 1011&#10;1100, 1101, 1110, 1111
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/bottom.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/fig1_tholonic_triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/fig2_embedded_child.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/fig3_convergence_curves.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/fig4_gaussian_dc_axis.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/fig5_tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/fig6_tvpci_radar.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/front.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/left.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/make_tetrahedron.py
+extension: .py
+excerpt:
+"""
+Blender 4/5 Python script — Regular tetrahedron with per-face UV islands and materials.
+
+Run with:
+ blender --background --python make_tetrahedron.py
+
+The script:
+ • Constructs a regular tetrahedron inscribed in the unit sphere
+ • Assigns 4 named materials (bottom / front / left / right), one per face
+ • Maps each face to an upright full-UV-space triangle island (0-1 range)
+ • Loads matching PNG textures from the script's own directory
+ • Adds camera + sun light with a clear view of the front face
+ • Saves tetrahedron_uv.blend alongside this script
+"""
+
+import bpy
+import bmesh
+import math
+import os
+
+# ── paths ─────────────────────────────────────────────────────────────────────
+
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+OUT_BLEND = os.path.join(SCRIPT_DIR, "tetrahedron_u
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/make_textures.py
+extension: .py
+excerpt:
+"""Create four labeled, colored placeholder PNG textures for the tetrahedron."""
+
+from PIL import Image, ImageDraw, ImageFont
+import os
+
+OUT = os.path.dirname(os.path.abspath(__file__))
+
+FACES = {
+ "bottom": (80, 160, 220), # blue
+ "front": (220, 100, 80), # red-orange
+ "left": (100, 200, 100), # green
+ "right": (220, 180, 60), # amber
+}
+
+SIZE = 512
+
+for name, color in FACES.items():
+ img = Image.new("RGB", (SIZE, SIZE), color)
+ draw = ImageDraw.Draw(img)
+
+ # Dark border
+ draw.rectangle([4, 4, SIZE - 5, SIZE - 5], outline=(30, 30, 30), width=6)
+
+ # Large centred label
+ try:
+ font = ImageFont.truetype("/usr/share/fonts/TTF/DejaVuSans-Bold.ttf", 96)
+ except OSError:
+ font = ImageFont.load_default()
+
+ bbox = draw.textbbox((0, 0), name.upper(), font=font)
+ tw, th = bbox[2] - bbox[0], bbox[3] -
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/math-tetrahedron.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/right.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/tetra.obj
+extension: .obj
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/tetrahedron_uv.blend
+extension: .blend
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/archive/tetrahedron_uv.blend1
+extension: .blend1
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/gametheory/gametheory_tholonic_sliders.html
+extension: .html
+excerpt:
+Tholonic Game Theory Simulator
+
+Simulation
+
+Rounds
+
+200
+
+20
+1000
+
+Players
+
+20
+
+2
+100
+
+Seed
+
+0
+
+0
+99
+
+Payoff Structure
+
+Cooperation cost
+
+1.00
+
+0.1
+3.0
+
+Public benefit multiplier
+
+0.12
+
+0.01
+0.50
+
+Resource Dynamics
+
+Regen per cooperator
+
+0.020
+
+0.001
+0.1
+
+Decay per defector
+
+0.010
+
+0.001
+0.1
+
+Initial resource
+
+1.00
+
+0.1
+1.0
+
+Learning
+
+Learning rate
+
+0.050
+
+0.005
+0.3
+
+Initial coop probability
+
+0.50
+
+0.0
+1.0
+
+Tholonic Parameter
+
+Tholonic lambda (λ)
+
+1.50
+
+0 (disabled)
+5.0
+
+Run
+
+Reset
+
+Final Cooperation — Standard (A)
+
+—
+
+Final Cooperation — Tholonic (B)
+
+—
+
+Final Resource — Standard (A)
+
+—
+
+Final Resource — Tholonic (B)
+
+—
+
+Cooperation Rate Over Time
+
+System A — Standard
+
+System B — Tholonic
+
+Resource Level Over Time
+
+System A — Standard
+
+System B — Tholonic
+
+Individual Player Cooperation Pro
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/gametheory/gold_supply_chain.html
+extension: .html
+excerpt:
+Gold Supply Chain — Tholonic Game Theory Simulator
+
+Phase Seed Data (real D/C/Balance)
+
+Simulation
+
+Rounds (market cycles)
+
+200
+
+20
+1000
+
+Seed
+
+0
+
+0
+99
+
+Payoff Structure
+
+D-constraint overhead (cost)
+
+1.00
+
+0.1 (low)
+3.0 (high)
+
+Downstream N-state multiplier
+
+0.12
+
+0.01
+0.50
+
+Chain Integrity Dynamics
+
+Regen per balanced phase
+
+0.020
+
+0.001
+0.1
+
+Decay per imbalanced phase
+
+0.010
+
+0.001
+0.1
+
+Initial chain integrity (N)
+
+0.74
+
+0.1 (degraded)
+1.0 (pristine)
+
+Learning
+
+Phase adaptation rate
+
+0.050
+
+0.005 (slow)
+0.3 (fast)
+
+Tholonic Parameter
+
+Tholonic lambda (λ)
+
+1.50
+
+0 (disabled)
+5.0
+
+Run
+
+Reset
+
+Final Chain Balance — Standard (A)
+
+—
+
+Final Chain Balance — Tholonic (B)
+
+—
+
+Final N-State Integrity — Standard (A)
+
+—
+
+Final N-State Integrity — Tholonic (B)
+
+—
+
+Chain Balance Over Time
+
+System A —
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/gametheory/tholonic_vs_twistor_theory.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_gametheory_tholonic_vs_twistor_theory
+title: "Twistor Theory as a Tholonic Instantiation: Structural Correspondence Between Penrose's Twistor Framework and the Tholonic N-D-C Model in Four-Dimensional Lorentzian Spacetime"
+type: documentation
+status: active
+domain: tholonic_framework
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - ndc
+ - tholonic
+ - tholonic_framework
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Twistor Theory as a Tholonic Instantiation: Structural Correspondence Between Penrose's Twistor Framework and the Tholonic N-D-C Model in Four-Dimensional Lorentzian Spacetime
+
+Working Paper
+Supply Chain Intelligence Project / Tholonic Model Research
+draft v1.0 / April 2026
+
+---
+
+## Abstract
+
+The Tholonic model proposes that all formed and
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/Achieving_Sustainability_In_Developing_Markets_2021.03.09_v1.pdf
+extension: .pdf
+excerpt:
+FS
+ C
+lub
+N
+ews
+ E
+vents
+ P
+artnerships
+ACHIEVING SUSTAINABILITY IN DEVELOPING MARKETS: A CASE STUDY WIT
+H 
+SERIOUS SHEA & CLEO ORGANICS
+Webinar
+Tuesday, 09 March 2021, 09:00am GMT
+Dr Sarah Jones, Secretary General, Clarity Coalition
+William Kwende, Executive Chairman, Agritech Group
+A Word From Today’s Chairman
+Professor Michael Mainelli
+Executive Chairman
+Z/Yen Group
+2
+FS Club
+Platinum 
+Sponsors
+Personal 
+Sponsors
+Gold 
+Sponsors
+Silver 
+Sponsors
+Bronze 
+Sponsors
+3
+Today’s Agenda
+• 09:00 – 09:05 Chairman’s Introduction
+• 09:05 – 09:30 Keynote Address 
+ William Kwende
+ Dr Sarah Jones
+• 09:30 – 09:45 Questions & Answers
+4
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/CORETTE_CHERRY_ROOTSTOCKS_INTENSIVE_ORCHARDS_SOURCE_NOTE.md
+extension: .md
+excerpt:
+---
+doc_id: corette_cherry_rootstocks_intensive_orchards_source_note
+title: Corette Cherry Rootstocks And Intensive Orchards Source Note
+type: source_note
+status: active
+domain: research
+layer: supply_chain
+projects:
+ - agriculture
+tags:
+ - agriculture
+ - rootstocks
+ - climate_adaptation
+ - orchard_intensification
+ - mechanization
+ - mediterranean_soils
+related_docs:
+ - supply_chain_rules
+ - abstract_supply_chain_phase_template
+key_claims:
+ - rootstock_training_system_fit_drives_cherry_orchard_adaptation
+source_file: NEW/corette-cherry-rootstocks-spain-mediterranean-soils-intensive-orchards.html
+source_url: https://cherrytimes.it/en/news/corette-cherry-rootstocks-spain-mediterranean-soils-intensive-orchards
+source_type: public
+created: 2026-04-26
+---
+
+# Corette Cherry Rootstocks And Intens
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/Ep-Carbon-new-Requirements-Detarium-senegalense.xlsx
+extension: .xlsx
+excerpt:
+Plantation Site List: Site Name Primary Area (Ha) Secondary Area (Ha) PAPSEN Ndiakhate Saer Nghass Darou Salam Mbodiene Ndiaye Darou Gaye Lamsing Keur Abdou Ndiaye Batal Sine Macoumba Bousra Leye Sao Nder Nar Goly Gade Niandoul Tieye Tieye Ndiarga Mbalene Tambacounda 1 Tambacounda 2 Belle Belle Nursery Zone Dialiguel Sarre Bema/Gouniag Bakel Nursery Fenaye Dieri Fenaye Dieri 2 Loumbol Eco Village Makoumbel GGW Senegal TOTAL: Farmers Fatick Diourbel Shea Plantation Zone Community Land/Private Land Protected by the Ministry of Environment and Forestery Region Merina Dakhar Niakhane-Merina Dakhar https://www.google.com/maps/@15.09882,-16.37121,832m/data=!3m1!1e3 https://www.google.com/maps/@15.04139,-16.5366,832m/data=!3m1!1e3 https://www.google.com/maps?ll=15.09967,-16.42397&amp;z=17&amp;t=h
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/Foranetal.2005-BalancingAct-VOLUME1.pdf
+extension: .pdf
+excerpt:
+B a l a n c i n g A c t
+A TRIPLE BOTTOM LINE ANALYSIS 
+OF THE AUSTRALIAN ECONOMY
+Balancing Act Volume 1
+VOLUME 1
+
+© Commonwealth of Australia 2005
+Information contained in this publication may be 
+copied or reproduced for study, research, information 
+or educational purposes, subject to inclusion of an 
+acknowledgment of the source.
+DISCLAIMERS
+The views and opinions expressed in this publication are 
+those of the authors and do not necessarily reﬂ ect those 
+of the Department of the Environment and Heritage or 
+the Minister for the Environment and Heritage.
+While reasonable efforts have been made to ensure 
+that the contents of this publication are factually correct, 
+the Commonwealth does not accept responsibility for 
+the accuracy or completeness of the contents, and 
+shall not be liabl
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/Foranetal.2005-BalancingAct-VOLUME2.pdf
+extension: .pdf
+excerpt:
+B a l a n c i n g A c t
+A TRIPLE BOTTOM LINE ANALYSIS 
+OF THE AUSTRALIAN ECONOMY
+Balancing Act Volume 2
+VOLUME 2
+
+© Commonwealth of Australia 2005
+Information contained in this publication may be 
+copied or reproduced for study, research, information 
+or educational purposes, subject to inclusion of an 
+acknowledgment of the source.
+DISCLAIMERS
+The views and opinions expressed in this publication are 
+those of the authors and do not necessarily reﬂ ect those 
+of the Department of the Environment and Heritage or 
+the Minister for the Environment and Heritage.
+While reasonable efforts have been made to ensure 
+that the contents of this publication are factually correct, 
+the Commonwealth does not accept responsibility for 
+the accuracy or completeness of the contents, and 
+shall not be liabl
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/Publis_Sustainability_Targets.jpeg
+extension: .jpeg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/SUSTAINABILITY_LINKED_LOAN_CREDIT_RATING_FRAMEWORK.md
+extension: .md
+excerpt:
+---
+doc_id: sustainability_linked_loan_framework
+title: Sustainability-Linked Loan Credit Rating Framework
+type: research_paper
+status: active
+domain: sustainability_finance
+layer: financial_abstraction
+projects:
+ []
+tags:
+ - sustainability
+ - credit_rating
+ - finance
+ - ndc
+related_docs:
+ - clarity_vs_kpmg_tvf
+key_claims:
+ - ndc_metrics_can_support_sustainability_credit_analysis
+source_role: finance_methodology
+---
+
+# Sustainability-Linked Loan Credit Rating Framework
+## Seven-Country African Supply Chain Investment Structure
+
+**Version**: 1.0 
+**Date**: April 2026 
+**Status**: Strategic Framework Document
+
+---
+
+## 1. Overview
+
+This document defines the recommended institutional framework for structuring **Sustainability-Linked Loans (SLLs)** across seven Sub-Saharan African countries, us
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/THE_CORETTE_ROOTSTOCK_SERIES_OPENS_UP_NEW_OPPORTUNITIES_FOR_CHERRY_CULTIVATION_IN_SPAIN_SOURCE_NOTE.md
+extension: .md
+excerpt:
+---
+doc_id: the_corette_rootstock_series_opens_up_new_opportunities_for_cherry_cultivation_in_spain_source_note
+title: The Corette® rootstock series opens up new opportunities for cherry cultivation in Spain
+type: source_note
+status: draft
+domain: research
+layer: methodology
+projects:
+ - unassigned
+tags:
+ - converted_html
+ - source_note
+related_docs: []
+key_claims: []
+source_file: NEW/corette-cherry-rootstocks-spain-mediterranean-soils-intensive-orchards.html
+source_type: public
+created: 2026-04-26
+---
+
+# The Corette® rootstock series opens up new opportunities for cherry cultivation in Spain
+
+## Source Context
+
+Generated from `NEW/corette-cherry-rootstocks-spain-mediterranean-soils-intensive-orchards.html` by `scripts/convert_inbox_sources.py`.
+
+## Extracted Text
+
+The Corette® rootstock s
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/WWF_Adaptation_Case_Studies.doc
+extension: .doc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/furure_farming_in_spain.pdf
+extension: .pdf
+excerpt:
+OECD Agriculture and/uni00A0Food Policy Reviews
+Policies for/uni00A0the/uni00A0Future 
+of/uni00A0Farming and/uni00A0Food in/uni00A0Spain
+Policies for/uni00A0the/uni00A0Future of/uni00A0Farming and/uni00A0Food in/uni00A0Spain OECD Agriculture and/uni00A0Food Policy Reviews
+
+OECD Agriculture and Food Policy Reviews
+Policies for
+ the Future 
+of Farming and Food in Spain
+
+This document, as well as any data and map included herein, are without prejudice to the status of or sovereignty over
+any territory,
+ to the delimitation of international frontiers and boundaries and to the name of any territory, city or area.
+The statistical data for Israel are supplied by and under the responsibility of the relevant Israeli authorities. The use of
+such data by the OECD is without prejudice to the status of
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/sustainability-scenarios_3-1.pdf
+extension: .pdf
+excerpt:
+Sustainability 
+scenarios 
+Contents: 
+ 
+What is sustainability? 
+What are scenarios? 
+Background: The 2050 predictions 
+ 
+Our scenarios: 
+1. Solar energy 
+ 
+2. Ecological x Economical 
+ 
+3. Sustainability points as involvement 
+ 
+4. Sustainable cities, sustainable homes
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/archive/tv-sarah.txt
+extension: .txt
+excerpt:
+TRUE VALUE SOFTWARE V1
+SNJ 23.01.26
+
+WHO’S THE FIRST CUSTOMER?
+(Commodities Triples as True Value Initiative 2018 (high margin commodities for
+sustainability reporting/marketing vs minimal travel costs to pitch/existing contacts) +
+potential data application to run with Jack and Rhys Perseus Office Refurbishment
+Model + potential to market/pump prime funding from‘The Crowd’)
+Gold &amp; Copper (Primary Production e.g Newmont Corporation, Recycling phones e.g.
+UK Royal Mint, Wales)
+Lithium (Argentine Mines e.g. Alkem, Rio Tinto, Zijin Mining to explore)
+Shea (Serious Shea demo only for revisiting 2022 commercial contacts, investors and
+World Economic Forum/UN Platforms, The Crowd)
+Cherries (Marks and Spencer &amp; Waitrose Supermarkets, UK N.B. China a huge market
+for the Chinese New Year)
+O
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/blue_carbon/Africa_Blue_Carbon_Stakeholder_Brief.pdf
+extension: .pdf
+excerpt:
+Africa Blue Carbon Initiative
+Mangrove Restoration, Climate Resilience & Biodiversity Conservation
+150,000 hectares  7 African nations  USD 1 billion in climate finance
+Led by the African Union Commission in partnership with Green United Development (GUD)
+The Opportunity
+Africa's mangrove belt holds some of the planet's highest carbon density (800 Mg C/ha), yet has degraded at
+alarming pace. The Africa Blue Carbon Initiative, led by the African Union Commission and Green United
+Development, locks away massive carbon volumes, delivers coastal protection to vulnerable communities,
+restores critical fisheries, and opens major new revenue streams through emerging blue carbon markets.
+Carbon Density
+800 Mg C/ha
+5–10x terrestrial forests
+Wave Protection
+13–66%
+per 100m mangrove belt
+Fisheries 
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/blue_carbon/BLUE_CARBON_CTVF_GAP_ANALYSIS.md
+extension: .md
+excerpt:
+---
+doc_id: blue_carbon_ctvf_gap_analysis
+title: Blue Carbon cTVF Gap Analysis
+type: research_note
+status: draft
+domain: research
+layer: methodology
+projects:
+ - blue_carbon
+tags:
+ - blue_carbon
+ - ctvf
+ - gap_analysis
+ - blue_finance
+ - blended_finance
+ - ecosystem_services
+ - investor_readiness
+related_docs:
+ - blue_finance_3cs_blended_finance_source_note
+ - sustainability_linked_loan_framework
+ - clarity_vs_kpmg_tvf
+ - aubeb_pdi_feedback_source_note
+key_claims:
+ - blue_carbon_analysis_is_preliminary_due_to_limited_project_data
+ - blue_carbon_requires_mrv_and_ecosystem_service_baselines
+ - blue_carbon_coupon_advice_requires_kpi_and_verification_evidence
+created: 2026-04-26
+---
+
+# Blue Carbon cTVF Gap Analysis
+
+## Preliminary Status
+
+This is a preliminary cTVF scoping report for a Blue Ca
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/blue_carbon/Michael Mainelli African Blue Carbon.pdf
+extension: .pdf
+excerpt:
+de: Michael Mainelli <michael_mainelli@zyen.com> 
+para: "Sarah Jones (sarah.jones175@gmail.com)" <sarah.jones175@gmail.com>
+Cc: Janine Campling <janine.campling@globalgud.com>,
+Hendrik Hetzel <hendrik.hetzel@globalgud.com>
+fecha: 8 abr 2026, 11:52
+asunto: Africa Blue Carbon Initiative
+enviado por: zyen.com
+firmado por: ZyenLtd.onmicrosoft.com
+Sarah,
+Introducing you to Janine regarding her attached proposal.
+Africa Blue Carbon Initiative
+Mangrove Restoration, Climate Resilience & Biodiversity Conservation
+150,000 hectares • 7 African nations • USD 1 billion in climate finance
+ www.globalgud.com
+https://www.globalgud.com/great-green-wall
+ You’ll see when reading this that the Sahel and Green Green Wall feature, and I thought you and she 
+might share connections and ideas.
+With all best wishe
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/bonds/DBEB_bond_rating_gap_analysis.md
+extension: .md
+excerpt:
+---
+doc_id: dbeb_bond_rating_gap_analysis
+title: "DBEB Bond Rating: Current Methodology and Gap Analysis"
+type: research
+status: active
+domain: bond_analysis
+layer: financial_abstraction
+projects:
+ - danube
+tags:
+ - bond_rating
+ - gap_analysis
+ - sustainability_linked_bond
+ - ecosystem_services
+related_docs:
+ - danube_basin_bond
+ - bond-drivers
+---
+
+# Danube Basin Ecosystem Bond: Bond Rating Methodology and Gap Analysis
+
+## 1. What the Current Rating Is
+
+The Danube Basin Ecosystem Bond (DBEB) currently carries an **indicative grade of A+** based on a **composite ecosystem balance score of 80.8%**, derived from the Tholonic N-D-C framework.
+
+### How the current rating is calculated
+
+The composite score is the arithmetic mean of the **pi (operational coherence) scores** of all active subproj
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/bonds/bond-drivers.md
+extension: .md
+excerpt:
+reference article: https://claritycoalition.net/2-degrees-is-too-much/
+
+related research:
+ - pittock_freshwater_synopsis.md: Synopsis of Jamie Pittock's freshwater ecosystem
+ research and cross-reference with Danube project data. Key findings: irrigation
+ efficiency paradox (Grafton et al. Science 2018), climate change flow gap (Colloff
+ and Pittock Water 2022), environmental flow delivery gap, hydropower-fisheries
+ trade-offs. Directly updates human_irrigation_infrastructure and
+ natural_freshwater_availability PDI analyst notes and metrics CSVs.
+
+Quantifiability key:
+ [H] = High: publicly available, regularly updated, usable immediately
+ [M] = Medium: available but modeled, infrequent, or requires processing
+ [L] = Low: sparse, regional, estimated, or paywalled
+ [X] = None: no standardiz
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/bonds/pittock_freshwater_synopsis.md
+extension: .md
+excerpt:
+# Jamie Pittock — Freshwater Ecosystem Research: Synopsis and Danube Relevance
+
+**Compiled:** 2026-04-27
+**Source:** Google Scholar, ANU Research Portal, ResearchGate, The Conversation
+**Purpose:** Research synopsis and cross-reference with Danube Basin subproject data
+
+---
+
+## 1. Researcher Profile
+
+**Professor Jamie Pittock**
+Fenner School of Environment and Society, The Australian National University (ANU), Canberra.
+Top 2% of world scientists by citations (PLOS One, 2020). Editor of *Regional Environmental Change* and *Frontiers in Freshwater Science*.
+
+**Prior to ANU:** Director, WWF International Global Freshwater Programme (2001-2007). Earlier work with WWF Australia on environmental law, freshwater and threatened species conservation.
+
+**Primary research domains:**
+- Conservation o
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/infoarch/FRONTEND_SIMULATOR_VISUALIZATION_STRATEGY.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_research_frontend_simulator_visualization_strategy
+title: Frontend Visualization Strategy
+type: research_note
+status: active
+domain: project_documentation
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - project_documentation
+ - research
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Frontend Visualization Strategy
+**Gold Supply Chain Intelligence Platform**
+
+---
+
+## Overview
+
+This document outlines the visualization and interaction strategy for the JavaScript-driven frontend, designed to maximize user understanding of **balance** and **sustainability** in the gold supply chain through the Tholonic N-D-C framework.
+
+---
+
+## Core Principle
+
+> **"When balance and sustainability are optimal, the process is most efficient and therefore long-term more profitable."**
+
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/infoarch/VALUE_CHAIN_RULES.md
+extension: .md
+excerpt:
+---
+doc_id: value_chain_rules
+title: Value Chain Rules
+type: rules
+status: active
+domain: value_chain_modeling
+layer: value_chain
+projects:
+ - gold
+ - shea
+ - aubeb
+tags:
+ - value_chain
+ - rules
+ - pricing
+ - margins
+related_docs:
+ - supply_chain_rules
+ - abstract_value_chain_phase_template
+key_claims:
+ - value_layer_must_not_be_mixed_with_physical_supply_chain
+source_role: governance_rule
+---
+
+# Value Chain Layer Rules (Strictly Separate)
+
+## Purpose
+
+This layer models the **value chain** (profit, pricing, margins, cost structure) for the gold supply chain.
+
+It is **strictly separated** from the physical **supply chain** layer.
+
+## Non-Negotiable Separation
+
+- **Do not** add value-chain metrics (USD, margins, pricing) into any supply-chain CSVs, notebooks, or dashboards.
+- **Do not** infe
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/CLARITY_TRUE_VALUE_VS_KPMG_TRUE_VALUE.md
+extension: .md
+excerpt:
+---
+doc_id: clarity_vs_kpmg_tvf
+title: Clarity True Value Framework and KPMG True Value
+type: research_paper
+status: draft
+domain: "true_value_framework"
+layer: methodology
+projects:
+ - gold
+ - shea
+ - aubeb
+tags:
+ - "true_value"
+ - kpmg
+ - clarity
+ - esg
+ - ndc
+related_docs:
+ - tholonic_framework_supply_value_chain
+ - sustainability_linked_loan_framework
+key_claims:
+ - clarity_preserves_adaptive_system_data
+ - kpmg_monetizes_externalities
+ - corporate_materiality_can_filter_system_signals
+source_role: comparative_methodology
+---
+
+# Clarity True Value Framework and KPMG True Value
+## A Comparative Research Paper on Structural System Coherence and Monetized Externality Accounting
+
+### Abstract
+
+This paper compares the Clarity True Value Framework, a tholonic N-D-C system for phase-based ana
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/NDC-global-support.md
+extension: .md
+excerpt:
+---
+doc_id: ndc_global_support
+title: NDC Analysis of Global Sustainability Systems
+type: research_note
+status: active
+domain: tholonic_framework
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - ndc
+ - research
+ - sustainability
+ - tholonic_framework
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# NDC Analysis of Global Sustainability Systems
+
+## The Blue Economy and the Great Green Wall as Tholonic Case Studies
+
+---
+
+## 1. Introduction
+
+Modern sustainability initiatives increasingly converge on a common structural principle: systems must balance use, limitation, and regeneration in order to persist. While these initiatives are typically described in environmental or economic terms, they can be more precisely understood through the **Tholonic NDC framework**:
+
+* **Negotiation (N)**: Dynam
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/PHI_FACTOR_MAPPING_NOTES.txt
+extension: .txt
+excerpt:
+Regarding the phi relationship between each phase: the problem was that the input data we were using for each phase, which had been manually entered to reflect something closer to real-world conditions, was not optimal. When I changed all of the values to their ideal optimum, the ratio between the N-state of every adjacent phase became exactly 1.618. This confirms the argument that in a perfect system, each phase has a phi relationship with the phase before it.
+
+The way this is derived is specific to the phi model. In a perfect system, D and C are in their natural ratio of 2 to 3, the seed values assigned by the phi model. The N-state of a phase is simply D plus C, which gives 5. Now, the tholonic principle holds that the parent N-state differentiates into the next phase's D and C. Specifi
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/SARAH_DATA_INGESTION_QUICK_REFERENCE.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_research_modeling_sarah_data_ingestion_quick_reference
+title: Sarah Document Quick Reference
+type: research_note
+status: active
+domain: project_documentation
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - project_documentation
+ - research
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Sarah Document Quick Reference
+## Integration Summary for tv-sarah.txt
+
+---
+
+## TL;DR
+
+✅ **70% Already Aligned** - Your framework matches Sarah's philosophy 
+⚠️ **30% Requires Extension** - Add environmental metrics + entities + recycling phase 
+🎯 **Action**: Start with entity registry + water/waste metrics this week
+
+---
+
+## What's Already Integrated
+
+| Sarah's Requirement | Your Implementation | File |
+|--------------------|--------------------|------|
+| Physical flow first | R
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/SUPPLY_CHAIN_RULES.md
+extension: .md
+excerpt:
+---
+doc_id: supply_chain_rules
+title: Supply Chain Rules
+type: rules
+status: active
+domain: supply_chain_modeling
+layer: supply_chain
+projects:
+ - gold
+ - shea
+ - aubeb
+tags:
+ - supply_chain
+ - rules
+ - phase_mapping
+ - custody
+related_docs:
+ - value_chain_rules
+ - abstract_supply_chain_phase_template
+key_claims:
+ - physical_flow_precedes_value_interpretation
+source_role: governance_rule
+---
+
+# Supply Chain Rules
+## Gold Supply Chain Intelligence Project — AI Operating Rules (Supply Chain Layer)
+
+## Core Objective
+
+Build a quantitative, phase-resolved, physically grounded model of the gold supply chain, from geological origin to exchange-registered bullion, before introducing price, value, or financial interpretation.
+
+**Scope note**: This document governs the **Supply Chain (physical)** l
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/SYNTHETIC_DATA_COMPLETE.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_research_modeling_synthetic_data_complete
+title: "✅ Synthetic Data Implementation Complete"
+type: implementation_note
+status: active
+domain: project_documentation
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - project_documentation
+ - research
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# ✅ Synthetic Data Implementation Complete
+
+## Summary
+
+Successfully generated and loaded **synthetic N-D-C data** for gold supply chain development and testing.
+
+---
+
+## What Was Created
+
+### 1. Data Generator (`src/data/synthetic_data_generator.py`)
+- **370 lines** of production-ready synthetic data generation
+- **4 realistic scenarios** with distinct characteristics
+- **Reproducible** (seed=42 for consistent results)
+- **Scientifically accurate** N-D-C calculations
+
+### 2. 
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/THOLONIC_FRAMEWORK_SUPPLY_AND_VALUE_CHAIN_APPLICATION.md
+extension: .md
+excerpt:
+---
+doc_id: tholonic_framework_supply_value_chain
+title: Tholonic Framework Supply and Value Chain Application
+type: methodology
+status: active
+domain: tholonic_framework
+layer: methodology
+projects:
+ - gold
+ - shea
+ - aubeb
+tags:
+ - tholonic
+ - ndc
+ - supply_chain
+ - value_chain
+ - methodology
+related_docs:
+ - clarity_vs_kpmg_tvf
+ - tholonic_integration
+ - supply_chain_rules
+ - value_chain_rules
+key_claims:
+ - ndc_models_phase_coherence
+ - definition_contribution_balance_drives_negotiation
+source_role: core_methodology
+---
+
+# Tholonic Framework for Supply Chain and Value Chain Optimization
+## A Technical Framework for Modeling Complex Adaptive Systems
+
+### Abstract
+
+This document presents the tholonic model as a theoretical and practical framework for analyzing, modeling, and optimizing c
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/THOLONIC_IMPLEMENTATION_COMPLETE.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_research_modeling_tholonic_implementation_complete
+title: "Tholonic N-D-C Integration - Complete ✅"
+type: implementation_note
+status: active
+domain: tholonic_framework
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - ndc
+ - research
+ - tholonic
+ - tholonic_framework
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Tholonic N-D-C Integration - Complete ✅
+
+## What Was Implemented
+
+You asked for:
+1. ✅ **N-D-C parameters in schema**
+2. ✅ **Tholonic simulation engine**
+3. ✅ **Balance optimization**
+4. ✅ **Sustainability metrics**
+5. ✅ **Transaction/process evaluation through N-D-C**
+
+All five components are now fully integrated.
+
+---
+
+## Files Created/Modified
+
+### New Schema Files (3)
+1. **`schema/supply_chain_phases_ndc.csv`**
+ - Extended phase definitions with D and
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/THOLONIC_INTEGRATION.md
+extension: .md
+excerpt:
+---
+doc_id: tholonic_integration
+title: Tholonic N-D-C Framework Integration Guide
+type: methodology
+status: active
+domain: tholonic_framework
+layer: methodology
+projects:
+ - gold
+tags:
+ - tholonic
+ - ndc
+ - integration
+ - simulation
+related_docs:
+ - tholonic_framework_supply_value_chain
+ - supply_chain_rules
+key_claims:
+ - ndc_can_be_calculated_from_definition_and_contribution
+source_role: implementation_methodology
+---
+
+# Tholonic N-D-C Framework Integration Guide
+
+## Overview
+
+The gold supply chain project now incorporates the **Tholonic Framework** for modeling complex adaptive systems using N-D-C (Negotiation-Definition-Contribution) dynamics.
+
+---
+
+## Core Concepts
+
+### The Three Forces
+
+#### N (Negotiation) - Emergent Reality
+- **What it is**: The actual operational state that emerg
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/TVF_Research_Agenda.pdf
+extension: .pdf
+excerpt:
+True Value Framework (TVF) Research Agenda
+Responding to (THE REPORT)
+SNJ 03042026 to consider with JWM during April 2026
+Link
+FIRST CUSTOMER
+TVF 2016 (Input data from individual companies and regional sustainable development projects 
+compared to sector commodity BaU for resource flows and towards meeting the SDG indicators and 
+relative to national unit GDP. No supply chain phase balance quantitative analysis beyond market flow 
+and pricing – value chain).
+First customer: 2018 Group of Founders and Endorsers of Serious Shea SARL (Burkina Faso) @ 
+EURO 1.4 Million financed by ADB; World Bank; BF Government; SS 
+Founders.
+Second Customer: 2023 Mirova Sustainable Investment Fund through Serious Shea Senegal
+TVF 2026 (Entire supply chain phase analysis with JWM structural balancing engine wh
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/TVPCI_GOLD_WORKED_EXAMPLE.html
+extension: .html
+excerpt:
+TVPCI — Gold Supply Chain Worked Example
+
+← TVPCI Specification
+
+TrueValue Analytics · TVPCI Worked Example
+
+Gold Supply Chain
+TVPCI — Step by Step
+
+Geological prospecting → COMEX-registered bullion · Phases 0–7
+
+Commodity
+ Gold
+
+Phases
+ 8 (P0–P7)
+
+Period
+ 2024 Annual (illustrative)
+
+Data
+ Synthetic — educational
+
+TVPCI
+ v1.1
+
+Contents
+
+Overview and Approach
+
+Phase Inputs: D, C, B, S, N
+
+Phase Boundary Coherence (φ-scores)
+
+Chain-Level Aggregates
+
+TVPCI Composite Score
+
+Opacity Correction
+
+Result and Interpretation
+
+What This Means in Practice
+
+1
+ Overview and Approach
+
+ This document applies every formula from the
+ TVPCI specification
+ to the gold supply chain — from geological prospecting to exchange-registered bullion.
+ The goal is to demonstrate exactly what the index measures, how it 
+ENTRY_END
+
+ENTRY_START
+relative_path: api/FRONTEND_API.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_api_frontend_api
+title: Gold Supply Chain Simulator - Frontend Data Contract
+type: api_reference
+status: active
+domain: gold_supply_chain
+layer: supply_chain
+projects:
+ []
+tags:
+ - api
+ - gold
+ - gold_supply_chain
+ - supply_chain
+related_docs:
+ []
+key_claims:
+ []
+---
+
+# Gold Supply Chain Simulator - Frontend Data Contract
+
+## Overview
+
+This document defines the JSON API contract between the gold supply chain data pipeline and the interactive frontend simulator.
+
+## Design Principles
+
+1. **Phase-Resolved**: All data structured by supply chain phase (0-8, now includes Recycling)
+2. **Variable-Driven**: Expose adjustable parameters for simulation
+3. **Flow-Aware**: Track material flow between phases (including circular flows)
+4. **Transparency-Tagged**: Mark data qua
+ENTRY_END
+
+ENTRY_START
+relative_path: archives/WhatsApp_Ptt_2026-03-28_at_09.01.03.ogg
+extension: .ogg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends.html
+extension: .html
+excerpt:
+Clarity – Bridging the Gaps: Between Investment and Global Resource Trends
+
+ 
+
+Skip to content
+
+BUILDING MAINSTREAM FINANCE AND INVESTMENT INNOVATIONS INTO LARGE SCALE DEVELOPMENT PROJECTS TO CREATE TRUE VALUE
+
+CLARITY’S SUSTAINABLE DESIGN MODELS WORLDWIDE PROVIDE THE ENABLING ENVIRONMENTS
+
+ 
+
+Overview
+Sustainability-Linked Debt
+True Value Futures
+ 
+2016-02-23
+
+ 
+
+ admin 
+
+ 
+
+Reduced interest loans for education, health, and infrastructure could help meet climate targets.
+
+Read more
+
+Overview
+ 
+2026-02-10
+
+ 
+
+ admin 
+
+ 
+
+There is no excerpt because this is a protected post.
+
+Read more
+
+Clarity Project
+True Value Futures
+ 
+2026-02-10
+
+ 
+
+ admin 
+
+ 
+
+There is no excerpt because this is a protected post.
+
+Read more
+
+Clarity Project
+True Value Futures
+ 
+2023-02-10
+
+ 
+
+ admin 
+
+ 
+
+Clarity’s Tru
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/00_Secuencia-Alicia.00_00_17_01.Imagen-fija010-500x500.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/00_Secuencia-Alicia.00_00_17_01.Imagen-fija010-800x445.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/1_ACD_LentilBurgers750-750x445.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/210228_whaleandpond-800x445.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/210604_ECBLogo-1-450x445.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/Agritech.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/Alicante-Mountain-Cherries.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/Chile-sets-the-high-bar-500x500.webp
+extension: .webp
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/GGFI_logo_purple-150x150.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/Screenshot-115-800x445.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/Screenshot-98.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/ajaxdata.js
+extension: .js
+excerpt:
+window.addEventListener("load", function () {
+ jQuery("body").on(
+ "click",
+ ".wpm-6310-custom-field-mail-link-class",
+ function (event) {
+ var customField = jQuery(this).attr("wpm-data-custom-field");
+ if (customField != undefined) {
+ window.open(customField, "_blank").focus();
+ event.preventDefault();
+ return false;
+ }
+ }
+ );
+ var modalId = "";
+ jQuery("body").on("click", ".wpm_6310_team_member_info, .wpm_6310_team_member_internal_link", function (event) {
+ let allModal = jQuery(".wpm_6310_modal");
+ allModal.each(function () {
+ jQuery(this).remove();
+ });
+
+ modalId = parseInt(jQuery(this).attr("team-id"));
+ var linkId = parseInt(jQuery(this).attr("link-id"));
+ var linkUrl = jQuery(this).attr("data-wpm-link-url");
+
+ if (linkId > 0) {
+ event.preventDefault();
+ if (jQuery(this).attr("target
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/all.min.css
+extension: .css
+excerpt:
+/*!
+ * Font Awesome Free 6.5.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ * Copyright 2024 Fonticons, Inc.
+ */
+.fa{font-family:var(--fa-style-family,"Font Awesome 6 Free");font-weight:var(--fa-style,900)}.fa,.fa-brands,.fa-classic,.fa-regular,.fa-sharp,.fa-solid,.fab,.far,.fas{-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased;display:var(--fa-display,inline-block);font-style:normal;font-variant:normal;line-height:1;text-rendering:auto}.fa-classic,.fa-regular,.fa-solid,.far,.fas{font-family:"Font Awesome 6 Free"}.fa-brands,.fab{font-family:"Font Awesome 6 Brands"}.fa-1x{font-size:1em}.fa-2x{font-size:2em}.fa-3x{font-size:3em}.fa-4x{font-size:4em}.fa-5x{font-size:5em
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/az_recorder_20250711_102510-2-500x500.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/calculators.css
+extension: .css
+excerpt:
+.farmCalculator {
+ padding-bottom: 10px;
+}
+
+.farmCalculator h4 {
+ font-size: 18px;
+}
+
+.farmCalculator legend {
+ font-size: 18px;
+}
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/calculators.js
+extension: .js
+excerpt:
+jQuery(document).ready(function($) {
+ 
+ $("#calculateCropPopulation").bind('click submit', function() {
+ calculateCropPopulation(this.form);
+ return false;
+ });
+
+ $("#calculateCropPopulationHoop").bind('click submit', function() {
+ calculateCropPopulationHoop(this.form);
+ return false;
+ });
+
+ $("#calculateWheatHarvestYieldLoss").bind('click submit', function() {
+ calculateWheatHarvestYieldLoss(this.form);
+ return false;
+ });
+
+ $("#calculateSorghumHarvestYieldLoss").bind('click submit', function() {
+ calculateSorghumHarvestYieldLoss(this.form);
+ return false;
+ });
+
+ $("#calculateSoybeanHarvestYieldLoss").bind('click submit', function() {
+ calculateSoybeanHarvestYieldLoss(this.form);
+ return false;
+ });
+
+ $("#calculateSunflowerHarvestYieldLoss").bind('click submit', function() {
+ calculateSu
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/colormag-custom.min.js
+extension: .js
+excerpt:
+function colormagInit(){var e=function(){jQuery("#cm-masthead .search-form-top").removeClass("show"),jQuery("#cm-content").removeClass("backdrop")};jQuery(document).off("click.colormag",".search-top").on("click.colormag",".search-top",(function(){jQuery(this).next("#cm-masthead .search-form-top").toggleClass("show"),jQuery("#cm-content").toggleClass("backdrop"),setTimeout((function(){jQuery("#cm-masthead .search-form-top input").focus()}),200),function(){var e=jQuery(".cm-desktop-row .search-form-top.show, .cm-mobile-row .search-form-top.show");if(e.length){e.css({right:"",left:""});var o=e[0].getBoundingClientRect(),t=window.innerWidth;o.right>t?(e.css({right:0,left:"auto"}),e.css({"--arrow-right":"10px"})):o.left<0&&(e.css({left:0,right:"auto"}),e.css({"--arrow-left":"10px"}))}}(),jQuery
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/core.min.js
+extension: .js
+excerpt:
+/*! jQuery UI - v1.13.3 - 2024-04-26
+* https://jqueryui.com
+* Includes: widget.js, position.js, data.js, disable-selection.js, effect.js, effects/effect-blind.js, effects/effect-bounce.js, effects/effect-clip.js, effects/effect-drop.js, effects/effect-explode.js, effects/effect-fade.js, effects/effect-fold.js, effects/effect-highlight.js, effects/effect-puff.js, effects/effect-pulsate.js, effects/effect-scale.js, effects/effect-shake.js, effects/effect-size.js, effects/effect-slide.js, effects/effect-transfer.js, focusable.js, form-reset-mixin.js, jquery-patch.js, keycode.js, labels.js, scroll-parent.js, tabbable.js, unique-id.js, widgets/accordion.js, widgets/autocomplete.js, widgets/button.js, widgets/checkboxradio.js, widgets/controlgroup.js, widgets/datepicker.js, widgets/dialog.js, wi
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/css
+extension: (none)
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/custom.js
+extension: .js
+excerpt:
+jQuery(document).ready(function (e) {
+ jQuery("#sfsi_floater").attr("data-top", jQuery(document).height());
+});
+
+function showErrorSuc(s, i, e) {
+ if ("error" == s) var t = "errorMsg";
+ else var t = "sucMsg";
+ return SFSI(".tab" + e + ">." + t).html(i), SFSI(".tab" + e + ">." + t).show(),
+ SFSI(".tab" + e + ">." + t).effect("highlight", {}, 5e3), setTimeout(function () {
+ SFSI("." + t).slideUp("slow");
+ }, 5e3), !1;
+}
+
+function beForeLoad() {
+ SFSI(".loader-img").show(), SFSI(".save_button >a").html("Saving..."), SFSI(".save_button >a").css("pointer-events", "none");
+}
+
+function sfsi_make_popBox() {
+ var s = 0;
+ SFSI(".sfsi_sample_icons >li").each(function () {
+ "none" != SFSI(this).css("display") && (s = 1);
+ }), 0 == s ? SFSI(".sfsi_Popinner").hide() : SFSI(".sfsi_Popinner").show(), "" !
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/default.css
+extension: .css
+excerpt:
+.tablepress{--text-color:#111;--head-text-color:var(--text-color);--head-bg-color:#d9edf7;--odd-text-color:var(--text-color);--odd-bg-color:#fff;--even-text-color:var(--text-color);--even-bg-color:#f9f9f9;--hover-text-color:var(--text-color);--hover-bg-color:#f3f3f3;--border-color:#ddd;--padding:0.5rem;border:none;border-collapse:collapse;border-spacing:0;clear:both;margin:0 auto 1rem;table-layout:auto;width:100%}.tablepress>:not(caption)>*>*{background:none;border:none;box-sizing:border-box;float:none!important;padding:var(--padding);text-align:left;vertical-align:top}.tablepress>:where(thead)+tbody>:where(:not(.child))>*,.tablepress>tbody>*~:where(:not(.child))>*,.tablepress>tfoot>:where(:first-child)>*{border-top:1px solid var(--border-color)}.tablepress>:where(thead,tfoot)>tr>*{backgro
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/e-202616.js
+extension: .js
+excerpt:
+window.wpcom=window.wpcom||{};window._stq=window._stq||[];function st_go(t){window._stq.push(["view",t])};function linktracker_init(t,e){window._stq.push(["clickTrackerInit",t,e])};window.wpcom.stats=function(){var t=function(){var t,n;var o=function(t,e,n){if("function"===typeof t.addEventListener){t.addEventListener(e,n)}else if("object"===typeof t.attachEvent){t.attachEvent("on"+e,n)}};var i=function(t){if("object"===typeof t&&t.target){return t.target}else{return window.event.srcElement}};var r=function(t){var n=0;if("object"===typeof InstallTrigger)n=100;if(7===e())n=100;f(i(t),n)};var c=function(t){f(i(t),0)};var a=function(t){var e=document.location;if(e.host===t.host)return true;if(""===t.host)return true;if(e.protocol===t.protocol&&e.host===t.hostname){if("http:"===e.protocol&&e.h
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/earth-sunrise-on-horizon-200x200.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/etfhubs-TARA-Women-800x445.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/fishface2.-200x200.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/font-awesome.min.css
+extension: .css
+excerpt:
+/*!
+ * Font Awesome 4.7.0 by @davegandy - http://fontawesome.io - @fontawesome
+ * License - http://fontawesome.io/license (Font: SIL OFL 1.1, CSS: MIT License)
+ */@font-face{font-family:'FontAwesome';src:url('../fonts/fontawesome-webfont.eot?v=4.7.0');src:url('../fonts/fontawesome-webfont.eot?#iefix&v=4.7.0') format('embedded-opentype'),url('../fonts/fontawesome-webfont.woff2?v=4.7.0') format('woff2'),url('../fonts/fontawesome-webfont.woff?v=4.7.0') format('woff'),url('../fonts/fontawesome-webfont.ttf?v=4.7.0') format('truetype'),url('../fonts/fontawesome-webfont.svg?v=4.7.0#fontawesomeregular') format('svg');font-weight:normal;font-style:normal}.fa{display:inline-block;font:normal normal normal 14px/1 FontAwesome;font-size:inherit;text-rendering:auto;-webkit-font-smoothing:antialiased;-mo
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/foogallery.299538a2.min.css
+extension: .css
+excerpt:
+.foogallery,.foogallery *{box-sizing:border-box}.foogallery{display:block;z-index:1;font-family:-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;position:relative;line-height:0;font-size:0;width:100%;max-width:100%}.foogallery .fg-item{display:inline-block;position:relative;background-color:transparent;z-index:2;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.foogallery .fg-item.fg-hidden{display:none!important}.foogallery .fg-item-inner{display:block;position:relative;visibility:hidden;overflow:hidden;opacity:0;z-index:3;margin:0;border:solid 0 transparent}.foogallery .fg-item.fg-error:before{content:"";display:block;position:absolute;top:50%;left:50%;transform:translateX(-50%) translateY(-50%);width:32px;
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/foundation.css
+extension: .css
+excerpt:
+@charset "UTF-8";
+/**
+ * Foundation for Sites by ZURB
+ * Version 6.4.3
+ * foundation.zurb.com
+ * Licensed under MIT Open Source
+ */
+ .wpucv article,
+ .wpucv aside,
+ .wpucv footer,
+ .wpucv header,
+ .wpucv nav,
+ .wpucv section {
+ display: block; }
+ .wpucv h1 {
+ font-size: 2em;
+ margin: 0.67em 0; }
+ .wpucv figcaption,
+ .wpucv figure {
+ display: block; }
+ .wpucv figure {
+ margin: 1em 40px; }
+ .wpucv hr {
+ box-sizing: content-box;
+ /* 1 */
+ height: 0;
+ /* 1 */
+ overflow: visible;
+ /* 2 */ }
+ .wpucv main {
+ display: block; }
+ .wpucv pre {
+ font-family: monospace, monospace;
+ /* 1 */
+ font-size: 1em;
+ /* 2 */ }
+ .wpucv a {
+ background-color: transparent;
+ /* 1 */
+ -webkit-text-decoration-skip: objects;
+ /* 2 */ }
+ .wpucv a:active,
+ .wpucv a:hover {
+ outline-width: 0; }
+ .wpucv abbr[title] {
+ bord
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/frontend.min.css
+extension: .css
+excerpt:
+:root{--direction-multiplier:1}body.rtl,html[dir=rtl]{--direction-multiplier:-1}.elementor-hidden{display:none}.elementor-visibility-hidden{visibility:hidden}.elementor-screen-only,.screen-reader-text,.screen-reader-text span,.ui-helper-hidden-accessible{height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;top:-10000em;width:1px;clip:rect(0,0,0,0);border:0}.elementor-clearfix:after{clear:both;content:"";display:block;height:0;width:0}.e-logo-wrapper{display:inline-block;line-height:1}.e-logo-wrapper i{color:var(--e-a-color-circle-logo);font-size:2.5em}.elementor *,.elementor :after,.elementor :before{box-sizing:border-box}.elementor a{box-shadow:none;text-decoration:none}.elementor hr{background-color:transparent;margin:0}.elementor img{border:none;border-radius:0;box-shadow:
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/general.min.css
+extension: .css
+excerpt:
+.clearfix::before,.clearfix::after{content:" ";display:table;clear:both}.eael-testimonial-slider.nav-top-left,.eael-testimonial-slider.nav-top-right,.eael-team-slider.nav-top-left,.eael-team-slider.nav-top-right,.eael-logo-carousel.nav-top-left,.eael-logo-carousel.nav-top-right,.eael-post-carousel.nav-top-left,.eael-post-carousel.nav-top-right,.eael-product-carousel.nav-top-left,.eael-product-carousel.nav-top-right{padding-top:40px}.eael-contact-form input[type=text],.eael-contact-form input[type=email],.eael-contact-form input[type=url],.eael-contact-form input[type=tel],.eael-contact-form input[type=date],.eael-contact-form input[type=number],.eael-contact-form textarea{background:#fff;box-shadow:none;-webkit-box-shadow:none;float:none;height:auto;margin:0;outline:0;width:100%}.eael-cont
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/general.min.js
+extension: .js
+excerpt:
+!function(e){var t={};function n(r){if(t[r])return t[r].exports;var o=t[r]={i:r,l:!1,exports:{}};return e[r].call(o.exports,o,o.exports,n),o.l=!0,o.exports}n.m=e,n.c=t,n.d=function(e,t,r){n.o(e,t)||Object.defineProperty(e,t,{enumerable:!0,get:r})},n.r=function(e){"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},n.t=function(e,t){if(1&t&&(e=n(e)),8&t)return e;if(4&t&&"object"==typeof e&&e&&e.__esModule)return e;var r=Object.create(null);if(n.r(r),Object.defineProperty(r,"default",{enumerable:!0,value:e}),2&t&&"string"!=typeof e)for(var o in e)n.d(r,o,function(t){return e[t]}.bind(null,o));return r},n.n=function(e){var t=e&&e.__esModule?function(){return e.default}:function(){return 
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/images4-174x174.jpe
+extension: .jpe
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jetpack-forms-layout.css
+extension: .css
+excerpt:
+.wp-block-jetpack-contact-form-container.is-layout-flex.is-horizontal,.wp-block-jetpack-contact-form-is-layout-flex.is-horizontal,.wp-block-jetpack-contact-form.is-layout-flex.is-horizontal{flex-flow:row wrap}.wp-block-jetpack-contact-form-container.is-layout-flex.is-horizontal .wp-block-button,.wp-block-jetpack-contact-form-container.is-layout-flex.is-horizontal .wp-block-jetpack-button,.wp-block-jetpack-contact-form-is-layout-flex.is-horizontal .wp-block-button,.wp-block-jetpack-contact-form-is-layout-flex.is-horizontal .wp-block-jetpack-button,.wp-block-jetpack-contact-form.is-layout-flex.is-horizontal .wp-block-button,.wp-block-jetpack-contact-form.is-layout-flex.is-horizontal .wp-block-jetpack-button{flex:0 0 auto}.wp-block-jetpack-contact-form-container.is-layout-flex.is-horizontal .
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery-migrate.min.js
+extension: .js
+excerpt:
+/*! jQuery Migrate v3.4.1 | (c) OpenJS Foundation and other contributors | jquery.org/license */
+"undefined"==typeof jQuery.migrateMute&&(jQuery.migrateMute=!0),function(t){"use strict";"function"==typeof define&&define.amd?define(["jquery"],function(e){return t(e,window)}):"object"==typeof module&&module.exports?module.exports=t(require("jquery"),window):t(jQuery,window)}(function(s,n){"use strict";function e(e){return 0<=function(e,t){for(var r=/^(\d+)\.(\d+)\.(\d+)/,n=r.exec(e)||[],o=r.exec(t)||[],a=1;a<=3;a++){if(+o[a]<+n[a])return 1;if(+n[a]<+o[a])return-1}return 0}(s.fn.jquery,e)}s.migrateVersion="3.4.1";var t=Object.create(null);s.migrateDisablePatches=function(){for(var e=0;e<arguments.length;e++)t[arguments[e]]=!0},s.migrateEnablePatches=function(){for(var e=0;e<arguments.length;e
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery.bxslider.min.js
+extension: .js
+excerpt:
+!function(t){var e={mode:"horizontal",slideSelector:"",infiniteLoop:!0,hideControlOnEnd:!1,speed:500,easing:null,slideMargin:0,startSlide:0,randomStart:!1,captions:!1,ticker:!1,tickerHover:!1,adaptiveHeight:!1,adaptiveHeightSpeed:500,video:!1,useCSS:!0,preloadImages:"visible",responsive:!0,slideZIndex:50,wrapperClass:"cm-slider",touchEnabled:!0,swipeThreshold:50,oneToOneTouch:!0,preventDefaultSwipeX:!0,preventDefaultSwipeY:!1,ariaLive:!0,ariaHidden:!0,keyboardEnabled:!1,pager:!0,pagerType:"full",pagerShortSeparator:" / ",pagerSelector:null,buildPager:null,pagerCustom:null,controls:!0,nextText:"Next",prevText:"Prev",nextSelector:null,prevSelector:null,autoControls:!1,startText:"Start",stopText:"Stop",autoControlsCombine:!1,autoControlsSelector:null,auto:!1,pause:4e3,autoStart:!0,autoDirecti
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery.fitvids.min.js
+extension: .js
+excerpt:
+/*!
+* FitVids 1.1
+*
+* Copyright 2013, Chris Coyier - http://css-tricks.com + Dave Rupert - http://daverupert.com
+* Credit to Thierry Koblentz - http://www.alistapart.com/articles/creating-intrinsic-ratios-for-video/
+* Released under the WTFPL license - http://sam.zoy.org/wtfpl/
+*
+*/
+!function(t){"use strict";t.fn.fitVids=function(e){var i={customSelector:null,ignore:null};if(!document.getElementById("fit-vids-style")){var r=document.head||document.getElementsByTagName("head")[0],a=document.createElement("div");a.innerHTML='<p>x</p><style id="fit-vids-style">.fluid-width-video-wrapper{width:100%;position:relative;padding:0;}.fluid-width-video-wrapper iframe,.fluid-width-video-wrapper object,.fluid-width-video-wrapper embed {position:absolute;top:0;left:0;width:100%;height:100%;}</style>',r.
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery.min.js
+extension: .js
+excerpt:
+/*! jQuery v3.7.1 | (c) OpenJS Foundation and other contributors | jquery.org/license */
+!function(e,t){"use strict";"object"==typeof module&&"object"==typeof module.exports?module.exports=e.document?t(e,!0):function(e){if(!e.document)throw new Error("jQuery requires a window with a document");return t(e)}:t(e)}("undefined"!=typeof window?window:this,function(ie,e){"use strict";var oe=[],r=Object.getPrototypeOf,ae=oe.slice,g=oe.flat?function(e){return oe.flat.call(e)}:function(e){return oe.concat.apply([],e)},s=oe.push,se=oe.indexOf,n={},i=n.toString,ue=n.hasOwnProperty,o=ue.toString,a=o.call(Object),le={},v=function(e){return"function"==typeof e&&"number"!=typeof e.nodeType&&"function"!=typeof e.item},y=function(e){return null!=e&&e===e.window},C=ie.document,u={type:!0,src:!0,nonce:!0,noM
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery.newsTicker.min.js
+extension: .js
+excerpt:
+!function(t,i,s,o){"use strict";var n="newsTicker",e={row_height:20,max_rows:3,speed:400,duration:2500,direction:"up",autostart:1,pauseOnHover:1,nextButton:null,prevButton:null,startButton:null,stopButton:null,hasMoved:function(){},movingUp:function(){},movingDown:function(){},start:function(){},stop:function(){},pause:function(){},unpause:function(){}};function h(i,s){this.element=i,this.$el=t(i),this.options=t.extend({},e,s),this._defaults=e,this._name=n,this.moveInterval,this.state=0,this.paused=0,this.moving=0,this.$el.is("ul, ol")&&this.init()}h.prototype={init:function(){this.$el.height(this.options.row_height*this.options.max_rows).css({overflow:"hidden"}),this.checkSpeed(),this.options.nextButton&&void 0!==this.options.nextButton[0]&&this.options.nextButton.click(function(t){this.m
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery.shuffle.min.js
+extension: .js
+excerpt:
+!function(t){"function"==typeof define&&define.amd?define(["jquery","modernizr"],t):t(window.jQuery,window.Modernizr)}(function(t,i,e){"use strict";if("object"!=typeof i)throw new Error("Shuffle.js requires Modernizr.\nhttp://vestride.github.io/Shuffle/#dependencies");var s,n=i.prefixed("transition"),r=i.prefixed("transitionDelay"),o=i.prefixed("transitionDuration"),a={WebkitTransition:"webkitTransitionEnd",transition:"transitionend"}[n],l=i.prefixed("transform"),h=(s=l)?s.replace(/([A-Z])/g,function(t,i){return"-"+i.toLowerCase()}).replace(/^ms-/,"-ms-"):"",u=i.csstransforms&&i.csstransitions,f=i.csstransforms3d;var d=0,c=function(i,e){e=e||{},t.extend(this,c.options,e,c.settings),this.$el=t(i),this.$window=t(window),this.unique="shuffle_"+d++,this._fire(c.EventType.LOADING),this._init(),
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/jquery.sticky.min.js
+extension: .js
+excerpt:
+!function(t){"function"==typeof define&&define.amd?define(["jquery"],t):"object"==typeof module&&module.exports?module.exports=t(require("jquery")):t(jQuery)}((function(t){var e=Array.prototype.slice,i=Array.prototype.splice,n={topSpacing:0,bottomSpacing:0,className:"is-sticky",wrapperClassName:"sticky-wrapper",center:!1,getWidthFrom:"",widthFromWrapper:!0,responsiveWidth:!1,zIndex:"auto"},r=t(window),s=t(document),o=[],c=r.height(),a=function(){for(var e=r.scrollTop(),i=s.height(),n=i-c,a=e>n?n-e:0,p=0,d=o.length;p<d;p++){var l=o[p],h=l.stickyWrapper.offset().top-l.topSpacing-a;if(l.stickyWrapper.css("height",l.stickyElement.outerHeight()),e<=h)null!==l.currentTop&&(l.stickyElement.css({width:"",position:"",top:"","z-index":""}),l.stickyElement.parent().removeClass(l.className),l.stickyEl
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/js.js
+extension: .js
+excerpt:
+"use strict";
+function wpucv_change_page(list_id, wrapper_id, page){
+ 
+ if('none' != list_id){
+ jQuery.ajax({
+ url: wpucv_admin_url,
+ method: 'POST',
+ dataType: 'json',
+ data: {
+ action: 'wpucv_get_list_page',
+ list_id: list_id,
+ wrapper_id: wrapper_id,
+ page: page
+ },
+ success: function(data){
+ "use strict";
+ if(data && data.list){
+ jQuery('#' + wrapper_id + ' .wpucv-list-wrapper').fadeOut(500, function(){
+ "use strict";
+ jQuery('#' + wrapper_id + ' .wpucv-list-wrapper').html(data.list);
+ jQuery('#' + wrapper_id + ' .wpucv-list-wrapper').fadeIn(500);
+ });
+ }
+ if(data && data.pagination){
+ jQuery('#' + wrapper_id + ' .wpucv-pagination-wrapper').html(data.pagination);
+ }
+ },
+ error: function(){
+ 
+ }
+ });
+ }
+}
+//-------------------------------------
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/longfinancelogo-thumbnail-200x200.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/mediaelementplayer-legacy.min.css
+extension: .css
+excerpt:
+.mejs-offscreen{border:0;clip:rect(1px,1px,1px,1px);-webkit-clip-path:inset(50%);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;width:1px;word-wrap:normal}.mejs-container{background:#000;font-family:Helvetica,Arial,serif;position:relative;text-align:left;text-indent:0;vertical-align:top}.mejs-container,.mejs-container *{box-sizing:border-box}.mejs-container video::-webkit-media-controls,.mejs-container video::-webkit-media-controls-panel,.mejs-container video::-webkit-media-controls-panel-container,.mejs-container video::-webkit-media-controls-start-playback-button{-webkit-appearance:none;display:none!important}.mejs-fill-container,.mejs-fill-container .mejs-container{height:100%;width:100%}.mejs-fill-container{background:transparent;margin:0 auto;o
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/modernizr.custom.min.js
+extension: .js
+excerpt:
+/* Modernizr 2.6.2 (Custom Build) | MIT & BSD
+
+ * Build: http://modernizr.com/download/#-csstransforms-csstransforms3d-csstransitions-cssclasses-prefixed-teststyles-testprop-testallprops-prefixes-domprefixes
+
+ */
+
+window.Modernizr=function(a,b,c){function z(a){j.cssText=a}function A(a,b){return z(m.join(a+";")+(b||""))}function B(a,b){return typeof a===b}function C(a,b){return!!~(""+a).indexOf(b)}function D(a,b){for(var d in a){var e=a[d];if(!C(e,"-")&&j[e]!==c)return b=="pfx"?e:!0}return!1}function E(a,b,d){for(var e in a){var f=b[a[e]];if(f!==c)return d===!1?a[e]:B(f,"function")?f.bind(d||b):f}return!1}function F(a,b,c){var d=a.charAt(0).toUpperCase()+a.slice(1),e=(a+" "+o.join(d+" ")+d).split(" ");return B(b,"string")||B(b,"undefined")?D(e,b):(e=(a+" "+p.join(d+" ")+d).split(" "),E(e,b,
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/navigation.min.js
+extension: .js
+excerpt:
+function initMobileNavigation(){const e=document.querySelector(".cm-mobile-nav-container");if(!e)return;const t=e.querySelector(".cm-menu-toggle"),a=e.querySelector(".cm-mobile-menu"),n=e.querySelector(".cm-mobile-header-row");if(!t||!a||!n)return;const i=t.cloneNode(!0);t.parentNode.replaceChild(i,t),i.setAttribute("aria-expanded","false"),i.addEventListener("click",(function(t){t.preventDefault();const i=t.currentTarget,s="true"===i.getAttribute("aria-expanded");i.setAttribute("aria-expanded",!s),s?(e.classList.remove("cm-toggle-open"),a.classList.remove("cm-mobile-menu--open"),n.classList.remove("cm-mobile-menu--open")):(e.classList.add("cm-toggle-open"),a.classList.add("cm-mobile-menu--open"),n.classList.add("cm-mobile-menu--open"))}))}!function(){var e,t,a,n,i,s;if((e=document.getElem
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/owl.carousel.min.css
+extension: .css
+excerpt:
+/**
+ * Owl Carousel v2.3.4
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+.owl-carousel,.owl-carousel .owl-item{-webkit-tap-highlight-color:transparent;position:relative}.owl-carousel{display:none;width:100%;z-index:1}.owl-carousel .owl-stage{position:relative;-ms-touch-action:pan-Y;touch-action:manipulation;-moz-backface-visibility:hidden}.owl-carousel .owl-stage:after{content:".";display:block;clear:both;visibility:hidden;line-height:0;height:0}.owl-carousel .owl-stage-outer{position:relative;overflow:hidden;-webkit-transform:translate3d(0,0,0)}.owl-carousel .owl-item,.owl-carousel .owl-wrapper{-webkit-backface-visibility:hidden;-moz-backface-visibility:hidden;-ms-backface-visibility:hidden;-webk
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/owl.carousel.min.js
+extension: .js
+excerpt:
+/**
+ * Owl Carousel v2.3.4
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+ "use strict";
+!function(a,b,c,d){function e(b,c){this.settings=null,this.options=a.extend({},e.Defaults,c),this.$element=a(b),this._handlers={},this._plugins={},this._supress={},this._current=null,this._speed=null,this._coordinates=[],this._breakpoint=null,this._width=null,this._items=[],this._clones=[],this._mergers=[],this._widths=[],this._invalidated={},this._pipe=[],this._drag={time:null,target:null,pointer:null,stage:{start:null,current:null},direction:null},this._states={current:{},tags:{initializing:["busy"],animating:["busy"],dragging:["interacting"]}},a.each(["onResize","onThrottledResize"],a.proxy(function(b,c){thi
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/owl.theme.default.min.css
+extension: .css
+excerpt:
+/**
+ * Owl Carousel v2.3.4
+ * Copyright 2013-2018 David Deutsch
+ * Licensed under: SEE LICENSE IN https://github.com/OwlCarousel2/OwlCarousel2/blob/master/LICENSE
+ */
+.owl-theme .owl-dots,.owl-theme .owl-nav{text-align:center;-webkit-tap-highlight-color:transparent}.owl-theme .owl-nav{margin-top:10px}.owl-theme .owl-nav [class*=owl-]{color:#FFF;font-size:14px;margin:5px;padding:4px 7px;background:#D6D6D6;display:inline-block;cursor:pointer;border-radius:3px}.owl-theme .owl-nav [class*=owl-]:hover{background:#869791;color:#FFF;text-decoration:none}.owl-theme .owl-nav .disabled{opacity:.5;cursor:default}.owl-theme .owl-nav.disabled+.owl-dots{margin-top:10px}.owl-theme .owl-dots .owl-dot{display:inline-block;zoom:1}.owl-theme .owl-dots .owl-dot span{width:10px;height:10px;margin:5px 7px;backg
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/random-shuffle-min.js
+extension: .js
+excerpt:
+window.Manipulator=function(e){"use strict";var t=window.console&&typeof window.console.log==="function";var n=function(t){var n=this;n.$el=e(t);n.init()};n.prototype.init=function(){var e=this;e.initShuffle();e.setupEvents()};n.prototype.initShuffle=function(){this.$el.shuffle({itemSelector:".shuffeldiv",speed:250,easing:"ease",columnWidth:function(t){return parseInt(e(".shuffeldiv").css("width"))},gutterWidth:function(t){return parseInt(e(".shuffeldiv").css("margin-left"))}});this.shuffle=this.$el.data("shuffle")};n.prototype.setupEvents=function(){var n=this;e("#sfsi_wDiv").on("click",e.proxy(n.onRandomize,n));n.$el.on("removed.shuffle",function(e,n,r){if(!t){return}})};n.prototype.onAddClick=function(){var t=this,n=5,r=document.createDocumentFragment(),i=t.$el[0],s=[],o,u=["w2","h2","w
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/serious-heathbeauty-200x200.jpg
+extension: .jpg
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/sfsi-style.css
+extension: .css
+excerpt:
+@charset "utf-8";
+
+@font-face {
+ font-family: helveticabold;
+ src: url(fonts/helvetica_bold_0-webfont.eot);
+ src: url(fonts/helvetica_bold_0-webfont.eot?#iefix) format('embedded-opentype'), url(fonts/helvetica_bold_0-webfont.woff) format('woff'), url(fonts/helvetica_bold_0-webfont.ttf) format('truetype'), url(fonts/helvetica_bold_0-webfont.svg#helveticabold) format('svg');
+ font-weight: 400;
+ font-style: normal;
+}
+
+@font-face {
+ font-family: helveticaregular;
+ src: url(fonts/helvetica_0-webfont.eot);
+ src: url(fonts/helvetica_0-webfont.eot?#iefix) format('embedded-opentype'), url(fonts/helvetica_0-webfont.woff) format('woff'), url(fonts/helvetica_0-webfont.ttf) format('truetype'), url(fonts/helvetica_0-webfont.svg#helveticaregular) format('svg');
+ font-weight: 400;
+ font-style: normal;
+}
+
+
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/skip-link-focus-fix.min.js
+extension: .js
+excerpt:
+/(trident|msie)/i.test(navigator.userAgent)&&document.getElementById&&window.addEventListener&&window.addEventListener("hashchange",(function(){var t,e=location.hash.substring(1);/^[A-z0-9_-]+$/.test(e)&&(t=document.getElementById(e))&&(/^(?:a|select|input|button|textarea)$/i.test(t.tagName)||(t.tabIndex=-1),t.focus())}),!1);
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/style(1).css
+extension: .css
+excerpt:
+.wpucv-second-column{
+ 
+ background-color: #f7f7f7;
+ border-left: solid 3px #EAEAEA;
+}
+
+.wpucv .wpucv-image-responsive {
+ display: block;
+ width: 100%;
+ min-height: auto;
+ margin: 0;
+}
+.wpucv .wpucv-image-link-wrapper, .wpucv .wpucv-image-link-wrapper:visited, .wpucv .wpucv-image-link-wrapper:hover, .wpucv .wpucv-image-link-wrapper:active {
+ display: block;
+ border: none;
+ cursor: pointer;
+}
+.wpucv .wpucv-image-link-wrapper, .wpucv .wpucv-image-link-wrapper:visited, .wpucv .wpucv-image-link-wrapper:hover, .wpucv .wpucv-image-link-wrapper:active, .wpucv .wpucv-image-link-wrapper:visited, .wpucv .wpucv-image-link-wrapper:visited:visited, .wpucv .wpucv-image-link-wrapper:visited:hover, .wpucv .wpucv-image-link-wrapper:visited:active, .wpucv .wpucv-image-link-wrapper:hover, .wpucv .wpucv-image
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/style.css
+extension: .css
+excerpt:
+@charset "UTF-8";
+/*
+Theme Name: ColorMag
+Theme URI: https://themegrill.com/themes/colormag/
+Author: ThemeGrill
+Author URI: https://themegrill.com
+Description: ColorMag is always the best choice when it comes to magazine, news, and blog WordPress themes. You can create elegant and modern websites for news portals, online magazines, and publishing sites. With ColorMag’s 8 and counting free starter demos for health, food, entertainment, sports, and fashion industries, building a magazine style website is super easy. Best of all, the ColorMag WordPress theme offers multiple ad spaces in its layout. So, you can monetize your website by displaying ads in these slots without any fuss. And if you plan to sell products and services online, you can rely on the theme’s compatibility with WooCommerce
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/style.min.css
+extension: .css
+excerpt:
+@charset "UTF-8";.wp-block-accordion{box-sizing:border-box}.wp-block-accordion-item.is-open>.wp-block-accordion-heading .wp-block-accordion-heading__toggle-icon{transform:rotate(45deg)}@media (prefers-reduced-motion:no-preference){.wp-block-accordion-item{transition:grid-template-rows .3s ease-out}.wp-block-accordion-item>.wp-block-accordion-heading .wp-block-accordion-heading__toggle-icon{transition:transform .2s ease-in-out}}.wp-block-accordion-heading__toggle{align-items:center;background:none;border:none;color:inherit;cursor:pointer;display:flex;font-family:inherit;font-size:inherit;font-style:inherit;font-weight:inherit;letter-spacing:inherit;line-height:inherit;overflow:hidden;padding:var(--wp--preset--spacing--20,1em) 0;text-align:inherit;text-decoration:inherit;text-transform:inher
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/ultp-youtube-gallery-block.js
+extension: .js
+excerpt:
+(function ($) {
+ ("use strict");
+
+ $(document).ready(function () {
+ initYouTubeGallery();
+ });
+
+ function initYouTubeGallery() {
+ // Helper for parsing JSON data
+ function parseMaybeJSON(val, fallback) {
+ if (typeof val === "string") {
+ try {
+ return JSON.parse(val);
+ } catch (e) {
+ return fallback;
+ }
+ }
+ return typeof val === "object" && val !== null ? val : fallback;
+ }
+
+ // Helper to truncate text responsively
+ function truncateText(text, length) {
+ if (!text) return "";
+ const width = $(window).width();
+ let maxLength;
+ if (width < 600) {
+ maxLength = length.sm || length.lg;
+ } else if (width < 900) {
+ maxLength = length.md || length.lg;
+ } else {
+ maxLength = length.lg;
+ }
+ return text.length > maxLength
+ ? text.substring(0, maxLength) + "..."
+ : text;
+ }
+
+ // Helper to sort videos
+ 
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/v4-shims.min.css
+extension: .css
+excerpt:
+/*!
+ * Font Awesome Free 6.4.2 by @fontawesome - https://fontawesome.com
+ * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
+ * Copyright 2023 Fonticons, Inc.
+ */
+.fa.fa-glass:before{content:"\f000"}.fa.fa-envelope-o{font-family:"Font Awesome 6 Free";font-weight:400}.fa.fa-envelope-o:before{content:"\f0e0"}.fa.fa-star-o{font-family:"Font Awesome 6 Free";font-weight:400}.fa.fa-star-o:before{content:"\f005"}.fa.fa-close:before,.fa.fa-remove:before{content:"\f00d"}.fa.fa-gear:before{content:"\f013"}.fa.fa-trash-o{font-family:"Font Awesome 6 Free";font-weight:400}.fa.fa-trash-o:before{content:"\f2ed"}.fa.fa-home:before{content:"\f015"}.fa.fa-file-o{font-family:"Font Awesome 6 Free";font-weight:400}.fa.fa-file-o:before{content:"\f15b"}.fa.
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/wp-mediaelement.min.css
+extension: .css
+excerpt:
+.mejs-container{clear:both;max-width:100%}.mejs-container *{font-family:Helvetica,Arial}.mejs-container,.mejs-container .mejs-controls,.mejs-embed,.mejs-embed body{background:#222}.mejs-time{font-weight:400;word-wrap:normal}.mejs-controls a.mejs-horizontal-volume-slider{display:table}.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-current,.mejs-controls .mejs-time-rail .mejs-time-loaded{background:#fff}.mejs-controls .mejs-time-rail .mejs-time-current{background:#0073aa}.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-total,.mejs-controls .mejs-time-rail .mejs-time-total{background:rgba(255,255,255,.33)}.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volume-current,.mejs-controls .mejs-horizontal-volume-slider .mejs-horizontal-volum
+ENTRY_END
+
+ENTRY_START
+relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends_files/wpnw-public.css
+extension: .css
+excerpt:
+/* General CSS */
+.news-clearfix:before, .news-clearfix:after{content: "";display: table;}
+.news-clearfix::after{clear: both;}
+.news-col-3, .news-col-4, .news-col-2{margin-bottom:30px;}
+.news-col-3, .news-col-4, .news-col-2, .news-col-1, .news-col-list{-webkit-box-sizing: border-box; box-sizing: border-box; }
+.news-col-1 .news-inner-wrap-view, .news-col-list .news-inner-wrap-view{ border-bottom:1px solid #d1d1d1; padding-bottom:20px; margin-bottom:20px;}
+.news-col-list .wpnaw-news-no-image .news-content{margin:0; width:100%;}
+.news-col-list .news-thumb{margin-bottom:0px}
+.news .news-title{margin-top:0px !important; margin-bottom:10px !important;}
+.news .news-title a{font-size:22px; line-height:26px; color:#555; text-decoration:none !important;}
+.news-cat{margin-bottom:10px;}
+.news-cat a, .
+ENTRY_END
+

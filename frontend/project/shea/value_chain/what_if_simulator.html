@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Shea Value What‑If Simulator</title>
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Shea Value What‑If Simulator</title>
+<style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
@@ -106,174 +107,161 @@
   </style>
 </head>
 <body>
-  <div class="app">
-    <div class="header">
-      <div>
-        <h1>Shea Value What‑If Simulator</h1>
-        <div style="font-size:12px; opacity:0.85; margin-top:4px;">Value-only scenario exploration for shea</div>
-      </div>
-      <div class="nav">
-        <a href="./dashboard.html">Dashboard</a>
-        <a href="./financial_report.html">📊 Financial Report</a>
-        <a href="./">Shea Value Home</a>
-        <a href="/index.html">Server Root</a>
-      </div>
-    </div>
-
-    <div class="layout">
-      <div class="left">
-        <div class="title">
-          <span>Controls (Phase 6)</span>
-          <select id="entitySelect"></select>
-        </div>
-
-        <div class="box">
-          <div class="control">
-            <div class="row"><span>Price To Women (USD/MT)</span><span id="priceWomenLabel">—</span></div>
-            <input id="priceWomenSlider" type="range" min="1000" max="20000" step="50" />
-            <div class="hint">Serious Shea price to women's groups.</div>
-          </div>
-
-          <div class="control">
-            <div class="row"><span>Retail Value To Women (USD/MT)</span><span id="retailWomenLabel">—</span></div>
-            <input id="retailWomenSlider" type="range" min="1000" max="70000" step="100" />
-            <div class="hint">Cleo-style value transfer to women's groups.</div>
-          </div>
-
-          <div style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
-            <div class="title" style="margin-bottom: 10px;"><span>Tholonic N‑D‑C Controls (Value)</span></div>
-            <div class="control">
-              <div class="row"><span>D (Definition)</span><span id="dLabel">—</span></div>
-              <input id="dSlider" type="range" min="120" max="420" step="1" />
-            </div>
-            <div class="control">
-              <div class="row"><span>C (Contribution)</span><span id="cLabel">—</span></div>
-              <input id="cSlider" type="range" min="120" max="420" step="1" />
-            </div>
-          </div>
-
-          <div class="btns">
-            <button class="btn-reset" id="resetBtn">Reset</button>
-            <button class="btn-apply" id="applyBtn">Apply</button>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Carbon Credit Scenario (Serious Shea)</div>
-          <div class="control">
-            <div class="row"><span>Carbon Credit Price (USD/tCO₂e)</span><span id="carbonCreditLabel">$12</span></div>
-            <input id="carbonCreditSlider" type="range" min="0" max="50" step="1" value="12" />
-            <div class="hint">VCM (Voluntary Carbon Market) reference: $10–$15/tCO₂e nature-based credits. Serious Shea Phase 3 saves ~9.86 tCO₂e/MT vs BAU firewood.</div>
-          </div>
-          <div style="margin-top: 8px;">
-            <span class="env-badge env-credit" id="carbonCreditPerMtBadge">—</span>
-            <span class="env-badge env-total" id="annualCreditRevBadge">—</span>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">
-            <span>Period</span>
-            <select id="periodSelect">
-              <option value="annual">Annual</option>
-              <option value="quarterly">Quarterly</option>
-            </select>
-          </div>
-          <div class="hint">Initialized from latest shea value record for the selected scenario + period.</div>
-        </div>
-      </div>
-
-      <div class="center">
-        <div class="metric-grid">
-          <div class="metric">
-            <div class="label">Uplift Ratio</div>
-            <div class="value" id="upliftValue">—</div>
-            <div class="delta" id="upliftDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Incremental Value</div>
-            <div class="value" id="incrementalValue">—</div>
-            <div class="delta" id="incrementalDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">N (Negotiation)</div>
-            <div class="value" id="ndcNValue">—</div>
-            <div class="delta" id="ndcNDelta">—</div>
-          </div>
-          <div class="metric">
-            <div class="label">Balance Score</div>
-            <div class="value" id="ndcBalanceValue">—</div>
-            <div class="delta" id="ndcBalanceDelta">—</div>
-          </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Interpretation (Value Layer)</div>
-          <div class="hint">
+<div class="app">
+<div class="header">
+<div>
+<h1>Shea Value What‑If Simulator</h1>
+<div style="font-size:12px; opacity:0.85; margin-top:4px;">Value-only scenario exploration for shea</div>
+</div>
+<div class="nav">
+<a href="./dashboard.html">Dashboard</a>
+<a href="./financial_report.html">📊 Financial Report</a>
+<a href="./">Shea Value Home</a>
+<a href="/index.html">Server Root</a>
+</div>
+</div>
+<div class="layout">
+<div class="left">
+<div class="title">
+<span>Controls (Phase 6)</span>
+<select id="entitySelect"></select>
+</div>
+<div class="box">
+<div class="control">
+<div class="row"><span>Price To Women (USD/MT)</span><span id="priceWomenLabel">—</span></div>
+<input id="priceWomenSlider" max="20000" min="1000" step="50" type="range"/>
+<div class="hint">Serious Shea price to women's groups.</div>
+</div>
+<div class="control">
+<div class="row"><span>Retail Value To Women (USD/MT)</span><span id="retailWomenLabel">—</span></div>
+<input id="retailWomenSlider" max="70000" min="1000" step="100" type="range"/>
+<div class="hint">Cleo-style value transfer to women's groups.</div>
+</div>
+<div style="margin-top: 10px; border-top: 1px solid #e2e8f0; padding-top: 12px;">
+<div class="title" style="margin-bottom: 10px;"><span>Tholonic N‑D‑C Controls (Value)</span></div>
+<div class="control">
+<div class="row"><span>D (Definition)</span><span id="dLabel">—</span></div>
+<input id="dSlider" max="420" min="120" step="1" type="range"/>
+</div>
+<div class="control">
+<div class="row"><span>C (Contribution)</span><span id="cLabel">—</span></div>
+<input id="cSlider" max="420" min="120" step="1" type="range"/>
+</div>
+</div>
+<div class="btns">
+<button class="btn-reset" id="resetBtn">Reset</button>
+<button class="btn-apply" id="applyBtn">Apply</button>
+</div>
+</div>
+<div class="box">
+<div class="title">Carbon Credit Scenario (Serious Shea)</div>
+<div class="control">
+<div class="row"><span>Carbon Credit Price (USD/tCO₂e)</span><span id="carbonCreditLabel">$12</span></div>
+<input id="carbonCreditSlider" max="50" min="0" step="1" type="range" value="12"/>
+<div class="hint">VCM (Voluntary Carbon Market) reference: $10–$15/tCO₂e nature-based credits. Serious Shea Phase 3 saves ~9.86 tCO₂e/MT vs BAU firewood.</div>
+</div>
+<div style="margin-top: 8px;">
+<span class="env-badge env-credit" id="carbonCreditPerMtBadge">—</span>
+<span class="env-badge env-total" id="annualCreditRevBadge">—</span>
+</div>
+</div>
+<div class="box">
+<div class="title">
+<span>Period</span>
+<select id="periodSelect">
+<option value="annual">Annual</option>
+<option value="quarterly">Quarterly</option>
+</select>
+</div>
+<div class="hint">Initialized from latest shea value record for the selected scenario + period.</div>
+</div>
+</div>
+<div class="center">
+<div class="metric-grid">
+<div class="metric">
+<div class="label">Uplift Ratio</div>
+<div class="value" id="upliftValue">—</div>
+<div class="delta" id="upliftDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Incremental Value</div>
+<div class="value" id="incrementalValue">—</div>
+<div class="delta" id="incrementalDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">N (Negotiation)</div>
+<div class="value" id="ndcNValue">—</div>
+<div class="delta" id="ndcNDelta">—</div>
+</div>
+<div class="metric">
+<div class="label">Balance Score</div>
+<div class="value" id="ndcBalanceValue">—</div>
+<div class="delta" id="ndcBalanceDelta">—</div>
+</div>
+</div>
+<div class="box">
+<div class="title">Interpretation (Value Layer)</div>
+<div class="hint">
             Educational scenario page for shea value distribution. It does not claim physical production, custody,
             or logistics behavior. Keep value and supply layers separate.
           </div>
-        </div>
-
-        <div class="box">
-          <div class="title">Phase 3 — Carbon: BAU vs Serious Shea (Environmental Value Layer)</div>
-          <div class="hint" style="margin-bottom:10px;">
+</div>
+<div class="box">
+<div class="title">Phase 3 — Carbon: BAU vs Serious Shea (Environmental Value Layer)</div>
+<div class="hint" style="margin-bottom:10px;">
             The largest value chain differentiator for Serious Shea. BAU processing uses 20 kg firewood per kg butter.
             Serious Shea uses 100% renewable energy. Carbon savings generate VCM credit revenue.
           </div>
-          <div class="bau-ss-grid">
-            <div class="bau-box" style="background:#fef3c7;">
-              <div class="sub">BAU (Firewood)</div>
-              <div class="val" style="color:#b45309;">10.374 kg CO₂e/kg</div>
-              <div class="sub">High deforestation driver</div>
-            </div>
-            <div class="bau-box" style="background:#d1fae5;">
-              <div class="sub">Serious Shea (Renewable)</div>
-              <div class="val" style="color:#065f46;">0.519 kg CO₂e/kg</div>
-              <div class="sub">&lt;5% of BAU emissions</div>
-            </div>
-          </div>
-          <div style="margin-top:12px; padding:10px; background:#f0fdf4; border-radius:10px;">
-            <div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#065f46;">Carbon Credit Revenue (at selected price)</div>
-            <div style="display:flex; gap:8px; flex-wrap:wrap;">
-              <span class="env-badge env-credit" id="shea_creditPerMt">—</span>
-              <span class="env-badge env-credit" id="shea_creditPerKg">—</span>
-              <span class="env-badge env-total" id="shea_annualRev">—</span>
-            </div>
-            <div style="margin-top:8px; font-size:11px; color:#475569;">
+<div class="bau-ss-grid">
+<div class="bau-box" style="background:#fef3c7;">
+<div class="sub">BAU (Firewood)</div>
+<div class="val" style="color:#b45309;">10.374 kg CO₂e/kg</div>
+<div class="sub">High deforestation driver</div>
+</div>
+<div class="bau-box" style="background:#d1fae5;">
+<div class="sub">Serious Shea (Renewable)</div>
+<div class="val" style="color:#065f46;">0.519 kg CO₂e/kg</div>
+<div class="sub">&lt;5% of BAU emissions</div>
+</div>
+</div>
+<div style="margin-top:12px; padding:10px; background:#f0fdf4; border-radius:10px;">
+<div style="font-size:12px; font-weight:900; margin-bottom:6px; color:#065f46;">Carbon Credit Revenue (at selected price)</div>
+<div style="display:flex; gap:8px; flex-wrap:wrap;">
+<span class="env-badge env-credit" id="shea_creditPerMt">—</span>
+<span class="env-badge env-credit" id="shea_creditPerKg">—</span>
+<span class="env-badge env-total" id="shea_annualRev">—</span>
+</div>
+<div style="margin-top:8px; font-size:11px; color:#475569;">
               9.855 tCO₂e/MT saved × carbon credit price × reference 1,000 MT/yr
             </div>
-          </div>
-          <div style="margin-top:10px; padding:10px; background:#fffbeb; border-radius:10px;">
-            <div style="font-size:12px; font-weight:900; margin-bottom:4px; color:#92400e;">Effective Value to Women (with carbon credits)</div>
-            <div style="font-size:18px; font-weight:900;" id="shea_effectiveValue">—</div>
-            <div style="font-size:11px; color:#475569; margin-top:4px;">
+</div>
+<div style="margin-top:10px; padding:10px; background:#fffbeb; border-radius:10px;">
+<div style="font-size:12px; font-weight:900; margin-bottom:4px; color:#92400e;">Effective Value to Women (with carbon credits)</div>
+<div id="shea_effectiveValue" style="font-size:18px; font-weight:900;">—</div>
+<div style="font-size:11px; color:#475569; margin-top:4px;">
               Serious Shea price to women + carbon credit premium per MT
             </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="right">
-        <div class="title">Impact Analysis</div>
-        <ul class="list" id="impactList"></ul>
-        <div class="box">
-          <div class="title">Data Source</div>
-          <div class="hint">
+</div>
+</div>
+</div>
+<div class="right">
+<div class="title">Impact Analysis</div>
+<ul class="list" id="impactList"></ul>
+<div class="box">
+<div class="title">Data Source</div>
+<div class="hint">
             Loaded from <code>/frontend/project/shea/data/processed/shea_value_metrics.json</code> and
             <code>/frontend/project/shea/data/processed/shea_value_ndc_metrics.json</code>.
           </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="footer">
-      <div>Shea value simulator • separate by design</div>
-      <div><a href="../../../docs/Research/modeling/VALUE_CHAIN_RULES.md">Separation rules</a></div>
-    </div>
-  </div>
-
-  <script>
+</div>
+</div>
+</div>
+<div class="footer">
+<div>Shea value simulator • separate by design</div>
+<div>Separation rules</div>
+</div>
+</div>
+<script>
     const ENTITIES = [
       { entity_id: "S001", label: "Serious Shea Current (S001)" },
       { entity_id: "S002", label: "Cleo 10% Share Scenario (S002)" }
@@ -474,7 +462,6 @@
       alert("Shea Value simulator failed to load data. Check /data/shea_value_chain/processed/*.json");
     });
   </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -549,7 +536,6 @@
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -570,11 +556,7 @@
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -592,7 +574,6 @@
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -606,14 +587,8 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

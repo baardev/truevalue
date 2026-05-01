@@ -1,10 +1,11 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Water Analysis — Shea Butter Supply Chain</title>
-    <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Water Analysis — Shea Butter Supply Chain</title>
+<style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%); min-height: 100vh; padding: 20px; }
         .page { max-width: 1400px; margin: 0 auto; background: #f4f6f9; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
@@ -51,55 +52,55 @@
 </head>
 <body>
 <div class="page">
-    <div class="header">
-        <div class="header-left">
-            <h1>💧 Water Consumption Analysis — Shea Butter Supply Chain</h1>
-            <p>Consumption · Recycling · Net withdrawal · Phase-resolved · What-If aware</p>
-        </div>
-        <div>
-            <a href="what_if_simulator.html" class="nav-link">← Back to Simulator</a>
-            <a href="emissions_analysis.html" class="nav-link">🌡️ Carbon</a>
-            <a href="energy_analysis.html" class="nav-link">⚡ Energy</a>
-            <a href="/index.html" class="nav-link">🏠 Home</a>
-        </div>
-    </div>
-    <div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading water data…</span></div>
-    <div class="kpi-strip">
-        <div class="kpi-card"><div class="kpi-label">Total Consumed</div><div class="kpi-value" id="kpiTotal" style="color:#0d47a1;">—</div><div class="kpi-sub">litres (reference scale)</div></div>
-        <div class="kpi-card"><div class="kpi-label">Total Recycled</div><div class="kpi-value" id="kpiRecycled" style="color:#2e7d32;">—</div><div class="kpi-sub">closed-loop return</div></div>
-        <div class="kpi-card"><div class="kpi-label">Net Withdrawal</div><div class="kpi-value" id="kpiNet" style="color:#e65100;">—</div><div class="kpi-sub">freshwater consumed</div></div>
-        <div class="kpi-card"><div class="kpi-label">Chain Recycling Rate</div><div class="kpi-value" id="kpiRate" style="color:#1565c0;">—</div><div class="kpi-sub">% returned to process</div></div>
-        <div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest water use</div></div>
-        <div class="kpi-card"><div class="kpi-label">Efficiency Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs benchmarks</div></div>
-    </div>
-    <div class="main-grid">
-        <div class="card">
-            <div class="card-title">📊 Consumed vs Recycled by Phase</div>
-            <svg class="chart" id="barChart" viewBox="0 0 600 280"></svg>
-        </div>
-        <div class="card">
-            <div class="card-title">📈 Net Water Burden Cascade</div>
-            <svg class="chart" id="cascadeChart" viewBox="0 0 600 280"></svg>
-        </div>
-        <div class="card full-width">
-            <div class="card-title">🔍 Phase-by-Phase Breakdown</div>
-            <table class="phase-table"><thead><tr>
-                <th>Phase</th><th>Consumed</th><th>Recycled</th><th>Recycling Rate</th>
-                <th>Net Withdrawal</th><th>% of Net</th><th>Cascade Burden ↑</th><th>Data Quality</th><th>Rating</th>
-            </tr></thead><tbody id="phaseTableBody"></tbody></table>
-        </div>
-        <div class="card full-width">
-            <div class="card-title">💡 Key Findings &amp; Analysis</div>
-            <div class="findings-grid" id="findingsGrid"></div>
-        </div>
-        <div class="card full-width">
-            <div class="card-title">♻️ Water Efficiency Opportunity Ranking</div>
-            <p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by net freshwater withdrawal. Sources: food science benchmarks (Olawale et al. 2020); EU cosmetic manufacturing guidelines; inferred from process descriptions.</p>
-            <div id="waterRanking"></div>
-        </div>
-    </div>
-    <div class="footnote">
-        <strong>Data sources &amp; quality flags:</strong>
+<div class="header">
+<div class="header-left">
+<h1>💧 Water Consumption Analysis — Shea Butter Supply Chain</h1>
+<p>Consumption · Recycling · Net withdrawal · Phase-resolved · What-If aware</p>
+</div>
+<div>
+<a class="nav-link" href="what_if_simulator.html">← Back to Simulator</a>
+<a class="nav-link" href="emissions_analysis.html">🌡️ Carbon</a>
+<a class="nav-link" href="energy_analysis.html">⚡ Energy</a>
+<a class="nav-link" href="/index.html">🏠 Home</a>
+</div>
+</div>
+<div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading water data…</span></div>
+<div class="kpi-strip">
+<div class="kpi-card"><div class="kpi-label">Total Consumed</div><div class="kpi-value" id="kpiTotal" style="color:#0d47a1;">—</div><div class="kpi-sub">litres (reference scale)</div></div>
+<div class="kpi-card"><div class="kpi-label">Total Recycled</div><div class="kpi-value" id="kpiRecycled" style="color:#2e7d32;">—</div><div class="kpi-sub">closed-loop return</div></div>
+<div class="kpi-card"><div class="kpi-label">Net Withdrawal</div><div class="kpi-value" id="kpiNet" style="color:#e65100;">—</div><div class="kpi-sub">freshwater consumed</div></div>
+<div class="kpi-card"><div class="kpi-label">Chain Recycling Rate</div><div class="kpi-value" id="kpiRate" style="color:#1565c0;">—</div><div class="kpi-sub">% returned to process</div></div>
+<div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest water use</div></div>
+<div class="kpi-card"><div class="kpi-label">Efficiency Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs benchmarks</div></div>
+</div>
+<div class="main-grid">
+<div class="card">
+<div class="card-title">📊 Consumed vs Recycled by Phase</div>
+<svg class="chart" id="barChart" viewbox="0 0 600 280"></svg>
+</div>
+<div class="card">
+<div class="card-title">📈 Net Water Burden Cascade</div>
+<svg class="chart" id="cascadeChart" viewbox="0 0 600 280"></svg>
+</div>
+<div class="card full-width">
+<div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+<table class="phase-table"><thead><tr>
+<th>Phase</th><th>Consumed</th><th>Recycled</th><th>Recycling Rate</th>
+<th>Net Withdrawal</th><th>% of Net</th><th>Cascade Burden ↑</th><th>Data Quality</th><th>Rating</th>
+</tr></thead><tbody id="phaseTableBody"></tbody></table>
+</div>
+<div class="card full-width">
+<div class="card-title">💡 Key Findings &amp; Analysis</div>
+<div class="findings-grid" id="findingsGrid"></div>
+</div>
+<div class="card full-width">
+<div class="card-title">♻️ Water Efficiency Opportunity Ranking</div>
+<p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by net freshwater withdrawal. Sources: food science benchmarks (Olawale et al. 2020); EU cosmetic manufacturing guidelines; inferred from process descriptions.</p>
+<div id="waterRanking"></div>
+</div>
+</div>
+<div class="footnote">
+<strong>Data sources &amp; quality flags:</strong>
         Phase 3 (Processing): Inferred from shea processing food science — Olawale et al. (2020) ~5-10 L/kg butter; traditional method ~10 L/kg, Serious Shea mechanical ~5 L/kg (quality: Medium) ·
         Phase 5 (Manufacturing): Inferred from EU cosmetic manufacturing benchmarks ~3-8 L/kg product (quality: Low) ·
         All other phases: Inferred from process descriptions and logistics industry benchmarks (quality: Low) ·
@@ -266,7 +267,6 @@ async function init(){
 }
 init();
 </script>
-
 <script>
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
@@ -341,7 +341,6 @@ init();
   else inject();
 })();
 </script>
-
 <script>
 /* ── Contextual Resource Footer ─────────────────────────────────── */
 (function(){
@@ -362,11 +361,7 @@ init();
   if (project) {
     var cap = project.charAt(0).toUpperCase() + project.slice(1);
     projectLinks = [
-      { label: cap + ' Supply Chain Data', href: '/frontend/project/' + project + '/data/processed/' + project + '_supply_chain_ui.json', icon: '📦' },
-      { label: cap + ' Value Chain Data',  href: '/frontend/project/' + project + '/data/processed/' + project + '_value_chain_ui.json',  icon: '💰' },
-      { label: cap + ' Value Metrics',     href: '/frontend/project/' + project + '/data/processed/' + project + '_value_metrics.json', icon: '📈' },
-      { label: cap + ' Scenario Baseline', href: '/frontend/project/' + project + '/data/processed/' + project + '_scenario_baseline.csv', icon: '🎲' },
-    ];
+];
     if (project === 'aubeb') {
       projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
     }
@@ -384,7 +379,6 @@ init();
     schemaLinks = schemaLinks.concat([
       { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
       { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
-      { label: 'Custody & Flow Schema',   href: '/data/custody_and_flow.html',        icon: '🏷️' },
       { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
     ]);
   }
@@ -398,14 +392,8 @@ init();
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-    { label: 'Documentation Wiki',       href: '/site/index.html',                          icon: '📖' },
-    { label: 'CSV Data Explorer',        href: '/frontend/csv/index.html',                  icon: '📊' },
-    { label: 'Research & Publications',  href: '/frontend/research/index.html',             icon: '🔬', color: 'red' },
-    { label: 'Reports & Briefings',      href: '/frontend/report/index.html',               icon: '📄' },
-    { label: 'TVPCI',                    href: '/frontend/tvpci/index.html',                icon: '🧭' },
-    { label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-    { label: 'PDI Form',                 href: '/frontend/PDI.html',                        icon: '📋' },
-  ];
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

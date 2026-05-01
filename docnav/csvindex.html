@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DocNav — Project CSV Catalog</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --text: #e2e4f0;
+    --muted: #7c82a0;
+    --accent: #4f8ef7;
+    --tag-topic: #2563eb;
+    --tag-fmt: #059669;
+    --tag-phase: #d97706;
+    --tag-kind: #7c3aed;
+    --tag-meta: #dc2626;
+    --tag-other: #475569;
+    --pill-bg: #1e2235;
+    --active-pill: #3b4cca;
+    --card-shadow: 0 1px 4px rgba(0,0,0,.4);
+    --radius: 6px;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 14px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-shrink: 0;
+    flex-wrap: wrap;
+  }
+
+  header h1 {
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: .03em;
+    color: var(--accent);
+    white-space: nowrap;
+  }
+
+  #search {
+    flex: 1;
+    min-width: 200px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--text);
+    padding: 7px 12px;
+    font-size: 13px;
+    outline: none;
+    transition: border-color .15s;
+  }
+  #search:focus { border-color: var(--accent); }
+
+  #result-count {
+    color: var(--muted);
+    font-size: 12px;
+    white-space: nowrap;
+  }
+
+  #clear-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: var(--radius);
+    padding: 5px 12px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: border-color .15s, color .15s;
+    white-space: nowrap;
+  }
+  #clear-btn:hover { border-color: var(--accent); color: var(--text); }
+
+  #active-filters {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 6px 20px;
+    display: none;
+    flex-wrap: wrap;
+    gap: 6px;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  #active-filters.visible { display: flex; }
+  .active-label { color: var(--muted); font-size: 11px; margin-right: 4px; }
+
+  .active-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--active-pill);
+    color: #fff;
+    border-radius: 20px;
+    padding: 3px 10px 3px 12px;
+    font-size: 12px;
+    cursor: pointer;
+    transition: opacity .15s;
+  }
+  .active-pill:hover { opacity: .8; }
+  .active-pill .x { font-size: 14px; line-height: 1; }
+
+  .layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+  }
+
+  aside {
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    padding: 12px 0;
+  }
+
+  .facet-group { margin-bottom: 4px; }
+
+  .facet-heading {
+    font-size: 10px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding: 8px 16px 4px;
+    font-weight: 600;
+  }
+
+  .facet-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 16px;
+    cursor: pointer;
+    border-left: 2px solid transparent;
+    transition: background .1s, border-color .1s;
+    border-radius: 0 4px 4px 0;
+  }
+  .facet-item:hover { background: var(--surface2); }
+  .facet-item.active {
+    background: var(--surface2);
+    border-left-color: var(--accent);
+  }
+
+  .facet-label {
+    font-size: 12px;
+    color: var(--text);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .facet-item.active .facet-label { color: #fff; font-weight: 600; }
+
+  .facet-count {
+    font-size: 11px;
+    color: var(--muted);
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 1px 6px;
+    margin-left: 6px;
+    flex-shrink: 0;
+  }
+
+  main {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 20px;
+  }
+
+  #cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    box-shadow: var(--card-shadow);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: #4a5080; }
+
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+  }
+  .card-title a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+  .card-title a:hover { text-decoration: underline; }
+
+  .card-path {
+    font-size: 10px;
+    color: var(--muted);
+    font-family: "SFMono-Regular", "Cascadia Code", "Fira Code", monospace;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .card-summary {
+    font-size: 12px;
+    color: #a0a6c0;
+    line-height: 1.5;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    margin-top: 4px;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 500;
+    opacity: .9;
+    transition: opacity .1s, transform .1s;
+  }
+  .tag-pill:hover { opacity: 1; transform: translateY(-1px); }
+
+  .tag-topic  { background: #1d3a80; color: #93b8ff; }
+  .tag-fmt    { background: #064e3b; color: #6ee7b7; }
+  .tag-phase  { background: #78350f; color: #fde68a; }
+  .tag-kind   { background: #3b0764; color: #d8b4fe; }
+  .tag-meta   { background: #7f1d1d; color: #fca5a5; }
+  .tag-other  { background: #1e293b; color: #94a3b8; }
+
+  .no-results {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--muted);
+    font-size: 15px;
+  }
+
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>CSV Catalog</h1>
+  <input id="search" type="search" placeholder="Search paths and previews…" autocomplete="off">
+  <span id="result-count"></span>
+  <button id="clear-btn">Clear filters</button>
+</header>
+
+<div id="active-filters"></div>
+
+<div class="layout">
+  <aside id="sidebar"></aside>
+  <main><div id="cards"></div></main>
+</div>
+
+<script>
+(function () {
+
+const FACET_ORDER = ["topic", "fmt", "phase", "kind", "meta"];
+const FACET_LABELS = {
+  topic: "Topic", fmt: "Format", phase: "Phase",
+  kind: "Kind", meta: "Confidence",
+};
+
+let allDocs = [];
+let activeFilters = new Set();
+let searchText = "";
+
+function facetOf(tag) {
+  const slash = tag.indexOf("/");
+  return slash >= 0 ? tag.slice(0, slash) : "other";
+}
+
+function tagClass(tag) {
+  const f = facetOf(tag);
+  return ["topic","fmt","phase","kind","meta"].includes(f) ? "tag-" + f : "tag-other";
+}
+
+function shortTag(tag) {
+  const slash = tag.indexOf("/");
+  return slash >= 0 ? tag.slice(slash + 1) : tag;
+}
+
+function matchesFilters(doc) {
+  for (const f of activeFilters) {
+    if (!doc.tags.includes(f)) return false;
+  }
+  return true;
+}
+
+function matchesSearch(doc) {
+  if (!searchText) return true;
+  const q = searchText.toLowerCase();
+  return doc.title.toLowerCase().includes(q) ||
+         doc.summary.toLowerCase().includes(q) ||
+         doc.path.toLowerCase().includes(q);
+}
+
+function filteredDocs() {
+  return allDocs.filter(d => matchesFilters(d) && matchesSearch(d));
+}
+
+function buildFacetCounts(docs) {
+  const counts = {};
+  for (const doc of docs) {
+    for (const tag of doc.tags) {
+      counts[tag] = (counts[tag] || 0) + 1;
+    }
+  }
+  return counts;
+}
+
+function renderSidebar(docs) {
+  const counts = buildFacetCounts(docs);
+  const totalCounts = buildFacetCounts(allDocs);
+  const byFacet = {};
+  for (const [tag, cnt] of Object.entries(totalCounts)) {
+    const f = facetOf(tag);
+    if (!byFacet[f]) byFacet[f] = [];
+    byFacet[f].push({ tag, total: cnt, visible: counts[tag] || 0 });
+  }
+
+  const sidebar = document.getElementById("sidebar");
+  sidebar.innerHTML = "";
+
+  const orderedFacets = [
+    ...FACET_ORDER.filter(f => byFacet[f]),
+    ...Object.keys(byFacet).filter(f => !FACET_ORDER.includes(f) && f !== "other"),
+    ...(byFacet["other"] ? ["other"] : []),
+  ];
+
+  for (const facet of orderedFacets) {
+    const items = byFacet[facet].sort((a, b) => b.total - a.total);
+    const group = document.createElement("div");
+    group.className = "facet-group";
+
+    const heading = document.createElement("div");
+    heading.className = "facet-heading";
+    heading.textContent = FACET_LABELS[facet] || facet;
+    group.appendChild(heading);
+
+    for (const { tag, total, visible } of items) {
+      const item = document.createElement("div");
+      item.className = "facet-item" + (activeFilters.has(tag) ? " active" : "");
+      item.innerHTML = `<span class="facet-label">${shortTag(tag)}</span>
+        <span class="facet-count">${activeFilters.size ? visible : total}</span>`;
+      item.addEventListener("click", () => toggleFilter(tag));
+      group.appendChild(item);
+    }
+    sidebar.appendChild(group);
+  }
+}
+
+function renderActiveFilters() {
+  const bar = document.getElementById("active-filters");
+  if (activeFilters.size === 0) {
+    bar.classList.remove("visible");
+    return;
+  }
+  bar.classList.add("visible");
+  bar.innerHTML = `<span class="active-label">Filtering by:</span>`;
+  for (const tag of activeFilters) {
+    const pill = document.createElement("div");
+    pill.className = "active-pill";
+    pill.innerHTML = `<span>${tag}</span><span class="x">×</span>`;
+    pill.addEventListener("click", () => toggleFilter(tag));
+    bar.appendChild(pill);
+  }
+}
+
+function renderCards(docs) {
+  const container = document.getElementById("cards");
+  document.getElementById("result-count").textContent =
+    `${docs.length} of ${allDocs.length} CSV files`;
+
+  if (docs.length === 0) {
+    container.innerHTML = `<div class="no-results">No CSV files match the current filters.</div>`;
+    return;
+  }
+
+  container.innerHTML = "";
+  const fragment = document.createDocumentFragment();
+
+  for (const doc of docs) {
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const name = doc.title.replace(/^csv\s*\([^)]*\):\s*/i, "").trim() || doc.title;
+    const viewerExts = new Set(["md","markdown","csv","tsv"]);
+    const docExt = doc.path.split(".").pop().toLowerCase();
+    const href = viewerExts.has(docExt)
+      ? "view.html?file=" + encodeURIComponent(doc.path)
+      : doc.url;
+    card.innerHTML = `
+      <div class="card-title"><a href="${href}" target="_blank" rel="noopener">${escHtml(name)}</a></div>
+      <div class="card-path">${escHtml(doc.path)}</div>
+      <div class="card-summary">${escHtml(doc.summary)}</div>
+      <div class="card-tags"></div>
+    `;
+
+    const tagsDiv = card.querySelector(".card-tags");
+    for (const tag of doc.tags) {
+      const pill = document.createElement("span");
+      pill.className = "tag-pill " + tagClass(tag);
+      pill.textContent = shortTag(tag);
+      pill.title = tag;
+      pill.addEventListener("click", () => toggleFilter(tag));
+      tagsDiv.appendChild(pill);
+    }
+
+    fragment.appendChild(card);
+  }
+  container.appendChild(fragment);
+}
+
+function render() {
+  const docs = filteredDocs();
+  renderSidebar(docs);
+  renderActiveFilters();
+  renderCards(docs);
+}
+
+function toggleFilter(tag) {
+  if (activeFilters.has(tag)) {
+    activeFilters.delete(tag);
+  } else {
+    activeFilters.add(tag);
+  }
+  render();
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+
+document.getElementById("search").addEventListener("input", e => {
+  searchText = e.target.value.trim();
+  render();
+});
+
+document.getElementById("clear-btn").addEventListener("click", () => {
+  activeFilters.clear();
+  searchText = "";
+  document.getElementById("search").value = "";
+  render();
+});
+
+fetch("csv_catalog.json")
+  .then(r => r.json())
+  .then(data => {
+    allDocs = data;
+    render();
+  })
+  .catch(() => {
+    document.getElementById("cards").innerHTML =
+      `<div class="no-results">Could not load csv_catalog.json. Run sh docnav/CSV_REFRESH from the repo root.</div>`;
+  });
+
+})();
+</script>
+</body>
+</html>

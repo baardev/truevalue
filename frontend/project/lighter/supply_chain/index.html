@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lighter – Supply Chain</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: linear-gradient(135deg, #e05c00 0%, #a03e00 50%, #2c1a00 100%);
+      min-height: 100vh;
+      padding: 24px;
+      color: #2c3e50;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .hero {
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+      padding: 40px;
+      margin-bottom: 22px;
+    }
+    .kicker {
+      display: inline-block;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #e05c00;
+      background: #fff3ec;
+      padding: 6px 14px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+    h1 { font-size: 30px; font-weight: 300; margin-bottom: 10px; }
+    .subtitle { font-size: 14px; color: #6c757d; line-height: 1.6; max-width: 700px; margin-bottom: 28px; }
+    .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .card {
+      border: 1px solid #eee;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.12); }
+    .card-header { padding: 20px 22px 14px; color: #fff; background: linear-gradient(135deg, #2c1a00 0%, #a03e00 100%); }
+    .card-icon { font-size: 28px; margin-bottom: 8px; }
+    .card-title { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+    .card-desc { font-size: 12px; opacity: 0.9; }
+    .card-body { padding: 18px 22px 20px; }
+    .card-body ul { list-style: none; margin-bottom: 16px; }
+    .card-body li { font-size: 13px; color: #495057; padding: 4px 0 4px 18px; position: relative; }
+    .card-body li::before { content: "→"; position: absolute; left: 0; color: #e05c00; font-weight: bold; }
+    .btn {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+      background: linear-gradient(135deg, #2c1a00 0%, #a03e00 100%);
+    }
+    .btn:hover { opacity: 0.9; }
+    .phase-strip {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 22px;
+    }
+    .phase-strip h3 { font-size: 13px; font-weight: 700; color: #2c3e50; margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .phases { display: flex; gap: 6px; flex-wrap: wrap; }
+    .phase-pill {
+      padding: 5px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .ph-high { background: #2e7d32; }
+    .ph-medium { background: #e65100; }
+    .ph-low { background: #c62828; }
+    .phase-pill span { font-weight: 400; opacity: 0.85; margin-left: 3px; }
+    .nav { text-align: center; margin-top: 16px; }
+    .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+    .nav a:hover { text-decoration: underline; }
+    .balance-note { font-size: 12px; color: #6c757d; margin-top: 10px; }
+  </style>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+<div class="kicker">Lighter · Supply Chain · Physical Layer</div>
+<h1>🏭 Lighter — Supply Chain Analysis</h1>
+<p class="subtitle">
+        8 phases from raw material extraction (butane; PP resin; ferrocerium) through to retail sale.
+        Chain average balance: <strong>81.9%</strong>. Bottleneck phases: Phase 1 (Component Manufacturing, 70.0%) and Phase 2 (Lighter Assembly, 72.0%).
+        The highest-transparency phases are Phase 5 (Ocean Freight) and Phase 7 (Retail), both anchored by public UN Comtrade and BIC Annual Report data.
+      </p>
+<div class="phase-strip">
+<h3>Phase Map — Transparency by Phase</h3>
+<div class="phases">
+<div class="phase-pill ph-medium">0<span>Raw Materials</span></div>
+<div class="phase-pill ph-low">1<span>Components</span></div>
+<div class="phase-pill ph-low">2<span>Assembly</span></div>
+<div class="phase-pill ph-medium">3<span>QA/Cert</span></div>
+<div class="phase-pill ph-medium">4<span>Packaging</span></div>
+<div class="phase-pill ph-high">5<span>Ocean Freight</span></div>
+<div class="phase-pill ph-medium">6<span>Wholesale</span></div>
+<div class="phase-pill ph-high">7<span>Retail</span></div>
+</div>
+<div class="balance-note">Green = High transparency · Orange = Medium · Red = Low (opaque; private factory economics)</div>
+</div>
+<div class="cards">
+<div class="card">
+<div class="card-header">
+<div class="card-icon">📊</div>
+<div class="card-title">N-D-C Dashboard</div>
+<div class="card-desc">Phase balance scores · D-C-N charts · Bottleneck analysis</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Phase-by-phase D, C, N values and balance scores</li>
+<li>Five-model coherence pentagon (π, φ, √2, ln2, e)</li>
+<li>Bottleneck identification: Phase 1 at 70.0%, Phase 2 at 72.0%</li>
+<li>Scenario explorer: Wenzhou disruption, tariff shock, circular economy</li>
+</ul>
+<a class="btn" href="dashboard.html">Open Dashboard →</a>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<div class="card-icon">📋</div>
+<div class="card-title">Project Context</div>
+<div class="card-desc">Phase map · Actor registry · Data sources · Bond opportunity</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Full 8-phase supply chain with transparency ratings</li>
+<li>Actor registry: WLPGA; CLCA; BIC; SGS; NACS; UN Comtrade</li>
+<li>Data sources: public; estimated; inferred — all cited</li>
+<li>Structural analysis: micro-margin optimization and E-layer</li>
+</ul>
+<a class="btn" href="project_context.html">Open Context →</a>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<div class="card-icon">♻️</div>
+<div class="card-title">System Lifecycle</div>
+<div class="card-desc">5 lifecycle phases · Disposal bottleneck · Circularity gap</div>
+</div>
+<div class="card-body">
+<ul>
+<li>5 lifecycle phases: sourcing → manufacturing → distribution → use → disposal</li>
+<li>Lifecycle bottleneck: Disposal &amp; Circularity at 62.0% balance</li>
+<li>50,000 MT PP plastic waste per year; near-zero recycling</li>
+<li>Tholonic model: D-C collapse at end-of-life boundary</li>
+</ul>
+<a class="btn" href="system_lifecycle.html">Open Lifecycle →</a>
+</div>
+</div>
+<div class="card">
+<div class="card-header">
+<div class="card-icon">📁</div>
+<div class="card-title">Phase Instance Document</div>
+<div class="card-desc">Full phase-by-phase N-D-C tables with data status</div>
+</div>
+<div class="card-body">
+<ul>
+<li>All 8 phases with physical state in/out, actors, volumes, value flows</li>
+<li>D-parameters and C-parameters per phase</li>
+<li>Data status: POPULATED / PARTIAL / INFERRED / ESTIMATED</li>
+<li>Source citations for every data point</li>
+</ul>
+<a class="btn" href="../data/LIGHTER_SUPPLY_CHAIN_PHASE_INSTANCE.md">View Document →</a>
+</div>
+</div>
+</div>
+</div>
+<div class="nav">
+<a href="../index.html">← Lighter Hub</a>
+Main Homepage
+<a href="../value_chain/index.html">Value Chain →</a>
+</div>
+</div>
+</body>
+</html>

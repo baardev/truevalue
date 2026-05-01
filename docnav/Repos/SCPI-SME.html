@@ -1,0 +1,1164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCPI-SME — Supply Chain Profile Instrument · Small Business Edition</title>
+<style>
+/* ─── Reset & Base ─────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --amber:       #b45309;
+  --amber-dark:  #78350f;
+  --amber-mid:   #d97706;
+  --amber-light: #fef3c7;
+  --amber-pale:  #fffbeb;
+  --green:       #059669;
+  --green-light: #d1fae5;
+  --green-dark:  #065f46;
+  --red:         #dc2626;
+  --red-light:   #fee2e2;
+  --blue:        #1d4ed8;
+  --blue-light:  #dbeafe;
+  --bg:          #f9fafb;
+  --white:       #ffffff;
+  --border:      #e5e7eb;
+  --text:        #1c1917;
+  --muted:       #6b7280;
+  --radius:      10px;
+  --shadow:      0 1px 4px rgba(0,0,0,0.08);
+}
+html { scroll-behavior: smooth; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.65;
+  font-size: 15px;
+}
+
+/* ─── Top Nav ─────────────────────────────────── */
+#topnav {
+  position: sticky; top: 0; z-index: 200;
+  background: var(--amber-dark);
+  display: flex; align-items: center; gap: 0; padding: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25); flex-wrap: wrap;
+}
+.nav-brand {
+  padding: 0 1.25rem; font-weight: 700; font-size: 0.9rem; color: #fff;
+  letter-spacing: 0.02em; white-space: nowrap;
+  border-right: 1px solid rgba(255,255,255,0.15);
+  height: 48px; display: flex; align-items: center; gap: 8px;
+}
+.nav-brand .badge {
+  background: var(--amber-mid); color: #fff;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.08em;
+  padding: 2px 6px; border-radius: 4px; text-transform: uppercase;
+}
+.nav-links { display: flex; }
+.nav-links a {
+  color: rgba(255,255,255,0.75); text-decoration: none;
+  padding: 0 1rem; height: 48px; display: flex; align-items: center;
+  font-size: 0.85rem; font-weight: 500; white-space: nowrap;
+  border-bottom: 3px solid transparent; transition: all 0.15s;
+}
+.nav-links a:hover { background: rgba(255,255,255,0.08); color: #fff; }
+.nav-links a.active { color: #fcd34d; border-bottom-color: #fcd34d; }
+.nav-actions { margin-left: auto; display: flex; gap: 0.5rem; padding: 0 1rem; align-items: center; }
+.btn {
+  padding: 0.35rem 0.875rem; border-radius: 6px; font-size: 0.8rem;
+  font-weight: 600; cursor: pointer; border: none; transition: all 0.15s; white-space: nowrap;
+}
+.btn-outline { background: transparent; border: 1.5px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.85); }
+.btn-outline:hover { background: rgba(255,255,255,0.12); }
+.btn-amber { background: var(--amber-mid); color: white; }
+.btn-amber:hover { background: var(--amber); }
+.btn-green { background: var(--green); color: white; }
+.btn-green:hover { background: var(--green-dark); }
+.btn-red { background: #ef4444; color: white; font-size: 0.75rem; padding: 0.25rem 0.625rem; border-radius: 4px; }
+.btn-red:hover { background: var(--red); }
+
+/* ─── Main ───────────────────────────────────── */
+.main { max-width: 900px; margin: 0 auto; padding: 1.75rem 1.25rem 5rem; }
+
+/* ─── Hero ───────────────────────────────────── */
+.hero {
+  background: linear-gradient(135deg, var(--amber-dark) 0%, #a16207 100%);
+  border-radius: var(--radius); padding: 2rem 2rem 1.75rem; margin-bottom: 1.75rem;
+  color: white; box-shadow: 0 4px 16px rgba(120,53,15,0.35);
+}
+.hero-eyebrow {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+  color: #fcd34d; margin-bottom: 0.5rem;
+}
+.hero h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.25rem; }
+.hero h1 span { color: #fcd34d; }
+.hero p { color: rgba(255,255,255,0.72); font-size: 0.875rem; margin-bottom: 1.5rem; max-width: 600px; line-height: 1.5; }
+.hero-meta { display: flex; gap: 0.875rem; flex-wrap: wrap; }
+.hero-meta .meta-field { flex: 1; min-width: 160px; }
+.hero-meta label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); margin-bottom: 0.35rem; }
+.hero-meta input, .hero-meta select {
+  width: 100%; background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.22);
+  border-radius: 6px; padding: 0.4rem 0.75rem; color: white; font-size: 0.9rem; font-family: inherit;
+}
+.hero-meta input::placeholder { color: rgba(255,255,255,0.35); }
+.hero-meta input:focus, .hero-meta select:focus { outline: none; border-color: #fcd34d; }
+.hero-meta select option { background: var(--amber-dark); color: white; }
+.product-field {
+  margin-bottom: 1.25rem;
+}
+.product-field label { display: block; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: rgba(255,255,255,0.55); margin-bottom: 0.35rem; }
+.product-field input {
+  font-size: 1.2rem; font-weight: 600; color: white;
+  background: rgba(255,255,255,0.1); border: 2px solid rgba(255,255,255,0.25);
+  border-radius: 8px; padding: 0.6rem 1rem; width: 100%;
+}
+.product-field input::placeholder { color: rgba(255,255,255,0.35); font-weight: 400; }
+.product-field input:focus { outline: none; border-color: #fcd34d; background: rgba(255,255,255,0.15); }
+
+/* ─── Cards ──────────────────────────────────── */
+.card {
+  background: var(--white); border-radius: var(--radius);
+  padding: 1.75rem 2rem; margin-bottom: 1.5rem;
+  box-shadow: var(--shadow); border: 1px solid var(--border);
+}
+.section-header { display: flex; align-items: flex-start; gap: 1rem; margin-bottom: 1.25rem; }
+.module-badge {
+  background: var(--amber-dark); color: white; font-size: 0.68rem; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 0.25rem 0.625rem; border-radius: 20px; white-space: nowrap; margin-top: 0.25rem;
+}
+.section-header h2 { font-size: 1.15rem; font-weight: 700; color: var(--amber-dark); }
+.section-header p { font-size: 0.875rem; color: var(--muted); margin-top: 0.125rem; }
+
+/* ─── Info & Instruction Boxes ───────────────── */
+.info-box {
+  background: var(--amber-pale); border-left: 4px solid var(--amber-mid);
+  padding: 0.875rem 1.125rem; border-radius: 0 8px 8px 0;
+  margin-bottom: 1.25rem; font-size: 0.875rem; color: var(--amber-dark);
+}
+.info-box strong { color: var(--amber); }
+.info-box ul { margin-top: 0.4rem; padding-left: 1.25rem; }
+.info-box li { margin-bottom: 0.2rem; }
+.example-toggle {
+  display: flex; align-items: center; gap: 0.5rem;
+  font-size: 0.8rem; font-weight: 600; color: var(--amber);
+  cursor: pointer; margin-bottom: 0.75rem; user-select: none;
+}
+.example-toggle:hover { color: var(--amber-dark); }
+.example-box {
+  background: #fffbeb; border: 1px dashed #fbbf24; border-radius: 8px;
+  padding: 0.875rem 1rem; margin-bottom: 1.25rem;
+  font-size: 0.825rem; color: #78350f; display: none;
+}
+.example-box.open { display: block; }
+.example-box .ex-label { font-weight: 700; color: #92400e; margin-bottom: 0.25rem; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ─── Form Elements ──────────────────────────── */
+.form-group { margin-bottom: 1.125rem; }
+.form-row { display: flex; gap: 1rem; flex-wrap: wrap; }
+.form-row .form-group { flex: 1; min-width: 180px; }
+label.field-label { display: block; font-weight: 600; font-size: 0.85rem; color: var(--amber-dark); margin-bottom: 0.35rem; }
+label.field-label .req { color: var(--red); margin-left: 2px; }
+.field-desc { font-size: 0.775rem; color: var(--muted); margin-bottom: 0.375rem; line-height: 1.45; }
+input[type="text"], input[type="number"], textarea, select {
+  width: 100%; padding: 0.5rem 0.75rem;
+  border: 1.5px solid var(--border); border-radius: 6px;
+  font-size: 0.9rem; font-family: inherit; color: var(--text);
+  transition: border-color 0.15s; background: #fafafa;
+}
+input[type="text"]:focus, input[type="number"]:focus, textarea:focus, select:focus {
+  outline: none; border-color: var(--amber-mid); background: white;
+}
+textarea { resize: vertical; min-height: 65px; }
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 1.25rem 0; }
+
+/* ─── Pill Toggles ───────────────────────────── */
+.pill-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+.pill {
+  display: flex; align-items: center; gap: 0.35rem;
+  padding: 0.3rem 0.75rem; border: 1.5px solid var(--border);
+  border-radius: 20px; cursor: pointer; font-size: 0.85rem;
+  transition: all 0.15s; user-select: none; background: #fafafa;
+}
+.pill:hover { border-color: var(--amber-mid); background: var(--amber-light); }
+.pill input[type="radio"] { display: none; }
+.pill.sel { border-color: var(--amber-mid); background: var(--amber-light); color: var(--amber-dark); font-weight: 600; }
+.pill.sel-green { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 600; }
+.pill.sel-red { border-color: var(--red); background: var(--red-light); color: #991b1b; font-weight: 600; }
+
+/* ─── Step Records ───────────────────────────── */
+.steps-container { display: flex; flex-direction: column; gap: 0.875rem; }
+.step-record { border: 1.5px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.step-record.ok { border-color: #a7f3d0; }
+.step-record.warn { border-color: #fcd34d; }
+.step-record.risk { border-color: #fca5a5; }
+.step-header {
+  display: flex; align-items: center; gap: 0.875rem;
+  background: #f9fafb; padding: 0.875rem 1.125rem; cursor: pointer;
+  border-bottom: 1px solid transparent; transition: background 0.15s; user-select: none;
+}
+.step-header:hover { background: #f3f4f6; }
+.step-record.open .step-header { border-bottom-color: var(--border); }
+.step-num {
+  background: var(--amber-dark); color: white; font-size: 0.7rem; font-weight: 700;
+  border-radius: 50%; width: 26px; height: 26px; display: flex;
+  align-items: center; justify-content: center; flex-shrink: 0;
+}
+.step-name-input {
+  flex: 1; background: transparent; border: none; font-size: 0.9rem;
+  font-weight: 600; color: var(--amber-dark); cursor: text; padding: 0;
+}
+.step-name-input:focus { outline: none; }
+.step-name-input::placeholder { font-weight: 400; color: var(--muted); }
+.health-pill {
+  padding: 0.2rem 0.625rem; border-radius: 20px; font-size: 0.75rem;
+  font-weight: 700; white-space: nowrap; flex-shrink: 0;
+}
+.health-pending { background: #f3f4f6; color: var(--muted); }
+.health-good { background: var(--green-light); color: var(--green-dark); }
+.health-warn { background: var(--amber-light); color: var(--amber-dark); }
+.health-risk { background: var(--red-light); color: #991b1b; }
+.chevron { color: var(--muted); font-size: 0.75rem; flex-shrink: 0; transition: transform 0.2s; }
+.step-record.open .chevron { transform: rotate(180deg); }
+.step-body { padding: 1.5rem; display: none; }
+.step-record.open .step-body { display: block; }
+
+/* ─── Health Scorecard ───────────────────────── */
+.health-card {
+  background: #f9fafb; border: 1px solid var(--border); border-radius: 8px;
+  padding: 1rem 1.125rem; margin-top: 1rem;
+}
+.health-card h4 { font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--amber-dark); margin-bottom: 0.875rem; }
+.health-row { margin-bottom: 0.75rem; }
+.health-question { font-size: 0.85rem; font-weight: 600; color: var(--text); margin-bottom: 0.3rem; }
+.health-sub { font-size: 0.775rem; color: var(--muted); margin-bottom: 0.3rem; }
+.health-score-display {
+  margin-top: 1rem; padding: 0.875rem 1.125rem; border-radius: 8px;
+  display: flex; align-items: center; gap: 1rem; border: 1px solid var(--border);
+}
+.health-score-display.good { background: var(--green-light); border-color: #a7f3d0; }
+.health-score-display.warn { background: var(--amber-light); border-color: #fcd34d; }
+.health-score-display.risk { background: var(--red-light); border-color: #fca5a5; }
+.health-score-display.pending { background: #f9fafb; }
+.health-score-num { font-size: 2rem; font-weight: 800; }
+.good .health-score-num { color: var(--green); }
+.warn .health-score-num { color: var(--amber-mid); }
+.risk .health-score-num { color: var(--red); }
+.pending .health-score-num { color: var(--muted); }
+.health-score-label { font-weight: 700; font-size: 0.95rem; }
+.health-score-sub { font-size: 0.8rem; color: var(--muted); margin-top: 0.125rem; }
+
+/* ─── Phase Map ──────────────────────────────── */
+.phase-flow {
+  display: flex; flex-wrap: wrap; gap: 0; align-items: stretch; margin: 1rem 0; border: 1px solid var(--border); border-radius: 8px; overflow: hidden;
+}
+.phase-node {
+  flex: 1; min-width: 80px; padding: 10px 8px; text-align: center;
+  font-size: 0.72rem; font-weight: 600; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  border-right: 1px solid rgba(255,255,255,0.3);
+}
+.phase-node:last-child { border-right: none; }
+.phase-node.good { background: var(--green-light); color: var(--green-dark); }
+.phase-node.warn { background: var(--amber-light); color: var(--amber-dark); }
+.phase-node.risk { background: var(--red-light); color: #991b1b; }
+.phase-node.empty { background: #f3f4f6; color: var(--muted); font-weight: 400; font-style: italic; }
+.phase-num { font-size: 0.65rem; opacity: 0.7; margin-bottom: 3px; }
+.phase-arrow { font-size: 0.65rem; opacity: 0.5; margin-top: 3px; }
+
+/* ─── Summary Tables ─────────────────────────── */
+.summary-table { width: 100%; border-collapse: collapse; font-size: 0.875rem; margin-top: 0.75rem; }
+.summary-table th { background: var(--amber-dark); color: white; padding: 0.625rem 0.875rem; text-align: left; font-size: 0.78rem; }
+.summary-table td { padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+.summary-table tr:nth-child(even) td { background: #fafafa; }
+.tag { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.72rem; font-weight: 700; }
+.tag-good { background: var(--green-light); color: var(--green-dark); }
+.tag-warn { background: var(--amber-light); color: var(--amber-dark); }
+.tag-risk { background: var(--red-light); color: #991b1b; }
+.tag-na { background: #f3f4f6; color: var(--muted); }
+
+/* ─── YAML Output ────────────────────────────── */
+#yaml-output {
+  background: #1e293b; color: #a5f3fc; font-family: 'Courier New', monospace;
+  font-size: 0.8rem; padding: 1.25rem; border-radius: 8px; white-space: pre;
+  overflow-x: auto; max-height: 500px; overflow-y: auto;
+  border: 1px solid #334155; margin-top: 1rem;
+}
+
+/* ─── Finding Box ─────────────────────────────── */
+.finding-box {
+  background: var(--amber-pale); border: 1px solid #fcd34d; border-radius: 8px;
+  padding: 1rem 1.25rem; margin-bottom: 0.875rem;
+}
+.finding-box .finding-label { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--amber); margin-bottom: 0.25rem; }
+.finding-box .finding-text { font-size: 0.9rem; color: var(--amber-dark); line-height: 1.55; }
+.finding-box.risk-box { background: var(--red-light); border-color: #fca5a5; }
+.finding-box.risk-box .finding-label { color: #991b1b; }
+.finding-box.risk-box .finding-text { color: #7f1d1d; }
+.finding-box.good-box { background: var(--green-light); border-color: #a7f3d0; }
+.finding-box.good-box .finding-label { color: var(--green-dark); }
+.finding-box.good-box .finding-text { color: #064e3b; }
+
+/* ─── Accessibility / Print ──────────────────── */
+@media (max-width: 600px) {
+  .form-row { flex-direction: column; }
+  .hero-meta { flex-direction: column; }
+  .nav-links { display: none; }
+  .phase-flow { flex-direction: column; }
+}
+@media print {
+  #topnav, .nav-actions, .btn-amber, .btn-green, .btn-red, .btn-outline { display: none !important; }
+  .card { box-shadow: none; border: 1px solid #ccc; page-break-inside: avoid; }
+  body { font-size: 12px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ─── Nav ────────────────────────────────────── -->
+<nav id="topnav">
+  <div class="nav-brand">
+    🔗 SCPI<span class="badge">SME</span>
+  </div>
+  <div class="nav-links">
+    <a href="#s1" class="nav-link active">Profile</a>
+    <a href="#s2" class="nav-link">Chain Steps</a>
+    <a href="#s3" class="nav-link">Health Check</a>
+    <a href="#s4" class="nav-link">Phase Map</a>
+    <a href="#s5" class="nav-link">Findings</a>
+    <a href="#s6" class="nav-link">Export</a>
+  </div>
+  <div class="nav-actions">
+    <button class="btn btn-outline" onclick="window.print()">Print / Save PDF</button>
+    <button class="btn btn-amber" onclick="generateYaml()">Generate YAML ↓</button>
+  </div>
+</nav>
+
+<!-- ─── Main ───────────────────────────────────── -->
+<div class="main">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-eyebrow">Supply Chain Profile Instrument — Small Business Edition</div>
+    <h1>🔗 SCPI-SME <span>Chain Mapper</span></h1>
+    <p>Map your supply chain in plain language. Identify bottlenecks, blind spots, and cost pressure points. No jargon required. Complete Sections 1–3 in order; Sections 4–6 update automatically as you go.</p>
+    <div class="product-field">
+      <label>Your Business Name / Product</label>
+      <input type="text" id="biz-name" placeholder="e.g. Maya's Organic Candles — Soy Wax Candle Supply Chain">
+    </div>
+    <div class="hero-meta">
+      <div class="meta-field">
+        <label>Analyst / Completed By</label>
+        <input type="text" id="analyst" placeholder="Your name or team">
+      </div>
+      <div class="meta-field">
+        <label>Date</label>
+        <input type="text" id="date-completed" placeholder="e.g. 2026-04-30">
+      </div>
+      <div class="meta-field">
+        <label>Industry Sector</label>
+        <select id="industry">
+          <option value="">Select sector…</option>
+          <option>Food & Beverage</option>
+          <option>Consumer Goods / FMCG</option>
+          <option>Apparel & Textiles</option>
+          <option>Electronics & Hardware</option>
+          <option>Health & Beauty</option>
+          <option>Agriculture & Farming</option>
+          <option>Manufacturing (Other)</option>
+          <option>Retail & Distribution</option>
+          <option>Services</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="meta-field">
+        <label>Annual Scale</label>
+        <input type="text" id="scale" placeholder="e.g. 5,000 units/year or $120k revenue">
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Section 1: Business Profile ─────────── -->
+  <div class="card" id="s1">
+    <div class="section-header">
+      <span class="module-badge">Section 1</span>
+      <div>
+        <h2>Business Profile — Anchoring Your Chain</h2>
+        <p>Define the start and end of your supply chain before mapping the steps in between.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>Why this matters:</strong> Every supply chain has a clear starting point (the raw material or input you acquire) and a clear endpoint (the finished product or service your customer receives). Everything in between is a step in your chain. Defining both endpoints first prevents gaps and overlaps in your map.
+    </div>
+
+    <div class="example-toggle" onclick="toggleExample('ex1')">▶ Show example (handmade candle business)</div>
+    <div class="example-box" id="ex1">
+      <div class="ex-label">Example — Maya's Organic Candles</div>
+      <strong>Chain start:</strong> Soy wax flakes (bought in 25kg bags from a US supplier) + fragrance oils + cotton wicks + glass jars.<br>
+      <strong>Chain end:</strong> Finished scented soy wax candle in branded glass jar, delivered to customer or placed on retail shelf.<br>
+      <strong>Geography:</strong> Wax sourced from Iowa, jars from China, fragrance from California, assembled and poured in Portland OR.
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">Chain Start — Your Input <span class="req">*</span></label>
+        <div class="field-desc">What is the first physical material or service your business acquires? Be specific about form and source.</div>
+        <textarea id="chain-start" placeholder="e.g. Soy wax flakes in 25kg bags, purchased from a wholesale distributor in the US Midwest"></textarea>
+      </div>
+      <div class="form-group">
+        <label class="field-label">Chain End — Your Output <span class="req">*</span></label>
+        <div class="field-desc">What does your customer receive? What physical form and specification does it take at the moment of sale or delivery?</div>
+        <textarea id="chain-end" placeholder="e.g. Finished 8oz scented soy candle in branded glass jar with lid, shipped directly to customer or placed on retail shelf"></textarea>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">Key Input Unit</label>
+        <div class="field-desc">What unit do you buy your main input in?</div>
+        <input type="text" id="input-unit" placeholder="e.g. kg, litres, metres, units, pallets">
+      </div>
+      <div class="form-group">
+        <label class="field-label">Key Output Unit</label>
+        <div class="field-desc">What unit do you sell your output in?</div>
+        <input type="text" id="output-unit" placeholder="e.g. individual candles, cases of 6, kg of product">
+      </div>
+      <div class="form-group">
+        <label class="field-label">Primary Geography</label>
+        <div class="field-desc">Where do the main steps happen?</div>
+        <input type="text" id="geography" placeholder="e.g. USA (sourcing), China (jars), Portland OR (production)">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">Key Suppliers / Vendors</label>
+      <div class="field-desc">List your main suppliers or source countries for your inputs. Even a rough list helps.</div>
+      <textarea id="suppliers" placeholder="e.g. Soy wax: Nature's Garden (Ohio) · Fragrance: Brambleberry (WA) · Jars: AliExpress China supplier · Wicks: CandleScience (NC)"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">Who is your final customer?</label>
+      <div class="field-desc">End consumer, wholesaler, retailer, or business buyer?</div>
+      <div class="pill-group" id="customer-type-group">
+        <label class="pill" onclick="selPill(this,'customer-type','consumer')"><input type="radio" name="customer-type" value="consumer"> End consumer (B2C)</label>
+        <label class="pill" onclick="selPill(this,'customer-type','retailer')"><input type="radio" name="customer-type" value="retailer"> Retailer / shop</label>
+        <label class="pill" onclick="selPill(this,'customer-type','wholesale')"><input type="radio" name="customer-type" value="wholesale"> Wholesaler / distributor</label>
+        <label class="pill" onclick="selPill(this,'customer-type','business')"><input type="radio" name="customer-type" value="business"> Business buyer (B2B)</label>
+        <label class="pill" onclick="selPill(this,'customer-type','mixed')"><input type="radio" name="customer-type" value="mixed"> Mix of the above</label>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Section 2: Step Builder ──────────────── -->
+  <div class="card" id="s2">
+    <div class="section-header">
+      <span class="module-badge">Section 2</span>
+      <div>
+        <h2>Chain Steps — Map Every Significant Step</h2>
+        <p>A step is anything that changes what you have: a transformation, a handover, a purchase, or a delivery. Add 3–8 steps.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <strong>What counts as a step?</strong> A step begins when something meaningfully changes:
+      <ul>
+        <li>The <strong>physical form</strong> of your product changes (raw material becomes finished good)</li>
+        <li>The <strong>custodian changes</strong> — it passes from a supplier to you, or from you to a customer</li>
+        <li>A specific process is applied that couldn't be skipped without breaking the chain</li>
+        <li>A key cost is incurred (major purchase, shipping, certification)</li>
+      </ul>
+      If two things always happen together and you can't imagine doing one without the other, they are likely the same step.
+    </div>
+
+    <div class="example-toggle" onclick="toggleExample('ex2')">▶ Show example steps (handmade candle business)</div>
+    <div class="example-box" id="ex2">
+      <div class="ex-label">Example — Maya's Organic Candles (6 steps)</div>
+      <strong>Step 1:</strong> Raw material procurement (order and receive soy wax, fragrance, wicks, jars)<br>
+      <strong>Step 2:</strong> Inventory storage (store inputs in workshop; quality check on arrival)<br>
+      <strong>Step 3:</strong> Candle production (melt wax, add fragrance, pour into jars, insert wicks, cure for 48hrs)<br>
+      <strong>Step 4:</strong> Quality inspection and labeling (check appearance, scent, burn test samples; apply branded label)<br>
+      <strong>Step 5:</strong> Order fulfilment and packaging (pack per customer order; add tissue paper and thank-you card)<br>
+      <strong>Step 6:</strong> Shipping / delivery to customer (ship via USPS/UPS; hand off custody to carrier)
+    </div>
+
+    <div class="steps-container" id="steps-container"></div>
+
+    <div style="margin-top:1rem; display:flex; gap:0.75rem; flex-wrap:wrap;">
+      <button class="btn btn-amber" onclick="addStep()">+ Add Step</button>
+      <button class="btn btn-outline" style="background:transparent;border:1.5px solid var(--amber-mid);color:var(--amber-dark);" onclick="refreshPhaseMap()">Refresh Phase Map</button>
+    </div>
+  </div>
+
+  <!-- ─── Section 3: Chain Health Check ────────── -->
+  <div class="card" id="s3">
+    <div class="section-header">
+      <span class="module-badge">Section 3</span>
+      <div>
+        <h2>Chain Health Check — Bottleneck &amp; Visibility Assessment</h2>
+        <p>Answer four questions for each step. The health score 0–10 flags where your chain is most at risk.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      Each step gets a health score from 0 (severe problems) to 10 (fully functioning):
+      <ul>
+        <li><strong>8–10 (Green):</strong> Step is under control, cost-predictable, well-measured, low risk.</li>
+        <li><strong>5–7 (Amber):</strong> Step has known weaknesses. Monitor closely; consider improvement.</li>
+        <li><strong>0–4 (Red):</strong> Step is a real bottleneck or blind spot. Prioritise fixing this first.</li>
+      </ul>
+    </div>
+
+    <p style="font-size:0.875rem;color:var(--muted);font-style:italic;">
+      Health check questions appear inside each Step record above when you expand it. Open any step and scroll to the "Step Health Check" panel at the bottom of its form. Scores update the phase map automatically.
+    </p>
+  </div>
+
+  <!-- ─── Section 4: Phase Map ──────────────────── -->
+  <div class="card" id="s4">
+    <div class="section-header">
+      <span class="module-badge">Section 4</span>
+      <div>
+        <h2>Phase Map — Your Chain at a Glance</h2>
+        <p>Auto-built from your step entries. Green = healthy; amber = watch; red = bottleneck.</p>
+      </div>
+    </div>
+
+    <div class="phase-flow" id="phase-flow">
+      <div class="phase-node empty" style="min-width:100%;padding:1.5rem;text-align:center;">Add steps in Section 2 to generate your phase map.</div>
+    </div>
+
+    <div style="margin-top:1rem;">
+      <table class="summary-table" id="phase-summary-table">
+        <thead>
+          <tr>
+            <th>Step</th>
+            <th>Name</th>
+            <th>Input</th>
+            <th>Output</th>
+            <th>Custodian</th>
+            <th>Cost Weight</th>
+            <th>Health</th>
+            <th>Transparency</th>
+          </tr>
+        </thead>
+        <tbody id="phase-summary-body">
+          <tr><td colspan="8" style="color:var(--muted);font-style:italic;text-align:center;padding:1rem;">No steps added yet.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── Section 5: Key Findings ──────────────── -->
+  <div class="card" id="s5">
+    <div class="section-header">
+      <span class="module-badge">Section 5</span>
+      <div>
+        <h2>Key Findings — Auto-Generated Summary</h2>
+        <p>Auto-generated from your responses. Update your step data and click "Refresh Findings".</p>
+      </div>
+    </div>
+
+    <button class="btn btn-amber" onclick="refreshFindings()" style="margin-bottom:1rem;">Refresh Findings</button>
+
+    <div id="findings-container">
+      <div class="finding-box">
+        <div class="finding-label">Waiting for data</div>
+        <div class="finding-text">Complete Sections 1–3 then click "Refresh Findings".</div>
+      </div>
+    </div>
+
+    <div class="form-group" style="margin-top:1.25rem;">
+      <label class="field-label">Analyst Notes</label>
+      <div class="field-desc">Any observations, contradictions, or issues that the form couldn't capture automatically.</div>
+      <textarea id="analyst-notes" placeholder="e.g. Step 3 (production) is the highest risk but we have a verbal agreement with backup supplier — not yet formalised. Step 5 costs vary wildly in Q4 due to holiday carrier surcharges…"></textarea>
+    </div>
+  </div>
+
+  <!-- ─── Section 6: Export ─────────────────────── -->
+  <div class="card" id="s6">
+    <div class="section-header">
+      <span class="module-badge">Section 6</span>
+      <div>
+        <h2>Export — YAML Data File</h2>
+        <p>Generate a structured YAML record of your chain map for use in analysis, reporting, or AI tools.</p>
+      </div>
+    </div>
+
+    <div class="info-box">
+      The YAML output is compatible with the TrueValue Analytics framework and can be used as input for the standard Phase Discovery Instrument (PDI) pipeline. It can also be pasted into any AI assistant for further analysis.
+    </div>
+
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.5rem;">
+      <button class="btn btn-amber" onclick="generateYaml()">Generate YAML</button>
+      <button class="btn btn-green" onclick="copyYaml()">Copy to Clipboard</button>
+      <button class="btn btn-outline" style="background:transparent;border:1.5px solid var(--amber-mid);color:var(--amber-dark);" onclick="downloadYaml()">Download .yaml</button>
+    </div>
+
+    <pre id="yaml-output"># Click "Generate YAML" to produce your chain map data file.</pre>
+  </div>
+
+</div><!-- end main -->
+
+<script>
+// ─── State ──────────────────────────────────────
+var stepCount = 0;
+
+// ─── Utility ────────────────────────────────────
+function selPill(el, name, value) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(function(r) {
+    var pill = r.closest('.pill');
+    if (pill) pill.classList.remove('sel','sel-green','sel-red');
+  });
+  el.classList.add('sel');
+}
+function selPillColor(el, name, value) {
+  document.querySelectorAll(`[name="${name}"]`).forEach(function(r) {
+    var pill = r.closest('.pill');
+    if (pill) pill.classList.remove('sel','sel-green','sel-red');
+  });
+  if (value === 'yes') el.classList.add('sel-red');
+  else if (value === 'no') el.classList.add('sel-green');
+  else el.classList.add('sel');
+  updateStepHealth(name.split('-hq')[0]);
+}
+function toggleExample(id) {
+  var box = document.getElementById(id);
+  var tog = box.previousElementSibling;
+  box.classList.toggle('open');
+  tog.textContent = (box.classList.contains('open') ? '▼ ' : '▶ ') + tog.textContent.slice(2);
+}
+function toggleStep(id) {
+  var rec = document.getElementById('step-' + id);
+  rec.classList.toggle('open');
+}
+
+// ─── Step Builder ────────────────────────────────
+function addStep() {
+  stepCount++;
+  var id = stepCount;
+  var container = document.getElementById('steps-container');
+  var div = document.createElement('div');
+  div.id = 'step-' + id;
+  div.className = 'step-record open';
+  div.innerHTML = buildStepHTML(id);
+  container.appendChild(div);
+  refreshPhaseMap();
+}
+
+function buildStepHTML(id) {
+  return `
+  <div class="step-header" onclick="toggleStep(${id})">
+    <div class="step-num">${id}</div>
+    <input class="step-name-input" id="sname-${id}" type="text" placeholder="Step name (e.g. Raw Material Procurement)" onclick="event.stopPropagation()">
+    <span class="health-pill health-pending" id="health-pill-${id}">Not scored</span>
+    <span class="chevron">▼</span>
+    <button class="btn-red" onclick="event.stopPropagation();removeStep(${id})">✕</button>
+  </div>
+  <div class="step-body">
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">What enters this step? <span class="req">*</span></label>
+        <div class="field-desc">Physical form of the material or information arriving at this step.</div>
+        <input type="text" id="sinput-${id}" placeholder="e.g. Soy wax flakes in 25kg bags">
+      </div>
+      <div class="form-group">
+        <label class="field-label">What leaves this step? <span class="req">*</span></label>
+        <div class="field-desc">Physical form of the material or information after this step is complete.</div>
+        <input type="text" id="soutput-${id}" placeholder="e.g. Soy wax flakes stored in workshop; quality-checked">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">Who is responsible for this step?</label>
+        <div class="field-desc">Your business, a supplier, a third-party service provider, or a customer?</div>
+        <div class="pill-group">
+          <label class="pill" onclick="selPill(this,'scust-${id}','own')"><input type="radio" name="scust-${id}" value="own"> My business</label>
+          <label class="pill" onclick="selPill(this,'scust-${id}','supplier')"><input type="radio" name="scust-${id}" value="supplier"> Supplier</label>
+          <label class="pill" onclick="selPill(this,'scust-${id}','3p')"><input type="radio" name="scust-${id}" value="3p"> Third-party (e.g. carrier, lab)</label>
+          <label class="pill" onclick="selPill(this,'scust-${id}','customer')"><input type="radio" name="scust-${id}" value="customer"> Customer</label>
+          <label class="pill" onclick="selPill(this,'scust-${id}','shared')"><input type="radio" name="scust-${id}" value="shared"> Shared / unclear</label>
+        </div>
+        <input type="text" id="scust-name-${id}" placeholder="Name the specific actor if known (e.g. Nature's Garden, UPS, SGS labs)…" style="margin-top:0.5rem;">
+      </div>
+      <div class="form-group">
+        <label class="field-label">Typical time for this step</label>
+        <div class="field-desc">How long does this step take in normal operation?</div>
+        <input type="text" id="stime-${id}" placeholder="e.g. 2 days lead time, or 4 hours production run">
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="form-group">
+        <label class="field-label">Cost weight</label>
+        <div class="field-desc">Roughly what share of your total product cost does this step represent?</div>
+        <div class="pill-group">
+          <label class="pill" onclick="selPill(this,'scost-${id}','low')"><input type="radio" name="scost-${id}" value="low"> Low (under 10%)</label>
+          <label class="pill" onclick="selPill(this,'scost-${id}','mid')"><input type="radio" name="scost-${id}" value="mid"> Medium (10–30%)</label>
+          <label class="pill" onclick="selPill(this,'scost-${id}','high')"><input type="radio" name="scost-${id}" value="high"> High (30–60%)</label>
+          <label class="pill" onclick="selPill(this,'scost-${id}','dominant')"><input type="radio" name="scost-${id}" value="dominant"> Dominant (over 60%)</label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="field-label">Specific cost or volume figure (optional)</label>
+        <div class="field-desc">Any number that anchors this step's economics.</div>
+        <input type="text" id="scostfig-${id}" placeholder="e.g. $1.80/unit raw materials, or $200 per batch">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">What is the biggest problem with this step?</label>
+      <div class="field-desc">Honest one-sentence answer. What keeps you up at night about this part of the chain?</div>
+      <textarea id="sproblem-${id}" placeholder="e.g. Supplier lead time is unpredictable — we've been out of stock 3 times this year. / We have no way to verify the quality of jars before they arrive from China."></textarea>
+    </div>
+
+    <div class="form-group">
+      <label class="field-label">Key output metric for this step (optional)</label>
+      <div class="field-desc">What number, if you tracked it, would tell you whether this step is working? E.g. defect rate, delivery on-time %, units/hour.</div>
+      <input type="text" id="smetric-${id}" placeholder="e.g. On-time delivery rate from supplier %; defect rate per 100 units; cure time in hours">
+    </div>
+
+    <!-- Health Check -->
+    <div class="health-card">
+      <h4>Step Health Check — 4 Questions</h4>
+
+      <div class="health-row">
+        <div class="health-question">1. Is cost at this step predictable and within budget?</div>
+        <div class="health-sub">If costs here regularly surprise you or exceed plan, score lower.</div>
+        <div class="pill-group">
+          <label class="pill" onclick="selPillColor(this,'${id}-hq1','yes')"><input type="radio" name="${id}-hq1" value="yes"> No — cost is unpredictable or over-budget</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq1','sometimes')"><input type="radio" name="${id}-hq1" value="sometimes"> Sometimes — occasional surprises</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq1','no')"><input type="radio" name="${id}-hq1" value="no"> Yes — cost is well under control</label>
+        </div>
+      </div>
+
+      <div class="health-row">
+        <div class="health-question">2. Do you have clear, measurable data about what happens at this step?</div>
+        <div class="health-sub">Can you measure volume in, volume out, time taken, and quality level — reliably?</div>
+        <div class="pill-group">
+          <label class="pill" onclick="selPillColor(this,'${id}-hq2','yes')"><input type="radio" name="${id}-hq2" value="yes"> No — it is largely a black box to me</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq2','sometimes')"><input type="radio" name="${id}-hq2" value="sometimes"> Partial — I have some data but not everything</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq2','no')"><input type="radio" name="${id}-hq2" value="no"> Yes — I have good visibility into this step</label>
+        </div>
+      </div>
+
+      <div class="health-row">
+        <div class="health-question">3. Do you have control over this step or could a supplier / carrier disrupt it?</div>
+        <div class="health-sub">If one external actor could unilaterally break or delay this step, control is low.</div>
+        <div class="pill-group">
+          <label class="pill" onclick="selPillColor(this,'${id}-hq3','yes')"><input type="radio" name="${id}-hq3" value="yes"> No — a single external party controls this step</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq3','sometimes')"><input type="radio" name="${id}-hq3" value="sometimes"> Partial — some alternatives exist but limited</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq3','no')"><input type="radio" name="${id}-hq3" value="no"> Yes — I have strong control or multiple alternatives</label>
+        </div>
+      </div>
+
+      <div class="health-row">
+        <div class="health-question">4. Has this step caused a real disruption — delay, stock-out, quality fail, or customer complaint — in the past 12 months?</div>
+        <div class="health-sub">Based on actual experience, not hypothetical risk.</div>
+        <div class="pill-group">
+          <label class="pill" onclick="selPillColor(this,'${id}-hq4','yes')"><input type="radio" name="${id}-hq4" value="yes"> Yes — multiple times this year</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq4','sometimes')"><input type="radio" name="${id}-hq4" value="sometimes"> Once or twice — minor disruptions</label>
+          <label class="pill" onclick="selPillColor(this,'${id}-hq4','no')"><input type="radio" name="${id}-hq4" value="no"> No — this step has been reliable</label>
+        </div>
+      </div>
+
+      <div class="health-score-display pending" id="health-display-${id}">
+        <div class="health-score-num">—</div>
+        <div>
+          <div class="health-score-label">Not yet scored</div>
+          <div class="health-score-sub">Answer the 4 questions above to calculate.</div>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function removeStep(id) {
+  if (confirm('Remove this step?')) {
+    document.getElementById('step-' + id).remove();
+    refreshPhaseMap();
+  }
+}
+
+// ─── Health Score ────────────────────────────────
+function getRadioVal(name) {
+  var el = document.querySelector('[name="' + name + '"]:checked');
+  return el ? el.value : null;
+}
+
+function calculateHealth(id) {
+  var q1 = getRadioVal(id + '-hq1');
+  var q2 = getRadioVal(id + '-hq2');
+  var q3 = getRadioVal(id + '-hq3');
+  var q4 = getRadioVal(id + '-hq4');
+  if (!q1 && !q2 && !q3 && !q4) return null;
+  var score = 0;
+  var answered = 0;
+  [q1, q2, q3, q4].forEach(function(v) {
+    if (!v) return;
+    answered++;
+    if (v === 'no') score += 2.5;       // positive answer (no problem)
+    else if (v === 'sometimes') score += 1.25;
+    // yes = 0 (problem)
+  });
+  // Scale to answered questions
+  return answered > 0 ? Math.round((score / (answered * 2.5)) * 10) : null;
+}
+
+function updateStepHealth(stepId) {
+  // Extract numeric id from string like "1-hq1" split
+  var id = stepId.replace(/-hq\d$/, '');
+  // Actually stepId passed from selPillColor is already the name prefix
+  // We need to extract the step number
+  // name is like "1-hq1", so id = "1"
+  var score = calculateHealth(id);
+  var pill = document.getElementById('health-pill-' + id);
+  var disp = document.getElementById('health-display-' + id);
+  var rec = document.getElementById('step-' + id);
+  if (!pill) return;
+
+  if (score === null) {
+    pill.className = 'health-pill health-pending';
+    pill.textContent = 'Not scored';
+    if (disp) { disp.className = 'health-score-display pending'; disp.querySelector('.health-score-num').textContent = '—'; disp.querySelector('.health-score-label').textContent = 'Not yet scored'; disp.querySelector('.health-score-sub').textContent = 'Answer the 4 questions above.'; }
+    return;
+  }
+
+  var zone, zoneLabel, zoneDetail;
+  if (score >= 8) { zone = 'good'; zoneLabel = 'Healthy (' + score + '/10)'; zoneDetail = 'This step is under control. Low risk, cost-predictable, and well-measured.'; }
+  else if (score >= 5) { zone = 'warn'; zoneLabel = 'Watch (' + score + '/10)'; zoneDetail = 'This step has known weaknesses. Monitor closely and consider improvements.'; }
+  else { zone = 'risk'; zoneLabel = 'Bottleneck (' + score + '/10)'; zoneDetail = 'This step is a real risk point. Prioritise fixing this first.'; }
+
+  pill.className = 'health-pill health-' + zone;
+  pill.textContent = zoneLabel;
+  if (rec) { rec.classList.remove('ok','warn','risk'); if (score >= 8) rec.classList.add('ok'); else if (score >= 5) rec.classList.add('warn'); else rec.classList.add('risk'); }
+  if (disp) {
+    disp.className = 'health-score-display ' + zone;
+    disp.querySelector('.health-score-num').textContent = score;
+    disp.querySelector('.health-score-label').textContent = zoneLabel;
+    disp.querySelector('.health-score-sub').textContent = zoneDetail;
+  }
+  refreshPhaseMap();
+}
+
+// ─── Phase Map ───────────────────────────────────
+function refreshPhaseMap() {
+  var flow = document.getElementById('phase-flow');
+  var tbody = document.getElementById('phase-summary-body');
+  var steps = getStepData();
+
+  if (steps.length === 0) {
+    flow.innerHTML = '<div class="phase-node empty" style="min-width:100%;padding:1.5rem;text-align:center;">Add steps in Section 2 to generate your phase map.</div>';
+    tbody.innerHTML = '<tr><td colspan="8" style="color:var(--muted);font-style:italic;text-align:center;padding:1rem;">No steps added yet.</td></tr>';
+    return;
+  }
+
+  // Flow
+  flow.innerHTML = steps.map(function(s, i) {
+    var zone = s.healthZone || 'empty';
+    var label = s.name || ('Step ' + (i + 1));
+    var scoreLabel = s.score !== null ? s.score + '/10' : '?';
+    return '<div class="phase-node ' + zone + '">' +
+      '<div class="phase-num">Step ' + (i + 1) + '</div>' +
+      '<div>' + (label.length > 18 ? label.slice(0, 16) + '…' : label) + '</div>' +
+      (s.score !== null ? '<div class="phase-arrow">' + scoreLabel + '</div>' : '<div class="phase-arrow">→</div>') +
+      '</div>';
+  }).join('<div style="display:flex;align-items:center;padding:0 2px;background:white;font-size:18px;color:#ccc;">›</div>');
+
+  // Table
+  tbody.innerHTML = steps.map(function(s, i) {
+    var tagCls = s.healthZone === 'good' ? 'tag-good' : s.healthZone === 'warn' ? 'tag-warn' : s.healthZone === 'risk' ? 'tag-risk' : 'tag-na';
+    var scoreText = s.score !== null ? s.score + '/10' : 'Pending';
+    var transp = s.visibility === 'no' ? '<span class="tag tag-good">High</span>' : s.visibility === 'sometimes' ? '<span class="tag tag-warn">Partial</span>' : s.visibility === 'yes' ? '<span class="tag tag-risk">Low</span>' : '<span class="tag tag-na">?</span>';
+    var costText = {low:'Low (&lt;10%)', mid:'Medium (10-30%)', high:'High (30-60%)', dominant:'Dominant (&gt;60%)'}[s.costWeight] || '—';
+    return '<tr><td><strong>' + (i + 1) + '</strong></td>' +
+      '<td>' + (s.name || '—') + '</td>' +
+      '<td style="font-size:0.8rem;color:var(--muted);">' + (s.input || '—') + '</td>' +
+      '<td style="font-size:0.8rem;color:var(--muted);">' + (s.output || '—') + '</td>' +
+      '<td style="font-size:0.8rem;">' + (s.custodian || '—') + '</td>' +
+      '<td>' + costText + '</td>' +
+      '<td><span class="tag ' + tagCls + '">' + scoreText + '</span></td>' +
+      '<td>' + transp + '</td></tr>';
+  }).join('');
+}
+
+// ─── Get all step data ────────────────────────────
+function getStepData() {
+  var steps = [];
+  for (var i = 1; i <= stepCount; i++) {
+    var rec = document.getElementById('step-' + i);
+    if (!rec) continue;
+    var score = calculateHealth(i);
+    var zone = score === null ? 'empty' : score >= 8 ? 'good' : score >= 5 ? 'warn' : 'risk';
+    steps.push({
+      id: i,
+      name: (document.getElementById('sname-' + i) || {}).value || '',
+      input: (document.getElementById('sinput-' + i) || {}).value || '',
+      output: (document.getElementById('soutput-' + i) || {}).value || '',
+      custodian: getRadioVal('scust-' + i) || '',
+      custodianName: (document.getElementById('scust-name-' + i) || {}).value || '',
+      time: (document.getElementById('stime-' + i) || {}).value || '',
+      costWeight: getRadioVal('scost-' + i) || '',
+      costFigure: (document.getElementById('scostfig-' + i) || {}).value || '',
+      problem: (document.getElementById('sproblem-' + i) || {}).value || '',
+      metric: (document.getElementById('smetric-' + i) || {}).value || '',
+      hq1: getRadioVal(i + '-hq1'),
+      hq2: getRadioVal(i + '-hq2'),
+      hq3: getRadioVal(i + '-hq3'),
+      hq4: getRadioVal(i + '-hq4'),
+      visibility: getRadioVal(i + '-hq2'),
+      score: score,
+      healthZone: zone,
+    });
+  }
+  return steps;
+}
+
+// ─── Findings ────────────────────────────────────
+function refreshFindings() {
+  var steps = getStepData();
+  var container = document.getElementById('findings-container');
+  if (steps.length === 0) {
+    container.innerHTML = '<div class="finding-box"><div class="finding-label">No data yet</div><div class="finding-text">Add steps in Section 2 first.</div></div>';
+    return;
+  }
+
+  var html = '';
+  var bizName = document.getElementById('biz-name').value || 'your business';
+  var scored = steps.filter(function(s) { return s.score !== null; });
+  var avgScore = scored.length ? Math.round(scored.reduce(function(a, s) { return a + s.score; }, 0) / scored.length) : null;
+  var worstStep = scored.length ? scored.reduce(function(w, s) { return s.score < w.score ? s : w; }) : null;
+  var bestStep = scored.length ? scored.reduce(function(b, s) { return s.score > b.score ? s : b; }) : null;
+  var blindSpots = steps.filter(function(s) { return s.visibility === 'yes'; });
+  var highCost = steps.filter(function(s) { return s.costWeight === 'high' || s.costWeight === 'dominant'; });
+  var externalControl = steps.filter(function(s) { return s.hq3 === 'yes'; });
+  var recentDisruption = steps.filter(function(s) { return s.hq4 === 'yes'; });
+
+  // Chain health
+  var overallLabel = avgScore === null ? 'Unscored' : avgScore >= 8 ? 'Healthy' : avgScore >= 5 ? 'Under pressure' : 'At risk';
+  var overallColor = avgScore === null ? '' : avgScore >= 8 ? 'good-box' : avgScore >= 5 ? '' : 'risk-box';
+  html += '<div class="finding-box ' + overallColor + '">';
+  html += '<div class="finding-label">Overall Chain Health</div>';
+  if (avgScore !== null) {
+    html += '<div class="finding-text">Average health score across ' + scored.length + ' scored step(s): <strong>' + avgScore + '/10 (' + overallLabel + ')</strong>. ' + (avgScore >= 8 ? 'Your chain is broadly functioning well. Focus on maintaining visibility and pre-empting the amber steps before they deteriorate.' : avgScore >= 5 ? 'Your chain has real pressure points. The amber and red steps should be reviewed in the next 30 days.' : 'Your chain has significant bottlenecks. Urgent attention required at the red-scored steps.') + '</div>';
+  } else {
+    html += '<div class="finding-text">No steps have been health-scored yet. Open each step in Section 2 and answer the 4 health questions.</div>';
+  }
+  html += '</div>';
+
+  // Worst step
+  if (worstStep && worstStep.score < 8) {
+    html += '<div class="finding-box risk-box">';
+    html += '<div class="finding-label">Highest-Risk Step: Step ' + worstStep.id + ' — ' + (worstStep.name || 'Unnamed') + '</div>';
+    html += '<div class="finding-text">Health score: <strong>' + worstStep.score + '/10</strong>. ';
+    if (worstStep.problem) html += 'Your own assessment: "' + worstStep.problem + '" ';
+    html += 'This is where your chain is most vulnerable. Consider: Can you reduce dependence on a single supplier here? Do you have a backup plan if this step fails? Can you improve your data visibility?</div>';
+    html += '</div>';
+  }
+
+  // Blind spots
+  if (blindSpots.length > 0) {
+    html += '<div class="finding-box risk-box">';
+    html += '<div class="finding-label">Low-Visibility Steps (' + blindSpots.length + ' identified)</div>';
+    html += '<div class="finding-text">You reported poor data visibility at: <strong>' + blindSpots.map(function(s) { return 'Step ' + s.id + ' (' + (s.name || 'Unnamed') + ')'; }).join('; ') + '</strong>. ';
+    html += 'These are your chain blind spots — you cannot measure what you cannot see. Prioritise adding a simple tracking metric (even a spreadsheet log) to each of these steps.</div>';
+    html += '</div>';
+  }
+
+  // External control risk
+  if (externalControl.length > 0) {
+    html += '<div class="finding-box">';
+    html += '<div class="finding-label">Single-Point Dependency Risk (' + externalControl.length + ' step(s))</div>';
+    html += '<div class="finding-text">You have no alternatives at: <strong>' + externalControl.map(function(s) { return 'Step ' + s.id + ' (' + (s.name || 'Unnamed') + ')'; }).join('; ') + '</strong>. ';
+    html += 'A single actor controls each of these steps. Supply chain resilience requires at least two qualified alternatives for any step that could stop your entire operation.</div>';
+    html += '</div>';
+  }
+
+  // Cost concentration
+  if (highCost.length > 0) {
+    html += '<div class="finding-box">';
+    html += '<div class="finding-label">Cost Concentration Points (' + highCost.length + ' step(s))</div>';
+    html += '<div class="finding-text">High or dominant cost weight at: <strong>' + highCost.map(function(s) { return 'Step ' + s.id + ' (' + (s.name || 'Unnamed') + ')'; }).join('; ') + '</strong>. ';
+    html += 'These steps represent 30%+ of your product cost each. Any price movement here flows directly to your margin. Ensure you have pricing agreements, hedging, or substitution options in place.</div>';
+    html += '</div>';
+  }
+
+  // Recent disruptions
+  if (recentDisruption.length > 0) {
+    html += '<div class="finding-box">';
+    html += '<div class="finding-label">Recent Disruption History (' + recentDisruption.length + ' step(s))</div>';
+    html += '<div class="finding-text">Multiple disruptions in the past 12 months at: <strong>' + recentDisruption.map(function(s) { return 'Step ' + s.id + ' (' + (s.name || 'Unnamed') + ')'; }).join('; ') + '</strong>. ';
+    html += 'Past disruption is the best predictor of future disruption. These steps should have documented contingency plans, not just informal workarounds.</div>';
+    html += '</div>';
+  }
+
+  // Best step
+  if (bestStep && bestStep.score >= 8) {
+    html += '<div class="finding-box good-box">';
+    html += '<div class="finding-label">Strongest Step: Step ' + bestStep.id + ' — ' + (bestStep.name || 'Unnamed') + '</div>';
+    html += '<div class="finding-text">Health score: <strong>' + bestStep.score + '/10</strong>. This step is functioning well. Document what makes it work (reliable suppliers, clear metrics, backup options) and apply those practices to your weaker steps.</div>';
+    html += '</div>';
+  }
+
+  // Phase count
+  html += '<div class="finding-box">';
+  html += '<div class="finding-label">Chain Structure: ' + steps.length + ' Step(s) Mapped</div>';
+  html += '<div class="finding-text">Your chain has <strong>' + steps.length + ' mapped step(s)</strong>. ';
+  if (steps.length < 3) html += 'Consider whether you have missed any significant steps — most product chains have at least 3-4 distinct phases. Review Section 1 and ask: are there steps in between that you have not yet named?';
+  else if (steps.length >= 3 && steps.length <= 8) html += 'This is a typical size for a small business supply chain. Each step is a potential point of failure and a potential point of improvement.';
+  else html += 'You have identified a detailed chain. Consider whether any adjacent steps could be grouped if they always happen together and are managed by the same actor.';
+  html += '</div>';
+  html += '</div>';
+
+  container.innerHTML = html;
+}
+
+// ─── YAML Export ─────────────────────────────────
+function generateYaml() {
+  var steps = getStepData();
+  var bizName = document.getElementById('biz-name').value || '';
+  var analyst = document.getElementById('analyst').value || 'AI';
+  var date = document.getElementById('date-completed').value || new Date().toISOString().slice(0, 10);
+  var industry = document.getElementById('industry').value || '';
+  var scale = document.getElementById('scale').value || '';
+  var chainStart = document.getElementById('chain-start').value || '';
+  var chainEnd = document.getElementById('chain-end').value || '';
+  var inputUnit = document.getElementById('input-unit').value || '';
+  var outputUnit = document.getElementById('output-unit').value || '';
+  var geography = document.getElementById('geography').value || '';
+  var suppliers = document.getElementById('suppliers').value || '';
+  var customerType = getRadioVal('customer-type') || '';
+  var analystNotes = document.getElementById('analyst-notes').value || '';
+  var scored = steps.filter(function(s) { return s.score !== null; });
+  var avgScore = scored.length ? (scored.reduce(function(a, s) { return a + s.score; }, 0) / scored.length).toFixed(1) : 'null';
+
+  function yamlStr(v) { return v ? '"' + v.replace(/"/g, '\\"').replace(/\n/g, ' ') + '"' : '""'; }
+  function yamlBool(v) { return v === null ? 'null' : v ? 'true' : 'false'; }
+
+  var hq = function(v) { return v === 'yes' ? 'problematic' : v === 'sometimes' ? 'partial' : v === 'no' ? 'ok' : 'unanswered'; };
+
+  var lines = [];
+  lines.push('# ============================================================');
+  lines.push('# SCPI-SME — Supply Chain Profile Instrument (Small Business Edition)');
+  lines.push('# Generated by SCPI-SME v1.0 — TrueValue Analytics');
+  lines.push('# Compatible with: PDI pipeline / N-D-C Tholonic Framework');
+  lines.push('# ============================================================');
+  lines.push('');
+  lines.push('scpi_sme:');
+  lines.push('');
+  lines.push('  # Header');
+  lines.push('  business_name: ' + yamlStr(bizName));
+  lines.push('  analyst: ' + yamlStr(analyst));
+  lines.push('  date_completed: ' + yamlStr(date));
+  lines.push('  industry: ' + yamlStr(industry));
+  lines.push('  annual_scale: ' + yamlStr(scale));
+  lines.push('  instrument_version: "SCPI-SME v1.0"');
+  lines.push('');
+  lines.push('  # Chain Endpoints (maps to PDI module_1)');
+  lines.push('  chain_start: ' + yamlStr(chainStart));
+  lines.push('  chain_end: ' + yamlStr(chainEnd));
+  lines.push('  input_unit: ' + yamlStr(inputUnit));
+  lines.push('  output_unit: ' + yamlStr(outputUnit));
+  lines.push('  geography: ' + yamlStr(geography));
+  lines.push('  key_suppliers: ' + yamlStr(suppliers));
+  lines.push('  final_customer_type: ' + yamlStr(customerType));
+  lines.push('');
+  lines.push('  # Chain Statistics');
+  lines.push('  total_steps: ' + steps.length);
+  lines.push('  steps_scored: ' + scored.length);
+  lines.push('  average_health_score: ' + avgScore);
+  lines.push('  bottleneck_steps: ' + JSON.stringify(steps.filter(function(s){return s.score!==null&&s.score<5;}).map(function(s){return s.id;})));
+  lines.push('  watch_steps: ' + JSON.stringify(steps.filter(function(s){return s.score!==null&&s.score>=5&&s.score<8;}).map(function(s){return s.id;})));
+  lines.push('  healthy_steps: ' + JSON.stringify(steps.filter(function(s){return s.score!==null&&s.score>=8;}).map(function(s){return s.id;})));
+  lines.push('');
+  lines.push('  # Step Map (maps to PDI module_2 events + module_3 phase_map)');
+  lines.push('  steps:');
+  steps.forEach(function(s) {
+    lines.push('');
+    lines.push('    - step_id: ' + s.id);
+    lines.push('      step_name: ' + yamlStr(s.name));
+    lines.push('      input: ' + yamlStr(s.input));
+    lines.push('      output: ' + yamlStr(s.output));
+    lines.push('      custodian_type: ' + yamlStr(s.custodian));
+    lines.push('      custodian_name: ' + yamlStr(s.custodianName));
+    lines.push('      typical_time: ' + yamlStr(s.time));
+    lines.push('      cost_weight: ' + yamlStr(s.costWeight));
+    lines.push('      cost_figure: ' + yamlStr(s.costFigure));
+    lines.push('      key_metric: ' + yamlStr(s.metric));
+    lines.push('      biggest_problem: ' + yamlStr(s.problem));
+    lines.push('      health_score: ' + (s.score !== null ? s.score : 'null'));
+    lines.push('      health_zone: ' + yamlStr(s.healthZone));
+    lines.push('      health_checks:');
+    lines.push('        cost_predictable: ' + yamlStr(hq(s.hq1)));
+    lines.push('        data_visibility: ' + yamlStr(hq(s.hq2)));
+    lines.push('        control_level: ' + yamlStr(hq(s.hq3)));
+    lines.push('        recent_disruption: ' + yamlStr(hq(s.hq4)));
+    lines.push('      # transparency maps to PDI module_4_opacity');
+    lines.push('      transparency: ' + (s.visibility === 'no' ? '"high"' : s.visibility === 'sometimes' ? '"medium"' : s.visibility === 'yes' ? '"low"' : '"unknown"'));
+  });
+  lines.push('');
+  lines.push('  # Analyst Notes');
+  lines.push('  analyst_notes: |');
+  if (analystNotes) {
+    analystNotes.split('\n').forEach(function(l) { lines.push('    ' + l); });
+  } else {
+    lines.push('    # No additional notes recorded.');
+  }
+  lines.push('');
+  lines.push('# ============================================================');
+  lines.push('# SCPI-SME v1.0 — TrueValue Analytics');
+  lines.push('# To upgrade to a full PDI, complete Modules 1-4 at frontend/PDI.html');
+  lines.push('# ============================================================');
+
+  var yaml = lines.join('\n');
+  document.getElementById('yaml-output').textContent = yaml;
+  document.getElementById('s6').scrollIntoView({ behavior: 'smooth' });
+}
+
+function copyYaml() {
+  var text = document.getElementById('yaml-output').textContent;
+  if (text.startsWith('#')) {
+    navigator.clipboard.writeText(text).then(function() { alert('YAML copied to clipboard.'); }).catch(function() { alert('Copy failed — please select and copy the YAML text manually.'); });
+  } else {
+    generateYaml();
+    setTimeout(copyYaml, 200);
+  }
+}
+
+function downloadYaml() {
+  generateYaml();
+  var text = document.getElementById('yaml-output').textContent;
+  var biz = (document.getElementById('biz-name').value || 'scpi_sme').replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_-]/g, '').toLowerCase();
+  var date = document.getElementById('date-completed').value || new Date().toISOString().slice(0, 10);
+  var filename = 'SCPI_SME_' + biz + '_' + date + '.yaml';
+  var blob = new Blob([text], { type: 'text/yaml' });
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+// ─── Active nav highlight on scroll ─────────────
+var sections = ['s1','s2','s3','s4','s5','s6'];
+window.addEventListener('scroll', function() {
+  var scrollY = window.scrollY + 80;
+  var active = 's1';
+  sections.forEach(function(id) {
+    var el = document.getElementById(id);
+    if (el && el.offsetTop <= scrollY) active = id;
+  });
+  document.querySelectorAll('.nav-link').forEach(function(a) {
+    a.classList.toggle('active', a.getAttribute('href') === '#' + active);
+  });
+});
+
+// ─── Bootstrap one starter step ─────────────────
+window.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('date-completed').value = new Date().toISOString().slice(0, 10);
+  addStep();
+});
+</script>
+</body>
+</html>
