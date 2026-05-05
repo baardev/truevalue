@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Five-model engine test (π φ √2 ln2 e)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1120px; margin: 0 auto; }
+  .panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    padding: 24px 28px;
+    margin-bottom: 18px;
+  }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: #0f172a; }
+  .kicker {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #4338ca; margin-bottom: 10px;
+  }
+  .sub { font-size: 13px; color: #64748b; margin-bottom: 14px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 14px; }
+  .nav a {
+    font-size: 12px; color: #1d4ed8;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+  }
+  .nav a:hover { background: #dbeafe; }
+  .row-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; align-items: center; }
+  .row-tabs .lbl { font-size: 11px; font-weight: 700; color: #64748b; width: 56px; flex-shrink: 0; }
+  .tab {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 2px solid #cbd5e1;
+    background: #f8fafc;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .tab.active { color: #fff; }
+  .tab.chain-g.active { background: #b8860b; border-color: #b8860b; }
+  .tab.chain-s.active { background: #2d6a4f; border-color: #2d6a4f; }
+  .tab.m-pi.active  { background: #3949ab; border-color: #3949ab; }
+  .tab.m-phi.active { background: #b8860b; border-color: #b8860b; }
+  .tab.m-s2.active  { background: #2e7d32; border-color: #2e7d32; }
+  .tab.m-ln.active  { background: #c62828; border-color: #c62828; }
+  .tab.m-e.active   { background: #6a1b9a; border-color: #6a1b9a; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+    gap: 12px;
+    margin-bottom: 18px;
+  }
+  .stat {
+    background: #f8fafc;
+    border-radius: 8px;
+    padding: 14px;
+    border-left: 4px solid var(--model-color, #4338ca);
+  }
+  .stat .lbl { font-size: 10px; text-transform: uppercase; color: #64748b; letter-spacing: 0.06em; }
+  .stat .val { font-size: 22px; font-weight: 800; color: #0f172a; }
+  .stat .hint { font-size: 11px; color: #64748b; margin-top: 4px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  th, td {
+    text-align: left;
+    padding: 9px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  th {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: #64748b; background: #f8fafc;
+    position: sticky; top: 0; z-index: 1;
+  }
+  tr.worst-row td { background: #fff8f0; }
+  tr.worst-row td:first-child { border-left: 3px solid #e65100; }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .score-cell { white-space: nowrap; }
+  .score-num { font-weight: 700; }
+  .score-bar-wrap { display: inline-block; width: 48px; height: 6px; background: #e2e8f0; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+  .score-bar-fill { display: block; height: 6px; border-radius: 3px; }
+  .sc-green { color: #1b5e20; }
+  .sc-amber { color: #e65100; }
+  .sc-red   { color: #b91c1c; }
+  .err { color: #b91c1c; font-size: 13px; padding: 12px; background: #fef2f2; border-radius: 8px; }
+  .mono { font-family: ui-monospace, monospace; font-size: 11px; color: #475569; }
+  code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+  .model-desc { font-size: 12px; color: #475569; margin-bottom: 16px; padding: 10px 12px; background: #f1f5f9; border-radius: 8px; line-height: 1.6; }
+  .opaque-row td { color: #94a3b8; font-style: italic; }
+  .coupling-bar { display: inline-block; width: 40px; height: 5px; background: #e2e8f0; border-radius: 2px; margin-left: 5px; vertical-align: middle; }
+  .coupling-fill { display: block; height: 5px; border-radius: 2px; }
+  .section-title { font-size: 14px; font-weight: 700; margin: 20px 0 10px; color: #0f172a; border-top: 1px solid #e2e8f0; padding-top: 16px; }
+  .regen-note { font-size: 11px; color: #94a3b8; margin-top: 14px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <div class="kicker">Shared test harness</div>
+    <h1>Five-model engine reports</h1>
+    <p class="sub">
+      JSON is emitted by <code>scripts/export_model_engine_reports_json.py</code> from
+      <code>src/simulation/pi_engine.py</code>, <code>phi_engine.py</code>, <code>sqrt2_engine.py</code>,
+      <code>ln2_engine.py</code>, and <code>e_engine.py</code>. Toggle commodity and model to inspect the same
+      numbers the Python modules produce. Deep-link with query params, for example
+      <code>?model=ln2</code> or <code>?chain=shea&amp;model=e</code>.
+    </p>
+    <div class="nav">
+      <a href="/frontend/project/five_model_coherence.html">Five-model coherence UI</a>
+      <a href="/frontend/project/gold/supply_chain/dashboard.html">Gold π dashboard</a>
+      <a href="/frontend/project/gold/supply_chain/ln2_dashboard.html">Gold ln(2) dashboard</a>
+      <a href="/frontend/project/gold/supply_chain/e_dashboard.html">Gold e dashboard</a>
+      <a href="/frontend/project/shared/sqrt2_analysis_test.html">√2-only test</a>
+      <a href="/index.html">Home</a>
+    </div>
+    <div class="row-tabs" id="chain-tabs">
+      <span class="lbl">Chain</span>
+      <button type="button" class="tab chain-g active" data-chain="gold">Gold</button>
+      <button type="button" class="tab chain-s" data-chain="shea">Shea</button>
+    </div>
+    <div class="row-tabs" id="model-tabs">
+      <span class="lbl">Model</span>
+      <button type="button" class="tab m-pi active" data-model="pi">π</button>
+      <button type="button" class="tab m-phi" data-model="phi">φ</button>
+      <button type="button" class="tab m-s2" data-model="sqrt2">√2</button>
+      <button type="button" class="tab m-ln" data-model="ln2">ln(2)</button>
+      <button type="button" class="tab m-e" data-model="e">e</button>
+    </div>
+    <div id="load-err" class="err" style="display:none;"></div>
+    <div id="content" style="display:none;">
+      <p class="mono" id="meta-line"></p>
+      <div class="model-desc" id="model-desc"></div>
+      <div class="stats" id="stats"></div>
+      <div id="extra-block"></div>
+      <div style="overflow-x:auto;">
+        <table id="main-table">
+          <thead id="thead"></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="regen-note">Regenerate data: <code>python3 scripts/export_model_engine_reports_json.py</code></p>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  "use strict";
+
+  var DATA_URL = "/frontend/project/shared/data/model_engine_reports.json";
+
+  var MODEL_COLOR = {
+    pi:    "#3949ab",
+    phi:   "#b8860b",
+    sqrt2: "#2e7d32",
+    ln2:   "#c62828",
+    e:     "#6a1b9a",
+  };
+
+  var COLOR = {
+    excellent: "#1b5e20",
+    good:      "#2e7d32",
+    fair:      "#f57f17",
+    poor:      "#c62828",
+    warn:      "#e65100",
+  };
+
+  var bundle = null;
+  var chain  = "gold";
+  var model  = "pi";
+  var ALLOWED_MODELS = ["pi", "phi", "sqrt2", "ln2", "e"];
+
+  function initFromQuery() {
+    try {
+      var q = new URLSearchParams(window.location.search || "");
+      var m  = (q.get("model") || "").toLowerCase();
+      if (ALLOWED_MODELS.indexOf(m) >= 0) model = m;
+      var ch = (q.get("chain") || "").toLowerCase();
+      if (ch === "gold" || ch === "shea") chain = ch;
+    } catch (e2) { /* ignore */ }
+  }
+
+  function pushQuery() {
+    try {
+      var url = window.location.pathname + "?chain=" + chain + "&model=" + model;
+      history.replaceState(null, "", url);
+    } catch (e2) { /* ignore */ }
+  }
+
+  function syncChainTabs() {
+    document.querySelectorAll("#chain-tabs .tab").forEach(function (x) {
+      x.classList.toggle("active", x.dataset.chain === chain);
+    });
+  }
+
+  function syncModelTabs() {
+    document.querySelectorAll("#model-tabs .tab").forEach(function (x) {
+      x.classList.toggle("active", x.dataset.model === model);
+    });
+  }
+
+  function esc(s) {
+    if (s == null) return "";
+    return String(s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function trunc(s, n) {
+    if (!s) return "";
+    var t = String(s);
+    return t.length > n ? t.slice(0, n) + "…" : t;
+  }
+
+  function truncCell(s, n) {
+    if (!s) return "";
+    var t = String(s);
+    if (t.length <= n) return esc(t);
+    return "<span title=\"" + esc(t) + "\">" + esc(t.slice(0, n)) + "…</span>";
+  }
+
+  function pill(colorKey, text) {
+    var c = COLOR[colorKey] || "#546e7a";
+    return "<span class=\"pill\" style=\"background:" + c + "22;color:" + c + ";\">" + esc(text) + "</span>";
+  }
+
+  function scoreColor(val) {
+    var v = parseFloat(val);
+    if (isNaN(v)) return "";
+    if (v >= 70) return "sc-green";
+    if (v >= 40) return "sc-amber";
+    return "sc-red";
+  }
+
+  function barColor(val) {
+    var v = parseFloat(val);
+    if (isNaN(v)) return "#94a3b8";
+    if (v >= 70) return "#2e7d32";
+    if (v >= 40) return "#f57f17";
+    return "#c62828";
+  }
+
+  function scoreCell(val) {
+    if (val == null || val === "") return "<td>—</td>";
+    var v = parseFloat(val);
+    if (isNaN(v)) return "<td class=\"score-cell\"><span class=\"score-num\">" + esc(val) + "</span></td>";
+    var pct = Math.min(100, Math.max(0, v));
+    return (
+      "<td class=\"score-cell\">" +
+      "<span class=\"score-num " + scoreColor(v) + "\">" + esc(String(val)) + "</span>" +
+      "<span class=\"score-bar-wrap\"><span class=\"score-bar-fill\" style=\"width:" + pct + "%;background:" + barColor(v) + ";\"></span></span>" +
+      "</td>"
+    );
+  }
+
+  function statHtml(lbl, val, hint) {
+    return (
+      "<div class=\"stat\"><div class=\"lbl\">" + esc(lbl) + "</div><div class=\"val\">" + esc(val) +
+      "</div><div class=\"hint\">" + esc(hint || "") + "</div></div>"
+    );
+  }
+
+  function zoneHintPi(z) {
+    if (!z) return "";
+    return Object.keys(z).map(function (k) { return k + ": " + z[k]; }).join(", ");
+  }
+
+  function zoneToColor(zone) {
+    if (!zone) return "fair";
+    var z = zone.toLowerCase();
+    if (z === "coherent")  return "excellent";
+    if (z === "good")      return "good";
+    if (z === "stressed")  return "fair";
+    if (z === "failure")   return "poor";
+    if (z === "breakdown") return "poor";
+    return "fair";
+  }
+
+  function applyModelColor() {
+    var c = MODEL_COLOR[model] || "#4338ca";
+    document.documentElement.style.setProperty("--model-color", c);
+  }
+
+  var MODEL_DESC = {
+    pi:    "π operational layer: per-phase D and C from processed supply-chain UI JSON. Score = exponential balance from tholonic_engine (same shape used in hub radar). Highlighted row = lowest-scoring phase.",
+    phi:   "φ proportional layer: adjacent-phase N ratios vs φ (1.61803). Scores measure how close each boundary ratio is to the golden ratio. Highlighted row = worst boundary.",
+    sqrt2: "√2 structural layer: boundary d_structural vs c_structural symmetry (sqrt2_engine). Target symmetry ratio is 1.0; natural overhead reference is ≈41.4% (√2−1). Highlighted row = worst boundary.",
+    ln2:   "ln(2) growth layer: transformation phases only. Target C/D ≈ 2.0 (natural doubling). Score combines ln2 coherence and institutional capture inversion. Highlighted row = lowest composite score.",
+    e:     "e abstract layer: claim rows from gold_e_model_claims.csv / shea_e_model_claims.csv. System score = average of per-phase minimum e-scores, excluding OPAQUE phases. Italic rows = OPAQUE coupling.",
+  };
+
+  function render() {
+    var rep     = bundle && bundle[model] && bundle[model][chain];
+    var errEl   = document.getElementById("load-err");
+    var content = document.getElementById("content");
+    if (!bundle || !rep) {
+      errEl.style.display  = "block";
+      errEl.textContent    = "No report for this selection.";
+      content.style.display = "none";
+      return;
+    }
+    errEl.style.display   = "none";
+    content.style.display = "block";
+    applyModelColor();
+
+    document.getElementById("meta-line").textContent = bundle._meta
+      ? "JSON: " + (bundle._meta.generated || "") + "   " + (bundle._meta.note || "")
+      : "";
+    document.getElementById("model-desc").textContent = MODEL_DESC[model] || "";
+
+    var stats  = document.getElementById("stats");
+    var thead  = document.getElementById("thead");
+    var tbody  = document.getElementById("tbody");
+    var extra  = document.getElementById("extra-block");
+    extra.innerHTML  = "";
+    tbody.innerHTML  = "";
+    thead.innerHTML  = "";
+
+    var sys = rep.system_summary || {};
+
+    /* ---- π ---- */
+    if (model === "pi") {
+      stats.innerHTML =
+        statHtml("Avg π balance", sys.system_pi_score, sys.system_status) +
+        statHtml("Phases", sys.total_phases, zoneHintPi(sys.zone_counts)) +
+        statHtml("Score range", (sys.min_score != null ? sys.min_score : "—") + " – " + (sys.max_score != null ? sys.max_score : "—"),
+                 "Worst: " + esc(sys.worst_phase));
+      thead.innerHTML =
+        "<tr><th>Phase</th><th>D</th><th>C</th><th>D/C</th><th>Bal (stored)</th><th>Bal (calc)</th><th>N</th><th>Zone</th><th>Notes</th></tr>";
+      var worstPi = sys.worst_score;
+      (rep.phases || []).forEach(function (p) {
+        var tr = document.createElement("tr");
+        if (p.balance_exponential === worstPi) tr.className = "worst-row";
+        tr.innerHTML =
+          "<td><b>P" + esc(p.phase_id) + "</b> " + truncCell(p.phase_name, 40) + "</td>" +
+          "<td>" + esc(p.D) + "</td>" +
+          "<td>" + esc(p.C) + "</td>" +
+          "<td class=\"mono\">" + esc(p.dc_ratio != null ? p.dc_ratio : "—") + "</td>" +
+          "<td>" + esc(p.balance_reported) + "</td>" +
+          scoreCell(p.balance_exponential) +
+          "<td>" + esc(p.N) + "</td>" +
+          "<td>" + pill(zoneToColor(p.balance_zone), p.balance_zone_label || p.balance_zone) + "</td>" +
+          "<td class=\"mono\">" + truncCell(p.notes, 160) + "</td>";
+        tbody.appendChild(tr);
+      });
+
+    /* ---- φ ---- */
+    } else if (model === "phi") {
+      stats.innerHTML =
+        statHtml("System φ score", sys.system_phi_score, sys.system_status) +
+        statHtml("Boundaries", sys.total_boundaries, "Healthy ≥80: " + esc(sys.healthy_boundaries)) +
+        statHtml("φ = " + esc(rep.phi_constant), "Range", esc(sys.min_score) + " – " + esc(sys.max_score));
+      thead.innerHTML =
+        "<tr><th>Boundary</th><th>N from</th><th>N to</th><th>Ratio</th><th>φ score</th><th>Status</th><th>Description</th></tr>";
+      var worstPhi = sys.min_score;
+      (rep.boundaries || []).forEach(function (b) {
+        var tr = document.createElement("tr");
+        if (parseFloat(b.phi_score) === parseFloat(worstPhi)) tr.className = "worst-row";
+        tr.innerHTML =
+          "<td>P" + esc(b.from_phase_id) + "→P" + esc(b.to_phase_id) +
+          "<br><span class=\"mono\">" + truncCell(b.from_phase_name, 30) + " → " + truncCell(b.to_phase_name, 30) + "</span></td>" +
+          "<td>" + esc(b.n_from) + "</td>" +
+          "<td>" + esc(b.n_to) + "</td>" +
+          "<td class=\"mono\">" + esc(b.ratio) + "</td>" +
+          scoreCell(b.phi_score) +
+          "<td>" + pill(b.color, b.label || b.status) + "</td>" +
+          "<td>" + truncCell(b.description, 160) + "</td>";
+        tbody.appendChild(tr);
+      });
+      if (rep.value_amplification && rep.value_amplification.length) {
+        var h = "<div class=\"section-title\">Value amplification (shea)</div>" +
+          "<table><thead><tr><th>Edge</th><th>Multiple</th><th>φ-steps</th><th>Note</th></tr></thead><tbody>";
+        rep.value_amplification.forEach(function (v) {
+          h += "<tr><td>P" + esc(v.from_phase_id) + "→P" + esc(v.to_phase_id) +
+            "</td><td>" + esc(v.actual_multiple) +
+            "</td><td>" + esc(v.phi_steps_equivalent) +
+            "</td><td>" + truncCell(v.note, 180) + "</td></tr>";
+        });
+        h += "</tbody></table>";
+        extra.innerHTML = h;
+      }
+
+    /* ---- √2 ---- */
+    } else if (model === "sqrt2") {
+      stats.innerHTML =
+        statHtml("System √2 score", sys.system_sqrt2_score, sys.system_status) +
+        statHtml("Boundaries", sys.total_boundaries,
+                 "Symmetric ≥80: " + esc(sys.symmetric_boundaries) + "  Asymmetric <40: " + esc(sys.asymmetric_boundaries)) +
+        statHtml("√2 = " + esc(rep.constant), "Nat. overhead", esc(rep.natural_overhead_pct) + "%") +
+        statHtml("Score range", esc(sys.min_score) + " – " + esc(sys.max_score),
+                 "Best: " + esc(sys.best_boundary));
+      thead.innerHTML =
+        "<tr><th>Boundary</th><th>D struct</th><th>C struct</th><th>C/D ratio</th><th>√2 score</th><th>Status</th><th>Notes / source</th></tr>";
+      var worstS2 = sys.min_score;
+      (rep.boundaries || []).forEach(function (b) {
+        var tr = document.createElement("tr");
+        if (parseFloat(b.sqrt2_score) === parseFloat(worstS2)) tr.className = "worst-row";
+        tr.innerHTML =
+          "<td><b>" + esc(b.boundary_id) + "</b><br><span class=\"mono\">" +
+          truncCell(b.from_phase, 28) + " → " + truncCell(b.to_phase, 28) + "</span></td>" +
+          "<td>" + esc(b.d_structural) + "</td>" +
+          "<td>" + esc(b.c_structural) + "</td>" +
+          "<td class=\"mono\">" + esc(b.symmetry_ratio) + "</td>" +
+          scoreCell(b.sqrt2_score) +
+          "<td>" + pill(b.color, b.label || b.status) + "</td>" +
+          "<td>" + truncCell(b.notes, 160) + "<br><span class=\"mono\">" + esc(b.data_source) + "</span></td>";
+        tbody.appendChild(tr);
+      });
+
+    /* ---- ln(2) ---- */
+    } else if (model === "ln2") {
+      stats.innerHTML =
+        statHtml("System ln2 score", sys.system_ln2_score, sys.system_status) +
+        statHtml("Phases", sys.total_phases, "Avg inst. %: " + esc(sys.avg_institutional_pct)) +
+        statHtml("Target C/D", rep.target_cd_ratio, "ln(2) = " + esc(rep.constant)) +
+        statHtml("Score range", esc(sys.min_score) + " – " + esc(sys.max_score),
+                 "Worst: P" + esc(sys.worst_phase_id));
+      thead.innerHTML =
+        "<tr><th>Phase</th><th>D nat</th><th>D inst</th><th>C</th><th>C/D</th><th>ln2 score</th><th>Capture</th><th>Inst %</th><th>Status</th><th>Examples</th></tr>";
+      var worstLn2 = sys.min_score;
+      (rep.phases || []).forEach(function (p) {
+        var composite = Math.min(parseFloat(p.ln2_score || 0), parseFloat(p.capture_score || 0));
+        var tr = document.createElement("tr");
+        if (parseFloat(p.ln2_score) === parseFloat(worstLn2)) tr.className = "worst-row";
+        tr.innerHTML =
+          "<td><b>P" + esc(p.phase_id) + "</b> " + truncCell(p.phase_name, 38) + "</td>" +
+          "<td>" + esc(p.d_natural) + "</td>" +
+          "<td>" + esc(p.d_institutional) + "</td>" +
+          "<td>" + esc(p.c_contribution) + "</td>" +
+          "<td class=\"mono\">" + esc(p.cd_ratio) + "</td>" +
+          scoreCell(p.ln2_score) +
+          scoreCell(p.capture_score) +
+          "<td>" + esc(p.institutional_fraction_pct) + "</td>" +
+          "<td>" + pill(p.color, p.label || p.status) + "</td>" +
+          "<td class=\"mono\">" + truncCell(p.institutional_examples, 160) + "</td>";
+        tbody.appendChild(tr);
+      });
+
+    /* ---- e ---- */
+    } else if (model === "e") {
+      var csvFile = esc((rep.data_source_path || "").split("/").pop());
+      stats.innerHTML =
+        statHtml("System e score", sys.system_e_score, sys.system_status) +
+        statHtml("Claim rows", sys.total_claim_rows, "Phases in avg: " + esc(sys.phases_in_average)) +
+        statHtml("Score range", esc(sys.min_score) + " – " + esc(sys.max_score), "Source: " + csvFile);
+      thead.innerHTML =
+        "<tr><th>P</th><th>Phase</th><th>Min e score</th><th>Claims</th><th>Has opaque</th><th>Claim types</th></tr>";
+      (rep.phase_scores || []).forEach(function (p) {
+        var tr = document.createElement("tr");
+        tr.innerHTML =
+          "<td>" + esc(p.phase_id) + "</td>" +
+          "<td>" + truncCell(p.phase_name, 40) + "</td>" +
+          scoreCell(p.phase_score) +
+          "<td>" + esc(p.claim_count) + "</td>" +
+          "<td>" + (p.has_opaque ? "<span class=\"pill\" style=\"background:#fff3cd;color:#856404;\">Yes</span>" : "No") + "</td>" +
+          "<td class=\"mono\">" + truncCell((p.claim_types || []).join(", "), 120) + "</td>";
+        tbody.appendChild(tr);
+      });
+      var h2 = "<div class=\"section-title\">All claim rows</div>" +
+        "<div style=\"overflow-x:auto;\"><table><thead><tr><th>P</th><th>Type</th><th>Coupling</th><th>e score</th><th>Rehyp</th><th>Status</th><th>Notes</th></tr></thead><tbody>";
+      (rep.claims || []).forEach(function (c) {
+        var isOpaque = (c.coupling_ratio_status || "").toUpperCase() === "OPAQUE";
+        var coup = isOpaque ? "<em>OPAQUE</em>" : esc(c.coupling_ratio);
+        var coupBar = "";
+        if (!isOpaque && c.coupling_ratio != null) {
+          var cr = parseFloat(c.coupling_ratio);
+          if (!isNaN(cr)) {
+            var w = Math.min(100, cr * 10);
+            var bc = cr <= 2 ? "#2e7d32" : cr <= 10 ? "#f57f17" : "#c62828";
+            coupBar = "<span class=\"coupling-bar\"><span class=\"coupling-fill\" style=\"width:" + w + "%;background:" + bc + ";\"></span></span>";
+          }
+        }
+        h2 += "<tr" + (isOpaque ? " class=\"opaque-row\"" : "") + ">" +
+          "<td>P" + esc(c.phase_id) + "</td>" +
+          "<td>" + esc(c.claim_type) + "</td>" +
+          "<td class=\"mono\">" + coup + coupBar + "</td>" +
+          scoreCell(c.e_score) +
+          "<td>" + (c.is_rehypothecated ? "<b>Y</b>" : "") + "</td>" +
+          "<td>" + esc(c.coupling_ratio_status) + "</td>" +
+          "<td>" + truncCell(c.notes, 200) + "</td></tr>";
+      });
+      h2 += "</tbody></table></div>";
+      extra.innerHTML = h2;
+    }
+  }
+
+  document.getElementById("chain-tabs").addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.classList.contains("tab")) {
+      chain = t.dataset.chain;
+      syncChainTabs();
+      pushQuery();
+      render();
+    }
+  });
+
+  document.getElementById("model-tabs").addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.classList.contains("tab")) {
+      model = t.dataset.model;
+      syncModelTabs();
+      pushQuery();
+      render();
+    }
+  });
+
+  fetch(DATA_URL)
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      bundle = data;
+      initFromQuery();
+      syncChainTabs();
+      syncModelTabs();
+      pushQuery();
+      render();
+    })
+    .catch(function (e) {
+      var errEl = document.getElementById("load-err");
+      errEl.style.display = "block";
+      errEl.innerHTML =
+        "Could not load <code>" + esc(DATA_URL) + "</code>. " +
+        "Run <code>python3 scripts/export_model_engine_reports_json.py</code> " +
+        "from the repo root and serve with <code>python3 -m http.server 8000 --bind 127.0.0.1</code>. " +
+        esc(e.message || String(e));
+    });
+})();
+</script>
+</body>
+</html>

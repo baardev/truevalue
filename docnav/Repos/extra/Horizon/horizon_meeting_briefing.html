@@ -1,0 +1,1266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TrueVal-Chains — Horizon Meeting Briefing</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1f2e;
+    --ink-light: #4a5568;
+    --ink-faint: #718096;
+    --rule: #e2e8f0;
+    --accent: #2563eb;
+    --accent-light: #eff6ff;
+    --accent-border: #bfdbfe;
+    --warn: #92400e;
+    --warn-bg: #fffbeb;
+    --warn-border: #fcd34d;
+    --green: #065f46;
+    --green-bg: #ecfdf5;
+    --green-border: #6ee7b7;
+    --red: #991b1b;
+    --red-bg: #fef2f2;
+    --red-border: #fca5a5;
+    --purple: #4c1d95;
+    --purple-bg: #f5f3ff;
+    --purple-border: #c4b5fd;
+  }
+
+  body {
+    font-family: 'Georgia', serif;
+    font-size: 15px;
+    line-height: 1.7;
+    color: var(--ink);
+    background: #f8fafc;
+    padding: 0;
+  }
+
+  /* ── Print ── */
+  @media print {
+    body { background: white; font-size: 13px; }
+    .no-print { display: none !important; }
+    .page-break { page-break-before: always; }
+    .section { box-shadow: none !important; border: 1px solid #ddd !important; }
+    a { color: inherit; text-decoration: none; }
+  }
+
+  /* ── Navigation bar ── */
+  .topbar {
+    background: var(--ink);
+    color: #e5e7eb;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    padding: 10px 32px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    no-print: true;
+  }
+  .topbar a { color: #93c5fd; text-decoration: none; }
+  .topbar a:hover { text-decoration: underline; }
+  .topbar-right { display: flex; gap: 16px; align-items: center; }
+  .print-btn {
+    background: #374151;
+    border: 1px solid #4b5563;
+    color: #e5e7eb;
+    font-size: 11px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    padding: 4px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .print-btn:hover { background: #4b5563; }
+
+  /* ── Page wrapper ── */
+  .page {
+    max-width: 900px;
+    margin: 32px auto 64px;
+    padding: 0 24px;
+  }
+
+  /* ── Cover block ── */
+  .cover {
+    background: var(--ink);
+    color: #f1f5f9;
+    border-radius: 14px;
+    padding: 44px 48px 36px;
+    margin-bottom: 32px;
+  }
+  .cover-kicker {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #93c5fd;
+    margin-bottom: 16px;
+  }
+  .cover h1 {
+    font-size: 28px;
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 10px;
+    color: #f8fafc;
+  }
+  .cover-sub {
+    font-size: 14px;
+    color: #94a3b8;
+    line-height: 1.6;
+    margin-bottom: 28px;
+  }
+  .cover-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .meta-pill {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.1);
+    color: #cbd5e1;
+    letter-spacing: 0.04em;
+  }
+  .meta-pill.highlight {
+    background: rgba(37,99,235,0.5);
+    color: #bfdbfe;
+  }
+
+  /* ── Section card ── */
+  .section {
+    background: white;
+    border-radius: 12px;
+    border: 1px solid var(--rule);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .section-header {
+    padding: 18px 28px 14px;
+    border-bottom: 1px solid var(--rule);
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .section-number {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--accent);
+    flex-shrink: 0;
+  }
+  .section-header h2 {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--ink);
+    line-height: 1.3;
+  }
+  .section-body { padding: 22px 28px; }
+
+  /* ── Call outcomes strip ── */
+  .outcomes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .outcome-item {
+    background: var(--accent-light);
+    border: 1px solid var(--accent-border);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 13px;
+    color: #1e3a8a;
+    line-height: 1.5;
+  }
+  .outcome-n {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+    color: var(--accent);
+    display: block;
+  }
+
+  /* ── Problem-solution blocks ── */
+  .problem-block {
+    border-left: 3px solid #e2e8f0;
+    margin-bottom: 28px;
+    padding-left: 20px;
+  }
+  .problem-block:last-child { margin-bottom: 0; }
+  .problem-label {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--ink-faint);
+    margin-bottom: 4px;
+  }
+  .problem-block h3 {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--ink);
+    margin-bottom: 10px;
+    line-height: 1.35;
+  }
+  .problem-desc {
+    font-size: 14px;
+    color: var(--ink-light);
+    margin-bottom: 12px;
+    line-height: 1.65;
+  }
+  .tvf-response {
+    background: var(--green-bg);
+    border: 1px solid var(--green-border);
+    border-radius: 7px;
+    padding: 11px 14px;
+    font-size: 13px;
+    color: var(--green);
+    line-height: 1.6;
+  }
+  .tvf-response strong {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    display: block;
+    margin-bottom: 4px;
+    color: #047857;
+  }
+
+  /* ── Frame the ask ── */
+  .ask-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-light);
+  }
+  .ask-item:last-child { margin-bottom: 0; }
+  .ask-bullet {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    background: var(--accent);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    margin-top: 2px;
+  }
+  .ask-item em { font-style: normal; color: var(--ink); font-weight: 700; }
+
+  /* ── Legal focus blocks ── */
+  .legal-block {
+    border-left: 3px solid var(--warn-border);
+    padding: 14px 18px;
+    background: var(--warn-bg);
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 14px;
+    font-size: 13.5px;
+    color: var(--warn);
+    line-height: 1.6;
+  }
+  .legal-block:last-child { margin-bottom: 0; }
+  .legal-block h4 {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    color: #b45309;
+  }
+  .legal-block ul {
+    padding-left: 18px;
+    margin-top: 6px;
+  }
+  .legal-block li { margin-bottom: 4px; }
+
+  /* ── Differentiators ── */
+  .diff-item {
+    background: var(--purple-bg);
+    border: 1px solid var(--purple-border);
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    color: var(--purple);
+    line-height: 1.6;
+  }
+  .diff-item:last-child { margin-bottom: 0; }
+  .diff-item strong {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    display: block;
+    font-size: 12px;
+    font-weight: 900;
+    margin-bottom: 5px;
+    color: #5b21b6;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── Risk table ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  thead tr {
+    background: #f1f5f9;
+  }
+  th {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--ink-faint);
+    padding: 10px 14px;
+    text-align: left;
+    border-bottom: 2px solid var(--rule);
+  }
+  td {
+    padding: 11px 14px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    color: var(--ink-light);
+  }
+  td:first-child { color: var(--ink); font-weight: 600; font-size: 13px; }
+  td:nth-child(2) { color: var(--warn); }
+  tr:last-child td { border-bottom: none; }
+  tr:hover td { background: #f8fafc; }
+
+  /* ── Call scope tag list ── */
+  .scope-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+  }
+  .scope-tag {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 11px;
+    border-radius: 999px;
+    background: #f1f5f9;
+    color: var(--ink-light);
+    border: 1px solid var(--rule);
+  }
+  .scope-tag.matched {
+    background: var(--green-bg);
+    border-color: var(--green-border);
+    color: var(--green);
+  }
+
+  /* ── Intro paragraph ── */
+  .intro-para {
+    font-size: 14px;
+    color: var(--ink-light);
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+  .intro-para:last-child { margin-bottom: 0; }
+
+  p { margin-bottom: 10px; }
+  p:last-child { margin-bottom: 0; }
+
+  /* ── Glossary ── */
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+  }
+  @media (max-width: 640px) {
+    .glossary-grid { grid-template-columns: 1fr; }
+    .outcomes-grid { grid-template-columns: 1fr; }
+  }
+  .gloss-group {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .gloss-group:nth-child(odd) { border-right: 1px solid var(--rule); }
+  .gloss-group-title {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 9px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .gloss-entry {
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 8px 12px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    line-height: 1.5;
+    align-items: start;
+  }
+  .gloss-entry:last-child { margin-bottom: 0; }
+  .gloss-term {
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-weight: 900;
+    font-size: 12px;
+    color: var(--accent);
+    padding-top: 1px;
+    word-break: break-word;
+  }
+  .gloss-def { color: var(--ink-light); }
+  .gloss-def strong {
+    display: block;
+    color: var(--ink);
+    font-size: 12px;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    margin-bottom: 2px;
+  }
+  .gloss-sig {
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    font-style: italic;
+    margin-top: 2px;
+  }
+
+  /* ── Section divider ── */
+  .divider {
+    text-align: center;
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: #94a3b8;
+    margin: 28px 0 20px;
+    position: relative;
+  }
+  .divider::before, .divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 38%;
+    height: 1px;
+    background: var(--rule);
+  }
+  .divider::before { left: 0; }
+  .divider::after { right: 0; }
+</style>
+</head>
+<body>
+
+<!-- topbar -->
+<div class="topbar no-print">
+  <div>
+    <a href="/index.html">TrueValue Analytics</a>
+    <span style="margin:0 8px;color:#4b5563;">›</span>
+    <span style="color:#9ca3af;">Horizon Meeting Briefing</span>
+  </div>
+  <div class="topbar-right">
+    <span style="color:#6b7280;">HORIZON-CL6-2026-01-CIRCBIO-09 · 5 May 2026</span>
+    <button class="print-btn" onclick="window.print()">Print / PDF</button>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-kicker">Meeting Briefing — Confidential Draft</div>
+    <h1>TrueVal-Chains<br>Horizon Lawyers Meeting</h1>
+    <div class="cover-sub">
+      Positioning the True Value Framework for Horizon Europe Call HORIZON-CL6-2026-01-CIRCBIO-09.
+      This document sets out the five regulatory problems the call is designed to solve, how TVF addresses each one,
+      the legal questions the consortium lawyers will raise, and the key talking points for securing €6M in grant funding.
+    </div>
+    <div class="cover-meta">
+      <span class="meta-pill">Call: HORIZON-CL6-2026-01-CIRCBIO-09</span>
+      <span class="meta-pill">Action Type: RIA</span>
+      <span class="meta-pill highlight">Requesting: €6,000,000</span>
+      <span class="meta-pill">Call Budget: €12,000,000</span>
+      <span class="meta-pill">Deadline: 17 September 2026</span>
+      <span class="meta-pill">Duration: 54 months</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: CALL REQUIREMENTS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 1</span>
+      <h2>What the Horizon Call Actually Requires</h2>
+    </div>
+    <div class="section-body">
+      <p class="intro-para">
+        The call title is "Balancing food security, bioeconomy, climate and biodiversity objectives to unlock sustainable value chains."
+        The EC's own language defines four expected outcomes that all funded projects must demonstrably deliver.
+        Every one of these is addressed directly by the True Value Framework.
+      </p>
+
+      <div class="outcomes-grid">
+        <div class="outcome-item">
+          <span class="outcome-n">Outcome 1</span>
+          Decision-makers understand the impacts of bioeconomy and nature markets on food security, climate, biodiversity, and land-use conflicts.
+        </div>
+        <div class="outcome-item">
+          <span class="outcome-n">Outcome 2</span>
+          Society benefits from economic activities that align bioeconomy, climate, and biodiversity objectives without compromising food security.
+        </div>
+        <div class="outcome-item">
+          <span class="outcome-n">Outcome 3</span>
+          Farmers gain income diversification without compromising food supply.
+        </div>
+        <div class="outcome-item">
+          <span class="outcome-n">Outcome 4</span>
+          Policymakers are equipped for evidence-based agricultural and environmental policy.
+        </div>
+      </div>
+
+      <p class="intro-para" style="margin-top:18px;">
+        The call scope also explicitly lists the following analytical requirements. All are covered by the proposal:
+      </p>
+      <div class="scope-tags">
+        <span class="scope-tag matched">Land-use conflict assessment</span>
+        <span class="scope-tag matched">Biomass supply/demand threshold modelling</span>
+        <span class="scope-tag matched">Food security risk analysis</span>
+        <span class="scope-tag matched">Farm-to-macro interdisciplinary research</span>
+        <span class="scope-tag matched">Natural capital accounting</span>
+        <span class="scope-tag matched">New business models for value chains</span>
+        <span class="scope-tag matched">EAA framework synergies</span>
+        <span class="scope-tag matched">CRCF certification methodology</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: FIVE PROBLEMS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 2</span>
+      <h2>The Five Problems — and the TVF Response to Each</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="problem-block">
+        <div class="problem-label">Problem 1</div>
+        <h3>The EU Built a Regulatory Architecture with No Measurement Tools</h3>
+        <p class="problem-desc">
+          The CRCF Regulation (EU 2025/2358, November 2025) is now law. The Nature Credits Roadmap was published July 2025.
+          CSRD is driving corporate Scope 3 disclosure obligations. CAP is mid-revision.
+          These frameworks all require supply-chain-resolved quantitative data on environmental performance.
+          That data does not exist at the resolution policymakers and markets need.
+          Carbon farming Delegated Acts for agriculture are being finalized in 2026. The window for methodology input is open right now.
+        </p>
+        <div class="tvf-response">
+          <strong>TVF Response</strong>
+          TVF generates exactly this data. It produces per-phase, per-commodity emission factors, biodiversity accounts, and value distribution maps
+          at the resolution the CRCF, Nature Credits, and EAA frameworks require. No existing tool does this at supply chain phase resolution.
+          The project's M30 deliverable (D5.4: CRCF Methodology Input Document) feeds directly into the Delegated Acts process.
+        </div>
+      </div>
+
+      <div class="problem-block">
+        <div class="problem-label">Problem 2</div>
+        <h3>Greenwashing Risk is Threatening the Carbon and Nature Credit Market Before It Starts</h3>
+        <p class="problem-desc">
+          Without phase-resolved supply chain data, carbon and nature credits cannot be priced with integrity.
+          Certification bodies have no defensible methodology. The EC, institutional investors, and corporate buyers all recognise this.
+          The risk is that the entire nature credits market is discredited before it achieves scale.
+        </p>
+        <div class="tvf-response">
+          <strong>TVF Response</strong>
+          TVF's transparency classification (High / Medium / Low / Opaque per phase) is a structural anti-greenwashing mechanism.
+          By explicitly flagging where data is absent or opaque, it produces certification-grade evidence with auditable uncertainty ranges.
+          This is directly relevant to both the CRCF Delegated Acts and the Nature Credits certification methodology.
+        </div>
+      </div>
+
+      <div class="problem-block">
+        <div class="problem-label">Problem 3</div>
+        <h3>Farmers Are Price-Takers and Cannot Monetize Their Environmental Stewardship</h3>
+        <p class="problem-desc">
+          The call is explicit: farmers cannot capture the value of their environmental contributions.
+          Cooperatives in olive oil (Spain accounts for ~65% of world production) and shea (4 to 6 million women in West Africa)
+          are structurally disadvantaged as value is captured by downstream actors.
+          The Great Green Wall has $33 billion pledged but only about 2% of restoration targets achieved,
+          largely because there is no value chain infrastructure linking restoration activity to market incentives.
+        </p>
+        <div class="tvf-response">
+          <strong>TVF Response</strong>
+          TVF's phase-resolved value appropriation analysis shows exactly where value is extracted and by whom.
+          For shea, TVF delivers the first Scope 3 emission factors that EU cosmetics and chocolate companies are legally required
+          to report under CSRD — data that is currently unavailable. This makes TVF directly commercially valuable to every EU
+          company sourcing shea, including L'Oréal and Unilever.
+        </div>
+      </div>
+
+      <div class="problem-block">
+        <div class="problem-label">Problem 4</div>
+        <h3>Land-Use Conflict and Food Security Risk Are Currently Unquantifiable</h3>
+        <p class="problem-desc">
+          Bioeconomy incentives (bioenergy, carbon credits, nature restoration) can divert agricultural land from food production.
+          The EU does not have the analytical tools to set safe biomass thresholds, and land-use conflict assessments remain qualitative.
+          The EU Deforestation Regulation (EUDR) is already creating compliance pressure for companies sourcing Argentine soya and beef,
+          with no agreed quantitative methodology available.
+        </p>
+        <div class="tvf-response">
+          <strong>TVF Response</strong>
+          TVF's biomass threshold modelling and spatial land-use conflict index directly address this.
+          The three-commodity design (shea/West Africa, olive oil/Mediterranean, Argentine soya/beef) spans the full range
+          of governance environments and creates the comparative dataset needed for generalizable, cross-regional policy conclusions
+          that single-commodity studies cannot produce.
+        </div>
+      </div>
+
+      <div class="problem-block">
+        <div class="problem-label">Problem 5</div>
+        <h3>No Unified Methodology Integrates Across All These Regulatory Frameworks Simultaneously</h3>
+        <p class="problem-desc">
+          Existing tools (LCA, SEEA, TCA, IPBES valuation) operate in silos.
+          A company using LCA gets GHG numbers. A biodiversity consultant produces an IPBES report.
+          A financial auditor produces an EAA account. None of these integrate at supply chain resolution.
+          The two nearest comparators funded under Horizon Europe, FOODCoST and PLAN'EAT,
+          operate at product or aggregate level. TVF is the missing architecture between aggregate statistics and product-level LCA.
+        </p>
+        <div class="tvf-response">
+          <strong>TVF Response</strong>
+          TVF is designed as the integration layer. It is explicitly compatible with SEEA, IPBES, GHG Protocol Scope 3, and EU EAA.
+          The N-D-C framework provides a single mathematical structure that operates across all dimensions simultaneously
+          at phase resolution. WP1 delivers a harmonised Natural Capital Accounting Methodology as a formal deliverable (D1.2, M12).
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 3: FRAMING THE ASK -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 3</span>
+      <h2>How to Frame the €6M Ask</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="ask-item">
+        <div class="ask-bullet">1</div>
+        <div>
+          <em>This is not a research grant.</em> It is a methodology development and validation contract with the EC
+          to produce tools that the EC's own regulations require but currently lack. The CRCF and Nature Credits
+          frameworks are law. The tools to implement them are not yet built.
+        </div>
+      </div>
+
+      <div class="ask-item">
+        <div class="ask-bullet">2</div>
+        <div>
+          <em>The CRCF carbon farming Delegated Acts are being written now.</em> Input at M30 means
+          methodology authorship on a regulation that will govern agricultural carbon certification across the EU for a decade.
+          That is durable commercial and policy leverage, not a research deliverable.
+        </div>
+      </div>
+
+      <div class="ask-item">
+        <div class="ask-bullet">3</div>
+        <div>
+          <em>The shea Scope 3 data is a commercial product, not just a research output.</em>
+          Every EU cosmetics and food company with CSRD obligations is legally required to report shea Scope 3 emissions.
+          That data does not exist anywhere. The grant pays for generation. The post-project revenue model is
+          fee-for-service Scope 3 accounting — a direct commercial exploitation pathway built into WP7.
+        </div>
+      </div>
+
+      <div class="ask-item">
+        <div class="ask-bullet">4</div>
+        <div>
+          <em>The Great Green Wall connection provides political visibility at AU-EU partnership level.</em>
+          $33 billion pledged, 2% achieved. Connecting the shea supply chain analysis to GGW financing gaps
+          is not academic framing. It is an argument for why the EC needs this project to succeed.
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="divider">Legal and Consortium Issues</div>
+
+  <!-- SECTION 4: WHAT LAWYERS WILL FOCUS ON -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 4</span>
+      <h2>What the Lawyers Will Focus On — and What to Prepare</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="legal-block">
+        <h4>1. Consortium and Legal Entity Status</h4>
+        Minimum requirement: 3 independent legal entities across different EU Member States or Associated Countries,
+        with at least one in an EU Member State. The proposal lists 7 partners, most TBC. Expect scrutiny on:
+        <ul>
+          <li>Is True Value Analytics registered in the EU Participant Register? If not, this is the first step.</li>
+          <li>If UK-based, TVA qualifies as an Associated Country but must not be the only non-EU partner in the consortium.</li>
+          <li>Letters of Intent from the Spanish partner (Cooperativas Agro-alimentarias or IFAPA) and the West Africa partner
+              are required by June 2026. These will be on the lawyers' checklist.</li>
+          <li>"TBC" against WP3 Spain lead and WP5 SSH lead are the two highest-risk gaps in the Implementation score.</li>
+        </ul>
+      </div>
+
+      <div class="legal-block">
+        <h4>2. IP and Exploitation Rights (Background vs. Foreground IP)</h4>
+        The N-D-C / TVF methodology is the core IP. Under Horizon Europe RIA rules, IP generated in the project (Foreground IP)
+        is owned by the generating partner, with a licensing obligation to other consortium members and a right of EC access.
+        Lawyers will require a clean definition of:
+        <ul>
+          <li><strong>Background IP (brought in):</strong> TVF methodology, existing gold/shea supply chain models, digital platform code.</li>
+          <li><strong>Foreground IP (generated):</strong> CRCF methodology contributions, Scope 3 emission factors for shea and olive oil, digital dashboard, biomass threshold models.</li>
+          <li>The exploitation plan must name specific post-project commercial routes: fee-for-service Scope 3 accounting (CSRD market)
+              and potential Eurostat EAA data infrastructure integration.</li>
+        </ul>
+      </div>
+
+      <div class="legal-block">
+        <h4>3. Funding Rate and For-Profit Entity Status</h4>
+        Horizon Europe RIA funds non-profit entities at 100% of eligible costs, but for-profit entities at only 70%.
+        If True Value Analytics and/or Impact Agri are for-profit companies, this directly affects the budget
+        and may require restructuring the subcontracting model to avoid a funding shortfall.
+        Lawyers will run this check for every named consortium member before the proposal is submitted.
+      </div>
+
+      <div class="legal-block">
+        <h4>4. Subcontracting Rules</h4>
+        Subcontracting to West African cooperatives for shea data collection is estimated at ~5% of total budget (approximately €300,000).
+        Horizon Europe rules require subcontracting to be justified by tasks that consortium members cannot reasonably carry out themselves,
+        and it cannot be used to circumvent EU procurement obligations. This is a structural legal question that needs a documented answer,
+        not a proposal footnote.
+      </div>
+
+      <div class="legal-block">
+        <h4>5. Ethics Compliance</h4>
+        Field research with shea women's cooperatives in West Africa involves research with potentially vulnerable communities.
+        This triggers Horizon Europe ethics requirements: informed consent protocols, GDPR compliance for personal data collected outside the EU,
+        and community safeguards. D8.2 (Ethics Self-Assessment, M3) is a formal deliverable. Lawyers will ask who is responsible
+        for this and whether the West Africa field partner has an existing ethics review process.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 5: DIFFERENTIATORS -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 5</span>
+      <h2>Key Differentiators to Assert in the Meeting</h2>
+    </div>
+    <div class="section-body">
+
+      <div class="diff-item">
+        <strong>Phase Resolution Is the Structural Differentiator</strong>
+        TVF is the only supply chain methodology that integrates GHG, biodiversity, water, social equity, and economic value
+        simultaneously at supply chain phase resolution. FOODCoST and PLAN'EAT (the two nearest Horizon-funded comparators)
+        operate at product or aggregate level. TVF is the missing layer between aggregate national statistics and product-level LCA.
+        This is not a marginal improvement on existing methods. It is a structural gap in the current analytical landscape.
+      </div>
+
+      <div class="diff-item">
+        <strong>The Shea Scope 3 Data Is a Commercial Product with a Captive Market</strong>
+        Every EU cosmetics and food company sourcing shea has a legal Scope 3 reporting obligation under CSRD.
+        The data they need to meet that obligation does not exist. The grant funds the generation.
+        Post-project, the revenue model is a direct fee-for-service offering to a market of companies that has no alternative source.
+        This is not a secondary commercial consideration. It is built into the proposal's exploitation strategy.
+      </div>
+
+      <div class="diff-item">
+        <strong>The N-D-C Framework Has Mathematical Validity, Not Just Descriptive Utility</strong>
+        For a legal audience, the key framing is this: the TVF sustainability metrics are not expert opinion.
+        They are derived from a mathematical structure grounded in the relationships between the first prime numbers,
+        which generates the fundamental constants (pi, phi, sqrt(2), e, ln2) as emergent properties.
+        This means the metrics are reproducible, auditable, and structurally defensible in a way that qualitative
+        sustainability frameworks are not. That matters for CRCF certification and Nature Credits legal integrity.
+      </div>
+
+      <div class="diff-item">
+        <strong>The Timing Is Structural, Not Coincidental</strong>
+        The CRCF carbon farming Delegated Acts for agriculture are being finalized in 2026.
+        The Nature Credits certification methodology is being designed now.
+        The project's M30 deliverable (D5.4: CRCF Methodology Input Document) is timed to feed directly into the Delegated Acts consultation.
+        Missing this window means waiting for the next regulatory revision cycle, which could be five or more years.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SECTION 6: RISK TABLE -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 6</span>
+      <h2>Risks and Prepared Answers</h2>
+    </div>
+    <div class="section-body">
+      <table>
+        <thead>
+          <tr>
+            <th>Risk</th>
+            <th>Lawyer's Concern</th>
+            <th>Prepared Answer</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Most consortium partners are TBC</td>
+            <td>Can the proposal score well on Implementation?</td>
+            <td>Impact Agri (Jon White) is the immediate April priority. Spanish partner is confirmable by May.
+                The WP structure is modular and partner-agnostic at proposal stage. Fall-back partners are named for each role.</td>
+          </tr>
+          <tr>
+            <td>West Africa field access (security situation in Burkina Faso)</td>
+            <td>Can deliverables be guaranteed?</td>
+            <td>Geographic diversification across Burkina Faso, Senegal, and Ghana. Remote data collection protocols built in.
+                Field activities led by local partner (Nitidæ or ISRA). No single-country dependency.</td>
+          </tr>
+          <tr>
+            <td>UK-based coordinator in post-Brexit landscape</td>
+            <td>Is there a legal eligibility risk?</td>
+            <td>UK is a confirmed Associated Country for Horizon Europe. The Spanish partner provides the required EU Member State anchor.
+                This is structurally resolved, not contingent on political decisions.</td>
+          </tr>
+          <tr>
+            <td>Phase-resolved methodology is novel and unvalidated for agriculture</td>
+            <td>Will EC evaluators accept an unproven methodology?</td>
+            <td>TVF has been developed and validated on the gold supply chain (Phases 0 to 7, geological origin to COMEX registration).
+                The agricultural extension is the research question; the methodology itself has a validated track record.</td>
+          </tr>
+          <tr>
+            <td>Competing projects (FOODCoST, PLAN'EAT)</td>
+            <td>Is there overlap that would count against the proposal?</td>
+            <td>These are aggregate or product-level tools. TVF is supply chain architecture level. The complementarity section
+                explicitly addresses this. WP1 includes harmonisation with TCA, SEEA, and IPBES as a formal deliverable (D1.2).</td>
+          </tr>
+          <tr>
+            <td>For-profit entity status (TVA, Impact Agri)</td>
+            <td>Does the 70% funding rate create a budget gap?</td>
+            <td>This needs to be resolved before the budget tables are finalized. If both are for-profit, the consortium structure
+                may need to shift subcontracting volumes or add a non-profit partner to carry a larger share of eligible costs.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="divider">Glossary</div>
+
+  <!-- SECTION 7: GLOSSARY -->
+  <div class="section">
+    <div class="section-header">
+      <span class="section-number">Section 7</span>
+      <h2>Acronyms and Terms — Quick Reference</h2>
+    </div>
+    <div class="section-body" style="padding:0;">
+
+      <div class="glossary-grid">
+
+        <!-- GROUP: EU Regulations and Policy Frameworks -->
+        <div class="gloss-group">
+          <div class="gloss-group-title">EU Regulations and Policy Frameworks</div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">CRCF</span>
+            <div class="gloss-def">
+              <strong>Carbon Removals and Carbon Farming Regulation (EU 2025/2358)</strong>
+              EU law adopted November 2025 establishing the first voluntary EU certification framework
+              for carbon removals from land and agriculture. Delegated Acts for carbon farming methodologies
+              are being finalized in 2026.
+              <div class="gloss-sig">Significance: TVF aims to contribute input to the carbon farming Delegated Acts at month 30 of the project (D5.4). This is the main regulatory hook for the proposal.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">CSRD</span>
+            <div class="gloss-def">
+              <strong>Corporate Sustainability Reporting Directive</strong>
+              EU directive requiring large companies to disclose environmental, social, and governance
+              data, including full Scope 1, 2, and 3 greenhouse gas emissions across their supply chains.
+              <div class="gloss-sig">Significance: EU cosmetics and food companies sourcing shea are legally required to report Scope 3 emissions. That data does not currently exist — TVF generates it, creating a direct commercial product.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">CAP</span>
+            <div class="gloss-def">
+              <strong>Common Agricultural Policy</strong>
+              The EU's primary agricultural subsidy and regulation framework, covering farm income support,
+              rural development, and environmental compliance for all EU member states. Currently under
+              revision for the post-2027 period.
+              <div class="gloss-sig">Significance: Project policy recommendations (WP5) are timed to feed into the 2027 CAP review cycle.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">EUDR</span>
+            <div class="gloss-def">
+              <strong>EU Deforestation Regulation</strong>
+              EU law requiring companies placing specific commodities (including soya, beef, palm oil,
+              cocoa, coffee, wood) on the EU market to prove they were not produced on deforested land
+              after December 2020.
+              <div class="gloss-sig">Significance: Argentine soya and beef — one of the three project commodity systems — are directly subject to EUDR compliance requirements. TVF provides the supply chain transparency tools needed.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">GDPR</span>
+            <div class="gloss-def">
+              <strong>General Data Protection Regulation</strong>
+              EU law governing collection, storage, and use of personal data. Applies to all EU-funded
+              projects including data collected in non-EU countries.
+              <div class="gloss-sig">Significance: Field research with shea cooperatives in West Africa triggers GDPR obligations for informed consent and data protection. This feeds directly into the Ethics Self-Assessment (D8.2).</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">EAA</span>
+            <div class="gloss-def">
+              <strong>Economic Accounts for Agriculture (EU Framework)</strong>
+              The Eurostat framework for measuring the economic performance of the agricultural sector
+              across EU member states, including income, production, and input costs.
+              <div class="gloss-sig">Significance: The call explicitly requires synergy with the EAA framework. TVF's natural capital accounts are designed for integration into EAA — and potential Eurostat institutional uptake is one of the two post-project exploitation routes.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GROUP: Horizon Europe Grant Mechanics -->
+        <div class="gloss-group">
+          <div class="gloss-group-title">Horizon Europe Grant Mechanics</div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">RIA</span>
+            <div class="gloss-def">
+              <strong>Research and Innovation Action</strong>
+              A Horizon Europe grant type focused on producing new knowledge and demonstrating feasibility
+              of new solutions. Distinct from Innovation Actions (closer-to-market) and Coordination and
+              Support Actions (policy/networking only).
+              <div class="gloss-sig">Significance: The call is an RIA, which means the project must include genuine research (methodology development and validation), not just deployment. This shapes how TVF must be presented: as a methodology being tested and proved, not a commercial tool being sold.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">WP1 – WP8</span>
+            <div class="gloss-def">
+              <strong>Work Packages 1 through 8</strong>
+              The structural divisions of the project's work plan. Each WP has a lead partner, a budget,
+              and a set of deliverables. WP1: Framework Development. WP2: Shea. WP3: Olive Oil.
+              WP4: Diversification. WP5: Policy. WP6: Digital Platform. WP7: Dissemination. WP8: Management.
+              <div class="gloss-sig">Significance: Evaluators score the Implementation section on WP structure. TBC leads for WP3 and WP5 are the two highest-risk gaps.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">M3, M12, M30</span>
+            <div class="gloss-def">
+              <strong>Month 3, Month 12, Month 30 of the project</strong>
+              Horizon Europe projects use M-notation to specify when deliverables are due, counting from
+              the grant start date. M3 = three months in; M30 = two and a half years in.
+              <div class="gloss-sig">Significance: D8.2 Ethics Self-Assessment is due M3. D1.2 Harmonised Natural Capital Accounting Methodology is due M12. D5.4 CRCF Methodology Input Document is due M30 — timed to influence the Delegated Acts consultation process.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">D1.2, D5.4, D8.2</span>
+            <div class="gloss-def">
+              <strong>Deliverable codes (WP number . deliverable sequence)</strong>
+              Each deliverable is coded by its work package and sequence number. D1.2 is the second
+              deliverable of WP1; D5.4 is the fourth deliverable of WP5; D8.2 is the second of WP8.
+              <div class="gloss-sig">Significance: These three are the most legally and strategically important deliverables cited in this briefing. They represent the ethics compliance obligation, the natural capital methodology, and the CRCF policy input respectively.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">TBC</span>
+            <div class="gloss-def">
+              <strong>To Be Confirmed</strong>
+              Designation for consortium partners that have been identified as targets but have not yet
+              formally agreed to participate.
+              <div class="gloss-sig">Significance: Most of the seven proposed consortium partners are currently TBC. This is the single biggest Implementation risk the lawyers will flag. Spanish and West Africa partners need letters of intent by June 2026.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">SSH</span>
+            <div class="gloss-def">
+              <strong>Social Sciences and Humanities</strong>
+              Horizon Europe explicitly requires proposals to integrate SSH disciplines. The project's
+              SSH partner (WP5, policy lead) covers agricultural economics, political economy, gender
+              studies, and development economics.
+              <div class="gloss-sig">Significance: The SSH partner is currently TBC. The call's SSH integration requirement is a formal scoring criterion; absence of a confirmed SSH partner weakens the Implementation score.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GROUP: Analytical Methodologies -->
+        <div class="gloss-group">
+          <div class="gloss-group-title">Analytical Methodologies</div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">TVF</span>
+            <div class="gloss-def">
+              <strong>True Value Framework</strong>
+              The proprietary analytical methodology developed by True Value Analytics. Maps supply chains
+              into discrete, measurable phases, each with a physical state, transformation, measurable output,
+              and transparency classification. Measures GHG, biodiversity, water, social equity, and economic
+              value simultaneously at phase resolution.
+              <div class="gloss-sig">Significance: TVF is the core IP being brought into the project as Background IP. The project's purpose is to develop and validate TVF for agricultural commodity systems.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">N-D-C</span>
+            <div class="gloss-def">
+              <strong>Negotiation – Definition – Contribution (Tholonic Framework)</strong>
+              The triadic mathematical structure underlying TVF. N = the stable operational state at a
+              given phase. D = the constraints and requirements defining what the phase is. C = the outputs
+              and flows defining what it does. Sustainability is measured by the D/C balance.
+              <div class="gloss-sig">Significance: N-D-C is the mathematical foundation that makes TVF metrics reproducible and auditable rather than expert-opinion-dependent. For lawyers: this is the basis for claiming legal defensibility of certification outputs under CRCF and Nature Credits.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">LCA</span>
+            <div class="gloss-def">
+              <strong>Life Cycle Assessment</strong>
+              A standardized methodology (ISO 14040/14044) for quantifying the environmental impacts of
+              a product across its full life cycle, from raw material extraction to disposal.
+              <div class="gloss-sig">Significance: LCA is the dominant existing tool for supply chain environmental accounting but operates at product level, not supply chain phase level. TVF is positioned as the missing architecture between LCA and aggregate national statistics.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">SEEA</span>
+            <div class="gloss-def">
+              <strong>System of Environmental-Economic Accounting</strong>
+              The UN statistical framework for integrating environmental data with economic accounts.
+              Adopted as international statistical standard in 2021. Covers ecosystem accounts, material
+              flows, and environmental transactions.
+              <div class="gloss-sig">Significance: TVF is designed to be compatible with SEEA, enabling its natural capital accounts to feed into national and international statistical systems.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">TCA</span>
+            <div class="gloss-def">
+              <strong>True Cost Accounting</strong>
+              An approach to economic analysis that attempts to include the hidden environmental, social,
+              and health costs (externalities) of food and agricultural production in cost calculations.
+              <div class="gloss-sig">Significance: TCA is the nearest existing methodological comparator to TVF. FOODCoST and PLAN'EAT are TCA-based Horizon-funded projects. TVF is distinguished from TCA by its supply chain phase resolution and N-D-C mathematical structure.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">IPBES</span>
+            <div class="gloss-def">
+              <strong>Intergovernmental Science-Policy Platform on Biodiversity and Ecosystem Services</strong>
+              The intergovernmental body that assesses the state of biodiversity and ecosystem services
+              globally, analogous to the IPCC for climate. Develops biodiversity valuation protocols.
+              <div class="gloss-sig">Significance: TVF's biodiversity accounting is designed to align with IPBES valuation protocols, making project outputs compatible with the leading international biodiversity science framework.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GROUP: GHG Accounting and Emissions -->
+        <div class="gloss-group">
+          <div class="gloss-group-title">GHG Accounting and Emissions</div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">GHG</span>
+            <div class="gloss-def">
+              <strong>Greenhouse Gas</strong>
+              Gases that trap heat in the atmosphere, including carbon dioxide (CO₂), methane (CH₄),
+              and nitrous oxide (N₂O). Measured in tonnes of CO₂ equivalent (tCO₂e).
+              <div class="gloss-sig">Significance: GHG accounting at supply chain phase resolution is one of the core methodological deliverables of the project, particularly for the shea supply chain.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">Scope 1</span>
+            <div class="gloss-def">
+              <strong>Direct Emissions (GHG Protocol)</strong>
+              Greenhouse gas emissions from sources owned or controlled directly by the reporting
+              organisation (e.g. factory combustion, company vehicle fleet).
+              <div class="gloss-sig">Significance: The easiest category to measure; required under CSRD but does not capture the supply chain problem.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">Scope 2</span>
+            <div class="gloss-def">
+              <strong>Indirect Energy Emissions (GHG Protocol)</strong>
+              Greenhouse gas emissions from the generation of purchased electricity, heat, or steam
+              consumed by the reporting organisation.
+              <div class="gloss-sig">Significance: Also required under CSRD; like Scope 1, this is measurable by existing tools and is not where the data gap lies.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">Scope 3</span>
+            <div class="gloss-def">
+              <strong>Value Chain Emissions (GHG Protocol)</strong>
+              All other indirect greenhouse gas emissions in a company's upstream and downstream value
+              chain — including purchased goods, transportation, processing by third parties, use of
+              products, and end-of-life treatment. Typically 70–90% of a company's total footprint.
+              <div class="gloss-sig">Significance: The critical data gap. EU cosmetics and food companies are legally required to report Scope 3 shea emissions under CSRD. Those emission factors do not exist. TVF generates them — creating both a scientific deliverable and a direct commercial product.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GROUP: International Initiatives and Organisations -->
+        <div class="gloss-group">
+          <div class="gloss-group-title">International Initiatives and Organisations</div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">GGW</span>
+            <div class="gloss-def">
+              <strong>Great Green Wall Initiative</strong>
+              An African Union-led initiative to restore 100 million hectares of degraded land across
+              the Sahel by 2030, sequester 250 million tonnes of carbon, and create 10 million green
+              jobs. Backed by $33 billion in international pledges (2021); approximately 2% of
+              restoration targets achieved as of 2025.
+              <div class="gloss-sig">Significance: The shea supply chain runs through the GGW corridor countries (Senegal, Burkina Faso, Mali, Ghana). TVF's shea analysis provides the value chain evidence base needed to unlock GGW-aligned financing, connecting the project to the AU-EU's flagship collaborative initiative.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">AU</span>
+            <div class="gloss-def">
+              <strong>African Union</strong>
+              The continental political body of 55 African member states. Co-sponsor of the Great Green
+              Wall Initiative and a key stakeholder for the project's West Africa shea work.
+              <div class="gloss-sig">Significance: AU-EU partnership alignment elevates the project's political profile beyond a standard Horizon RIA, providing visibility with both EC and African policy audiences.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">EC</span>
+            <div class="gloss-def">
+              <strong>European Commission</strong>
+              The executive body of the European Union, responsible for proposing legislation, implementing
+              decisions, and managing EU programmes including Horizon Europe. The funder of this grant.
+              <div class="gloss-sig">Significance: The EC is simultaneously the funder, the regulator writing the CRCF Delegated Acts, and a potential institutional customer for TVF outputs via Eurostat EAA integration.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">COMEX</span>
+            <div class="gloss-def">
+              <strong>Commodity Exchange (New York)</strong>
+              The primary exchange for gold futures and options in the United States, operated by CME
+              Group. In the TVF context, Phase 7 of the gold supply chain (the high-transparency anchor
+              against which earlier phases are validated).
+              <div class="gloss-sig">Significance: Cited in the briefing as evidence that TVF has already been developed and validated on a complete supply chain (gold, Phases 0–7). COMEX registration is the end-point of that chain.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">IFAPA</span>
+            <div class="gloss-def">
+              <strong>Instituto de Investigación y Formación Agraria y Pesquera</strong>
+              The Andalusian regional government's agricultural and fisheries research institute. One of
+              the named candidate Spanish partners for WP3.
+              <div class="gloss-sig">Significance: IFAPA provides scientific credibility and an EU Member State anchor. Cooperativas Agro-alimentarias de España is the alternative, providing stronger multi-actor and cooperative-sector credentials.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">ISRA</span>
+            <div class="gloss-def">
+              <strong>Institut Sénégalais de Recherches Agricoles</strong>
+              Senegal's national agricultural research institute. Named as a candidate West Africa
+              research partner for the shea field work in WP2.
+              <div class="gloss-sig">Significance: Provides in-country scientific credibility and established cooperative relationships in Senegal, one of the primary shea production zones.</div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- GROUP: Existing Horizon-Funded Comparators -->
+        <div class="gloss-group">
+          <div class="gloss-group-title">Existing Horizon-Funded Comparator Projects</div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">FOODCoST</span>
+            <div class="gloss-def">
+              <strong>FOOD Costing and Internalisation of Externalities for System Transition</strong>
+              A Horizon Europe-funded project developing approaches and databases to calculate the value
+              of environmental, health, and social externalities across food value chains. Provides a
+              toolbox to assess sustainability impacts.
+              <div class="gloss-sig">Significance: The nearest existing comparator to TVF. Key distinction: FOODCoST operates at product or aggregate level; TVF operates at supply chain phase resolution. The complementarity section of the proposal explicitly addresses this distinction.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">PLAN'EAT</span>
+            <div class="gloss-def">
+              <strong>Horizon Europe project on sustainable dietary patterns (Sept 2022 – Aug 2026)</strong>
+              A 24-partner Horizon project applying True Cost Accounting to European diets, developing a
+              database of true costs for 2,000+ food products and assessing environmental, socio-economic,
+              and health impacts.
+              <div class="gloss-sig">Significance: Second nearest comparator. Like FOODCoST, operates at aggregate and product level, not supply chain phase level. TVF is the missing architecture between these aggregate tools and product-level LCA.</div>
+            </div>
+          </div>
+
+          <div class="gloss-entry">
+            <span class="gloss-term">ROBIN</span>
+            <div class="gloss-def">
+              <strong>Driving Sustainability: Circular Bioeconomy and Governance in Andalusia</strong>
+              An ongoing Horizon Europe project focused on circular bioeconomy governance in the
+              Andalusian region of Spain.
+              <div class="gloss-sig">Significance: Identified as a direct complementarity partner for WP3 (olive oil). ROBIN's findings on Andalusian governance will inform the cooperative business model innovation work. A joint workshop is proposed.</div>
+            </div>
+          </div>
+
+        </div>
+
+      </div><!-- end glossary-grid -->
+    </div>
+  </div>
+
+  <!-- FOOTER NOTE -->
+  <div style="text-align:center;font-family:ui-sans-serif,system-ui,sans-serif;font-size:12px;color:#94a3b8;margin-top:32px;padding-top:20px;border-top:1px solid #e2e8f0;">
+    TrueValue Analytics · TrueVal-Chains · HORIZON-CL6-2026-01-CIRCBIO-09 · Briefing prepared 5 May 2026 · Confidential Draft
+  </div>
+
+</div>
+
+<script>
+/* Highlight any section that is clicked for quick navigation reference */
+document.querySelectorAll('.section').forEach(function(s){
+  s.addEventListener('click', function(){
+    document.querySelectorAll('.section').forEach(function(x){ x.style.outline=''; });
+    s.style.outline='2px solid #2563eb';
+  });
+});
+</script>
+
+</body>
+</html>

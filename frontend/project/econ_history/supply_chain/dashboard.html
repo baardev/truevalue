@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paradigm Chain — N-D-C Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117;
+    color: #c9d1d9;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { margin-bottom: 22px; }
+  .kicker {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+    color: #ffd600; margin-bottom: 8px;
+  }
+  h1 { font-size: 28px; font-weight: 300; color: #fff; margin-bottom: 6px; }
+  .subtitle { font-size: 13px; color: #8b949e; line-height: 1.6; max-width: 700px; }
+  .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #161b22; border-radius: 10px; padding: 16px; border-top: 2px solid #283593; }
+  .kpi-value { font-size: 28px; font-weight: 700; color: #7986cb; }
+  .kpi-label { font-size: 11px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+  .alert {
+    background: #1c1100;
+    border-left: 4px solid #f9a825;
+    border-radius: 0 8px 8px 0;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #d4a72c;
+    line-height: 1.6;
+  }
+  .alert strong { color: #ffd600; }
+  .section { background: #161b22; border-radius: 12px; padding: 22px; margin-bottom: 20px; }
+  .section-title {
+    font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+    color: #7986cb; margin-bottom: 16px; border-bottom: 1px solid #21262d; padding-bottom: 10px;
+  }
+  .phase-row { margin-bottom: 14px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+  .phase-name { font-size: 13px; font-weight: 600; color: #e6edf3; }
+  .phase-epoch { font-size: 11px; color: #8b949e; }
+  .phase-score { font-size: 12px; font-weight: 700; }
+  .phase-score.coherent { color: #56d364; }
+  .phase-score.stressed { color: #f78166; }
+  .bar-track { height: 8px; background: #21262d; border-radius: 4px; position: relative; }
+  .bar-d { height: 8px; border-radius: 4px 0 0 4px; background: #5c6bc0; position: absolute; top: 0; left: 0; }
+  .bar-c { height: 8px; border-radius: 0 4px 4px 0; background: #66bb6a; position: absolute; top: 0; }
+  .bar-labels { display: flex; justify-content: space-between; font-size: 10px; color: #8b949e; margin-top: 3px; }
+  .badge-row { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+  .badge {
+    font-size: 10px; padding: 2px 8px; border-radius: 10px; font-weight: 600;
+  }
+  .badge.coherent { background: rgba(46, 125, 50, 0.25); color: #56d364; }
+  .badge.stressed { background: rgba(230, 81, 0, 0.2); color: #f78166; }
+  .badge.low { background: rgba(97, 97, 97, 0.3); color: #adb5bd; }
+  .badge.medium { background: rgba(30, 100, 200, 0.2); color: #79b8ff; }
+  .badge.high { background: rgba(46, 125, 50, 0.2); color: #56d364; }
+  .phase-detail { font-size: 11px; color: #8b949e; margin-top: 4px; line-height: 1.5; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  canvas { display: block; width: 100%; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { text-align: left; color: #8b949e; font-weight: 600; padding: 8px 10px; border-bottom: 1px solid #21262d; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+  td { padding: 8px 10px; border-bottom: 1px solid #21262d; color: #c9d1d9; vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+  .nav-bar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+  .nav-link { color: #8b949e; text-decoration: none; font-size: 12px; padding: 6px 12px; border-radius: 6px; border: 1px solid #21262d; transition: background 0.15s; }
+  .nav-link:hover { background: #21262d; color: #c9d1d9; }
+  @media (max-width: 700px) { .kpi-strip { grid-template-columns: 1fr 1fr; } .grid-2 { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="kicker">Tholonic Framework · History of Economic Thought</div>
+    <h1>Paradigm Chain — N-D-C Dashboard</h1>
+    <p class="subtitle">
+      D (constraints), C (outputs), and N (emergent intellectual equilibrium) for each of the 10 paradigm epochs.
+      Chain avg balance 81.1%. Peak N = 241 (Keynesian Macro, Phase 6). Three epochs stressed below 80%.
+    </p>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi"><div class="kpi-value">81.1%</div><div class="kpi-label">Chain Avg Balance</div></div>
+    <div class="kpi"><div class="kpi-value">196</div><div class="kpi-label">Avg N</div></div>
+    <div class="kpi"><div class="kpi-value">Phase 6</div><div class="kpi-label">Peak Epoch (N=241)</div></div>
+    <div class="kpi"><div class="kpi-value">Phase 9</div><div class="kpi-label">Bottleneck (74%)</div></div>
+  </div>
+
+  <div class="alert">
+    <strong>Bottleneck: Phase 9 — Post-Crisis Fragmentation.</strong>
+    Structural cause: D constraints from the neoliberal epoch (efficient market hypothesis, DSGE models, capital mobility doctrine)
+    were falsified by the 2008 crisis but have not been replaced. C outputs are proliferating without a binding D framework.
+    No child N has stabilized. This is a structural constraint failure, not a policy failure.
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase D-C-N Balance Bars</div>
+    <div id="phase-bars"></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="section">
+      <div class="section-title">Five-Model Coherence</div>
+      <canvas id="pentagon" width="320" height="260"></canvas>
+    </div>
+    <div class="section">
+      <div class="section-title">N Trajectory</div>
+      <canvas id="trajectory" width="320" height="260"></canvas>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Phase Detail Table</div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Epoch</th>
+          <th>Period</th>
+          <th>D</th>
+          <th>C</th>
+          <th>Balance</th>
+          <th>N</th>
+          <th>Sustainability</th>
+          <th>Transparency</th>
+        </tr>
+      </thead>
+      <tbody id="phase-table"></tbody>
+    </table>
+  </div>
+
+  <div class="nav-bar">
+    <a class="nav-link" href="../index.html">Hub</a>
+    <a class="nav-link" href="project_context.html">Historical Context</a>
+    <a class="nav-link" href="system_lifecycle.html">Lifecycle View</a>
+    <a class="nav-link" href="../../index.html">Homepage</a>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  { id:0, name:"Ancient Exchange", epoch:"pre-3000 – 600 BCE", balance:66, N:146, D:280, C:175, sust:0.009, zone:"stressed", transparency:"Low", custodian:"Temple priests" },
+  { id:1, name:"Classical Antiquity", epoch:"600 BCE – 400 CE", balance:72, N:164, D:260, C:200, sust:0.028, zone:"stressed", transparency:"Low-Medium", custodian:"State mints" },
+  { id:2, name:"Medieval Commercial Revolution", epoch:"500 – 1500 CE", balance:81, N:200, D:270, C:225, sust:0.049, zone:"coherent", transparency:"Medium", custodian:"Merchant guilds" },
+  { id:3, name:"Mercantilism and State Finance", epoch:"1500 – 1776", balance:82, N:201, D:255, C:235, sust:0.244, zone:"coherent", transparency:"Medium", custodian:"Trading companies" },
+  { id:4, name:"Classical Political Economy", epoch:"1776 – 1871", balance:88, N:209, D:230, C:245, sust:0.426, zone:"coherent", transparency:"High", custodian:"Universities" },
+  { id:5, name:"Marginalist Revolution", epoch:"1871 – 1929", balance:87, N:204, D:220, C:250, sust:0.110, zone:"coherent", transparency:"High", custodian:"Econ departments" },
+  { id:6, name:"Keynesian Macro", epoch:"1929 – 1973", balance:91, N:241, D:260, C:270, sust:0.909, zone:"coherent", transparency:"High", custodian:"Central banks / govt" },
+  { id:7, name:"Monetarism and Stagflation Response", epoch:"1970 – 1990", balance:86, N:217, D:250, C:255, sust:2.857, zone:"coherent", transparency:"High", custodian:"Central banks" },
+  { id:8, name:"Neoliberal Consolidation", epoch:"1990 – 2008", balance:84, N:210, D:235, C:265, sust:0.110, zone:"coherent", transparency:"High", custodian:"IMF / World Bank" },
+  { id:9, name:"Post-Crisis Fragmentation", epoch:"2008 – present", balance:74, N:168, D:210, C:245, sust:0.081, zone:"stressed", transparency:"Medium", custodian:"Distributed" }
+];
+
+// Phase bars
+const barsDiv = document.getElementById('phase-bars');
+const maxDC = 300;
+PHASES.forEach(p => {
+  const pct_D = (p.D / maxDC * 100).toFixed(0);
+  const pct_C = (p.C / maxDC * 100).toFixed(0);
+  barsDiv.innerHTML += `
+    <div class="phase-row">
+      <div class="phase-header">
+        <div>
+          <span class="phase-name">${p.id}. ${p.name}</span>
+          <span class="phase-epoch"> · ${p.epoch}</span>
+        </div>
+        <span class="phase-score ${p.zone}">${p.balance}% · N=${p.N}</span>
+      </div>
+      <div class="bar-track" style="height:10px">
+        <div class="bar-d" style="width:${pct_D}%; opacity:0.85"></div>
+        <div class="bar-c" style="left:${pct_D}%; width:${Math.abs(pct_C - pct_D)}%; opacity:0.8"></div>
+      </div>
+      <div class="bar-labels">
+        <span style="color:#5c6bc0">D=${p.D}</span>
+        <span style="color:#66bb6a">C=${p.C}</span>
+        <span>|D-C|=${Math.abs(p.D-p.C)}</span>
+      </div>
+      <div class="badge-row">
+        <span class="badge ${p.zone}">${p.zone.charAt(0).toUpperCase()+p.zone.slice(1)}</span>
+        <span class="badge ${p.transparency.toLowerCase().replace('-','').split(' ')[0]}">${p.transparency} transparency</span>
+        <span class="badge medium">Sust: ${p.sust.toFixed(3)}</span>
+        <span class="badge low">${p.custodian}</span>
+      </div>
+    </div>`;
+});
+
+// Phase table
+const tbody = document.getElementById('phase-table');
+PHASES.forEach(p => {
+  const tr = document.createElement('tr');
+  tr.innerHTML = `
+    <td>${p.id}</td>
+    <td style="font-weight:600">${p.name}</td>
+    <td style="color:#8b949e;font-size:11px">${p.epoch}</td>
+    <td style="color:#5c6bc0;font-weight:600">${p.D}</td>
+    <td style="color:#66bb6a;font-weight:600">${p.C}</td>
+    <td><span style="font-weight:700;color:${p.zone==='coherent'?'#56d364':'#f78166'}">${p.balance}%</span></td>
+    <td style="font-weight:700">${p.N}</td>
+    <td style="font-size:11px;color:#8b949e">${p.sust.toFixed(3)}</td>
+    <td><span class="badge ${p.transparency.toLowerCase().replace('-medium','').replace('-','')}">${p.transparency}</span></td>`;
+  tbody.appendChild(tr);
+});
+
+// Pentagon (five-model coherence)
+(function() {
+  const canvas = document.getElementById('pentagon');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#0d1117'; ctx.fillRect(0, 0, W, H);
+  const labels = ['π\n81.1', 'φ\n79.2', '√2\n82.5', 'ln2\n77.3', 'e\n—'];
+  const scores = [81.1, 79.2, 82.5, 77.3, 0];
+  const n = 5, cx = W/2, cy = H/2 + 5;
+  const maxR = Math.min(W,H)/2 - 40;
+  const angle = i => (i/n)*2*Math.PI - Math.PI/2;
+  const pt = (i, r) => ({ x: cx + r*Math.cos(angle(i)), y: cy + r*Math.sin(angle(i)) });
+
+  // Grid
+  [25,50,75,100].forEach(pct => {
+    ctx.strokeStyle = '#21262d'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i=0;i<n;i++) { const p=pt(i,maxR*pct/100); i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); }
+    ctx.closePath(); ctx.stroke();
+  });
+  for (let i=0;i<n;i++) { const p=pt(i,maxR); ctx.beginPath(); ctx.moveTo(cx,cy); ctx.lineTo(p.x,p.y); ctx.strokeStyle='#21262d'; ctx.stroke(); }
+
+  // Fill
+  ctx.beginPath();
+  scores.forEach((s,i) => { const r=maxR*(s||0)/100; const p=pt(i,r); i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y); });
+  ctx.closePath();
+  ctx.fillStyle='rgba(121,134,203,0.2)'; ctx.fill();
+  ctx.strokeStyle='#7986cb'; ctx.lineWidth=2; ctx.stroke();
+
+  // Labels
+  labels.forEach((l,i) => {
+    const p = pt(i, maxR+28);
+    ctx.fillStyle='#c9d1d9'; ctx.font='bold 10px sans-serif'; ctx.textAlign='center';
+    l.split('\n').forEach((line, li) => ctx.fillText(line, p.x, p.y + li*12 - 6));
+  });
+})();
+
+// Trajectory
+(function() {
+  const canvas = document.getElementById('trajectory');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#0d1117'; ctx.fillRect(0,0,W,H);
+  const pad = {top:18, right:16, bottom:44, left:40};
+  const cW = W-pad.left-pad.right, cH = H-pad.top-pad.bottom;
+  const minN=100, maxN=260;
+
+  // Grid
+  [130,160,190,220,250].forEach(v => {
+    const y = pad.top + cH - (v-minN)/(maxN-minN)*cH;
+    ctx.strokeStyle='#21262d'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad.left,y); ctx.lineTo(pad.left+cW,y); ctx.stroke();
+    ctx.fillStyle='#8b949e'; ctx.font='9px sans-serif'; ctx.textAlign='right';
+    ctx.fillText(v, pad.left-5, y+3);
+  });
+
+  // Line
+  ctx.beginPath();
+  PHASES.forEach((p,i) => {
+    const x = pad.left + (i/(PHASES.length-1))*cW;
+    const y = pad.top + cH - (p.N-minN)/(maxN-minN)*cH;
+    i===0 ? ctx.moveTo(x,y) : ctx.lineTo(x,y);
+  });
+  ctx.strokeStyle='#7986cb'; ctx.lineWidth=2.5; ctx.stroke();
+
+  // Dots
+  PHASES.forEach((p,i) => {
+    const x = pad.left + (i/(PHASES.length-1))*cW;
+    const y = pad.top + cH - (p.N-minN)/(maxN-minN)*cH;
+    ctx.beginPath(); ctx.arc(x,y,4,0,2*Math.PI);
+    ctx.fillStyle = p.zone==='coherent' ? '#56d364' : '#f78166'; ctx.fill();
+    ctx.fillStyle='#8b949e'; ctx.font='9px sans-serif'; ctx.textAlign='center';
+    ctx.fillText(p.id, x, pad.top+cH+14);
+  });
+
+  ctx.fillStyle='#8b949e'; ctx.font='10px sans-serif'; ctx.textAlign='center';
+  ctx.fillText('Epoch', pad.left+cW/2, H-6);
+})();
+</script>
+</body>
+</html>

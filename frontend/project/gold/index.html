@@ -344,7 +344,7 @@
         Where D and C are far apart, the phase is under stress. Where N sits close to both, the phase is in healthy equilibrium.
       </p>
 <div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
-<canvas height="700" id="ndc-radar-gold" style="max-width:100%;flex-shrink:0;" width="700"></canvas>
+<canvas height="760" id="ndc-radar-gold" style="max-width:100%;flex-shrink:0;" width="900"></canvas>
 <div id="ndc-radar-info-gold" style="font-size:13px;color:#495057;min-width:180px;max-width:260px;flex-shrink:0;"></div>
 </div>
 <div id="ndc-radar-interp-gold" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:800px;border-left:3px solid #c9922a;"></div>
@@ -385,7 +385,7 @@
 
           var canvas=document.getElementById('ndc-radar-gold');
           var ctx=canvas.getContext('2d');
-          var W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,R=Math.min(W,H)*0.35,labelR=R+46;
+          var W=canvas.width,H=canvas.height,cx=W/2,cy=H/2,R=Math.min(W,H)*0.30,labelR=R+58;
           var Npts=ids.length,minV=80,maxV=310;
           function ang(i){return (2*Math.PI*i/Npts)-Math.PI/2;}
           function pt2(i,v){var frac=Math.max(0,Math.min(1,(v-minV)/(maxV-minV)));return{x:cx+R*frac*Math.cos(ang(i)),y:cy+R*frac*Math.sin(ang(i))};}
@@ -534,193 +534,68 @@
 </div>
 <div id="balance-radar-interp-gold" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:800px;border-left:3px solid #c9922a;"></div>
 </div>
+<script src="/frontend/project/shared/phi_balance_radar.js"></script>
 <script>
 (function(){
-  var DATA_URL='/frontend/project/gold/data/processed/gold_supply_chain_ui.json';
-  var ENTITY='synthetic';
-  fetch(DATA_URL).then(function(r){return r.json();}).catch(function(){return null;})
-  .then(function(data){
-    if(!data) return;
-    var rawPhases=(data.phases||{})[ENTITY]||{};
-    var phaseMeta=data.phase_meta||{};
-    var ids=Object.keys(rawPhases).filter(function(k){return /^\d+$/.test(k);}).sort(function(a,b){return +a-+b;});
-    if(ids.length<3) return;
-
-    var labels=ids.map(function(id){
-      var m=phaseMeta[id];
-      var name=(m&&m.name)?m.name:((rawPhases[id]&&rawPhases[id].name)?rawPhases[id].name:'');
-      if(name.length>16) name=name.slice(0,15)+'…';
-      return name?('Ph\u202f'+id+'\n'+name):('Phase '+id);
-    });
-    var Bvals=ids.map(function(id){return +(rawPhases[id].balance||0);});
-    var ZONE_COLORS={coherent:'#3ecf8e',stressed:'#f5a623',failure:'#ef5350',breakdown:'#b71c1c'};
-    var ZONE_ABBREV={coherent:'C',stressed:'S',failure:'F',breakdown:'B'};
-    var zoneKeys=ids.map(function(id){return rawPhases[id].balance_zone||'coherent';});
-    var zoneCols=zoneKeys.map(function(z){return ZONE_COLORS[z]||'#8b949e';});
-    var zoneAbbr=zoneKeys.map(function(z){return ZONE_ABBREV[z]||'?';});
-
-    var canvas=document.getElementById('balance-radar-gold');
-    var ctx=canvas.getContext('2d');
-    var W=canvas.width, H=canvas.height, cx=W/2, cy=H/2;
-    var R=Math.min(W,H)*0.27, labelR=R+56;
-    var Npts=ids.length;
-    var minV=0, maxV=100;
-
-    function ang(i){return (2*Math.PI*i/Npts)-Math.PI/2;}
-    function pt(i,v){
-      var frac=Math.max(0,Math.min(1,(v-minV)/(maxV-minV)));
-      return {x:cx+R*frac*Math.cos(ang(i)), y:cy+R*frac*Math.sin(ang(i))};
-    }
-    function polyPath(frac){
-      ctx.beginPath();
-      for(var i=0;i<Npts;i++){
-        var x=cx+R*frac*Math.cos(ang(i)), y=cy+R*frac*Math.sin(ang(i));
-        i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);
-      }
-      ctx.closePath();
-    }
-
-    // Dark background
-    ctx.clearRect(0,0,W,H);
-    ctx.fillStyle='#0d1117'; ctx.fillRect(0,0,W,H);
-
-    // PHI zone background fills (outermost first so innermost paints on top)
-    var zones=[
-      {v:100,  fill:'rgba(62,207,142,0.06)'},   // coherent  ≥80
-      {v:80,   fill:'rgba(245,166,35,0.10)'},    // stressed  61.8–80
-      {v:61.8, fill:'rgba(239,83,80,0.14)'},     // failure   38.2–61.8
-      {v:38.2, fill:'rgba(183,28,28,0.22)'},     // breakdown <38.2
-    ];
-    zones.forEach(function(z){
-      polyPath(z.v/100);
-      ctx.fillStyle=z.fill; ctx.fill();
-    });
-
-    // PHI threshold rings with labels
-    var thresholds=[
-      {v:80,   col:'#3ecf8e', label:'80% — Coherent floor'},
-      {v:61.8, col:'#f5a623', label:'61.8% — φ⁻¹ Sustainability floor'},
-      {v:38.2, col:'#ef5350', label:'38.2% — Breakdown threshold'},
-    ];
-    thresholds.forEach(function(t){
-      polyPath(t.v/100);
-      ctx.strokeStyle=t.col; ctx.lineWidth=1.4; ctx.globalAlpha=0.8; ctx.stroke(); ctx.globalAlpha=1;
-      // Tick label at top spoke
-      var lx=cx, ly=cy-R*(t.v/100)-6;
-      ctx.font='9px ui-sans-serif,system-ui,sans-serif';
-      ctx.fillStyle=t.col; ctx.textAlign='center';
-      ctx.fillText(t.v+'%', lx, ly);
-    });
-
-    // Light grid rings at 20%, 40%, 60%, 100%
-    [20,40,60,100].forEach(function(gv){
-      polyPath(gv/100);
-      ctx.strokeStyle='rgba(255,255,255,0.07)'; ctx.lineWidth=0.8; ctx.stroke();
-    });
-
-    // Spokes
-    for(var i=0;i<Npts;i++){
-      ctx.beginPath(); ctx.moveTo(cx,cy);
-      ctx.lineTo(cx+R*Math.cos(ang(i)), cy+R*Math.sin(ang(i)));
-      ctx.strokeStyle='rgba(255,255,255,0.08)'; ctx.lineWidth=1; ctx.stroke();
-    }
-
-    // Balance polygon — filled and stroked with per-point zone gradient approach
-    // Single fill with neutral, then individual segment coloring would be complex;
-    // use a uniform fill and per-point zone dots instead.
-    ctx.beginPath();
-    ids.forEach(function(id,i){var p=pt(i,Bvals[i]); i===0?ctx.moveTo(p.x,p.y):ctx.lineTo(p.x,p.y);});
-    ctx.closePath();
-    ctx.globalAlpha=0.25; ctx.fillStyle='#4fc3f7'; ctx.fill(); ctx.globalAlpha=1;
-
-    // Draw each segment in its zone colour
-    ids.forEach(function(id,i){
-      var next=(i+1)%Npts;
-      var p1=pt(i,Bvals[i]), p2=pt(next,Bvals[next]);
-      ctx.beginPath(); ctx.moveTo(p1.x,p1.y); ctx.lineTo(p2.x,p2.y);
-      ctx.strokeStyle=zoneCols[i]; ctx.lineWidth=2.5; ctx.stroke();
-    });
-
-    // Per-phase dots + zone badge
-    ids.forEach(function(id,i){
-      var p=pt(i,Bvals[i]);
-      ctx.beginPath(); ctx.arc(p.x,p.y,5,0,2*Math.PI);
-      ctx.fillStyle=zoneCols[i]; ctx.globalAlpha=0.95; ctx.fill(); ctx.globalAlpha=1;
-    });
-
-    // Zone badge on outer spoke end
-    ids.forEach(function(id,i){
-      var spx=cx+R*Math.cos(ang(i)), spy=cy+R*Math.sin(ang(i));
-      ctx.beginPath(); ctx.arc(spx,spy,5.5,0,2*Math.PI);
-      ctx.fillStyle=zoneCols[i]; ctx.globalAlpha=0.85; ctx.fill(); ctx.globalAlpha=1;
-      ctx.font='bold 7px ui-sans-serif,system-ui,sans-serif';
-      ctx.textAlign='center'; ctx.fillStyle='#0d1117';
-      ctx.fillText(zoneAbbr[i],spx,spy+2.5);
-    });
-
-    // Axis labels
-    ids.forEach(function(id,i){
-      var a=ang(i), lx=cx+labelR*Math.cos(a), ly=cy+labelR*Math.sin(a);
-      var lines=labels[i].split('\n');
-      var align='center';
-      if(Math.cos(a)>0.25) align='left';
-      if(Math.cos(a)<-0.25) align='right';
-      ctx.textAlign=align;
-      var lineH=13, startY=ly-(lines.length*lineH)/2+lineH/2;
-      lines.forEach(function(line,li){
-        if(li===0){ctx.fillStyle=zoneCols[i]; ctx.font='bold 11px ui-sans-serif,system-ui,sans-serif';}
-        else{ctx.fillStyle='#8b949e'; ctx.font='10px ui-sans-serif,system-ui,sans-serif';}
-        ctx.fillText(line,lx,startY+li*lineH);
-      });
-    });
-
-    ctx.beginPath(); ctx.arc(cx,cy,3,0,2*Math.PI);
-    ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.fill();
-
-    // Info panel
-    var zoneCounts={coherent:0,stressed:0,failure:0,breakdown:0};
-    zoneKeys.forEach(function(z){if(zoneCounts[z]!==undefined)zoneCounts[z]++;});
-    var avgB=(Bvals.reduce(function(a,b){return a+b;},0)/Bvals.length).toFixed(1);
-    var minBi=Bvals.indexOf(Math.min.apply(null,Bvals));
-    var maxBi=Bvals.indexOf(Math.max.apply(null,Bvals));
-
-    document.getElementById('balance-radar-info-gold').innerHTML=
-      '<div style="background:#f0f2f5;border-radius:8px;padding:12px 14px;font-size:12px;margin-bottom:14px;">'+
-      '<div style="font-weight:700;color:#111;margin-bottom:6px;font-size:13px;">Balance Summary</div>'+
-      '<div>Chain avg: <b>'+avgB+'%</b></div>'+
-      '<div>Highest: <b>'+Math.max.apply(null,Bvals).toFixed(1)+'%</b> (Ph\u202f'+ids[maxBi]+')</div>'+
-      '<div>Lowest: <b>'+Math.min.apply(null,Bvals).toFixed(1)+'%</b> (Ph\u202f'+ids[minBi]+')</div>'+
-      '</div>'+
-      '<div style="background:#f0f2f5;border-radius:8px;padding:12px 14px;font-size:11.5px;">'+
-      '<div style="font-weight:700;color:#111;margin-bottom:8px;font-size:13px;">PHI Zone Key</div>'+
-      '<table style="border-collapse:collapse;width:100%;font-size:11px;line-height:1.5;">'+
-      '<thead><tr style="border-bottom:1px solid #d0d0d0;">'+
-      '<th style="text-align:left;padding:0 4px 4px 0;color:#666;font-weight:600;">Zone</th>'+
-      '<th style="text-align:right;padding:0 4px 4px;color:#666;font-weight:600;">Balance</th>'+
-      '<th style="text-align:right;padding:0 0 4px 4px;color:#666;font-weight:600;">D/C</th>'+
-      '</tr></thead><tbody>'+
-      '<tr><td style="padding:4px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3ecf8e;"></span><b style="color:#3ecf8e;">C</b> Coherent <b>('+zoneCounts.coherent+')</b></span></td><td style="text-align:right;white-space:nowrap;padding:4px 4px 3px;">≥ 80%</td><td style="text-align:right;white-space:nowrap;padding:4px 0 3px 4px;">≤ 1.50</td></tr>'+
-      '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f5a623;"></span><b style="color:#f5a623;">S</b> Stressed <b>('+zoneCounts.stressed+')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px;">61.8–80%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 3px 4px;">1.50–\u03c6 (2.24)</td></tr>'+
-      '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef5350;"></span><b style="color:#ef5350;">F</b> Failure <b>('+zoneCounts.failure+')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px;">38.2–61.8%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 3px 4px;">\u03c6\u2013\u03c6\u00b2 (2.24\u20134.24)</td></tr>'+
-      '<tr><td style="padding:3px 4px 0 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#b71c1c;"></span><b style="color:#b71c1c;">B</b> Breakdown <b>('+zoneCounts.breakdown+')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px 0;">&lt; 38.2%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 0 4px;">&gt; \u03c6\u00b2 (4.24)</td></tr>'+
-      '</tbody></table>'+
-      '<div style="margin-top:8px;font-size:10.5px;color:#666;">Polygon edge color follows each phase\'s zone. Rings mark PHI thresholds.</div>'+
-      '</div>';
-
-    // Interpretation
-    var stressed2=ids.filter(function(id,i){return zoneKeys[i]==='stressed';});
-    var failure2=ids.filter(function(id,i){return zoneKeys[i]==='failure';});
-    var breakdown2=ids.filter(function(id,i){return zoneKeys[i]==='breakdown';});
-    var interp=[];
-    interp.push('<strong>Reading this chart:</strong> Unlike the D/C/N radar, this chart plots only the balance score per phase on a 0–100% axis. The three coloured rings are structural thresholds derived from the golden ratio φ, not arbitrary engineering benchmarks. A phase\'s position relative to the rings shows whether it is coherent, stressed, in failure, or in breakdown.');
-    if(stressed2.length) interp.push('<strong>Stressed phases (amber, '+stressed2.join(', ')+'):</strong> Above the 61.8% φ⁻¹ floor but below 80%. These phases are self-sustaining. The imbalance is real but correctable from within the system.');
-    if(failure2.length) interp.push('<strong>Failure-zone phases (red, '+failure2.join(', ')+'):</strong> Below the 61.8% sustainability floor. The constraint apparatus exceeds contribution by more than φ:1. Cost is being exported to external parties; internal actors have no economic incentive to close the gap.');
-    if(breakdown2.length) interp.push('<strong>Breakdown phases (dark red, '+breakdown2.join(', ')+'):</strong> Below 38.2%. Constraint dominates contribution by more than φ²:1. Structural collapse condition.');
-    if(!stressed2.length&&!failure2.length&&!breakdown2.length) interp.push('<strong>All phases coherent:</strong> Every phase sits above the 80% floor. The chain is structurally healthy across all phases.');
-    document.getElementById('balance-radar-interp-gold').innerHTML=interp.join('<br><br>');
+  if(typeof renderPhiBalanceRadar!=='function')return;
+  renderPhiBalanceRadar({
+    dataUrl:'/frontend/project/gold/data/processed/gold_supply_chain_ui.json',
+    idSuffix:'gold',
+    entity:'synthetic',
+    borderColor:'#c9922a'
   });
 })();
 </script>
+
+<div style="margin-top:28px;max-width:920px;margin-left:auto;margin-right:auto;background:#fdfcf8;border-radius:10px;border:1px solid #ece8e0;overflow:hidden;">
+  <div style="padding:18px 24px 14px;border-bottom:1px solid #ece8e0;display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#a67c1a;margin-bottom:4px;">N·D·C Analysis Engines</div>
+      <p style="font-size:12px;color:#6c757d;line-height:1.5;max-width:640px;">
+        Numerical output from <code style="font-size:11px;">src/simulation/*_engine.py</code>, exported by
+        <code style="font-size:11px;">scripts/export_model_engine_reports_json.py</code>.
+        Engine tests show raw tables; dashboards show visual representations.
+      </p>
+    </div>
+    <a href="/frontend/project/shared/model_engine_test.html" style="font-size:12px;font-weight:700;color:#a67c1a;text-decoration:none;white-space:nowrap;padding:7px 14px;border-radius:7px;background:#fff8e7;border:1px solid #e6cf8b;">All five models →</a>
+  </div>
+  <table style="width:100%;border-collapse:collapse;font-size:13px;">
+    <thead>
+      <tr style="background:#f7f4ee;">
+        <th style="text-align:left;padding:9px 16px 9px 20px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#8a7a5a;width:120px;">Model</th>
+        <th style="text-align:left;padding:9px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#8a7a5a;">Dimension</th>
+        <th style="text-align:left;padding:9px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#8a7a5a;width:160px;">Engine test</th>
+        <th style="text-align:left;padding:9px 20px 9px 16px;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.07em;color:#8a7a5a;width:180px;">Dashboard</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-top:1px solid #ece8e0;">
+        <td style="padding:11px 16px 11px 20px;"><span style="font-size:18px;font-weight:900;color:#3949ab;">π</span> <span style="font-size:11px;color:#6c757d;font-weight:600;">pi</span></td>
+        <td style="padding:11px 16px;font-size:12px;color:#495057;">Per-phase D–C operational balance</td>
+        <td style="padding:11px 16px;"><a href="/frontend/project/shared/model_engine_test.html?model=pi" style="font-size:11px;font-weight:700;color:#3949ab;text-decoration:none;padding:4px 10px;border-radius:6px;background:#e8eaf6;border:1px solid #9fa8da;white-space:nowrap;">Engine test →</a></td>
+        <td style="padding:11px 20px 11px 16px;"><a href="/frontend/project/gold/supply_chain/dashboard.html" style="font-size:11px;font-weight:700;color:#2c3e50;text-decoration:none;padding:4px 10px;border-radius:6px;background:#eef0f2;border:1px solid #b0bec5;white-space:nowrap;">Operational dashboard →</a></td>
+      </tr>
+      <tr style="border-top:1px solid #ece8e0;">
+        <td style="padding:11px 16px 11px 20px;"><span style="font-size:18px;font-weight:900;color:#2e7d32;">√2</span> <span style="font-size:11px;color:#6c757d;font-weight:600;">sqrt2</span></td>
+        <td style="padding:11px 16px;font-size:12px;color:#495057;">Structural D/C symmetry at phase boundaries</td>
+        <td style="padding:11px 16px;"><a href="/frontend/project/shared/sqrt2_analysis_test.html" style="font-size:11px;font-weight:700;color:#2e7d32;text-decoration:none;padding:4px 10px;border-radius:6px;background:#e8f5e9;border:1px solid #81c784;white-space:nowrap;">Engine test →</a></td>
+        <td style="padding:11px 20px 11px 16px;"><a href="/frontend/project/gold/supply_chain/sqrt2_dashboard.html" style="font-size:11px;font-weight:700;color:#2c3e50;text-decoration:none;padding:4px 10px;border-radius:6px;background:#eef0f2;border:1px solid #b0bec5;white-space:nowrap;">Structural dashboard →</a></td>
+      </tr>
+      <tr style="border-top:1px solid #ece8e0;">
+        <td style="padding:11px 16px 11px 20px;"><span style="font-size:16px;font-weight:900;color:#c62828;">ln(2)</span> <span style="font-size:11px;color:#6c757d;font-weight:600;">ln2</span></td>
+        <td style="padding:11px 16px;font-size:12px;color:#495057;">Transformation phase growth efficiency (C/D target 2.0)</td>
+        <td style="padding:11px 16px;"><a href="/frontend/project/shared/model_engine_test.html?model=ln2" style="font-size:11px;font-weight:700;color:#c62828;text-decoration:none;padding:4px 10px;border-radius:6px;background:#ffebee;border:1px solid #e57373;white-space:nowrap;">Engine test →</a></td>
+        <td style="padding:11px 20px 11px 16px;"><a href="/frontend/project/gold/supply_chain/ln2_dashboard.html" style="font-size:11px;font-weight:700;color:#2c3e50;text-decoration:none;padding:4px 10px;border-radius:6px;background:#eef0f2;border:1px solid #b0bec5;white-space:nowrap;">Growth dashboard →</a></td>
+      </tr>
+      <tr style="border-top:1px solid #ece8e0;">
+        <td style="padding:11px 16px 11px 20px;"><span style="font-size:18px;font-weight:900;color:#6a1b9a;">e</span> <span style="font-size:11px;color:#6c757d;font-weight:600;">euler</span></td>
+        <td style="padding:11px 16px;font-size:12px;color:#495057;">Abstract claim coupling (paper vs physical holdings)</td>
+        <td style="padding:11px 16px;"><a href="/frontend/project/shared/model_engine_test.html?model=e" style="font-size:11px;font-weight:700;color:#6a1b9a;text-decoration:none;padding:4px 10px;border-radius:6px;background:#f3e5f5;border:1px solid #ce93d8;white-space:nowrap;">Engine test →</a></td>
+        <td style="padding:11px 20px 11px 16px;"><a href="/frontend/project/gold/supply_chain/e_dashboard.html" style="font-size:11px;font-weight:700;color:#2c3e50;text-decoration:none;padding:4px 10px;border-radius:6px;background:#eef0f2;border:1px solid #b0bec5;white-space:nowrap;">Abstract dashboard →</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
 <div class="nav">
 <a href="/index.html">🏠 Main Homepage</a>
@@ -855,8 +730,15 @@
 
   // ── Global Tier-1 links (always shown) ──────────────────────────
   var globalLinks = [
-{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
-];
+    { label: 'Five-Model Coherence', href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+    { label: 'Model engine test (πφ√2 ln2 e)', href: '/frontend/project/shared/model_engine_test.html', icon: '🔧' },
+    { label: '√2 structural dashboard', href: '/frontend/project/gold/supply_chain/sqrt2_dashboard.html', icon: '⎷' },
+    { label: '√2 engine test', href: '/frontend/project/shared/sqrt2_analysis_test.html', icon: '⎷' },
+    { label: 'π operational dashboard', href: '/frontend/project/gold/supply_chain/dashboard.html', icon: 'π' },
+    { label: 'ln(2) engine test', href: '/frontend/project/shared/model_engine_test.html?model=ln2', icon: '⌬' },
+    { label: 'ln(2) growth dashboard', href: '/frontend/project/gold/supply_chain/ln2_dashboard.html', icon: '↗' },
+    { label: 'e abstract dashboard', href: '/frontend/project/gold/supply_chain/e_dashboard.html', icon: 'ℯ' },
+  ];
 
   // ── Build HTML ───────────────────────────────────────────────────
   var PALETTE = {

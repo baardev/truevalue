@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>Value Chain Phases Ndc</title>
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Value Chain Phases Ndc</title>
+  <style>
     :root {
       --bg: #0f172a;
       --panel: #111827;
@@ -182,25 +181,27 @@
   </style>
 </head>
 <body>
-<div class="container">
-<div class="card">
-<div class="header">
-<h1>Value Chain Phases Ndc</h1>
-<p class="subtitle">CSV viewer generated from <strong>value_chain_phases_ndc.csv</strong></p>
-</div>
-<div class="controls">
-<div class="search-box">
-<input id="searchInput" placeholder="Search all rows..." type="text"/>
-</div>
-<div class="meta">
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Value Chain Phases Ndc</h1>
+        <p class="subtitle">CSV viewer generated from <strong>value_chain_phases_ndc.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
           Rows shown: <span id="rowCount">9</span> / 9
         </div>
-</div>
-<div class="table-wrap">
-<table id="csvTable">
-<thead>
-<tr>
-<th>value_phase_id<span class="sort-indicator"></span></th>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>value_phase_id<span class="sort-indicator"></span></th>
 <th>value_phase_name<span class="sort-indicator"></span></th>
 <th>value_category<span class="sort-indicator"></span></th>
 <th>definition_scope<span class="sort-indicator"></span></th>
@@ -211,10 +212,10 @@
 <th>balance_target<span class="sort-indicator"></span></th>
 <th>energy_base<span class="sort-indicator"></span></th>
 <th>notes<span class="sort-indicator"></span></th>
-</tr>
-</thead>
-<tbody>
-<tr><td>0</td><td>Geological Occurrence (Value Context)</td><td>Value</td><td>Project economics pre-production</td><td>Annual</td><td>Medium</td><td>D1:capital_risk|D2:permit_uncertainty|D3:timeline_rigidity|D4:exploration_budget_constraints|D5:reserve_confidence</td><td>C1:capital_access|C2:partner_network|C3:information_quality|C4:portfolio_diversification|C5:regulatory_navigation</td><td>0.75</td><td>10.0</td><td>Value-layer interpretation only; do not infer physical discovery rates.</td></tr>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Geological Occurrence (Value Context)</td><td>Value</td><td>Project economics pre-production</td><td>Annual</td><td>Medium</td><td>D1:capital_risk|D2:permit_uncertainty|D3:timeline_rigidity|D4:exploration_budget_constraints|D5:reserve_confidence</td><td>C1:capital_access|C2:partner_network|C3:information_quality|C4:portfolio_diversification|C5:regulatory_navigation</td><td>0.75</td><td>10.0</td><td>Value-layer interpretation only; do not infer physical discovery rates.</td></tr>
 <tr><td>1</td><td>Mining (Value Context)</td><td>Value</td><td>Operating cost structure at mine stage</td><td>Quarterly</td><td>High</td><td>D1:fixed_cost_burden|D2:cost_inflation_exposure|D3:contract_rigidity|D4:tax_royalty_constraints|D5:capex_commitments</td><td>C1:supplier_diversity|C2:operational_flexibility|C3:energy_optionality|C4:workforce_flexibility|C5:market_access</td><td>0.85</td><td>8.0</td><td>Maps to mining economics (AISC, cash cost) without mixing with physical flow metrics.</td></tr>
 <tr><td>2</td><td>Processing (Value Context)</td><td>Value</td><td>Treatment/processing economics</td><td>Quarterly</td><td>Medium</td><td>D1:reagent_cost_constraints|D2:throughput_contracts|D3:quality_spec_penalties|D4:waste_compliance_costs|D5:capacity_limits</td><td>C1:processing_optionality|C2:technology_alternatives|C3:water_access_flex|C4:byproduct_monetization|C5:information_systems</td><td>0.85</td><td>8.0</td><td>Treatment charges and penalties are often opaque; mark OPAQUE explicitly.</td></tr>
 <tr><td>3</td><td>Doré / Intermediate (Value Context)</td><td>Value</td><td>Intermediate product economics</td><td>Quarterly</td><td>Medium</td><td>D1:assay_dispute_risk|D2:financing_terms|D3:security_costs|D4:documentation_burden|D5:timing_constraints</td><td>C1:refinery_counterparties|C2:assay_services|C3:transport_provider_options|C4:trade_terms_flex|C5:traceability_systems</td><td>0.80</td><td>10.0</td><td>Value frictions often arise from disputes/terms rather than physical constraints.</td></tr>
@@ -223,15 +224,17 @@
 <tr><td>6</td><td>Logistics &amp; Vaulting (Value Context)</td><td>Value</td><td>Transport/security/insurance economics</td><td>Quarterly</td><td>Low</td><td>D1:security_protocol_costs|D2:insurance_requirements|D3:jurisdictional_limits|D4:route_constraints|D5:time_sensitivity</td><td>C1:route_diversity|C2:provider_options|C3:insurance_access|C4:client_access|C5:information_opacity</td><td>0.50</td><td>20.0</td><td>Structurally opaque; treat opacity as a result.</td></tr>
 <tr><td>7</td><td>Exchange / Market Interface (Value Context)</td><td>Value</td><td>Exchange-related value frictions</td><td>Daily-Quarterly</td><td>High</td><td>D1:exchange_rules|D2:delivery_terms|D3:warehouse_fees|D4:settlement_constraints|D5:regulatory_costs</td><td>C1:participant_diversity|C2:clearing_integration|C3:market_access|C4:information_transparency|C5:settlement_flexibility</td><td>0.85</td><td>7.0</td><td>Value-chain only; keep separate from physical COMEX inventory reconciliation logic.</td></tr>
 <tr><td>8</td><td>Recycling (Value Context)</td><td>Value</td><td>Recycling economics and fee stack</td><td>Quarterly</td><td>Medium</td><td>D1:collection_costs|D2:feedstock_variability|D3:processing_constraints|D4:compliance_costs|D5:throughput_limits</td><td>C1:collection_network|C2:sorting_integration|C3:refinery_relationships|C4:technology_providers|C5:market_integration</td><td>0.80</td><td>6.0</td><td>Recycling can reduce cost/waste; value modeling must remain separate from physical mass flow.</td></tr>
-</tbody>
-</table>
-</div>
-<div class="footer">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
         Click a column header to sort. Use the search box to filter rows.
       </div>
-</div>
-</div>
-<script>
+    </div>
+  </div>
+
+  <script>
     const searchInput = document.getElementById("searchInput");
     const table = document.getElementById("csvTable");
     const tbody = table.querySelector("tbody");
