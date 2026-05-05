@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CUNY EPHS PhD - NDC Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117;
+    color: #e6edf3;
+    min-height: 100vh;
+    padding: 24px 20px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .top-nav {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 22px; font-size: 13px;
+  }
+  .top-nav a { color: #58a6ff; text-decoration: none; font-weight: 600; }
+  .top-nav a:hover { text-decoration: underline; }
+  .top-nav .nav-links { display: flex; gap: 16px; }
+  .page-title { font-size: 22px; font-weight: 300; color: #e6edf3; margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: #8b949e; margin-bottom: 22px; }
+  /* KPI strip */
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 22px;
+  }
+  .kpi {
+    background: #161b22; border-radius: 10px; padding: 18px 16px;
+    border-top: 3px solid #1f6feb; text-align: center;
+  }
+  .kpi-val { font-size: 28px; font-weight: 700; color: #58a6ff; }
+  .kpi-label { font-size: 11px; color: #8b949e; margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; }
+  /* Bottleneck alert */
+  .alert {
+    background: #161b22; border-left: 4px solid #f0883e; border-radius: 8px;
+    padding: 14px 18px; margin-bottom: 22px; font-size: 13px; color: #d29922; line-height: 1.6;
+  }
+  .alert strong { color: #f0883e; }
+  /* Main grid */
+  .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px; }
+  .panel { background: #161b22; border-radius: 12px; padding: 22px; }
+  .panel-title { font-size: 14px; font-weight: 700; color: #58a6ff; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; }
+  /* Phase bars */
+  .phase-row { margin-bottom: 18px; }
+  .phase-row-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
+  .phase-name { font-size: 13px; color: #e6edf3; font-weight: 600; }
+  .phase-meta { font-size: 11px; color: #8b949e; }
+  .bar-group-row { display: flex; flex-direction: column; gap: 4px; }
+  .bar-item { display: flex; align-items: center; gap: 8px; }
+  .bar-item-label { font-size: 10px; width: 14px; color: #8b949e; font-weight: 700; text-align: right; }
+  .bar-track { flex: 1; background: #21262d; border-radius: 3px; height: 7px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 3px; }
+  .bar-num { font-size: 11px; color: #8b949e; width: 32px; text-align: right; }
+  .balance-row { display: flex; align-items: center; gap: 8px; margin-top: 6px; }
+  .balance-bar-track { flex: 1; background: #21262d; border-radius: 3px; height: 9px; overflow: hidden; }
+  .balance-bar-fill { height: 100%; border-radius: 3px; }
+  .balance-pct { font-size: 12px; font-weight: 700; width: 42px; text-align: right; }
+  .balance-lbl { font-size: 10px; color: #8b949e; width: 50px; }
+  /* Phase table */
+  .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .phase-table th { color: #8b949e; font-weight: 600; padding: 8px 10px; text-align: left; border-bottom: 1px solid #21262d; text-transform: uppercase; letter-spacing: 0.04em; font-size: 10px; }
+  .phase-table td { padding: 10px 10px; border-bottom: 1px solid #21262d; color: #e6edf3; vertical-align: top; }
+  .phase-table tr:last-child td { border-bottom: none; }
+  .t-badge {
+    font-size: 10px; padding: 2px 7px; border-radius: 999px; font-weight: 600;
+  }
+  .t-high   { background: #1a3a22; color: #56d364; }
+  .t-medium { background: #3a2c1a; color: #d29922; }
+  .t-low    { background: #3a1a1a; color: #f85149; }
+  .bot-badge { background: #3a2200; color: #f0883e; font-size: 10px; padding: 2px 7px; border-radius: 999px; font-weight: 600; }
+  /* Coherence panel */
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .coh-item { background: #0d1117; border-radius: 8px; padding: 12px 8px; text-align: center; }
+  .coh-const { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
+  .coh-label { font-size: 10px; color: #8b949e; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 8px; }
+  .coh-score { font-size: 22px; font-weight: 700; }
+  .coh-zone { font-size: 10px; margin-top: 3px; }
+  .zone-coherent { color: #56d364; }
+  .zone-stressed { color: #d29922; }
+  .zone-failure { color: #f85149; }
+  .zone-unmeasured { color: #8b949e; }
+  @media (max-width: 760px) { .main-grid { grid-template-columns: 1fr; } .kpi-strip { grid-template-columns: 1fr 1fr; } .coherence-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="top-nav">
+  <a href="../index.html">← CUNY EPHS Hub</a>
+  <div class="nav-links">
+    <a href="index.html">Phase Overview</a>
+    <a href="project_context.html">Program Context</a>
+  </div>
+</div>
+
+<div class="page-title">NDC Analysis Dashboard</div>
+<div class="page-sub">CUNY SPH PhD in Environmental and Planetary Health Sciences · 7-Phase Academic Pipeline · Tholonic N-D-C Model</div>
+
+<div class="kpi-strip">
+  <div class="kpi"><div class="kpi-val">85.7%</div><div class="kpi-label">Chain Balance</div></div>
+  <div class="kpi"><div class="kpi-val">202</div><div class="kpi-label">Avg N-State</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:#f0883e;">2</div><div class="kpi-label">Bottleneck Phases</div></div>
+  <div class="kpi"><div class="kpi-val" style="color:#56d364;">100%</div><div class="kpi-label">Graduation Rate</div></div>
+</div>
+
+<div class="alert">
+  <strong>Bottleneck Alert (Phases 4 and 5):</strong>
+  Phase 4 (Qualifying Exam, balance 82%) is a structural D-gate: high constraint, zero C-output by design. It produces candidacy status but no field contribution.
+  Phase 5 (Dissertation, balance 71%) is the primary structural stress point: low transparency (advisor-student dynamics, committee decisions are not publicly monitored),
+  6.1-year average completion against a 5-year full-time target, and a D-C imbalance where the institutional D-constraints (approval requirements) are lighter
+  than coursework phases but the C-delivery (original research) is harder to support without visible resource data. Activating the e-model (financial layer) would clarify
+  whether underfunding is a structural cause of the dissertation bottleneck.
+</div>
+
+<div class="main-grid">
+  <div class="panel">
+    <div class="panel-title">Phase D-C-N Balance</div>
+    <div id="phase-bars">Loading...</div>
+  </div>
+  <div class="panel">
+    <div class="panel-title">Phase Summary Table</div>
+    <table class="phase-table" id="phase-table">
+      <thead>
+        <tr>
+          <th>#</th><th>Phase</th><th>D</th><th>C</th><th>N</th><th>Bal</th><th>Transp.</th>
+        </tr>
+      </thead>
+      <tbody id="phase-table-body">
+        <tr><td colspan="7" style="color:#8b949e;padding:18px;">Loading...</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="panel" style="margin-bottom:22px;">
+  <div class="panel-title">Five-Model Coherence</div>
+  <div class="coherence-grid" id="coherence-grid">Loading...</div>
+  <div style="margin-top:14px;font-size:12px;color:#8b949e;line-height:1.7;" id="coherence-interp"></div>
+</div>
+
+</div>
+
+<script>
+var DATA_URL  = "../data/processed/cuny_ephs_supply_chain_ui.json";
+var SCEN_URL  = "scenarios.json";
+var BOTTLENECKS = [4, 5];
+var COLORS = ["#1f6feb","#238636","#2059a0","#0550ae","#b45309","#7d2d00","#1a7f37"];
+var COH_COLORS = {pi:"#58a6ff",phi:"#e3b341",sqrt2:"#56d364",ln2:"#f85149",e:"#bc8cff"};
+var COH_LABELS = {pi:"pi (Operational)",phi:"phi (Proportional)",sqrt2:"sqrt2 (Structural)",ln2:"ln2 (Growth)",e:"e (Abstract)"};
+
+function balColor(b){ return b>=88?"#56d364":b>=78?"#d29922":"#f85149"; }
+function transBadge(t){
+  if(t==="high")   return '<span class="t-badge t-high">High</span>';
+  if(t==="medium") return '<span class="t-badge t-medium">Medium</span>';
+  return '<span class="t-badge t-low">Low</span>';
+}
+
+function renderBars(phMeta, phVals){
+  var ids = Object.keys(phMeta).sort(function(a,b){return+a-+b;});
+  var html="";
+  ids.forEach(function(id){
+    var pm=phMeta[id], pv=phVals[id]||{};
+    var D=pv.D||0,C=pv.C||0,N=pv.N||0,bal=pv.balance||0;
+    var mx=Math.max(D,C,250);
+    var col=COLORS[+id]||"#58a6ff";
+    var isBot=BOTTLENECKS.indexOf(+id)>=0;
+    html+='<div class="phase-row">';
+    html+='<div class="phase-row-top">';
+    html+='<span class="phase-name">'+id+'. '+pm.name+(isBot?' <span class="bot-badge">Bottleneck</span>':'')+'</span>';
+    html+='<span class="phase-meta" style="color:'+balColor(bal)+'">'+bal+'% balance</span>';
+    html+='</div>';
+    html+='<div class="bar-group-row">';
+    [["D",D],["C",C],["N",N]].forEach(function(x){
+      var maxV=x[0]==="N"?260:mx;
+      html+='<div class="bar-item">';
+      html+='<span class="bar-item-label">'+x[0]+'</span>';
+      html+='<div class="bar-track"><div class="bar-fill" style="width:'+Math.round(x[1]/maxV*100)+'%;background:'+col+'"></div></div>';
+      html+='<span class="bar-num">'+x[1]+'</span>';
+      html+='</div>';
+    });
+    html+='</div>';
+    html+='<div class="balance-row">';
+    html+='<span class="balance-lbl" style="font-size:10px;color:#8b949e;">Balance</span>';
+    html+='<div class="balance-bar-track"><div class="balance-bar-fill" style="width:'+bal+'%;background:'+balColor(bal)+';"></div></div>';
+    html+='<span class="balance-pct" style="color:'+balColor(bal)+'">'+bal+'%</span>';
+    html+='</div>';
+    html+='</div>';
+  });
+  document.getElementById("phase-bars").innerHTML=html;
+}
+
+function renderTable(phMeta, phVals){
+  var ids=Object.keys(phMeta).sort(function(a,b){return+a-+b;});
+  var html="";
+  ids.forEach(function(id){
+    var pm=phMeta[id],pv=phVals[id]||{};
+    var isBot=BOTTLENECKS.indexOf(+id)>=0;
+    html+='<tr>';
+    html+='<td style="font-weight:700;color:'+COLORS[+id]+'">'+id+'</td>';
+    html+='<td>'+pm.name+(isBot?' <span class="bot-badge">!</span>':'')+'</td>';
+    html+='<td style="color:#58a6ff">'+pv.D+'</td>';
+    html+='<td style="color:#56d364">'+pv.C+'</td>';
+    html+='<td style="color:#e3b341;font-weight:700;">'+pv.N+'</td>';
+    html+='<td style="color:'+balColor(pv.balance||0)+';font-weight:700;">'+(pv.balance||0)+'%</td>';
+    html+='<td>'+transBadge(pm.transparency)+'</td>';
+    html+='</tr>';
+  });
+  document.getElementById("phase-table-body").innerHTML=html;
+}
+
+function renderCoherence(scores){
+  var keys=["pi","phi","sqrt2","ln2","e"];
+  var html="";
+  keys.forEach(function(k){
+    var s=scores[k]||0;
+    var zone=s>=70?"Coherent":s>=40?"Stressed":s>0?"Failure mode":"Unmeasured";
+    var zc=s>=70?"zone-coherent":s>=40?"zone-stressed":s>0?"zone-failure":"zone-unmeasured";
+    html+='<div class="coh-item">';
+    html+='<div class="coh-const" style="color:'+COH_COLORS[k]+'">'+k+'</div>';
+    html+='<div class="coh-label">'+COH_LABELS[k].split(' ')[1]+'</div>';
+    html+='<div class="coh-score" style="color:'+COH_COLORS[k]+'">'+(s>0?s+'%':'N/A')+'</div>';
+    html+='<div class="coh-zone '+zc+'">'+zone+'</div>';
+    html+='</div>';
+  });
+  document.getElementById("coherence-grid").innerHTML=html;
+
+  var active=keys.filter(function(k){return scores[k]>0;});
+  var avg=active.length?Math.round(active.reduce(function(a,k){return a+scores[k];},0)/active.length):0;
+  document.getElementById("coherence-interp").innerHTML=
+    'Active models: <strong>'+active.length+'/5</strong> &nbsp;|&nbsp; Active average: <strong>'+avg+'%</strong> &nbsp;|&nbsp; '+
+    'Pi (Operational) and Sqrt2 (Structural) are the strongest signals, confirming phase handoffs are working. '+
+    'Phi (Proportional) and Ln2 (Growth) scores reflect the dissertation bottleneck and the credit-weight imbalance in Concentration (Phase 3). '+
+    'The e-model (Abstract) is unmeasured: financial aid and stipend data are required to activate this axis. '+
+    'A funded, well-supported dissertation phase would be expected to raise the Ln2 and e scores substantially.';
+}
+
+Promise.all([
+  fetch(DATA_URL).then(function(r){return r.json();}),
+  fetch(SCEN_URL).then(function(r){return r.json();})
+]).then(function(results){
+  var data=results[0], scen=results[1];
+  renderBars(data.phase_meta, data.phases.synthetic);
+  renderTable(data.phase_meta, data.phases.synthetic);
+  renderCoherence(scen.coherence_scores);
+}).catch(function(e){
+  document.getElementById("phase-bars").innerHTML='<div style="color:#f85149;padding:12px;">Error: '+e.message+'</div>';
+});
+</script>
+</body>
+</html>

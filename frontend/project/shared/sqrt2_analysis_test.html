@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>√2 structural analysis (engine test)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #0f172a;
+    color: #1e293b;
+    min-height: 100vh;
+    padding: 20px;
+    line-height: 1.5;
+  }
+  .wrap { max-width: 1080px; margin: 0 auto; }
+  .panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+    padding: 24px 28px;
+    margin-bottom: 18px;
+  }
+  h1 { font-size: 20px; font-weight: 600; margin-bottom: 6px; color: #0f172a; }
+  .kicker {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; color: #2e7d32; margin-bottom: 10px;
+  }
+  .sub { font-size: 13px; color: #64748b; margin-bottom: 16px; }
+  .nav { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .nav a {
+    font-size: 12px; color: #1d4ed8;
+    text-decoration: none;
+    padding: 4px 10px;
+    border-radius: 8px;
+    border: 1px solid #bfdbfe;
+    background: #eff6ff;
+  }
+  .nav a:hover { background: #dbeafe; }
+  .tabs { display: flex; gap: 8px; margin-bottom: 18px; flex-wrap: wrap; }
+  .tab {
+    padding: 8px 18px;
+    border-radius: 20px;
+    border: 2px solid #cbd5e1;
+    background: #f8fafc;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+  .tab.active { background: #2e7d32; border-color: #2e7d32; color: #fff; }
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .stat {
+    background: #f1f8e9;
+    border-radius: 8px;
+    padding: 14px;
+    border-left: 4px solid #2e7d32;
+  }
+  .stat .lbl { font-size: 10px; text-transform: uppercase; color: #64748b; letter-spacing: 0.06em; }
+  .stat .val { font-size: 26px; font-weight: 800; color: #1b5e20; }
+  .stat .hint { font-size: 11px; color: #64748b; margin-top: 4px; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 8px;
+    border-bottom: 1px solid #e2e8f0;
+    vertical-align: top;
+  }
+  th {
+    font-size: 10px; text-transform: uppercase;
+    letter-spacing: 0.05em; color: #64748b;
+    background: #f8fafc;
+    position: sticky; top: 0; z-index: 1;
+  }
+  tr.worst-row td { background: #fff8f0; }
+  tr.worst-row td:first-child { border-left: 3px solid #e65100; }
+  .pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+  }
+  .score-cell { white-space: nowrap; }
+  .score-num { font-weight: 700; }
+  .score-bar-wrap { display: inline-block; width: 48px; height: 6px; background: #e2e8f0; border-radius: 3px; margin-left: 6px; vertical-align: middle; }
+  .score-bar-fill { display: block; height: 6px; border-radius: 3px; }
+  .sc-green { color: #1b5e20; }
+  .sc-amber { color: #e65100; }
+  .sc-red   { color: #b91c1c; }
+  .err { color: #b91c1c; font-size: 13px; padding: 12px; background: #fef2f2; border-radius: 8px; }
+  .mono { font-family: ui-monospace, monospace; font-size: 11px; color: #475569; }
+  code { background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 11px; }
+  .regen-note { font-size: 11px; color: #94a3b8; margin-top: 14px; padding-top: 10px; border-top: 1px solid #f1f5f9; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="panel">
+    <div class="kicker">√2 structural layer — engine test</div>
+    <h1>√2 structural transfer coherence</h1>
+    <p class="sub">
+      Data is produced by <code>generate_sqrt2_report()</code> in
+      <code>src/simulation/sqrt2_engine.py</code> and exported to
+      <code>frontend/project/shared/data/model_engine_reports.json</code>.
+      Scores measure structural <strong>D</strong> (requirements to cross a boundary) vs
+      <strong>C</strong> (documented delivery). Target symmetry ratio is 1.0.
+      Natural overhead reference is ≈41.4% (√2−1). Highlighted row = worst boundary.
+    </p>
+    <div class="nav">
+      <a href="/frontend/project/shared/model_engine_test.html">All five models (test)</a>
+      <a href="/frontend/project/gold/supply_chain/sqrt2_dashboard.html">Gold √2 dashboard</a>
+      <a href="/frontend/project/shea/supply_chain/sqrt2_dashboard.html">Shea √2 dashboard</a>
+      <a href="/index.html">Home</a>
+    </div>
+    <div class="tabs" id="tabs">
+      <button type="button" class="tab active" data-chain="gold">Gold</button>
+      <button type="button" class="tab" data-chain="shea">Shea</button>
+    </div>
+    <div id="load-err" class="err" style="display:none;"></div>
+    <div id="content" style="display:none;">
+      <div class="stats" id="stats"></div>
+      <p class="sub mono" id="meta-line"></p>
+      <div style="overflow-x:auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Boundary</th>
+              <th>D struct</th>
+              <th>C struct</th>
+              <th>C/D ratio</th>
+              <th>√2 score</th>
+              <th>Status</th>
+              <th>Notes / source</th>
+            </tr>
+          </thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+      <p class="regen-note">Regenerate data: <code>python3 scripts/export_model_engine_reports_json.py</code></p>
+    </div>
+  </div>
+</div>
+<script>
+(function () {
+  "use strict";
+
+  var DATA_URL = "/frontend/project/shared/data/model_engine_reports.json";
+
+  var COLOR = {
+    excellent: "#1b5e20",
+    good:      "#2e7d32",
+    fair:      "#f57f17",
+    poor:      "#c62828",
+    warn:      "#e65100",
+  };
+
+  var bundle = null;
+  var fullPayload = null;
+  var chain = "gold";
+
+  function esc(s) {
+    if (s == null) return "";
+    return String(s)
+      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+  }
+
+  function truncCell(s, n) {
+    if (!s) return "";
+    var t = String(s);
+    if (t.length <= n) return esc(t);
+    return "<span title=\"" + esc(t) + "\">" + esc(t.slice(0, n)) + "…</span>";
+  }
+
+  function pill(colorKey, text) {
+    var c = COLOR[colorKey] || "#546e7a";
+    return "<span class=\"pill\" style=\"background:" + c + "22;color:" + c + ";\">" + esc(text) + "</span>";
+  }
+
+  function scoreColor(val) {
+    var v = parseFloat(val);
+    if (isNaN(v)) return "";
+    if (v >= 70) return "sc-green";
+    if (v >= 40) return "sc-amber";
+    return "sc-red";
+  }
+
+  function barColor(val) {
+    var v = parseFloat(val);
+    if (isNaN(v)) return "#94a3b8";
+    if (v >= 70) return "#2e7d32";
+    if (v >= 40) return "#f57f17";
+    return "#c62828";
+  }
+
+  function scoreCell(val) {
+    if (val == null || val === "") return "<td>—</td>";
+    var v = parseFloat(val);
+    if (isNaN(v)) return "<td class=\"score-cell\"><span class=\"score-num\">" + esc(val) + "</span></td>";
+    var pct = Math.min(100, Math.max(0, v));
+    return (
+      "<td class=\"score-cell\">" +
+      "<span class=\"score-num " + scoreColor(v) + "\">" + esc(String(val)) + "</span>" +
+      "<span class=\"score-bar-wrap\"><span class=\"score-bar-fill\" style=\"width:" + pct + "%;background:" + barColor(v) + ";\"></span></span>" +
+      "</td>"
+    );
+  }
+
+  function statHtml(lbl, val, hint) {
+    return (
+      "<div class=\"stat\"><div class=\"lbl\">" + esc(lbl) + "</div>" +
+      "<div class=\"val\">" + esc(val) + "</div>" +
+      "<div class=\"hint\">" + esc(hint || "") + "</div></div>"
+    );
+  }
+
+  function render() {
+    var rep    = bundle && bundle[chain];
+    var errEl  = document.getElementById("load-err");
+    var content = document.getElementById("content");
+    if (!rep) {
+      errEl.style.display   = "block";
+      errEl.textContent     = "No report for selected chain.";
+      content.style.display = "none";
+      return;
+    }
+    errEl.style.display   = "none";
+    content.style.display = "block";
+
+    var sys = rep.system_summary || {};
+
+    document.getElementById("stats").innerHTML =
+      statHtml("System √2 score",  sys.system_sqrt2_score, sys.system_status) +
+      statHtml("Boundaries",       sys.total_boundaries,
+               "Symmetric ≥80: "  + esc(sys.symmetric_boundaries) +
+               "  Asymmetric <40: " + esc(sys.asymmetric_boundaries)) +
+      statHtml("√2 = " + esc(rep.constant), "Nat. overhead", esc(rep.natural_overhead_pct) + "%") +
+      statHtml("Score range", esc(sys.min_score) + " – " + esc(sys.max_score),
+               "Best: " + esc(sys.best_boundary) + "  Worst: " + esc(sys.worst_boundary));
+
+    document.getElementById("meta-line").textContent = fullPayload && fullPayload._meta
+      ? "JSON: " + (fullPayload._meta.generated || "") + "   " + (fullPayload._meta.note || "")
+      : "";
+
+    var tb = document.getElementById("tbody");
+    tb.innerHTML = "";
+    var worstScore = sys.min_score;
+    (rep.boundaries || []).forEach(function (b) {
+      var tr = document.createElement("tr");
+      if (parseFloat(b.sqrt2_score) === parseFloat(worstScore)) tr.className = "worst-row";
+      tr.innerHTML =
+        "<td><strong>" + esc(b.boundary_id) + "</strong>" +
+        "<br><span class=\"mono\">" + truncCell(b.from_phase, 28) + " → " + truncCell(b.to_phase, 28) + "</span></td>" +
+        "<td>" + esc(b.d_structural) + "</td>" +
+        "<td>" + esc(b.c_structural) + "</td>" +
+        "<td class=\"mono\">" + esc(b.symmetry_ratio) + "</td>" +
+        scoreCell(b.sqrt2_score) +
+        "<td>" + pill(b.color, b.label || b.status) + "</td>" +
+        "<td>" + truncCell(b.notes, 160) + "<br><span class=\"mono\">" + esc(b.data_source) + "</span></td>";
+      tb.appendChild(tr);
+    });
+  }
+
+  document.getElementById("tabs").addEventListener("click", function (e) {
+    var t = e.target;
+    if (t.classList.contains("tab")) {
+      chain = t.dataset.chain;
+      document.querySelectorAll(".tab").forEach(function (x) {
+        x.classList.toggle("active", x === t);
+      });
+      render();
+    }
+  });
+
+  fetch(DATA_URL)
+    .then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    })
+    .then(function (data) {
+      fullPayload = data;
+      bundle = data.sqrt2;
+      render();
+    })
+    .catch(function (e) {
+      var errEl = document.getElementById("load-err");
+      errEl.style.display = "block";
+      errEl.innerHTML =
+        "Could not load <code>" + esc(DATA_URL) + "</code>. " +
+        "Serve the repo root (<code>python3 -m http.server 8000 --bind 127.0.0.1</code>) and run " +
+        "<code>python3 scripts/export_model_engine_reports_json.py</code> to create the bundle. " +
+        esc(e.message || String(e));
+    });
+})();
+</script>
+</body>
+</html>

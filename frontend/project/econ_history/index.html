@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>History of Economic Thought – Tholonic N-D-C Analysis</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #283593 0%, #7b1fa2 100%);
+    min-height: 100vh;
+    padding: 24px;
+    color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.30);
+    padding: 40px;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+  .kicker {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #283593;
+    background: #e8eaf6;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 14px;
+  }
+  h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto 28px; }
+  .kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-top: 10px;
+  }
+  .kpi {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 16px 12px;
+    text-align: center;
+    border-top: 3px solid #283593;
+  }
+  .kpi-value { font-size: 26px; font-weight: 700; color: #283593; }
+  .kpi-label { font-size: 11px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+  .alert-panel {
+    background: #fff8e1;
+    border-left: 4px solid #f9a825;
+    border-radius: 0 10px 10px 0;
+    padding: 16px 20px;
+    margin-bottom: 22px;
+    font-size: 13.5px;
+    color: #5d4037;
+    line-height: 1.6;
+  }
+  .alert-panel strong { color: #e65100; }
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+    margin-bottom: 22px;
+  }
+  .grid-2 { grid-template-columns: 1fr 1fr; }
+  .card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+  .card-header { padding: 26px 26px 16px; color: #fff; }
+  .card-header.sc { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); }
+  .card-header.lc { background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%); }
+  .card-header.vc { background: linear-gradient(135deg, #37474f 0%, #546e7a 100%); }
+  .card-header.thl { background: linear-gradient(135deg, #0d1b4b 0%, #1a237e 100%); border-top: 3px solid #ffd600; }
+  .card-icon { font-size: 38px; margin-bottom: 8px; }
+  .card-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+  .card-desc { font-size: 12.5px; opacity: 0.88; line-height: 1.5; }
+  .card-body { padding: 20px 26px 24px; }
+  .card-body ul { list-style: none; margin-bottom: 16px; }
+  .card-body li { font-size: 13px; color: #495057; padding: 4px 0 4px 20px; position: relative; }
+  .card-body li::before { content: "»"; position: absolute; left: 0; color: #283593; font-weight: bold; }
+  .btn {
+    display: inline-block;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 13px;
+    color: #fff;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+  .btn.sc { background: linear-gradient(135deg, #1a237e 0%, #283593 100%); }
+  .btn.lc { background: linear-gradient(135deg, #4a148c 0%, #7b1fa2 100%); }
+  .btn.vc { background: linear-gradient(135deg, #37474f 0%, #546e7a 100%); }
+  .btn.thl { background: linear-gradient(135deg, #0d1b4b 0%, #1a237e 100%); }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+  .phase-strip {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    padding: 26px 28px;
+    margin-bottom: 22px;
+  }
+  .phase-strip h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #283593; margin-bottom: 16px; }
+  .phases-row { display: flex; gap: 6px; flex-wrap: wrap; }
+  .phase-pill {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #fff;
+    cursor: default;
+  }
+  .phase-pill.coherent { background: #2e7d32; }
+  .phase-pill.stressed { background: #e65100; }
+  .phase-pill.high { opacity: 1; }
+  .phase-pill .epoch { font-size: 9px; opacity: 0.85; display: block; margin-top: 2px; }
+  .phase-pill .balance { font-size: 10px; opacity: 0.9; }
+  .coherence-panel {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    padding: 26px 28px;
+    margin-bottom: 22px;
+  }
+  .coherence-panel h3 { font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #283593; margin-bottom: 16px; }
+  .coh-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coh-card { background: #f8f9fa; border-radius: 10px; padding: 14px 10px; text-align: center; }
+  .coh-value { font-size: 22px; font-weight: 700; }
+  .coh-label { font-size: 10px; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em; margin-top: 3px; }
+  .coh-sub { font-size: 10px; color: #868e96; margin-top: 2px; }
+  .coh-card.green .coh-value { color: #2e7d32; }
+  .coh-card.amber .coh-value { color: #e65100; }
+  .coh-card.grey .coh-value { color: #9e9e9e; }
+  .nav-bar {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 6px;
+  }
+  .nav-link {
+    color: rgba(255,255,255,0.85);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid rgba(255,255,255,0.3);
+    transition: background 0.15s;
+  }
+  .nav-link:hover { background: rgba(255,255,255,0.15); }
+  canvas { display: block; margin: 0 auto; }
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: 1fr; }
+    .grid-2 { grid-template-columns: 1fr; }
+    .kpi-strip { grid-template-columns: 1fr 1fr; }
+    .coh-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="kicker">Tholonic Framework · Intellectual History</div>
+    <h1>History of Economic Thought</h1>
+    <p class="subtitle">
+      The intellectual supply chain of economics modeled as 10 discrete paradigm epochs using the Tholonic N-D-C framework.
+      Each epoch is a phase with measurable D (constraints), C (outputs), and an emergent N (the settled intellectual settlement
+      that is passed forward). Chain spans pre-3000 BCE to present.
+    </p>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-value">10</div>
+        <div class="kpi-label">Paradigm Epochs</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">81.1%</div>
+        <div class="kpi-label">Chain Avg Balance</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">241</div>
+        <div class="kpi-label">Peak N (Phase 6)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-value">3</div>
+        <div class="kpi-label">Stressed Epochs</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-panel">
+    <strong>Structural finding:</strong> Phase 9 (Post-2008 Fragmentation) is stressed at 74% balance with N = 168, the lowest in the modern era.
+    The D constraints of the neoliberal epoch have dissolved but no new D framework has reconstituted. C outputs are proliferating
+    (complexity, MMT, behavioral, AI) without converging. The Tholonic model predicts instability continues until one candidate C stream
+    generates enough constraint-force (D) to produce a new child N. Climate macro and AI-augmented planning are the leading candidates.
+  </div>
+
+  <div class="phase-strip">
+    <h3>Phase Map — 10 Epochs</h3>
+    <div class="phases-row" id="phase-pills"></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-header sc">
+        <div class="card-icon">📜</div>
+        <div class="card-title">Paradigm Chain</div>
+        <div class="card-desc">Phase-by-phase N-D-C analysis of economic thought from barter economies to post-2008 fragmentation</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>10 discrete paradigm epochs</li>
+          <li>D parameters: constraints per epoch</li>
+          <li>C parameters: outputs passed forward</li>
+          <li>N: emergent intellectual equilibrium</li>
+          <li>Transparency classification per phase</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn sc" href="supply_chain/dashboard.html">N-D-C Dashboard</a>
+          <a class="btn sc" href="supply_chain/project_context.html">Historical Context</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header lc">
+        <div class="card-icon">🔄</div>
+        <div class="card-title">Intellectual Lifecycle</div>
+        <div class="card-desc">Five lifecycle phases from pre-scientific formation to the current open transition. How paradigms form, peak, stress, and dissolve.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>5 lifecycle phases spanning all epochs</li>
+          <li>Formation, consolidation, maturation</li>
+          <li>Stress and renewal-or-collapse</li>
+          <li>D-C balance arc across each lifecycle</li>
+          <li>Bottleneck: open transition (Phase 4)</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn lc" href="supply_chain/system_lifecycle.html">Lifecycle View</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header vc">
+        <div class="card-icon">💹</div>
+        <div class="card-title">Value Layer</div>
+        <div class="card-desc">How economic paradigms translate into financial instruments, policy tools, and measurable economic outcomes. Deferred pending supply chain completion.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Policy instrument diffusion rates</li>
+          <li>Paradigm adoption economics</li>
+          <li>Theory-to-policy transmission lag</li>
+          <li>Financial abstraction layer (e-score)</li>
+        </ul>
+        <div class="btn-row">
+          <a class="btn vc" href="value_chain/index.html">Value Chain</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="coherence-panel">
+    <h3>Five-Model Coherence</h3>
+    <div class="coh-grid">
+      <div class="coh-card green">
+        <div class="coh-value">81.1</div>
+        <div class="coh-label">π — Operational</div>
+        <div class="coh-sub">Chain avg balance</div>
+      </div>
+      <div class="coh-card amber">
+        <div class="coh-value">79.2</div>
+        <div class="coh-label">φ — Proportional</div>
+        <div class="coh-sub">D/C ratio efficiency</div>
+      </div>
+      <div class="coh-card green">
+        <div class="coh-value">82.5</div>
+        <div class="coh-label">√2 — Structural</div>
+        <div class="coh-sub">Inter-epoch coupling</div>
+      </div>
+      <div class="coh-card amber">
+        <div class="coh-value">77.3</div>
+        <div class="coh-label">ln 2 — Growth</div>
+        <div class="coh-sub">Transformation efficiency</div>
+      </div>
+      <div class="coh-card grey">
+        <div class="coh-value">—</div>
+        <div class="coh-label">e — Abstract</div>
+        <div class="coh-sub">Not yet modeled</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="card-header thl">
+        <div class="card-icon">⚖</div>
+        <div class="card-title">N-D-C Phase Radar</div>
+        <div class="card-desc">D vs C balance across all 10 epochs. Epochs below 80% balance are stressed.</div>
+      </div>
+      <div class="card-body">
+        <canvas id="radarChart" width="380" height="280"></canvas>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header thl">
+        <div class="card-icon">📊</div>
+        <div class="card-title">N Trajectory</div>
+        <div class="card-desc">Emergent N-value per epoch. Shows the rise of intellectual capacity, the Keynesian peak, and the post-2008 fall.</div>
+      </div>
+      <div class="card-body">
+        <canvas id="trajectoryChart" width="380" height="280"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-bar">
+    <a class="nav-link" href="../../index.html">Main Homepage</a>
+    <a class="nav-link" href="../gold/index.html">Gold Supply Chain</a>
+    <a class="nav-link" href="../shea/index.html">Shea Value Chain</a>
+    <a class="nav-link" href="supply_chain/dashboard.html">N-D-C Dashboard</a>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  { id: 0, name: "Ancient Exchange", epoch: "pre-3000–600 BCE", balance: 66, N: 146, D: 280, C: 175, zone: "stressed" },
+  { id: 1, name: "Classical Antiquity", epoch: "600 BCE–400 CE", balance: 72, N: 164, D: 260, C: 200, zone: "stressed" },
+  { id: 2, name: "Medieval Commercial Rev.", epoch: "500–1500 CE", balance: 81, N: 200, D: 270, C: 225, zone: "coherent" },
+  { id: 3, name: "Mercantilism", epoch: "1500–1776", balance: 82, N: 201, D: 255, C: 235, zone: "coherent" },
+  { id: 4, name: "Classical Pol. Economy", epoch: "1776–1871", balance: 88, N: 209, D: 230, C: 245, zone: "coherent" },
+  { id: 5, name: "Marginalist Revolution", epoch: "1871–1929", balance: 87, N: 204, D: 220, C: 250, zone: "coherent" },
+  { id: 6, name: "Keynesian Macro", epoch: "1929–1973", balance: 91, N: 241, D: 260, C: 270, zone: "coherent" },
+  { id: 7, name: "Monetarism", epoch: "1970–1990", balance: 86, N: 217, D: 250, C: 255, zone: "coherent" },
+  { id: 8, name: "Neoliberal Consolidation", epoch: "1990–2008", balance: 84, N: 210, D: 235, C: 265, zone: "coherent" },
+  { id: 9, name: "Post-Crisis Fragmentation", epoch: "2008–present", balance: 74, N: 168, D: 210, C: 245, zone: "stressed" }
+];
+
+// Phase pills
+const pillsContainer = document.getElementById('phase-pills');
+PHASES.forEach(p => {
+  const pill = document.createElement('div');
+  pill.className = `phase-pill ${p.zone}`;
+  pill.innerHTML = `<strong>${p.id}</strong> ${p.name}<span class="epoch">${p.epoch}</span><span class="balance">${p.balance}%</span>`;
+  pill.title = `N=${p.N} D=${p.D} C=${p.C}`;
+  pillsContainer.appendChild(pill);
+});
+
+// N Trajectory Chart
+(function() {
+  const canvas = document.getElementById('trajectoryChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const pad = { top: 20, right: 20, bottom: 50, left: 44 };
+  const chartW = W - pad.left - pad.right;
+  const chartH = H - pad.top - pad.bottom;
+  const minN = 100, maxN = 260;
+
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid lines
+  ctx.strokeStyle = '#dee2e6';
+  ctx.lineWidth = 1;
+  [130, 160, 190, 220, 250].forEach(val => {
+    const y = pad.top + chartH - ((val - minN) / (maxN - minN)) * chartH;
+    ctx.beginPath(); ctx.moveTo(pad.left, y); ctx.lineTo(pad.left + chartW, y); ctx.stroke();
+    ctx.fillStyle = '#adb5bd'; ctx.font = '10px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(val, pad.left - 6, y + 4);
+  });
+
+  // Bars
+  const barW = chartW / PHASES.length;
+  PHASES.forEach((p, i) => {
+    const x = pad.left + i * barW + barW * 0.15;
+    const bw = barW * 0.7;
+    const barH = ((p.N - minN) / (maxN - minN)) * chartH;
+    const y = pad.top + chartH - barH;
+    ctx.fillStyle = p.zone === 'coherent' ? '#3949ab' : '#e65100';
+    ctx.fillRect(x, y, bw, barH);
+
+    ctx.fillStyle = '#2c3e50';
+    ctx.font = 'bold 9px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText(p.id, x + bw / 2, pad.top + chartH + 14);
+
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 10px sans-serif';
+    if (barH > 18) ctx.fillText(p.N, x + bw / 2, y + 13);
+  });
+
+  // X label
+  ctx.fillStyle = '#6c757d'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Phase (Epoch)', pad.left + chartW / 2, H - 6);
+  ctx.save(); ctx.translate(11, pad.top + chartH / 2); ctx.rotate(-Math.PI / 2);
+  ctx.fillText('N value', 0, 0); ctx.restore();
+})();
+
+// Balance Radar
+(function() {
+  const canvas = document.getElementById('radarChart');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  ctx.fillStyle = '#f8f9fa';
+  ctx.fillRect(0, 0, W, H);
+
+  const n = PHASES.length;
+  const cx = W / 2, cy = H / 2 - 10;
+  const maxR = Math.min(W, H) / 2 - 46;
+
+  function angleOf(i) { return (i / n) * 2 * Math.PI - Math.PI / 2; }
+  function point(i, r) {
+    return { x: cx + r * Math.cos(angleOf(i)), y: cy + r * Math.sin(angleOf(i)) };
+  }
+
+  // Grid circles
+  [25, 50, 75, 100].forEach(pct => {
+    ctx.strokeStyle = '#dee2e6'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    for (let i = 0; i < n; i++) {
+      const p = point(i, maxR * pct / 100);
+      i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+    }
+    ctx.closePath(); ctx.stroke();
+    if (pct !== 25) {
+      ctx.fillStyle = '#adb5bd'; ctx.font = '9px sans-serif'; ctx.textAlign = 'center';
+      ctx.fillText(pct + '%', cx, cy - maxR * pct / 100 + 3);
+    }
+  });
+
+  // Spoke lines
+  ctx.strokeStyle = '#dee2e6';
+  for (let i = 0; i < n; i++) {
+    const p = point(i, maxR);
+    ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(p.x, p.y); ctx.stroke();
+  }
+
+  // Balance polygon
+  ctx.beginPath();
+  PHASES.forEach((ph, i) => {
+    const r = maxR * ph.balance / 100;
+    const p = point(i, r);
+    i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y);
+  });
+  ctx.closePath();
+  ctx.fillStyle = 'rgba(40, 53, 147, 0.18)';
+  ctx.fill();
+  ctx.strokeStyle = '#283593'; ctx.lineWidth = 2; ctx.stroke();
+
+  // Dots
+  PHASES.forEach((ph, i) => {
+    const r = maxR * ph.balance / 100;
+    const p = point(i, r);
+    ctx.beginPath(); ctx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+    ctx.fillStyle = ph.zone === 'coherent' ? '#283593' : '#e65100'; ctx.fill();
+  });
+
+  // Labels
+  PHASES.forEach((ph, i) => {
+    const p = point(i, maxR + 26);
+    ctx.fillStyle = '#495057'; ctx.font = 'bold 9px sans-serif'; ctx.textAlign = 'center';
+    ctx.fillText(ph.id, p.x, p.y + 3);
+  });
+
+  ctx.fillStyle = '#6c757d'; ctx.font = '10px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText('Balance % per epoch (phase ID = spoke label)', cx, H - 8);
+})();
+</script>
+</body>
+</html>

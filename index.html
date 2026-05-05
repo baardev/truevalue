@@ -36,12 +36,19 @@
     .page-header-docnav a:hover { text-decoration: underline; color: #79c0ff; }
     .page-header-docnav a:nth-of-type(2) { display: inline-block; margin-top: 8px; }
 
-    /* ── row label (top-level section divider) ── */
-    .row-label {
-      font-size: 11px; font-weight: 900; text-transform: uppercase;
-      letter-spacing: 1.2px; color: #6e7681;
-      margin: 40px 0 14px; padding-bottom: 8px;
-      border-bottom: 1px solid #21262d; max-width: 1100px;
+    /* ── category section header ── */
+    .cat-header {
+      display: flex; align-items: baseline; gap: 12px;
+      max-width: 1100px; margin: 44px 0 6px;
+    }
+    .cat-icon { font-size: 18px; line-height: 1; }
+    .cat-label {
+      font-size: 13px; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 1px; color: #c9d1d9;
+    }
+    .cat-desc { font-size: 12px; color: #6e7681; }
+    .cat-divider {
+      max-width: 1100px; height: 1px; background: #21262d; margin-bottom: 14px;
     }
 
     /* ── Projects: simple full-card links ── */
@@ -63,6 +70,14 @@
     .proj-card .card-tag {
       display: inline-block; margin-top: 12px; font-size: 11px; font-weight: 600;
       padding: 3px 8px; border-radius: 20px; background: #21262d; color: #8b949e;
+    }
+
+    /* ── row label (legacy fallback) ── */
+    .row-label {
+      font-size: 11px; font-weight: 900; text-transform: uppercase;
+      letter-spacing: 1.2px; color: #6e7681;
+      margin: 40px 0 14px; padding-bottom: 8px;
+      border-bottom: 1px solid #21262d; max-width: 1100px;
     }
 
     /* ── Hub sections: rich cards (shared with hub pages via tv-hub.js) ── */
@@ -138,13 +153,12 @@
 <a href="/docnav/csvindex.html">Data Catalog · Project CSV files (searchable) →</a>
 </p>
 </header>
-<!-- ── Projects ─────────────────────────────────────────────────── -->
-<div class="row-label">Projects</div>
-<div class="proj-grid" id="grid-projects">
+<!-- ── Projects (categorized) ────────────────────────────────── -->
+<div id="grid-projects">
 <div style="color:#6e7681;padding:8px 0;">Loading…</div>
 </div>
 <!-- ── Additional information (research, reports, TVPCI, etc.) ─── -->
-<div class="row-label">Additional Information</div>
+<div class="row-label" style="margin-top:48px;">Additional Information</div>
 <div id="hub-additional">
 <p style="color:#6b7280;padding:8px 0;">Loading…</p>
 </div>
@@ -152,9 +166,10 @@
     TrueValue Analytics · Supply Chain Intelligence Platform · v0.2
   </div>
 <script>
-/* ── Projects + Additional Information (one site-index fetch; no tv-hub dependency) ── */
+/* ── Projects (categorized) + Additional Information ─────────── */
 (function () {
-  var SITE_INDEX = '/frontend/site-index.json?v=20260430';
+  var SITE_INDEX   = '/frontend/site-index.json?v=20260502';
+  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260502';
 
   function esc(s) {
     return String(s || '')
@@ -170,6 +185,24 @@
       + '<div class="card-desc">'  + esc(item.desc)  + '</div>'
       + '<span class="card-tag">'  + esc(item.tag)   + '</span>'
       + '</a>';
+  }
+
+  function renderCategory(cat, projectMap) {
+    var cards = (cat.project_ids || [])
+      .map(function (id) { return projectMap[id]; })
+      .filter(Boolean)
+      .map(renderProjCard)
+      .join('');
+    if (!cards) return '';
+
+    var header = '<div class="cat-header">'
+      + '<span class="cat-icon">' + (cat.icon || '') + '</span>'
+      + '<span class="cat-label">' + esc(cat.label) + '</span>'
+      + (cat.desc ? '<span class="cat-desc">' + esc(cat.desc) + '</span>' : '')
+      + '</div>'
+      + '<div class="cat-divider"></div>';
+
+    return header + '<div class="proj-grid">' + cards + '</div>';
   }
 
   function renderHubLinks(links) {
@@ -206,37 +239,66 @@
       var block = data[key];
       if (!block || !block.sections) return;
       block.sections.forEach(function (sec) {
-        (sec.items || []).forEach(function (item) {
-          items.push(item);
-        });
+        (sec.items || []).forEach(function (item) { items.push(item); });
       });
     });
     return items;
   }
 
-  fetch(SITE_INDEX)
-    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-    .then(function (data) {
-      var grid = document.getElementById('grid-projects');
-      if (grid) grid.innerHTML = (data.projects || []).map(renderProjCard).join('');
+  Promise.all([
+    fetch(SITE_INDEX).then(function (r) { if (!r.ok) throw new Error('site-index HTTP ' + r.status); return r.json(); }),
+    fetch(LAYOUT_INDEX).then(function (r) { if (!r.ok) throw new Error('homepage-layout HTTP ' + r.status); return r.json(); })
+  ])
+  .then(function (results) {
+    var siteData   = results[0];
+    var layoutData = results[1];
 
-      var hub = document.getElementById('hub-additional');
-      if (!hub) return;
-      var extra = collectAdditionalItems(data, ['research', 'reports', 'tvpci']);
-      if (!extra.length) {
-        hub.innerHTML =
-          '<p style="color:#6b7280;padding:8px 0;">No additional entries yet. Edit frontend/site-index.json.</p>';
-        return;
+    /* Build a quick-lookup map: project id -> project object */
+    var projectMap = {};
+    (siteData.projects || []).forEach(function (p) { projectMap[p.id] = p; });
+
+    /* Track which IDs have been placed in a category */
+    var placed = {};
+
+    /* Render each category */
+    var grid = document.getElementById('grid-projects');
+    if (grid) {
+      var html = '';
+      (layoutData.categories || []).forEach(function (cat) {
+        html += renderCategory(cat, projectMap);
+        (cat.project_ids || []).forEach(function (id) { placed[id] = true; });
+      });
+
+      /* Append any projects not listed in any category */
+      var uncategorized = (siteData.projects || []).filter(function (p) { return !placed[p.id]; });
+      if (uncategorized.length) {
+        html += '<div class="cat-header">'
+          + '<span class="cat-label">Uncategorized</span>'
+          + '</div>'
+          + '<div class="cat-divider"></div>'
+          + '<div class="proj-grid">' + uncategorized.map(renderProjCard).join('') + '</div>';
       }
-      hub.innerHTML = '<div class="grid">' + extra.map(renderHubItem).join('') + '</div>';
-    })
-    .catch(function (err) {
-      var msg = esc(err.message);
-      var grid = document.getElementById('grid-projects');
-      if (grid) grid.innerHTML = '<p style="color:#f87171;">Could not load projects: ' + msg + '</p>';
-      var hub = document.getElementById('hub-additional');
-      if (hub) hub.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
-    });
+
+      grid.innerHTML = html || '<p style="color:#6b7280;padding:8px 0;">No projects found.</p>';
+    }
+
+    /* Render additional information */
+    var hub = document.getElementById('hub-additional');
+    if (!hub) return;
+    var extra = collectAdditionalItems(siteData, ['research', 'reports', 'tvpci']);
+    if (!extra.length) {
+      hub.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No additional entries yet. Edit frontend/site-index.json.</p>';
+      return;
+    }
+    hub.innerHTML = '<div class="grid">' + extra.map(renderHubItem).join('') + '</div>';
+  })
+  .catch(function (err) {
+    var msg = esc(err.message);
+    var grid = document.getElementById('grid-projects');
+    if (grid) grid.innerHTML = '<p style="color:#f87171;">Could not load projects: ' + msg + '</p>';
+    var hub = document.getElementById('hub-additional');
+    if (hub) hub.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
+  });
 })();
 </script>
 <script>

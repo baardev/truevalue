@@ -362,7 +362,7 @@
         Where D and C are far apart, the phase is under stress. The bottleneck phases (1 and 2) show the narrowest N polygon.
       </p>
 <div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
-<canvas height="700" id="ndc-radar-lighter" style="max-width:100%;flex-shrink:0;" width="700"></canvas>
+<canvas height="760" id="ndc-radar-lighter" style="max-width:100%;flex-shrink:0;" width="900"></canvas>
 <div id="ndc-radar-info-lighter" style="font-size:13px;color:#495057;min-width:180px;max-width:260px;flex-shrink:0;"></div>
 </div>
 <div id="ndc-radar-interp-lighter" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:800px;border-left:3px solid #e05c00;"></div>
@@ -389,16 +389,19 @@
           var Cvals = ids.map(function(id){return rawPhases[id].C || 0;});
           var Nvals = ids.map(function(id){return rawPhases[id].N || 0;});
 
-          var canvas = document.getElementById('ndc-radar-lighter');
-          if(!canvas) return;
-          var ctx = canvas.getContext('2d');
-          var W = canvas.width, H = canvas.height;
-          var CX = W/2, CY = H/2, R = Math.min(W,H)*0.38;
+          var W = 900, H = 760;
+          var CX = W/2, CY = H/2, R = Math.min(W,H)*0.28;
           var n = ids.length;
           var maxV = Math.max.apply(null, Dvals.concat(Cvals).concat(Nvals).concat([300]));
 
           function angleFor(i){ return (i/n)*2*Math.PI - Math.PI/2; }
           function polarPoint(i,v){ var a=angleFor(i),r2=(v/maxV)*R; return {x:CX+r2*Math.cos(a),y:CY+r2*Math.sin(a)}; }
+
+          var canvas = document.getElementById('ndc-radar-lighter');
+          if(!canvas) return;
+          canvas.width = W;
+          canvas.height = H;
+          var ctx = canvas.getContext('2d');
 
           ctx.clearRect(0,0,W,H);
           // Grid rings
@@ -447,7 +450,7 @@
           ctx.font='bold 13px ui-sans-serif,system-ui,sans-serif';
           ctx.textAlign='center';
           for(var i=0;i<n;i++){
-            var lp=polarPoint(i,maxV*1.18);
+            var lp=polarPoint(i,maxV*1.12);
             var bal=rawPhases[ids[i]].balance||0;
             var bc=bal>=80?'#2e7d32':bal>=70?'#e65100':'#c62828';
             ctx.fillStyle='#2c3e50';ctx.fillText(labels[i],lp.x,lp.y);
@@ -484,6 +487,34 @@
         });
     })();
     </script>
+<script src="/frontend/project/shared/phi_balance_radar.js"></script>
+<div class="hero" style="margin-top:22px;padding:32px 40px 28px;text-align:left;">
+<div class="kicker" style="color:#e05c00;background:transparent;padding:0 0 4px;font-size:11px;">PHI Sustainability Analysis</div>
+<h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Lighter — Phase Balance Score with PHI Zone Rings</h2>
+<p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:700px;line-height:1.55;">
+  Each axis is one supply chain phase. The single polygon shows the <strong>balance score (0–100%)</strong> per phase.
+  The three zone rings mark the PHI-derived structural thresholds:
+  <strong style="color:#3ecf8e;">80% coherent floor</strong>,
+  <strong style="color:#f5a623;">61.8% sustainability floor (φ⁻¹)</strong>, and
+  <strong style="color:#ef5350;">38.2% breakdown threshold (1−φ⁻¹)</strong>.
+</p>
+<div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">
+<canvas height="580" id="balance-radar-lighter" style="max-width:100%;flex-shrink:0;" width="720"></canvas>
+<div id="balance-radar-info-lighter" style="font-size:13px;color:#495057;min-width:180px;max-width:260px;flex-shrink:0;"></div>
+</div>
+<div id="balance-radar-interp-lighter" style="margin-top:18px;padding:14px 18px;background:#f8f9fb;border-radius:8px;font-size:13px;line-height:1.7;color:#333;max-width:800px;border-left:3px solid #e05c00;"></div>
+</div>
+<script>
+(function(){
+  if(typeof renderPhiBalanceRadar!=='function')return;
+  renderPhiBalanceRadar({
+    dataUrl:'/frontend/project/lighter/data/processed/lighter_supply_chain_ui.json',
+    idSuffix:'lighter',
+    resolvePhases:'lighter',
+    borderColor:'#e05c00'
+  });
+})();
+</script>
 <div class="nav">
 <a href="../../../index.html">← Main Homepage</a>
 <a href="../gold/index.html">Gold Hub</a>
