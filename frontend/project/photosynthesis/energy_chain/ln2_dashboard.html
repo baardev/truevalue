@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — ln(2) Growth Model</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 28px;}
+.header h1{font-size:20px;font-weight:600;color:#e6edf3;}
+.header h1 span{color:#f48fb1;}
+.main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px;text-align:center;}
+.kpi-val{font-size:26px;font-weight:800;color:#f48fb1;}
+.kpi-label{font-size:10px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8b949e;margin:24px 0 12px;}
+.phase-row{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;margin-bottom:8px;}
+.phase-row.transform{border-color:rgba(244,143,177,.3);}
+.ph-header{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.ph-num{width:30px;height:30px;border-radius:6px;background:#880e4f;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.ph-name{font-size:14px;font-weight:700;color:#e6edf3;}
+.ph-type{font-size:11px;color:#8b949e;margin-left:6px;}
+.cd-ratio-row{display:flex;align-items:center;gap:12px;}
+.cd-label{width:70px;font-size:11px;color:#8b949e;font-weight:700;text-transform:uppercase;flex-shrink:0;}
+.cd-bar{flex:1;background:#21262d;border-radius:4px;height:12px;overflow:hidden;position:relative;}
+.cd-fill{height:12px;border-radius:4px;}
+.cd-target-line{position:absolute;top:0;height:12px;width:2px;background:rgba(255,255,255,.35);}
+.cd-val{width:50px;font-size:12px;font-weight:700;text-align:right;flex-shrink:0;}
+.ln2-score{font-size:22px;font-weight:800;margin-top:6px;}
+.ln2-score.good{color:#66bb6a;}
+.ln2-score.warn{color:#f0c040;}
+.ln2-score.bad{color:#f48fb1;}
+.ln2-interp{font-size:11px;color:#8b949e;margin-top:3px;}
+.info-panel{background:#1a0d12;border:1px solid #880e4f;border-radius:8px;padding:16px 18px;margin-bottom:20px;font-size:13px;color:#f48fb1;line-height:1.7;}
+.info-panel h3{font-size:14px;font-weight:700;color:#f48fb1;margin-bottom:8px;}
+.target-ref{display:inline-block;padding:2px 9px;border-radius:8px;background:rgba(244,143,177,.12);border:1px solid rgba(244,143,177,.3);font-size:11px;font-weight:700;color:#f48fb1;margin:4px 2px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🌿 Photosynthesis — <span>ln(2) Growth Model</span></h1>
+  <div style="font-size:12px;color:#8b949e;margin-top:4px;">Transformation phase efficiency · C/D target = 2.0 · ln(2) score: 65.5</div>
+</div>
+<div class="main">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">65.5</div><div class="kpi-label">ln(2) Score</div></div>
+    <div class="kpi"><div class="kpi-val">2.0×</div><div class="kpi-label">Target C/D Ratio</div></div>
+    <div class="kpi"><div class="kpi-val">Phases 5-7</div><div class="kpi-label">Transformation Phases</div></div>
+    <div class="kpi"><div class="kpi-val">~25%</div><div class="kpi-label">Photorespiratory Loss</div></div>
+  </div>
+
+  <div class="info-panel">
+    <h3>ln(2) Model Applied to Photosynthesis</h3>
+    <p>The ln(2) model measures whether transformation phases double the value of their inputs (C/D target = 2.0). In gold this captures whether institutional constraints suppress natural value doubling. In photosynthesis, the analogous question is: does the Calvin cycle double the energetic value of its ATP/NADPH inputs into fixed carbon?</p>
+    <p style="margin-top:8px;">The answer in C3 under ambient conditions is: no. The C/D ratio at Phase 5 is only 0.85 (C=230, D=270), far below the target 2.0. This is not an institutional constraint; it is a natural one (Rubisco bifunctionality). The ln(2) score of 65.5 reflects this: the Calvin cycle transformation phases (5-7) are operating below the natural doubling efficiency due to the photorespiratory energy drain.</p>
+    <p style="margin-top:8px;">Target references: <span class="target-ref">C/D = 2.0 (ideal)</span><span class="target-ref">C/D = 1.0 (balanced)</span><span class="target-ref">C/D &lt;1.0 (D dominates = constraint capture)</span></p>
+  </div>
+
+  <div class="section-title">All 8 Phases — C/D Ratio Analysis</div>
+  <div id="phase-container"></div>
+</div>
+
+<script>
+var DATA_URL='/frontend/project/photosynthesis/data/processed/photosynthesis_energy_chain_ui.json';
+var TARGET=2.0;
+var MAX_RATIO=2.5;
+
+var PHASE_TYPES={
+  0:'Energy conversion (antenna)',1:'Energy conversion (PSII)',2:'Energy transfer (ETC)',
+  3:'Energy conversion (PSI)',4:'Energy conversion (ATP synthase)',
+  5:'Transformation — Calvin fixation',6:'Transformation — Calvin reduction',7:'Transformation — Carbon export'
+};
+var TRANSFORM_PHASES=['5','6','7'];
+
+var PHASE_INTERPRETATIONS={
+  0:'C > D: antenna has more output connections than input constraints. Healthy — near-perfect energy funneling.',
+  1:'D > C slightly: PSII has strict requirements (Mn cluster, D1 protein). C = O2 evolution and PQH2 production is high but D dominates slightly. High coherence nonetheless.',
+  2:'C > D slightly: cytochrome b6f connects multiple downstream electron carriers. Near-perfect balance.',
+  3:'C > D slightly: PSI feeds NADPH, cyclic flow, N/S assimilation — multiple outputs. Coherent.',
+  4:'D > C slightly: ATP synthase has strict stoichiometric requirements (H+/ATP = 4.67). C is ATP production. Near-perfect balance.',
+  5:'D >> C: Rubisco requires CO2 but also oxygenates RuBP. D includes the O2 competition constraint. C = net carbon fixed (reduced 25% by photorespiration). C/D = 0.85. This is the ln(2) failure mode: constraint capture by a natural (not institutional) constraint.',
+  6:'D > C slightly: Calvin reduction stoichiometry adds slight D excess. C/D = 0.98. Near-balanced.',
+  7:'D > C: export regulation adds overhead (TPT capacity, sucrose synthesis). C/D = 0.96. Slightly D-dominant but coherent.'
+};
+
+fetch(DATA_URL)
+  .then(function(r){return r.json();})
+  .catch(function(){return null;})
+  .then(function(data){
+    var phases=data&&data.phases&&data.phases.synthetic?data.phases.synthetic:{};
+    var meta=data&&data.phase_meta?data.phase_meta:{};
+    var ids=Object.keys(phases).sort(function(a,b){return +a-+b;});
+    var container=document.getElementById('phase-container');
+
+    ids.forEach(function(id){
+      var p=phases[id];
+      var m=meta[id]||{};
+      var isTransform=TRANSFORM_PHASES.indexOf(id)>=0;
+      var cdRatio=p.D>0?(p.C/p.D):0;
+      var dcRatio=p.C>0?(p.D/p.C):0;
+      var cdPct=Math.min(100,(cdRatio/MAX_RATIO)*100);
+      var dPct=Math.min(100,(p.D/280)*100);
+      var cPct=Math.min(100,(p.C/280)*100);
+      var targetPct=(TARGET/MAX_RATIO)*100;
+      var scoreClass=cdRatio>=1.5?'good':cdRatio>=0.9?'warn':'bad';
+
+      var div=document.createElement('div');
+      div.className='phase-row'+(isTransform?' transform':'');
+      div.innerHTML=
+        '<div class="ph-header">'+
+          '<div class="ph-num">'+id+'</div>'+
+          '<div class="ph-name">'+(m.name||'Phase '+id)+'</div>'+
+          '<span class="ph-type">'+(PHASE_TYPES[id]||'')+'</span>'+
+          (isTransform?'<span style="display:inline-block;padding:2px 8px;border-radius:8px;background:rgba(244,143,177,.12);border:1px solid rgba(244,143,177,.3);font-size:10px;font-weight:700;color:#f48fb1;margin-left:auto;">Transformation</span>':'')+
+        '</div>'+
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">'+
+          '<div>'+
+            '<div class="cd-ratio-row" style="margin-bottom:6px;">'+
+              '<div class="cd-label">D = '+p.D+'</div>'+
+              '<div class="cd-bar"><div class="cd-fill" style="width:'+dPct.toFixed(1)+'%;background:#58a6ff;"></div></div>'+
+            '</div>'+
+            '<div class="cd-ratio-row">'+
+              '<div class="cd-label">C = '+p.C+'</div>'+
+              '<div class="cd-bar"><div class="cd-fill" style="width:'+cPct.toFixed(1)+'%;background:#f48fb1;"></div></div>'+
+            '</div>'+
+          '</div>'+
+          '<div>'+
+            '<div class="cd-ratio-row">'+
+              '<div class="cd-label">C/D ratio</div>'+
+              '<div class="cd-bar">'+
+                '<div class="cd-fill" style="width:'+cdPct.toFixed(1)+'%;background:'+(scoreClass==='good'?'#66bb6a':scoreClass==='warn'?'#f0c040':'#f48fb1')+'"></div>'+
+                '<div class="cd-target-line" style="left:'+targetPct.toFixed(1)+'%"></div>'+
+              '</div>'+
+              '<div class="cd-val '+scoreClass+'">'+cdRatio.toFixed(2)+'×</div>'+
+            '</div>'+
+            '<div class="ln2-score '+scoreClass+'">C/D = '+cdRatio.toFixed(2)+'</div>'+
+            '<div class="ln2-interp">'+(PHASE_INTERPRETATIONS[id]||'')+'</div>'+
+          '</div>'+
+        '</div>';
+      container.appendChild(div);
+    });
+  });
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><a href="index.html">Energy Chain</a><span class="bc-sep">›</span><span class="bc-cur">ln(2) Model</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hdr=document.querySelector('.header');if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>

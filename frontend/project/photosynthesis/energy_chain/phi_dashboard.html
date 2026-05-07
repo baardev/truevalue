@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — φ Proportional Model</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 28px;}
+.header h1{font-size:20px;font-weight:600;color:#e6edf3;}
+.header h1 span{color:#00c853;}
+.main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px;text-align:center;}
+.kpi-val{font-size:26px;font-weight:800;color:#00c853;}
+.kpi-label{font-size:10px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8b949e;margin:24px 0 12px;}
+.boundary-row{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;margin-bottom:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.b-phases{width:180px;font-size:12px;flex-shrink:0;}
+.b-from{font-weight:700;color:#e6edf3;}
+.b-arrow{color:#8b949e;font-size:10px;}
+.b-to{font-weight:700;color:#e6edf3;}
+.b-nvals{width:140px;font-size:11px;color:#8b949e;flex-shrink:0;}
+.b-ratio-wrap{flex:1;min-width:180px;}
+.b-ratio-label{font-size:10px;color:#8b949e;margin-bottom:3px;}
+.b-ratio-bar{background:#21262d;border-radius:4px;height:10px;overflow:hidden;position:relative;}
+.b-ratio-fill{height:10px;border-radius:4px;}
+.b-phi-line{position:absolute;top:0;height:10px;width:2px;background:#fff;opacity:.4;}
+.b-ratio-val{font-size:15px;font-weight:800;margin-top:4px;}
+.b-ratio-val.good{color:#00c853;}
+.b-ratio-val.warn{color:#f0c040;}
+.b-ratio-val.bad{color:#f85149;}
+.phi-legend{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 18px;margin-bottom:20px;font-size:13px;color:#c9d1d9;line-height:1.7;}
+.phi-legend h3{font-size:14px;font-weight:700;color:#e6edf3;margin-bottom:8px;}
+.phi-range{display:inline-block;padding:2px 9px;border-radius:8px;font-size:11px;font-weight:700;margin-right:6px;}
+.phi-near{background:rgba(0,200,83,.15);color:#00c853;border:1px solid rgba(0,200,83,.3);}
+.phi-high{background:rgba(240,192,64,.15);color:#f0c040;border:1px solid rgba(240,192,64,.3);}
+.phi-low{background:rgba(248,81,73,.15);color:#f85149;border:1px solid rgba(248,81,73,.3);}
+.interp-panel{background:#0d1f17;border:1px solid #1a4d1a;border-radius:8px;padding:16px 18px;margin-top:20px;font-size:13px;line-height:1.7;color:#a7d7a7;}
+.interp-panel h3{font-size:14px;font-weight:700;color:#00c853;margin-bottom:8px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🌿 Photosynthesis — <span>φ Proportional Model</span></h1>
+  <div style="font-size:12px;color:#8b949e;margin-top:4px;">Cross-phase N-value ratios · Proportional coherence · φ = 1.618</div>
+</div>
+<div class="main">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">74.2</div><div class="kpi-label">φ Score</div></div>
+    <div class="kpi"><div class="kpi-val">φ = 1.618</div><div class="kpi-label">Target Ratio</div></div>
+    <div class="kpi"><div class="kpi-val">4-5</div><div class="kpi-label">Key Boundary</div></div>
+    <div class="kpi"><div class="kpi-val">7</div><div class="kpi-label">Boundaries Scored</div></div>
+  </div>
+
+  <div class="phi-legend">
+    <h3>Reading the φ Model</h3>
+    <p>This model measures whether N-values at adjacent phases scale in golden-ratio (φ = 1.618) proportions. A ratio near 1.0 means adjacent phases have equal N-values (balanced but not escalating). A ratio near φ means each phase contributes proportionally more than the last.</p>
+    <p style="margin-top:8px;">
+      <span class="phi-range phi-near">0.85–1.20</span> Near-equal (phases matched in N-value)<br/>
+      <span class="phi-range phi-high" style="margin-top:4px;display:inline-block;">1.20–1.80</span> Proportional (near golden-ratio escalation)<br/>
+      <span class="phi-range phi-low" style="margin-top:4px;display:inline-block;">&lt;0.85 or &gt;1.80</span> Disproportionate (sharp step-up or step-down)
+    </p>
+    <p style="margin-top:10px;">In photosynthesis, the N-values are tightly clustered between 213 (Phase 5) and 248 (Phase 3), so most ratios are near 1.0. The system is not designed for escalating value capture across phases; it is designed for maximum throughput coherence. The exception is the Phase 4→5 step-down (N drops from 232 to 213) caused by the Rubisco bottleneck.</p>
+  </div>
+
+  <div class="section-title">Phase Boundary Proportional Analysis</div>
+  <div id="boundary-container"></div>
+
+  <div class="interp-panel">
+    <h3>Proportional Coherence Interpretation (Score: 74.2)</h3>
+    <p>The photosynthesis φ score of 74.2 (stressed zone, 40-70% is failure, 70-100% is stressed-to-coherent) reflects the fact that N-values across the eight phases do not follow a monotonically increasing or golden-ratio-scaled pattern. This is expected: the photosynthetic chain is not an economic value chain where each step should amplify value. It is an energy conversion chain where phase outputs must be closely matched to phase inputs.</p>
+    <br/>
+    <p>The most significant proportional deviation is at the Phase 4→5 boundary, where N drops from 232 (ATP synthase) to 213 (Rubisco fixation). This is the φ signature of the photorespiration bottleneck: the Rubisco phase cannot sustain the N-value established by the efficient light reactions because O2 competition reduces its effective contribution (C) relative to its constraints (D).</p>
+    <br/>
+    <p>Comparison with gold (φ score 49.5): gold has a lower φ score because economic value extraction at phase boundaries is highly disproportionate (mining margins vs refining margins vs exchange margins). Photosynthesis maintains better proportional coherence because evolution has optimized for throughput, not for differential value extraction at any one phase.</p>
+  </div>
+</div>
+
+<script>
+var DATA_URL='/frontend/project/photosynthesis/data/processed/photosynthesis_energy_chain_ui.json';
+var PHI=1.618;
+
+fetch(DATA_URL)
+  .then(function(r){return r.json();})
+  .catch(function(){return null;})
+  .then(function(data){
+    var phases=data&&data.phases&&data.phases.synthetic?data.phases.synthetic:{};
+    var meta=data&&data.phase_meta?data.phase_meta:{};
+    var ids=Object.keys(phases).sort(function(a,b){return +a-+b;});
+    var container=document.getElementById('boundary-container');
+
+    for(var i=0;i<ids.length-1;i++){
+      var id1=ids[i],id2=ids[i+1];
+      var p1=phases[id1],p2=phases[id2];
+      var n1=parseFloat(p1.N),n2=parseFloat(p2.N);
+      var ratio=n2>0?n1/n2:0;
+      var cls=ratio>=0.85&&ratio<=1.20?'good':ratio>=1.20&&ratio<=1.80?'warn':'bad';
+      var pct=Math.min(100,(ratio/2.5)*100);
+      var phiPct=Math.min(100,(PHI/2.5)*100);
+      var m1=meta[id1]||{},m2=meta[id2]||{};
+      var name1=m1.name||('Phase '+id1),name2=m2.name||('Phase '+id2);
+
+      var div=document.createElement('div');
+      div.className='boundary-row';
+      div.innerHTML=
+        '<div class="b-phases">'+
+          '<div class="b-from">Ph '+id1+': '+name1+'</div>'+
+          '<div class="b-arrow">↓ boundary</div>'+
+          '<div class="b-to">Ph '+id2+': '+name2+'</div>'+
+        '</div>'+
+        '<div class="b-nvals">N('+id1+') = '+n1+'<br/>N('+id2+') = '+n2+'</div>'+
+        '<div class="b-ratio-wrap">'+
+          '<div class="b-ratio-label">N('+id1+') / N('+id2+') — φ reference at 1.618</div>'+
+          '<div class="b-ratio-bar">'+
+            '<div class="b-ratio-fill" style="width:'+pct.toFixed(1)+'%;background:'+(cls==='good'?'#00c853':cls==='warn'?'#f0c040':'#f85149')+'"></div>'+
+            '<div class="b-phi-line" style="left:'+phiPct.toFixed(1)+'%"></div>'+
+          '</div>'+
+          '<div class="b-ratio-val '+cls+'">Ratio: '+ratio.toFixed(3)+'</div>'+
+        '</div>';
+      container.appendChild(div);
+    }
+  });
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><a href="index.html">Energy Chain</a><span class="bc-sep">›</span><span class="bc-cur">φ Model</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hdr=document.querySelector('.header');if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>

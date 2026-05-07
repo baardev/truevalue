@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — Energy Analysis</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 28px;}
+.header h1{font-size:20px;font-weight:600;color:#e6edf3;}
+.header h1 span{color:#56d364;}
+.main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8b949e;margin:24px 0 12px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px;text-align:center;}
+.kpi-val{font-size:26px;font-weight:800;color:#56d364;}
+.kpi-label{font-size:10px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+/* Photon budget waterfall */
+.waterfall{background:#161b22;border:1px solid #30363d;border-radius:10px;padding:20px 24px;margin-bottom:20px;}
+.waterfall h2{font-size:15px;font-weight:700;color:#e6edf3;margin-bottom:4px;}
+.waterfall .sub{font-size:12px;color:#8b949e;margin-bottom:18px;}
+.wf-row{display:flex;align-items:center;gap:14px;margin-bottom:10px;}
+.wf-phase{width:200px;font-size:12px;flex-shrink:0;}
+.wf-name{font-weight:700;color:#e6edf3;}
+.wf-note{color:#8b949e;font-size:11px;margin-top:1px;}
+.wf-bar-wrap{flex:1;}
+.wf-bar{height:22px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;color:#fff;min-width:20px;transition:width .3s;}
+.wf-pct{width:55px;font-size:13px;font-weight:800;color:#e6edf3;text-align:right;flex-shrink:0;}
+.wf-loss{width:55px;font-size:11px;color:#f85149;text-align:right;flex-shrink:0;}
+.wf-row.total .wf-bar{background:#56d364!important;}
+.wf-row.total .wf-name{color:#56d364;}
+/* Info panels */
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.info-box{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 18px;}
+.info-box h3{font-size:13px;font-weight:700;color:#e6edf3;margin-bottom:8px;}
+.info-box p{font-size:12px;color:#8b949e;line-height:1.65;}
+.info-box .val{font-size:22px;font-weight:800;color:#56d364;display:block;margin-bottom:4px;}
+.info-box .val.warn{color:#f0883e;}
+/* sqrt2 boundary panel */
+.sqrt2-panel{background:#0e1a2e;border:1px solid #1565c0;border-radius:8px;padding:16px 18px;margin-bottom:20px;font-size:13px;color:#90caf9;line-height:1.7;}
+.sqrt2-panel h3{color:#64b5f6;font-size:14px;font-weight:700;margin-bottom:8px;}
+.sqrt2-table{width:100%;border-collapse:collapse;font-size:12px;margin-top:8px;}
+.sqrt2-table th{background:#1565c0;color:#fff;padding:7px 10px;text-align:left;font-size:10px;text-transform:uppercase;}
+.sqrt2-table td{padding:7px 10px;border-bottom:1px solid rgba(255,255,255,.08);color:#c9d1d9;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🌿 Photosynthesis — <span>Energy Analysis</span></h1>
+  <div style="font-size:12px;color:#8b949e;margin-top:4px;">Photon budget · Quantum efficiency · √2 structural symmetry</div>
+</div>
+<div class="main">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">6%</div><div class="kpi-label">Whole-chain Efficiency</div></div>
+    <div class="kpi"><div class="kpi-val">11%</div><div class="kpi-label">Theoretical Max</div></div>
+    <div class="kpi"><div class="kpi-val">8-9</div><div class="kpi-label">Photons per CO2 (theoretical)</div></div>
+    <div class="kpi"><div class="kpi-val">16-18</div><div class="kpi-label">Photons per CO2 (actual C3)</div></div>
+  </div>
+
+  <div class="waterfall">
+    <h2>Photon Budget Waterfall — 100 Incident Photons</h2>
+    <div class="sub">Tracking how incident PAR is transformed, lost, or converted to net carbon at each phase. Values are representative for C3 leaf at saturation, 25°C, 380 ppm CO2.</div>
+    <div id="wf-container"></div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-box">
+      <h3>Theoretical Maximum Efficiency (11%)</h3>
+      <p>Theoretical maximum is ~11% of incident solar radiation converted to chemical energy (glucose). This assumes perfect quantum yield at all phases, no photorespiration (0% O2), minimal thermodynamic losses, and no dark respiration. In practice, this is never achievable in a C3 plant under ambient conditions.</p>
+      <p style="margin-top:8px;">Key thermodynamic losses are unavoidable: the red-drop (photons beyond ~680 nm have insufficient energy for water splitting), fluorescence from PSII (~2%), and heat dissipation in the antenna (~5%). These alone reduce max theoretical efficiency to ~11%.</p>
+    </div>
+    <div class="info-box">
+      <h3>Actual C3 Efficiency (~6%)</h3>
+      <span class="val warn">~6% incident solar → fixed carbon</span>
+      <p>The gap between 11% theoretical and ~6% actual is primarily caused by: (1) photorespiration at Phase 5 consuming ~25% of fixed carbon, (2) non-photochemical quenching (NPQ) dissipating excess light as heat at Phase 0, (3) the ATP/NADPH mismatch requiring cyclic electron flow (additional photons per CO2), and (4) the CO2 diffusion limitation through stomata and mesophyll.</p>
+    </div>
+    <div class="info-box">
+      <h3>C4 Efficiency Advantage</h3>
+      <p>C4 plants achieve ~8-9% efficiency under high temperature because: (1) the CO2-concentrating mechanism suppresses photorespiration (Vo/Vc ~0.02 vs 0.25 in C3), recovering ~20% of the lost photons; (2) Rubisco operates at near-saturating CO2 inside bundle sheath cells. Under cool conditions (&lt;20°C), C4 efficiency advantage is reduced because the CO2-concentrating mechanism itself costs ATP.</p>
+    </div>
+    <div class="info-box">
+      <h3>Phase 5: The 11% vs 6% Gap</h3>
+      <p>The entire gap between theoretical (11%) and actual (6%) efficiency is essentially attributable to Phase 5 and its downstream consequences. If photorespiration were eliminated (as in C4), actual C3 efficiency would approach ~8-9%. The N-D-C balance score of 85.2% at Phase 5 directly reflects this energetic cost: D exceeds C by 40 index points, corresponding to ~25% of gross carbon fixation being consumed by the oxygenation pathway.</p>
+    </div>
+  </div>
+
+  <div class="section-title">√2 Structural Symmetry at Phase Boundaries</div>
+  <div class="sqrt2-panel">
+    <h3>√2 Model (Score: 81.0) — Boundary Structural Analysis</h3>
+    <p>The √2 model measures whether what is structurally required at each boundary (D) matches what is structurally delivered (C). A perfectly symmetric boundary has D/C = 1.0 (= √1). The natural overhead of any boundary crossing approaches √2 (1.414) as a minimum cost.</p>
+    <table class="sqrt2-table">
+      <thead><tr><th>Boundary</th><th>From Phase</th><th>To Phase</th><th>D</th><th>C</th><th>D/C Ratio</th><th>Structural Symmetry</th></tr></thead>
+      <tbody>
+        <tr><td>0→1</td><td>Light Harvesting</td><td>PSII</td><td>240</td><td>255</td><td>0.94</td><td>Near-symmetric (D &lt; C: slight C excess)</td></tr>
+        <tr><td>1→2</td><td>PSII</td><td>ETC</td><td>255</td><td>245</td><td>1.04</td><td>Near-symmetric (D ≈ C)</td></tr>
+        <tr><td>2→3</td><td>ETC</td><td>PSI</td><td>245</td><td>250</td><td>0.98</td><td>Near-symmetric (D ≈ C)</td></tr>
+        <tr><td>3→4</td><td>PSI</td><td>ATP Synthase</td><td>250</td><td>240</td><td>1.04</td><td>Near-symmetric (D ≈ C)</td></tr>
+        <tr style="background:rgba(240,136,62,.08);"><td>4→5</td><td>ATP Synthase</td><td>Rubisco fixation</td><td>235→270</td><td>240→230</td><td>1.17</td><td>Asymmetric: D rises sharply at Phase 5 entry due to O2 competition constraint</td></tr>
+        <tr><td>5→6</td><td>Rubisco fixation</td><td>Calvin reduction</td><td>270</td><td>245</td><td>1.10</td><td>Slightly asymmetric (D excess carries through)</td></tr>
+        <tr><td>6→7</td><td>Calvin reduction</td><td>Carbon export</td><td>245</td><td>220</td><td>1.11</td><td>Slightly asymmetric (D excess: export regulation adds overhead)</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:10px;font-size:11px;color:#8b949e;">The thylakoid-to-stroma boundary (Phases 4→5) is the key structural break point. All boundaries within the thylakoid membrane (Phases 0-4) are near-symmetric. The boundary crossing into the stroma introduces the O2 competition constraint that elevates D at Phase 5.</p>
+  </div>
+</div>
+
+<script>
+var wfData=[
+  {id:0,name:'Ph 0: Light Harvesting',note:'Reflection + transmission loss',incoming:100,remaining:85,loss:15,color:'#56d364',lossType:'Reflection/transmission (~15%)'},
+  {id:1,name:'Ph 1: PSII',note:'Fluorescence + heat dissipation',incoming:85,remaining:77,loss:8,color:'#4caf50',lossType:'PSII fluorescence + heat (~8%)'},
+  {id:2,name:'Ph 2: Electron Transport',note:'Redox thermodynamic losses',incoming:77,remaining:74,loss:3,color:'#43a047',lossType:'ETC thermodynamic loss (~3%)'},
+  {id:3,name:'Ph 3: PSI',note:'PSI heat dissipation',incoming:74,remaining:71,loss:3,color:'#388e3c',lossType:'PSI thermodynamic loss (~3%)'},
+  {id:4,name:'Ph 4: ATP Synthase',note:'H+/ATP stoichiometry overhead',incoming:71,remaining:68,loss:3,color:'#2e7d32',lossType:'ATP synthase coupling overhead (~3%)'},
+  {id:5,name:'Ph 5: Carbon Fixation',note:'Photorespiration — largest single loss',incoming:68,remaining:51,loss:17,color:'#f0883e',lossType:'Photorespiration at Rubisco (~17% of original)'},
+  {id:6,name:'Ph 6: Calvin Reduction',note:'ATP/NADPH cyclic flow overhead',incoming:51,remaining:48,loss:3,color:'#2e7d32',lossType:'Cyclic electron flow supplement (~3%)'},
+  {id:7,name:'Ph 7: Carbon Export',note:'Leaf respiration loss',incoming:48,remaining:42,loss:6,color:'#388e3c',lossType:'Dark respiration (~6%)'},
+  {id:'total',name:'Net Fixed Carbon',note:'Incident solar → fixed C',incoming:42,remaining:6,loss:36,color:'#56d364',lossType:'(relative to incident: ~6%)'}
+];
+
+var container=document.getElementById('wf-container');
+wfData.forEach(function(row){
+  var pct=row.remaining;
+  var barW=Math.max(2,pct);
+  var isTotal=row.id==='total';
+  var div=document.createElement('div');
+  div.className='wf-row'+(isTotal?' total':'');
+  div.innerHTML=
+    '<div class="wf-phase">'+
+      '<div class="wf-name">'+row.name+'</div>'+
+      '<div class="wf-note">'+row.note+'</div>'+
+    '</div>'+
+    '<div class="wf-bar-wrap">'+
+      '<div class="wf-bar" style="background:'+row.color+';width:'+barW+'%;">'+
+        (barW>12?pct+'%':'')+'</div>'+
+    '</div>'+
+    '<div class="wf-pct">'+pct+'%</div>'+
+    '<div class="wf-loss">'+(row.loss>0?'−'+row.loss+'%':'')+'</div>';
+  container.appendChild(div);
+  if(!isTotal){
+    var note=document.createElement('div');
+    note.style='font-size:11px;color:#6e7681;padding:0 0 6px 216px;margin-top:-2px;';
+    note.textContent=row.lossType;
+    container.appendChild(note);
+  }
+});
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc a:hover{color:#fff;text-decoration:underline;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><a href="index.html">Energy Chain</a><span class="bc-sep">›</span><span class="bc-cur">Energy Analysis</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hdr=document.querySelector('.header');if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>

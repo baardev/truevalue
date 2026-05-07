@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — Energy Flow Chain</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 50%,#00695c 100%);min-height:100vh;padding:20px;}
+.container{max-width:1400px;margin:0 auto;}
+.hero{background:#fff;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,0.3);padding:60px 50px;text-align:center;margin-bottom:30px;}
+.hero h1{font-size:42px;color:#1b2e1b;margin-bottom:16px;font-weight:300;}
+.tagline{font-size:18px;color:#6c757d;margin-bottom:24px;line-height:1.6;}
+.badge{display:inline-block;padding:6px 14px;background:#e8f5e9;color:#2e7d32;border-radius:20px;font-size:13px;font-weight:700;margin-bottom:18px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin:24px 0;}
+.kpi{background:#f1f8e9;border-radius:8px;padding:20px;text-align:center;border:1px solid #c5e1a5;}
+.kpi-val{font-size:30px;font-weight:800;color:#2e7d32;}
+.kpi-label{font-size:11px;color:#558b2f;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+.bottleneck-bar{background:#fff3e0;border-left:5px solid #e65100;border-radius:0 8px 8px 0;padding:12px 16px;margin:0 auto 24px;max-width:800px;font-size:13px;color:#bf360c;line-height:1.55;}
+.interfaces{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;margin-bottom:32px;}
+.icard{background:#fff;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,0.18);overflow:hidden;transition:all .3s;cursor:pointer;}
+.icard:hover{transform:translateY(-6px);box-shadow:0 18px 50px rgba(0,0,0,0.28);}
+.icard-header{padding:32px 28px;color:#fff;}
+.icard-header.pi{background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%);}
+.icard-header.phi{background:linear-gradient(135deg,#004d40 0%,#00796b 100%);}
+.icard-header.sqrt2{background:linear-gradient(135deg,#1a237e 0%,#283593 100%);}
+.icard-header.ln2{background:linear-gradient(135deg,#880e4f 0%,#c2185b 100%);}
+.icard-header.ctx{background:linear-gradient(135deg,#37474f 0%,#546e7a 100%);}
+.icard-header.lc{background:linear-gradient(135deg,#e65100 0%,#ff6d00 100%);}
+.icard-header h2{font-size:24px;font-weight:400;margin-bottom:8px;}
+.icard-icon{font-size:52px;margin-bottom:14px;}
+.icard-status{display:inline-block;padding:4px 12px;background:rgba(255,255,255,0.2);border-radius:10px;font-size:11px;font-weight:700;}
+.icard-body{padding:28px;}
+.icard-body h3{font-size:16px;color:#1b2e1b;margin-bottom:12px;}
+.icard-body p{font-size:13px;color:#6c757d;line-height:1.6;margin-bottom:14px;}
+.icard-body ul{list-style:none;margin-bottom:18px;}
+.icard-body li{font-size:13px;color:#495057;padding:6px 0 6px 22px;position:relative;}
+.icard-body li::before{content:"✓";position:absolute;left:0;color:#2e7d32;font-weight:bold;}
+.btn-green{display:inline-block;padding:10px 24px;background:linear-gradient(135deg,#1b5e20 0%,#2e7d32 100%);color:#fff;text-decoration:none;border-radius:6px;font-weight:700;font-size:13px;transition:all .2s;}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(46,125,50,.4);}
+.section-label{background:#f1f8e9;border-radius:10px;padding:16px 20px;margin:28px 0 14px;border-left:4px solid #2e7d32;}
+.section-label span{font-size:24px;font-weight:900;color:#2e7d32;}
+.section-label .sl-title{font-size:14px;font-weight:700;color:#1b2e1b;}
+.section-label .sl-sub{font-size:12px;color:#6c757d;}
+.footer{text-align:center;color:rgba(255,255,255,.85);font-size:13px;margin-top:18px;padding:8px 0;}
+@media(max-width:700px){.interfaces,.kpi-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="hero">
+  <div class="badge">Photosynthesis · Energy Flow Chain · C3 Canonical</div>
+  <h1>⚡ Energy Flow Chain — 8 Phases</h1>
+  <p class="tagline">Phase-resolved N-D-C analysis of C3 photosynthesis from photon capture to carbon export.<br/>Chain balance: 95.4% · Average N: 232 · One structural bottleneck: Phase 5 (Rubisco)</p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">8</div><div class="kpi-label">Phases</div></div>
+    <div class="kpi"><div class="kpi-val">95.4%</div><div class="kpi-label">Chain Balance</div></div>
+    <div class="kpi"><div class="kpi-val">7/8</div><div class="kpi-label">Coherent Phases</div></div>
+    <div class="kpi"><div class="kpi-val">85.2%</div><div class="kpi-label">Phase 5 Balance</div></div>
+  </div>
+  <div class="bottleneck-bar">
+    <strong>Bottleneck: Phase 5 (Calvin Cycle: Carbon Fixation).</strong>
+    D = 270, C = 230. The D-C gap is caused by Rubisco's bifunctionality: it fixes both CO2 (productive) and O2 (wasteful photorespiration).
+    Under current atmosphere (21% O2), ~25% of light energy captured by Phases 0-4 is consumed by photorespiration.
+    The chain average balance (95.4%) is high because all seven other phases are coherent; Phase 5 alone creates the structural deviation.
+  </div>
+</div>
+
+<div class="section-label">
+  <span>π</span>
+  <div class="sl-title">π Operational Model — Layer 1 of 5</div>
+  <div class="sl-sub">Per-phase D-C balance. Measures operational sustainability of each phase in isolation.</div>
+</div>
+<div class="interfaces">
+  <div class="icard" onclick="location.href='dashboard.html'">
+    <div class="icard-header pi"><div class="icard-icon">📊</div><h2>π — Phase Dashboard</h2><span class="icard-status">Active</span></div>
+    <div class="icard-body">
+      <h3>Operational D-C Balance — All 8 Phases</h3>
+      <p>Per-phase view of D vs C balance, N-state, sustainability index, and key metrics across all 8 energy flow phases.</p>
+      <ul>
+        <li>Phase 0-7 D-C balance visualization</li>
+        <li>Balance zone coloring (coherent / stressed / failure)</li>
+        <li>N-D-C radar chart for all phases</li>
+        <li>Phase 5 bottleneck highlighted</li>
+        <li>Key metrics per phase (quantum yield, rate constants)</li>
+      </ul>
+      <a class="btn-green" href="dashboard.html">Launch Dashboard →</a>
+    </div>
+  </div>
+  <div class="icard" onclick="location.href='what_if_simulator.html'">
+    <div class="icard-header pi"><div class="icard-icon">🎛️</div><h2>π — What-If Simulator</h2><span class="icard-status">Active</span></div>
+    <div class="icard-body">
+      <h3>Environmental Parameter Modeling</h3>
+      <p>Adjust CO2 concentration, light intensity, temperature, and O2 level. Observe how changes cascade through all 8 phases and affect the Phase 5 D-C balance and chain efficiency.</p>
+      <ul>
+        <li>CO2 concentration slider (200-1000 ppm)</li>
+        <li>Light intensity slider (0-2000 µmol photons m-2 s-1)</li>
+        <li>Temperature slider (10-40°C)</li>
+        <li>O2 concentration slider (2-21%)</li>
+        <li>Live recalculation of An, photorespiration, and phase balances</li>
+      </ul>
+      <a class="btn-green" href="what_if_simulator.html">Launch Simulator →</a>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">
+  <span>φ</span>
+  <div class="sl-title">φ Proportional Model — Layer 2 of 5</div>
+  <div class="sl-sub">Cross-phase N-value ratios. Measures proportional coherence between adjacent phases.</div>
+</div>
+<div class="interfaces" style="margin-bottom:32px;">
+  <div class="icard" onclick="location.href='phi_dashboard.html'" style="border-top:4px solid #00796b;">
+    <div class="icard-header phi"><div class="icard-icon">φ</div><h2>φ Proportional Model</h2><span class="icard-status">Active</span></div>
+    <div class="icard-body">
+      <h3>Cross-Phase Proportional Coherence</h3>
+      <p>Analyzes whether N-values scale in φ (golden ratio) proportions between adjacent phases. The Phase 5 step-down is the dominant signal in the photosynthesis proportional profile.</p>
+      <ul>
+        <li>All 7 phase boundaries scored against φ = 1.618</li>
+        <li>Phase 4-5 boundary: sharpest N-value drop in the chain</li>
+        <li>Proportional coherence score: 74.2</li>
+        <li>Visual ratio scale showing all boundary ratios</li>
+      </ul>
+      <a class="btn-green" href="phi_dashboard.html" style="background:linear-gradient(135deg,#004d40,#00796b);">Launch φ Model →</a>
+    </div>
+  </div>
+  <div class="icard" onclick="location.href='ln2_dashboard.html'" style="border-top:4px solid #c2185b;">
+    <div class="icard-header ln2"><div class="icard-icon" style="font-size:28px;">ln(2)</div><h2>ln(2) Growth Model</h2><span class="icard-status">Active</span></div>
+    <div class="icard-body">
+      <h3>Transformation Phase Growth Efficiency</h3>
+      <p>Analyzes transformation phases (Calvin cycle Phases 5-7). Measures whether photorespiratory constraints suppress natural carbon doubling. System score: 65.5.</p>
+      <ul>
+        <li>Calvin cycle phases scored for transformation efficiency</li>
+        <li>Photorespiration as natural constraint (not institutional)</li>
+        <li>C/D ratio reference scale (target: 2.0×)</li>
+        <li>What-if: reduce O2 concentration, see score impact</li>
+      </ul>
+      <a class="btn-green" href="ln2_dashboard.html" style="background:linear-gradient(135deg,#880e4f,#c2185b);">Launch ln(2) Model →</a>
+    </div>
+  </div>
+</div>
+
+<div class="section-label">
+  <span style="font-size:20px;">√2 · e</span>
+  <div class="sl-title">Structural and Abstract Models — Layers 3 and 5</div>
+  <div class="sl-sub">√2: boundary symmetry between compartments. e: abstract coupling (unmeasured — not applicable).</div>
+</div>
+<div class="interfaces" style="margin-bottom:32px;">
+  <div class="icard" onclick="location.href='energy_analysis.html'" style="border-top:4px solid #283593;">
+    <div class="icard-header sqrt2"><div class="icard-icon">⚡</div><h2>Energy Analysis</h2><span class="icard-status">Active</span></div>
+    <div class="icard-body">
+      <h3>Photon Budget and Quantum Efficiency</h3>
+      <p>Tracks the photon budget from incident PAR through each phase to net carbon fixation. Quantifies the ~6% whole-chain efficiency and where the losses occur.</p>
+      <ul>
+        <li>Photon budget: 100 absorbed → ~6 fixed as carbon</li>
+        <li>Loss allocation per phase</li>
+        <li>Theoretical (11%) vs actual (6%) efficiency gap</li>
+        <li>Structural symmetry at thylakoid-stroma boundary (√2 model)</li>
+      </ul>
+      <a class="btn-green" href="energy_analysis.html" style="background:linear-gradient(135deg,#1a237e,#283593);">Open Energy Analysis →</a>
+    </div>
+  </div>
+  <div class="icard" onclick="location.href='project_context.html'" style="border-top:4px solid #546e7a;">
+    <div class="icard-header ctx"><div class="icard-icon">📋</div><h2>Project Context</h2><span class="icard-status">Reference</span></div>
+    <div class="icard-body">
+      <h3>Methodology and Data Sources</h3>
+      <p>Phase map, N-D-C derivation methodology, data sources, tholonic framework application to biological energy conversion, and C4/CAM pathway comparison.</p>
+      <ul>
+        <li>8-phase energy flow map with D/C/N per phase</li>
+        <li>D and C parameter definitions per phase</li>
+        <li>Primary literature sources with citations</li>
+        <li>Tholonic framework application notes</li>
+        <li>C4 and CAM structural comparison</li>
+      </ul>
+      <a class="btn-green" href="project_context.html" style="background:linear-gradient(135deg,#37474f,#546e7a);">Open Project Context →</a>
+    </div>
+  </div>
+</div>
+
+<div class="interfaces" style="margin-bottom:32px;">
+  <div class="icard" onclick="location.href='system_lifecycle.html'" style="border-top:4px solid #ff6d00;">
+    <div class="icard-header lc"><div class="icard-icon">🔁</div><h2>System Lifecycle N-D-C</h2><span class="icard-status">Active</span></div>
+    <div class="icard-body">
+      <h3>Resource, Develop, Operate, Sustain</h3>
+      <p>Four-phase lifecycle of the photosynthetic apparatus from leaf development through sustained photosynthesis and the repair systems that maintain it.</p>
+      <ul>
+        <li>Phase 0: Resource definition (leaf morphology, chloroplast blueprint)</li>
+        <li>Phase 1: Develop (chloroplast biogenesis, photosystem assembly)</li>
+        <li>Phase 2: Operate (active photosynthesis during photoperiod)</li>
+        <li>Phase 3: Sustain (D1 turnover, carotenoid protection, antioxidants)</li>
+        <li>Lifecycle bottleneck: Phase 3 repair demand exceeds capacity under stress</li>
+      </ul>
+      <a class="btn-green" href="system_lifecycle.html" style="background:linear-gradient(135deg,#e65100,#ff6d00);">Open Lifecycle N-D-C →</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">Photosynthesis · Energy Flow Chain · C3 Canonical · v1.0 · <a href="../index.html" style="color:rgba(255,255,255,.85);">Hub</a></div>
+</div>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc a:hover{color:#fff;text-decoration:underline;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><span class="bc-cur">Energy Flow Chain</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hero=document.querySelector('.hero,.container');if(hero)hero.parentNode.insertBefore(nav,hero);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+{
+  "_meta": {
+    "generated": "2026-05-06",
+    "material": "photosynthesis",
+    "note": "Ecological output chain data for C3 photosynthesis. Three analytical layers: ecological outputs (carbon, O2, biomass, sequestration), energy efficiency (quantum yields, stoichiometries), and stress responses (D-C imbalance under four stress states)."
+  },
+  "ecological_outputs": {
+    "0": { "phase": "Light Harvesting", "carbon_fixation_contribution": "indirect enabler", "o2_evolution": "indirect", "biomass_contribution": "indirect enabler", "sequestration_potential_tC_ha_yr": null, "key_metric": "Absorptance PAR = 0.85", "key_metric_unit": "fraction" },
+    "1": { "phase": "Photosystem II", "carbon_fixation_contribution": "electron source for all fixation", "o2_evolution_umol_m2_s": 28, "biomass_contribution": "foundation of net primary productivity", "sequestration_potential_tC_ha_yr": null, "key_metric": "O2 evolution at saturation = 28 µmol m-2 s-1", "key_metric_unit": "µmol O2 m-2 s-1" },
+    "2": { "phase": "Electron Transport Chain", "carbon_fixation_contribution": "energizes Calvin cycle", "o2_evolution": "indirect", "biomass_contribution": "determines ATP/NADPH for biomass synthesis", "sequestration_potential_tC_ha_yr": null, "key_metric": "pmf = 175 mV", "key_metric_unit": "mV" },
+    "3": { "phase": "Photosystem I", "carbon_fixation_contribution": "NADPH for Calvin cycle and N/S assimilation", "o2_evolution": "indirect", "biomass_contribution": "NADPH drives fatty acid synthesis and chlorophyll biosynthesis beyond carbon fixation", "sequestration_potential_tC_ha_yr": null, "key_metric": "NADPH production ~10 µmol m-2 s-1", "key_metric_unit": "µmol NADPH m-2 s-1" },
+    "4": { "phase": "ATP Synthase", "carbon_fixation_contribution": "ATP for Calvin cycle RuBP regeneration", "o2_evolution": "indirect", "biomass_contribution": "ATP fuels all biosynthetic processes", "sequestration_potential_tC_ha_yr": null, "key_metric": "ATP/NADPH ratio from linear flow = 1.28", "key_metric_unit": "mol/mol" },
+    "5": { "phase": "Calvin Cycle: Carbon Fixation", "carbon_fixation_contribution_umol_m2_s": 20, "o2_evolution": "indirect (O2 consumed by photorespiration = ~5 µmol m-2 s-1)", "biomass_contribution": "direct: fixed carbon enters all biosynthetic pathways", "sequestration_potential_tC_ha_yr": 12, "key_metric": "Net An = 20 µmol CO2 m-2 s-1; Photorespiration loss ~25%", "key_metric_unit": "µmol CO2 m-2 s-1" },
+    "6": { "phase": "Calvin Cycle: Reduction", "carbon_fixation_contribution": "converts fixed CO2 to organic carbon (G3P)", "o2_evolution": "indirect", "biomass_contribution": "G3P is universal precursor to all plant organic compounds", "sequestration_potential_tC_ha_yr": null, "key_metric": "G3P export ~4 µmol triose-P m-2 s-1", "key_metric_unit": "µmol triose-P m-2 s-1" },
+    "7": { "phase": "Carbon Export", "carbon_fixation_contribution": "distributes fixed carbon to growth sinks", "o2_evolution": "indirect", "biomass_contribution": "sucrose and starch fuel all plant growth; sink demand determines whole-plant carbon balance", "sequestration_potential_tC_ha_yr": 9, "key_metric": "Export efficiency ~75% of fixed C; sucrose ~12 + starch ~6 µmol C m-2 s-1", "key_metric_unit": "µmol C m-2 s-1" }
+  },
+  "energy_efficiency": {
+    "0": { "phase": "Light Harvesting", "theoretical_max_quantum_yield": 0.95, "actual_quantum_yield": 0.90, "efficiency_pct": 94.7, "stoichiometry": "~1 excitation per absorbed photon", "notes": "Near-theoretical: energy transfer within LHCII is 95%+ efficient via Forster resonance transfer." },
+    "1": { "phase": "Photosystem II", "theoretical_max_quantum_yield": 0.88, "actual_quantum_yield": 0.83, "efficiency_pct": 94.3, "stoichiometry": "4 photons -> 1 O2; 2 PQH2; 4 H+ into lumen", "notes": "Fv/Fm = 0.83 in healthy dark-adapted leaf vs theoretical max 0.88. Dark reactions and charge recombination cause the gap." },
+    "2": { "phase": "Electron Transport Chain", "theoretical_max_quantum_yield": 1.0, "actual_quantum_yield": 0.95, "efficiency_pct": 95.0, "stoichiometry": "2 H+ pumped per electron via Q-cycle at cytochrome b6f", "notes": "Highly efficient electron carrier. Q-cycle amplifies proton pumping. Rate-limiting but energetically efficient." },
+    "3": { "phase": "Photosystem I", "theoretical_max_quantum_yield": 0.88, "actual_quantum_yield": 0.80, "efficiency_pct": 90.9, "stoichiometry": "2 photons -> 2 reduced ferredoxin -> 1 NADPH", "notes": "Y(I) ~0.80 under moderate light. Losses from acceptor-side limitation and P700+ recombination." },
+    "4": { "phase": "ATP Synthase", "theoretical_max_quantum_yield": null, "actual_quantum_yield": null, "efficiency_pct": null, "stoichiometry": "14/3 H+ per ATP (spinach CF1CF0); ATP/NADPH ratio 1.28 vs demand 1.5", "notes": "ATP/NADPH mismatch requires ~15% cyclic electron flow supplement. Thermodynamically efficient (~60%) under in vivo pmf." },
+    "5": { "phase": "Calvin Cycle: Carbon Fixation", "theoretical_max_quantum_yield": 0.125, "actual_quantum_yield": 0.055, "efficiency_pct": 44.0, "stoichiometry": "8 photons minimum per CO2 fixed (theoretical); ~18 photons actual (C3 with photorespiration)", "notes": "Largest efficiency gap in the system. Theoretical minimum 8 photons/CO2; actual ~16-18 due to photorespiration ATP/NADPH costs. The 11% theoretical vs 6% practical whole-chain efficiency gap originates here." },
+    "6": { "phase": "Calvin Cycle: Reduction", "theoretical_max_quantum_yield": null, "actual_quantum_yield": null, "efficiency_pct": 93.0, "stoichiometry": "3 ATP + 2 NADPH consumed per CO2 fixed; essentially 100% of G3P produced goes toward RuBP regeneration or export", "notes": "Highly efficient when ATP and NADPH supply is adequate. TPU limitation under high CO2 is the efficiency failure mode." },
+    "7": { "phase": "Carbon Export", "theoretical_max_quantum_yield": null, "actual_quantum_yield": null, "efficiency_pct": 75.0, "stoichiometry": "~75% of fixed carbon exported; ~25% consumed by leaf respiration and photorespiratory carbon skeleton recycling", "notes": "Export efficiency highly variable by species, age, and temperature. The 25% respiratory cost is largely unavoidable maintenance." }
+  },
+  "stress_responses": {
+    "heat": {
+      "description": "Elevated temperature (>30°C) stress",
+      "phases_affected": [0, 1, 4, 5],
+      "details": {
+        "0": { "effect": "NPQ increases to dissipate excess excitation energy", "direction": "D increases (heat dissipation constraint)", "severity": "moderate" },
+        "1": { "effect": "Mn4CaO5 cluster destabilization; D1 protein damage rate accelerates; Fv/Fm declines", "direction": "D increases sharply (repair demand exceeds repair rate)", "severity": "severe" },
+        "4": { "effect": "Membrane fluidity increases; H+ leak across thylakoid rises; ATP synthesis efficiency drops", "direction": "C decreases (ATP yield per H+ declines)", "severity": "moderate" },
+        "5": { "effect": "Rubisco specificity factor Sc/o decreases with temperature; photorespiration fraction increases sharply above 30°C", "direction": "D increases further (O2 competition intensifies)", "severity": "severe" }
+      }
+    },
+    "drought": {
+      "description": "Water deficit and stomatal closure",
+      "phases_affected": [4, 5, 7],
+      "details": {
+        "4": { "effect": "Membrane dehydration increases passive H+ conductance; pmf destabilized", "direction": "C decreases (ATP yield declines)", "severity": "moderate" },
+        "5": { "effect": "Stomatal closure reduces CO2 supply; internal CO2/O2 ratio falls; photorespiration increases; Rubisco activation state declines", "direction": "D increases sharply (substrate limitation + O2 competition)", "severity": "severe" },
+        "7": { "effect": "Reduced turgor limits phloem loading; sucrose export declines; starch accumulation inhibits upstream phases via Pi trapping", "direction": "C decreases (export capacity declines)", "severity": "moderate" }
+      }
+    },
+    "high_light": {
+      "description": "Excess light (PAR > 1000 µmol photons m-2 s-1)",
+      "phases_affected": [0, 1, 3],
+      "details": {
+        "0": { "effect": "NPQ (non-photochemical quenching) activated; thermal dissipation increases; effective antenna size decreases to protect PSII", "direction": "D increases (photoprotection constraint activates)", "severity": "moderate (protective, not damaging if NPQ functions)" },
+        "1": { "effect": "PSII photoinhibition when excitation exceeds repair capacity; D1 protein oxidized; Fv/Fm declines; O2 evolution rate falls", "direction": "D increases (repair demand exceeds capacity at D-C balance of Phase 3 Lifecycle)", "severity": "severe (if chronic)" },
+        "3": { "effect": "PSI acceptor-side limitation under fluctuating light; reactive oxygen species (ROS) generated at FeS clusters under sudden high light pulses", "direction": "C decreases (NADPH production impaired by acceptor limitation)", "severity": "moderate to severe under rapid fluctuation" }
+      }
+    },
+    "elevated_co2": {
+      "description": "Elevated atmospheric CO2 (>700 ppm, e.g. 2×CO2 scenarios)",
+      "phases_affected": [5, 6, 7],
+      "details": {
+        "5": { "effect": "Rubisco carboxylation rate increases; oxygenation ratio Vo/Vc decreases; photorespiration suppressed; An increases by ~20-30%", "direction": "D decreases (CO2 substrate limitation relieved; O2 competition reduced)", "severity": "positive (reduces Phase 5 D-C imbalance)" },
+        "6": { "effect": "Increased G3P production; ATP and NADPH consumed faster; cyclic electron flow demand increases", "direction": "D increases slightly (energetic demand on light reactions increases)", "severity": "mild" },
+        "7": { "effect": "TPU (triose phosphate utilization) limitation emerges when sucrose and starch synthesis cannot keep up with increased G3P supply; feedback inhibits upstream An", "direction": "C decreases (export bottleneck)", "severity": "moderate (observed as CO2 response curve saturation at elevated CO2 under cold or nutrient limitation)" }
+      }
+    }
+  }
+}

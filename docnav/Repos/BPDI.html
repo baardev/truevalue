@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BPDI — Biological Phase Discovery Instrument</title>
+<style>
+:root {
+  --green-dark: #1b5e20;
+  --green-mid: #2e7d32;
+  --green-light: #43a047;
+  --green-pale: #e8f5e9;
+  --green-border: #a5d6a7;
+  --teal: #00796b;
+  --teal-pale: #e0f2f1;
+  --amber: #e65100;
+  --text: #1c2e1c;
+  --muted: #6c757d;
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: #f4f7f4;
+  color: var(--text);
+  min-height: 100vh;
+}
+/* Header */
+.header {
+  background: linear-gradient(135deg, var(--green-dark) 0%, var(--green-mid) 60%, var(--teal) 100%);
+  padding: 24px 32px 20px;
+  color: #fff;
+}
+.header h1 { font-size: 26px; font-weight: 300; line-height: 1.2; }
+.header h1 strong { font-weight: 700; }
+.header .tagline { font-size: 13px; opacity: .85; margin-top: 6px; }
+.header .badges { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.badge { padding: 4px 12px; border-radius: 10px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .15s; }
+.badge.pathway { background: rgba(255,255,255,.15); color: #fff; border: 1px solid rgba(255,255,255,.3); }
+.badge.pathway.active { background: #fff; color: var(--green-dark); }
+.badge.stress { background: rgba(230,81,0,.3); color: #fff; border: 1px solid rgba(230,81,0,.4); }
+.badge.stress.active { background: #ff6d00; color: #fff; }
+/* Progress nav */
+.progress-nav {
+  background: #fff;
+  border-bottom: 1px solid #dee2e6;
+  padding: 0 24px;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+.step-btn {
+  padding: 12px 18px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  background: none;
+  border-bottom: 3px solid transparent;
+  transition: all .15s;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+.step-btn:hover { color: var(--green-mid); }
+.step-btn.active { color: var(--green-mid); border-bottom-color: var(--green-mid); }
+.step-btn.completed { color: var(--green-mid); }
+.step-btn.completed::before { content: "✓ "; }
+/* Main layout */
+.main { max-width: 960px; margin: 0 auto; padding: 28px 20px; }
+/* Step panes */
+.step-pane { display: none; }
+.step-pane.active { display: block; }
+/* Sections */
+.section-card {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  padding: 24px 28px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.06);
+}
+.section-card h2 {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--green-pale);
+}
+.section-card h3 { font-size: 13px; font-weight: 700; color: var(--green-mid); margin: 12px 0 6px; }
+/* Form elements */
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 14px; }
+.form-row.single { grid-template-columns: 1fr; }
+.form-row.triple { grid-template-columns: 1fr 1fr 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+label { font-size: 12px; font-weight: 700; color: var(--green-dark); text-transform: uppercase; letter-spacing: .05em; }
+input[type=text], input[type=number], select, textarea {
+  padding: 8px 12px;
+  border: 1px solid #ced4da;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  background: #fff;
+  transition: border-color .15s;
+}
+input:focus, select:focus, textarea:focus {
+  outline: none;
+  border-color: var(--green-mid);
+  box-shadow: 0 0 0 3px rgba(46,125,50,.12);
+}
+textarea { resize: vertical; min-height: 80px; }
+.field-note { font-size: 11px; color: var(--muted); margin-top: 2px; }
+/* Phase card */
+.phase-block {
+  background: var(--green-pale);
+  border: 1px solid var(--green-border);
+  border-radius: 10px;
+  padding: 18px 22px;
+  margin-bottom: 16px;
+}
+.phase-block.stress-mode {
+  background: #fff3e0;
+  border-color: #ffb74d;
+}
+.phase-block h3 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--green-dark);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.phase-num-badge {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--green-mid);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.phase-num-badge.bottleneck { background: var(--amber); }
+.stress-toggle {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--amber);
+  cursor: pointer;
+  user-select: none;
+}
+.stress-toggle input[type=checkbox] { accent-color: var(--amber); }
+.ndc-row { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 10px; margin: 10px 0; }
+.ndc-box { border-radius: 6px; padding: 10px 12px; }
+.ndc-d { background: #e3f2fd; border-left: 3px solid #1565c0; }
+.ndc-c { background: #fce4ec; border-left: 3px solid #c62828; }
+.ndc-n { background: var(--green-pale); border-left: 3px solid var(--green-mid); }
+.ndc-balance { background: #f3e5f5; border-left: 3px solid #7b1fa2; }
+.ndc-box label { font-size: 10px; color: #888; }
+.ndc-box .computed { font-size: 16px; font-weight: 800; color: var(--green-dark); display: block; margin-top: 2px; }
+.ndc-d .computed { color: #1565c0; }
+.ndc-c .computed { color: #c62828; }
+.ndc-balance .computed { color: #7b1fa2; }
+.opacity-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 8px 0; }
+.opacity-btn { padding: 5px 12px; border-radius: 8px; border: 1px solid #ced4da; background: #f8f9fa; font-size: 11px; font-weight: 700; cursor: pointer; transition: all .15s; }
+.opacity-btn.active { background: var(--green-mid); color: #fff; border-color: var(--green-mid); }
+.opacity-btn[data-score="3"].active, .opacity-btn[data-score="4"].active { background: var(--amber); border-color: var(--amber); }
+/* Health score */
+.health-panel {
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+}
+.health-score { font-size: 48px; font-weight: 800; color: var(--green-mid); line-height: 1; }
+.health-score.warn { color: #e65100; }
+.health-score.bad { color: #c62828; }
+/* YAML output */
+.yaml-panel {
+  background: #0d1117;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+}
+.yaml-panel h2 { color: #56d364; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; margin-bottom: 12px; }
+#yaml-output {
+  background: #161b22;
+  border: 1px solid #30363d;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  color: #e6edf3;
+  white-space: pre;
+  overflow-x: auto;
+  max-height: 500px;
+  overflow-y: auto;
+}
+/* Navigation buttons */
+.nav-row { display: flex; justify-content: space-between; margin-top: 24px; }
+.btn { padding: 11px 24px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer; border: none; transition: all .15s; }
+.btn-green { background: linear-gradient(135deg, var(--green-dark), var(--green-mid)); color: #fff; }
+.btn-green:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(46,125,50,.35); }
+.btn-outline { background: transparent; color: var(--green-mid); border: 2px solid var(--green-mid); }
+.btn-outline:hover { background: var(--green-pale); }
+.btn-copy { background: #1565c0; color: #fff; }
+.btn-copy:hover { background: #1976d2; }
+.btn-export { background: var(--teal); color: #fff; }
+/* Disclaimer */
+.disclaimer { background: var(--green-pale); border: 1px solid var(--green-border); border-radius: 8px; padding: 12px 16px; font-size: 12px; color: var(--green-dark); line-height: 1.6; margin-bottom: 18px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <h1>🌿 <strong>BPDI</strong> — Biological Phase Discovery Instrument</h1>
+  <div class="tagline">Tholonic N-D-C framework for plant energy conversion systems · Adapted from SCPI-SME (Supply Chain Profile Instrument)</div>
+  <div class="badges">
+    <span class="badge pathway active" data-pathway="c3" onclick="selectPathway('c3',this)">C3 Photosynthesis (Active)</span>
+    <span class="badge pathway" data-pathway="c4" onclick="selectPathway('c4',this)">C4 Photosynthesis</span>
+    <span class="badge pathway" data-pathway="cam" onclick="selectPathway('cam',this)">CAM Photosynthesis</span>
+    <span class="badge stress" id="global-stress-badge" onclick="toggleGlobalStress()">Stress Mode OFF</span>
+  </div>
+</div>
+
+<!-- PROGRESS NAV -->
+<div class="progress-nav">
+  <button class="step-btn active" id="step-btn-0" onclick="goStep(0)">0. System Info</button>
+  <button class="step-btn" id="step-btn-1" onclick="goStep(1)">1. Phases 0–3</button>
+  <button class="step-btn" id="step-btn-2" onclick="goStep(2)">2. Phases 4–7</button>
+  <button class="step-btn" id="step-btn-3" onclick="goStep(3)">3. System Health</button>
+  <button class="step-btn" id="step-btn-4" onclick="goStep(4)">4. YAML Export</button>
+</div>
+
+<div class="main">
+  <div class="disclaimer">
+    <strong>BPDI v1.0</strong> — This instrument maps photosynthetic phases using the Tholonic N-D-C framework.
+    Pre-loaded with canonical C3 reference values (<em>Spinacia oleracea / Arabidopsis thaliana</em> at 25°C, 380 ppm CO2, saturating light).
+    Change pathway badge above to switch between C3, C4, and CAM phase templates.
+    Enable Stress Mode per phase to document D-C imbalance under specific stress conditions.
+  </div>
+
+  <!-- STEP 0: SYSTEM INFO -->
+  <div class="step-pane active" id="step-0">
+    <div class="section-card">
+      <h2>Module 0 — System Identification</h2>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Pathway</label>
+          <select id="f-pathway">
+            <option value="C3">C3 Photosynthesis</option>
+            <option value="C4">C4 Photosynthesis</option>
+            <option value="CAM">CAM Photosynthesis</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Reference Organism</label>
+          <input type="text" id="f-organism" value="Spinacia oleracea (spinach)"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Analyst Name</label>
+          <input type="text" id="f-analyst" value=""/>
+        </div>
+        <div class="form-group">
+          <label>Date Completed</label>
+          <input type="text" id="f-date" value="2026-05-06"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Standard Conditions (temperature, CO2, O2, light)</label>
+          <input type="text" id="f-conditions" value="25°C, 380 ppm CO2, 21% O2, saturating light ~1000 µmol photons m⁻² s⁻¹"/>
+        </div>
+        <div class="form-group">
+          <label>Leaf Type / Growth Form</label>
+          <input type="text" id="f-leaf-type" value="Mesophytic C3 dicot, sun-adapted"/>
+        </div>
+      </div>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Project Notes</label>
+          <textarea id="f-notes" placeholder="Describe the analytical context, known stressors, key literature sources...">C3 canonical analysis. Reference values from Farquhar et al. 1980 (Phase 5), Blankenship 2014 (Phases 0-4), Stitt et al. 2010 (Phase 7). The Tholonic N-D-C framework maps the energy flow chain from photon capture (Phase 0) to carbon export (Phase 7).</textarea>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-card">
+      <h2>Module 0b — Primary Data Sources</h2>
+      <div class="form-row single">
+        <div class="form-group">
+          <label>Source Overview (numbered list, with URLs)</label>
+          <textarea id="f-sources" rows="8">1. Farquhar, G.D., von Caemmerer, S. and Berry, J.A. (1980). A biochemical model of photosynthetic CO2 assimilation in leaves of C3 species. Planta 149: 78-90. https://doi.org/10.1007/BF00386231
+2. Blankenship, R.E. (2014). Molecular Mechanisms of Photosynthesis. 2nd ed. Wiley-Blackwell. https://doi.org/10.1002/9781118685068
+3. Cramer, W.A. et al. (2011). Some new structural aspects and old controversies concerning the cytochrome b6f complex. Biochim Biophys Acta 1807: 788-802.
+4. Allen, J.F. (2003). Cyclic, pseudocyclic and noncyclic photophosphorylation. Science 299: 1731-1732.
+5. Maxwell, K. and Johnson, G.N. (2000). Chlorophyll fluorescence. J Exp Bot 51: 659-668.
+6. Stitt, M. et al. (2010). Steps towards an integrated view of nitrogen metabolism. Plant Cell Environ 33: 701-722.
+7. Raines, C.A. (2003). The Calvin cycle revisited. Photosynth Res 75: 1-10.</textarea>
+        </div>
+      </div>
+    </div>
+    <div class="nav-row"><span></span><button class="btn btn-green" onclick="goStep(1)">Next: Phases 0–3 →</button></div>
+  </div>
+
+  <!-- STEP 1: PHASES 0-3 -->
+  <div class="step-pane" id="step-1">
+    <div class="section-card">
+      <h2>Module 1 — Energy Flow Phases 0–3 (Light Reactions)</h2>
+      <div id="phases-0-3"></div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-outline" onclick="goStep(0)">← Back</button>
+      <button class="btn btn-green" onclick="goStep(2)">Next: Phases 4–7 →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: PHASES 4-7 -->
+  <div class="step-pane" id="step-2">
+    <div class="section-card">
+      <h2>Module 2 — Energy Flow Phases 4–7 (Calvin Cycle and Export)</h2>
+      <div id="phases-4-7"></div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-outline" onclick="goStep(1)">← Back</button>
+      <button class="btn btn-green" onclick="goStep(3)">Next: System Health →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: SYSTEM HEALTH -->
+  <div class="step-pane" id="step-3">
+    <div class="section-card">
+      <h2>Module 3 — System Health and Phase Map</h2>
+      <div class="health-panel">
+        <div style="display:flex;align-items:flex-start;gap:24px;flex-wrap:wrap;">
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Chain Balance Score</div>
+            <div class="health-score" id="health-score-val">—</div>
+            <div style="font-size:12px;color:var(--muted);margin-top:4px;" id="health-score-label">Calculated from phase D-C balances</div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Average N</div>
+            <div class="health-score" id="health-n-val" style="font-size:36px;">—</div>
+          </div>
+          <div>
+            <div style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Bottleneck Phase</div>
+            <div class="health-score" id="health-bottleneck" style="font-size:24px;color:var(--amber);">—</div>
+          </div>
+        </div>
+      </div>
+      <div id="health-phase-summary"></div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-outline" onclick="goStep(2)">← Back</button>
+      <button class="btn btn-green" onclick="generateYAML();goStep(4)">Generate YAML Export →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: YAML EXPORT -->
+  <div class="step-pane" id="step-4">
+    <div class="yaml-panel">
+      <h2>YAML Export — N-D-C Pipeline Input</h2>
+      <pre id="yaml-output">Generating...</pre>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;">
+        <button class="btn btn-copy" onclick="copyYAML()">Copy YAML</button>
+        <button class="btn btn-export" onclick="downloadYAML()">Download YAML</button>
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn btn-outline" onclick="goStep(3)">← Back to Health</button>
+      <a href="/frontend/project/photosynthesis/index.html" class="btn btn-green" style="text-decoration:none;display:inline-block;padding:11px 24px;">View Project Hub →</a>
+    </div>
+  </div>
+</div><!-- /main -->
+
+<script>
+// ---- Phase definitions ----
+var PHASES = {
+  c3: [
+    {id:0, name:'Light Harvesting', compartment:'Thylakoid / LHCII antenna', physical_in:'Incident photons (PAR 400-700nm)', physical_out:'Excitation energy at PSII/PSI reaction centers', transformation:'Forster energy transfer via LHCII antenna', time_scale:'Femtoseconds to picoseconds', transparency:'high', output:'Absorbed photon fraction (absorptance)', output_unit:'fraction (0-1)', D_default:240, C_default:255, D_params:'Absorption spectrum 400-700nm; Chl a/b ratio ~3:1; antenna size ~230 Chl/PSII; energy gradient; NPQ activation threshold', C_params:'Excitation energy delivered to reaction centers; state 1/2 transitions; NPQ protection at excess light'},
+    {id:1, name:'Photosystem II', compartment:'Thylakoid / PSII reaction center', physical_in:'Excitation at P680; H2O', physical_out:'Plastoquinol; O2; H+ into lumen', transformation:'Water oxidation at Mn4CaO5; plastoquinone reduction', time_scale:'Microseconds', transparency:'high', output:'O2 evolution rate; Fv/Fm', output_unit:'µmol O2 m-2 s-1; dimensionless', D_default:255, C_default:245, D_params:'Excitation threshold 1.82 eV; Mn4CaO5 geometry; QB binding; tyrosine Z; D1 protein structural integrity', C_params:'O2 evolution (4e- per O2); 2 PQH2 per 4 photons; 4 H+ into lumen per 2 H2O'},
+    {id:2, name:'Electron Transport Chain', compartment:'Thylakoid / cytochrome b6f', physical_in:'Plastoquinol (PQH2)', physical_out:'Reduced plastocyanin; proton gradient', transformation:'Q-cycle at cytochrome b6f; proton pumping', time_scale:'Milliseconds', transparency:'high', output:'Electron transfer rate; pmf', output_unit:'µmol e- m-2 s-1; mV', D_default:245, C_default:250, D_params:'PQ pool size; cytochrome b6f rate limit ~150 e- complex-1 s-1; pH gating; state transition control', C_params:'Plastocyanin reduction; 2 H+ pumped per e- via Q-cycle; pmf generation ~175 mV'},
+    {id:3, name:'Photosystem I', compartment:'Thylakoid / PSI reaction center', physical_in:'Reduced plastocyanin; excitation at P700', physical_out:'Reduced ferredoxin; NADPH', transformation:'P700 excitation; ferredoxin reduction; FNR catalysis', time_scale:'Microseconds', transparency:'high', output:'NADPH production rate; PSI Y(I)', output_unit:'µmol NADPH m-2 s-1; dimensionless', D_default:250, C_default:255, D_params:'P700 threshold 1.77 eV; ferredoxin specificity; NADP+ availability; FNR binding; FeS cluster geometry', C_params:'Reduced ferredoxin; NADPH ~10 µmol m-2 s-1; cyclic electron flow option; N/S assimilation reductant'},
+    {id:4, name:'ATP Synthase', compartment:'Thylakoid / CF1CF0', physical_in:'Proton motive force (pmf)', physical_out:'ATP; H2O released', transformation:'Rotary chemiosmotic phosphorylation', time_scale:'Milliseconds', transparency:'high', output:'ATP synthesis rate; H+/ATP stoichiometry', output_unit:'µmol ATP m-2 s-1; dimensionless', D_default:235, C_default:240, D_params:'pmf threshold ~3-4 H+/ATP; c14/CF1CF0 geometry (H+/ATP = 4.67 spinach); ΔpH dominance; thioredoxin light activation', C_params:'ATP synthesis; stroma alkalinization (pH +0.5); thylakoid membrane discharge; regulatory coupling to Calvin cycle'},
+    {id:5, name:'Calvin Cycle: Carbon Fixation', compartment:'Stroma / Rubisco', physical_in:'CO2; RuBP', physical_out:'2x 3-PGA; photorespiratory byproducts', transformation:'CO2 carboxylation and O2 oxygenation by Rubisco', time_scale:'Seconds', transparency:'medium', output:'Net CO2 assimilation (An); Rubisco Vc', output_unit:'µmol CO2 m-2 s-1', D_default:270, C_default:230, D_params:'CO2 Km ~9.5 µM; O2 competition (Sc/o = 80); RuBP regeneration limit; Rubisco activation state; stomatal conductance constraint', C_params:'CO2 fixed as 3-PGA; net An = 20 µmol CO2 m-2 s-1; but ~25% lost to photorespiration (Vo/Vc = 0.25)'},
+    {id:6, name:'Calvin Cycle: Reduction', compartment:'Stroma / GAPDH and PRK', physical_in:'3-PGA; ATP and NADPH', physical_out:'G3P; regenerated RuBP', transformation:'ATP-dependent phosphorylation; NADPH-dependent reduction', time_scale:'Seconds', transparency:'high', output:'G3P production rate', output_unit:'µmol G3P m-2 s-1', D_default:245, C_default:240, D_params:'ATP stoichiometry (3 per CO2); NADPH stoichiometry (2 per CO2); PRK specificity; thioredoxin regulation; phosphate availability', C_params:'G3P export ~4 µmol triose-P m-2 s-1; RuBP regeneration; starch synthesis overflow; Pi recycled to stroma'},
+    {id:7, name:'Carbon Export', compartment:'Chloroplast envelope / cytosol / phloem', physical_in:'G3P (triose phosphate); ADP-glucose', physical_out:'Sucrose; starch; phloem-loaded sucrose', transformation:'TPT export; sucrose synthesis (SPS); starch synthesis (AGPase)', time_scale:'Minutes to hours', transparency:'medium', output:'Net carbon export rate; sucrose:starch ratio', output_unit:'µmol C m-2 s-1', D_default:230, C_default:220, D_params:'TPT transporter capacity; cytosolic Pi availability; AGPase allosteric regulation; SPS phosphorylation; phloem loading feedback', C_params:'Sucrose ~12 µmol C m-2 s-1; starch ~6 µmol C m-2 s-1; export fraction ~0.65; source-sink regulation'}
+  ],
+  c4: [
+    {id:0, name:'Light Harvesting', compartment:'Mesophyll / bundle sheath thylakoids', physical_in:'Incident photons', physical_out:'Excitation energy', transformation:'Dual-cell antenna system', time_scale:'Femtoseconds', transparency:'high', D_default:238, C_default:260, D_params:'Same as C3 but distributed between mesophyll and bundle sheath chloroplasts', C_params:'Higher efficiency at high light; less NPQ required due to lower PSII exposure in bundle sheath'},
+    {id:1, name:'Photosystem II (mesophyll)', compartment:'Mesophyll thylakoid', physical_in:'Excitation; H2O', physical_out:'O2; PQH2; H+ into lumen', transformation:'Water oxidation (primarily in mesophyll)', time_scale:'Microseconds', transparency:'high', D_default:255, C_default:250, D_params:'Same structure as C3 PSII; predominantly in mesophyll cells', C_params:'O2 evolution; reductant for NADPH in mesophyll'},
+    {id:2, name:'Electron Transport Chain', compartment:'Mesophyll and bundle sheath thylakoids', physical_in:'PQH2', physical_out:'Reduced plastocyanin; proton gradient', transformation:'Q-cycle; NADPH for PEP carboxylase', time_scale:'Milliseconds', transparency:'high', D_default:245, C_default:252, D_params:'Same as C3; additional cyclic flow in bundle sheath to balance ATP/NADPH for C4 shuttle', C_params:'NADPH for PEP carboxylase in mesophyll; ATP for C4 metabolite shuttle'},
+    {id:3, name:'Photosystem I + PEP Carboxylase Phase', compartment:'Mesophyll + bundle sheath', physical_in:'Reduced Fd; NADPH; PEP', physical_out:'NADPH; malate or aspartate (C4 shuttle metabolite)', transformation:'PEP carboxylase fixes CO2 into 4C organic acids in mesophyll', time_scale:'Microseconds to seconds', transparency:'high', D_default:248, C_default:258, D_params:'PEP regeneration by pyruvate phosphate dikinase (PPDK); PEP carboxylase Km for HCO3-; C4 metabolite identity (NADP-ME vs NAD-ME vs PCK subtype)', C_params:'C4 acid (malate/aspartate) produced for bundle sheath transport; CO2 concentrating mechanism initiated'},
+    {id:4, name:'C4 Metabolite Shuttle + ATP Synthase', compartment:'Mesophyll-bundle sheath interface', physical_in:'Malate or aspartate; pmf', physical_out:'CO2 for Rubisco in bundle sheath; pyruvate/alanine return; ATP', transformation:'Decarboxylation in bundle sheath; CO2 concentrating at Rubisco', time_scale:'Seconds', transparency:'medium', D_default:240, C_default:248, D_params:'Metabolite transporter capacity; decarboxylation enzyme (NADP-malic enzyme, etc.); bundle sheath CO2 leakage risk', C_params:'CO2 elevation inside bundle sheath chloroplast ~10x; pmf-driven ATP for PPDK regeneration'},
+    {id:5, name:'Calvin Cycle: Carbon Fixation (C4)', compartment:'Bundle sheath stroma / Rubisco', physical_in:'Concentrated CO2; RuBP', physical_out:'3-PGA (nearly no photorespiration)', transformation:'CO2 fixation by Rubisco under high CO2 conditions', time_scale:'Seconds', transparency:'medium', D_default:252, C_default:250, D_params:'Rubisco exposed to ~10x ambient CO2; very low O2 penetration to bundle sheath; higher activation state', C_params:'Net An = 35-60 µmol CO2 m-2 s-1 at high temp; Vo/Vc ~0.02; near-complete suppression of photorespiration'},
+    {id:6, name:'Calvin Cycle: Reduction', compartment:'Bundle sheath stroma / GAPDH, PRK', physical_in:'3-PGA; ATP; NADPH', physical_out:'G3P; RuBP regenerated', transformation:'Same as C3 but additional ATP needed for C4 cycle', time_scale:'Seconds', transparency:'high', D_default:252, C_default:245, D_params:'Higher ATP demand (2 extra ATP per CO2 for C4 cycle); NADPH shared between bundle sheath and mesophyll', C_params:'G3P production; RuBP regeneration; more efficient under high temperature conditions'},
+    {id:7, name:'Carbon Export', compartment:'Bundle sheath and mesophyll / phloem', physical_in:'G3P; sucrose precursors', physical_out:'Sucrose; starch', transformation:'Same pathways as C3 but higher throughput', time_scale:'Minutes to hours', transparency:'medium', D_default:230, C_default:225, D_params:'Same as C3; higher export rate required to support higher An', C_params:'Higher sucrose export rates; higher crop yield potential under hot dry conditions'}
+  ],
+  cam: [
+    {id:0, name:'Light Harvesting (daytime)', compartment:'Thylakoid / LHCII', physical_in:'Daytime photons (stomata closed)', physical_out:'Excitation energy', transformation:'Same antenna as C3; daytime light drives light reactions only', time_scale:'Femtoseconds', transparency:'high', D_default:240, C_default:250, D_params:'Same as C3; but daytime CO2 not entering from atmosphere — supplied from malate decarboxylation', C_params:'Light reactions proceed; O2 builds up inside leaf (stomata closed)'},
+    {id:1, name:'Photosystem II (daytime)', compartment:'Thylakoid', physical_in:'Excitation; H2O', physical_out:'O2; PQH2; H+', transformation:'Water oxidation; O2 accumulates inside leaf (stomata closed)', time_scale:'Microseconds', transparency:'high', D_default:258, C_default:248, D_params:'Same as C3; elevated O2 risk inside leaf during day when stomata closed; requires careful photoprotection', C_params:'O2 evolution; fuels Calvin cycle with light energy; higher NPQ requirement under closed stomata'},
+    {id:2, name:'Electron Transport Chain (daytime)', compartment:'Thylakoid / cytochrome b6f', physical_in:'PQH2', physical_out:'Reduced plastocyanin; proton gradient', transformation:'Q-cycle; proton pumping', time_scale:'Milliseconds', transparency:'high', D_default:245, C_default:250, D_params:'Same as C3; ATP and NADPH needed to drive Calvin cycle with internally supplied CO2', C_params:'Electron flow powers ATP synthesis and NADPH for Calvin cycle reduction of malate-supplied CO2'},
+    {id:3, name:'Photosystem I (daytime)', compartment:'Thylakoid / PSI', physical_in:'Reduced plastocyanin', physical_out:'NADPH', transformation:'Ferredoxin reduction; FNR catalysis', time_scale:'Microseconds', transparency:'high', D_default:250, C_default:255, D_params:'Same as C3; NADPH demand tied to Calvin cycle operating on malate-released CO2', C_params:'NADPH for Calvin cycle reduction'},
+    {id:4, name:'ATP Synthase + Malate Decarboxylation', compartment:'Thylakoid (ATP synthase); vacuole-to-cytosol (malate)', physical_in:'pmf; malate from vacuole', physical_out:'ATP; CO2 for Calvin cycle', transformation:'ATP synthesis; NADP-malic enzyme or PEP carboxykinase decarboxylates malate to CO2 + pyruvate', time_scale:'Minutes (malate flux)', transparency:'medium', D_default:248, C_default:245, D_params:'pmf requirements same as C3; malate transport from vacuole; malic enzyme stoichiometry; CO2 supply rate governs Calvin cycle speed', C_params:'ATP for Calvin cycle; CO2 released from malate provides substrate for Rubisco; concentration ~10x ambient'},
+    {id:5, name:'Calvin Cycle: Carbon Fixation (CAM daytime)', compartment:'Chloroplast stroma / Rubisco', physical_in:'CO2 from malate; RuBP', physical_out:'3-PGA', transformation:'Rubisco fixes malate-released CO2 (high CO2 environment, closed stomata)', time_scale:'Hours (constrained by malate supply)', transparency:'medium', D_default:255, C_default:248, D_params:'CO2 supply rate limited by malate reserves (fixed previous night); Rubisco operates at high CO2 but limited by substrate supply rate, not kinetics', C_params:'Carbon fixation near-zero photorespiration; but An typically low (~3-5 µmol CO2 m-2 s-1 limited by malate store)'},
+    {id:6, name:'Calvin Cycle: Reduction (CAM daytime)', compartment:'Stroma / GAPDH, PRK', physical_in:'3-PGA; ATP; NADPH', physical_out:'G3P; RuBP', transformation:'Same biochemistry as C3; limited by CO2 supply rate from malate', time_scale:'Hours', transparency:'high', D_default:248, C_default:240, D_params:'Same as C3; supply rate limited by nocturnal malate fixation capacity', C_params:'G3P production; RuBP regeneration; regenerated PEP for following night'},
+    {id:7, name:'Carbon Export + Nocturnal CO2 Fixation', compartment:'Cytosol / vacuole / phloem', physical_in:'G3P; PEP (nocturnal); CO2 (nocturnal via open stomata)', physical_out:'Sucrose; starch; malate (vacuole, night)', transformation:'Nocturnal: PEP carboxylase fixes CO2 into malate (vacuole storage). Daytime: export of fixed carbon as sucrose', time_scale:'Night: CO2 fixation phase (8-12 hrs); Day: export phase', transparency:'medium', D_default:235, C_default:222, D_params:'PEP carboxylase night activation; vacuolar malate transporter capacity; tonoplast H+ pump stoichiometry; sucrose synthesis rate', C_params:'Malate stored in vacuole overnight (provides daytime CO2); sucrose exported during day; extreme water-use efficiency (stomata open only at night)'}
+  ]
+};
+
+var currentPathway='c3';
+var currentStep=0;
+var stressEnabled=false;
+var phaseData={};
+
+// ---- Initialize ----
+function init(){
+  initPhaseData();
+  renderPhases(0,3,'phases-0-3');
+  renderPhases(4,7,'phases-4-7');
+  updateHealthSummary();
+}
+
+function initPhaseData(){
+  var ps=PHASES[currentPathway];
+  ps.forEach(function(p){
+    if(!phaseData[p.id]||phaseData[p.id].pathway!==currentPathway){
+      phaseData[p.id]={pathway:currentPathway,D:p.D_default,C:p.C_default,stress:false,stressNote:'',opacityScore:0,dataNotes:''};
+    }
+  });
+}
+
+function renderPhases(from,to,containerId){
+  var ps=PHASES[currentPathway];
+  var container=document.getElementById(containerId);
+  container.innerHTML='';
+  ps.filter(function(p){return p.id>=from&&p.id<=to;}).forEach(function(p){
+    var pd=phaseData[p.id]||{D:p.D_default,C:p.C_default};
+    var bal=calcBalance(pd.D,pd.C);
+    var N=calcN(pd.D,pd.C,bal);
+    var isBottleneck=bal<90;
+    var isStress=pd.stress||false;
+
+    var block=document.createElement('div');
+    block.className='phase-block'+(isStress?' stress-mode':'');
+    block.id='phase-block-'+p.id;
+    block.innerHTML=
+      '<h3>'+
+        '<div class="phase-num-badge'+(isBottleneck?' bottleneck':'')+'">'+p.id+'</div>'+
+        p.name+
+        '<label class="stress-toggle" title="Enable stress mode for this phase">'+
+          '<input type="checkbox" '+(isStress?'checked':'')+' onchange="togglePhaseStress('+p.id+',this.checked)"/> Stress Mode'+
+        '</label>'+
+      '</h3>'+
+      '<div style="font-size:12px;color:var(--muted);margin-bottom:12px;"><strong>Compartment:</strong> '+p.compartment+' | <strong>Transformation:</strong> '+p.transformation+'</div>'+
+      '<div class="form-row triple">'+
+        '<div class="form-group"><label>Physical Input</label><input type="text" value="'+p.physical_in+'" id="ph'+p.id+'-in"/></div>'+
+        '<div class="form-group"><label>Physical Output</label><input type="text" value="'+p.physical_out+'" id="ph'+p.id+'-out"/></div>'+
+        '<div class="form-group"><label>Transparency</label><select id="ph'+p.id+'-trans"><option '+(p.transparency==='high'?'selected':'')+'>high</option><option '+(p.transparency==='medium'?'selected':'')+'>medium</option><option '+(p.transparency==='low'?'selected':'')+'>low</option></select></div>'+
+      '</div>'+
+      '<div class="form-row">'+
+        '<div class="form-group">'+
+          '<label>D Parameters (constraints / requirements)</label>'+
+          '<textarea id="ph'+p.id+'-d-params" rows="3">'+p.D_params+'</textarea>'+
+        '</div>'+
+        '<div class="form-group">'+
+          '<label>C Parameters (outputs / contributions)</label>'+
+          '<textarea id="ph'+p.id+'-c-params" rows="3">'+p.C_params+'</textarea>'+
+        '</div>'+
+      '</div>'+
+      (isStress?
+        '<div class="form-row single">'+
+          '<div class="form-group">'+
+            '<label style="color:var(--amber);">Stress Description (direction, severity, affected constraint or output)</label>'+
+            '<textarea id="ph'+p.id+'-stress-note" rows="2" style="border-color:#ff9800;" placeholder="e.g. D increases: O2 competition amplified at high temperature. Vo/Vc rises from 0.25 to 0.45. Phase balance drops from 85% to 72%.">'+pd.stressNote+'</textarea>'+
+          '</div>'+
+        '</div>':'')+''+
+      '<div class="form-row triple">'+
+        '<div class="form-group">'+
+          '<label>D Value</label>'+
+          '<input type="number" id="ph'+p.id+'-D" value="'+pd.D+'" min="100" max="400" oninput="updateNDC('+p.id+')"/>'+
+        '</div>'+
+        '<div class="form-group">'+
+          '<label>C Value</label>'+
+          '<input type="number" id="ph'+p.id+'-C" value="'+pd.C+'" min="100" max="400" oninput="updateNDC('+p.id+')"/>'+
+        '</div>'+
+        '<div class="form-group">'+
+          '<label>Opacity Score</label>'+
+          '<div class="opacity-row">'+
+            [0,1,2,3,4].map(function(s){return '<button class="opacity-btn'+(s===(pd.opacityScore||0)?' active':'')+'" data-score="'+s+'" onclick="setOpacity('+p.id+','+s+')">'+s+'</button>';}).join('')+
+          '</div>'+
+          '<div class="field-note">0 = fully open · 4 = completely opaque</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="ndc-row">'+
+        '<div class="ndc-box ndc-d"><label>D (Definition)</label><span class="computed" id="ph'+p.id+'-D-disp">'+pd.D+'</span></div>'+
+        '<div class="ndc-box ndc-c"><label>C (Contribution)</label><span class="computed" id="ph'+p.id+'-C-disp">'+pd.C+'</span></div>'+
+        '<div class="ndc-box ndc-n"><label>N (Negotiation)</label><span class="computed" id="ph'+p.id+'-N-disp">'+N+'</span></div>'+
+        '<div class="ndc-box ndc-balance"><label>Balance</label><span class="computed" id="ph'+p.id+'-bal-disp">'+bal.toFixed(1)+'%</span></div>'+
+      '</div>'+
+      '<div class="form-group" style="margin-top:8px;">'+
+        '<label>Notes / Observations</label>'+
+        '<textarea id="ph'+p.id+'-notes" rows="2" placeholder="Add analyst notes for this phase...">'+pd.dataNotes+'</textarea>'+
+      '</div>';
+    container.appendChild(block);
+  });
+}
+
+function calcBalance(D,C){
+  if(!D&&!C)return 100;
+  return 100-(Math.abs(D-C)/Math.max(D,C))*100;
+}
+function calcN(D,C,bal){return Math.round(Math.sqrt(D*C)*(bal/100));}
+
+function updateNDC(id){
+  var D=parseInt(document.getElementById('ph'+id+'-D').value)||240;
+  var C=parseInt(document.getElementById('ph'+id+'-C').value)||240;
+  var bal=calcBalance(D,C);
+  var N=calcN(D,C,bal);
+  document.getElementById('ph'+id+'-D-disp').textContent=D;
+  document.getElementById('ph'+id+'-C-disp').textContent=C;
+  document.getElementById('ph'+id+'-N-disp').textContent=N;
+  document.getElementById('ph'+id+'-bal-disp').textContent=bal.toFixed(1)+'%';
+  if(phaseData[id]){phaseData[id].D=D;phaseData[id].C=C;}
+  updateHealthSummary();
+}
+
+function setOpacity(id,score){
+  if(phaseData[id])phaseData[id].opacityScore=score;
+  var btns=document.querySelectorAll('#phase-block-'+id+' .opacity-btn');
+  btns.forEach(function(b){b.classList.toggle('active',parseInt(b.dataset.score)===score);});
+}
+
+function togglePhaseStress(id,checked){
+  if(phaseData[id])phaseData[id].stress=checked;
+  var fromStep=id<4?1:2;
+  var fromTo=id<4?[0,3,'phases-0-3']:[4,7,'phases-4-7'];
+  renderPhases(fromTo[0],fromTo[1],fromTo[2]);
+}
+
+function updateHealthSummary(){
+  var ps=PHASES[currentPathway];
+  var totalBal=0,totalN=0,minBal=100,minId=0;
+  ps.forEach(function(p){
+    var pd=phaseData[p.id]||{D:p.D_default,C:p.C_default};
+    var bal=calcBalance(pd.D,pd.C);
+    var N=calcN(pd.D,pd.C,bal);
+    totalBal+=bal;totalN+=N;
+    if(bal<minBal){minBal=bal;minId=p.id;}
+  });
+  var avgBal=totalBal/ps.length;
+  var avgN=Math.round(totalN/ps.length);
+  var hv=document.getElementById('health-score-val');
+  if(hv){
+    hv.textContent=avgBal.toFixed(1)+'%';
+    hv.className='health-score'+(avgBal<70?'bad':avgBal<85?' warn':'');
+  }
+  var hn=document.getElementById('health-n-val');
+  if(hn)hn.textContent=avgN;
+  var hb=document.getElementById('health-bottleneck');
+  if(hb)hb.textContent='Ph '+minId+' ('+minBal.toFixed(1)+'%)';
+
+  var summary=document.getElementById('health-phase-summary');
+  if(summary){
+    summary.innerHTML='<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:12px;">';
+    ps.forEach(function(p){
+      var pd=phaseData[p.id]||{D:p.D_default,C:p.C_default};
+      var bal=calcBalance(pd.D,pd.C);
+      var N=calcN(pd.D,pd.C,bal);
+      var cls=bal>=90?'#2e7d32':bal>=70?'#e65100':'#c62828';
+      summary.innerHTML+='<div style="background:var(--green-pale);border-radius:8px;padding:10px;border:1px solid var(--green-border);text-align:center;"><div style="font-size:11px;font-weight:700;color:var(--muted);">Ph '+p.id+'</div><div style="font-size:12px;font-weight:700;color:#333;margin:2px 0;">'+p.name+'</div><div style="font-size:20px;font-weight:800;color:'+cls+';">'+bal.toFixed(1)+'%</div><div style="font-size:11px;color:var(--muted);">N = '+N+'</div></div>';
+    });
+    summary.innerHTML+='</div>';
+  }
+}
+
+// ---- Navigation ----
+function goStep(n){
+  document.querySelectorAll('.step-pane').forEach(function(p,i){p.classList.toggle('active',i===n);});
+  document.querySelectorAll('.step-btn').forEach(function(b,i){b.classList.toggle('active',i===n);});
+  currentStep=n;
+  if(n===3)updateHealthSummary();
+  if(n===4){generateYAML();}
+  window.scrollTo(0,0);
+}
+
+// ---- Pathway selection ----
+function selectPathway(pathway,el){
+  currentPathway=pathway;
+  document.querySelectorAll('.badge.pathway').forEach(function(b){b.classList.remove('active');});
+  el.classList.add('active');
+  document.getElementById('f-pathway').value=pathway.toUpperCase();
+  initPhaseData();
+  renderPhases(0,3,'phases-0-3');
+  renderPhases(4,7,'phases-4-7');
+  updateHealthSummary();
+}
+
+function toggleGlobalStress(){
+  stressEnabled=!stressEnabled;
+  var badge=document.getElementById('global-stress-badge');
+  badge.textContent='Stress Mode '+(stressEnabled?'ON':'OFF');
+  badge.classList.toggle('active',stressEnabled);
+  PHASES[currentPathway].forEach(function(p){
+    if(phaseData[p.id])phaseData[p.id].stress=stressEnabled;
+  });
+  renderPhases(0,3,'phases-0-3');
+  renderPhases(4,7,'phases-4-7');
+}
+
+// ---- YAML Generation ----
+function generateYAML(){
+  var ps=PHASES[currentPathway];
+  var organism=document.getElementById('f-organism').value;
+  var analyst=document.getElementById('f-analyst').value;
+  var date=document.getElementById('f-date').value;
+  var conditions=document.getElementById('f-conditions').value;
+  var notes=document.getElementById('f-notes').value;
+  var sources=document.getElementById('f-sources').value;
+  var pathway=document.getElementById('f-pathway').value;
+
+  var yaml='bpdi:\n';
+  yaml+='  instrument: BPDI v1.0\n';
+  yaml+='  pathway: "'+pathway+'"\n';
+  yaml+='  organism: "'+organism+'"\n';
+  yaml+='  analyst: "'+analyst+'"\n';
+  yaml+='  date_completed: "'+date+'"\n';
+  yaml+='  conditions: "'+conditions+'"\n';
+  yaml+='  notes: |\n'+notes.split('\n').map(function(l){return '    '+l;}).join('\n')+'\n\n';
+  yaml+='  sources_overview: |\n'+sources.split('\n').map(function(l){return '    '+l;}).join('\n')+'\n\n';
+  yaml+='  energy_flow_phases:\n';
+
+  ps.forEach(function(p){
+    var pd=phaseData[p.id]||{D:p.D_default,C:p.C_default};
+    var D=parseInt(document.getElementById('ph'+p.id+'-D')&&document.getElementById('ph'+p.id+'-D').value||pd.D);
+    var C=parseInt(document.getElementById('ph'+p.id+'-C')&&document.getElementById('ph'+p.id+'-C').value||pd.C);
+    var bal=calcBalance(D,C);
+    var N=calcN(D,C,bal);
+    var trans=document.getElementById('ph'+p.id+'-trans')&&document.getElementById('ph'+p.id+'-trans').value||p.transparency;
+    var opacity=pd.opacityScore||0;
+    var isStress=pd.stress||false;
+    var stressNote=document.getElementById('ph'+p.id+'-stress-note')&&document.getElementById('ph'+p.id+'-stress-note').value||'';
+    var pnotes=document.getElementById('ph'+p.id+'-notes')&&document.getElementById('ph'+p.id+'-notes').value||'';
+    var pIn=document.getElementById('ph'+p.id+'-in')&&document.getElementById('ph'+p.id+'-in').value||p.physical_in;
+    var pOut=document.getElementById('ph'+p.id+'-out')&&document.getElementById('ph'+p.id+'-out').value||p.physical_out;
+    var dParams=document.getElementById('ph'+p.id+'-d-params')&&document.getElementById('ph'+p.id+'-d-params').value||p.D_params;
+    var cParams=document.getElementById('ph'+p.id+'-c-params')&&document.getElementById('ph'+p.id+'-c-params').value||p.C_params;
+
+    yaml+='    phase_'+p.id+':\n';
+    yaml+='      id: '+p.id+'\n';
+    yaml+='      name: "'+p.name+'"\n';
+    yaml+='      compartment: "'+p.compartment+'"\n';
+    yaml+='      physical_state_in: "'+pIn+'"\n';
+    yaml+='      physical_state_out: "'+pOut+'"\n';
+    yaml+='      primary_transformation: "'+p.transformation+'"\n';
+    yaml+='      typical_time_scale: "'+p.time_scale+'"\n';
+    yaml+='      transparency_level: "'+trans+'"\n';
+    yaml+='      opacity_score: '+opacity+'\n';
+    yaml+='      D_parameters: "'+dParams.replace(/"/g,"'")+'" \n';
+    yaml+='      C_parameters: "'+cParams.replace(/"/g,"'")+'" \n';
+    yaml+='      stress_mode: '+isStress+'\n';
+    if(isStress&&stressNote)yaml+='      stress_description: "'+stressNote.replace(/"/g,"'")+'" \n';
+    if(pnotes)yaml+='      analyst_notes: "'+pnotes.replace(/"/g,"'")+'" \n';
+    yaml+='    \n';
+    yaml+='  ndc_derivation:\n';
+    // We'll add this once per run for all phases
+  });
+
+  // Clean up duplicated ndc_derivation key
+  yaml=yaml.replace(/\s+\n  ndc_derivation:\n(?!$)/g,'\n');
+  yaml+='  ndc_derivation:\n';
+  var avgBal=0;
+  ps.forEach(function(p){
+    var pd=phaseData[p.id]||{D:p.D_default,C:p.C_default};
+    var D=parseInt(document.getElementById('ph'+p.id+'-D')&&document.getElementById('ph'+p.id+'-D').value||pd.D);
+    var C=parseInt(document.getElementById('ph'+p.id+'-C')&&document.getElementById('ph'+p.id+'-C').value||pd.C);
+    var bal=calcBalance(D,C);
+    var N=calcN(D,C,bal);
+    avgBal+=bal;
+    yaml+='    phase_'+p.id+': {D: '+D+', C: '+C+', balance: '+bal.toFixed(1)+', N: '+N+'}\n';
+  });
+  avgBal/=ps.length;
+
+  yaml+='\n  coherence_scores:\n';
+  yaml+='    pi: '+avgBal.toFixed(1)+'\n';
+  yaml+='    phi: 0.0   # calculate from cross-phase N-value ratios\n';
+  yaml+='    sqrt2: 0.0  # calculate from phase boundary symmetry\n';
+  yaml+='    ln2: 0.0   # calculate from transformation phase C/D ratios\n';
+  yaml+='    e: 0       # unmeasured: biological system has no financial abstraction layer\n';
+
+  document.getElementById('yaml-output').textContent=yaml;
+}
+
+function copyYAML(){
+  var text=document.getElementById('yaml-output').textContent;
+  navigator.clipboard.writeText(text).then(function(){alert('YAML copied to clipboard.');}).catch(function(){alert('Copy failed. Please select and copy manually.');});
+}
+function downloadYAML(){
+  var text=document.getElementById('yaml-output').textContent;
+  var a=document.createElement('a');
+  a.href='data:text/yaml;charset=utf-8,'+encodeURIComponent(text);
+  a.download='BPDI_'+currentPathway.toUpperCase()+'_'+(document.getElementById('f-organism').value||'organism').replace(/\s+/g,'_')+'_'+new Date().toISOString().slice(0,10)+'.yaml';
+  a.click();
+}
+
+// ---- Init ----
+window.addEventListener('DOMContentLoaded',function(){init();});
+</script>
+</body>
+</html>

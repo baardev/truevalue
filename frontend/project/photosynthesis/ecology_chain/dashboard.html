@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — Ecological Output Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:14px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.header h1{font-size:19px;font-weight:600;color:#e6edf3;}
+.header h1 span{color:#79c0ff;}
+/* Tab nav */
+.tab-nav{background:#161b22;border-bottom:1px solid #30363d;display:flex;overflow-x:auto;}
+.tab-btn{padding:12px 28px;font-size:13px;font-weight:700;color:#8b949e;cursor:pointer;border:none;background:none;border-bottom:3px solid transparent;transition:all .15s;white-space:nowrap;outline:none;}
+.tab-btn:hover{color:#e6edf3;background:rgba(255,255,255,.04);}
+.tab-btn.active{color:#79c0ff;border-bottom-color:#79c0ff;}
+.tab-btn.active.eco{color:#56d364;border-bottom-color:#56d364;}
+.tab-btn.active.eff{color:#00bcd4;border-bottom-color:#00bcd4;}
+.tab-btn.active.str{color:#f48fb1;border-bottom-color:#f48fb1;}
+/* Main */
+.main{max-width:1200px;margin:0 auto;padding:24px 20px;}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;}
+/* Global KPIs */
+.kpi-row{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;margin-bottom:22px;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 12px;text-align:center;}
+.kpi-val{font-size:20px;font-weight:800;color:#56d364;line-height:1.1;}
+.kpi-label{font-size:10px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:3px;}
+/* Ecological outputs tab */
+.phase-eco-card{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 18px;margin-bottom:10px;display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start;}
+.pec-num{width:34px;height:34px;border-radius:8px;background:#1a237e;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.pec-main{flex:1;min-width:200px;}
+.pec-name{font-size:14px;font-weight:700;color:#e6edf3;margin-bottom:3px;}
+.pec-output{font-size:12px;color:#79c0ff;margin-bottom:4px;}
+.pec-notes{font-size:11px;color:#8b949e;line-height:1.6;}
+.pec-metrics{display:flex;flex-wrap:wrap;gap:8px;min-width:240px;}
+.pec-metric{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:6px 10px;font-size:11px;text-align:center;}
+.pec-metric-val{font-weight:700;color:#56d364;display:block;font-size:14px;}
+.pec-metric-label{color:#8b949e;font-size:9px;text-transform:uppercase;margin-top:2px;}
+/* Efficiency tab */
+.eff-card{background:#161b22;border:1px solid #30363d;border-radius:8px;margin-bottom:10px;overflow:hidden;}
+.eff-header{padding:12px 18px;background:#0d1117;display:flex;align-items:center;gap:12px;cursor:pointer;}
+.eff-header:hover{background:#161b22;}
+.eff-ph-num{width:30px;height:30px;border-radius:6px;background:#004d40;color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.eff-ph-name{font-size:13px;font-weight:700;color:#e6edf3;flex:1;}
+.eff-score{font-size:16px;font-weight:800;}
+.eff-score.high{color:#00bcd4;}
+.eff-score.med{color:#f0c040;}
+.eff-score.low{color:#f48fb1;}
+.eff-chevron{color:#8b949e;font-size:11px;flex-shrink:0;}
+.eff-body{padding:14px 18px;display:none;border-top:1px solid #21262d;}
+.eff-card.open .eff-body{display:block;}
+.eff-card.open .eff-chevron{transform:rotate(180deg);}
+.eff-stat-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px;}
+.eff-stat{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 12px;font-size:12px;}
+.eff-stat strong{color:#00bcd4;}
+.eff-note{font-size:12px;color:#8b949e;line-height:1.65;}
+.eff-comparison-bar{margin:10px 0;}
+.eff-comp-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.eff-comp-label{width:80px;font-size:11px;color:#8b949e;flex-shrink:0;}
+.eff-comp-track{flex:1;background:#21262d;border-radius:3px;height:8px;overflow:hidden;}
+.eff-comp-fill{height:8px;border-radius:3px;}
+.eff-comp-val{width:45px;font-size:11px;font-weight:700;text-align:right;flex-shrink:0;}
+/* Stress tab */
+.stress-selector{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.stress-btn{padding:8px 18px;border-radius:8px;border:1px solid #30363d;background:#161b22;color:#8b949e;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.stress-btn:hover{color:#e6edf3;}
+.stress-btn.active{color:#fff;border-color:#f48fb1;background:rgba(244,143,177,.12);}
+.stress-desc{background:#1a0d12;border:1px solid #880e4f;border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:12px;color:#f48fb1;line-height:1.6;}
+.stress-phase-row{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 16px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap;}
+.stress-phase-row.affected{border-color:rgba(244,143,177,.3);}
+.sp-num{width:28px;height:28px;border-radius:6px;background:#880e4f;color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.sp-num.unaffected{background:#21262d;}
+.sp-name{font-size:13px;font-weight:700;color:#e6edf3;margin-bottom:3px;}
+.sp-effect{font-size:12px;color:#f48fb1;line-height:1.55;margin-bottom:4px;}
+.sp-direction{font-size:11px;color:#8b949e;}
+.sp-severity{display:inline-block;padding:2px 8px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.sev-severe{background:rgba(248,81,73,.15);color:#f85149;border:1px solid rgba(248,81,73,.3);}
+.sev-moderate{background:rgba(240,192,64,.15);color:#f0c040;border:1px solid rgba(240,192,64,.3);}
+.sev-positive{background:rgba(86,211,100,.15);color:#56d364;border:1px solid rgba(86,211,100,.3);}
+.sev-mild{background:rgba(139,148,158,.12);color:#8b949e;border:1px solid rgba(139,148,158,.3);}
+.unaffected-row{font-size:12px;color:#6e7681;padding:8px 14px;background:#161b22;border:1px solid #30363d;border-radius:8px;margin-bottom:8px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🌿 Photosynthesis — <span>Ecological Output Chain</span></h1>
+  <div style="font-size:12px;color:#8b949e;">Three-tab analysis · C3 Canonical · 8 phases</div>
+</div>
+
+<div class="tab-nav">
+  <button class="tab-btn active eco" data-tab="ecological" onclick="switchTab('ecological',this)">🌿 Ecological Outputs</button>
+  <button class="tab-btn eff" data-tab="efficiency" onclick="switchTab('efficiency',this)">⚡ Energy Efficiency</button>
+  <button class="tab-btn str" data-tab="stress" onclick="switchTab('stress',this)">🌡️ Stress Responses</button>
+</div>
+
+<div class="main">
+  <!-- GLOBAL KPIs always visible -->
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">20 µmol</div><div class="kpi-label">CO2 m⁻² s⁻¹ (An)</div></div>
+    <div class="kpi"><div class="kpi-val">28 µmol</div><div class="kpi-label">O2 m⁻² s⁻¹ (PSII)</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#00bcd4;">6%</div><div class="kpi-label">Whole-chain Efficiency</div></div>
+    <div class="kpi"><div class="kpi-val" style="color:#f0c040;">~25%</div><div class="kpi-label">Photorespiration Loss</div></div>
+    <div class="kpi"><div class="kpi-val">12 tC/ha/yr</div><div class="kpi-label">Sequestration Potential</div></div>
+  </div>
+
+  <!-- TAB 1: ECOLOGICAL OUTPUTS -->
+  <div id="tab-ecological" class="tab-pane active">
+    <div style="font-size:13px;color:#8b949e;margin-bottom:14px;line-height:1.6;">
+      Per-phase ecological output contribution: which phase produces what, how much, and what its role is in the broader ecological carbon cycle and atmospheric oxygen budget.
+    </div>
+    <div id="eco-container"></div>
+  </div>
+
+  <!-- TAB 2: ENERGY EFFICIENCY -->
+  <div id="tab-efficiency" class="tab-pane">
+    <div style="font-size:13px;color:#8b949e;margin-bottom:14px;line-height:1.6;">
+      Quantum yield (actual vs theoretical), ATP/NADPH stoichiometry, and thermodynamic conversion efficiency per phase. Click any phase to expand its full efficiency analysis.
+    </div>
+    <div id="eff-container"></div>
+  </div>
+
+  <!-- TAB 3: STRESS RESPONSES -->
+  <div id="tab-stress" class="tab-pane">
+    <div class="stress-selector">
+      <button class="stress-btn active" onclick="showStress('heat',this)">🌡️ Heat (&gt;30°C)</button>
+      <button class="stress-btn" onclick="showStress('drought',this)">💧 Drought</button>
+      <button class="stress-btn" onclick="showStress('high_light',this)">☀️ High Light</button>
+      <button class="stress-btn" onclick="showStress('elevated_co2',this)">🌫️ Elevated CO2</button>
+    </div>
+    <div id="stress-desc" class="stress-desc"></div>
+    <div id="stress-container"></div>
+  </div>
+</div>
+
+<script>
+var DATA_URL='/frontend/project/photosynthesis/data/processed/photosynthesis_ecology_chain_ui.json';
+var ecoData=null;
+
+var PHASE_NAMES=['Light Harvesting','Photosystem II','Electron Transport Chain','Photosystem I',
+  'ATP Synthase','Calvin: Carbon Fixation','Calvin: Reduction','Carbon Export'];
+
+// ---- Tab switching ----
+function switchTab(name, btn){
+  document.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});
+  document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');});
+  document.getElementById('tab-'+name).classList.add('active');
+  btn.classList.add('active');
+  // Set active tab class from data attribute
+  if(name==='ecological') btn.classList.add('eco');
+  else if(name==='efficiency') btn.classList.add('eff');
+  else btn.classList.add('str');
+}
+
+// ---- Load data ----
+fetch(DATA_URL)
+  .then(function(r){return r.json();})
+  .catch(function(){return null;})
+  .then(function(data){
+    ecoData=data;
+    buildEcologicalTab(data);
+    buildEfficiencyTab(data);
+    buildStressTab(data,'heat');
+  });
+
+// Handle anchor links for direct tab navigation
+var hash=window.location.hash;
+if(hash==='#efficiency'){
+  switchTab('efficiency',document.querySelector('[data-tab="efficiency"]'));
+}else if(hash==='#stress'){
+  switchTab('stress',document.querySelector('[data-tab="stress"]'));
+}
+
+// ---- TAB 1: Ecological Outputs ----
+function buildEcologicalTab(data){
+  var container=document.getElementById('eco-container');
+  if(!data||!data.ecological_outputs){container.innerHTML='<p style="color:#f85149;">Data unavailable.</p>';return;}
+  var eco=data.ecological_outputs;
+  Object.keys(eco).sort().forEach(function(id){
+    var p=eco[id];
+    var card=document.createElement('div');
+    card.className='phase-eco-card';
+    var metricsHtml='';
+    if(p.carbon_fixation_contribution_umol_m2_s){
+      metricsHtml+='<div class="pec-metric"><span class="pec-metric-val">'+p.carbon_fixation_contribution_umol_m2_s+'</span><span class="pec-metric-label">µmol CO2 m⁻² s⁻¹</span></div>';
+    }
+    if(p.o2_evolution_umol_m2_s){
+      metricsHtml+='<div class="pec-metric"><span class="pec-metric-val">'+p.o2_evolution_umol_m2_s+'</span><span class="pec-metric-label">µmol O2 m⁻² s⁻¹</span></div>';
+    }
+    if(p.sequestration_potential_tC_ha_yr){
+      metricsHtml+='<div class="pec-metric"><span class="pec-metric-val">'+p.sequestration_potential_tC_ha_yr+'</span><span class="pec-metric-label">tC ha⁻¹ yr⁻¹</span></div>';
+    }
+    if(p.key_metric){
+      metricsHtml+='<div class="pec-metric" style="max-width:200px;text-align:left;"><span class="pec-metric-label">Key metric</span><span style="color:#79c0ff;font-size:11px;display:block;margin-top:2px;">'+p.key_metric+'</span></div>';
+    }
+
+    card.innerHTML=
+      '<div class="pec-num">'+id+'</div>'+
+      '<div class="pec-main">'+
+        '<div class="pec-name">'+PHASE_NAMES[+id]+'</div>'+
+        '<div class="pec-output">Ecological role: '+p.ecological_output+'</div>'+
+        '<div class="pec-notes">Carbon: '+p.carbon_fixation_contribution+'</div>'+
+        (p.biomass_contribution?'<div class="pec-notes" style="margin-top:3px;">Biomass: '+p.biomass_contribution+'</div>':'')+
+      '</div>'+
+      '<div class="pec-metrics">'+metricsHtml+'</div>';
+    container.appendChild(card);
+  });
+}
+
+// ---- TAB 2: Energy Efficiency ----
+function buildEfficiencyTab(data){
+  var container=document.getElementById('eff-container');
+  if(!data||!data.energy_efficiency){container.innerHTML='<p style="color:#f85149;">Data unavailable.</p>';return;}
+  var eff=data.energy_efficiency;
+
+  // Whole-chain summary row
+  var summaryDiv=document.createElement('div');
+  summaryDiv.style='background:#0a1a2a;border:1px solid #1565c0;border-radius:8px;padding:14px 18px;margin-bottom:16px;font-size:13px;color:#79c0ff;line-height:1.7;';
+  summaryDiv.innerHTML='<strong>Whole-chain efficiency:</strong> ~6% of incident PAR converted to net fixed carbon. Theoretical maximum: ~11%. The 5% gap between theoretical and actual is almost entirely attributable to Phase 5 (photorespiration, ~17% of incident photons wasted) plus Phase 0 NPQ losses (~8%) and dark respiration (~6%). Phases 1-4 are near-thermodynamically optimal.';
+  container.appendChild(summaryDiv);
+
+  Object.keys(eff).sort().forEach(function(id){
+    var e=eff[id];
+    var hasPct=e.efficiency_pct!==null;
+    var scoreClass=e.efficiency_pct>=90?'high':e.efficiency_pct>=60?'med':'low';
+    if(!hasPct)scoreClass='med';
+
+    var card=document.createElement('div');
+    card.className='eff-card';
+    var scoreStr=hasPct?e.efficiency_pct.toFixed(1)+'%':'N/A';
+
+    card.innerHTML=
+      '<div class="eff-header" onclick="this.closest(\'.eff-card\').classList.toggle(\'open\')">'+
+        '<div class="eff-ph-num">'+id+'</div>'+
+        '<div class="eff-ph-name">'+PHASE_NAMES[+id]+'</div>'+
+        '<div class="eff-score '+scoreClass+'">'+scoreStr+'</div>'+
+        '<span class="eff-chevron">▼</span>'+
+      '</div>'+
+      '<div class="eff-body">'+
+        '<div class="eff-stat-row">'+
+          (e.theoretical_max_quantum_yield?'<div class="eff-stat"><strong>Theoretical QY</strong>: '+e.theoretical_max_quantum_yield.toFixed(3)+'</div>':'')+
+          (e.actual_quantum_yield?'<div class="eff-stat"><strong>Actual QY</strong>: '+e.actual_quantum_yield.toFixed(3)+'</div>':'')+
+          (hasPct?'<div class="eff-stat"><strong>Phase efficiency</strong>: '+e.efficiency_pct.toFixed(1)+'%</div>':'')+
+        '</div>'+
+        '<div class="eff-note"><strong>Stoichiometry:</strong> '+e.stoichiometry+'</div>'+
+        '<div class="eff-note" style="margin-top:6px;">'+e.notes+'</div>'+
+        (hasPct&&e.theoretical_max_quantum_yield&&e.actual_quantum_yield?
+          '<div class="eff-comparison-bar">'+
+            '<div class="eff-comp-row">'+
+              '<div class="eff-comp-label">Theoretical</div>'+
+              '<div class="eff-comp-track"><div class="eff-comp-fill" style="width:'+Math.min(100,(e.theoretical_max_quantum_yield/0.95)*100).toFixed(1)+'%;background:#00bcd4;"></div></div>'+
+              '<div class="eff-comp-val">'+e.theoretical_max_quantum_yield.toFixed(3)+'</div>'+
+            '</div>'+
+            '<div class="eff-comp-row">'+
+              '<div class="eff-comp-label">Actual</div>'+
+              '<div class="eff-comp-track"><div class="eff-comp-fill" style="width:'+Math.min(100,(e.actual_quantum_yield/0.95)*100).toFixed(1)+'%;background:'+(scoreClass==='high'?'#56d364':scoreClass==='med'?'#f0c040':'#f48fb1')+'"></div></div>'+
+              '<div class="eff-comp-val">'+e.actual_quantum_yield.toFixed(3)+'</div>'+
+            '</div>'+
+          '</div>':'')+
+      '</div>';
+    container.appendChild(card);
+  });
+  // Open Phase 5 by default
+  var cards=document.querySelectorAll('.eff-card');
+  if(cards[5])cards[5].classList.add('open');
+}
+
+// ---- TAB 3: Stress Responses ----
+function showStress(stressId, btn){
+  document.querySelectorAll('.stress-btn').forEach(function(b){b.classList.remove('active');});
+  btn.classList.add('active');
+  if(ecoData)buildStressTab(ecoData,stressId);
+}
+
+function buildStressTab(data,stressId){
+  if(!data||!data.stress_responses){return;}
+  var stress=data.stress_responses[stressId];
+  if(!stress){return;}
+  var container=document.getElementById('stress-container');
+  var descEl=document.getElementById('stress-desc');
+  container.innerHTML='';
+  descEl.innerHTML='<strong>'+stress.description+'</strong> — Phases affected: '+
+    stress.phases_affected.map(function(i){return 'Ph '+i+' ('+PHASE_NAMES[i]+')';}).join(', ')+'.';
+
+  for(var i=0;i<8;i++){
+    var detail=stress.details[i];
+    var affected=stress.phases_affected.indexOf(i)>=0;
+    var row=document.createElement('div');
+    if(affected&&detail){
+      row.className='stress-phase-row affected';
+      var sevClass='sev-'+getSevClass(detail.severity);
+      row.innerHTML=
+        '<div class="sp-num">'+i+'</div>'+
+        '<div style="flex:1;min-width:200px;">'+
+          '<div class="sp-name">'+PHASE_NAMES[i]+'</div>'+
+          '<div class="sp-effect">'+detail.effect+'</div>'+
+          '<div class="sp-direction">Direction: '+detail.direction+'</div>'+
+        '</div>'+
+        '<div><span class="sp-severity '+sevClass+'">'+detail.severity+'</span></div>';
+    } else {
+      row.className='unaffected-row';
+      row.innerHTML='<span style="color:#6e7681;">Ph '+i+' — '+PHASE_NAMES[i]+'</span><span style="color:#8b949e;font-size:11px;margin-left:12px;">Not directly affected by '+stress.description+'</span>';
+    }
+    container.appendChild(row);
+  }
+}
+
+function getSevClass(sev){
+  var s=sev.toLowerCase();
+  if(s.indexOf('severe')>=0)return 'severe';
+  if(s.indexOf('positive')>=0)return 'positive';
+  if(s.indexOf('mild')>=0)return 'mild';
+  return 'moderate';
+}
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><a href="index.html">Ecological Chain</a><span class="bc-sep">›</span><span class="bc-cur">Dashboard</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hdr=document.querySelector('.header');if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>
