@@ -1,0 +1,130 @@
+{
+  "_meta": {
+    "generated": "2026-05-06",
+    "material": "photosynthesis",
+    "system": "C3 photosynthesis (Spinacia oleracea / Arabidopsis thaliana reference)",
+    "pathway": "C3 canonical",
+    "sources": ["Farquhar et al. 1980 Planta", "Blankenship 2014 Molecular Mechanisms of Photosynthesis", "Cramer et al. 2011 Biochim Biophys Acta", "Allen 2003 Science", "Stitt et al. 2010 Plant Cell Environ", "Maxwell & Johnson 2000 J Exp Bot"],
+    "note": "N-D-C values derived from published quantum yields, rate constants, and stoichiometries. Balance scores reflect transparency tier midpoints adjusted for known constraints."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "C3 Canonical Baseline",
+      "description": "Spinacia oleracea / Arabidopsis thaliana reference values at 25°C, 380 ppm CO2, saturating light, unstressed conditions."
+    }
+  },
+  "phase_meta": {
+    "0": { "name": "Light Harvesting", "transparency": "high", "transformation": "Photon absorption and excitation energy transfer", "compartment": "Thylakoid membrane / LHCII antenna" },
+    "1": { "name": "Photosystem II", "transparency": "high", "transformation": "Water oxidation and plastoquinone reduction", "compartment": "Thylakoid membrane / PSII reaction center" },
+    "2": { "name": "Electron Transport Chain", "transparency": "high", "transformation": "Plastoquinol oxidation and proton pumping", "compartment": "Thylakoid membrane / cytochrome b6f" },
+    "3": { "name": "Photosystem I", "transparency": "high", "transformation": "Ferredoxin reduction and NADPH synthesis", "compartment": "Thylakoid membrane / PSI reaction center" },
+    "4": { "name": "ATP Synthase", "transparency": "high", "transformation": "Chemiosmotic ATP synthesis", "compartment": "Thylakoid membrane / CF1CF0 ATP synthase" },
+    "5": { "name": "Calvin Cycle: Carbon Fixation", "transparency": "medium", "transformation": "CO2 fixation by RuBisCO (with photorespiration)", "compartment": "Stroma / Rubisco enzyme" },
+    "6": { "name": "Calvin Cycle: Reduction", "transparency": "high", "transformation": "3-PGA reduction to G3P; RuBP regeneration", "compartment": "Stroma / GAPDH and PRK enzymes" },
+    "7": { "name": "Carbon Export", "transparency": "medium", "transformation": "Triose phosphate export; sucrose and starch synthesis", "compartment": "Chloroplast envelope / cytosol / phloem" }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 240, "C": 255, "balance": 94.1, "N": 233, "sustainability": 1.62,
+        "balance_zone": "coherent",
+        "notes": "Incident photons -> excitation energy at reaction center. High D from spectral and structural constraints; high C from near-perfect energy transfer efficiency.",
+        "data_quality": "high",
+        "key_metric": "Leaf absorptance PAR = 0.85; LHCII energy transfer efficiency >0.95",
+        "stress_mode": "NPQ activation under excess light; Fv/Fm depression under chronic stress",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable (biological system)", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "1": {
+        "D": 255, "C": 245, "balance": 96.1, "N": 241, "sustainability": 1.89,
+        "balance_zone": "coherent",
+        "notes": "Excitation at P680 -> O2 evolution and plastoquinol. D reflects strict electrochemical and structural requirements of the Mn4CaO5 cluster.",
+        "data_quality": "high",
+        "key_metric": "Fv/Fm = 0.83 (dark-adapted); O2 evolution ~28 µmol m-2 s-1 at saturation",
+        "stress_mode": "Photoinhibition: D1 protein oxidative damage reduces Fv/Fm; Mn cluster disruption under Mn deficiency",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "2": {
+        "D": 245, "C": 250, "balance": 98.0, "N": 241, "sustainability": 1.97,
+        "balance_zone": "coherent",
+        "notes": "PQH2 -> reduced plastocyanin + proton gradient. Near-perfect D-C balance; cytochrome b6f is rate-limiting but well-matched to upstream supply.",
+        "data_quality": "high",
+        "key_metric": "Cytochrome b6f turnover ~150 e- complex-1 s-1; pmf ~175 mV steady-state",
+        "stress_mode": "Cold temperature reduces cytochrome b6f rate; state transitions limit linear flow under fluctuating light",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "3": {
+        "D": 250, "C": 255, "balance": 98.0, "N": 248, "sustainability": 1.97,
+        "balance_zone": "coherent",
+        "notes": "Reduced plastocyanin -> NADPH via ferredoxin. Slight C advantage reflects multiple downstream outputs (NADPH, cyclic flow, N/S assimilation).",
+        "data_quality": "high",
+        "key_metric": "PSI quantum yield Y(I) ~0.80; NADPH production ~10 µmol m-2 s-1",
+        "stress_mode": "Acceptor-side limitation when NADP+ depleted under drought; PSI photoinhibition under fluctuating light",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "4": {
+        "D": 235, "C": 240, "balance": 97.9, "N": 232, "sustainability": 1.94,
+        "balance_zone": "coherent",
+        "notes": "pmf -> ATP. Near-perfect balance. H+/ATP = 4.67 in spinach; ATP deficit relative to Calvin cycle demand is met by cyclic electron flow.",
+        "data_quality": "high",
+        "key_metric": "H+/ATP = 4.67 (14/3); ATP/NADPH ratio from linear flow = 1.28 (demand = 1.5)",
+        "stress_mode": "Drought or salt stress destabilizes pmf via passive H+ leak; reduces ATP synthesis efficiency",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "5": {
+        "D": 270, "C": 230, "balance": 85.2, "N": 213, "sustainability": 0.83,
+        "balance_zone": "stressed",
+        "notes": "CO2 fixation by Rubisco. Significant D-C imbalance: high D from O2 competition and CO2 substrate limitation (Rubisco operates near its Km). Photorespiration wastes ~25% of light energy.",
+        "data_quality": "high",
+        "key_metric": "An = 20 µmol CO2 m-2 s-1; Vo/Vc = 0.25 at 25°C; Rubisco Sc/o = 80",
+        "stress_mode": "Photorespiration: amplified by high temperature (Sc/o decreases) and drought (stomatal closure raises O2/CO2 ratio inside leaf). Primary ecological bottleneck of C3 photosynthesis.",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "6": {
+        "D": 245, "C": 240, "balance": 97.9, "N": 237, "sustainability": 1.94,
+        "balance_zone": "coherent",
+        "notes": "3-PGA -> G3P; RuBP regeneration. Well-balanced phase. ATP and NADPH stoichiometry tightly matched to demand when phase 5 and 4 are functioning normally.",
+        "data_quality": "high",
+        "key_metric": "Stoichiometry: 3 ATP + 2 NADPH per CO2; G3P export ~4 µmol triose-P m-2 s-1",
+        "stress_mode": "TPU (triose phosphate utilization) limitation under high CO2 or cold: G3P accumulates and backs up Calvin cycle",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      },
+      "7": {
+        "D": 230, "C": 220, "balance": 95.7, "N": 216, "sustainability": 1.73,
+        "balance_zone": "coherent",
+        "notes": "G3P -> sucrose/starch; phloem loading. Slight D excess reflects regulatory complexity of source-sink coupling. Export efficiency ~75% of fixed carbon.",
+        "data_quality": "medium",
+        "key_metric": "Sucrose synthesis ~12 µmol C m-2 s-1; starch ~6 µmol C m-2 s-1; export fraction ~0.65",
+        "stress_mode": "Sink limitation: low sink demand (cold, nutrient stress) causes sucrose feedback, starch accumulation, and indirect reduction of An",
+        "scope1_tco2": null, "scope2_tco2": null, "scope_source": "Not applicable", "scope_quality": "N/A",
+        "water": null, "energy": null, "water_recycling_pct": null, "energy_clean_pct": null
+      }
+    }
+  },
+  "system": {
+    "synthetic": {
+      "balance": 95.4,
+      "average_N": 232,
+      "bottleneck_phase_ids": [5],
+      "stressed_phase_ids": [5],
+      "coherent_phase_ids": [0,1,2,3,4,6,7],
+      "water_recycling_pct": null,
+      "waste_circularity_pct": null,
+      "clean_energy_pct": 100,
+      "interpretation": "The C3 photosynthesis energy chain is highly coherent in its light reaction phases (0-4) but faces a structural bottleneck at Phase 5 (Rubisco carbon fixation) due to photorespiration. The D-C imbalance at Phase 5 reflects the evolutionary constraint of Rubisco operating simultaneously as a carboxylase and oxygenase under present atmospheric conditions."
+    }
+  },
+  "coherence_scores": {
+    "pi": 95.4,
+    "phi": 74.2,
+    "sqrt2": 81.0,
+    "ln2": 65.5,
+    "e": 0
+  }
+}

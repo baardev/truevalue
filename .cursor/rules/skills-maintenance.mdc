@@ -1,0 +1,37 @@
+---
+description: Requires docs/skills.md to be updated whenever a Cursor skill is added, changed, or deleted. Apply whenever working with files under .cursor/skills/ or .cursor/rules/.
+globs: .cursor/skills/**,cursor/rules/**
+alwaysApply: true
+---
+
+# Skills and Rules Maintenance
+
+`docs/skills.md` is the single source of truth for every AI skill and rule in this project. It must stay in sync with the actual files.
+
+## Obligations
+
+**When a skill is added** (new directory under `.cursor/skills/`):
+
+1. Add a new `###` subsection to the "Project skills" section of `docs/skills.md`.
+2. Include: skill name, file path, what it does, when to trigger it, and which files it touches.
+
+**When a skill is changed** (any edit to a `SKILL.md` file):
+
+1. Update the corresponding section in `docs/skills.md` to reflect the new behavior, trigger terms, or file list.
+
+**When a skill is deleted** (directory removed from `.cursor/skills/`):
+
+1. Remove its section from `docs/skills.md`.
+
+**When a rule is added** (new `.mdc` file in `.cursor/rules/`):
+
+1. Add a new `###` subsection to the "Cursor rules" section of `docs/skills.md`.
+2. Include: rule name, file path, trigger glob or `alwaysApply`, and a plain-language description.
+
+**When a rule is changed or deleted:**
+
+1. Update or remove the corresponding section in `docs/skills.md`.
+
+## Never skip this step
+
+Do not end any task that adds, modifies, or removes a skill or rule without also updating `docs/skills.md`. This is a hard requirement, not a suggestion.

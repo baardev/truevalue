@@ -16,12 +16,25 @@
       padding: 32px 24px 64px;
     }
 
+    /* ── main content width: fluid with viewport (body supplies horizontal padding) ── */
+    .cat-header,
+    .cat-divider,
+    .proj-grid,
+    .row-label,
+    #hub-pdi,
+    #hub-pci,
+    #hub-twistors,
+    #hub-gametheory,
+    #hub-papers,
+    #hub-additional,
+    .footer { width: 100%; max-width: none; }
+
     /* ── breadcrumb ── */
     .breadcrumb { font-size: 13px; color: #8b949e; margin-bottom: 40px; }
     .breadcrumb span { color: #e6edf3; font-weight: 600; }
 
     /* ── page header ── */
-    .page-header { margin-bottom: 40px; max-width: 760px; }
+    .page-header { margin-bottom: 40px; max-width: 48rem; }
     .page-header h1 {
       font-size: 32px; font-weight: 300; letter-spacing: -0.5px;
       color: #e6edf3; margin-bottom: 10px;
@@ -39,7 +52,7 @@
     /* ── category section header ── */
     .cat-header {
       display: flex; align-items: baseline; gap: 12px;
-      max-width: 1100px; margin: 44px 0 6px;
+      margin: 44px 0 6px;
     }
     .cat-icon { font-size: 18px; line-height: 1; }
     .cat-label {
@@ -48,14 +61,14 @@
     }
     .cat-desc { font-size: 12px; color: #6e7681; }
     .cat-divider {
-      max-width: 1100px; height: 1px; background: #21262d; margin-bottom: 14px;
+      height: 1px; background: #21262d; margin-bottom: 14px;
     }
 
     /* ── Projects: simple full-card links ── */
     .proj-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-      gap: 14px; max-width: 1100px; margin-bottom: 8px;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr));
+      gap: 14px; margin-bottom: 8px;
     }
     .proj-card {
       display: block; text-decoration: none;
@@ -77,7 +90,7 @@
       font-size: 11px; font-weight: 900; text-transform: uppercase;
       letter-spacing: 1.2px; color: #6e7681;
       margin: 40px 0 14px; padding-bottom: 8px;
-      border-bottom: 1px solid #21262d; max-width: 1100px;
+      border-bottom: 1px solid #21262d;
     }
 
     /* ── Hub sections: rich cards (shared with hub pages via tv-hub.js) ── */
@@ -87,7 +100,7 @@
       display: flex; align-items: center; gap: 10px;
     }
     .section-title::after { content:''; flex:1; height:1px; background:#1f2937; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 14px; }
     .card {
       background: rgba(17,24,39,0.75); border: 1px solid #1f2937;
       border-radius: 14px; padding: 20px 22px;
@@ -129,13 +142,18 @@
     .card-link.pdf  { color: #f87171; border-color: rgba(248,113,113,0.3); }
     .card-link.pdf:hover { background: rgba(248,113,113,0.1); }
 
-    /* ── hub section wrapper — max-width matches proj-grid ── */
-    #hub-additional { max-width: 1100px; margin-bottom: 8px; }
+    /* hub section wrappers (width from .layout-wide block above) */
+    #hub-pdi,
+    #hub-pci,
+    #hub-twistors,
+    #hub-gametheory,
+    #hub-papers,
+    #hub-additional { margin-bottom: 8px; }
 
     /* ── footer ── */
     .footer {
       text-align: center; color: #6e7681; font-size: 13px;
-      margin-top: 48px; padding: 6px 0 8px; max-width: 1100px;
+      margin-top: 48px; padding: 6px 0 8px;
       border-top: 1px solid #21262d;
       padding-top: 28px;
     }
@@ -147,7 +165,7 @@
 </nav>
 <header class="page-header">
 <h1>TrueValue Analytics</h1>
-<p>Supply chain &amp; value chain intelligence — select a project or browse additional information.</p>
+<p>Supply chain &amp; value chain intelligence: select a project, open draft Papers (Markdown in DocNav), Phase Mapping (PDI), Price convergence index (PCI), Twistors, Game theory, or other materials.</p>
 <p class="page-header-docnav">
 <a href="/docnav/index.html">Document repository · Tagged and searchable (DocNav) →</a><br/>
 <a href="/docnav/csvindex.html">Data Catalog · Project CSV files (searchable) →</a>
@@ -157,8 +175,33 @@
 <div id="grid-projects">
 <div style="color:#6e7681;padding:8px 0;">Loading…</div>
 </div>
-<!-- ── Additional information (research, reports, TVPCI, etc.) ─── -->
-<div class="row-label" style="margin-top:48px;">Additional Information</div>
+<!-- ── Papers (draft manuscripts, DocNav) ───────────────────────── -->
+<div class="row-label" style="margin-top:48px;">Papers</div>
+<div id="hub-papers">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
+<!-- ── Phase Mapping / Phase Discovery Instrument (PDI) ─────── -->
+<div class="row-label" style="margin-top:48px;">Phase Mapping / Phase Discovery Instrument (PDI)</div>
+<div id="hub-pdi">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
+<!-- ── Price convergence index (PCI) / TVPCI ─────────────────── -->
+<div class="row-label" style="margin-top:48px;">Price convergence index (PCI)</div>
+<div id="hub-pci">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
+<!-- ── Twistors (twistor theory / Tholonic) ───────────────────── -->
+<div class="row-label" style="margin-top:48px;">Twistors</div>
+<div id="hub-twistors">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
+<!-- ── Game theory ─────────────────────────────────────────────── -->
+<div class="row-label" style="margin-top:48px;">Game Theory</div>
+<div id="hub-gametheory">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
+<!-- ── Other materials (research, reports, modeling) ───────────── -->
+<div class="row-label" style="margin-top:48px;">Other materials</div>
 <div id="hub-additional">
 <p style="color:#6b7280;padding:8px 0;">Loading…</p>
 </div>
@@ -168,8 +211,8 @@
 <script>
 /* ── Projects (categorized) + Additional Information ─────────── */
 (function () {
-  var SITE_INDEX   = '/frontend/site-index.json?v=20260502';
-  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260502';
+  var SITE_INDEX   = '/frontend/site-index.json?v=20260506';
+  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260510';
 
   function esc(s) {
     return String(s || '')
@@ -282,12 +325,67 @@
       grid.innerHTML = html || '<p style="color:#6b7280;padding:8px 0;">No projects found.</p>';
     }
 
+    /* Papers (Markdown drafts under docnav/Research/papers) */
+    var hubPapers = document.getElementById('hub-papers');
+    if (hubPapers) {
+      var paperItems = collectAdditionalItems(siteData, ['papers']);
+      if (!paperItems.length) {
+        hubPapers.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No papers listed. Edit frontend/site-index.json (papers).</p>';
+      } else {
+        hubPapers.innerHTML = '<div class="grid">' + paperItems.map(renderHubItem).join('') + '</div>';
+      }
+    }
+
+    /* Render Phase Mapping / PDI */
+    var hubPdi = document.getElementById('hub-pdi');
+    if (hubPdi) {
+      var pdiItems = collectAdditionalItems(siteData, ['pdi']);
+      if (!pdiItems.length) {
+        hubPdi.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No PDI entries. Edit frontend/site-index.json.</p>';
+      } else {
+        hubPdi.innerHTML = '<div class="grid">' + pdiItems.map(renderHubItem).join('') + '</div>';
+      }
+    }
+
+    /* Price convergence index (PCI): data key tvpci in site-index.json */
+    var hubPci = document.getElementById('hub-pci');
+    if (hubPci) {
+      var pciItems = collectAdditionalItems(siteData, ['tvpci']);
+      if (!pciItems.length) {
+        hubPci.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No PCI entries. Edit frontend/site-index.json (tvpci).</p>';
+      } else {
+        hubPci.innerHTML = '<div class="grid">' + pciItems.map(renderHubItem).join('') + '</div>';
+      }
+    }
+
+    /* Render Twistors */
+    var hubTwistors = document.getElementById('hub-twistors');
+    if (hubTwistors) {
+      var twistorItems = collectAdditionalItems(siteData, ['twistors']);
+      if (!twistorItems.length) {
+        hubTwistors.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No Twistors entries. Edit frontend/site-index.json.</p>';
+      } else {
+        hubTwistors.innerHTML = '<div class="grid">' + twistorItems.map(renderHubItem).join('') + '</div>';
+      }
+    }
+
+    /* Render Game theory */
+    var hubGametheory = document.getElementById('hub-gametheory');
+    if (hubGametheory) {
+      var gtItems = collectAdditionalItems(siteData, ['gametheory']);
+      if (!gtItems.length) {
+        hubGametheory.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No Game theory entries. Edit frontend/site-index.json.</p>';
+      } else {
+        hubGametheory.innerHTML = '<div class="grid">' + gtItems.map(renderHubItem).join('') + '</div>';
+      }
+    }
+
     /* Render additional information */
     var hub = document.getElementById('hub-additional');
     if (!hub) return;
-    var extra = collectAdditionalItems(siteData, ['research', 'reports', 'tvpci']);
+    var extra = collectAdditionalItems(siteData, ['research', 'reports', 'modeling']);
     if (!extra.length) {
-      hub.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No additional entries yet. Edit frontend/site-index.json.</p>';
+      hub.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No other materials yet. Edit frontend/site-index.json.</p>';
       return;
     }
     hub.innerHTML = '<div class="grid">' + extra.map(renderHubItem).join('') + '</div>';
@@ -296,6 +394,16 @@
     var msg = esc(err.message);
     var grid = document.getElementById('grid-projects');
     if (grid) grid.innerHTML = '<p style="color:#f87171;">Could not load projects: ' + msg + '</p>';
+    var hubPdi = document.getElementById('hub-pdi');
+    if (hubPdi) hubPdi.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
+    var hubPci = document.getElementById('hub-pci');
+    if (hubPci) hubPci.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
+    var hubTwistors = document.getElementById('hub-twistors');
+    if (hubTwistors) hubTwistors.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
+    var hubGametheory = document.getElementById('hub-gametheory');
+    if (hubGametheory) hubGametheory.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
+    var hubPapers = document.getElementById('hub-papers');
+    if (hubPapers) hubPapers.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
     var hub = document.getElementById('hub-additional');
     if (hub) hub.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
   });

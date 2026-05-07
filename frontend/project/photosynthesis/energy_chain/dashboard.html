@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — Energy Flow Dashboard</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.header h1{font-size:20px;font-weight:600;color:#e6edf3;}
+.header h1 span{color:#56d364;}
+.header .meta{font-size:12px;color:#8b949e;}
+.main{max-width:1200px;margin:0 auto;padding:24px 20px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px 20px;text-align:center;}
+.kpi-val{font-size:28px;font-weight:800;color:#56d364;}
+.kpi-val.warn{color:#f0c040;}
+.kpi-val.bad{color:#f85149;}
+.kpi-label{font-size:11px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+.section-title{font-size:14px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8b949e;margin:28px 0 12px;}
+.phase-row{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:16px 20px;margin-bottom:8px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.phase-num{width:32px;height:32px;border-radius:50%;background:#2e7d32;color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.phase-num.bottleneck{background:#f0883e;}
+.phase-name{flex:1;min-width:160px;}
+.phase-name .pn{font-size:14px;font-weight:700;color:#e6edf3;}
+.phase-name .pc{font-size:11px;color:#8b949e;margin-top:2px;}
+.bar-group{flex:2;min-width:220px;}
+.bar-label{font-size:10px;color:#8b949e;font-weight:700;text-transform:uppercase;margin-bottom:3px;}
+.bar-track{background:#21262d;border-radius:4px;height:8px;overflow:hidden;margin-bottom:4px;}
+.bar-fill{height:8px;border-radius:4px;}
+.bar-d{background:#56d364;}
+.bar-c{background:#58a6ff;}
+.bar-n{background:#f0c040;}
+.bar-fill.stressed{background:#f0883e;}
+.phase-stats{display:flex;gap:14px;flex-wrap:wrap;}
+.stat{text-align:center;}
+.stat-val{font-size:15px;font-weight:800;color:#e6edf3;}
+.stat-label{font-size:9px;color:#8b949e;text-transform:uppercase;}
+.zone-pill{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;font-weight:700;text-transform:uppercase;}
+.zone-coherent{background:rgba(86,211,100,.15);color:#56d364;border:1px solid rgba(86,211,100,.3);}
+.zone-stressed{background:rgba(240,136,62,.15);color:#f0883e;border:1px solid rgba(240,136,62,.3);}
+.zone-failure{background:rgba(248,81,73,.15);color:#f85149;border:1px solid rgba(248,81,73,.3);}
+.bottleneck-alert{background:#1c1208;border:1px solid #f0883e;border-radius:8px;padding:14px 18px;margin-bottom:20px;font-size:13px;color:#f0883e;line-height:1.6;}
+.bottleneck-alert strong{color:#ffa556;}
+.info-panel{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:20px;margin-bottom:20px;font-size:13px;line-height:1.7;color:#8b949e;}
+.info-panel h3{font-size:14px;font-weight:700;color:#e6edf3;margin-bottom:8px;}
+.key-metric{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:8px 12px;display:inline-block;margin:4px;font-size:12px;color:#c9d1d9;}
+.key-metric strong{color:#56d364;}
+/* Pathway Variants */
+.variant-strip{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:14px 18px;margin-bottom:20px;}
+.variant-strip h3{font-size:13px;font-weight:700;color:#8b949e;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;}
+.variant-cards{display:flex;gap:12px;flex-wrap:wrap;}
+.vc-card{border-radius:6px;padding:10px 14px;flex:1;min-width:160px;font-size:12px;line-height:1.5;}
+.vc-card.active{background:rgba(86,211,100,.08);border:1px solid rgba(86,211,100,.3);color:#56d364;}
+.vc-card.available{background:rgba(188,120,248,.08);border:1px solid rgba(188,120,248,.3);color:#bc8cf8;}
+.vc-card.future{background:rgba(139,148,158,.08);border:1px solid rgba(139,148,158,.3);color:#8b949e;}
+.vc-title{font-weight:700;margin-bottom:4px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>🌿 Photosynthesis — <span>Energy Flow Dashboard</span></h1>
+  <div class="meta">C3 Canonical · Spinacia oleracea / Arabidopsis thaliana · 25°C 380 ppm CO2 saturating light</div>
+</div>
+
+<div class="main">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">95.4%</div><div class="kpi-label">Chain Balance</div></div>
+    <div class="kpi"><div class="kpi-val">232</div><div class="kpi-label">Average N</div></div>
+    <div class="kpi"><div class="kpi-val warn">85.2%</div><div class="kpi-label">Phase 5 Balance</div></div>
+    <div class="kpi"><div class="kpi-val">7/8</div><div class="kpi-label">Coherent Phases</div></div>
+  </div>
+
+  <div class="bottleneck-alert">
+    <strong>Bottleneck detected: Phase 5 (Calvin Cycle: Carbon Fixation).</strong>
+    Balance 85.2% (stressed zone). D = 270, C = 230. The D-C gap is structural: Rubisco cannot discriminate perfectly between CO2 and O2 as substrates.
+    Under present atmosphere (~21% O2, ~0.04% CO2), the oxygenation/carboxylation ratio (Vo/Vc) = 0.25,
+    meaning 25% of RuBP is consumed by photorespiration. All other phases are coherent (balance above 94%).
+    The 95.4% chain average is high because the seven coherent phases dominate.
+  </div>
+
+  <div class="section-title">Phase-by-Phase D-C-N Balance</div>
+
+  <div id="phase-container"></div>
+
+  <div class="section-title">Key Phase Metrics</div>
+  <div class="info-panel">
+    <h3>Reference Values (C3 canonical, 25°C, 380 ppm CO2, saturating light)</h3>
+    <div class="key-metric"><strong>Ph 0</strong> Absorptance PAR = 0.85 | LHCII efficiency = 95%</div>
+    <div class="key-metric"><strong>Ph 1</strong> Fv/Fm = 0.83 | O2 evolution = 28 µmol m⁻² s⁻¹</div>
+    <div class="key-metric"><strong>Ph 2</strong> Cyt b6f turnover = 150 e⁻ complex⁻¹ s⁻¹ | pmf = 175 mV</div>
+    <div class="key-metric"><strong>Ph 3</strong> PSI Y(I) = 0.80 | NADPH = 10 µmol m⁻² s⁻¹</div>
+    <div class="key-metric"><strong>Ph 4</strong> H⁺/ATP = 4.67 | ATP/NADPH = 1.28</div>
+    <div class="key-metric"><strong>Ph 5</strong> An = 20 µmol CO2 m⁻² s⁻¹ | Vo/Vc = 0.25 | Sc/o = 80</div>
+    <div class="key-metric"><strong>Ph 6</strong> G3P export = 4 µmol m⁻² s⁻¹ | 3 ATP + 2 NADPH per CO2</div>
+    <div class="key-metric"><strong>Ph 7</strong> Sucrose = 12 + Starch = 6 µmol C m⁻² s⁻¹ | Export fraction = 0.65</div>
+  </div>
+
+  <div class="section-title">Pathway Variants</div>
+  <div class="variant-strip">
+    <h3>Pathway Analysis Scope — C3 Active</h3>
+    <div class="variant-cards">
+      <div class="vc-card active">
+        <div class="vc-title">C3 Photosynthesis (Active)</div>
+        This analysis. 8 phases as mapped. Rubisco Phase 5 bottleneck from photorespiration. Accounts for ~85% of plant species. Reference: Spinacia oleracea.
+      </div>
+      <div class="vc-card available">
+        <div class="vc-title">C4 Photosynthesis (Initializable)</div>
+        Adds Phase 5a (PEP carboxylase, bundle sheath transport). Phases 5-7 reorganized. Photorespiration nearly eliminated (Vo/Vc ~0.02). Initialize via BPDI form.
+      </div>
+      <div class="vc-card future">
+        <div class="vc-title">CAM Photosynthesis (Future)</div>
+        Temporal separation of light reactions and carbon fixation. Same phases but night/day split. Rate constants differ completely. Extreme water-use efficiency.
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var DATA_URL = '/frontend/project/photosynthesis/data/processed/photosynthesis_energy_chain_ui.json';
+
+var PHASE_NOTES = {
+  0:'Photon absorption and excitation energy transfer via LHCII antenna to PSII/PSI reaction centers.',
+  1:'Water oxidation at Mn4CaO5 cluster; O2 evolution; plastoquinone reduction.',
+  2:'Plastoquinol oxidation at cytochrome b6f; Q-cycle proton pumping; plastocyanin reduction.',
+  3:'P700 excitation; ferredoxin reduction; NADPH synthesis via FNR.',
+  4:'Chemiosmotic ATP synthesis driven by proton motive force across thylakoid membrane.',
+  5:'CO2 fixation by Rubisco; structural bottleneck from O2 competition and photorespiration (25% loss).',
+  6:'3-PGA reduction to G3P; RuBP regeneration; consumes 3 ATP + 2 NADPH per CO2 fixed.',
+  7:'Triose phosphate export; sucrose and starch synthesis; phloem loading and sink supply.'
+};
+
+var MAXVAL = 280;
+
+fetch(DATA_URL)
+  .then(function(r){return r.json();})
+  .catch(function(){return null;})
+  .then(function(data){
+    var phases = data && data.phases && data.phases.synthetic ? data.phases.synthetic : null;
+    var meta = data && data.phase_meta ? data.phase_meta : {};
+    var container = document.getElementById('phase-container');
+    if(!phases){container.innerHTML='<p style="color:#f85149;">Data not loaded.</p>';return;}
+
+    var ids = Object.keys(phases).sort(function(a,b){return +a-+b;});
+    ids.forEach(function(id){
+      var p = phases[id];
+      var m = meta[id] || {};
+      var name = m.name || ('Phase '+id);
+      var compartment = m.compartment || '';
+      var isBottleneck = parseFloat(p.balance) < 90;
+      var zone = parseFloat(p.balance) >= 90 ? 'coherent' : parseFloat(p.balance) >= 61.8 ? 'stressed' : 'failure';
+      var maxV = MAXVAL;
+      var dPct = Math.min(100, (p.D / maxV)*100).toFixed(1);
+      var cPct = Math.min(100, (p.C / maxV)*100).toFixed(1);
+      var nPct = Math.min(100, (p.N / maxV)*100).toFixed(1);
+
+      var div = document.createElement('div');
+      div.className = 'phase-row';
+      div.innerHTML =
+        '<div class="phase-num'+(isBottleneck?' bottleneck':'')+'">'+id+'</div>'+
+        '<div class="phase-name">'+
+          '<div class="pn">'+name+'</div>'+
+          '<div class="pc">'+compartment+'</div>'+
+          '<div class="pc" style="margin-top:3px;color:#6e7681;">'+(PHASE_NOTES[id]||'')+'</div>'+
+        '</div>'+
+        '<div class="bar-group">'+
+          '<div class="bar-label">D = '+p.D+' &nbsp; C = '+p.C+' &nbsp; N = '+p.N+'</div>'+
+          '<div class="bar-track"><div class="bar-fill bar-d" style="width:'+dPct+'%"></div></div>'+
+          '<div class="bar-track"><div class="bar-fill bar-c'+(isBottleneck?' stressed':'')+'" style="width:'+cPct+'%"></div></div>'+
+          '<div class="bar-track"><div class="bar-fill bar-n" style="width:'+nPct+'%"></div></div>'+
+          '<div style="font-size:10px;color:#6e7681;margin-top:2px;">Green = D &nbsp; Blue = C &nbsp; Yellow = N</div>'+
+        '</div>'+
+        '<div class="phase-stats">'+
+          '<div class="stat"><div class="stat-val'+(isBottleneck?' style="color:#f0883e"':'')+'">'+parseFloat(p.balance).toFixed(1)+'%</div><div class="stat-label">Balance</div></div>'+
+          '<div class="stat"><div class="stat-val">'+p.N+'</div><div class="stat-label">N</div></div>'+
+          '<div class="stat"><div class="stat-val">'+parseFloat(p.sustainability).toFixed(2)+'</div><div class="stat-label">Sust.</div></div>'+
+          '<div class="stat"><span class="zone-pill zone-'+zone+'">'+zone+'</span></div>'+
+        '</div>';
+      container.appendChild(div);
+    });
+  });
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc a:hover{color:#fff;text-decoration:underline;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><a href="index.html">Energy Chain</a><span class="bc-sep">›</span><span class="bc-cur">Dashboard</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hdr=document.querySelector('.header');if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>

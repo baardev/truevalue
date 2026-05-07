@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Photosynthesis — System Lifecycle N-D-C</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:#0d1117;color:#c9d1d9;min-height:100vh;}
+.header{background:#161b22;border-bottom:1px solid #30363d;padding:16px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.header h1{font-size:20px;font-weight:600;color:#e6edf3;}
+.header h1 span{color:#56d364;}
+.main{max-width:1100px;margin:0 auto;padding:24px 20px;}
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.kpi{background:#161b22;border:1px solid #30363d;border-radius:8px;padding:18px;text-align:center;}
+.kpi-val{font-size:26px;font-weight:800;color:#56d364;}
+.kpi-val.warn{color:#f0883e;}
+.kpi-label{font-size:11px;color:#8b949e;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-top:4px;}
+.section-title{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8b949e;margin:24px 0 12px;}
+.lc-card{background:#161b22;border:1px solid #30363d;border-radius:10px;margin-bottom:14px;overflow:hidden;}
+.lc-card.bottleneck{border-color:#f0883e;}
+.lc-header{padding:14px 18px;display:flex;align-items:center;gap:12px;background:#0d1117;cursor:pointer;user-select:none;}
+.lc-header:hover{background:#161b22;}
+.lc-num{width:36px;height:36px;border-radius:8px;background:#2e7d32;color:#fff;font-size:14px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.lc-num.bn{background:#f0883e;}
+.lc-name{flex:1;}
+.lc-name .ln{font-size:15px;font-weight:700;color:#e6edf3;}
+.lc-name .lcat{font-size:11px;color:#8b949e;margin-top:2px;}
+.lc-balance{font-size:18px;font-weight:800;color:#56d364;}
+.lc-balance.warn{color:#f0883e;}
+.lc-zone{display:inline-block;padding:2px 9px;border-radius:8px;font-size:10px;font-weight:700;text-transform:uppercase;margin-left:8px;}
+.zone-coherent{background:rgba(86,211,100,.15);color:#56d364;border:1px solid rgba(86,211,100,.3);}
+.zone-stressed{background:rgba(240,136,62,.15);color:#f0883e;border:1px solid rgba(240,136,62,.3);}
+.chevron{color:#8b949e;font-size:12px;flex-shrink:0;}
+.lc-body{padding:16px 18px;display:none;}
+.lc-card.open .lc-body{display:block;}
+.lc-card.open .chevron{transform:rotate(180deg);}
+.desc-text{font-size:13px;color:#8b949e;line-height:1.7;margin-bottom:14px;}
+.bar-group{margin-bottom:12px;}
+.bar-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.bar-row-label{width:28px;font-size:11px;font-weight:700;text-transform:uppercase;color:#8b949e;flex-shrink:0;}
+.bar-track{flex:1;background:#21262d;border-radius:4px;height:10px;overflow:hidden;}
+.bar-fill{height:10px;border-radius:4px;}
+.bar-d{background:#56d364;}
+.bar-c{background:#58a6ff;}
+.bar-n{background:#f0c040;}
+.bar-c.warn{background:#f0883e;}
+.bar-val{width:40px;font-size:11px;font-weight:700;color:#c9d1d9;text-align:right;flex-shrink:0;}
+.params-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px;}
+.param-box{background:#0d1117;border:1px solid #30363d;border-radius:6px;padding:10px 12px;}
+.param-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#8b949e;margin-bottom:5px;}
+.param-text{font-size:12px;color:#c9d1d9;line-height:1.55;}
+.interp-panel{background:#0f1f0f;border:1px solid #1a4d1a;border-radius:8px;padding:18px 20px;margin-top:20px;font-size:13px;line-height:1.7;color:#a7d7a7;}
+.interp-panel h3{font-size:14px;font-weight:700;color:#56d364;margin-bottom:10px;}
+.bottleneck-bar{background:#1c1208;border:1px solid #f0883e;border-radius:8px;padding:14px 18px;margin-bottom:18px;font-size:13px;color:#f0883e;line-height:1.6;}
+.bottleneck-bar strong{color:#ffa556;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>🌿 Photosynthesis — <span>System Lifecycle N-D-C</span></h1>
+  <div style="font-size:12px;color:#8b949e;">Resource · Develop · Operate · Sustain · Four lifecycle phases</div>
+</div>
+
+<div class="main">
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">93.9%</div><div class="kpi-label">Lifecycle Avg Balance</div></div>
+    <div class="kpi"><div class="kpi-val">236</div><div class="kpi-label">Average N</div></div>
+    <div class="kpi"><div class="kpi-val warn">Phase 3</div><div class="kpi-label">Lifecycle Bottleneck</div></div>
+    <div class="kpi"><div class="kpi-val">Phase 2</div><div class="kpi-label">Strongest Phase</div></div>
+  </div>
+
+  <div class="bottleneck-bar">
+    <strong>Lifecycle bottleneck: Phase 3 (Sustain and Assure).</strong>
+    Balance 90.4%. D = 260, C = 235. The D excess reflects the ongoing demand of the repair apparatus:
+    D1 protein in PSII is the most rapidly turned-over protein in the plant proteome under high light.
+    When photodamage rate exceeds D1 synthesis and insertion rate, progressive photoinhibition accumulates.
+    This is the lifecycle equivalent of infrastructure maintenance debt: the system performs at full capacity
+    only when repair demand (D) is matched by repair capacity (C).
+  </div>
+
+  <div class="section-title">Lifecycle Phase Detail</div>
+  <div id="lc-container"></div>
+
+  <div class="interp-panel">
+    <h3>Structural Interpretation</h3>
+    <p>The photosynthesis system lifecycle shows a characteristic pattern: high operational coherence during development and operation (Phases 1-2), with a declining balance in the sustaining phase (Phase 3). This mirrors the pattern seen in the gold supply chain lifecycle, where the sustaining and closure phases are consistently the weakest.</p>
+    <br/>
+    <p>In biological terms, the sustaining bottleneck has a precise molecular basis: the D1 protein of PSII is the target of reactive oxygen species generated by PSII itself during charge separation. D1 must be removed from the PSII complex, degraded by FtsH proteases, and replaced by newly synthesized D1 within the same complex. This entire cycle occurs in minutes under high light and represents a continuous maintenance cost. When light exceeds repair capacity, PSII centers become inactivated (photoinhibition) and the chain efficiency declines from its optimum.</p>
+    <br/>
+    <p>The tholonic implication: Phase 3 (Sustain) has a D-C imbalance where D (repair demand) > C (repair delivery). Interventions that increase C — for example, overexpression of FtsH protease or D1 synthesis rate — can in principle recover the lifecycle balance. This has been demonstrated experimentally in transgenic plants with elevated FtsH levels.</p>
+  </div>
+</div>
+
+<script>
+var DATA_URL='/frontend/project/photosynthesis/data/processed/photosynthesis_system_lifecycle_ndc.json';
+var MAXVAL=280;
+
+fetch(DATA_URL)
+  .then(function(r){return r.json();})
+  .catch(function(){return null;})
+  .then(function(data){
+    if(!data||!data.lifecycle_phases){return;}
+    var container=document.getElementById('lc-container');
+    var sys=data.lifecycle_system||{};
+    var bottleneckId=String(sys.bottleneck_phase_id);
+
+    Object.keys(data.lifecycle_phases).sort().forEach(function(id){
+      var p=data.lifecycle_phases[id];
+      var isBottleneck=(id===bottleneckId);
+      var bal=parseFloat(p.balance);
+      var zone=bal>=90?'coherent':'stressed';
+      var dPct=Math.min(100,(p.D/MAXVAL)*100).toFixed(1);
+      var cPct=Math.min(100,(p.C/MAXVAL)*100).toFixed(1);
+      var nPct=Math.min(100,(p.N/MAXVAL)*100).toFixed(1);
+
+      var card=document.createElement('div');
+      card.className='lc-card'+(isBottleneck?' bottleneck':'');
+      card.innerHTML=
+        '<div class="lc-header" onclick="this.closest(\'.lc-card\').classList.toggle(\'open\')">'+
+          '<div class="lc-num'+(isBottleneck?' bn':'')+'">'+id+'</div>'+
+          '<div class="lc-name"><div class="ln">'+p.name+'</div><div class="lcat">'+p.category+'</div></div>'+
+          '<div class="lc-balance'+(isBottleneck?' warn':'')+'">'+bal.toFixed(1)+'%<span class="lc-zone zone-'+zone+'">'+zone+'</span></div>'+
+          '<span class="chevron">▼</span>'+
+        '</div>'+
+        '<div class="lc-body">'+
+          '<div class="desc-text">'+p.description+'</div>'+
+          '<div class="bar-group">'+
+            '<div class="bar-row"><div class="bar-row-label">D</div><div class="bar-track"><div class="bar-fill bar-d" style="width:'+dPct+'%"></div></div><div class="bar-val">'+p.D+'</div></div>'+
+            '<div class="bar-row"><div class="bar-row-label">C</div><div class="bar-track"><div class="bar-fill bar-c'+(isBottleneck?' warn':'')+'" style="width:'+cPct+'%"></div></div><div class="bar-val">'+p.C+'</div></div>'+
+            '<div class="bar-row"><div class="bar-row-label">N</div><div class="bar-track"><div class="bar-fill bar-n" style="width:'+nPct+'%"></div></div><div class="bar-val">'+p.N+'</div></div>'+
+          '</div>'+
+          '<div class="params-grid">'+
+            '<div class="param-box"><div class="param-label">D — Constraints</div><div class="param-text">'+p.D_parameters+'</div></div>'+
+            '<div class="param-box"><div class="param-label">C — Contributions</div><div class="param-text">'+p.C_parameters+'</div></div>'+
+            '<div class="param-box"><div class="param-label">Measurable Output</div><div class="param-text">'+p.measurable_output+' ('+p.output_unit+')</div></div>'+
+            '<div class="param-box"><div class="param-label">Notes</div><div class="param-text">'+p.notes+'</div></div>'+
+          '</div>'+
+        '</div>';
+      container.appendChild(card);
+    });
+    // Open bottleneck phase by default
+    var cards=document.querySelectorAll('.lc-card.bottleneck');
+    cards.forEach(function(c){c.classList.add('open');});
+  });
+</script>
+
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc a:hover{color:#fff;text-decoration:underline;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="../index.html">Photosynthesis</a><span class="bc-sep">›</span><a href="index.html">Energy Chain</a><span class="bc-sep">›</span><span class="bc-cur">System Lifecycle</span>';
+  function inject(){if(document.getElementById('tv-bc'))return;var hdr=document.querySelector('.header');if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr);else document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+</body>
+</html>

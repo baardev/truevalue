@@ -26,7 +26,7 @@ Arrows (→) show outbound navigation links. `/index.html` is the root landing p
 ## Structure overview
 
 ```
-index.html                          Root — project grid
+index.html                          Root — project grid, Papers (DocNav drafts), PDI/PCI/Twistors/Game theory hubs
 ├── frontend/project/gold/index.html        Gold commodity hub
 │   ├── supply_chain/index.html     Gold Supply Chain hub
 │   │   ├── project_context.html

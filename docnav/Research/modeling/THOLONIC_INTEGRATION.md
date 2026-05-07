@@ -69,6 +69,23 @@ Energy_cost = |D - C|² + E_base
 
 **Key Insight**: Systems are most sustainable when **D ≈ C** (balanced)
 
+### TVPCI zone cuts on phase balance (replaces legacy "80% rule of thumb")
+
+Older notes often cited **~80%** on the exponential balance score as an informal "good enough" target. TVPCI reporting now anchors thresholds on the **golden section of the unit interval**:
+
+| Zone | Balance score \(B_{\mathrm{exp}}\), % | Meaning |
+|------|----------------------------------------|---------|
+| **Coherent** | \(\geq 80\) | Self-sustaining; optional optimization. |
+| **Stressed** | \(\geq 100/\phi \approx 61.8\) and \(< 80\) | Still in-system; D or C should be improved before stress propagates. |
+| **Failure** | \(\geq 100(1 - 1/\phi) \approx 38.2\) and \(< 61.8\) | Cost-export / policy pressure zone; external intervention often implied. |
+| **Breakdown** | \(< 38.2\) | Constraint shell dominates contribution. |
+
+Here \(\phi = (1 + \sqrt{5})/2\). The **61.8%** and **38.2%** edges are the structural complements used in project PDFs (`PHI_SUSTAINABILITY_THRESHOLD`, `PHI_THRESHOLD_PROJECT_REANALYSIS`) and in `src/simulation/tholonic_engine.py` (`ZONE_STRESSED_MIN_BALANCE`, `ZONE_FAILURE_MIN_BALANCE`). The exponential score \(B_{\mathrm{exp}}\) is not the same as the harmonic proportion \(100 \times \min(D,C)/\max(D,C)\); see engine docstrings for the exact D/C mapping at each cut.
+
+### Five-model coherence limits (π, φ, √2, ln 2, e)
+
+Chain-wide analysis does not reduce to a single percentage. The **five-model N-D-C framework** scores the same phase pattern against five irrational targets: **π** (phase-level balance), **φ** (adjacent-phase proportions), **√2** (differential stress), **ln 2** (halving/balance depth), **e** (compounding continuity). Implementation: `src/simulation/pi_engine.py`, `phi_engine.py`, `sqrt2_engine.py`, `ln2_engine.py`, `e_engine.py`. Integrated dashboard: `/frontend/project/five_model_coherence.html`.
+
 ---
 
 ## How N-D-C Values Are Calculated
@@ -164,8 +181,9 @@ balance_score = 100 × exp(-2 × imbalance / max(D_total, C_total))
 
 **How it works:**
 - When D = C (imbalance = 0): balance_score = 100
-- Small imbalance: balance_score 80-95
-- Large imbalance: balance_score < 50
+- Small imbalance: balance_score stays in the **coherent** band (\(\geq 80\))
+- Moderate imbalance: often lands between **61.8%** and **80%** (**stressed** zone)
+- Severe imbalance: can fall through **38.2%** toward **breakdown**
 
 **Example:**
 ```
@@ -174,12 +192,13 @@ D=390, C=300:
   balance_score = 100 × exp(-2 × 90/390) = 100 × exp(-0.46) = 63.2
 ```
 
-**Balance Score Interpretation:**
-- **95-100**: Excellent balance (D ≈ C)
-- **80-95**: Good balance ✓ (baseline)
-- **60-80**: Fair balance
-- **40-60**: Poor balance
-- **0-40**: Critical imbalance
+**Balance score interpretation (TVPCI zones on \(B_{\mathrm{exp}}\)):**
+- **\(\geq 80\)**: **Coherent** (excellent; D ≈ C in operational terms)
+- **61.8 to 80**: **Stressed** (primary improvement band; do not treat 80% alone as the only meaningful threshold)
+- **38.2 to 61.8**: **Failure** (structural risk; intervention or redistribution of D/C typically required)
+- **Below 38.2**: **Breakdown**
+
+Use the five-model dashboard to complement this single-phase score: a phase can sit near **61.8%** while boundary ratios still miss **φ**, or π-layer scores can flag a different bottleneck.
 
 #### 6. Calculate Sustainability Index
 
@@ -446,7 +465,7 @@ sustainability_index = 100 / energy_cost
 
 #### 6. Diagnose
 ```python
-if balance_score < 60:
+if balance_score < (100.0 / 1.618033988749895):  # stressed floor ≈ 61.8% (100/φ)
     if D_total > C_total:
         issue = "Over-constrained: Need more integration"
         recommendation = "Increase supplier diversity, logistics flexibility, or information sharing"
@@ -557,29 +576,31 @@ print(f"Balance achieved: {result['balance']}")
 
 ### Key Metrics to Monitor
 
-1. **Balance Score** (0-100)
-   - Target: >60 (acceptable), >80 (excellent)
-   - Red flag: <40
+1. **Balance score** (0-100, \(B_{\mathrm{exp}}\))
+   - **Coherent**: \(\geq 80\)
+   - **Stressed**: \(\geq 61.8\) (\(100/\phi\)) and below 80
+   - **Failure**: \(\geq 38.2\) (\(100(1-1/\phi)\)) and below 61.8
+   - **Breakdown**: below 38.2
 
-2. **Sustainability Index** (higher is better)
+2. **Five-model coherence** (π, φ, √2, ln 2, e)
+   - Each axis has its own target constant; no single "80%" replaces all five.
+   - Monitor the pentagon / per-model scores on the five-model dashboard (`five_model_coherence.html`).
+
+3. **Sustainability Index** (higher is better)
    - Baseline: ~10 (typical)
    - Target: >15 (efficient)
    - Red flag: <5 (unsustainable)
 
-3. **D-C Imbalance** (absolute)
+4. **D-C Imbalance** (absolute)
    - Target: <20% of max(D,C)
    - Red flag: >50%
 
-4. **System Health Score** (0-100)
-   - Excellent: >80
-   - Good: 60-80
-   - Fair: 40-60
-   - Poor: 20-40
-   - Critical: <20
+5. **System health (aggregate)**
+   - Derive from zone mix and bottleneck count rather than a lone ">80 = excellent" scalar; treat **61.8%** as the first structural floor on phase balance.
 
-5. **Bottleneck Count**
-   - Target: 0-1 phases with severe imbalance
-   - Red flag: >3 phases
+6. **Bottleneck count**
+   - Target: 0 to 1 phases in **failure** or **breakdown**
+   - Red flag: many phases below the **38.2%** edge or multi-axis failure on the five-model view
 
 ---
 
@@ -622,7 +643,7 @@ The frontend can now request:
 2. **Sustainability Heat Map**: Color phases by sustainability index
 3. **Interaction Flow**: Sankey diagram showing how imbalances propagate
 4. **Optimization Path**: Animated trajectory showing balance improvement
-5. **System Health Dial**: Overall health score (0-100) with status indicator
+5. **System health**: Show TVPCI zone (coherent / stressed / failure / breakdown) per phase, optionally a small **five-model** strip (π, φ, √2, ln 2, e) instead of a single ambiguous 0-100 dial
 
 ---
 

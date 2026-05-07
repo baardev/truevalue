@@ -1,0 +1,658 @@
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\title{A Minimal Recursive Triadic Framework for\\Self-Similar Hierarchical Systems}
+\author{Jeffrey W. Milton\\\\[4pt]\small Clarity Coalition}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We argue that the minimum non-trivial structure capable of sustained recursive
+self-organization is a three-role partition with a single emergent state and two
+functionally distinct auxiliary variables.  Starting from a binary state space
+$\{0,1\}$ and the requirement that any interaction involve at least one bit of state
+difference, we show that the smallest non-degenerate simplex (the triangle) induces
+exactly three directed roles: a \emph{negotiation} variable $N$ carrying the running
+emergent state, a \emph{definition/limitation} variable $D$ that bounds, and a
+\emph{contribution/integration} variable $C$ that accumulates.  The result is a proof
+that $m = 2$ is insufficient and $m = 3$ is necessary for non-trivial convergence
+under mild functional independence conditions (Lemma~4.2).  We then demonstrate that
+the triadic partition supports a self-similar hierarchical extension: any triad can
+serve as a node in a higher-level triad without altering the three-role grammar,
+producing unbounded depth from three principles.  This framework supplies a formal
+substrate for the tholonic ladder family of recurrences \cite{Mil24} and for a class
+of phase-resolved transparency scoring systems \cite{Mil24}, but the present paper
+establishes only the structural core: minimality, irreducibility, and self-similar
+nesting.  No empirical claims are made beyond the logical and topological argument
+within the stated axioms.
+\end{abstract}
+
+\tableofcontents
+
+\section{Introduction}\label{sec:intro}
+
+Self-organizing systems appear across disciplines: physical pattern formation \cite{CH93},
+biological morphogenesis \cite{Tur52}, computational models of emergence
+\cite{Lan90,Wol02}, and the study of hierarchical complexity in cognitive and social
+systems \cite{JLM01}.  A persistent question across these fields is: what is the
+\emph{minimum} set of structural ingredients required for a system to organize itself
+recursively, without external tuning at every step?
+
+This paper proposes an answer grounded in the properties of binary state spaces and
+simplex topology.  The argument proceeds in four steps:
+\begin{enumerate}
+  \item \textbf{Binary state space} (\S\ref{sec:binary}).  The minimal non-trivial state
+        space capable of supporting a difference (an interaction) is the Boolean set
+        $\{0,1\}$.  With a single bit, no interaction occurs; two bits are necessary to
+        encode a relation \cite{Sha48}.
+  \item \textbf{Minimum simplex} (\S\ref{sec:simplex}).  The smallest non-degenerate
+        simplex is the 2-simplex (triangle), which has three vertices and three edges.
+        The directed adjacency structure of a labeled triangle yields three oriented
+        axes, each connecting one outer vertex to one inner midpoint.
+  \item \textbf{Triadic partition} (\S\ref{sec:partition}).  A recurrence on $m$ real
+        variables with a distinguished state variable and two functionally independent
+        auxiliary variables requires $m \ge 3$ (Lemma~4.2).  The three roles correspond
+        to the three axes of the triangular geometry: bounding (Definition axis),
+        accumulating (Contribution axis), and instantiating (Instantiation axis).
+  \item \textbf{Self-similar nesting} (\S\ref{sec:selfsim}).  A triadic node can be
+        embedded as a single element in a higher-level triad, reproducing the three-role
+        structure at every scale.  This yields an infinite hierarchy from three principles.
+\end{enumerate}
+
+The framework is \emph{formal and structural}.  It does not derive specific dynamical
+laws or empirical constants.  It says: if a system is to organize itself under these
+minimal axioms, it must have at least three distinct functional roles, and those roles
+compose self-similarly.  This is a constraint on admissible architectures, not a
+prediction of particular outputs.
+
+\textbf{Related frameworks.}  The tholonic ladder recurrence family \cite{Mil24}
+instantiates this framework concretely by showing that five classical mathematical
+constants ($\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$) emerge as limits of
+three-variable recurrences whose branches differ only in initial seeds and traversal
+rules.  The present paper supplies the foundational argument for \emph{why three
+variables, and why these three roles}.  The supply-chain transparency scoring method
+(TVPCI) \cite{Mil24} applies the same triadic partition in a non-dynamical,
+evidence-scoring context, demonstrating that the three-role structure generalizes
+beyond recurrence.  This paper isolates the structural core common to both applications.
+
+\textbf{Scope.}  We establish minimality and self-similarity within the stated axioms.
+We do not claim that every three-variable system is irreducible, that all self-organizing
+systems reduce to this scaffold, or that the framework produces novel predictions about
+specific natural phenomena.  The claim is narrower: given the axioms of binary state
+space and simplex topology, \emph{three} is a lower bound, and the same three roles
+compose hierarchically.
+
+\section{Binary state space}\label{sec:binary}
+
+A state space is a set $S$ of values that a variable may take.  A relation on $S$ is a
+mapping $R\colon S \times S \to S$.  For $R$ to be non-trivial (i.e., to produce an
+effect distinguishable from the identity), there must exist at least one ordered pair
+$(a,b) \in S \times S$ with $a \neq b$ such that $R(a,b) \neq a$.
+
+\begin{definition}[Binary state space]\label{def:binary-space}
+The \emph{binary state space} is $S_2 = \{0,1\}$, the smallest set capable of encoding
+a difference.
+\end{definition}
+
+\begin{proposition}[Minimality of binary encoding]\label{prop:binary-min}
+Any system whose state is captured by a single variable requires $|S| \ge 2$ to support
+a non-trivial interaction between states.  Equivalently, one bit is the minimum
+informational unit for encoding a relation \cite{Sha48}.
+\end{proposition}
+\begin{proof}
+If $|S| = 1$, then $S = \{a\}$ and $R(a,a) = a$ for any $R$, so every possible $R$ is
+the identity mapping.  A non-trivial $R$ requires at least two distinct elements.
+\end{proof}
+
+The binary state space $\{0,1\}$ is thus the fundamental ground of any discrete system
+capable of change.  Every richer state space (integers, reals, vectors) is a composite
+built atop this binary substrate.
+
+\begin{corollary}[Interaction requires at least two bits]\label{cor:two-bits}
+Two interacting variables, each drawn from $S_2$, encode $2 \times 2 = 4$ possible
+configurations, the minimum capacity for a directionally non-trivial relation between
+distinct entities.
+\end{corollary}
+
+This corollary sets a hard lower bound on the complexity of any interaction: at least
+two binary positions, producing four states, must be available before a direction can be
+assigned.  A triangle, as we will see, uses six positions (three outer, three inner),
+exactly enough to encode three directed axes.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.90\textwidth]{figures/3_binary-to-triad}
+  \caption{A three-panel schematic.  Left: a single binary digit $\{0,1\}$.  Centre: a
+    $2\times 2$ lattice of four configurations from two interacting bits.  Right: a
+    labeled triangle with three outer vertices and three inner midpoints, with three
+    directed arrows connecting each outer vertex to a distinct inner vertex.}
+  \label{fig:binary-to-triad}
+\end{figure}
+
+\section{The minimum non-degenerate simplex}\label{sec:simplex}
+
+A simplex is the generalization of a triangle to arbitrary dimension.  The $k$-simplex
+is the convex hull of $k+1$ affinely independent points.  The 0-simplex is a point,
+the 1-simplex is a segment, and the 2-simplex is a triangle.
+
+\begin{definition}[Non-degenerate simplex]\label{def:nondegen}
+A $k$-simplex is \emph{non-degenerate} if its $k+1$ vertices are affinely independent;
+equivalently, if it has non-zero $k$-dimensional volume.
+\end{definition}
+
+\begin{proposition}[The triangle is the minimum non-degenerate simplex with three axes]
+\label{prop:min-simplex}
+The 0-simplex and 1-simplex cannot encode a directed relation between more than two
+elements.  The 2-simplex (triangle) is the smallest simplex with three vertices, three
+edges, and an interior, enabling three distinct directed axes without self-intersection.
+\end{proposition}
+\begin{proof}
+The 0-simplex has no distinct elements to relate.  The 1-simplex has two endpoints and
+one edge; it supports one directed relation but cannot support two orthogonal directed
+relations without self-intersection in the plane.  The 2-simplex has three vertices
+$\{V_1, V_2, V_3\}$ and three edges.  By labeling the vertices and orienting each edge,
+three distinct directed axes are obtained.  No structure with fewer than three vertices
+supports three independent directed relations without embedding them in a
+higher-dimensional space.
+\end{proof}
+
+\begin{definition}[Inner midpoint vertices]\label{def:midpoints}
+For a labeled equilateral triangle with outer vertices $A, B, C$, define three
+\emph{inner midpoint vertices} $a, b, c$ as the midpoints of edges $BC$, $CA$, $AB$
+respectively.  The triangle then has six labeled points: three outer and three inner.
+\end{definition}
+
+The six-point configuration supports three directed axes, each from an outer vertex to a
+distinct inner vertex, with no axis sharing both its source and target with another
+axis.  This is the geometric model from which the three functional roles emerge.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.88\textwidth]{figures/3_minimum-simplex}
+  \caption{The labeled 2-simplex and its three directed axes.  Left: an equilateral
+    triangle with outer vertices $A, B, C$ and inner midpoints $a, b, c$, all labeled.
+    Right: the same triangle with three colored directed axes: Definition axis (blue,
+    $A \to a$), Contribution axis (red, $B \to b$), and Instantiation axis (green,
+    $C \to c$).}
+  \label{fig:min-simplex}
+\end{figure}
+
+\begin{remark}[Connection to binary encoding]\label{rem:binary-six}
+Three directed axes require six labeled positions (three sources, three targets), which
+is the capacity of three binary bits ($2^3 = 8$ configurations, with 6 used).  The
+2-simplex with midpoints is the geometric minimalization of a structure supporting
+three independent directed relations in a binary substrate.
+\end{remark}
+
+\section{The irreducible three-role partition}\label{sec:partition}
+
+The geometric structure of \S\ref{sec:simplex} induces a partition of \emph{functional
+roles} within a recursive system.  We formalize this as a lemma on the minimum number
+of variables required for non-trivial convergence.
+
+\subsection{Formal statement}
+
+\begin{definition}[Recurrence with distinguished state]\label{def:recurrence}
+Let $\mathcal{R}$ be a recurrence on $m$ real variables $x^{(1)}, \ldots, x^{(m)}$,
+where $x^{(1)}$ is the \emph{distinguished state variable} and the update rule is
+\[
+  x^{(1)}_{k+1} \;=\; g\!\left(x^{(1)}_k;\,\alpha_k,\,\beta_k\right),
+\]
+where $\alpha_k$ and $\beta_k$ are derived from the remaining $m-1$ variables.  A
+\emph{convergent non-trivial} recurrence is one for which
+$\lim_{k \to \infty} x^{(1)}_k = L$ exists and $L$ is not a fixed point of a purely
+autonomous function $h(x^{(1)}_k)$ with $m \le 2$.
+\end{definition}
+
+\begin{lemma}[Three variables are necessary]\label{lem:three-vars}
+Let $\mathcal{R}$ be a convergent non-trivial recurrence as in Definition~\ref{def:recurrence}.
+Suppose:
+\begin{enumerate}
+  \item $\alpha_k$ and $\beta_k$ are \emph{functionally independent}: $g$ is not
+        expressible as a function of a single combined argument $h(\alpha_k,\beta_k)$
+        for all admissible $(\alpha_k,\beta_k)$.
+  \item The limit $L$ is not a trivial fixed point attainable with $m \le 2$.
+\end{enumerate}
+Then $m \ge 3$: the recurrence requires at least the state variable $x^{(1)}$ and two
+functionally independent auxiliary variables.
+\end{lemma}
+\begin{proof}
+Assume $m = 2$.  Then only one auxiliary variable $y$ is available.  Either (i) $y_k$
+is constant, in which case $g$ reduces to a function of $x^{(1)}_k$ alone and the
+limit, if it exists, is a fixed point of that function, violating non-triviality; or
+(ii) $y_k$ evolves according to $y_{k+1} = h(x^{(1)}_k, y_k)$, which still links
+$\alpha_k$ and $\beta_k$ through a single functional chain.  Condition (1) requires
+that the two auxiliary contributions enter $g$ through structurally distinct pathways:
+one bounding the step magnitude, the other contributing additive or multiplicative
+structure.  A single auxiliary variable cannot carry both roles simultaneously with
+functional independence, because its value alone determines both the bound and the
+contribution, collapsing them into a single degree of freedom.  Hence $m \ge 3$.
+\end{proof}
+
+\begin{remark}\label{rem:lemma-weak}
+This lemma is deliberately weak in its hypotheses.  It does not claim that all
+three-variable recurrences are irreducible; it claims that a system with a distinguished
+state and two functionally independent auxiliary roles cannot be reduced to fewer than
+three variables without losing the structural distinction between bounding and
+integrating.  The empirical evidence that the five tholonic ladder branches cannot be
+expressed as non-trivial 2-variable recurrences is presented elsewhere \cite{Mil24};
+Lemma~\ref{lem:three-vars} provides the formal lower bound.
+\end{remark}
+
+\subsection{The three roles}
+
+\begin{definition}[Triadic role partition]\label{def:triad-roles}
+For a three-variable recurrence $(N, D, C)$:
+\begin{itemize}
+  \item $N$ (\emph{negotiation}): the running state being iteratively refined; the
+        emergent quantity.
+  \item $D$ (\emph{definition/limitation}): the bounding or constraining parameter;
+        what limits the state at each step.
+  \item $C$ (\emph{contribution/integration}): the accumulating or synthesizing
+        parameter; what drives growth or combines past states.
+\end{itemize}
+These roles are assigned by function, not by numerical value.  Two variables may share
+the same numerical seed (e.g., $D_0 = C_0 = 2$ for the $\sqrt{2}$ branch \cite{Mil24})
+while remaining operationally distinct: one bounds, the other integrates.
+\end{definition}
+
+\begin{proposition}[Role stability under seed degeneracy]\label{prop:role-stability}
+If $D_0 = C_0$ numerically but the recurrence rule applies $D$ and $C$ through distinct
+operations, the roles are not degenerate.  The operational distinction (bounding
+vs.\ integrating) persists even when the numerical values coincide.
+\end{proposition}
+\begin{proof}
+By construction: $D$ appears in the recurrence as a divisor that limits the correction
+magnitude, while $C$ appears as a divisor that averages or synthesizes.  The two
+operations are functionally independent even when $D_k = C_k$ for all $k$, because
+removing $D$ from the recurrence eliminates the bounding term, while removing $C$
+eliminates the synthesis term.  The two deletions produce different dynamical systems.
+\end{proof}
+
+This proposition is essential: it prevents the objection that $D$ and $C$ are the same
+number, so the triad is really a two-variable system.  The numbers may coincide, but the
+\emph{roles} do not.
+
+\subsection{Geometric correspondence}
+
+The three roles map onto the three directed axes of the labeled triangle
+(\S\ref{sec:simplex}):
+
+\begin{table}[ht]
+\centering
+\caption{Correspondence between triangle axes and triadic roles.\label{tab:axes}}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{llll}
+\toprule
+Axis & Direction & Role & Action \\
+\midrule
+Definition    & $A \to a$ & $D$ & Bounds; constrains; subtracts \\
+Contribution  & $B \to b$ & $C$ & Accumulates; integrates; adds \\
+Instantiation & $C \to c$ & $N$ (derivative) & Instantiates the emergent state \\\bottomrule
+\end{tabular}
+\end{table}
+
+The Instantiation axis supplies the step structure that drives $N$ forward; $N$ itself
+is the running composite of the interactions between $D$ and $C$.  The geometry is not
+decorative: it supplies the combinatorial constraints on seed values for the $\pi/4$
+branch \cite{Mil24}, where the axis multipliers $(5, 3, 2)$ uniquely determine the seeds
+$(1, 3, 5)$ and the step $\Delta = 4$.
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.92\textwidth]{figures/3_three-roles}
+  \caption{Three functional roles of the triadic partition.  Each panel shows the
+    triangle geometry with one axis highlighted and the others faint.  Left: Definition
+    axis ($A \to a$, blue) annotated ``$D$: Bounds; constrains; limits.  Centre:
+    Contribution axis ($B \to b$, red) annotated ``$C$: Accumulates; integrates; adds.
+    Right: Instantiation axis ($C \to c$, green) annotated ``$N$: Emerges; the
+    negotiated state.  Roles are functionally distinct even when $D = C$ numerically.}
+  \label{fig:three-roles}
+\end{figure}
+
+\section{Self-similarity of the triadic partition}\label{sec:selfsim}
+
+A structure is self-similar if it reproduces the same pattern at multiple scales.  The
+triadic partition exhibits self-similarity in a precise sense: a triad can be embedded
+as a single element within a higher-level triad, preserving the three-role grammar at
+every level.
+
+\subsection{Formal definitions}
+
+\begin{definition}[Triadic embedding]\label{def:embedding}
+Let $\mathcal{T}_1 = (N_1, D_1, C_1)$ be a triad.  A \emph{triadic embedding} of
+$\mathcal{T}_1$ into a higher-level triad $\mathcal{T}_2$ is a mapping
+$\iota\colon \mathcal{T}_1 \hookrightarrow \mathcal{T}_2$ such that $\mathcal{T}_1$
+occupies one of the three role positions in $\mathcal{T}_2$ while retaining its
+internal three-role structure.
+\end{definition}
+
+\begin{definition}[Self-similar triadic hierarchy]\label{def:hierarchy}
+A sequence of triads $\{\mathcal{T}_\ell\}_{\ell=1}^{L}$ is a \emph{self-similar
+triadic hierarchy} if for each $\ell < L$ there exists a role $R_\ell \in \{N, D, C\}$
+in $\mathcal{T}_{\ell+1}$ such that $\mathcal{T}_\ell$ is embedded at $R_\ell$ and
+the internal structure of $\mathcal{T}_\ell$ is a triad governed by the same
+three-role grammar.
+\end{definition}
+
+\begin{proposition}[Unbounded depth]\label{prop:unbounded}
+Given a triadic root node with roles $(N, D, C)$, the self-similar triadic hierarchy
+can be extended to arbitrary finite depth $L$ without introducing new structural
+primitives.
+\end{proposition}
+\begin{proof}
+By induction on $\ell$.  Base case ($\ell = 1$): a single triad
+$\mathcal{T}_1 = (N_1, D_1, C_1)$ satisfies the definition.  Inductive step: assume a
+hierarchy of depth $\ell$ exists.  Embed $\mathcal{T}_\ell$ as the $N$-role of a new
+triad $\mathcal{T}_{\ell+1} = (\mathcal{T}_\ell, D_{\ell+1}, C_{\ell+1})$.  The
+resulting structure is again a triad with three roles.  The process can be repeated for
+any finite $\ell$.
+\end{proof}
+
+\begin{figure}[ht]
+  \centering
+  \includegraphics[width=0.82\textwidth]{figures/3_self-similar-nesting}
+  \caption{Self-similar triadic hierarchy at three levels.  Bottom: a base triad
+    $(N, D, C)$.  Middle: the base triad embedded as the $N$-role of a level-2 triad
+    with new $D$ and $C$ vertices.  Top: the level-2 triad embedded as the $N$-role of
+    a level-3 triad.  The three-role grammar is preserved at every level without
+    introducing new structural primitives.}
+  \label{fig:nesting}
+\end{figure}
+
+\subsection{Scale invariance of the three roles}
+
+An important property of the self-similar hierarchy is \emph{scale invariance}: the
+three roles have the same semantics at every level.  A $D$ at level $\ell$ is a
+bounding parameter for the dynamics at that level, regardless of whether it is
+internally a triad.  A $C$ at level $\ell$ is an accumulating parameter at that level,
+regardless of its internal complexity.
+
+This scale invariance distinguishes the triadic framework from generic hierarchical
+decomposition methods (e.g., hierarchical clustering, multi-level optimization): the
+semantics of the three roles are invariant under embedding.  In a generic hierarchy, a
+node at level $\ell$ may have a different functional meaning than a node at level
+$\ell+1$.  In the triadic hierarchy, every node at every level is a $(N, D, C)$ triple.
+
+\begin{observation}[Grammatical closure]\label{obs:closure}
+The set of all finite self-similar triadic hierarchies is closed under composition:
+applying the embedding operation to any two hierarchies produces another hierarchy in
+the same class.
+\end{observation}
+
+This closure property supports the claim that the three-role partition is not merely
+sufficient but \emph{complete} for this class: no additional primitive is needed to
+extend the framework to arbitrary depth.
+
+\section{Consequences and structural implications}\label{sec:consequences}
+
+\subsection{Why not two? Why not four?}
+
+The question of whether $m = 2$ or $m = 4$ could serve equally well has natural answers
+from the geometry and the irreducibility lemma.
+
+\textbf{Two variables.}  Lemma~\ref{lem:three-vars} establishes that two variables
+cannot carry both functionally independent roles simultaneously.  A two-variable system
+either lacks a bounding term (leading to divergence) or lacks an integrating term
+(leading to stasis).  Two variables can capture binary opposition but not the directed
+emergence of a third state, which requires a place for the emergent quantity to reside.
+
+\textbf{Four variables.}  Adding a fourth variable produces redundancy, not additional
+expressive power, at the structural level.  A fourth variable can always be absorbed
+into one of the three roles without loss of generality, because the update to $N$
+depends only on bounding contributions (from $D$, or any composition of $D$-like
+variables) and integrating contributions (from $C$, or any composition of $C$-like
+variables).  If $m = 4$, the fourth variable is either a second bounding parameter
+(combinable with $D$), a second integrating parameter (combinable with $C$), or a
+second state variable (which introduces a new degree of freedom but does not change the
+triadic logic at the interface).  The triadic partition is thus \emph{satisficing}: the
+smallest structure meeting all requirements, and larger structures add no new functional
+\emph{kind}.
+
+\begin{remark}[Ternary state spaces]\label{rem:ternary}
+The argument assumes a binary state space $\{0,1\}$.  If the state space were ternary
+($\{0,1,2\}$), the minimum non-degenerate simplex would remain the triangle, but the
+encoding capacity per vertex would increase.  The irreducibility of three roles would
+persist; only the combinatorial constraints on seed values would relax.  The binary
+ground is the \emph{strongest} constraint: if three roles are necessary in the binary
+case, they are necessary in any richer state space.
+\end{remark}
+
+\subsection{Connection to the tholonic ladder}
+
+The five tholonic ladder branches \cite{Mil24} instantiate the abstract triadic
+framework with a specific family of recurrences.  The ladder paper establishes:
+\begin{itemize}
+  \item A single three-variable recurrence template $(N_k, D_k, C_k)$.
+  \item Five branches distinguished by initial seeds and traversal rules.
+  \item Three traversal classes (Advancing, Self-redefined, Fixed) mapping onto
+        different dynamical regimes.
+  \item Seven proved structural properties (diagonal invariance, swap symmetry,
+        perfect-square denominators, offset consistency, seed partition, convergence to
+        classical limits, and an envelope bound for the $\pi/4$ recursion).
+  \item Convergence to five classical constants ($\pi/4$, $\varphi$, $e$, $\sqrt{2}$,
+        $\ln 2$).
+\end{itemize}
+The present paper supplies the \emph{architectural justification}: the three-variable
+template is not an arbitrary choice but the minimum required by the logic of binary
+state space, simplex topology, and functional independence.  The ladder paper
+demonstrates sufficiency; this paper argues necessity.
+
+\subsection{Connection to supply-chain transparency scoring}
+
+The TVPCI framework \cite{Mil24} applies the same triadic partition in an
+evidence-scoring context.  A transparency score is computed from:
+\begin{itemize}
+  \item $N$: the \emph{negotiated score}, the emergent trustworthiness metric.
+  \item $D$: \emph{definitional evidence}, constraining what counts as transparency.
+  \item $C$: \emph{contributory evidence}, integrating new information over time.
+\end{itemize}
+A transparency metric that is both bounded and accumulated requires at least three
+variables.  Two-variable scoring systems cannot simultaneously track \emph{what counts}
+and \emph{what has been observed} as functionally independent quantities.
+
+This demonstrates that the triadic partition is not specific to recurrence dynamics;
+it generalizes to any system in which a state is refined through the interaction of a
+constraining definition and a contributing accumulation.
+
+\section{Related work}\label{sec:related}
+
+\textbf{Minimal models of emergence.}  Wolfram \cite{Wol02} identifies Class~4 cellular
+automaton rules as the minimal computational universality class within a 1D binary CA,
+requiring at least 3-cell neighborhoods.  These examples require many more than three
+variables at the micro-level; the triadic framework operates at the macro-level of
+\emph{functional description}, where three roles suffice to describe the dynamics
+regardless of micro-implementation.
+
+\textbf{Simplex and category theory.}  The 2-simplex as the minimal non-trivial shape
+appears in category theory as the basic shape for composition: a commuting triangle
+represents the composition axiom $f \circ g = h$ \cite{MacLane98}.  Higher category
+theory generalizes this to $n$-simplex structures, but the foundational observation
+remains: the triangle is the minimum shape encoding directed composition.  The triadic
+framework repurposes this observation for dynamical systems rather than morphism
+composition.
+
+\textbf{Ternary logic and three-valued systems.}  Three-valued logics (true, false,
+unknown) trace back to {\L}ukasiewicz \cite{Luk20} and have been applied in database
+theory, circuit design, and philosophical logic.  The triadic framework is not a ternary
+logic: the three roles are \emph{functional} (bounding, integrating, emerging), not
+truth-valued.  The connection is structural: both frameworks recognize that a binary
+distinction must be supplemented by a third position for closure.
+
+\textbf{Hierarchical and multi-scale systems.}  The literature on hierarchical systems
+is vast \cite{Sim62,Koe69,Sal12}.  The distinctive feature of the triadic hierarchy
+(\S\ref{sec:selfsim}) is not the existence of levels but the \emph{grammatical
+invariance} of the three roles under embedding.  Most hierarchical frameworks allow
+node semantics to vary across levels; the triadic framework constrains every node at
+every level to be a $(N, D, C)$ triple.
+
+\textbf{Spin networks and twistor theory.}  The role-labeled triangle with inner and
+outer vertices bears a structural resemblance to spin networks in loop quantum gravity
+\cite{RS94} and to twistor diagrams \cite{Pen67}, where combinatorial labeling of
+simplex edges encodes quantum states.  The resemblance is noted here as a potential
+direction for formal connection but is not developed; this paper makes no
+quantum-mechanical claims.
+
+\section{Discussion}\label{sec:discussion}
+
+\textbf{Generality of the axioms.}  The framework rests on three axioms: (i)~binary
+state space as the minimal substrate; (ii)~the 2-simplex as the minimum non-degenerate
+geometric structure; (iii)~functional independence of bounding and integrating
+contributions.  These are not strong axioms.  (i) follows from information theory
+\cite{Sha48}; (ii) is a property of Euclidean geometry; (iii) is a definitional
+condition on what counts as a distinct role.  The result ($m \ge 3$, self-similar
+nesting) follows as a structural deduction rather than an empirical claim.
+
+\textbf{What the framework does not claim.}
+\begin{itemize}
+  \item It does not claim that every three-variable system has these three roles; only
+        that a system with a distinguished emergent state and two functionally independent
+        auxiliary roles corresponds to this partition.
+  \item It does not claim that all self-organizing systems reduce to this scaffold; only
+        that if a system satisfies the axioms, it admits a triadic description.
+  \item It does not derive specific dynamical laws or empirical predictions; the
+        framework is a constraint on admissible architectures, not a generator of
+        observable phenomena.
+  \item It does not assert that the triadic partition is the \emph{only} minimal
+        framework; alternative encodings may exist but would either be reducible to the
+        triadic partition or violate the axioms differently.
+\end{itemize}
+
+\textbf{Open questions.}
+\begin{enumerate}
+  \item \textit{Classification.}  Characterize the set of all three-variable recurrences
+        that satisfy the triadic role partition and converge to a non-trivial limit.  Is
+        this set finite for a bounded seed space?
+  \item \textit{Embedding completeness.}  Is every finite self-similar triadic hierarchy
+        representable as a composite of base triads, or do new structural types emerge
+        at certain depths?
+  \item \textit{Continuous limit.}  What is the continuous-time analogue of the triadic
+        recurrence, and does it correspond to a known class of differential equations
+        (e.g., three-variable Lotka--Volterra, Lorenz system)?
+  \item \textit{Observational signatures.}  If a physical or biological system satisfies
+        the triadic axioms, what measurable signatures would distinguish it from a system
+        organized under a different structural grammar?
+\end{enumerate}
+
+\textbf{Empirical grounding.}  The five-constants paper \cite{Mil24} provides a concrete
+computational instantiation.  The TVPCI paper \cite{Mil24} provides a non-dynamical
+application.  Neither claims empirical validation of the framework as a description of
+natural phenomena.  The next step is to identify a domain where the three-role partition
+makes a falsifiable prediction.  Until such a prediction is formulated and tested, the
+framework remains a structural taxonomy with formal minimality and self-similarity.
+
+\section{Conclusion}\label{sec:conclusion}
+
+We have argued that the minimum non-trivial structure capable of sustained recursive
+self-organization within a binary state space is a three-role partition with functionally
+distinct bounding and integrating contributions to a distinguished emergent state.
+The argument derives from information-theoretic minimality (binary encoding), geometric
+minimality (2-simplex), and functional independence (Lemma~\ref{lem:three-vars}),
+yielding $m \ge 3$ as a lower bound.  The same three-role grammar supports unbounded
+self-similar nesting, producing hierarchical depth without new primitives.
+
+The framework supplies the architectural foundation for the tholonic ladder recurrence
+family \cite{Mil24} and for triadic transparency scoring \cite{Mil24}.  Its contribution
+is logical and geometric: minimality, irreducibility, and hierarchical closure under
+three axioms.  The open work is classification (which recurrences satisfy the axioms
+and converge), embedding completeness (whether new structures emerge at depth), and
+empirical connection (whether the framework can be falsified in a natural system).
+
+\bibliographystyle{plainnat}
+\bibliography{3_minimal-recursive-triadic-framework}
+
+\appendix
+\section{The 2-simplex as a labeled configuration}\label{app:simplex}
+
+We provide the explicit vertex and axis assignment for the labeled triangle used in
+\S\S\,\ref{sec:simplex}--\ref{sec:partition}.  The purpose is to make the geometric
+origin of the three roles fully transparent, separate from any particular instantiation.
+
+\textbf{Vertices.}  Let the outer vertices be $A, B, C$ and the inner midpoints be
+$a, b, c$, with:
+\begin{itemize}
+  \item $a$ the midpoint of $BC$
+  \item $b$ the midpoint of $CA$
+  \item $c$ the midpoint of $AB$
+\end{itemize}
+
+\textbf{Axes.}  Three directed axes:
+\begin{itemize}
+  \item \textbf{Definition axis}: $A \to a$ (outer to inner, crossing edge $BC$)
+  \item \textbf{Contribution axis}: $B \to b$ (outer to inner, crossing edge $CA$)
+  \item \textbf{Instantiation axis}: $C \to c$ (outer to inner, crossing edge $AB$)
+\end{itemize}
+
+\textbf{Binary encoding.}  Assigning three bits to encode the six vertex labels uses 6
+of 8 possible configurations:
+
+\begin{table}[ht]
+\centering
+\caption{Three-bit encoding of the six labeled vertices.\label{tab:bits}}
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{clccc}
+\toprule
+Vertex & Label & Bit~1 (Outer/Inner) & Bit~2 (Axis member) & Bit~3 (Role parity) \\
+\midrule
+$A$ & outer & 0 & 1 & 0 ($D$) \\
+$B$ & outer & 0 & 1 & 1 ($C$) \\
+$C$ & outer & 0 & 0 & 0 ($N$) \\
+$a$ & inner & 1 & 1 & 0 ($D$ target) \\
+$b$ & inner & 1 & 1 & 1 ($C$ target) \\
+$c$ & inner & 1 & 0 & 0 ($N$ target) \\\bottomrule
+\end{tabular}
+\end{table}
+
+The unused two configurations correspond to symmetry-related states not needed for the
+three-axis labeling.  The three-bit encoding is the minimal information representation;
+each axis requires one bit for direction (outer $\to$ inner) and shares bits for axis
+identity and role parity.
+
+\section{Comparison with $m = 2$ and $m = 4$ template forms}\label{app:templates}
+
+To make the irreducibility argument concrete, we exhibit the forms of $m = 2$ and
+$m = 4$ recurrences and why they fail or are redundant.
+
+\textbf{Two-variable form.}  Let the variables be $(N, \alpha)$.  A recurrence with a
+bounding or contributing auxiliary role:
+\[
+  N_{k+1} \;=\; f(N_k;\,\alpha_k), \qquad \alpha_{k+1} \;=\; h(N_k,\,\alpha_k).
+\]
+If $f$ is additive, e.g., $N_{k+1} = N_k \pm 1/\alpha_k$, then $\alpha_k$ controls
+both the sign and the magnitude of the step.  A single $\alpha$ must serve both as the
+limiter and as the integrator, violating functional independence.  Two-variable
+recurrences can converge (e.g., the logistic map), but they do not separate bounding
+and contributing into functionally independent pathways.
+
+\textbf{Four-variable form.}  Let the variables be $(N, D_1, D_2, C)$.  The update:
+\[
+  N_{k+1} \;=\; g(N_k;\,D_{1,k},\,D_{2,k},\,C_k).
+\]
+If $D_{1,k}$ and $D_{2,k}$ both enter $g$ as divisors or bounds, they can be combined
+into an effective bound $D_{\mathrm{eff}} = h(D_1, D_2)$ without changing the
+functional form of $g$.  The three-role partition is recovered by identifying
+$D \equiv D_{\mathrm{eff}}$.  The fourth variable adds parametric freedom but not a new
+functional \emph{kind}: it remains within the bounding/constraining class.
+
+\end{document}
