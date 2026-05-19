@@ -1,0 +1,688 @@
+# ============================================================
+# Phase Discovery Instrument (PDI) — Gold Recycling Chain
+# Version 1.0
+# Project: True Value Analytics — Supply Chain Intelligence
+# Chain type: recycling (inverse / entropy-reversing)
+# ============================================================
+
+pdi:
+
+  # ----------------------------------------------------------
+  # Header
+  # ----------------------------------------------------------
+  material: "gold (secondary / recycled)"
+  analyst: "AI (Claude Sonnet 4.6)"
+  date_completed: "2026-05-10"
+  sources_overview: |
+    Foran B. et al. (2005) "Balancing Advanced Technology and Societal Limits" — GHG
+    and waste intensity distribution across mining phases.
+    Newmont (2024) Sustainability Report — cyanide spill data, water recycled, land
+    reclaimed metrics by phase.
+    World Gold Council (2024) Gold Demand Trends — recycled supply volumes and
+    price-response behaviour.
+    LBMA (2024) Responsible Gold Guidance — re-refining standards and chain-of-custody.
+    Boliden/Umicore public technical notes — secondary gold smelting process.
+
+  chain_type: "recycling"
+
+  primary_chain_link:
+    primary_chain_material: "gold"
+    reentry_phases: [4, 5]
+    reentry_notes: >
+      Secondary refined gold (995+ fineness) re-enters the primary gold supply chain
+      at Phase 4 (Refining) for material requiring final upgrading, or at Phase 5
+      (Bar Casting & Assay) for material already at Good Delivery specification.
+      Re-entry is documented via LBMA chain-of-custody records and refinery intake logs.
+
+  # ----------------------------------------------------------
+  # MODULE 1 — Anchor the Chain
+  # ----------------------------------------------------------
+
+  module_1:
+
+    A1_origin_state: |
+      Dispersed post-market gold in multiple low-entropy-depleted forms:
+      (a) post-consumer jewelry, coins, and decorative objects discarded or sold;
+      (b) electronic scrap (circuit boards, connectors, plating) containing gold;
+      (c) industrial process residues (acid pickling liquors, electroplating sludge);
+      (d) tailings and process water from primary mine Phase 2 (ore processing).
+      Material is geographically dispersed, unassayed, mixed with non-gold material,
+      and in most cases informally held or unregistered.
+
+    A2_market_state: |
+      Secondary refined gold bar or grain at minimum 995.0 fineness (equivalent to
+      LBMA Good Delivery specification), with documented chain-of-custody from
+      collection source, delivered to an accredited refinery intake point for
+      re-entry into the primary gold supply chain at Phase 4 or Phase 5.
+
+    A3_origin_unit: "kg gold-equivalent content (estimated, unassayed)"
+    A4_market_unit: "troy ounces fine gold (995+ assayed, custody-documented)"
+
+    A5_unit_changes: true
+    A5_unit_change_location: |
+      Unit changes occur twice: (1) from unassayed kg-equivalent to assayed kg at
+      Phase R2 (Pre-processing & Assay); (2) from kg to troy ounces at Phase R4
+      (Fine Refining) when LBMA delivery specification is met.
+
+    A6_physical_forms:
+      - sequence: 1
+        form: "Mixed scrap / electronic waste / jewelry"
+        location_in_chain: "Collection (Phase R0)"
+      - sequence: 2
+        form: "Sorted, decontaminated gold-bearing feedstock"
+        location_in_chain: "Sorting & Grading (Phase R1)"
+      - sequence: 3
+        form: "Assayed concentrate / pre-treated material"
+        location_in_chain: "Pre-processing & Assay (Phase R2)"
+      - sequence: 4
+        form: "Doré or crude bar (initial melt)"
+        location_in_chain: "Smelting (Phase R3)"
+      - sequence: 5
+        form: "Fine gold grain / bar (995+ fineness)"
+        location_in_chain: "Fine Refining (Phase R4)"
+      - sequence: 6
+        form: "Custody-documented secondary feedstock"
+        location_in_chain: "Delivery to primary chain (Phase R5)"
+
+    A7_actor_classes:
+      - sequence: 1
+        actor: "Consumer / industrial scrap generators"
+        point_in_chain: "Origin — dispersed post-market material"
+        teeb_category: ""
+        notes: "Highly fragmented; includes individuals, jewelers, electronics recyclers"
+      - sequence: 2
+        actor: "Urban mining / scrap dealer"
+        point_in_chain: "Collection and first aggregation"
+        teeb_category: ""
+        notes: "Often informal; opacity is highest here"
+      - sequence: 3
+        actor: "Secondary processor / e-waste recycler"
+        point_in_chain: "Sorting, decontamination, pre-processing"
+        teeb_category: ""
+        notes: "Regulated in EU/US; informal in many developing markets"
+      - sequence: 4
+        actor: "Secondary smelter"
+        point_in_chain: "Smelting to doré / crude bar"
+        teeb_category: ""
+        notes: "Umicore, Boliden, and regional operators; LBMA-audited for some"
+      - sequence: 5
+        actor: "LBMA-accredited refinery"
+        point_in_chain: "Fine refining and assay certification"
+        teeb_category: ""
+        notes: "Same actor class as primary chain Phase 4; secondary intake is a distinct sub-stream"
+      - sequence: 6
+        actor: "Primary chain operator (Phase 4 or 5 refinery)"
+        point_in_chain: "Re-entry into primary chain"
+        teeb_category: ""
+        notes: "Receives secondary feedstock; issues intake custody documentation"
+
+    module_1_completion_check:
+      A1_and_A2_specific_descriptions: true
+      A3_and_A4_explicit_units: true
+      A6_at_least_three_forms: true
+      A7_at_least_three_actors: true
+
+  # ----------------------------------------------------------
+  # MODULE 2 — Event Inventory
+  # ----------------------------------------------------------
+
+  module_2_events:
+
+    - event_number: 1
+      event_name: "Collection and first aggregation"
+      sources: "WGC (2024); OECD Due Diligence Guidance for Responsible Minerals Supply Chains"
+
+      B1_form_entering: "Dispersed post-consumer items (jewelry, coins, scrap), e-waste, industrial residues"
+      B2_form_leaving: "Aggregated mixed gold-bearing scrap, held by collector/dealer"
+      B3_physical_state_changes: false
+
+      B4_unit_changes: false
+      B4_unit_entering: "kg (estimated gold-bearing mass)"
+      B4_unit_leaving: "kg (estimated gold-bearing mass)"
+
+      B5_process_class: "aggregative"
+      B5_notes: "Multiple dispersed sources consolidated into a single custody batch"
+
+      B6_process_class_changes: false
+      B6_preceding_process_class: "n/a (origin event)"
+
+      B7_custodian_before:
+        class: "Consumer / scrap generator"
+        name: UNKNOWN
+      B8_custodian_after:
+        class: "Urban mining / scrap dealer"
+        name: UNKNOWN
+      B9_custody_changes: true
+
+      B10_ownership_changes: true
+      B10_notes: "Sale or consignment from consumer/generator to dealer"
+
+      B11_output_defined: false
+      B11_quantity_and_unit: ""
+      B11_approximate_volume: ""
+      B11_recipient: "Secondary processor"
+
+      B12_opacity_reason: "informal_practice"
+      boundary_score: 3
+
+    - event_number: 2
+      event_name: "Sorting, decontamination, and grading"
+      sources: "Umicore technical notes; EU WEEE Directive compliance reports"
+
+      B1_form_entering: "Mixed gold-bearing scrap (ungraded)"
+      B2_form_leaving: "Sorted, decontaminated gold-bearing feedstock by grade category"
+      B3_physical_state_changes: true
+
+      B4_unit_changes: false
+      B4_unit_entering: "kg"
+      B4_unit_leaving: "kg"
+
+      B5_process_class: "chemical_thermal"
+      B5_notes: "Mechanical separation, decoating, acid stripping of non-gold materials"
+
+      B6_process_class_changes: true
+      B6_preceding_process_class: "aggregative"
+
+      B7_custodian_before:
+        class: "Urban mining / scrap dealer"
+        name: UNKNOWN
+      B8_custodian_after:
+        class: "Secondary processor"
+        name: UNKNOWN
+      B9_custody_changes: true
+
+      B10_ownership_changes: unknown
+      B10_notes: "May remain on consignment; ownership transfer varies by arrangement"
+
+      B11_output_defined: true
+      B11_quantity_and_unit: "kg sorted gold-bearing feedstock by grade"
+      B11_approximate_volume: "~400 t Au eq per year globally (WGC)"
+      B11_recipient: "Secondary smelter"
+
+      B12_opacity_reason: ""
+      boundary_score: 5
+
+    - event_number: 3
+      event_name: "Pre-processing assay"
+      sources: "LBMA Responsible Gold Guidance; refinery intake protocols"
+
+      B1_form_entering: "Sorted gold-bearing feedstock"
+      B2_form_leaving: "Assayed feedstock with documented gold content (ppm or %)"
+      B3_physical_state_changes: false
+
+      B4_unit_changes: true
+      B4_unit_entering: "kg (estimated)"
+      B4_unit_leaving: "kg at stated gold content (assayed)"
+
+      B5_process_class: "specification"
+      B5_notes: "Assay establishes the first formal measurement of gold content"
+
+      B6_process_class_changes: true
+      B6_preceding_process_class: "chemical_thermal"
+
+      B7_custodian_before:
+        class: "Secondary processor"
+        name: UNKNOWN
+      B8_custodian_after:
+        class: "Secondary processor or smelter"
+        name: UNKNOWN
+      B9_custody_changes: false
+
+      B10_ownership_changes: false
+      B10_notes: ""
+
+      B11_output_defined: true
+      B11_quantity_and_unit: "kg gold-equivalent at stated assay grade"
+      B11_approximate_volume: "Derived from sorted feedstock volume"
+      B11_recipient: "Secondary smelter"
+
+      B12_opacity_reason: ""
+      boundary_score: 3
+
+    - event_number: 4
+      event_name: "Secondary smelting to doré / crude bar"
+      sources: "Boliden/Umicore annual reports; LBMA Good Delivery List"
+
+      B1_form_entering: "Sorted, assayed gold-bearing feedstock"
+      B2_form_leaving: "Doré bar or crude bar (mixed gold/silver alloy, ~70–95% Au)"
+      B3_physical_state_changes: true
+
+      B4_unit_changes: false
+      B4_unit_entering: "kg"
+      B4_unit_leaving: "kg"
+
+      B5_process_class: "chemical_thermal"
+      B5_notes: "High-temperature smelting and initial refining; removes base metals"
+
+      B6_process_class_changes: true
+      B6_preceding_process_class: "specification"
+
+      B7_custodian_before:
+        class: "Secondary processor"
+        name: UNKNOWN
+      B8_custodian_after:
+        class: "Secondary smelter"
+        name: "Umicore / Boliden / regional LBMA-audited operator"
+      B9_custody_changes: true
+
+      B10_ownership_changes: true
+      B10_notes: "Transfer to toll-refining arrangement or outright sale to smelter"
+
+      B11_output_defined: true
+      B11_quantity_and_unit: "kg doré at stated Au content"
+      B11_approximate_volume: "~3,500 t Au globally per year (WGC 2024)"
+      B11_recipient: "Fine refinery"
+
+      B12_opacity_reason: ""
+      boundary_score: 6
+
+    - event_number: 5
+      event_name: "Fine refining to 995+ fineness"
+      sources: "LBMA Responsible Gold Guidance; accredited refinery technical specs"
+
+      B1_form_entering: "Doré / crude bar"
+      B2_form_leaving: "Fine gold grain or bar at 995.0+ fineness, assay certified"
+      B3_physical_state_changes: true
+
+      B4_unit_changes: true
+      B4_unit_entering: "kg doré"
+      B4_unit_leaving: "troy ounces fine gold"
+
+      B5_process_class: "chemical_thermal"
+      B5_notes: "Chlorination or electrolytic refining to LBMA-grade fineness"
+
+      B6_process_class_changes: false
+      B6_preceding_process_class: "chemical_thermal"
+
+      B7_custodian_before:
+        class: "Secondary smelter"
+        name: "Umicore / Boliden / regional operator"
+      B8_custodian_after:
+        class: "LBMA-accredited refinery"
+        name: UNKNOWN
+      B9_custody_changes: true
+
+      B10_ownership_changes: true
+      B10_notes: ""
+
+      B11_output_defined: true
+      B11_quantity_and_unit: "troy oz fine gold at 995+ fineness, with assay certificate"
+      B11_approximate_volume: "~3,500 t Au per year (WGC recycled supply figure)"
+      B11_recipient: "Primary chain intake (Phase 4 or 5)"
+
+      B12_opacity_reason: ""
+      boundary_score: 6
+
+    - event_number: 6
+      event_name: "Delivery and re-entry into primary chain"
+      sources: "LBMA chain-of-custody rules; primary refinery intake documentation"
+
+      B1_form_entering: "Fine gold grain/bar (995+) with secondary-source provenance record"
+      B2_form_leaving: >
+        Secondary gold registered as primary chain intake at Phase 4 (refinery) or
+        Phase 5 (bar casting). Indistinguishable from primary-produced fine gold after
+        this point unless provenance tagging is maintained.
+      B3_physical_state_changes: false
+
+      B4_unit_changes: false
+      B4_unit_entering: "troy ounces fine gold"
+      B4_unit_leaving: "troy ounces fine gold"
+
+      B5_process_class: "custodial"
+      B5_notes: "Transfer of custody and documentation package to primary chain operator"
+
+      B6_process_class_changes: true
+      B6_preceding_process_class: "chemical_thermal"
+
+      B7_custodian_before:
+        class: "LBMA-accredited refinery (secondary)"
+        name: UNKNOWN
+      B8_custodian_after:
+        class: "Primary chain Phase 4 or 5 operator"
+        name: UNKNOWN
+      B9_custody_changes: true
+
+      B10_ownership_changes: true
+      B10_notes: "Sale or consignment to primary chain operator"
+
+      B11_output_defined: true
+      B11_quantity_and_unit: "troy oz secondary fine gold entering primary chain"
+      B11_approximate_volume: "~3,500 t Au per year (WGC; approximately 28% of annual supply)"
+      B11_recipient: "Primary chain Phase 4 or 5 refinery / bar caster"
+
+      B12_opacity_reason: ""
+      boundary_score: 5
+
+  # ----------------------------------------------------------
+  # MODULE 3 — Boundary Scoring and Phase Map
+  # ----------------------------------------------------------
+
+  module_3:
+
+    phase_map:
+      - phase: 0
+        name: "Collection & First Aggregation"
+        begins_at_event: null
+        ends_at_event: 1
+        child_n_output: "Aggregated mixed gold-bearing scrap batch in dealer custody"
+        tvpci_notes: >
+          Highest opacity phase. Collection is often informal; urban mining dealers
+          rarely publish volumes or provenance. R_p score for this phase will reflect
+          near-zero documentation of waste stream origins.
+        reentry_primary_phase: null
+
+      - phase: 1
+        name: "Sorting, Grading & Pre-processing"
+        begins_at_event: 2
+        ends_at_event: 3
+        child_n_output: "Assayed, sorted gold-bearing feedstock by grade category"
+        tvpci_notes: >
+          Opacity improves if processor is EU WEEE-regulated. Assay at event 3 is the
+          first formal measurement and the first point where TVPCI-R scoring becomes
+          numerically grounded.
+        reentry_primary_phase: null
+
+      - phase: 2
+        name: "Secondary Smelting"
+        begins_at_event: 4
+        ends_at_event: 4
+        child_n_output: "Doré bar at stated Au content, with smelter custody record"
+        tvpci_notes: >
+          LBMA-audited smelters (Umicore, Boliden) have medium-high transparency.
+          Non-LBMA regional smelters are low transparency.
+        reentry_primary_phase: null
+
+      - phase: 3
+        name: "Fine Refining"
+        begins_at_event: 5
+        ends_at_event: 5
+        child_n_output: "Fine gold grain/bar at 995+ fineness with assay certificate"
+        tvpci_notes: >
+          At LBMA-accredited refineries this is the highest-transparency phase in the
+          recycling chain. Assay certificates and intake records are mandatory.
+        reentry_primary_phase: null
+
+      - phase: 4
+        name: "Re-entry Delivery"
+        begins_at_event: 6
+        ends_at_event: 6
+        child_n_output: >
+          Secondary fine gold registered at primary chain Phase 4 or 5 intake;
+          provenance documentation package transferred.
+        tvpci_notes: >
+          This is the structural closure point. The reentry_primary_phase field
+          records that this output re-enters at primary chain Phase 4 or 5.
+          B_chain and TVPCI-R are most directly measured here.
+        reentry_primary_phase: [4, 5]
+
+    subprocesses:
+      - event_number: null
+        event_name: ""
+        belongs_to_phase: null
+        reason: ""
+
+  # ----------------------------------------------------------
+  # MODULE 4 — Opacity Tagging
+  # ----------------------------------------------------------
+
+  module_4_opacity:
+
+    - phase: 0
+      phase_name: "Collection & First Aggregation"
+
+      C1_volume_measurable: false
+      C1_source: >
+        No public source gives reliable per-region volume of post-consumer gold in
+        informal collection. WGC gives global aggregate recycled supply (~3,500 t/yr)
+        but does not break out the collection phase.
+
+      C2_custodians_public: false
+      C2_source: >
+        Urban mining dealers and scrap buyers are not publicly registered in most
+        jurisdictions. EU Conflict Minerals Regulation does not reach this phase for
+        recycled gold.
+
+      C3_process_verifiable: false
+      C3_mechanism: >
+        Collection is carried out by thousands of independent actors. No external
+        verification mechanism exists at this phase.
+
+      C4_output_confirmable: false
+      C4_mechanism: >
+        Aggregated scrap batch is unassayed at this stage; quantity and gold content
+        are estimated, not confirmed.
+
+      C5_reentry_documented: null
+      C5_reentry_source: ""
+
+      opacity_score: 0
+      transparency: "low"
+      opacity_reason: "informal_practice"
+      opacity_notes: >
+        This is the highest-opacity phase in the gold recycling chain and the
+        primary driver of low TVPCI-R scores. Improving transparency here would
+        require point-of-sale registration (as piloted in some EU jewelry buyback
+        schemes) or digital tagging at consumer level.
+
+    - phase: 1
+      phase_name: "Sorting, Grading & Pre-processing"
+
+      C1_volume_measurable: false
+      C1_source: >
+        Some processors publish throughput in sustainability reports but coverage
+        is partial and not standardised across jurisdictions.
+
+      C2_custodians_public: true
+      C2_source: >
+        EU WEEE-registered recyclers are listed in national registries. LBMA-audited
+        processors appear on the Responsible Gold Guidance compliance list.
+
+      C3_process_verifiable: true
+      C3_mechanism: >
+        EU/US regulatory inspection rights exist for e-waste facilities. LBMA audit
+        teams conduct on-site visits to approved secondary processors.
+
+      C4_output_confirmable: false
+      C4_mechanism: >
+        Pre-processing output (assayed feedstock) is commercially sensitive. Assay
+        certificates are issued but not publicly disclosed.
+
+      C5_reentry_documented: null
+      C5_reentry_source: ""
+
+      opacity_score: 2
+      transparency: "medium"
+      opacity_reason: "commercial_secrecy"
+      opacity_notes: >
+        Transparency is medium for LBMA-audited and EU-regulated processors.
+        The majority of global pre-processing volume outside these regimes is low.
+
+    - phase: 2
+      phase_name: "Secondary Smelting"
+
+      C1_volume_measurable: true
+      C1_source: >
+        WGC Gold Demand Trends reports annual recycled gold supply at aggregate level.
+        LBMA-listed smelters' intake volumes are partially disclosed in their
+        Responsible Gold Guidance reports.
+
+      C2_custodians_public: true
+      C2_source: >
+        LBMA Good Delivery List names accredited secondary smelters. Non-LBMA
+        regional smelters are not publicly listed.
+
+      C3_process_verifiable: true
+      C3_mechanism: >
+        LBMA audit process includes on-site verification of smelting operations.
+        EU-regulated facilities are subject to environmental inspection.
+
+      C4_output_confirmable: false
+      C4_mechanism: >
+        Doré output assays are issued but not public. Smelter-to-refinery
+        transfer documentation is commercially confidential.
+
+      C5_reentry_documented: null
+      C5_reentry_source: ""
+
+      opacity_score: 3
+      transparency: "medium"
+      opacity_reason: "commercial_secrecy"
+      opacity_notes: >
+        LBMA-accredited smelters constitute medium transparency. Non-LBMA
+        operators (significant share of Asian and African recycling volume) remain
+        structurally opaque.
+
+    - phase: 3
+      phase_name: "Fine Refining"
+
+      C1_volume_measurable: true
+      C1_source: >
+        LBMA-accredited refineries report intake volumes in Responsible Gold
+        Guidance compliance reports. WGC provides global aggregate.
+
+      C2_custodians_public: true
+      C2_source: "LBMA Good Delivery List of Acceptable Refiners (public)"
+
+      C3_process_verifiable: true
+      C3_mechanism: >
+        LBMA audit includes process verification. National assay offices conduct
+        random bar testing. Independent third-party assay is mandatory for
+        Good Delivery accreditation.
+
+      C4_output_confirmable: true
+      C4_mechanism: >
+        Fine gold assay certificates are the output documentation. Refineries
+        issue serial-numbered assay certificates for each production batch.
+        LBMA spot audits can verify.
+
+      C5_reentry_documented: null
+      C5_reentry_source: ""
+
+      opacity_score: 4
+      transparency: "high"
+      opacity_reason: "n/a"
+      opacity_notes: >
+        Fine refining at LBMA-accredited facilities is the highest-transparency
+        phase in the recycling chain, matching primary chain Phase 4 (Refining).
+
+    - phase: 4
+      phase_name: "Re-entry Delivery"
+
+      C1_volume_measurable: true
+      C1_source: >
+        WGC (2024): ~3,500 t Au per year enters primary chain as secondary supply,
+        approximately 28% of total annual gold supply.
+
+      C2_custodians_public: true
+      C2_source: >
+        Primary chain Phase 4 and 5 operators accepting secondary feedstock are
+        LBMA-accredited and publicly listed.
+
+      C3_process_verifiable: true
+      C3_mechanism: >
+        Intake at LBMA-accredited refinery or bar caster is subject to LBMA audit.
+        Independent assay of incoming material is standard practice.
+
+      C4_output_confirmable: true
+      C4_mechanism: >
+        Once registered at primary chain Phase 4 or 5, the material is subject to
+        the same documentation standards as primary-produced gold. Intake records
+        are maintained by the receiving facility.
+
+      C5_reentry_documented: true
+      C5_reentry_source: >
+        LBMA Responsible Gold Guidance requires intake documentation distinguishing
+        secondary from primary feedstock. Refinery intake logs and assay certificates
+        serve as the traceable re-entry record.
+
+      opacity_score: 5
+      transparency: "high"
+      opacity_reason: "n/a"
+      opacity_notes: >
+        Re-entry into the primary chain at an LBMA-accredited facility is the
+        most documented transition in the recycling chain. C5 is confirmed.
+        After this point, secondary gold is operationally indistinguishable from
+        primary-produced gold unless provenance tagging is separately maintained.
+
+  # ----------------------------------------------------------
+  # SUMMARY
+  # ----------------------------------------------------------
+
+  summary:
+
+    total_phases: 5
+    high_transparency_phases: [3, 4]
+    medium_transparency_phases: [1, 2]
+    low_transparency_phases: [0]
+    subprocesses_identified: 0
+    undefined_outputs_count: 1       # Phase 0: aggregated scrap batch is unassayed
+
+    phase_summary_table:
+      - phase: 0
+        name: "Collection & First Aggregation"
+        physical_state_in: "Dispersed post-consumer items, e-waste, industrial residues"
+        physical_state_out: "Aggregated mixed gold-bearing scrap batch"
+        child_n_output: "Aggregated scrap in dealer custody"
+        custodian_class: "Urban mining / scrap dealer"
+        transparency: "low"
+      - phase: 1
+        name: "Sorting, Grading & Pre-processing"
+        physical_state_in: "Mixed gold-bearing scrap"
+        physical_state_out: "Sorted, assayed gold-bearing feedstock by grade"
+        child_n_output: "Assayed feedstock kg at stated gold content"
+        custodian_class: "Secondary processor / e-waste recycler"
+        transparency: "medium"
+      - phase: 2
+        name: "Secondary Smelting"
+        physical_state_in: "Sorted assayed feedstock"
+        physical_state_out: "Doré bar at stated Au content"
+        child_n_output: "kg doré with smelter custody record"
+        custodian_class: "Secondary smelter (Umicore / Boliden / regional)"
+        transparency: "medium"
+      - phase: 3
+        name: "Fine Refining"
+        physical_state_in: "Doré bar"
+        physical_state_out: "Fine gold grain/bar 995+ fineness, assay certified"
+        child_n_output: "troy oz fine gold with assay certificate"
+        custodian_class: "LBMA-accredited refinery"
+        transparency: "high"
+      - phase: 4
+        name: "Re-entry Delivery"
+        physical_state_in: "Fine gold 995+, provenance-documented"
+        physical_state_out: "Secondary gold registered at primary chain Phase 4 or 5"
+        child_n_output: "troy oz secondary fine gold at primary chain intake"
+        custodian_class: "Primary chain Phase 4/5 operator"
+        transparency: "high"
+
+    analyst_notes: |
+      The gold recycling chain exhibits a strong transparency gradient in the same
+      direction as the primary chain: low transparency at origin (collection),
+      improving through smelting and refining, highest at the terminal re-entry
+      point. This mirrors the primary chain's entropy gradient (Phase 0 opaque,
+      Phase 7 anchor) but runs in the opposite structural direction (collecting
+      dispersed waste and delivering concentrated secondary feedstock).
+
+      The critical structural gap is Phase 0 (Collection). No public source provides
+      reliable phase-level volumes, custodian identities, or process verification for
+      informal collection. Any TVPCI-R score for the gold recycling chain carries a
+      high confidence penalty at Phase 0; omega_p for Phase 0 is also among the
+      highest (waste intensity is highest at mine extraction / early phases).
+
+      Phase 4 (Re-entry Delivery) is the structural mirror of primary chain Phase 7
+      (Exchange Registration): both are the highest-transparency phases in their
+      respective chains, and both serve as the reference anchors for their chain's
+      scoring model. B_chain (the tholonic N of the combined primary+recycling holon)
+      is most meaningful when computed from TVPCI scores anchored at these two phases.
+
+      All source data used in omega_p weights is PROVISIONAL. Source citations:
+      Foran 2005 (GHG/waste intensity distribution), Newmont 2024 SR (phase-level
+      environmental metrics). These must be replaced with commodity-specific
+      empirical measurements before TVPCI-R scores are used for reporting purposes.
+
+# ============================================================
+# Phase Discovery Instrument v1.0 — True Value Analytics
+# chain_type: recycling
+# Aligned with: PDI_TEMPLATE.yaml v1.1 (chain_type extension)
+#               N-D-C Tholonic Framework
+#               Paper 2 Sections 3.3, 4.3, 8.7
+# ============================================================

@@ -1,0 +1,119 @@
+
+========================================================================
+  CHSH OPERATOR AS UNIQUE NATURAL MEASURE OF
+  REAL-VIRTUAL THOLON INTERACTION
+  Computational Demonstration  |  Paper 8, Section 3.4
+========================================================================
+
+========================================================================
+PART 1: THOLONIC DECOMPOSITION OF THE CHSH OPERATOR
+========================================================================
+
+The tholonic model (Paper 3) proves that any stable self-sustaining
+structure requires exactly three functional roles:
+  N (Negotiation/Balance), D (Definition/Limitation), C (Contribution/Integration).
+
+A complete tholon always comprises:
+  Real tholon:    explicit N-D-C configuration (explicate order)
+  Virtual tholon: structural complement, the inverted central trigram
+                  (implicate order)
+
+In a 2-party quantum measurement scenario (Alice: A1,A2; Bob: B1,B2),
+there are exactly 4 measurement combinations:
+  (A1,B1),  (A1,B2),  (A2,B1),  (A2,B2)
+
+Tholonic assignment:
+  Real tholon (3 N-D-C balanced interactions):   +A1xB1, +A1xB2, +A2xB1
+  Virtual tholon (1 inverted mirror interaction): -A2xB2
+
+Resulting operator:
+  S_real    =  A1 x B1  +  A1 x B2  +  A2 x B1   [3 positive terms]
+  S_virtual = -A2 x B2                             [1 negative term]
+  S_CHSH    =  S_real + S_virtual
+            =  A1 x B1  +  A1 x B2  +  A2 x B1  -  A2 x B2
+
+This is exactly the standard CHSH operator.
+The 3+1 sign structure is not arbitrary: it follows from the tholonic
+requirement that a real tholon has N-D-C (three) role interactions
+and a virtual tholon contributes one inverted interaction.
+
+========================================================================
+PART 2: ALL 16 SIGN PATTERNS — CLASSICAL vs QUANTUM MAXIMUM
+========================================================================
+
+For S = c11*A1B1 + c12*A1B2 + c21*A2B1 + c22*A2B2, c_ij in {-1,+1}:
+
+  Classical max: exhaustive search over a_i, b_j in {-1,+1} (16 combos)
+  Quantum max:   2 * sigma_max(M), M = [[c11,c12],[c21,c22]]
+                 (Tsirelson 1980, analytically exact for 2x2)
+  Gap:           quantum_max - classical_max
+
+(c11,c12,c21,c22)            #neg  Cl.max  Q.max     Gap        Note
+--------------------------------------------------------------------------------
+  (-1, 1, 1, 1)                  1    2.00    2.8284 +0.8284  <-- CHSH  (real-virtual tholon)
+  (1, -1, 1, 1)                  1    2.00    2.8284 +0.8284  <-- CHSH  (real-virtual tholon)
+  (1, 1, -1, 1)                  1    2.00    2.8284 +0.8284  <-- CHSH  (real-virtual tholon)
+  (1, 1, 1, -1)                  1    2.00    2.8284 +0.8284  <-- CHSH  (real-virtual tholon)
+  (-1, -1, -1, 1)                3    2.00    2.8284 +0.8284  <-- -CHSH (negated; same physics)
+  (-1, -1, 1, -1)                3    2.00    2.8284 +0.8284  <-- -CHSH (negated; same physics)
+  (-1, 1, -1, -1)                3    2.00    2.8284 +0.8284  <-- -CHSH (negated; same physics)
+  (1, -1, -1, -1)                3    2.00    2.8284 +0.8284  <-- -CHSH (negated; same physics)
+  (1, 1, 1, 1)                   0    4.00    4.0000 +0.0000  
+  (-1, -1, 1, 1)                 2    4.00    4.0000 +0.0000  
+  (-1, 1, -1, 1)                 2    4.00    4.0000 +0.0000  
+  (-1, 1, 1, -1)                 2    4.00    4.0000 +0.0000  
+  (1, -1, -1, 1)                 2    4.00    4.0000 +0.0000  
+  (1, -1, 1, -1)                 2    4.00    4.0000 +0.0000  
+  (1, 1, -1, -1)                 2    4.00    4.0000 +0.0000  
+  (-1, -1, -1, -1)               4    4.00    4.0000 +0.0000  
+
+Patterns with quantum advantage (gap > 0): 8 out of 16
+
+  These are EXACTLY the patterns with 1 negative term (CHSH)
+  or 3 negative terms (negated CHSH, equivalent under S -> -S):
+    (-1, 1, 1, 1)  #neg=1  gap=0.8284
+    (1, -1, 1, 1)  #neg=1  gap=0.8284
+    (1, 1, -1, 1)  #neg=1  gap=0.8284
+    (1, 1, 1, -1)  #neg=1  gap=0.8284
+    (-1, -1, -1, 1)  #neg=3  gap=0.8284
+    (-1, -1, 1, -1)  #neg=3  gap=0.8284
+    (-1, 1, -1, -1)  #neg=3  gap=0.8284
+    (1, -1, -1, -1)  #neg=3  gap=0.8284
+
+No other sign pattern creates a classical-quantum gap.
+
+The 3+1 structure is therefore the unique bipartite sign pattern that:
+  (a) creates a genuine classical-quantum gap, AND
+  (b) has tholonic structure (3 real + 1 virtual role interactions).
+
+========================================================================
+PART 3: TSIRELSON BOUND — ANALYTIC VERIFICATION
+========================================================================
+
+CHSH coefficient matrix  M = [[ 1,  1],
+                               [ 1, -1]]
+
+Analytic singular value computation:
+  M^T * M: p = 1+1 = 2,  q = 1+1 = 2,  r = 1*1 + 1*(-1) = 0
+  Largest eigenvalue of M^T M = ((2+2) + sqrt((2-2)^2 + 4*0^2))/2 = 4/2 = 2
+  sigma_max = sqrt(2)
+  Quantum maximum = 2 * sigma_max = 2*sqrt(2)
+
+  Singular values of M:          1.4142135624,  1.4142135624
+  sigma_max:                     1.4142135624
+  Quantum max  2*sigma_max:      2.8284271247
+  Tsirelson bound 2*sqrt(2):     2.8284271247
+  Exact match:                   True
+  Classical max:                 2.0000000000
+  Quantum advantage (gap):       0.8284271247
+
+Exact eigenvalues of the optimal CHSH operator (4x4 matrix):
+  At optimal settings (A1=Sz, A2=Sx, B1=(Sz+Sx)/sqrt(2), B2=(Sz-Sx)/sqrt(2)):
+    +2*sqrt(2)  =  2.82842712  (maximum)
+    +sqrt(2)    =  1.41421356
+    -sqrt(2)    =  -1.41421356
+    -2*sqrt(2)  =  -2.82842712  (minimum)
+
+  The spectral norm (largest |eigenvalue|) = 2*sqrt(2). Confirmed analytically.
+  These eigenvalues follow from the Pauli algebra of the optimal settings.
+

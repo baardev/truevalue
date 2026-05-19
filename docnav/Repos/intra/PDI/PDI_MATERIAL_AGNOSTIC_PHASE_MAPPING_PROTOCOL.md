@@ -79,6 +79,30 @@ Work through the four modules **in strict sequence**. Do not skip ahead. Each mo
 
 ---
 
+**A0. What type of chain is this?**
+
+Select one:
+
+- [ ] **Forward** — standard supply chain flowing from origin state (raw material, low human intervention) to terminal market state. This is the default.
+- [ ] **Recycling** — inverse, entropy-reversing chain: dispersed waste streams or recovered material flow toward a secondary feedstock state that re-enters a named primary forward chain at a specific phase. Complete A0b below.
+- [ ] **Ecosystem** — natural service chain (provisioning, regulating, cultural, or biodiversity services). Origin and market states are defined by ecological rather than commercial endpoints.
+
+> *If Recycling: this PDI documents the reverse chain as a standalone instrument. The primary forward chain is documented in a separate PDI instance.*
+
+---
+
+**A0b. Primary chain link** *(recycling chains only — skip for forward and ecosystem)*
+
+Which primary forward chain does this recycling chain feed back into, and at which phase(s) does secondary material re-enter?
+
+> *Primary chain material:* _______________________________________________
+>
+> *Re-entry phase number(s) in primary chain:* ______________________________
+>
+> *Physical form and condition of material at re-entry:* _____________________
+
+---
+
 **A1. What is the material in its pre-commercial state — before any human intervention?**
 
 Describe the physical form, location, and condition of the material as it exists in nature or at its origin point, before any extraction, harvest, or collection has occurred.
@@ -392,19 +416,22 @@ Score 4–6 → phase boundary confirmed regardless of B11, but B11 must be note
 
 List only the confirmed phase boundaries below, in sequence. Number them starting from Phase 0 (origin/pre-commercial state) through the final phase.
 
-| Phase # | Phase name | Begins at (event #) | Ends at / transitions to (event #) | Child N output (from B11) |
-|---------|------------|--------------------|------------------------------------|--------------------------|
-| 0 | | — | | |
-| 1 | | | | |
-| 2 | | | | |
-| 3 | | | | |
-| 4 | | | | |
-| 5 | | | | |
-| 6 | | | | |
-| 7 | | | | |
-| 8 | | | | |
+| Phase # | Phase name | Begins at (event #) | Ends at / transitions to (event #) | Child N output (from B11) | Re-entry phase *(recycling only)* |
+|---------|------------|--------------------|------------------------------------|--------------------------|----------------------------------|
+| 0 | | — | | | |
+| 1 | | | | | |
+| 2 | | | | | |
+| 3 | | | | | |
+| 4 | | | | | |
+| 5 | | | | | |
+| 6 | | | | | |
+| 7 | | | | | |
 
 > *Most supply chains resolve to 6–9 phases. Fewer than 5 suggests events have been grouped prematurely. More than 10 suggests sub-processes have been elevated to phase status.*
+>
+> *For recycling chains: the "Re-entry phase" column records the primary forward chain phase number where this recycling phase's output material re-enters the primary chain. Only the terminal recycling phase (the one delivering secondary feedstock) typically carries a re-entry phase number. Earlier recycling phases leave this blank.*
+>
+> *Note: Phase 8 is not a valid phase in this project's phase map. Recycling is documented as a separate chain_type: recycling PDI, not as a Phase 8 appended to any forward chain.*
 
 ---
 
@@ -478,15 +505,33 @@ Is there a way to verify, from outside this phase, that the output stated in Ste
 
 ---
 
+**C5. *(Recycling chains only — skip for forward and ecosystem chains)*  Is the re-entry of secondary material into the primary chain documented with a traceable record?**
+
+At the phase identified in the "Re-entry phase" column of Step 3.3, is there a document, assay certificate, custody record, or registry entry that confirms secondary material entered the primary chain at the stated phase, in the stated quantity and form?
+
+- [ ] Yes — source or mechanism: ______________________________________________
+- [ ] No — reason: ____________________________________________________________
+- [ ] N/A — this is a forward or ecosystem chain
+
+---
+
 ### Opacity Score and Classification
 
-Count the Yes answers for this phase:
+**For forward and ecosystem chains** — count Yes answers across C1–C4:
 
 | Yes count | Transparency classification | Meaning |
 |-----------|----------------------------|---------|
 | 4 | **High** | All four measurability tests pass. Phase is fully traceable. |
 | 2–3 | **Medium** | Partial traceability. Some structural gaps exist. |
 | 0–1 | **Low** | Phase is structurally opaque. The child-N transition cannot be independently traced. |
+
+**For recycling chains** — count Yes answers across C1–C5:
+
+| Yes count | Transparency classification | Meaning |
+|-----------|----------------------------|---------|
+| 5 | **High** | All five tests pass. Phase and re-entry fully traceable. |
+| 3–4 | **Medium** | Partial traceability. Re-entry linkage or internal process may be undocumented. |
+| 0–2 | **Low** | Phase is structurally opaque. Re-entry into primary chain cannot be independently confirmed. |
 
 **Opacity score (Yes count):** _______
 

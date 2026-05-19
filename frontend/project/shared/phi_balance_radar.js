@@ -8,19 +8,17 @@
   var PHI = (1 + Math.sqrt(5)) / 2;
 
   function zoneFromBalance(b) {
-    if (b >= 80) return "coherent";
-    if (b >= 100 / PHI) return "stressed";
+    if (b >= 100 / PHI) return "coherent";
     if (b >= 100 * (1 - 1 / PHI)) return "failure";
     return "breakdown";
   }
 
   var ZONE_COLORS = {
     coherent: "#3ecf8e",
-    stressed: "#f5a623",
     failure: "#ef5350",
     breakdown: "#b71c1c",
   };
-  var ZONE_ABBREV = { coherent: "C", stressed: "S", failure: "F", breakdown: "B" };
+  var ZONE_ABBREV = { coherent: "C", failure: "F", breakdown: "B" };
 
   function getRawPhases(data, cfg) {
     var p = data.phases || {};
@@ -116,10 +114,9 @@
         ctx.fillRect(0, 0, W, H);
 
         var zones = [
-          { v: 100, fill: "rgba(62,207,142,0.06)" },
-          { v: 80, fill: "rgba(245,166,35,0.10)" },
-          { v: 61.8, fill: "rgba(239,83,80,0.14)" },
-          { v: 38.2, fill: "rgba(183,28,28,0.22)" },
+          { v: 100, fill: "rgba(62,207,142,0.07)" },
+          { v: 61.8, fill: "rgba(239,83,80,0.15)" },
+          { v: 38.2, fill: "rgba(183,28,28,0.24)" },
         ];
         zones.forEach(function (z) {
           polyPath(z.v / 100);
@@ -128,8 +125,7 @@
         });
 
         var thresholds = [
-          { v: 80, col: "#3ecf8e" },
-          { v: 61.8, col: "#f5a623" },
+          { v: 61.8, col: "#3ecf8e" },
           { v: 38.2, col: "#ef5350" },
         ];
         thresholds.forEach(function (t) {
@@ -239,7 +235,7 @@
         ctx.fillStyle = "rgba(255,255,255,0.3)";
         ctx.fill();
 
-        var zoneCounts = { coherent: 0, stressed: 0, failure: 0, breakdown: 0 };
+        var zoneCounts = { coherent: 0, failure: 0, breakdown: 0 };
         zoneKeys.forEach(function (z) {
           if (zoneCounts[z] !== undefined) zoneCounts[z]++;
         });
@@ -280,24 +276,18 @@
             "</tr></thead><tbody>" +
             '<tr><td style="padding:4px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3ecf8e;"></span><b style="color:#3ecf8e;">C</b> Coherent <b>(' +
             zoneCounts.coherent +
-            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:4px 4px 3px;">≥ 80%</td><td style="text-align:right;white-space:nowrap;padding:4px 0 3px 4px;">≤ 1.50</td></tr>' +
-            '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f5a623;"></span><b style="color:#f5a623;">S</b> Stressed <b>(' +
-            zoneCounts.stressed +
-            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px;">61.8–80%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 3px 4px;">1.50–\u03c6 (2.24)</td></tr>' +
+            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:4px 4px 3px;">&#x2265; 61.8%</td><td style="text-align:right;white-space:nowrap;padding:4px 0 3px 4px;">D:C &lt; \u03c6 (1.618)</td></tr>' +
             '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef5350;"></span><b style="color:#ef5350;">F</b> Failure <b>(' +
             zoneCounts.failure +
-            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px;">38.2–61.8%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 3px 4px;">\u03c6\u2013\u03c6\u00b2 (2.24\u20134.24)</td></tr>' +
+            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px;">38.2–61.8%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 3px 4px;">D:C \u03c6 to \u03c6\u00b2</td></tr>' +
             '<tr><td style="padding:3px 4px 0 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#b71c1c;"></span><b style="color:#b71c1c;">B</b> Breakdown <b>(' +
             zoneCounts.breakdown +
-            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px 0;">&lt; 38.2%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 0 4px;">&gt; \u03c6\u00b2 (4.24)</td></tr>' +
+            ')</b></span></td><td style="text-align:right;white-space:nowrap;padding:3px 4px 0;">&lt; 38.2%</td><td style="text-align:right;white-space:nowrap;padding:3px 0 0 4px;">D:C &gt; \u03c6\u00b2 (2.618)</td></tr>' +
             "</tbody></table>" +
             "<div style=\"margin-top:8px;font-size:10.5px;color:#666;\">Polygon edge color follows each phase\'s zone. Rings mark PHI thresholds.</div>" +
             "</div>";
         }
 
-        var stressed2 = ids.filter(function (id, i) {
-          return zoneKeys[i] === "stressed";
-        });
         var failure2 = ids.filter(function (id, i) {
           return zoneKeys[i] === "failure";
         });
@@ -306,29 +296,23 @@
         });
         var interp = [];
         interp.push(
-          "<strong>Reading this chart:</strong> This chart plots only the balance score per phase on a 0–100% axis. The three coloured rings are structural thresholds derived from the golden ratio φ. A phase's position relative to the rings shows whether it is coherent, stressed, in failure, or in breakdown."
+          "<strong>Reading this chart:</strong> This chart plots the balance score per phase on a 0\u2013100% axis. The two coloured rings mark the φ-derived structural thresholds: 61.8% (φ\u207b\u00b9, the sustainability floor, D:C = φ) and 38.2% (1\u2212φ\u207b\u00b9, the breakdown threshold, D:C = φ\u00b2). Above 61.8% is coherent; between 38.2% and 61.8% is failure; below 38.2% is breakdown."
         );
-        if (stressed2.length)
-          interp.push(
-            "<strong>Stressed phases (amber, " +
-              stressed2.join(", ") +
-              "):</strong> Above the 61.8% φ\u207b\u00b9 floor but below 80%. Self-sustaining; imbalance correctable from within the system."
-          );
         if (failure2.length)
           interp.push(
             "<strong>Failure-zone phases (red, " +
               failure2.join(", ") +
-              "):</strong> Below the 61.8% sustainability floor. Cost export; external policy or capital typically required."
+              "):</strong> Below the 61.8% sustainability floor (D:C exceeds φ:1). External policy or capital is typically required to restore balance."
           );
         if (breakdown2.length)
           interp.push(
             "<strong>Breakdown phases (dark red, " +
               breakdown2.join(", ") +
-              "):</strong> Below 38.2%. Constraint dominates contribution by more than φ\u00b2:1."
+              "):</strong> Below 38.2%. Constraint dominates contribution by more than φ\u00b2:1 (2.618). Structural intervention required."
           );
-        if (!stressed2.length && !failure2.length && !breakdown2.length)
+        if (!failure2.length && !breakdown2.length)
           interp.push(
-            "<strong>All phases coherent:</strong> Every phase sits above the 80% floor."
+            "<strong>All phases coherent:</strong> Every phase sits above the 61.8% sustainability floor (D:C &lt; φ)."
           );
 
         var interpEl = document.getElementById("balance-radar-interp-" + idSuffix);

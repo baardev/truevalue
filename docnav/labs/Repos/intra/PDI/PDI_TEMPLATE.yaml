@@ -40,6 +40,22 @@ pdi:
   material: ""                    # e.g. "gold", "shea butter", "olive oil"
   analyst: "AI"                   # Name or "AI (model)" e.g. "AI (Claude Sonnet 4.6)"
   date_completed: ""              # ISO 8601 e.g. 2026-04-21
+
+  # [NEW FIELD] chain_type distinguishes the direction and nature of this chain.
+  # forward    — standard supply chain from origin state to terminal market (default)
+  # recycling  — inverse/entropy-reversing chain: dispersed waste → secondary feedstock
+  #              re-entering a named primary chain at a specific phase
+  # ecosystem  — natural service chain (e.g. Danube delta biodiversity)
+  chain_type: "forward"           # forward | recycling | ecosystem
+
+  # [NEW FIELD] Required when chain_type is "recycling".
+  # Identifies the primary chain this recycling chain feeds back into,
+  # and the phase number(s) where secondary material re-enters.
+  # Leave null for forward and ecosystem chains.
+  primary_chain_link:
+    primary_chain_material: null  # e.g. "gold"
+    reentry_phases: []            # list of primary chain phase numbers e.g. [4, 5]
+    reentry_notes: ""             # describe the re-entry point and material form
   sources_overview: |
     # List the primary documents / sources provided for this analysis.
     # One source per line. Include title, author/org, date if known.
@@ -239,56 +255,61 @@ pdi:
 
     phase_map:
       # Confirmed phases only. Number from 0 (origin/pre-commercial).
+      # For recycling chains: phases run in entropy-reducing direction
+      # (dispersed waste → secondary feedstock). Number from R0 upward,
+      # and set reentry_primary_phase on the final phase.
       - phase: 0
         name: ""
         begins_at_event: null     # event number, or null for phase 0 (origin)
         ends_at_event: null       # event number of the transition to next phase
         child_n_output: ""        # measurable output that leaves this phase (from B11)
-        tvpci_notes: ""           # optional: TVPCI integration notes for this phase
+        tvpci_notes: ""           # optional: TVPCI / TVPCI-R integration notes
+        reentry_primary_phase: null  # [NEW FIELD] recycling chains only: primary chain
+                                     # phase number(s) this output re-enters, e.g. [4, 5].
+                                     # null for forward/ecosystem chains.
       - phase: 1
         name: ""
         begins_at_event: null
         ends_at_event: null
         child_n_output: ""
+        reentry_primary_phase: null
       - phase: 2
         name: ""
         begins_at_event: null
         ends_at_event: null
         child_n_output: ""
+        reentry_primary_phase: null
       - phase: 3
         name: ""
         begins_at_event: null
         ends_at_event: null
         child_n_output: ""
+        reentry_primary_phase: null
       - phase: 4
         name: ""
         begins_at_event: null
         ends_at_event: null
         child_n_output: ""
+        reentry_primary_phase: null
       - phase: 5
         name: ""
         begins_at_event: null
         ends_at_event: null
         child_n_output: ""
+        reentry_primary_phase: null
       - phase: 6
         name: ""
         begins_at_event: null
         ends_at_event: null
         child_n_output: ""
-      - phase: 7
-        name: ""
-        begins_at_event: null
-        ends_at_event: null
-        child_n_output: ""
-      - phase: 8
-        name: ""
-        begins_at_event: null
-        ends_at_event: null
-        child_n_output: ""
+        reentry_primary_phase: null
       # Add or remove phases as needed.
       # Most chains resolve to 6–9 phases.
       # Fewer than 5: events may have been grouped prematurely.
       # More than 10: sub-processes may have been elevated to phase status.
+      # Note: Phase 8 is not a valid phase in this project's phase map.
+      # Recycling is modeled as a separate recycling-chain PDI (chain_type: recycling),
+      # not as an extension of the forward chain.
 
     subprocesses:
       # Events scored as sub-processes, with their assigned phase.
@@ -322,10 +343,21 @@ pdi:
       C4_output_confirmable: null       # true | false
       C4_mechanism: ""
 
-      # opacity_score: count of true answers above (0–4)
+      # [NEW FIELD] C5 applies to recycling chains only (chain_type: recycling).
+      # For forward and ecosystem chains, leave as null.
+      # true  = the point at which secondary material re-enters the primary chain
+      #         (reentry_primary_phase) is documented with a traceable record.
+      # false = re-entry is undocumented or informally handled.
+      C5_reentry_documented: null       # true | false | null (non-recycling chains)
+      C5_reentry_source: ""             # source or mechanism confirming re-entry, if true
+
+      # opacity_score: count of true answers above.
+      # For forward/ecosystem chains: sum of C1–C4 (max 4).
+      # For recycling chains: sum of C1–C5 (max 5); transparency bands shift by +1.
       opacity_score: 0
 
-      # transparency: high (4) | medium (2–3) | low (0–1)
+      # transparency for forward/ecosystem chains: high (4) | medium (2–3) | low (0–1)
+      # transparency for recycling chains:         high (5) | medium (3–4) | low (0–2)
       transparency: ""
 
       # opacity_reason (if medium or low):

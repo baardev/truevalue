@@ -239,8 +239,8 @@
   <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">CUNY EPHS PhD - Five-Model Coherence Signature</h2>
   <p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:700px;line-height:1.55;">
     Each vertex represents a Tholonic model derived from a mathematical constant applied to the academic pipeline.
-    The <strong>outer zone (70-100%)</strong> is coherent; the <strong>middle zone (40-70%)</strong> is stressed;
-    the <strong>inner zone (&lt;40%)</strong> indicates systemic failure in that dimension.
+    The <strong>outer zone (&gt;61.8%, φ⁻¹)</strong> is coherent; the <strong>middle zone (38.2–61.8%)</strong> is failure;
+    the <strong>inner zone (&lt;38.2%)</strong> is breakdown.
     A score of 0 means <em>unmeasured</em>, not failed.
   </p>
   <div style="display:flex;justify-content:center;align-items:flex-start;gap:28px;flex-wrap:wrap;">
@@ -263,10 +263,10 @@
   var MODEL_C = {pi:"#3949ab",phi:"#f57f17",sqrt2:"#2e7d32",ln2:"#c62828",e:"#6a1b9a"};
   var MODEL_BG= {pi:"#e8eaf6",phi:"#fff8e1",sqrt2:"#e8f5e9",ln2:"#fce4ec",e:"#f3e5f5"};
   var INTERP = {
-    pi:    {label:"Operational",  desc:"Average phase balance across the 7-phase academic pipeline. Score 85 = coherent zone. Chain-level D-C negotiation is functioning; the qualifying exam and dissertation phases pull the score below optimal."},
-    phi:   {label:"Proportional", desc:"Distribution efficiency: whether the program invests proportionally to its output intensity. Score 79 = upper stressed zone. Concentration phase carries 71% of credit weight but elective flexibility may not fully leverage it."},
+    pi:    {label:"Operational",  desc:"Average phase balance across the 7-phase academic pipeline. Score 85 = coherent zone (above 61.8% φ⁻¹ floor). Chain-level D-C negotiation is functioning; the qualifying exam and dissertation phases pull the score below optimal."},
+    phi:   {label:"Proportional", desc:"Distribution efficiency: whether the program invests proportionally to its output intensity. Score 79 = coherent zone (above 61.8%). Concentration phase carries 71% of credit weight but elective flexibility may not fully leverage it."},
     sqrt2: {label:"Structural",   desc:"Phase handoff quality: how cleanly each phase delivers its output to the next. Score 83 = coherent zone. The qualifying exam acts as a clean structural gate. Dissertation-to-placement transition is efficient given the 98% placement rate."},
-    ln2:   {label:"Growth",       desc:"Learning compounding: whether knowledge accumulates and transforms across the pipeline. Score 76 = upper stressed zone. 6.1-year average completion vs. 5-year target suggests mild inefficiency in the dissertation growth phase."},
+    ln2:   {label:"Growth",       desc:"Learning compounding: whether knowledge accumulates and transforms across the pipeline. Score 76 = coherent zone (above 61.8%). 6.1-year average completion vs. 5-year target suggests mild inefficiency in the dissertation growth phase."},
     e:     {label:"Abstract",     desc:"Financial abstraction: stipend structure, funding leverage, and resource adequacy. Score 0 = unmeasured. Financial data is not available from public sources. This is the primary data gap for a full NDC analysis."}
   };
 
@@ -286,12 +286,12 @@
     var CX=170,CY=170,R=128;
     var fill=hexRgba(PRIMARY,0.18), stroke=hexRgba(PRIMARY,0.85);
     var s='<svg viewBox="-40 -28 380 392" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
-    s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.70)+'" fill="#e3eaf5" fill-rule="evenodd"/>';
-    s+='<path d="'+pentPath(CX,CY,R,0.70)+' '+pentPath(CX,CY,R,0.40)+'" fill="#b0c4de" fill-rule="evenodd"/>';
-    s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="#0d2f55"/>';
+    s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.618)+'" fill="#e3eaf5" fill-rule="evenodd"/>';
+    s+='<path d="'+pentPath(CX,CY,R,0.618)+' '+pentPath(CX,CY,R,0.382)+'" fill="#ffccbc" fill-rule="evenodd"/>';
+    s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="#b71c1c"/>';
     [0.25,0.50,0.75,1.0].forEach(function(sc){s+='<path d="'+pentPath(CX,CY,R,sc)+'" fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="'+(sc===1?1.5:0.7)+'"/>';});
-    s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" stroke-dasharray="3,3"/>';
-    s+='<path d="'+pentPath(CX,CY,R,0.70)+'" fill="none" stroke="rgba(26,74,122,0.4)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+    s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="none" stroke="rgba(239,83,80,0.55)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+    s+='<path d="'+pentPath(CX,CY,R,0.618)+'" fill="none" stroke="rgba(62,207,142,0.50)" stroke-width="1.2" stroke-dasharray="3,3"/>';
     AXES.forEach(function(a){var p=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+p.x.toFixed(2)+'" y2="'+p.y.toFixed(2)+'" stroke="rgba(0,0,0,0.12)" stroke-width="0.8"/>';});
     var dp=dataPath(CX,CY,R,scores);
     if(dp){s+='<path d="'+dp+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5" stroke-linejoin="round"/>';}

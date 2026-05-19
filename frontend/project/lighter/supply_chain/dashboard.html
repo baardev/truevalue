@@ -264,9 +264,9 @@
       var CX=140,CY=140,R=100;
       var fill=hexRgba(PRIMARY,0.20),stroke=hexRgba(PRIMARY,0.85);
       var s='<svg viewBox="-40 -28 320 336" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
-      s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.70)+'" fill="#fff3ec" fill-rule="evenodd"/>';
-      s+='<path d="'+pentPath(CX,CY,R,0.70)+' '+pentPath(CX,CY,R,0.40)+'" fill="#ffccaa" fill-rule="evenodd"/>';
-      s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="#a03e00"/>';
+      s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.618)+'" fill="#fff3ec" fill-rule="evenodd"/>';
+      s+='<path d="'+pentPath(CX,CY,R,0.618)+' '+pentPath(CX,CY,R,0.382)+'" fill="#ffccbc" fill-rule="evenodd"/>';
+      s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="#b71c1c"/>';
       [0.25,0.50,0.75,1.0].forEach(function(sc){s+='<path d="'+pentPath(CX,CY,R,sc)+'" fill="none" stroke="rgba(255,255,255,0.12)" stroke-width="'+(sc===1?1.5:0.7)+'"/>';});
       AXES.forEach(function(a){var tip=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+tip.x.toFixed(2)+'" y2="'+tip.y.toFixed(2)+'" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>';});
       var dp=dataPath(CX,CY,R,scores);
@@ -281,8 +281,8 @@
       var html='';
       AXES.forEach(function(a){
         var v=scores[a.key]||0;
-        var zone=v>=70?'Coherent':v>=40?'Stressed':'Failure';
-        var zc=v>=70?'#4caf50':v>=40?'#ff9800':'#ef5350';
+        var zone=v>=61.8?'Coherent':v>=38.2?'Failure':'Breakdown';
+        var zc=v>=61.8?'#3ecf8e':v>=38.2?'#ef5350':'#b71c1c';
         html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">';
         html+='<span style="font-weight:900;color:'+MODEL_C[a.key]+';width:28px;text-align:center;font-size:12px;">'+a.label+'</span>';
         html+='<div style="flex:1;height:5px;border-radius:3px;background:#30363d;"><div style="height:5px;border-radius:3px;background:'+MODEL_C[a.key]+';width:'+Math.min(100,v)+'%;"></div></div>';

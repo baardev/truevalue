@@ -2,7 +2,7 @@ ENTRY_START
 relative_path: AI_PROMPT_DOCNAV_MANIFEST.md
 extension: .md
 excerpt:
-# AI prompt: generate `docnav_manifest.tsv` for DocNav / TiddlyWiki index
+# AI prompt: generate `docnav_manifest.tsv` for DocNav catalog
 
 This document describes the manifest schema and tagging rules for DocNav. The **canonical implementation** is `docnav_manifest_from_entries.py`: run that script after `entries_for_ai.txt` is regenerated so output stays consistent.
 
@@ -23,7 +23,7 @@ excerpt:
 ENTRY_END
 ```
 
-2. Parse **onl
+2. Parse **only** blocks 
 ENTRY_END
 
 ENTRY_START
@@ -31,6 +31,31 @@ relative_path: CSV_REFRESH
 extension: (none)
 excerpt:
 OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Progs.md
+extension: .md
+excerpt:
+# Programming manual (`docnav/`)
+
+Executable scripts in this folder. Invocation details live in script headers; this file describes what each program is for.
+
+## `CSV_REFRESH`
+
+Thin shell wrapper run from the **repository root**. Calls `docnav/docnav_build_csv_catalog_json.py` to regenerate **`docnav/csv_catalog.json`** from CSV files discovered under `frontend/project/`.
+
+**Depends on:** `sh`, `python3`, and the Python helper (not executable).
+
+## `REFRESH`
+
+Thin shell wrapper run from the **repository root**. Regenerates the DocNav excerpt dump, manifest TSV, and catalog JSON by running, in order:
+
+1. `docnav/docnav_extract_excerpts.py` (stdout redirected to `docnav/entries_for_ai.txt`)
+2. `docnav/docnav_manifest_from_entries.py`
+3. `docnav/docnav_build_catalog_json.py`
+
+Ends with a line
 ENTRY_END
 
 ENTRY_START
@@ -195,7 +220,7 @@ ENTRY_START
 relative_path: csvindex.html
 extension: .html
 excerpt:
-DocNav — Project CSV Catalog
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -245,53 +270,17 @@ broken_image_links.json docnav: broken_image_links.json topic/tvpci fmt/json { '
 ENTRY_END
 
 ENTRY_START
-relative_path: docnav_tiddlers_import.json
-extension: .json
-excerpt:
-[
- {
- "title": "docnav: adaptive_system_data.md",
- "tags": "topic/tholonic-ndc fmt/md",
- "text": "[[Open file|http://127.0.0.1:8000/docnav/ai_notes/concept_notes/adaptive_system_data.md]]\n\nSummary: # Adaptive System Data ## Definition Signals inside a living, ecological, social, infrastructure, or institutional system that describe feedback, resilience, maintenance, phase dependency, or coherence before those signals become monetized…\n\nPath: `ai_notes/concept_notes/adaptive_system_data.md`"
- },
- {
- "title": "docnav: ai_costs.md",
- "tags": "topic/tholonic-ndc fmt/md",
- "text": "[[Open file|http://127.0.0.1:8000/docnav/ai_notes/concept_notes/ai_costs.md]]\n\nSummary: # AI Costs ## Definition The computational, API, infrastructure, and operational costs of using AI systems for document, d
-ENTRY_END
-
-ENTRY_START
 relative_path: entries_for_ai.txt
 extension: .txt
 excerpt:
-ENTRY_START
-relative_path: AI_PROMPT_DOCNAV_MANIFEST.md
-extension: .md
-excerpt:
-# AI prompt: generate `docnav_manifest.tsv` for DocNav / TiddlyWiki index
-
-This document describes the manifest schema and tagging rules for DocNav. The **canonical implementation** is `docnav_manifest_from_entries.py`: run that script after `entries_for_ai.txt` is regenerated so output stays consistent.
-
-Use this file when you want an AI (or a human) to understand how rows are built **without** reading Python. For routine updates, you do **not** need to ask an AI to write the TSV: run `sh docnav/REFRESH`.
-
----
-
-## Inputs
-
-1. **`entries_for_ai.txt`**, produced by `docnav_extract_excerpts.py`. Each file under `docnav/` becomes one block:
-
-```
-ENTRY_START
-relative_path: Repos/example/note.md
-extension: .md
-excerp
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: index.html
 extension: .html
 excerpt:
-DocNav — Document Catalog
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -349,63 +338,74 @@ ENTRY_START
 relative_path: view.html
 extension: .html
 excerpt:
-DocNav Viewer
+OPAQUE (extraction returned empty)
+ENTRY_END
 
-Loading…
+ENTRY_START
+relative_path: virtual_sarah_tholon_updated.md
+extension: .md
+excerpt:
+# Where Is the Virtual Sarah? (Revised and Extended)
+
+## Introduction
+
+The question “Where is the virtual Sarah?” begins with a mirror. Sarah stands ten feet in front of a mirror, and her reflection appears to stand ten feet behind it. That reflected Sarah is not physically behind the wall, yet she is not meaningless either. She is a real consequence of the optical geometry. She is visible, structured, predictable, and perfectly constrained by Sarah’s position and the mirror’s surface. In this sense, the reflection is not unreal. It is dependent. It is a virtual Sarah.
+
+This gives us a useful definition: the virtual Sarah is not an independently instantiated Sarah, but a structurally necessary appearance produced by a system.
+
+---
+
+## The Mirror and the Virtual Tholon
+
+A mirror reflection 
+ENTRY_END
+
+ENTRY_START
+relative_path: virtual_sarah_tholon_updated.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: where_is_virtual_sarah.md
+extension: .md
+excerpt:
+---
+title: "Where Is the Virtual Sarah?"
+keywords:
+ - where-is-virtual-sarah
+ - virtual-sarah
+ - mirror-reflection
+ - virtual-image
+ - tholonic-model
+ - virtual-tholon
+ - complex-numbers
+ - argand-plane
+ - imaginary-axis
+ - structural-dependence
+ - metaphor
+---
+
+# Where Is the Virtual Sarah?
+
+The question “Where is the virtual Sarah?” begins with a mirror. Sarah stands ten feet in front of a mirror, and her reflection appears to stand ten feet behind it. That reflected Sarah is not physically behind the wall, yet she is not meaningless either. She is a real consequence of the optical geometry. She is visible, structured, predictable, and perfectly constrained by Sarah’s position and the mirror’s surface. In this sense, the reflection is not unreal. It is dependent. It is a virtual Sarah.
+
+
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/BPDI.html
+extension: .html
+excerpt:
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/SCPI-SME.html
 extension: .html
 excerpt:
-SCPI-SME — Supply Chain Profile Instrument · Small Business Edition
-
-Supply Chain Profile Instrument — Small Business Edition
-
-🔗 SCPI-SME 
-Chain Mapper
-
-Map your supply chain in plain language. Identify bottlenecks, blind spots, and cost pressure points. No jargon required. Complete Sections 1–3 in order; Sections 4–6 update automatically as you go.
-
-Your Business Name / Product
-
-Analyst / Completed By
-
-Date
-
-Industry Sector
-
-Select sector…
-
-Food & Beverage
-
-Consumer Goods / FMCG
-
-Apparel & Textiles
-
-Electronics & Hardware
-
-Health & Beauty
-
-Agriculture & Farming
-
-Manufacturing (Other)
-
-Retail & Distribution
-
-Services
-
-Other
-
-Annual Scale
-
-Section 1
-
-Business Profile — Anchoring Your Chain
-
-Define the start and end of your supply chain before mapping the steps in between.
-
-Why this matters:
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -448,300 +448,183 @@ ENTRY_START
 relative_path: Repos/extra/Acorn/Acorn-Local-Partner-Onboarding-Process.pdf
 extension: .pdf
 excerpt:
-What is the role of the Local Partner in the Acorn onboarding process
-Local partners
-Blk It
-Acorn.Rabobank.com2
-Local Partner and Project onboarding process
-There are several application steps to complete via our 
-online portal or other channels
-Via Portal
-Via meetings or fieldwork
-No involvement from Local Partner
-Eligibility & 
-Additionality
-Agroforestry 
-design & BC
-Farmer 
-Onboarding
-Selling and 
-monitoring
-Ground truth data collection
-Eligibility checklist
-Project summary
-Map - area of 
-interest
-Additionality 
-assessment
-Subcontractor 
-responsibilities 
-overview
-Land tenure 
-documentation
-Project councils 
-with farmers
-100 plots of 1ha 
-each per 
-ecoregion
-Participant 
-agreement
-LiDAR request
-Agroforestry 
-design template
-Business case 
-template
-Farm(er) data 
-collection (incl. 
-polyg
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Deutsche/The Measurement Gap in Transition Finance — TrueValue Analytics · Deutsche Bank Strategic Alignment Brief.pdf
 extension: .pdf
 excerpt:
-STRATEGIC ALIGNMENT BRIEF  ·  TRANSITION FINANCE & NATURAL
-RESOURCES FINANCE
-The Measurement Gap in
-Transition Finance
-How the TrueValue Framework provides the phase-resolved supply chain analytics that
-Deutsche Bank's Transition Finance thesis requires — validated at every phase using
-Deutsche Bank's own published critical minerals and commodities research.
-NATURAL RESOURCES FINANCE SUSTAINABLE SUPPLY CHAIN FINANCE
-TRANSITION FINANCE FRAMEWORK · PARAMETER 1 & 3
-SUPPLY CHAIN DUE DILIGENCE AFRICA & EMERGING MARKETS
-Analytical Framework
-TrueValue Supply Chain
-Analytics
-Primary Case Study
-Gold Supply Chain (9
-phases)
-Contrast Case
-Shea Value Chain
-(West Africa)
-Date
-April
-2026
-This report presents a structural demonstration using phase-architecture data and simulated projections. It is intend
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Deutsche/db_investor_report.html
 extension: .html
 excerpt:
-The Measurement Gap in Transition Finance — TrueValue Analytics · Deutsche Bank Strategic Alignment Brief
-
-Strategic Alignment Brief  ·  Transition Finance & Natural Resources Finance
-
-The 
-Measurement Gap
- in
-Transition Finance
-
-How the TrueValue Framework provides the phase-resolved supply chain analytics that Deutsche Bank's Transition Finance thesis requires — validated at every phase using Deutsche Bank's own published critical minerals and commodities research.
-
-Natural Resources Finance
-
-Sustainable Supply Chain Finance
-
-Transition Finance Framework · Parameter 1 & 3
-
-Supply Chain Due Diligence
-
-Africa & Emerging Markets
-
-Analytical Framework
-
-TrueValue Supply Chain Analytics
-
-Primary Case Study
-
-Gold Supply Chain (9 phases)
-
-Contrast Case
-
-Shea Value Chain (West Africa)
-
-Date
-
-Apri
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Generic/The TrueValue Framework — Investor Report.pdf
 extension: .pdf
 excerpt:
-S T R U C T U R A L S U P P LY C H A I N A N A LY T I C S  ·  I N V E S T O R I N T E L L I G E N C E
-S E R I E S
-Sustainable Supply Chains
-Generate Superior Long-Term
-Returns
-A quantitative case for the TrueValue Framework: measuring structural
-balance across supply chain phases to unlock compounding performance
-advantage.
-Framework
-TrueValue Supply
-Chain Analytics
-Primary Case Study
-Gold Supply Chain
-(9 phases)
-Contrast Case
-Shea Value Chain
-(West Africa)
-Report
-Date
-March
-2026
-This report presents a structural demonstration using phase-architecture data and simulated projections. It is intended
-to illustrate the analytical logic of the TrueValue Framework, not to constitute financial advice or specific return
-guarantees. See Appendix for full methodology disclosure.
-The TrueValue Framew
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Generic/TrueValue Framework — Gap Analysis & Research Agenda.pdf
 extension: .pdf
 excerpt:
-T R U E VA L U E A N A LY T I C S  ·  I N T E R N A L W O R K I N G D O C U M E N T
-From Illustrative to Investor-
-Ready:
-What We Still Need to Know
-A gap analysis and research agenda identifying every claim, score, projection,
-and assumption in the Investor Report that requires real data, validation, or
-policy research before the report can be presented without qualification to
-institutional investors.
-Document Type
-Gap Analysis / Research Agenda
-Subject Report
-investor_report.html (March 2026)
-Audiences
-Non-technical & Technical
-Status
-Working Draft — Internal Only
-This document is a frank internal assessment of what is currently synthetic, estimated, or unvalidated in the
-Investor Report. It is not for external distribution. Its purpose is to create a clear research agenda for moving th
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Generic/TrueValue Framework — Implementation Cost & Deployment Analysis.pdf
 extension: .pdf
 excerpt:
-T R U E VA L U E A N A LY T I C S  ·  I M P L E M E N TAT I O N I N T E L L I G E N C E S E R I E S
-What Does It Cost to Build a
-TrueValue Framework?
-A phase-resolved cost, time, and resource estimate for deploying the
-TrueValue Framework across a commodity supply chain — using gold and
-shea as primary case studies.
-Document Type
-Implementation Cost Analysis
-Primary Case
-Gold Supply Chain (9 phases)
-Comparative Case
-Shea Value Chain (West Africa)
-Horizon
-5 Years (Gold) / 3 Years (Shea)
-Date
-March 2026
-All cost estimates presented in this report are order-of-magnitude ranges derived from analogous framework deployment data,
-industry staffing benchmarks, and structural analysis of supply chain complexity. They are not quotes, contracts, or financial
-projections. Actual implementation costs w
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Generic/gap_analysis_report.html
 extension: .html
 excerpt:
-TrueValue Framework — Gap Analysis & Research Agenda
-
-TrueValue Analytics  ·  Internal Working Document
-
-From Illustrative to 
-Investor-Ready
-:
-What We Still Need to Know
-
-A gap analysis and research agenda identifying every claim, score, projection, and assumption in the Investor Report that requires real data, validation, or policy research before the report can be presented without qualification to institutional investors.
-
-Document Type
-Gap Analysis / Research Agenda
-
-Subject Report
-investor_report.html (March 2026)
-
-Audiences
-Non-technical & Technical
-
-Status
-Working Draft — Internal Only
-
-This document is a frank internal assessment of what is currently synthetic, estimated, or unvalidated in the Investor Report. It is not for external distribution. Its purpose is to create a clear r
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Generic/implementation_cost_report.html
 extension: .html
 excerpt:
-TrueValue Framework — Implementation Cost & Deployment Analysis
-
-TrueValue Analytics  ·  Implementation Intelligence Series
-
-What Does It Cost to Build a
-TrueValue Framework
-?
-
-A phase-resolved cost, time, and resource estimate for deploying the TrueValue Framework across a commodity supply chain — using gold and shea as primary case studies.
-
-Document Type
-Implementation Cost Analysis
-
-Primary Case
-Gold Supply Chain (9 phases)
-
-Comparative Case
-Shea Value Chain (West Africa)
-
-Horizon
-5 Years (Gold) / 3 Years (Shea)
-
-Date
-March 2026
-
-All cost estimates presented in this report are order-of-magnitude ranges derived from analogous framework deployment data, industry staffing benchmarks, and structural analysis of supply chain complexity. They are not quotes, contracts, or financial projectio
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/Generic/investor_report.html
 extension: .html
 excerpt:
-The TrueValue Framework — Investor Report
+OPAQUE (extraction returned empty)
+ENTRY_END
 
-Structural Supply Chain Analytics  ·  Investor Intelligence Series
+ENTRY_START
+relative_path: Repos/extra/Horizon/260504 Horizon Europe Abstract v3.docx
+extension: .docx
+excerpt:
+HORIZON-CL6-2026-01-CIRCBIO-09 Proposal: TRUE VALUE CHAINS — Balancing Bioeconomy, Food Security, Climate and Biodiversity Through Phase-Resolved Supply Chain Analytics Call: HORIZON-CL6-2026-01-CIRCBIO-09 Call Title: Balancing food security, bioeconomy, climate and biodiversity objectives to unlock sustainable value chains Action Type: Research and Innovation Action (RIA) Opening Date: 17 April 2026 Deadline: 17 September 2026, 17:00 Brussels time Indicative Budget Request: €6,000,000 Total Call Budget: €12,000,000 Project Acronym (provisional): TrueVal-Chains Status: DRAFT v0. 3 — 5 May 2026 Lead Author: SNJ Action required from: April 2026 EXECUTIVE SUMMARY TrueVal-Chains is a 54-month, €6 million Research and Innovation Action (RIA) submitted under Horizon Europe Call HORIZON-CL6-2026-
+ENTRY_END
 
-Sustainable Supply Chains
-Generate 
-Superior
- Long-Term Returns
+ENTRY_START
+relative_path: Repos/extra/Horizon/260504 Horizon Europe Abstract v3.md
+extension: .md
+excerpt:
+# HORIZON-CL6-2026-01-CIRCBIO-09
 
-A quantitative case for the TrueValue Framework: measuring structural balance across supply chain phases to unlock compounding performance advantage.
+## Proposal: TRUE VALUE CHAINS --- Balancing Bioeconomy, Food Security, Climate and Biodiversity Through Phase-Resolved Supply Chain Analytics
 
-Framework
+**Call:** HORIZON-CL6-2026-01-CIRCBIO-09\
+**Call Title:** Balancing food security, bioeconomy, climate and
+biodiversity objectives to unlock sustainable value chains\
+**Action Type:** Research and Innovation Action (RIA)\
+**Opening Date:** 17 April 2026\
+**Deadline:** 17 September 2026, 17:00 Brussels time\
+**Indicative Budget Request:** €6,000,000\
+**Total Call Budget:** €12,000,000\
+**Project Acronym (provisional):** TrueVal-Chains\
+**Status:** DRAFT v0.3 --- 5 May 2026\
+**Lead Author:** SNJ\
+**Action required from:** April 2026
 
-TrueValue Supply Chain Analytics
+## EXECUTIVE SUMMARY
 
-Primary Case Study
+**TrueVal-Chains** is a 54-month, €6 million Research and Inno
+ENTRY_END
 
-Gold Supply Chain (9 phases)
+ENTRY_START
+relative_path: Repos/extra/Horizon/260504_horizon_registration_abstracts.md
+extension: .md
+excerpt:
+# TrueVal-Chains: Horizon Europe Registration Abstracts
 
-Contrast Case
+**Call:** HORIZON-CL6-2026-01-CIRCBIO-09
+**Project acronym:** TrueVal-Chains
+**Deadline:** 17 September 2026, 17:00 Brussels time
+**Document status:** DRAFT for review
 
-Shea Value Chain (West Africa)
+---
 
-Report Date
+## Part A: Short Summary (max 200 characters)
 
-March 2026
+> TrueVal-Chains delivers phase-resolved supply chain evidence for shea, olive oil and Argentine soy/beef, unlocking carbon credits, cooperative value and EU bioeconomy policy.
 
-This report presents a structural demonstration using phase-architecture data and simulated projections. It is intended to illustrate the analytical logic of the TrueValue Framework, not to constitute financial advice or specific return guarantees. See Appendix for full methodology disclosure.
+**Character count: 178**
 
-Executive 
+---
+
+## Part B: Full Abstract (target 1,000 to 2,000 characters)
+
+> The EU bioeconomy agenda demands reliable quantitative evidence on how agricultural value, environmental performance, and food security interact across the farm-to-market chain. That evidence does not yet exist at the resolution that policymakers, ca
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/260504_horizon_registration_readiness.md
+extension: .md
+excerpt:
+# TrueVal-Chains: Horizon Europe Registration Readiness Assessment
+
+**Call:** HORIZON-CL6-2026-01-CIRCBIO-09
+**Submission deadline:** 17 September 2026, 17:00 Brussels time
+**Assessment date:** May 2026
+**Weeks remaining:** ~19 weeks
+
+---
+
+## Summary Verdict
+
+Registration by the deadline is achievable, but only if the highest-priority items below are started immediately. At least three prerequisites are non-trivial and have lead times measured in weeks: organization validation (PIC), LEAR appointment, and Gender Equality Plan compliance. The unresolved ImpactAgri/Serious Shea question must also be closed before any portal work can begin for that partner slot.
+
+---
+
+## Prerequisite Checklist
+
+### 1. EU Login Accounts
+
+Every individual who will interact with the Funding and Tenders Portal on
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/260504_partner_skillset_evaluation.md
+extension: .md
+excerpt:
+# TrueVal-Chains Consortium Partner Skillset Evaluation
+
+**Source document:** 260504 Horizon Europe Abstract v3.docx (DRAFT v0.3, 5 May 2026)
+**Call:** HORIZON-CL6-2026-01-CIRCBIO-09
+**Evaluation date:** May 2026
+**Purpose:** Assess whether each named partner has the demonstrated skillset to accomplish their assigned role.
+
+---
+
+## Rating Scale
+
+| Rating | Meaning |
+|--------|---------|
+| Excellent fit | Partner has deep, directly relevant track record |
+| Good fit | Partner has relevant expertise with minor gaps |
+| Partial fit | Some relevant experience; gaps are meaningful |
+| Weak fit | Institutional name is credible but individual or specific expertise is not verified |
+| Gap / Unknown | Insufficient public evidence to assess |
+
+---
+
+## 1. TrueValue Analytics: Dr Sarah Jones and Jeff 
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/260504_partner_skillset_evaluation_v2.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -831,70 +714,45 @@ Proposal: TRUE VALUE CHAINS — Balancing Bioeconomy, Food Security, Climate and
 ENTRY_END
 
 ENTRY_START
+relative_path: Repos/extra/Horizon/TrueVal-Chains — Horizon Meeting Briefing.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/cTVF and AGORA_EDAAn — Partnership Analysis_(claude).html
+extension: .html
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/cTVF and AGORA_EDAAn — Partnership Analysis_(claude).pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/extra/Horizon/horizon_meeting_briefing.html
+extension: .html
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
 relative_path: Repos/extra/UBS/What Your Gold Forecast Doesn't Show — TrueValue Analytics · UBS Strategic Alignment Brief.pdf
 extension: .pdf
 excerpt:
-STRATEGIC ALIGNMENT BRIEF  ·  CHIEF INVESTMENT OFFICE  ·  WEALTH
-MANAGEMENT
-What Your Gold Forecast
-Doesn't Show
-UBS forecasts gold at $5,000–6,200/oz on supply stagnation and structural demand.
-The TrueValue Framework shows precisely where in the supply chain that stagnation is
-concentrated — and what it means for portfolio risk, sustainable investing compliance,
-and the Power & Resources structural theme.
-CHIEF INVESTMENT OFFICE POWER & RESOURCES THEME
-SUSTAINABLE INVESTING · $3.9T AUM DECARBONIZATION · 5DS FRAMEWORK
-SWISS ORDINANCE · CONFLICT MINERALS DUE DILIGENCE
-Analytical Framework
-TrueValue Supply Chain
-Analytics
-Primary Case Study
-Gold Supply Chain (9
-phases)
-Contrast Case
-Shea Value Chain
-(West Africa)
-Date
-April
-2026
-This report presents a structural demonstration using phase-ar
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/extra/UBS/ubs_investor_report.html
 extension: .html
 excerpt:
-What Your Gold Forecast Doesn't Show — TrueValue Analytics · UBS Strategic Alignment Brief
-
-Strategic Alignment Brief  ·  Chief Investment Office  ·  Wealth Management
-
-What Your Gold Forecast
-Doesn't 
-Show
-
-UBS forecasts gold at $5,000–6,200/oz on supply stagnation and structural demand. The TrueValue Framework shows precisely where in the supply chain that stagnation is concentrated — and what it means for portfolio risk, sustainable investing compliance, and the Power & Resources structural theme.
-
-Chief Investment Office
-
-Power & Resources Theme
-
-Sustainable Investing · $3.9T AUM
-
-Decarbonization · 5Ds Framework
-
-Swiss Ordinance · Conflict Minerals Due Diligence
-
-Analytical Framework
-
-TrueValue Supply Chain Analytics
-
-Primary Case Study
-
-Gold Supply Chain (9 phases)
-
-Contrast Case
-
-She
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -1146,36 +1004,7 @@ ENTRY_START
 relative_path: Repos/intra/PDI/PDI.html
 extension: .html
 excerpt:
-Phase Discovery Instrument — Supply Chain Phase Mapping
-
-Phase Discovery Instrument
-
-A material-agnostic supply chain phase mapping protocol — the phases are outputs, not inputs.
-
-Material / Product Being Analyzed
-
-Module 1
-
-Anchor the Chain
-
-Answer these seven questions once, before identifying any events.
-
-When to use:
- Once, at the start — before listing events.
-
-What it does:
- Establishes the two fixed endpoints of the chain (origin and market), identifies units at each end, and produces your first-pass list of physical forms and actor classes.
-
-How:
- Answer precisely. Resist the urge to describe processes — that happens in Module 2. This module is only about naming states and actors.
- 
-
-▶ Show example answers (Drinking water)
-
-Example — Drinking water (municipal supply)
-
-A1:
- Rainwate
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -1211,21 +1040,7 @@ ENTRY_START
 relative_path: Repos/intra/PDI/PDI_ECOSYSTEM_CASE_MANGO_COASTAL_Q_AND_A.pdf
 extension: .pdf
 excerpt:
-A1 Mango seed or rootstock (ungerminated, held in nursery stock or collected from parent trees)
-A2 Established coastal mango tree (canopy-closed, root-anchored, measurable by count per hectare
-or canopy area)
-Event B1 (entering) B2 (leaving) B3 flag?
-Germination Seed Germinated seedling Yes
-Nursery hardening Seedling Hardened transplant-ready stock Yes
-Field planting Nursery stock Transplanted sapling (in situ) Yes
-Establishment Juvenile sapling Rooted young tree (survival confirmed) Yes
-PDI Ecosystem Supply Chain — Questions & 
-Answers
- 
-Coastal Mango Restoration Use Case 
-Clarity True Value Framework (CTVF) Alignment 
-Context: These questions arose during evaluation of how the Phase Discovery Instrument (PDI) can be applied 
-to quantify the supply chain of planting mango trees near the c
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -1272,72 +1087,14 @@ ENTRY_START
 relative_path: Repos/intra/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.pdf
 extension: .pdf
 excerpt:
-Module Name What you do What you get
-1 Anchor the ChainAnswer seven questions once, about the whole chainTwo fixed endpoints; a list of candidate events
-2 Event InventoryFor each candidate event, answer twelve questionsA scored record for every change event
-3 Boundary ScoringApply the scoring rule to each event recordA confirmed, numbered phase map
-4 Opacity Tagging Answer four questions per confirmed phaseA transparency classification for each phase
-Phase Discovery Instrument (PDI) 
-A Material-Agnostic Supply Chain Phase Mapping Protocol 
-Version 1.0
-Project: True Value Analytics — Supply Chain Intelligence
-Purpose 
-This instrument is used to determine the phase structure of any material supply chain from first principles. It does not assume any prior 
-knowledge of the industry or commodi
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Repos/intra/PDI/PDI_SCPI-SME.html
 extension: .html
 excerpt:
-SCPI-SME — Supply Chain Profile Instrument · Small Business Edition
-
-Supply Chain Profile Instrument — Small Business Edition
-
-🔗 SCPI-SME 
-Chain Mapper
-
-Map your supply chain in plain language. Identify bottlenecks, blind spots, and cost pressure points. No jargon required. Complete Sections 1–3 in order; Sections 4–6 update automatically as you go.
-
-Your Business Name / Product
-
-Analyst / Completed By
-
-Date
-
-Industry Sector
-
-Select sector…
-
-Food & Beverage
-
-Consumer Goods / FMCG
-
-Apparel & Textiles
-
-Electronics & Hardware
-
-Health & Beauty
-
-Agriculture & Farming
-
-Manufacturing (Other)
-
-Retail & Distribution
-
-Services
-
-Other
-
-Annual Scale
-
-Section 1
-
-Business Profile — Anchoring Your Chain
-
-Define the start and end of your supply chain before mapping the steps in between.
-
-Why this matters:
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -1401,19 +1158,7 @@ ENTRY_START
 relative_path: Repos/intra/PDI/PDI_WORKED_EXAMPLE_GOLD_SUPPLY_CHAIN.pdf
 extension: .pdf
 excerpt:
-Module Name What you do What you get
-1 Anchor the ChainAnswer seven questions once, about the whole chainTwo fixed endpoints; a list of candidate events
-2 Event InventoryFor each candidate event, answer twelve questionsA scored record for every change event
-3 Boundary ScoringApply the scoring rule to each event recordA confirmed, numbered phase map
-4 Opacity Tagging Answer four questions per confirmed phaseA transparency classification for each phase
-Phase Discovery Instrument (PDI) — Gold 
-Supply Chain
- 
-Worked Example: Primary Gold — Geological Origin to Exchange-Registered Bullion 
-Version 1.0 — Completed Example
-Project: True Value Analytics — Supply Chain Intelligence
-Based on: PHASE_DISCOVERY_INSTRUMENT.md v1.0
-How to read this document: This is a fully completed example of the PDI a
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -1479,6 +1224,21 @@ key_claims:
 **Template reference:** This instance follows the [Abstract Value Chain Phase Template](ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE.md). Shea value phases map to shea supply phases: 0 Collection, 1 First sale, 2 Trading, 3 Processing, 4 Export, 5 Manufacturing, 6 Retail. Certification (abstract 5) and Circular (8) have no dedicated shea value phase here.
 
 Data from: `frontend/project/shea/data/shea_phase_metrics.csv`, `frontend/project/shea/data/Clarity_Cleo_Shea_Value_Chain_Outline.md`, `
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/TVPCI/Progs.md
+extension: .md
+excerpt:
+# Programming manual (`docnav/Repos/intra/TVPCI/`)
+
+Executable scripts in this folder. Invocation details live in script headers; this file describes what each program is for.
+
+## `tholonic_constants_original.py`
+
+Small reference implementation of **recursive estimators** framed in N, D, C form for constants pi/4, phi, e, sqrt(2), and ln(2). When run as a program it prints one numeric result per constant type from `compute_tholonic_constant`.
+
+**Depends on:** Python 3 only (stdlib).
 ENTRY_END
 
 ENTRY_START
@@ -2940,241 +2700,93 @@ OPAQUE (image or binary; no text extracted)
 ENTRY_END
 
 ENTRY_START
+relative_path: Repos/intra/gametheory/gametheory_tholonic_gold_supply_chain.html
+extension: .html
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
 relative_path: Repos/intra/gametheory/gametheory_tholonic_sliders.html
 extension: .html
 excerpt:
-Tholonic Game Theory Simulator
-
-Simulation
-
-Rounds
-
-200
-
-20
-1000
-
-Players
-
-20
-
-2
-100
-
-Seed
-
-0
-
-0
-99
-
-Payoff Structure
-
-Cooperation cost
-
-1.00
-
-0.1
-3.0
-
-Public benefit multiplier
-
-0.12
-
-0.01
-0.50
-
-Resource Dynamics
-
-Regen per cooperator
-
-0.020
-
-0.001
-0.1
-
-Decay per defector
-
-0.010
-
-0.001
-0.1
-
-Initial resource
-
-1.00
-
-0.1
-1.0
-
-Learning
-
-Learning rate
-
-0.050
-
-0.005
-0.3
-
-Initial coop probability
-
-0.50
-
-0.0
-1.0
-
-Tholonic Parameter
-
-Tholonic lambda (λ)
-
-1.50
-
-0 (disabled)
-5.0
-
-Run
-
-Reset
-
-Final Cooperation — Standard (A)
-
-—
-
-Final Cooperation — Tholonic (B)
-
-—
-
-Final Resource — Standard (A)
-
-—
-
-Final Resource — Tholonic (B)
-
-—
-
-Cooperation Rate Over Time
-
-System A — Standard
-
-System B — Tholonic
-
-Resource Level Over Time
-
-System A — Standard
-
-System B — Tholonic
-
-Individual Player Cooperation Pro
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
-relative_path: Repos/intra/gametheory/gold_supply_chain.html
-extension: .html
+relative_path: Repos/intra/gametheory/tholonic_vs_game_theory.md
+extension: .md
 excerpt:
-Gold Supply Chain — Tholonic Game Theory Simulator
+---
+layout: post
+title: "Beyond Nash Equilibrium: Tholonic Triadic Dynamics as a Sustainability-Oriented Alternative to Classical Game Theory"
+author: duncan
+date: 2026-04-14
+image: /material/assets/material_tholonic_vs_game_theory.jpg
+categories:
+- ECONOMICS
+src1: https://files.tholonia.com:8765/material/material_tholonic_vs_game_theory.pdf
+src1_title: 'View/Download "Beyond Nash Equilibrium: Tholonic Triadic Dynamics as a Sustainability-Oriented Alternative to Classical Game Theory (13 pages)"'
+ptags:
+- nokwgen-manual
+jday: 9600
+tags:
+- game-theory
+- tholonic
+- supply-chain
+- sustainability
+- nash-equilibrium
+- systems-theory
+- cooperative-equilibrium
+---
 
-Phase Seed Data (real D/C/Balance)
-
-Simulation
-
-Rounds (market cycles)
-
-200
-
-20
-1000
-
-Seed
-
-0
-
-0
-99
-
-Payoff Structure
-
-D-constraint overhead (cost)
-
-1.00
-
-0.1 (low)
-3.0 (high)
-
-Downstream N-state multiplier
-
-0.12
-
-0.01
-0.50
-
-Chain Integrity Dynamics
-
-Regen per balanced phase
-
-0.020
-
-0.001
-0.1
-
-Decay per imbalanced phase
-
-0.010
-
-0.001
-0.1
-
-Initial chain integrity (N)
-
-0.74
-
-0.1 (degraded)
-1.0 (pristine)
-
-Learning
-
-Phase adaptation rate
-
-0.050
-
-0.005 (slow)
-0.3 (fast)
-
-Tholonic Parameter
-
-Tholonic lambda (λ)
-
-1.50
-
-0 (disabled)
-5.0
-
-Run
-
-Reset
-
-Final Chain Balance — Standard (A)
-
-—
-
-Final Chain Balance — Tholonic (B)
-
-—
-
-Final N-State Integrity — Standard (A)
-
-—
-
-Final N-State Integrity — Tholonic (B)
-
-—
-
-Chain Balance Over Time
-
-System A —
+Classical game theory, grounded in Nash equilibrium and rational-actor assumptions, has dominated the formal analysis of strategic in
 ENTRY_END
 
 ENTRY_START
-relative_path: Repos/intra/gametheory/tholonic_vs_twistor_theory.md
+relative_path: Repos/intra/twistors/tholonic_twistor_mutual_enhancement.md
+extension: .md
+excerpt:
+---
+doc_id: frontend_docs_repos_intra_gametheory_tholonic_twistor_mutual_enhancement
+title: "Tholonic Model and Twistor Theory: Mutual Enhancement and New Connections"
+type: documentation
+status: active
+domain: tholonic_framework
+layer: methodology
+projects:
+ []
+tags:
+ - methodology
+ - ndc
+ - tholonic
+ - tholonic_framework
+ - twistor_theory
+ - complex_numbers
+ - mathematical_constants
+related_docs:
+ - frontend_docs_repos_intra_gametheory_tholonic_vs_twistor_theory
+key_claims:
+ []
+---
+
+# Tholonic Model and Twistor Theory: Mutual Enhancement and New Connections
+
+**Companion to:** *Twistor Theory as a Tholonic Instantiation* (draft v1.0, April 2026)
+
+Working Paper
+Supply Chain Intelligence Project / Tholonic Model Research
+draft v1.0 / May 2026
+
+---
+
+## Overview
+
+A previous analysis (see comp
+ENTRY_END
+
+ENTRY_START
+relative_path: Repos/intra/twistors/tholonic_vs_twistor_theory.md
 extension: .md
 excerpt:
 ---
@@ -3214,46 +2826,7 @@ ENTRY_START
 relative_path: Research/archive/Achieving_Sustainability_In_Developing_Markets_2021.03.09_v1.pdf
 extension: .pdf
 excerpt:
-FS
- C
-lub
-N
-ews
- E
-vents
- P
-artnerships
-ACHIEVING SUSTAINABILITY IN DEVELOPING MARKETS: A CASE STUDY WIT
-H 
-SERIOUS SHEA & CLEO ORGANICS
-Webinar
-Tuesday, 09 March 2021, 09:00am GMT
-Dr Sarah Jones, Secretary General, Clarity Coalition
-William Kwende, Executive Chairman, Agritech Group
-A Word From Today’s Chairman
-Professor Michael Mainelli
-Executive Chairman
-Z/Yen Group
-2
-FS Club
-Platinum 
-Sponsors
-Personal 
-Sponsors
-Gold 
-Sponsors
-Silver 
-Sponsors
-Bronze 
-Sponsors
-3
-Today’s Agenda
-• 09:00 – 09:05 Chairman’s Introduction
-• 09:05 – 09:30 Keynote Address 
- William Kwende
- Dr Sarah Jones
-• 09:30 – 09:45 Questions & Answers
-4
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -3301,54 +2874,14 @@ ENTRY_START
 relative_path: Research/archive/Foranetal.2005-BalancingAct-VOLUME1.pdf
 extension: .pdf
 excerpt:
-B a l a n c i n g A c t
-A TRIPLE BOTTOM LINE ANALYSIS 
-OF THE AUSTRALIAN ECONOMY
-Balancing Act Volume 1
-VOLUME 1
-
-© Commonwealth of Australia 2005
-Information contained in this publication may be 
-copied or reproduced for study, research, information 
-or educational purposes, subject to inclusion of an 
-acknowledgment of the source.
-DISCLAIMERS
-The views and opinions expressed in this publication are 
-those of the authors and do not necessarily reﬂ ect those 
-of the Department of the Environment and Heritage or 
-the Minister for the Environment and Heritage.
-While reasonable efforts have been made to ensure 
-that the contents of this publication are factually correct, 
-the Commonwealth does not accept responsibility for 
-the accuracy or completeness of the contents, and 
-shall not be liabl
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Research/archive/Foranetal.2005-BalancingAct-VOLUME2.pdf
 extension: .pdf
 excerpt:
-B a l a n c i n g A c t
-A TRIPLE BOTTOM LINE ANALYSIS 
-OF THE AUSTRALIAN ECONOMY
-Balancing Act Volume 2
-VOLUME 2
-
-© Commonwealth of Australia 2005
-Information contained in this publication may be 
-copied or reproduced for study, research, information 
-or educational purposes, subject to inclusion of an 
-acknowledgment of the source.
-DISCLAIMERS
-The views and opinions expressed in this publication are 
-those of the authors and do not necessarily reﬂ ect those 
-of the Department of the Environment and Heritage or 
-the Minister for the Environment and Heritage.
-While reasonable efforts have been made to ensure 
-that the contents of this publication are factually correct, 
-the Commonwealth does not accept responsibility for 
-the accuracy or completeness of the contents, and 
-shall not be liabl
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -3442,43 +2975,14 @@ ENTRY_START
 relative_path: Research/archive/furure_farming_in_spain.pdf
 extension: .pdf
 excerpt:
-OECD Agriculture and/uni00A0Food Policy Reviews
-Policies for/uni00A0the/uni00A0Future 
-of/uni00A0Farming and/uni00A0Food in/uni00A0Spain
-Policies for/uni00A0the/uni00A0Future of/uni00A0Farming and/uni00A0Food in/uni00A0Spain OECD Agriculture and/uni00A0Food Policy Reviews
-
-OECD Agriculture and Food Policy Reviews
-Policies for
- the Future 
-of Farming and Food in Spain
-
-This document, as well as any data and map included herein, are without prejudice to the status of or sovereignty over
-any territory,
- to the delimitation of international frontiers and boundaries and to the name of any territory, city or area.
-The statistical data for Israel are supplied by and under the responsibility of the relevant Israeli authorities. The use of
-such data by the OECD is without prejudice to the status of
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
 relative_path: Research/archive/sustainability-scenarios_3-1.pdf
 extension: .pdf
 excerpt:
-Sustainability 
-scenarios 
-Contents: 
- 
-What is sustainability? 
-What are scenarios? 
-Background: The 2050 predictions 
- 
-Our scenarios: 
-1. Solar energy 
- 
-2. Ecological x Economical 
- 
-3. Sustainability points as involvement 
- 
-4. Sustainable cities, sustainable homes
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -3507,22 +3011,7 @@ ENTRY_START
 relative_path: Research/blue_carbon/Africa_Blue_Carbon_Stakeholder_Brief.pdf
 extension: .pdf
 excerpt:
-Africa Blue Carbon Initiative
-Mangrove Restoration, Climate Resilience & Biodiversity Conservation
-150,000 hectares  7 African nations  USD 1 billion in climate finance
-Led by the African Union Commission in partnership with Green United Development (GUD)
-The Opportunity
-Africa's mangrove belt holds some of the planet's highest carbon density (800 Mg C/ha), yet has degraded at
-alarming pace. The Africa Blue Carbon Initiative, led by the African Union Commission and Green United
-Development, locks away massive carbon volumes, delivers coastal protection to vulnerable communities,
-restores critical fisheries, and opens major new revenue streams through emerging blue carbon markets.
-Carbon Density
-800 Mg C/ha
-5–10x terrestrial forests
-Wave Protection
-13–66%
-per 100m mangrove belt
-Fisheries 
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -3569,24 +3058,7 @@ ENTRY_START
 relative_path: Research/blue_carbon/Michael Mainelli African Blue Carbon.pdf
 extension: .pdf
 excerpt:
-de: Michael Mainelli <michael_mainelli@zyen.com> 
-para: "Sarah Jones (sarah.jones175@gmail.com)" <sarah.jones175@gmail.com>
-Cc: Janine Campling <janine.campling@globalgud.com>,
-Hendrik Hetzel <hendrik.hetzel@globalgud.com>
-fecha: 8 abr 2026, 11:52
-asunto: Africa Blue Carbon Initiative
-enviado por: zyen.com
-firmado por: ZyenLtd.onmicrosoft.com
-Sarah,
-Introducing you to Janine regarding her attached proposal.
-Africa Blue Carbon Initiative
-Mangrove Restoration, Climate Resilience & Biodiversity Conservation
-150,000 hectares • 7 African nations • USD 1 billion in climate finance
- www.globalgud.com
-https://www.globalgud.com/great-green-wall
- You’ll see when reading this that the Sahel and Green Green Wall feature, and I thought you and she 
-might share connections and ideas.
-With all best wishe
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -3748,6 +3220,32 @@ It is **strictly separated** from the physical **supply chain** layer.
 
 - **Do not** add value-chain metrics (USD, margins, pricing) into any supply-chain CSVs, notebooks, or dashboards.
 - **Do not** infe
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/CAMBRIDGE_SEMANTICS_THOLONIC_ANALYSIS.md
+extension: .md
+excerpt:
+# Cambridge Semantics and the Tholonic Framework: Research and Structural Analysis
+
+**Date:** May 2026
+**Classification:** Research / Modeling
+**Status:** Structural analysis. Sections 1-9 are analytical. Section 10 reports confirmed implementation status as of May 2026. Items described as speculative in the original draft have been updated to reflect what has since been implemented in the Cognee-based knowledge engine.
+
+---
+
+## Overview
+
+This document develops a single argument in three parts.
+
+**Part I (Sections 1-3)** establishes the structural alignment. Cambridge Semantics spent two decades engineering knowledge graphs and discovered empirically that robust systems require a stable, self-describing synthesis of constraints and data flows. Section 1 reconstructs that engineering histor
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/CAMBRIDGE_SEMANTICS_THOLONIC_ANALYSIS.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -4136,77 +3634,1055 @@ ENTRY_START
 relative_path: Research/modeling/TVF_Research_Agenda.pdf
 extension: .pdf
 excerpt:
-True Value Framework (TVF) Research Agenda
-Responding to (THE REPORT)
-SNJ 03042026 to consider with JWM during April 2026
-Link
-FIRST CUSTOMER
-TVF 2016 (Input data from individual companies and regional sustainable development projects 
-compared to sector commodity BaU for resource flows and towards meeting the SDG indicators and 
-relative to national unit GDP. No supply chain phase balance quantitative analysis beyond market flow 
-and pricing – value chain).
-First customer: 2018 Group of Founders and Endorsers of Serious Shea SARL (Burkina Faso) @ 
-EURO 1.4 Million financed by ADB; World Bank; BF Government; SS 
-Founders.
-Second Customer: 2023 Mirova Sustainable Investment Fund through Serious Shea Senegal
-TVF 2026 (Entire supply chain phase analysis with JWM structural balancing engine wh
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/modeling/TVF_vs_Consulting_Paradigm_Analysis.md
+extension: .md
+excerpt:
+# TVF/Tholonic Model vs. Consulting Frameworks: A Paradigm Comparison
+
+**Date:** 2026-05-05
+
+---
+
+## What Existing Consulting Frameworks Actually Do
+
+KPMG, McKinsey, BCG, and similar firms use frameworks that are fundamentally:
+
+- **Taxonomic**: They categorize what already exists (SWOT, Porter's Five Forces, Balanced Scorecard, PESTLE)
+- **Heuristic**: Built from empirical observation and practitioner consensus, not first principles
+- **Narrative-driven**: Conclusions are defended with data selected to support them, not derived from the data
+- **Layer-conflating**: Financial, operational, and strategic dimensions are routinely mixed without formal separation
+- **Static snapshots**: Most deliverables are point-in-time assessments, not dynamic models
+
+They are also extraordinarily good at w
 ENTRY_END
 
 ENTRY_START
 relative_path: Research/modeling/TVPCI_GOLD_WORKED_EXAMPLE.html
 extension: .html
 excerpt:
-TVPCI — Gold Supply Chain Worked Example
+OPAQUE (extraction returned empty)
+ENTRY_END
 
-← TVPCI Specification
+ENTRY_START
+relative_path: Research/modeling/test.wav
+extension: .wav
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
 
-TrueValue Analytics · TVPCI Worked Example
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants.md
+extension: .md
+excerpt:
+# Emergence of Classical Constants from a Minimal Recursive Triadic Framework
 
-Gold Supply Chain
-TVPCI — Step by Step
+**Author:** Jeffrey W. Milton, Clarity Coalition
 
-Geological prospecting → COMEX-registered bullion · Phases 0–7
+**Date:** 2026
 
-Commodity
- Gold
+**Proposed arXiv subjects:** math.CA; math.NT (secondary: math.CO)
 
-Phases
- 8 (P0–P7)
+---
 
-Period
- 2024 Annual (illustrative)
+## Abstract
 
-Data
- Synthetic — educational
+Five classical mathematical constants (the Leibniz limit $\pi/4$, the golden ratio $\varphi$, Euler's number $e$, $\sqrt{2}$, and $\ln 2$) emerge as limits of a single family of three-variable recurrences on a triple $(N, D, C)$ with functionally distinct roles: a *negotiation* state that is iteratively refined, a *definition/limitation* parameter that bounds, and a *contribution/integration* parameter that accumulates. These roles are irreducible to fewer than three even when two positions share the same numerical seed value.
 
-TVPCI
- v1.1
+Each branch of the family is specif
+ENTRY_END
 
-Contents
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci.md
+extension: .md
+excerpt:
+# Phase-Resolved Transparency Classification in Commodity Supply Chains: A Structural Triadic Scoring Framework (TVPCI)
 
-Overview and Approach
+**Author:** Jeffrey W. Milton, Independent Researcher
 
-Phase Inputs: D, C, B, S, N
+**Date:** 2026
 
-Phase Boundary Coherence (φ-scores)
+**Provisional arXiv subjects:** econ.GN; q-fin.EC (secondary: cs.SY)
 
-Chain-Level Aggregates
+---
 
-TVPCI Composite Score
+## Abstract
 
-Opacity Correction
+Opacity in commodity supply chains is commonly described in narrative or intent-based terms. This paper proposes a structural alternative: transparency is a property of *observable evidence attached to each phase of a chain*, and can be scored by a phase-resolved framework with three functionally distinct roles. We formalize the **Transparency via Phase-resolved Classification and Indexing (TVPCI)** framework, in which each phase $p \in \{0,\ldots,P\}$ of a commodity chain hosts three non-negative observables: a **
+ENTRY_END
 
-Result and Interpretation
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework.md
+extension: .md
+excerpt:
+# A Minimal Recursive Triadic Framework for Self-Similar Hierarchical Systems
 
-What This Means in Practice
+**Author:** Jeffrey W. Milton, Clarity Coalition
 
-1
- Overview and Approach
+**Date:** 2026
 
- This document applies every formula from the
- TVPCI specification
- to the gold supply chain — from geological prospecting to exchange-registered bullion.
- The goal is to demonstrate exactly what the index measures, how it 
+**Proposed arXiv subjects:** nlin.AO; math.DS (secondary: cs.SY)
+
+---
+
+## Abstract
+
+We argue that the minimum non-trivial structure capable of sustained recursive self-organization is a three-role partition with a single emergent state and two functionally distinct auxiliary variables. Starting from a binary state space $\{0, 1\}$ and the requirement that any interaction involve at least one bit of state difference, we show that the smallest non-degenerate simplex (the triangle) induces exactly three directed roles: a *negotiation* variable $N$ that carries the running emergent state, a *definition/limitation* variable $D$ that bounds, and a *cont
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance.md
+extension: .md
+excerpt:
+# Game-Theoretic Framing of the Triadic Balance Condition
+
+**Author:** Jeffrey W. Milton, Clarity Coalition
+
+**Date:** 2026
+
+**Provisional arXiv subjects:** math.OC; cs.GT (secondary: math.DS)
+
+---
+
+## Abstract
+
+The tholonic triad assigns three functionally distinct roles (Negotiation $N$, Definition $D$, and Contribution $C$) to a three-variable recurrence whose branches converge to classical constants: $\pi/4$, $\varphi$, $e$, $\sqrt{2}$, and $\ln 2$. We recast this system as a two-player alternating-move game in which $D$ and $C$ act as strategic agents whose opposing objectives (constraining versus accumulating) generate a dynamical trajectory for the payoff state $N$. The triadic balance condition is identified as the equilibrium reached when the marginal contributions of $D$ and $C$ 
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection.md
+extension: .md
+excerpt:
+# A tholonic perspective on twistor geometry: structural parallels and mutual enrichment
+
+**Jeffrey W. Milton, Clarity Coalition**
+
+## Abstract
+
+This paper explores structural correspondences between the tholonic model (a triadic recursive framework that simultaneously generates five classical mathematical constants ($\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$) from a single family of recurrences) and the twistor model of Roger Penrose, which recasts four-dimensional space-time physics in terms of complex projective geometry, holomorphic bundles, and non-local incidence relations. The subject is speculative; the paper does not assert provable connections between the two frameworks. Instead, it identifies analogies in their treatment of minimal irreducible structures, convergence to invari
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/6_qualitative-nature-integers-triadic-roles.md
+extension: .md
+excerpt:
+# The Qualitative Nature of One, Two, and Three: Structural Role Assignment in Minimal Recursive Systems
+
+**Author:** Jeffrey W. Milton, Independent Researcher
+
+**Date:** 2026
+
+**Provisional arXiv subjects:** math.HO; math.LO (secondary: cs.LO; q-bio.NC)
+
+---
+
+## Abstract
+
+The tholonic framework assigns three functionally distinct roles to the variables of minimal recursive systems: a unity state $N$ (negotiation), a bounding parameter $D$ (definition/limitation), and an integrating parameter $C$ (contribution). Prior work in this series establishes that exactly three such roles are structurally necessary (paper 3) and that they recur across recurrences generating classical constants (paper 1), supply-chain transparency scoring (paper 2), game-theoretic equilibria (paper 4), and twistor ge
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/7_cambridge-semantics-tholonic-framework.md
+extension: .md
+excerpt:
+# Engineering Toward N: Cambridge Semantics as Empirical Validation of the Tholonic N-D-C Framework
+
+**Author:** Jeffrey W. Milton, Independent Researcher
+
+**Date:** 2026
+
+**Provisional arXiv subjects:** cs.AI; cs.DB (secondary: cs.LO; math.HO)
+
+---
+
+## Abstract
+
+The tholonic framework models any coherent system as a recursive triadic structure in which a stable emergent state $N$ (negotiation) arises from the balance of a bounding parameter $D$ (definition) and an integrating parameter $C$ (contribution). Prior papers in this series establish the mathematical grounding of this framework in prime recursion (paper 1), apply it to supply chain transparency scoring (paper 2), prove the structural necessity of exactly three roles (paper 3), and examine its game-theoretic and geometric extensio
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/markdown-only.mdc
+extension: .mdc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.bbl
+extension: .bbl
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.blg
+extension: .blg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\graphicspath{{../}}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{listings}
+\usepackage{xcolor}
+\lstset{language=Python,basicstyle=\ttfamily\footnotesize,
+ keywordstyle=\color{blue!80!black},commentstyle=\color{gray},
+ stringstyle=\color{orange!80!black},showstringspaces=false,breaklines=true,
+ frame=single,numbers=left,numberstyle=\tiny\color{gray},captionpos=b}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{conjecture}[theore
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.toc
+extension: .toc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/1_recursive-tholonic-five-constants/refs.bib
+extension: .bib
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.bbl
+extension: .bbl
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.bib
+extension: .bib
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.blg
+extension: .blg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\graphicspath{{../}}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+\newtheorem{observation}[remark]{Observation}
+
+\title{Phase-Resolved Transparency Classification in Commodity Supply Chains:\\
+ \large A Structural Triadic Scoring Framework (TVPCI)}
+\author{Jeffrey W. Milton\\\\[4pt]\small Clarity Coalition}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Opacity in commodity supply chains is commonly described in narrative or intent-based terms.
+This p
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.toc
+extension: .toc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.bbl
+extension: .bbl
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.bib
+extension: .bib
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.blg
+extension: .blg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\graphicspath{{../}}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{observation}[theorem]{Observation}
+
+\title{A Minimal Recursive Triadic Framework for\\Self-Similar Hierarchical Systems}
+\author{Jeffrey W. Milton\\\\[4pt
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.toc
+extension: .toc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.bbl
+extension: .bbl
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.bib
+extension: .bib
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.blg
+extension: .blg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{definition}[theorem]{Definition}
+\theoremstyle{remark}
+\newtheorem{remark}[theorem]{Remark}
+
+\title{Game-Theoretic Framing of the Triadic Balance Condition}
+\author{Jeffrey W.\ Milton\\[4pt]\small Clarity Coalition}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+The tholonic triad assigns three functionally 
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.toc
+extension: .toc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.bbl
+extension: .bbl
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.bib
+extension: .bib
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.blg
+extension: .blg
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs, array}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage[numbers,sort&compress]{natbib}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\title{A Tholonic Perspective on Twistor Geometry:\\
+ \large Structural Parallels and Mutual Enrichment}
+\author{Jeffrey W. Milton\\\\[4pt]\small Clarity Coalition}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+This paper explores structural correspondences between the tholonic model (a triadic
+recursive framework that simultaneously generates five classical mathematical constants
+$\pi/4$, $\varphi$, $e$, $\sqrt{2}$, and $\ln 2$ from a single family of recurrences)
+and the twi
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.toc
+extension: .toc
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\providecommand{\tightlist}{%
+ \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\title{The Qualitative Nature of One, Two, and Three:\\
+\large Structural Role Assignment in Minimal Recursive Systems}
+\author{Jeffrey W. Milton\\[4pt]\small Independent Research
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.aux
+extension: .aux
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.log
+extension: .log
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.out
+extension: .out
+excerpt:
+OPAQUE (unrecognized format; manual review)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.tex
+extension: .tex
+excerpt:
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\providecommand{\tightlist}{%
+ \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\title{Engineering Toward $N$: Cambridge Semantics as Empirical Validation\\
+{\large of the Tholonic N-D-C Framework}}
+\author{Jeffrey W. Milton\\[4pt]\small Independent Researche
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/1_convergence-comparison.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/1_perfect-squares.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/1_pi4-convergence.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/1_swap-symmetry.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/1_tholonic-triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/1_traversal-classes.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/2_balance-metric-B.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/2_gold-phase-ladder.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/2_ndc-operational-map.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/2_sensitivity-surface.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/2_synthetic-transparency-by-phase.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/2_worked-example.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/3_binary-to-triad.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/3_minimum-simplex.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/3_self-similar-nesting.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/figures/3_three-roles.png
+extension: .png
+excerpt:
+OPAQUE (image or binary; no text extracted)
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/latex/2_supply-chain-transparency-tvpci.tex
+extension: .tex
+excerpt:
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+ 11pt,
+ letterpaper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+ \usepackage[T1]{fontenc}
+ \usepackage[utf8]{inputenc}
+ \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+ \usepackage{unicode-math} % this also loads fontspec
+ \defaultfontfeatures{Scale=MatchLowercase}
+ \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+ % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfF
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/latex/6_qualitative-nature-integers-triadic-roles.tex
+extension: .tex
+excerpt:
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+ 11pt,
+ letterpaper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+ \usepackage[T1]{fontenc}
+ \usepackage[utf8]{inputenc}
+ \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+ \usepackage{unicode-math} % this also loads fontspec
+ \defaultfontfeatures{Scale=MatchLowercase}
+ \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+ % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfF
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/latex/README.md
+extension: .md
+excerpt:
+# LaTeX exports (Pandoc)
+
+These `.tex` files were generated from Markdown with [Pandoc](https://pandoc.org/). Source files:
+
+| LaTeX | Source |
+|-------|--------|
+| `2_supply-chain-transparency-tvpci.tex` | `../2_supply-chain-transparency-tvpci.md` |
+| `6_qualitative-nature-integers-triadic-roles.tex` | `../6_qualitative-nature-integers-triadic-roles.md` (canonical `.tex` lives in the paper folder, see below) |
+| `tvpci-r_recycling_integration_plan.tex` | `.cursor/plans/tvpci-r_recycling_integration_950c5fee.plan.md` (repo copy may differ; regenerate from your plan file if needed) |
+
+## Paper 6 canonical path
+
+The qualitative-integers paper is maintained as:
+
+- `../6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.tex`
+
+Regenerate it with Pandoc plus `
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/latex/_paper6_pandoc_raw.tex
+extension: .tex
+excerpt:
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+ 11pt,
+ letterpaper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+ \usepackage[T1]{fontenc}
+ \usepackage[utf8]{inputenc}
+ \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+ \usepackage{unicode-math} % this also loads fontspec
+ \defaultfontfeatures{Scale=MatchLowercase}
+ \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+ % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquo
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/latex/_paper7_pandoc_raw.tex
+extension: .tex
+excerpt:
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+ 11pt,
+ letterpaper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+ \usepackage[T1]{fontenc}
+ \usepackage[utf8]{inputenc}
+ \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+ \usepackage{unicode-math} % this also loads fontspec
+ \defaultfontfeatures{Scale=MatchLowercase}
+ \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+ % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquo
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/papers/latex/tvpci-r_recycling_integration_plan.tex
+extension: .tex
+excerpt:
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+ 11pt,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+ \usepackage[T1]{fontenc}
+ \usepackage[utf8]{inputenc}
+ \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+ \usepackage{unicode-math} % this also loads fontspec
+ \defaultfontfeatures{Scale=MatchLowercase}
+ \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+ % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{micr
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/quantum/PhotoSynthSara.md
+extension: .md
+excerpt:
+# PhotoSynth / Sara: Quantum Coherence, Twistors, and N-D-C
+
+*Note from associate, received 2026-05-07. Rewording and analysis below. This document also draws on photosynthesis research from the book **Tholonia** (Jeffrey W. Milton), specifically Chapter 8: "Cycles," lines 116-150, which covers visible light as the ordered center of the EM spectrum, the green-light rejection strategy in plants, and the principle that stability trumps efficiency in natural systems.*
+
+---
+
+## Original message (lightly corrected for readability)
+
+From what I recall of quantum biology (I will confirm tonight): photons entering the chlorophyll complex do not travel a single fixed pathway. Instead they exist in a quantum superposition across multiple routes simultaneously, which allows the system to locate the m
+ENTRY_END
+
+ENTRY_START
+relative_path: Research/quantum/PhotoSynthSara.pdf
+extension: .pdf
+excerpt:
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START
@@ -4258,75 +4734,7 @@ ENTRY_START
 relative_path: sites/Clarity – Bridging the Gaps_ Between Investment and Global Resource Trends.html
 extension: .html
 excerpt:
-Clarity – Bridging the Gaps: Between Investment and Global Resource Trends
-
- 
-
-Skip to content
-
-BUILDING MAINSTREAM FINANCE AND INVESTMENT INNOVATIONS INTO LARGE SCALE DEVELOPMENT PROJECTS TO CREATE TRUE VALUE
-
-CLARITY’S SUSTAINABLE DESIGN MODELS WORLDWIDE PROVIDE THE ENABLING ENVIRONMENTS
-
- 
-
-Overview
-Sustainability-Linked Debt
-True Value Futures
- 
-2016-02-23
-
- 
-
- admin 
-
- 
-
-Reduced interest loans for education, health, and infrastructure could help meet climate targets.
-
-Read more
-
-Overview
- 
-2026-02-10
-
- 
-
- admin 
-
- 
-
-There is no excerpt because this is a protected post.
-
-Read more
-
-Clarity Project
-True Value Futures
- 
-2026-02-10
-
- 
-
- admin 
-
- 
-
-There is no excerpt because this is a protected post.
-
-Read more
-
-Clarity Project
-True Value Futures
- 
-2023-02-10
-
- 
-
- admin 
-
- 
-
-Clarity’s Tru
+OPAQUE (extraction returned empty)
 ENTRY_END
 
 ENTRY_START

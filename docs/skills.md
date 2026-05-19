@@ -40,6 +40,82 @@ To add a new skill, describe the workflow to the agent and ask it to "create a s
 
 ---
 
+### `research-paper-latex`
+
+**File:** `.cursor/skills/research-paper-latex/SKILL.md`
+
+**What it does:** Converts a companion research paper from Markdown (`docnav/Research/papers/<n>_<slug>.md`) to the **same artifact pattern as papers 1 to 5**: canonical LaTeX under `<n>_<slug>/` plus a **built PDF** and usual LaTeX sidecars. Flow is **Pandoc** to raw standalone `.tex`, **`scripts/pandoc_paper_postprocess.py`** for arXiv-style layout and headings, then **`scripts/research_paper_pdflatex.sh`** (two-pass **`pdflatex`**). Without **`pdflatex`** on PATH, only **`.tex`** exists until the user installs TeX and runs the script.
+
+**When to use it:** Whenever you ask to turn paper 6 (or a similar numbered paper) from `.md` into **`.tex` and `.pdf`**, rebuild paper 6 end to end, or match the repo’s existing paper folder layout.
+
+**Files it touches:**
+- `docnav/Research/papers/latex/_paper6_pandoc_raw.tex` (optional intermediate; can be deleted after a successful run)
+- `docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.tex` (primary LaTeX for paper 6)
+- `docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf` (after `research_paper_pdflatex.sh`)
+- `scripts/pandoc_paper_postprocess.py` (shared postprocessor; extend only with care)
+- `scripts/research_paper_pdflatex.sh` (two-pass compile helper)
+
+---
+
+### `content-sync`
+
+**File:** `.cursor/skills/content-sync/SKILL.md`
+
+**What it does:** Propagates a model or data change across every affected document, dashboard, and generated artifact in the project, then appends a summary entry to `docs/content-sync-log.json`. Covers four change types:
+
+- **`tvpci`**: TVPCI formula or parameter update. Works through five tiers: (1) primary TVPCI spec docs in `docnav/Repos/intra/TVPCI/`, (2) research papers 2, 3, 5, 6 (MD + TEX + PDF rebuild), (3) AI notes regenerated from updated Tier 1 source, (4) per-project PDI status files (methodology changes only), (5) `scenarios.json`, gold supply chain dashboard HTML, and regenerated frontend JSON.
+- **`new-chain`**: New supply chain project added (gold scope for now). Creates the frontend scaffold, updates `site-index.json` and `index.html` via the `add-homepage-section` skill, and adds the chain to paper 2.
+- **`engine`**: Simulation engine edit (`phi_engine.py`, `ln2_engine.py`, etc.). Checks affected dashboard HTML and generate scripts, then regenerates JSON.
+- **`schema`**: CSV schema field added, renamed, or removed. Updates generate scripts and the `frontend/project/gold/data/schema/` copies, then regenerates JSON.
+
+After executing the work list, the skill appends one entry to `docs/content-sync-log.json` with: date, change type, one-line description, list of files updated, PDFs rebuilt, whether JSON was regenerated, and optional notes.
+
+**Work list source:** The skill now reads `docs/document-registry.yaml` first and filters by tag to build the work list dynamically. The hardcoded impact tables in the skill are a fallback only.
+
+**When to use it:** Any time you say "TVPCI changed," "I added a new supply chain," "the algorithm was updated," "sync the documents," or "what needs updating after this change?"
+
+**Files it touches (varies by change type):**
+- `docnav/Research/papers/2_supply-chain-transparency-tvpci.md` and `.tex`
+- `docnav/Research/papers/4_game-theoretic-triadic-balance/...tex`
+- `docnav/Research/papers/5_tholonic-twistor-connection/...tex`
+- `docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/...tex`
+- `frontend/project/gold/supply_chain/scenarios.json`
+- `frontend/project/gold/supply_chain/index.html`, `dashboard.html`
+- `src/api/generate_frontend_data.py`, `src/api/generate_ui_data.py`
+- `site-index.json`, `index.html` (new-chain only, via `add-homepage-section`)
+- `docs/content-sync-log.json` (always, audit trail)
+
+**Key constraint:** Never rewrite whole documents during a sync. Scope every edit to the changed value or section only. The `.md` source is edited before `.tex`; do not re-run Pandoc for parameter-only changes.
+
+---
+
+## Supporting reference files
+
+### `docs/user-manual.md`
+
+Two-part user manual. **Part A (Analyst Guide):** scoring model in plain terms, the five constants and what they measure, TVPCI-R and B_chain interpretation, platform navigation (homepage, gold hub, dashboard, what-if simulator, recycling analysis page), reading a PDI, score interpretation tables. **Part B (Developer Guide):** adding a new commodity project end-to-end, propagating a model change, adding a research paper, data pipeline commands, updating the PDI instrument, and key constraints to observe.
+
+### `docs/document-registry.yaml`
+
+Central curated registry of all official and support documents for TVF projects. Each entry carries:
+
+- `doc_id` (unique slug), `path` (repo-relative), `title`, `type` (official | support | schema | frontend | archive)
+- `status` (active | draft | deprecated | provisional)
+- `domain` and `tags` (used by content-sync to filter the work list)
+- `last_updated`, `description`, `related_docs`, `derived` (paths of TEX/PDF/JSON built from this source)
+
+AI notes under `docnav/.ai_notes/` are self-describing and not listed here. Add a new entry to the registry whenever a new official or support document is created. Update `last_updated` and `tags` as part of any content-sync run.
+
+### `docs/roadmap.md`
+
+Platform-wide planning tracker. Organized into six sections: PDI status per project (with a conformance check for PDI v1.1), TVPCI scoring pipeline tasks, research paper status, frontend and site structure tasks, infrastructure and tooling, and documentation. Also contains a "Completed milestones" block for recent history. Update this file whenever a task is finished or a new task is identified. It is not a change log (use `docs/content-sync-log.json` for that).
+
+### `docs/content-sync-log.json`
+
+Append-only audit trail written by the `content-sync` skill after every sync run. Each entry records: date, change type, one-line description, files updated, PDFs rebuilt, whether JSON was regenerated, and notes for the next reader.
+
+---
+
 ## Cursor rules (always-applied and context-triggered)
 
 Rules live in `.cursor/rules/`. Rules with `alwaysApply: true` are active in every chat. Rules with `globs` activate when you open or edit a matching file.

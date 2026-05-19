@@ -274,12 +274,12 @@
         var CX=170,CY=170,R=128;
         var fill=hexRgba(PRIMARY,0.18), stroke=hexRgba(PRIMARY,0.85);
         var s='<svg viewBox="-40 -28 380 392" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
-        s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.70)+'" fill="#fff3ec" fill-rule="evenodd"/>';
-        s+='<path d="'+pentPath(CX,CY,R,0.70)+' '+pentPath(CX,CY,R,0.40)+'" fill="#ffccaa" fill-rule="evenodd"/>';
-        s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="#a03e00"/>';
+        s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.618)+'" fill="#fff3ec" fill-rule="evenodd"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.618)+' '+pentPath(CX,CY,R,0.382)+'" fill="#ffccbc" fill-rule="evenodd"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="#b71c1c"/>';
         [0.25,0.50,0.75,1.0].forEach(function(sc){s+='<path d="'+pentPath(CX,CY,R,sc)+'" fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="'+(sc===1?1.5:0.7)+'"/>';});
-        s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" stroke-dasharray="3,3"/>';
-        s+='<path d="'+pentPath(CX,CY,R,0.70)+'" fill="none" stroke="rgba(160,62,0,0.4)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="none" stroke="rgba(239,83,80,0.55)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.618)+'" fill="none" stroke="rgba(62,207,142,0.50)" stroke-width="1.2" stroke-dasharray="3,3"/>';
         AXES.forEach(function(a){var tip=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+tip.x.toFixed(2)+'" y2="'+tip.y.toFixed(2)+'" stroke="rgba(0,0,0,0.14)" stroke-width="1"/>';});
         var dp=dataPath(CX,CY,R,scores);
         if(dp) s+='<path d="'+dp+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5" stroke-linejoin="round"/>';
@@ -295,8 +295,8 @@
         AXES.forEach(function(a){
           var v=scores[a.key]||0;
           var isZero=v===0;
-          var zone=v>=70?'Coherent':v>=40?'Stressed':isZero?'Unmeasured':'Failure';
-          var zoneC=v>=70?'#2e7d32':v>=40?'#e65100':isZero?'#999':'#c62828';
+          var zone=v>=61.8?'Coherent':v>=38.2?'Failure':isZero?'Unmeasured':'Breakdown';
+          var zoneC=v>=61.8?'#3ecf8e':v>=38.2?'#ef5350':isZero?'#6e7681':'#b71c1c';
           html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;">';
           html+='<div style="width:34px;height:34px;border-radius:6px;background:'+MODEL_BG[a.key]+';color:'+MODEL_C[a.key]+';font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+a.label+'</div>';
           html+='<div style="flex:1;">';
@@ -318,7 +318,7 @@
         var strongest=measured.length?measured.reduce(function(best,a){return scores[a.key]>scores[best.key]?a:best;}):null;
         var weakest=measured.length?measured.reduce(function(w,a){return scores[a.key]<scores[w.key]?a:w;}):null;
 
-        if(avg>=70) lines.push('<strong>Overall shape:</strong> The lighter chain sits predominantly in the outer coherent zone. The pentagon is broad and moderately symmetric, reflecting a well-optimized industrial system that has been compressed to the physical and economic limit.');
+        if(avg>=61.8) lines.push('<strong>Overall shape:</strong> The lighter chain sits predominantly in the coherent zone (above the 61.8% φ⁻¹ sustainability floor). The pentagon is broad and moderately symmetric, reflecting a well-optimized industrial system that has been compressed to the physical and economic limit.');
         else lines.push('<strong>Overall shape:</strong> Mixed coherence. The chain shows significant stress in one or more dimensions.');
 
         var pi=scores.pi||0,phi=scores.phi||0,sq=scores.sqrt2||0,ln=scores.ln2||0,e=scores.e||0;

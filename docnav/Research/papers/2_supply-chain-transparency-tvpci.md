@@ -32,7 +32,7 @@ TVPCI addresses a gap that each of these approaches leaves open: a *phase-ordere
 
 **Organization precedes prediction.** TVPCI does not claim to predict enforcement outcomes, commodity prices, or fraud rates. It claims to organize available evidence into a consistent ordinal structure. Predictive applications require additional labeled data and pre-registered calibration; those are explicitly deferred.
 
-The triadic roles $(N, D, C)$ used here share labels with the tholonic mathematical framework developed in a companion manuscript (Milton, companion paper). In that paper, $(N, D, C)$ are positions in convergent recurrences; here they are *classes of indicators* attached to a phase node. The analogy is deliberate: the functional distinction between a running state, a bounding constraint, and an integrating corroboration is preserved across domains. No mathematical results from the companion paper are imported here.
+The triadic roles $(N, D, C)$ used here share labels with the tholonic mathematical framework developed in a companion manuscript (Milton, companion paper). In that paper, $(N, D, C)$ are positions in convergent recurrences; here they are *classes of indicators* attached to a phase node. The connection is not merely an analogy. Within the tholonic framework, the integers 1, 2, 3 carry inherent qualitative meaning: one as unity (the negotiation state), two as the first differentiation (definition/limitation), and three as the first recursive closure (contribution). The supply-chain roles are instantiations of these qualitative properties in an observable domain. No mathematical results from the companion paper are imported into the scoring rules here, but the role assignments follow from the same structural argument.
 
 The remainder of the paper is organized as follows. Section 2 surveys related work. Section 3 develops the phase-resolved ontology for gold (eight phases, schematic). Section 4 defines the triadic observables and provides a specimen indicator dictionary. Section 5 introduces the balance functional, transition penalties, and aggregate index. Section 6 presents a worked numerical example. Section 7 presents the synthetic two-commodity comparison and the sensitivity analysis. Section 8 discusses limitations. Section 9 concludes.
 
@@ -68,11 +68,19 @@ Holarchy (Koestler), viable systems models (Beer), and autopoiesis theory (Matur
 
 ### 3.1 Rationale for phase indexing
 
-A supply chain is a directed acyclic graph of custody handoffs, physical transformations, and documentation events. For scoring purposes, we coarsen this graph into a linear sequence of **phases** by grouping nodes with similar observability characteristics and regulatory exposure. This coarsening trades resolution for tractability; the appropriate phase count is commodity-specific.
+Within its defined custody horizon, a supply chain is a directed acyclic graph (DAG) of custody handoffs, physical transformations, and documentation events: material flows in one direction and no phase feeds back into an earlier phase within the same chain instance. This DAG assumption is a modeling boundary choice, not an ontological claim. At the system level, the chain is embedded in larger cycles: mined gold returns as recycled metal, financial instruments re-enter physical delivery, and ecological costs feed back through regulation and resource depletion. These outer cycles are real and structurally important (see Section 3.3 and Section 8.7), but treating them as part of the primary chain would make phase-resolved scoring intractable. The DAG scope is therefore declared explicitly as a design constraint, not assumed as a property of commodity chains in general.
+
+For scoring purposes, we coarsen this graph into a linear sequence of **phases** by grouping nodes with similar observability characteristics and regulatory exposure. This coarsening trades resolution for tractability; the appropriate phase count is commodity-specific.
 
 For gold, eight phases capture the dominant transformation events (extraction, aggregation, refining, fabrication, wholesale, distribution, listed storage, exchange delivery) while remaining fine enough to localize opacity. A chain that aggregates phases 0 through 3 into a single opaque "upstream" block would lose the ability to distinguish a transparent refinery from an opaque aggregator.
 
-Phase skipping must be handled explicitly. If phase $p$ is not observed (the chain moves directly from $p-1$ to $p+1$), the model assigns a **skip penalty**: $N_p$ inherits $N_{p-1}$ deflated by a skip factor $\sigma \in (0,1)$, and $D_p = C_p = 0$, producing $B_p = 100 \exp(-2 \cdot \max(D_{p-1},C_{p-1})/(\max(D_{p-1},C_{p-1})+\varepsilon))$, which collapses to near-zero when the prior phase had unequal observables. This is conservative by design: missing a phase is treated as maximum imbalance.
+Phase skipping must be handled explicitly. If phase $p$ is not observed (the chain moves directly from $p-1$ to $p+1$), the model assigns a **skip penalty** as follows. First, $N_p$ inherits $N_{p-1}$ deflated by a position-weighted skip factor:
+
+$$\sigma_p = \frac{P - p}{P},$$
+
+where $P$ is the total number of phases (e.g., $P = 7$ for an eight-phase gold chain, with phases indexed $0$ through $7$). This gives $\sigma_0 = 1$ (no prior phase to inherit from; the formula does not apply at phase 0), $\sigma_1 = 6/7$, $\sigma_2 = 5/7$, down to $\sigma_7 = 0$ at the exchange anchor. The rationale is foundational asymmetry: skipping an early phase undermines all downstream claims, while skipping a late phase leaves earlier evidence intact. A fixed $\sigma$ (e.g., $0.5$) would treat a missing extraction phase identically to a missing vault-transfer phase, which understates the damage done by early gaps.
+
+Second, $D_p = C_p = 0$ for the skipped phase (no bounding evidence, no corroboration, because nothing was documented). Because plugging $D_p = C_p = 0$ into the standard $B_p$ formula yields $B_p = 100$ (a spurious perfect-balance score), the skip case instead assigns $B_p = 0$ directly, representing maximum evidence failure. This is conservative by design: a gap in documentation is treated as maximum imbalance, not as perfect balance between two zeros.
 
 ### 3.2 Gold phase ladder
 
@@ -89,11 +97,19 @@ Phase skipping must be handled explicitly. If phase $p$ is not observed (the cha
 
 Phase 7 is the **high-observability anchor**: exchange rules impose delivery specifications (assay, bar markings, vault identity), and open-interest and warehouse-stock data are publicly reported. This makes phase 7 the most constrained node in the model, not the most trustworthy in an absolute sense, but the most *measurable*.
 
+Viewed through an information-theoretic lens, the phase ladder corresponds to an entropy gradient. Phase 0 (extraction) is the highest-entropy node: material origins are uncertain, documentation is sparse, and counterparty identity is often informal. Phase 7 is the lowest-entropy node: serial numbers are registered, vault locations are named, and delivery specifications are publicly auditable. The TVPCI scoring structure mirrors this gradient. High-entropy phases are hardest to score because indicators are few and noisy; low-entropy phases are easiest because the exchange infrastructure generates verifiable records by default. This entropy framing provides a principled basis for the downstream phase-weighting discussed in Section 5.4: phases closer to the low-entropy anchor carry higher weight not merely by convention but because their observables are more reliable and less subject to measurement noise.
+
 ![Figure 1. Phase-resolved gold ladder with synthetic observability profile.](figures/2_gold-phase-ladder.png)
 
 ### 3.3 Generalization
 
 The same machinery applies to any commodity once a phase table and indicator dictionary are fixed. Agricultural oil chains (shea, palm, soy) would replace metallurgical steps with harvest, processing, and blending phases. Battery minerals (cobalt, lithium) would follow analogous extraction-to-cell steps. The phase count need not be eight; chains with fewer distinct custody events may use four or five phases without loss of scoring validity.
+
+**Recycling and ecological flows as a parallel chain.** The primary chain (phases 0 through $P$) models material flowing forward through custody. But every phase also generates outputs other than product: tailings, process water, emissions, packaging waste, and heat. These waste streams are not captured by $(N_p, D_p, C_p)$ because those observables describe the forward custody claim. They require a **parallel recycling observable** $R_p \in [0,100]$ defined at each phase, measuring how observable and managed the waste or ecological cost of phase $p$ is.
+
+$R_p$ is scored analogously to the primary observables: a negotiation component (what waste is declared), a definition component (what fraction of waste is measured or bounded by policy), and a contribution component (what independent evidence corroborates the waste claim). The weight assigned to $R_p$ in any aggregate recycling index should be proportional to the waste intensity of phase $p$, not its position. Phase 0 (extraction) typically has the highest waste intensity (tailings volume, water use, habitat disturbance) and therefore the highest $R$-weight; phase 4 (vault transfer) has near-zero waste intensity and correspondingly low $R$-weight.
+
+The recycling index is thus not a ninth phase appended to the linear chain, nor a phase zero that would catastrophically penalize the entire model if the recycling infrastructure fails. It is a parallel structure with its own weighting profile, decoupled from the primary chain's phase-position logic but linked to the same phase labels. Re-integration of recycled material back into phase 0 (secondary gold entering the mining-gate equivalent) represents the closure of the larger ecological cycle: a return from high-entropy dispersed waste to low-entropy reusable input, mirroring the entropy gradient of the primary chain in reverse temporal order. A full tholonic treatment of this cycle is deferred to future work.
 
 ---
 
@@ -102,6 +118,8 @@ The same machinery applies to any commodity once a phase table and indicator dic
 ### 4.1 Role definitions
 
 At each phase $p$, three non-negative scalars $(N_p, D_p, C_p) \in [0,100]^3$ are computed by applying a **scoring rule** to raw indicator measurements. The indicators are organized by triadic role.
+
+The assignment of roles to the integers 1, 2, 3 is not arbitrary. Within the tholonic framework (Milton, companion paper), the integers carry inherent qualitative meaning rooted in their structural properties. One (unity) is the state of negotiation: a single, undifferentiated position whose coherence can be evaluated but which has not yet been bounded by anything external to itself. Two (the first duality) is the state of definition: something can only be defined in relation to something else, and the first act of differentiation establishes a limit. Three (the first closure) is the state of contribution: as established in Lemma 4.2 of the companion paper, three is the minimum number of elements required to close a recursive structure, making the third role the one that integrates and corroborates. The supply-chain roles $N$, $D$, $C$ are instantiations of these qualitative properties in an observable domain. We do not merely claim an analogy; we claim that the functional behavior of each evidence class (a unity state, a boundary constraint, an integrating corroboration) follows from what the corresponding integer inherently is.
 
 **$N_p$ (negotiation / state).** The declared chain position at phase $p$, evaluated for internal consistency. Indicators assess whether the custody claim entering phase $p$ is coherent: mass balance residuals (gold mass in versus gold mass out), time-delta anomalies versus published benchmark lead times, identifier continuity (lot, serial, assay certificate chain), and document-count completeness. A clean $N_p$ means the claim of "X kg of gold at purity Y entered this phase as lot Z" is internally supported.
 
@@ -140,6 +158,56 @@ These scoring rules are **additive up to a cap of 100**; the cap enforces the $[
 
 **Remark on role distinctness.** Two indicators may share numerical values in a particular chain; what the triadic structure requires is that *families* of indicators remain functionally distinct. An operator can maximize $D_p$ without any improvement to $C_p$ (by writing stronger policies with no independent verification), and vice versa. The balance functional in Section 5 penalizes this one-sided optimization.
 
+### 4.3 Specimen recycling and waste-stream dictionary (gold, all phases)
+
+The parallel recycling observable $R_p$ (introduced in Section 3.3) requires its own indicator dictionary, structured identically to the primary one but targeting waste outputs rather than custody claims. Each phase generates characteristic waste streams; the $R_p$ score measures how observable and managed those streams are. As with the primary dictionary, the three roles apply: a negotiation component (what waste is declared), a definition component (what fraction is measured or bounded by policy), and a contribution component (what independent evidence corroborates the waste claim).
+
+The table below lists the dominant waste streams by phase for the synthetic gold chain. Waste-intensity weight $\omega_p$ is a schematic relative value normalized so that $\sum_p \omega_p = 1$; actual calibration requires commodity-specific data (e.g., kilograms of waste per troy ounce of gold produced at each phase).
+
+| Phase | Schematic label | Primary waste streams | Schematic $\omega_p$ |
+|------:|-----------------|----------------------|---------------------:|
+| 0 | Extraction / mine gate | Tailings (crushed rock, process slurry), cyanide or mercury process water (artisanal), acid mine drainage, habitat clearance, particulate dust | 0.45 |
+| 1 | Aggregation / broker | Transport fuel emissions (diesel), packaging of consolidated lots, informal waste from handling sites | 0.15 |
+| 2 | Refining / assay | Smelting slag, acid effluent (nitric, sulfuric), furnace off-gases (SO$_2$, NOx), spent cupels, cooling water discharge | 0.25 |
+| 3 | Fabrication | Metal shavings and filings (recoverable), cutting lubricants, electroplating rinse water, energy (heat loss) | 0.08 |
+| 4 | Wholesale / vault chain | Climate-control energy (HVAC), minimal packaging waste; negligible direct material waste | 0.02 |
+| 5 | Distribution | Transport fuel emissions, security-packaging waste | 0.03 |
+| 6 | Listed storage | Climate-control energy; near-zero material waste | 0.01 |
+| 7 | Exchange anchor | Documentation and data systems energy only; essentially zero physical waste | 0.01 |
+
+**Specimen $R_p$ indicators (phases 0 and 2):**
+
+**Phase 0 (Extraction):**
+
+| Indicator | Role | Scoring rule (schematic) |
+|-----------|------|--------------------------|
+| Tailings volume declared per lot (tonnes) | $N$ | +20 if declared with mass balance |
+| Cyanide / mercury use declared and quantified | $N$ | +15 if quantified, +8 if acknowledged only |
+| Written tailings management plan with containment specs | $D$ | +20 if substantive and site-specific |
+| Acid mine drainage monitoring policy with discharge limits | $D$ | +15 if limits are independently set |
+| Independent assay of tailings effluent (external lab) | $C$ | +25 if from accredited lab within 12 months |
+| Satellite or aerial imagery confirming containment footprint | $C$ | +20 if available and dated |
+| Community health monitoring report on file | $C$ | +10 if documented by third party |
+
+**Phase 2 (Refining):**
+
+| Indicator | Role | Scoring rule (schematic) |
+|-----------|------|--------------------------|
+| Slag volume and composition declared per smelting run | $N$ | +20 if declared with run records |
+| SO$_2$ and NOx emissions declared per furnace cycle | $N$ | +15 if quantified against regulatory limit |
+| Stack emissions permit with enforceable limits | $D$ | +25 if from national regulator |
+| Acid effluent discharge policy with treatment specifications | $D$ | +15 if substantive |
+| Third-party stack emissions test (external lab) | $C$ | +30 if accredited, within 24 months |
+| Effluent discharge cross-checked to environmental registry | $C$ | +20 if matched |
+
+**Remark on waste-stream role distinctness.** The same triadic logic applies as in the primary chain. A refinery can write a detailed emissions policy ($D$ high) with no independent stack test ($C$ low), producing a low $R_2$ balance score. Conversely, an independent test result exists with no governing policy ($C$ high, $D$ low), which is also a low-balance outcome: measurement without governance. The balance functional $B(D_p^R, C_p^R)$ applied to the recycling observables penalizes both failure modes identically to the primary chain.
+
+**Aggregate recycling index.** A recycling sub-score $\mathrm{TVPCI}_R$ is computed from the $R_p$ observables using the same formula structure as the primary index (Section 5.4), with $\omega_p$ replacing $w_p$:
+
+$$\mathrm{TVPCI}_R = \sum_{p=0}^{P} \omega_p \cdot B^R_p \cdot g(N^R_p),$$
+
+where $B^R_p$ and $N^R_p$ are the balance and state scores computed from the recycling indicator dictionary. No transition penalty is applied to the recycling index because waste streams at adjacent phases are not causally linked in the same way as custody claims. The waste-intensity weights $\omega_p$ must be pre-registered alongside the primary phase weights $w_p$.
+
 ---
 
 ## 5. Scoring model
@@ -154,11 +222,31 @@ where $\varepsilon > 0$ is a small regularization constant (e.g., $10^{-6}$). Pr
 
 The exponential form was chosen over linear alternatives for two reasons. First, it guarantees $B_p > 0$ for any finite observables, avoiding sharp boundaries that would be sensitive to measurement noise near the boundary. Second, the exponential penalty grows more steeply than linear for moderate imbalance ($|D-C|/\max(D,C) > 0.3$) while forgiving small imbalances near the diagonal.
 
+**Signed imbalance diagnostic.** The absolute value $|D_p - C_p|$ is symmetric: a phase with $D_p = 80, C_p = 20$ (strong policy claims, weak independent corroboration) scores identically to one with $D_p = 20, C_p = 80$ (deep corroboration, no audit scope). These are structurally distinct failure modes that suggest different remediation paths. To preserve directional information without altering the aggregate formula, we define a companion **signed imbalance indicator**
+
+$$\Delta_p = D_p - C_p,$$
+
+where $\Delta_p > 0$ indicates over-definition relative to corroboration (bureaucratic opacity: policy exists but is unverified) and $\Delta_p < 0$ indicates over-corroboration relative to definition (measurement without governance: evidence exists but audit scope is undefined). $\Delta_p$ is reported alongside $B_p$ as a diagnostic; it does not enter the aggregate index but is a required output of any TVPCI computation.
+
+**Skip-phase correction.** When a phase is skipped (Section 3.1), setting $D_p = C_p = 0$ and applying the standard formula yields $B_p = 100\exp(0) = 100$, a spurious perfect-balance result. The correct assignment for a skipped phase is $B_p = 0$ (maximum evidence failure), applied directly rather than through the formula. This exception must be documented in any implementation.
+
 ![Figure 2. Balance surface $B(D,C)$ with $D=C$ diagonal.](figures/2_balance-metric-B.png)
 
 ### 5.2 State quality mapping
 
-Let $g: [0,100] \rightarrow [0,100]$ map the phase state $N_p$ to a quality score. In the simplest case $g(x) = x$ (the identity). More complex mappings (e.g., threshold-sigmoid functions that treat $N_p < 30$ as near-zero quality) are admissible and must be declared in advance. For the synthetic examples in this paper, we use $g = \mathrm{id}$.
+Let $g: [0,100] \rightarrow [0,100]$ denote a function that takes the phase state score $N_p$ (a number in the closed interval from 0 to 100) and returns a quality-adjusted version of it (also in the interval 0 to 100). The notation $[0,100]$ denotes a continuous range of real numbers, not a list of integers. The arrow $\rightarrow$ means "maps to." In the simplest case $g(x) = x$, called the identity function (written $g = \mathrm{id}$): whatever $N_p$ is, it passes through unchanged.
+
+More complex mappings are admissible. A **threshold-sigmoid mapping** is an S-shaped curve that is nearly flat (near zero) below a threshold, rises steeply through the threshold, and is nearly linear above it. This treats low $N_p$ values as effectively zero contribution: a phase state so weakly supported that it should not improve the aggregate score at all. The threshold must be chosen on principled, non-arbitrary grounds and declared before any chain data are observed.
+
+A natural candidate derived from the framework's own constants is:
+
+$$\theta = \frac{100}{\phi^2} = 100\left(1 - \frac{1}{\phi}\right) \approx 38.2,$$
+
+where $\phi = (1+\sqrt{5})/2 \approx 1.618$ is the golden ratio. This places the threshold at the golden-ratio complement of the scale, consistent with the phi-based recursion structure in the companion paper. An alternative is $\theta = 100/e \approx 36.8$, using the natural exponential base. Both are mathematically grounded; the choice between them must be pre-registered. An arbitrary threshold such as 30 is not acceptable under the pre-registration requirement.
+
+**Pre-registration mechanism.** "Declared in advance" means the indicator dictionary, all parameter values ($\beta$, $\gamma$, $\alpha$, $w_p$, the choice of $g$ and its threshold), and the skip-phase conventions must be committed to a versioned, timestamped record before any chain data are ingested. Appropriate venues include a public pre-registration repository (e.g., OSF.io or an institutional equivalent) or a signed, version-controlled document in the project audit trail. Any subsequent change to these parameters constitutes a model revision and must be logged as such, with the original pre-registration preserved.
+
+For the synthetic examples in this paper, we use $g = \mathrm{id}$ (the identity mapping) throughout.
 
 ### 5.3 Transition penalty
 
@@ -249,6 +337,36 @@ Several indicators in the specimen dictionary refer to legal concepts (origin, c
 
 Mapping TVPCI to OECD five-step guidance is feasible. OECD step 2 (risk identification) corresponds to identifying phases and indicators with low $N_p$ or low $B_p$; OECD step 3 (strategy response) corresponds to the action required to raise specific phase scores; OECD step 4 (third-party audit) corresponds to independently verifying the $C_p$ indicators. A companion compliance note mapping TVPCI fields to OECD steps and GRI 308/414 disclosures would be a useful practical deliverable.
 
+### 8.7 Recycling, ecological flows, and the outer cycle
+
+TVPCI scores the forward custody chain within a defined boundary. It does not score the ecological and recycling flows that the primary chain generates. This is an intentional limitation (tractability of the DAG assumption, Section 3.1), but it becomes a structural gap when the framework is used to assess long-run sustainability rather than short-run custody integrity.
+
+The parallel recycling observable $R_p$ introduced in Section 3.3 addresses this gap at the phase level. Three implementation considerations govern the phase-level design; a fourth addresses the chain-level integration.
+
+**First: waste-intensity weighting.** The weight $\omega_p$ assigned to $R_p$ in the recycling aggregate should track waste intensity, not phase position. Mining (phase 1 in the gold ladder) typically generates orders-of-magnitude more waste per unit of product than vault storage (phase 6); a uniform phase weight would misrepresent the ecological profile. Each commodity requires a waste-intensity vector (e.g., tonnes of tailings per troy ounce for gold) to calibrate $\omega_p$ weights, analogous to how the position-weight $\sigma_p$ must be pre-specified for the primary index. Provisional waste-intensity weights for the eight-phase gold ladder, derived from Foran et al. (2005) and Newmont (2024), are tabulated in Section 4.3. Weights must sum to unity and must be pre-registered alongside indicator dictionaries to prevent post-hoc adjustment.
+
+**Second: entropy reversal.** The entropy framing (Section 3.2) applies in reverse to the recycling chain. Primary production moves from high entropy (disordered extraction, phase 0) to low entropy (exchange-registered bar, phase 7). The recycling chain begins where primary production ends: the waste outputs of each phase (tailings, cyanide solution, acid pickling liquors, transport emissions) are the starting state, in high entropy. Recycling is functioning well when these dispersed streams are measured, collected, treated, and either rendered inert or re-entered into the primary chain as secondary feedstock at a lower entropy state. A TVPCI-R score tracks how visible and verified this entropy-reduction process is, with high $R_p$ scores indicating that waste streams are measured, bounded, and independently corroborated at each phase.
+
+**Third: chain re-entry.** Secondary material re-entering the chain at phase 0 (or its equivalent) closes the larger cycle that the DAG assumption excludes. When this re-entry is documented, it should be scored as a new chain instance beginning at phase 0 with an explicit "source: secondary" flag in the $N_0$ indicators, rather than treated as a continuation of the primary instance. This preserves the DAG property of the primary chain while making the recycling linkage explicit and auditable.
+
+**Fourth: chain-level balance and tholonic role assignment.** Once both the primary index TVPCI and the recycling index TVPCI-R are computed, they can be integrated into a single chain-level balance score $B_{\text{chain}}$ using the same exponential balance functional defined in Section 5.1:
+
+$$B_{\text{chain}} = 100 \cdot \exp\!\left(-2 \cdot \frac{|\text{TVPCI} - \text{TVPCI-R}|}{\max(\text{TVPCI},\,\text{TVPCI-R})}\right)$$
+
+This formula measures how equitably the supply chain accounts for what it takes (custody transparency, TVPCI) against what it gives back (ecological return transparency, TVPCI-R). A high $B_{\text{chain}}$ indicates that the chain is as accountable for its ecological outputs as it is for its forward custody claims. A low $B_{\text{chain}}$ indicates that custody transparency substantially exceeds ecological return accountability, the expected condition for most extractive commodity chains under current voluntary disclosure norms.
+
+The signed imbalance diagnostic $\Delta_{\text{chain}} = \text{TVPCI} - \text{TVPCI-R}$ provides the directional interpretation: positive values indicate the chain is over-defining (extracting and claiming custody more transparently than it returns ecological accountability); negative values would indicate the unusual and theoretically self-undermining case of higher ecological visibility than custody visibility.
+
+**Tholonic role assignment.** Within the tholonic framework (Section 4.1), the three-role structure at the chain level is assigned as follows:
+
+- TVPCI plays role **D** (Definition): it is the bounding, forward-defining structure, setting what was extracted, claimed, and transferred in custody.
+- TVPCI-R plays role **C** (Contribution): it is the integrating return flow, contributing the waste and secondary material back to the parent holon (the ecosystem, commons, and economic substrate from which the chain draws its inputs).
+- $B_{\text{chain}}$ is the emergent **N** (Negotiation): the negotiated state of the child holon with its parent, arising from the balance between the two directed flows.
+
+This assignment is not arbitrary. The recycling chain is by nature antithetical and asymmetric to the primary chain: where the primary chain extracts, refines, and claims, the recycling chain collects, disperses accountability, and returns. The primary chain defines what was taken; the recycling chain contributes acknowledgment of what must be given back. $B_{\text{chain}}$ then captures whether the two flows are in the proportion that a sustainable child holon would maintain with its parent system. The phi-derived zone thresholds (Section 5.2) apply directly to $B_{\text{chain}}$: $B_{\text{chain}} \geq 80$ indicates a coherent holon-parent relationship; values below $\approx 38.2$ indicate systemic breakdown in which the chain's ecological debt is effectively invisible.
+
+For the provisional gold benchmark (TVPCI = 82.5, TVPCI-R = 49.9), $B_{\text{chain}} \approx 45.4$, placing the current gold supply chain in the Failure zone. This is the expected structural condition given the maturity of voluntary ecological disclosure relative to custody documentation standards. The regulatory scenario modeled in the accompanying data (mandatory ecological disclosure) narrows $\Delta_{\text{chain}}$ from 32.6 to 16.0, lifting $B_{\text{chain}}$ to approximately 55.7 (Stressed zone). Full tholonic coherence of the child holon with its parent system would require $B_{\text{chain}} \geq 61.8$ (Stressed-to-Coherent transition) or $\geq 80$ (full Coherence), conditions that appear achievable only under comprehensive mandatory reporting with independent third-party verification at every phase.
+
 ---
 
 ## 9. Conclusion
@@ -271,7 +389,7 @@ Immediate next steps for an empirical deployment are: (i) fix indicator dictiona
 6. LBMA. *Responsible Sourcing: Guidance on Good Delivery Rules.* London Bullion Market Association, 2021.
 7. Koestler, A. *The Ghost in the Machine.* Hutchinson, 1967. (Holarchy concept.)
 8. Beer, S. *Brain of the Firm.* Allen Lane, 1972. (Viable systems model.)
-9. Milton, J. W. *Emergence of Classical Constants from a Minimal Recursive Triadic Framework.* Companion manuscript, this repository, 2026. (Mathematical $(N,D,C)$ ladder; roles analogous but not identical to the supply-chain observables here.)
+9. Milton, J. W. *Emergence of Classical Constants from a Minimal Recursive Triadic Framework.* Companion manuscript, this repository, 2026. (Mathematical $(N,D,C)$ ladder; supply-chain roles are instantiations of the same qualitative properties of 1, 2, 3 established there, not mere analogies. No mathematical results from that paper are imported into the scoring rules here.)
 
 ---
 
@@ -283,6 +401,7 @@ Immediate next steps for an empirical deployment are: (i) fix indicator dictiona
 | `figures/2_balance-metric-B.png` | Balance surface $B(D,C)$ with $D=C$ diagonal | 5.1 |
 | `figures/2_synthetic-transparency-by-phase.png` | Two-commodity synthetic profiles with 90% CI | 7.1 |
 | `figures/2_ndc-operational-map.png` | Conceptual $(N,D,C)$ indicator-role map | 4.1 |
+| `figures/2_recycling-waste-intensity.png` | Per-phase waste-stream intensity profile ($\omega_p$) for gold | 4.3 |
 | `figures/2_sensitivity-surface.png` | TVPCI sensitivity over $(\beta, \gamma)$ | 7.2 |
 | `figures/2_worked-example.png` | Three-phase step-by-step computation | 6 |
 

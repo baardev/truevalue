@@ -609,7 +609,7 @@ The Tholonic model provides the formal foundation.  The five constants provide t
 
 Gold is an ideal first case study for the TVPCI for three reasons.
 
-First, the chain is long and well-defined.  From geological occurrence to exchange-registered bullion, the gold supply chain spans eight discrete phases (Phases 0 through 7), each with a distinct physical transformation, a distinct custodian, and a distinct transparency profile.  The chain is old enough that its structure is well-documented, and its terminal end (exchange registration and delivery) is among the most transparent of any commodity market in the world.  This document also introduces Phase 8 (Recycling and Recovery) as a structural addition to the established phase map.  Phase 8 is not part of the primary forward chain; it is the cycle-closure mechanism that the $\frac{\pi}{4}$ equilibrium dimension measures.  It is flagged here as a departure from the eight-phase map used elsewhere in this project and should be treated as a proposed extension pending review against that map.
+First, the chain is long and well-defined.  From geological occurrence to exchange-registered bullion, the gold supply chain spans eight discrete phases (Phases 0 through 7), each with a distinct physical transformation, a distinct custodian, and a distinct transparency profile.  The chain is old enough that its structure is well-documented, and its terminal end (exchange registration and delivery) is among the most transparent of any commodity market in the world.  Alongside the forward chain, this document adopts the parallel recycling observable $R_p$: a per-phase ecological return score defined at each of the eight primary phases, measuring how observable and managed the waste outputs of each phase are.  $R_p$ is not a Phase 8 appended to the chain; it is a parallel structure decoupled from the primary phase-position logic, aggregated as $\text{TVPCI-R}$, and combined with the primary TVPCI into the chain-level balance score $B_\text{chain}$.  This is how the $\frac{\pi}{4}$ equilibrium dimension is operationalized in the full model.  The parallel-chain architecture is specified in full in Paper 2 (Section 3.3 and Section 8.7).
 
 Second, the chain exhibits the full range of structural conditions the TVPCI is designed to measure.  The upstream phases (geological prospecting, mine extraction, ore processing) are physically intensive, capital-constrained, and relatively opaque in their internal economics.  The midstream phases (doré production, refining, bar casting) are technically specified but commercially private.  The logistics and vaulting phase is explicitly low-transparency by structural necessity.  The exchange end is publicly reported.  A chain that moves from high opacity to high transparency across its length is precisely where the TVPCI diagnostic is most useful.
 
@@ -617,7 +617,7 @@ Third, the value amplification across the gold chain is extreme.  The ratio of t
 
 ---
 
-### 4.2 The Phase Map and Phase 8 Extension
+### 4.2 The Phase Map and Recycling Parallel Structure
 
 The gold supply chain maps directly onto the Tholonic structure.  Each phase is a tholon with a D-state (constraints), a C-state (outputs and flow), and an N-state (the operational entity that sustains the phase).
 
@@ -631,9 +631,12 @@ The gold supply chain maps directly onto the Tholonic structure.  Each phase is 
 | 5 | Bar Casting & Assay | Certified bar stock | Bar specification, assay precision | Good Delivery bars, serial record | Medium–High |
 | 6 | Logistics & Vaulting | Secured custody | Vault capacity, security protocols | Bullion in custody, transport | Low |
 | 7 | Exchange Registration | Registered warrant | Exchange standards, delivery protocol | Deliverable bullion, market warrant | High |
-| 8 | Recycling & Recovery | Recovery operation | Collection standards, purity requirements | Refined gold (re-enters Phase 4 or 5) | Medium |
 
-Phase 8 is structurally distinct and is a proposed addition to the established eight-phase map (Phases 0–7) used throughout this project.  It is the only phase that re-enters the chain rather than advancing it.  In Tholonic terms it is a recursion that closes the cycle, feeding recovered gold back to Phase 4 or 5 and completing the circuit that $\frac{\pi}{4}$ measures.  Its inclusion here is specific to the TVPCI equilibrium analysis; its status within the broader project phase map should be confirmed separately.
+The primary chain ends at Phase 7.  Recycling and ecological return are not modeled as a Phase 8 in the forward sequence.  Instead, each of the eight phases carries a parallel recycling observable $R_p \in [0, 100]$, scored by its own N/D/C indicator dictionary targeting waste outputs and ecological flows rather than custody claims.  $R_p$ is weighted by waste intensity $\omega_p$ (highest at Phase 1 mine extraction, near-zero at Phase 6 vaulting) and aggregated into $\text{TVPCI-R}$.  The chain-level balance score $B_\text{chain}$ is then:
+
+$$B_\text{chain} = 100 \cdot \exp\!\left(-2 \cdot \frac{|\text{TVPCI} - \text{TVPCI-R}|}{\max(\text{TVPCI},\,\text{TVPCI-R})}\right)$$
+
+In Tholonic terms: TVPCI plays role D (the bounding forward-defining structure), TVPCI-R plays role C (the integrating ecological return), and $B_\text{chain}$ is the emergent N: the negotiated state of the supply chain holon with the parent system it inhabits.  This parallel structure closes the cycle that $\frac{\pi}{4}$ measures without disrupting the DAG property of the primary chain.  Full indicator dictionaries and provisional $\omega_p$ weights for gold are in Paper 2, Sections 4.3 and 8.7.
 
 ---
 

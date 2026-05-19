@@ -1,187 +1,305 @@
 ---
 doc_id: readme
-title: Gold Supply Chain Intelligence Platform
+title: TrueValue Analytics Platform
 type: readme
 status: active
-domain: gold_supply_chain
-layer: supply_chain
-projects:
-  []
-tags:
-  - gold
-  - gold_supply_chain
-  - supply_chain
-related_docs:
-  []
-key_claims:
-  []
+domain: meta
+tags: [meta, site-management, gold, supply-chain, tvpci, pdi]
+related_docs: [skills_ref, document_registry, content_sync_log, tree]
+key_claims: []
 ---
 
-# Gold Supply Chain Intelligence Platform
+# TrueValue Analytics Platform
 
-## Project Objective
+Site management reference. Start here when you need to know how the repo is
+organized, what a config or management file does, how to add content, or how
+to propagate a model change across documents.
 
-Build a quantitative, phase-resolved, physically grounded model of the gold supply chain, from geological origin to exchange-registered bullion, before introducing price, value, or financial interpretation.
+---
 
-## End Goal
+## Project overview
 
-An interactive web-based simulation platform that allows users to:
-- Manipulate variables across the supply chain
-- Observe transient effects and cascading impacts
-- Analyze profit/loss implications
-- Evaluate sustainability constraints
-- Reconcile physical flow against exchange inventories
+A quantitative, phase-resolved, physically grounded platform for commodity
+supply chain analysis. The primary instance is gold (Phases 0 through 7,
+geological origin to COMEX-registered bullion). Parallel instances include
+shea, blue carbon, Danube basin, and others.
 
-## Architecture
+The Tholonic N-D-C framework and five irreducible constants ($\varphi$, $e$,
+$\ln 2$, $\sqrt 2$, $\pi/4$) provide the scoring backbone via the TVPCI
+(Transparency via Phase-resolved Classification and Indexing) model. The
+recycling chain is modeled as a parallel inverse chain (TVPCI-R) rather than
+a Phase 8 appended to the forward chain.
 
-```
-tv/
-├── data/              # Raw and processed data
-├── schema/            # CSV schema definitions (single source of truth)
-├── src/
-│   ├── ingest/       # Data collection and ingestion tools
-│   ├── analysis/     # Jupyter notebooks for phase analysis
-│   ├── validation/   # Data quality and reconciliation
-│   └── api/          # Future: API layer for frontend
-└── frontend/         # Web UI, static assets, and documentation (`frontend/docs/`)
-```
+Three analytical layers: supply chain (physical flow, custody, constraints)
+then value chain (margins, pricing) then financial abstraction (paper claims).
+Do not mix layers prematurely.
 
-## Operating Principles
+---
 
-### 1. Separation of Concerns
-- **Supply chain** (physical flow, custody, constraints) ← We start here
-- **Value chain** (profit, pricing, margins) ← Added after physical mapping
-- **Financial abstraction** (paper claims, leverage) ← Final layer
-
-### 2. Phase-Based Modeling
-All analysis maps to discrete supply chain phases (0-7):
-- Phase 0: Geological Occurrence & Prospecting
-- Phase 1: Mine Extraction
-- Phase 2: Ore Processing & Concentration
-- Phase 3: Doré Production
-- Phase 4: Refining
-- Phase 5: Bar Casting & Assay
-- Phase 6: Logistics & Vaulting
-- Phase 7: Exchange Registration
-
-Each phase defined by:
-- Physical state of gold
-- Transformation or custody change
-- Measurable output
-
-### 3. Data-First Discipline
-- No speculation - mark opacity explicitly
-- Every dataset includes: phase_id, unit, source_type
-- Missing data is a finding, not a failure
-
-### 4. Transparency Classification
-Every phase tagged:
-- **High transparency**: Mine extraction, Exchange registration
-- **Medium transparency**: Doré production, Refining, Bar casting
-- **Low transparency**: Logistics & Vaulting (structural opacity)
-
-### 5. Custody Awareness
-Distinguish: ownership ≠ custody ≠ control
-
-### 6. Exchange Data as Anchor
-COMEX inventory = reconciliation target, not inference source
-
-### 7. Schema-First Development
-If it can't be tabulated, it doesn't exist.
-
-### 8. Deferred Interpretation
-Map the terrain before asking who benefits.
-
-### 9. Reproducibility
-Every claim traceable to: phase → dataset → source category
-
-## Data Collection Strategy
-
-### High Priority (Public Data)
-- Phase 7: COMEX daily inventories (anchor point)
-- Phase 1: Mine production by country/company
-- Phase 2: Recovery rates from technical filings
-
-### Medium Priority (Mixed Availability)
-- Phase 4: Refinery capacity and throughput
-- Phase 5: Bar specifications and standards
-- Phase 0: Geological reserves (NI 43-101, JORC)
-
-### Low Priority (Structural Opacity)
-- Phase 6: Vault flows (mark as OPAQUE)
-- Phase 3: Doré trade flows (aggregate only)
-
-## Getting Started
-
-### Prerequisites
-```bash
-python 3.11+
-jupyter
-pandas, numpy
-requests, beautifulsoup4 (for scraping)
-```
-
-### Initial Setup
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Initialize schema
-python src/ingest/init_schema.py
-
-# Run COMEX scraper
-python src/ingest/comex_scraper.py
-
-# Launch analysis notebook
-jupyter notebook src/analysis/
-```
-
-### Documentation wiki (MkDocs)
-The `frontend/docs/` folder is built as a searchable wiki. To serve it locally:
+## Quick start
 
 ```bash
+# Dev server (repo root = site root)
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+| URL | Page |
+|-----|------|
+| `http://localhost:8000/` | Homepage |
+| `http://localhost:8000/frontend/project/gold/index.html` | Gold hub |
+| `http://localhost:8000/frontend/project/gold/supply_chain/index.html` | Gold supply chain |
+| `http://localhost:8000/frontend/project/shea/index.html` | Shea hub |
+
+```bash
+# Regenerate frontend JSON after schema or code changes
+python3 src/api/generate_frontend_data.py
+python3 src/api/generate_ui_data.py
+
+# COMEX scrape (Phase 7 anchor)
+python3 src/ingest/comex_scraper.py
+
+# Health check
+python3 scripts/health_check.py
+
+# MkDocs wiki (optional)
 pip install -r requirements-docs.txt
 mkdocs serve -f scripts/mkdocs.yml
 ```
 
-Then open the URL MkDocs prints (port **8001** if you use `scripts/RUN_MKWIKI`). To build a static site: `mkdocs build -f scripts/mkdocs.yml` (output in `site/`).
+---
 
-### Static web server and AUBEB access control
+## Repo structure
 
-For public serving, put Nginx on `tvf.tholonia.com:80` and run the Python static
-server behind it on localhost:
+```
+tv/
+├── README.md                     ← this file (site management reference)
+├── index.html                    ← homepage (project grid + hub sections)
+├── site-index.json               ← data source for homepage rendering
+├── tree.md                       ← HTML page tree (all pages + nav links)
+│
+├── docs/                         ← all project documentation and management files
+│   ├── skills.md                 ← AI skills and rules reference (human-readable)
+│   ├── document-registry.yaml    ← curated registry of official/support documents
+│   ├── content-sync-log.json     ← audit trail of every content sync run
+│   └── notes.md                  ← operational notes (Cognee, tooling)
+│
+├── .cursor/
+│   ├── rules/                    ← AI rule files (.mdc); always-applied or glob-triggered
+│   └── skills/                   ← AI skill directories (each has a SKILL.md)
+├── .cursorrules                  ← master AI operating rules for this project
+│
+├── docnav/
+│   ├── Repos/intra/
+│   │   ├── TVPCI/                ← TVPCI specification documents (Tier 1 source of truth)
+│   │   └── PDI/                  ← Phase Discovery Instrument template + protocol + HTML form
+│   ├── Research/
+│   │   ├── papers/               ← numbered research papers (MD + TEX + PDF)
+│   │   └── modeling/             ← modeling and analysis documents
+│   └── .ai_notes/                ← AI-generated concept and document summary notes
+│
+├── frontend/
+│   ├── site-index.json           ← site-wide config: project grid + hub section data
+│   ├── homepage-layout.json      ← site-wide config: homepage category definitions
+│   ├── js/
+│   │   └── tv-hub.js             ← shared JavaScript reused across hub pages
+│   └── project/
+│       ├── shared/               ← shared code and test pages (not a real project)
+│       │   ├── phi_balance_radar.js
+│       │   └── model_engine_test.html
+│       │
+│       ├── gold/                 ← standard project layout (see below)
+│       ├── shea/
+│       ├── danube/               ← basin project: sub-projects one level deeper (see below)
+│       └── ...
+│
+│       │
+│       │   Standard project layout (gold, shea, lighter, water_*, etc.):
+│       │   <name>/
+│       │   ├── index.html            hub page (presentation)
+│       │   ├── supply_chain/         HTML analysis pages (presentation)
+│       │   ├── value_chain/          HTML analysis pages (presentation)
+│       │   └── data/
+│       │       ├── schema/           CSV schemas — source of truth for field definitions
+│       │       ├── processed/        generated JSON — output of pipeline scripts
+│       │       ├── PDI_*.yaml        PDI instances for this project
+│       │       └── *_SOURCE_NOTE.md  source documents and analyst notes
+│       │
+│       │   Basin sub-project layout (danube only, one level deeper):
+│       │   danube/
+│       │   ├── index.html
+│       │   ├── data/
+│       │   └── <chain_name>/         e.g. human_commercial_fishing, natural_reed_bed
+│       │       ├── supply_chain/
+│       │       ├── value_chain/
+│       │       └── data/
+│
+├── src/
+│   ├── api/                      ← data generation scripts (generate_frontend_data.py etc.)
+│   ├── simulation/               ← Tholonic engines: phi, ln2, sqrt2, e, pi, balance
+│   ├── ingest/                   ← data collection (comex_scraper.py, data_importer.py)
+│   └── analysis/                 ← Jupyter notebooks
+│
+├── schema/                       ← CSV schema definitions (project-level source of truth)
+├── scripts/                      ← build helpers (pdflatex, pandoc, serve.py, health_check.py)
+├── deploy/                       ← systemd service files and install script
+└── data/                         ← raw and processed data
+```
+
+---
+
+## Site management files
+
+### Config and AI tooling
+
+| File / Path | What it does |
+|-------------|--------------|
+| `.cursorrules` | Master AI operating rules: methodology, layer separation, schema-first, COMEX anchor, Tholonic N-D-C framework. Non-negotiable for every session. |
+| `.cursor/rules/*.mdc` | Individual AI rules. Some always-apply (punctuation, project workflow, skills maintenance). Others trigger on file globs (PDI files, frontend simulators, basin architecture). |
+| `.cursor/skills/*/SKILL.md` | AI skill playbooks. Each is a multi-step procedure the agent follows when triggered. See `docs/skills.md` for the full list. |
+
+### Document management files
+
+| File | What it does |
+|------|--------------|
+| `docs/document-registry.yaml` | Curated registry of all official and support documents. Each entry has a `doc_id`, `path`, `type`, `status`, `tags`, and `derived` list. Used by the `content-sync` skill to build work lists. **Add an entry here whenever a new official or support document is created.** |
+| `docs/content-sync-log.json` | Append-only audit trail. Every time the `content-sync` skill runs, it adds one entry: date, change type, files updated, PDFs rebuilt, notes. Never delete entries. |
+| `docs/skills.md` | Human-readable reference for every AI skill and rule. Updated automatically by the agent whenever a skill or rule is added, changed, or removed. |
+| `tree.md` | All HTML pages in the project organized by commodity hierarchy, with navigation link maps. Update when pages are added or renamed. |
+| `site-index.json` | Data source for the homepage. Lists all projects (for the project card grid) and hub sections (Papers, PDI, etc.). The `add-homepage-section` skill manages this file. |
+
+### TVPCI specification documents
+
+All live under `docnav/Repos/intra/TVPCI/`. These are the Tier 1 source of
+truth for the TVPCI model. Update these first when any TVPCI parameter,
+formula, or phase definition changes. Downstream documents (research papers,
+frontend HTML, generated JSON) are updated afterward via `content-sync`.
+
+| File | Role |
+|------|------|
+| `TVPCI_FOUNDATION.md` | Full first-principles derivation; canonical phase map; R_p parallel recycling structure |
+| `TVPCI_FOUNDATION_INTRO.md` | Accessible introduction; five-constant rationale; stakeholder questions |
+| `TVPCI_FOUNDATION_SIMPLE.md` | Simplified version for non-technical audiences |
+| `TVPCI_EXPLAINED_MATH.md` | Mathematical walkthrough of the five constants |
+| `TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX.md` | High-level overview; formula; synthetic benchmarks |
+
+### PDI instrument files
+
+All live under `docnav/Repos/intra/PDI/`. The PDI (Phase Discovery Instrument)
+maps any supply chain from first principles.
+
+| File | Role |
+|------|------|
+| `PDI_TEMPLATE.yaml` | Master template v1.1. Supports `chain_type: forward \| recycling \| ecosystem`. Copy this for every new PDI instance; never fill in the template itself. |
+| `PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md` | Narrative protocol document. Authoritative description of all four modules and every field. |
+| `PDI.html` | Interactive HTML form for PDI completion. Supports chain_type selector and recycling-specific fields. |
+| `PDI_WORKED_EXAMPLE_GOLD_SUPPLY_CHAIN.md` | Fully completed forward-chain example (gold, Phases 0-7). Reference for new instances. |
+
+Completed PDI instances live alongside their project data:
+`frontend/project/<name>/data/PDI_<material>_<date>.yaml`
+
+---
+
+## Content workflows
+
+### Add a new frontend page
+
+1. Create the HTML file in the appropriate `frontend/project/<name>/` location.
+2. Add it to `tree.md`.
+3. If it needs a homepage card or hub section, run the `add-homepage-section` skill.
+4. Add an entry to `docs/document-registry.yaml`.
+
+### Add a new official document
+
+1. Create the file.
+2. Add an entry to `docs/document-registry.yaml` with correct `type`, `status`, `tags`, and `derived` paths.
+3. If it is a research paper (MD source), use the `research-paper-latex` skill to generate the TEX and PDF.
+
+### Propagate a model change (TVPCI, algorithm, schema)
+
+Use the `content-sync` skill. It reads `docs/document-registry.yaml`, filters
+by the relevant tags, builds a work list, executes targeted edits in document
+tier order, and appends to `docs/content-sync-log.json`.
+
+Trigger phrase examples: "TVPCI phase 3 weight changed," "I added a new supply
+chain," "the phi engine was updated, sync the documents."
+
+### Update the PDI instrument
+
+When a new field is needed in any PDI instance, the `pdi-processing` rule
+requires syncing all three files in the same session:
+`PDI_TEMPLATE.yaml`, `PDI.html`, and
+`PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md`.
+
+---
+
+## Deployment
+
+### Development (local)
 
 ```bash
 python3 -m http.server 8000 --bind 127.0.0.1
 ```
 
-The AUBEB password gate is configured in `deploy/nginx-tv-aubeb.conf.template`.
-Install notes are in `deploy/README-aubeb-nginx.md`.
+Bind to `127.0.0.1` so that browsers cannot bypass any Nginx gate that may
+sit in front.
 
-## Development Rules
+### Production (systemd)
 
-### For AI Agents (Cursor)
-1. **Never mix layers prematurely** - No pricing during supply chain modeling
-2. **Everything must map to a phase_id** - Reject unstructured narratives
-3. **Quantitative only** - Metrics, units, time series, source attribution
-4. **Opacity is structural** - Never attribute to conspiracy
-5. **Schema first** - All insights must be representable in CSV/SQL
-6. **Work backwards from COMEX** - Highest transparency first
+```bash
+sudo bash deploy/install-service.sh
+```
 
-## Project Status
+This copies `deploy/tv-web.service` to `/etc/systemd/system/`, reloads
+the daemon, and enables and starts the `tv-web` unit. The service runs
+`scripts/serve.py` (HTTP on 8000, HTTPS on 8443, bound to `127.0.0.1`).
 
-**Current Phase**: Foundation & Data Collection
-- ✅ Conceptual framework defined
-- ✅ Schema design complete
-- 🔄 Infrastructure setup in progress
-- ⏳ Phase 7 (COMEX) data collection next
-- ⏳ Analysis framework pending
+Useful service commands:
 
-## License
+```bash
+systemctl status  tv-web
+journalctl -u tv-web -f
+systemctl restart tv-web
+systemctl stop    tv-web
+```
 
-[To be determined]
+### AUBEB password gate
 
-## Contact
+Put Nginx on `tvf.tholonia.com:80` in front of the Python server. Config
+template is in `deploy/nginx-tv-aubeb.conf.template`; install notes in
+`deploy/README-aubeb-nginx.md`.
 
-[To be determined]
+---
 
+## Operating principles
+
+1. **Layer separation.** Supply chain (physical) before value chain (margins)
+   before financial abstraction. Never mix layers in the same analysis.
+2. **Phase-based modeling.** Every metric maps to a phase_id. The gold primary
+   chain is Phases 0-7. The gold recycling chain (TVPCI-R) is a parallel
+   inverse chain documented in its own PDI instance, not a Phase 8.
+3. **Schema first.** If a claim cannot be tabulated in a CSV schema, it does
+   not exist for this project.
+4. **Data-first discipline.** Mark opacity explicitly. Missing data is a
+   structural finding, not a failure.
+5. **COMEX as anchor.** Phase 7 (exchange registration) is the highest-
+   transparency reference point. Work backwards from it.
+6. **Custody awareness.** Ownership, custody, and control are distinct.
+   Never conflate them.
+7. **Auditability.** Every claim must be traceable to: phase, metric, unit,
+   source, custodian.
+8. **Reproducibility.** Every document change is logged in
+   `docs/content-sync-log.json`. Every schema change propagates through
+   the generate scripts before frontend files are considered current.
+
+---
+
+## Dependencies
+
+```bash
+pip install -r requirements.txt          # core pipeline
+pip install -r requirements-docs.txt     # MkDocs wiki (optional)
+```
+
+Core: Python 3.11+, pandas, numpy, requests, beautifulsoup4.
+LaTeX (pdflatex): required to build research paper PDFs. Install
+`texlive-most` on Manjaro or equivalent on other distros.

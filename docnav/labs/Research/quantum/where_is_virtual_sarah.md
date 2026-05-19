@@ -1,3 +1,19 @@
+---
+title: "Where Is the Virtual Sarah?"
+keywords:
+  - where-is-virtual-sarah
+  - virtual-sarah
+  - mirror-reflection
+  - virtual-image
+  - tholonic-model
+  - virtual-tholon
+  - complex-numbers
+  - argand-plane
+  - imaginary-axis
+  - structural-dependence
+  - metaphor
+---
+
 # Where Is the Virtual Sarah?
 
 The question “Where is the virtual Sarah?” begins with a mirror. Sarah stands ten feet in front of a mirror, and her reflection appears to stand ten feet behind it. That reflected Sarah is not physically behind the wall, yet she is not meaningless either. She is a real consequence of the optical geometry. She is visible, structured, predictable, and perfectly constrained by Sarah’s position and the mirror’s surface. In this sense, the reflection is not unreal. It is dependent. It is a virtual Sarah.

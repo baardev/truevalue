@@ -1,4 +1,4 @@
-# AI prompt: generate `docnav_manifest.tsv` for DocNav / TiddlyWiki index
+# AI prompt: generate `docnav_manifest.tsv` for DocNav catalog
 
 This document describes the manifest schema and tagging rules for DocNav. The **canonical implementation** is `docnav_manifest_from_entries.py`: run that script after `entries_for_ai.txt` is regenerated so output stays consistent.
 
@@ -160,24 +160,6 @@ Use empty string if none apply.
 
 ---
 
-## Optional step 2: TiddlyWiki JSON
-
-After `docnav_manifest.tsv` exists, generate import JSON:
-
-```bash
-python3 scripts/docnav_manifest_to_tiddlywiki_json.py
-```
-
-Optional base URL for links:
-
-```bash
-DOCNAV_PUBLIC_BASE_URL=https://example.com/docnav/ python3 scripts/docnav_manifest_to_tiddlywiki_json.py
-```
-
-Default output: `docnav/docnav_tiddlers_import.json`.
-
----
-
 ## Routine automation (recommended)
 
 From repository root:
@@ -186,4 +168,4 @@ From repository root:
 sh docnav/REFRESH
 ```
 
-That regenerates `entries_for_ai.txt`, `docnav_manifest.tsv`, and `catalog.json`. Run `python3 scripts/docnav_manifest_to_tiddlywiki_json.py` separately when you need the TiddlyWiki bundle updated.
+That regenerates `entries_for_ai.txt`, `docnav_manifest.tsv`, and `catalog.json`.

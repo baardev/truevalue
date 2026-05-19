@@ -59,6 +59,7 @@
     .card-header.lc { background: linear-gradient(135deg, #3d2b00 0%, #b8860b 100%); }
     .card-header.vc { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     .card-header.gt { background: linear-gradient(135deg, #0b0e14 0%, #1a2535 100%); border-top: 3px solid #f0c040; }
+    .card-header.ec { background: linear-gradient(135deg, #0d2318 0%, #2d5a3d 100%); border-top: 3px solid #5cb87a; }
     .card-icon { font-size: 40px; margin-bottom: 10px; }
     .card-title { font-size: 22px; font-weight: 600; margin-bottom: 6px; }
     .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
@@ -79,6 +80,7 @@
     .btn.sc { background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%); }
     .btn.vc { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
     .btn.gt { background: linear-gradient(135deg, #0b0e14 0%, #1a2535 100%); border: 1px solid #f0c040; }
+    .btn.ec { background: linear-gradient(135deg, #0d2318 0%, #2d5a3d 100%); }
     .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
     .sub-links { margin-top: 12px; font-size: 13px; }
     .sub-links a { color: #2c3e50; font-weight: 600; text-decoration: none; margin-right: 12px; }
@@ -128,11 +130,13 @@
 <li>Environmental metrics (water, waste, energy)</li>
 <li>Entity selector (Newmont, Barrick, Royal Mint)</li>
 <li>What-If simulator with live recalculation</li>
+<li>TVPCI-R: phase-by-phase ecological return (provisional data)</li>
 </ul>
 <a class="btn sc" href="supply_chain/index.html">Open Supply Chain →</a>
 <div class="sub-links">
 <a href="supply_chain/dashboard.html">Dashboard</a>
 <a href="supply_chain/what_if_simulator.html">What-If</a>
+<a href="supply_chain/recycling_analysis.html">TVPCI-R</a>
 </div>
 </div>
 </div>
@@ -178,6 +182,26 @@
 </div>
 </div>
 </div>
+<div class="card">
+<div class="card-header ec">
+<div class="card-icon">♻️</div>
+<div class="card-title">Ecological Return (TVPCI-R)</div>
+<div class="card-desc">Parallel chain · Waste intensity ω<sub style="font-size:0.85em">p</sub> · B<sub style="font-size:0.85em">chain</sub> vs TVPCI</div>
+</div>
+<div class="card-body">
+<ul>
+<li>Phase-resolved recycling and waste-stream N-D-C (same machinery as TVPCI)</li>
+<li>Worksheet to enter indicator scores and recompute TVPCI-R live</li>
+<li>Dashboard cards for TVPCI-R and B<sub>chain</sub> (load with main supply chain)</li>
+<li>Provisional: Foran 2005, Newmont 2024 SR, WGC (full LCA calibration later)</li>
+</ul>
+<a class="btn ec" href="supply_chain/recycling_analysis.html">Open Ecological Return →</a>
+<div class="sub-links">
+<a href="supply_chain/recycling_analysis.html">Full analysis</a>
+<a href="supply_chain/dashboard.html">π Dashboard</a>
+</div>
+</div>
+</div>
 </div>
 </div>
 <!-- ── Five-Model Coherence Panel ──────────────────────── -->
@@ -186,8 +210,8 @@
 <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Gold — Five-Model Coherence Signature</h2>
 <p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:700px;line-height:1.55;">
         Each vertex represents a Tholonic model derived from a mathematical constant.
-        The <strong>outer zone (70–100%)</strong> is coherent; the <strong>middle zone (40–70%)</strong> is stressed;
-        the <strong>inner zone (&lt;40%)</strong> indicates systemic failure in that dimension.
+        The <strong>outer zone (&gt;61.8%, φ⁻¹)</strong> is coherent; the <strong>middle zone (38.2–61.8%)</strong> is failure;
+        the <strong>inner zone (&lt;38.2%, 1−φ⁻¹)</strong> is breakdown.
         A score of 0 means <em>unmeasured</em>, not failed.
       </p>
 <div style="display:flex;justify-content:center;align-items:flex-start;gap:28px;flex-wrap:wrap;">
@@ -232,12 +256,12 @@
         var CX=170,CY=170,R=128;
         var fill=hexRgba(PRIMARY,0.18), stroke=hexRgba(PRIMARY,0.85);
         var s='<svg viewBox="-40 -28 380 392" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
-        s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.70)+'" fill="#e0f7fa" fill-rule="evenodd"/>';
-        s+='<path d="'+pentPath(CX,CY,R,0.70)+' '+pentPath(CX,CY,R,0.40)+'" fill="#80deea" fill-rule="evenodd"/>';
-        s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="#00838f"/>';
+        s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.618)+'" fill="#e0f7fa" fill-rule="evenodd"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.618)+' '+pentPath(CX,CY,R,0.382)+'" fill="#ffccbc" fill-rule="evenodd"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="#b71c1c"/>';
         [0.25,0.50,0.75,1.0].forEach(function(sc){s+='<path d="'+pentPath(CX,CY,R,sc)+'" fill="none" stroke="rgba(0,0,0,0.10)" stroke-width="'+(sc===1?1.5:0.7)+'"/>';});
-        s+='<path d="'+pentPath(CX,CY,R,0.40)+'" fill="none" stroke="rgba(255,255,255,0.45)" stroke-width="1.2" stroke-dasharray="3,3"/>';
-        s+='<path d="'+pentPath(CX,CY,R,0.70)+'" fill="none" stroke="rgba(0,96,100,0.4)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="none" stroke="rgba(239,83,80,0.55)" stroke-width="1.2" stroke-dasharray="3,3"/>';
+        s+='<path d="'+pentPath(CX,CY,R,0.618)+'" fill="none" stroke="rgba(62,207,142,0.50)" stroke-width="1.2" stroke-dasharray="3,3"/>';
         AXES.forEach(function(a){var tip=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+tip.x.toFixed(2)+'" y2="'+tip.y.toFixed(2)+'" stroke="rgba(0,0,0,0.14)" stroke-width="1"/>';});
         var dp=dataPath(CX,CY,R,scores);
         if(dp) s+='<path d="'+dp+'" fill="'+fill+'" stroke="'+stroke+'" stroke-width="2.5" stroke-linejoin="round"/>';
@@ -253,8 +277,8 @@
         AXES.forEach(function(a){
           var v=scores[a.key]||0;
           var isZero=v===0;
-          var zone=v>=70?'Coherent':v>=40?'Stressed':isZero?'Unmeasured':'Failure';
-          var zoneC=v>=70?'#2e7d32':v>=40?'#e65100':isZero?'#999':'#c62828';
+          var zone=v>=61.8?'Coherent':v>=38.2?'Failure':isZero?'Unmeasured':'Breakdown';
+          var zoneC=v>=61.8?'#3ecf8e':v>=38.2?'#ef5350':isZero?'#6e7681':'#b71c1c';
           html+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:9px;">';
           html+='<div style="width:34px;height:34px;border-radius:6px;background:'+MODEL_BG[a.key]+';color:'+MODEL_C[a.key]+';font-size:13px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;">'+a.label+'</div>';
           html+='<div style="flex:1;">';
@@ -278,7 +302,7 @@
         var strongest=measured.length?measured.reduce(function(best,a){return scores[a.key]>scores[best.key]?a:best;}):null;
         var weakest=measured.length?measured.reduce(function(w,a){return scores[a.key]<scores[w.key]?a:w;}):null;
 
-        if(avg>=70) lines.push('<strong>Overall shape:</strong> Predominantly outer-zone — the chain is broadly coherent across its measured dimensions. The pentagon sits in the cyan band, indicating systemic health.');
+        if(avg>=61.8) lines.push('<strong>Overall shape:</strong> Predominantly outer-zone — the chain is broadly coherent across its measured dimensions. The pentagon sits in the coherent band (above the 61.8% φ⁻¹ sustainability floor).');
         else if(avg>=50) lines.push('<strong>Overall shape:</strong> Mixed outer-middle zone — the chain has real strengths but notable stress points. The polygon\'s irregular shape shows where the chain diverges from ideal proportionality.');
         else lines.push('<strong>Overall shape:</strong> Predominantly middle or inner zone — systemic stresses are significant. The narrow, irregular polygon reveals concentrated failure modes.');
 
@@ -377,8 +401,8 @@
           var Bvals=ids.map(function(id){return +(rawPhases[id].balance||0);});
 
           // PHI zone colours and labels per phase (from balance_zone fields in JSON)
-          var ZONE_COLORS={coherent:'#3ecf8e',stressed:'#f5a623',failure:'#ef5350',breakdown:'#b71c1c'};
-          var ZONE_ABBREV={coherent:'C',stressed:'S',failure:'F',breakdown:'B'};
+          var ZONE_COLORS={coherent:'#3ecf8e',failure:'#ef5350',breakdown:'#b71c1c'};
+          var ZONE_ABBREV={coherent:'C',failure:'F',breakdown:'B'};
           var zoneKeys=ids.map(function(id){return rawPhases[id].balance_zone||'coherent';});
           var zoneCols=zoneKeys.map(function(z){return ZONE_COLORS[z]||'#8b949e';});
           var zoneAbbr=zoneKeys.map(function(z){return ZONE_ABBREV[z]||'?';});
@@ -456,7 +480,7 @@
           var maxB=Math.max.apply(null,Bvals).toFixed(1),minB=Math.min.apply(null,Bvals).toFixed(1);
 
           // Zone counts for info panel
-          var zoneCounts={coherent:0,stressed:0,failure:0,breakdown:0};
+          var zoneCounts={coherent:0,failure:0,breakdown:0};
           zoneKeys.forEach(function(z){if(zoneCounts[z]!==undefined)zoneCounts[z]++;});
 
           document.getElementById('ndc-radar-info-gold').innerHTML=
@@ -481,10 +505,9 @@
             '<th style="text-align:right;padding:0 0 4px 4px;color:#666;font-weight:600;">D/C</th>'+
             '</tr></thead>'+
             '<tbody>'+
-            '<tr><td style="padding:4px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3ecf8e;flex-shrink:0;"></span><b style="color:#3ecf8e;">C</b> Coherent <b>('+zoneCounts.coherent+')</b></span></td><td style="text-align:right;padding:4px 4px 3px;white-space:nowrap;">≥ 80%</td><td style="text-align:right;padding:4px 0 3px 4px;white-space:nowrap;">≤ 1.50</td></tr>'+
-            '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#f5a623;flex-shrink:0;"></span><b style="color:#f5a623;">S</b> Stressed <b>('+zoneCounts.stressed+')</b></span></td><td style="text-align:right;padding:3px 4px;white-space:nowrap;">61.8–80%</td><td style="text-align:right;padding:3px 0 3px 4px;white-space:nowrap;">1.50–\u03c6 (2.24)</td></tr>'+
-            '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef5350;flex-shrink:0;"></span><b style="color:#ef5350;">F</b> Failure <b>('+zoneCounts.failure+')</b></span></td><td style="text-align:right;padding:3px 4px;white-space:nowrap;">38.2–61.8%</td><td style="text-align:right;padding:3px 0 3px 4px;white-space:nowrap;">\u03c6–\u03c6\u00b2 (2.24–4.24)</td></tr>'+
-            '<tr><td style="padding:3px 4px 0 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#b71c1c;flex-shrink:0;"></span><b style="color:#b71c1c;">B</b> Breakdown <b>('+zoneCounts.breakdown+')</b></span></td><td style="text-align:right;padding:3px 4px 0;white-space:nowrap;">&lt; 38.2%</td><td style="text-align:right;padding:3px 0 0 4px;white-space:nowrap;">&gt; \u03c6\u00b2 (4.24)</td></tr>'+
+            '<tr><td style="padding:4px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#3ecf8e;flex-shrink:0;"></span><b style="color:#3ecf8e;">C</b> Coherent <b>('+zoneCounts.coherent+')</b></span></td><td style="text-align:right;padding:4px 4px 3px;white-space:nowrap;">&#x2265; 61.8%</td><td style="text-align:right;padding:4px 0 3px 4px;white-space:nowrap;">D:C &lt; \u03c6</td></tr>'+
+            '<tr><td style="padding:3px 4px 3px 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#ef5350;flex-shrink:0;"></span><b style="color:#ef5350;">F</b> Failure <b>('+zoneCounts.failure+')</b></span></td><td style="text-align:right;padding:3px 4px;white-space:nowrap;">38.2–61.8%</td><td style="text-align:right;padding:3px 0 3px 4px;white-space:nowrap;">D:C \u03c6 to \u03c6\u00b2</td></tr>'+
+            '<tr><td style="padding:3px 4px 0 0;"><span style="display:inline-flex;align-items:center;gap:5px;"><span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#b71c1c;flex-shrink:0;"></span><b style="color:#b71c1c;">B</b> Breakdown <b>('+zoneCounts.breakdown+')</b></span></td><td style="text-align:right;padding:3px 4px 0;white-space:nowrap;">&lt; 38.2%</td><td style="text-align:right;padding:3px 0 0 4px;white-space:nowrap;">D:C &gt; \u03c6\u00b2</td></tr>'+
             '</tbody></table>'+
             '<div style="margin-top:8px;font-size:10.5px;color:#666;">Label color and spoke dot reflect each phase\'s PHI zone. D/C = Definition\u202f÷\u202fContribution ratio.</div>'+
             '</div>';
@@ -493,18 +516,15 @@
           var interlines=[];
           var Dgaps=ids.map(function(id,i){return Math.abs(Dvals[i]-Cvals[i]);});
           var maxGapIdx=Dgaps.indexOf(Math.max.apply(null,Dgaps));
-          var stressedIds=ids.filter(function(id,i){return zoneKeys[i]==='stressed';});
           var failureIds=ids.filter(function(id,i){return zoneKeys[i]==='failure';});
           var breakdownIds=ids.filter(function(id,i){return zoneKeys[i]==='breakdown';});
           var coherentIds=ids.filter(function(id,i){return zoneKeys[i]==='coherent';});
 
           interlines.push('<strong>Reading this chart:</strong> The three polygons overlap when D, C, and N are close in value, indicating phase-level equilibrium. Where the green (D) and red (C) polygons diverge, the phase is under directional stress. Axis labels and spoke dots are color-coded by PHI sustainability zone.');
 
-          if(coherentIds.length>0) interlines.push('<strong>Coherent phases (green):</strong> Phase'+(coherentIds.length>1?'s':'')+' '+coherentIds.join(', ')+' are self-sustaining with balance ≥80%. The N polygon sits close to both D and C, indicating emergent value is being realised without external subsidy.');
+          if(coherentIds.length>0) interlines.push('<strong>Coherent phases (green):</strong> Phase'+(coherentIds.length>1?'s':'')+' '+coherentIds.join(', ')+' are above the 61.8% φ⁻¹ sustainability floor (D:C &lt; φ). The N polygon sits close to both D and C, indicating emergent value is being realised without external subsidy.');
 
-          if(stressedIds.length>0) interlines.push('<strong>Stressed phases (amber):</strong> Phase'+(stressedIds.length>1?'s':'')+' '+stressedIds.join(', ')+' sit between 61.8% and 80% balance. These phases are still self-sustaining but over-constrained. Improvement is possible from within the existing system by reducing D or growing C.');
-
-          if(failureIds.length>0) interlines.push('<strong>Failure-zone phases (red):</strong> Phase'+(failureIds.length>1?'s':'')+' '+failureIds.join(', ')+' are below the 61.8% PHI sustainability floor. These phases export costs to external parties and cannot self-correct without external policy, regulation, or capital.');
+          if(failureIds.length>0) interlines.push('<strong>Failure-zone phases (red):</strong> Phase'+(failureIds.length>1?'s':'')+' '+failureIds.join(', ')+' are below the 61.8% φ⁻¹ sustainability floor (D:C between φ and φ²). These phases export costs to external parties and cannot self-correct without external policy, regulation, or capital.');
 
           if(breakdownIds.length>0) interlines.push('<strong>Breakdown phases (dark red):</strong> Phase'+(breakdownIds.length>1?'s':'')+' '+breakdownIds.join(', ')+' are below 38.2%. The constraint apparatus dominates contribution at more than φ²:1. These phases are regulatory shells without a functioning core.');
 
@@ -523,9 +543,8 @@
 <h2 style="font-size:19px;font-weight:400;margin-bottom:6px;color:#2c3e50;">Gold — Phase Balance Score with PHI Zone Rings</h2>
 <p style="font-size:13px;color:#6c757d;margin-bottom:20px;max-width:700px;line-height:1.55;">
   Each axis is one supply chain phase. The single polygon shows the <strong>balance score (0–100%)</strong> per phase.
-  The three zone rings mark the PHI-derived structural thresholds:
-  <strong style="color:#3ecf8e;">80% coherent floor</strong>,
-  <strong style="color:#f5a623;">61.8% sustainability floor (φ⁻¹)</strong>, and
+  The two zone rings mark the φ-derived structural thresholds:
+  <strong style="color:#3ecf8e;">61.8% sustainability floor (φ⁻¹)</strong> and
   <strong style="color:#ef5350;">38.2% breakdown threshold (1−φ⁻¹)</strong>.
 </p>
 <div style="display:flex;justify-content:center;align-items:flex-start;gap:32px;flex-wrap:wrap;">

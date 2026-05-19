@@ -1,0 +1,952 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ecological Return Chain — Gold TVPCI-R Analysis</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a3a2a 0%, #0d2318 100%);
+    min-height: 100vh;
+    padding: 20px;
+    color: #333;
+}
+
+.page {
+    max-width: 1400px;
+    margin: 0 auto;
+    background: #f4f6f9;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* ── Header ── */
+.header {
+    background: linear-gradient(135deg, #1a3a2a 0%, #2d5a3d 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+.header-left p  { font-size: 12px; color: #a8d5b5; margin-top: 4px; }
+.nav-link { color: #a8d5b5; text-decoration: none; margin-left: 20px; font-size: 13px; }
+.nav-link:hover { color: #fff; }
+
+/* ── Provisional banner ── */
+.provisional-banner {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 12px 30px;
+    font-size: 13px;
+    color: #856404;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* ── Concept panel ── */
+.concept-panel {
+    background: white;
+    margin: 24px;
+    border-radius: 10px;
+    padding: 28px 32px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #2d5a3d;
+}
+.concept-panel h2 { font-size: 18px; color: #1a3a2a; margin-bottom: 12px; font-weight: 600; }
+.concept-panel p { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 10px; }
+.role-row {
+    display: flex;
+    gap: 16px;
+    margin-top: 16px;
+    flex-wrap: wrap;
+}
+.role-card {
+    flex: 1;
+    min-width: 180px;
+    background: #f8fffe;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 14px 16px;
+    text-align: center;
+}
+.role-card .role-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 4px; }
+.role-card .role-var { font-size: 22px; font-weight: 700; color: #1a3a2a; }
+.role-card .role-name { font-size: 13px; color: #555; margin-top: 4px; }
+.role-card .role-desc { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4; }
+
+/* ── KPI cards ── */
+.kpi-section {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    padding: 0 24px 24px;
+}
+.kpi-card {
+    background: white;
+    border-radius: 10px;
+    padding: 22px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    position: relative;
+    overflow: hidden;
+}
+.kpi-card .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 6px; }
+.kpi-card .kpi-value { font-size: 42px; font-weight: 200; color: #2c3e50; line-height: 1; }
+.kpi-card .kpi-sub { font-size: 12px; color: #888; margin-top: 6px; }
+.kpi-card .kpi-bar-bg { height: 6px; background: #e9ecef; border-radius: 3px; margin-top: 12px; }
+.kpi-card .kpi-bar { height: 6px; border-radius: 3px; transition: width 0.4s; }
+.kpi-card .kpi-zone { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.kpi-card.tvpci-card   { border-top: 4px solid #667eea; }
+.kpi-card.tvpcir-card  { border-top: 4px solid #28a745; }
+.kpi-card.bchain-card  { border-top: 4px solid #c9922a; }
+
+/* Delta bar */
+.delta-section {
+    margin: 0 24px 24px;
+    background: white;
+    border-radius: 10px;
+    padding: 20px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.delta-section h3 { font-size: 14px; color: #2c3e50; margin-bottom: 12px; font-weight: 600; }
+.delta-track { height: 24px; background: #e9ecef; border-radius: 12px; position: relative; margin-top: 8px; }
+.delta-center { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: #adb5bd; }
+.delta-fill { height: 100%; border-radius: 12px; position: absolute; top: 0; transition: width 0.4s, left 0.4s; }
+.delta-labels { display: flex; justify-content: space-between; font-size: 11px; color: #888; margin-top: 4px; }
+.delta-value-label { text-align: center; font-size: 13px; font-weight: 600; margin-top: 8px; }
+
+/* ── Section headers ── */
+.section-header {
+    padding: 12px 24px 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a3a2a;
+    border-bottom: 2px solid #e9ecef;
+    margin: 0 24px 16px;
+}
+
+/* ── Spider charts ── */
+.spider-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 0 24px 24px;
+}
+.spider-box {
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.spider-box h3 { font-size: 14px; color: #2c3e50; margin-bottom: 4px; font-weight: 600; text-align: center; }
+.spider-box .spider-sub { font-size: 11px; color: #888; margin-bottom: 14px; text-align: center; }
+.spider-legend { display: flex; gap: 16px; margin-top: 12px; font-size: 11px; }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 4px; }
+
+/* ── Phase cards grid ── */
+.phase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    padding: 0 24px 24px;
+}
+.phase-r-card {
+    background: white;
+    border-radius: 10px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+.phase-r-card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.phase-r-card .pr-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.phase-r-card .pr-name { font-size: 12px; font-weight: 600; color: #2c3e50; }
+.phase-r-card .pr-omega { font-size: 11px; color: #888; }
+.phase-r-card .pr-score { font-size: 28px; font-weight: 200; color: #2c3e50; text-align: center; margin: 8px 0; }
+.phase-r-card .pr-score-label { font-size: 10px; color: #888; text-align: center; margin-bottom: 8px; }
+.phase-r-card .pr-ndc { display: flex; justify-content: space-around; font-size: 11px; color: #555; margin-top: 8px; }
+.phase-r-card .pr-ndc span { text-align: center; }
+.phase-r-card .pr-ndc .val { font-weight: 700; font-size: 14px; display: block; }
+.phase-r-card .pr-delta { font-size: 11px; text-align: center; margin-top: 8px; padding: 4px; border-radius: 4px; }
+.phase-r-card .pr-waste { font-size: 10px; color: #888; margin-top: 8px; line-height: 1.4; border-top: 1px solid #e9ecef; padding-top: 8px; }
+
+/* ── Zone colors ── */
+.zone-coherent { color: #28a745; }
+.zone-stressed  { color: #17a2b8; }
+.zone-failure   { color: #ffc107; }
+.zone-breakdown { color: #dc3545; }
+.bg-coherent { background: #d4edda; }
+.bg-stressed  { background: #d1ecf1; }
+.bg-failure   { background: #fff3cd; }
+.bg-breakdown { background: #f8d7da; }
+
+/* ── Questionnaire ── */
+.questionnaire {
+    margin: 0 24px 24px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    overflow: hidden;
+}
+.q-header {
+    background: #1a3a2a;
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.q-header h3 { font-size: 15px; font-weight: 400; }
+.q-controls { display: flex; gap: 10px; }
+.q-btn {
+    padding: 6px 14px;
+    border: 1px solid rgba(255,255,255,0.4);
+    background: transparent;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+}
+.q-btn:hover { background: rgba(255,255,255,0.15); }
+.q-btn.primary { background: #c9922a; border-color: #c9922a; }
+
+.q-phase-block {
+    border-bottom: 1px solid #e9ecef;
+}
+.q-phase-toggle {
+    width: 100%;
+    text-align: left;
+    padding: 14px 20px;
+    background: #f8f9fa;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+.q-phase-toggle:hover { background: #e9ecef; }
+.q-phase-toggle .q-phase-scores {
+    display: flex;
+    gap: 16px;
+    font-size: 12px;
+    font-weight: 400;
+    color: #6c757d;
+}
+.q-phase-toggle .q-phase-scores span { font-weight: 700; }
+.q-phase-body { padding: 16px 20px; display: none; }
+.q-phase-body.open { display: block; }
+
+.q-indicator-row {
+    display: grid;
+    grid-template-columns: 1fr 60px 80px 120px;
+    gap: 12px;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 13px;
+}
+.q-indicator-row:last-child { border-bottom: none; }
+.q-role-badge {
+    display: inline-block;
+    padding: 2px 7px;
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: 700;
+    margin-right: 6px;
+}
+.badge-N { background: #e3f2fd; color: #1565c0; }
+.badge-D { background: #fff3e0; color: #e65100; }
+.badge-C { background: #e8f5e9; color: #2e7d32; }
+.q-max-pts { font-size: 11px; color: #888; }
+.q-input {
+    width: 100%;
+    padding: 6px 8px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 13px;
+    text-align: right;
+}
+.q-input:focus { outline: none; border-color: #2d5a3d; }
+.q-subtotal-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 24px;
+    padding: 12px 0 4px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.q-summary-bar {
+    background: #f8f9fa;
+    padding: 16px 20px;
+    border-top: 2px solid #1a3a2a;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+}
+.q-summary-item { text-align: center; }
+.q-summary-item .qs-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; }
+.q-summary-item .qs-value { font-size: 26px; font-weight: 200; color: #1a3a2a; margin-top: 4px; }
+
+/* ── Footer ── */
+.page-footer {
+    background: #1a3a2a;
+    color: #a8d5b5;
+    padding: 16px 30px;
+    font-size: 12px;
+    line-height: 1.6;
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- ── Header ── -->
+<div class="header">
+    <div class="header-left">
+        <h1>Gold — Ecological Return Chain (TVPCI-R)</h1>
+        <p>Phase-resolved recycling and waste-stream transparency scoring alongside the primary custody chain</p>
+    </div>
+    <nav>
+        <a class="nav-link" href="index.html">Supply Chain Hub</a>
+        <a class="nav-link" href="dashboard.html">Main Dashboard</a>
+        <a class="nav-link" href="../index.html">Gold Hub</a>
+    </nav>
+</div>
+
+<!-- ── Provisional banner ── -->
+<div class="provisional-banner">
+    <strong>PROVISIONAL DATA</strong> — All R_p scores and omega_p weights are synthetic baselines derived from published aggregate data
+    (Foran et al. 2005, Newmont 2024 SR, WGC 2019). Phase-resolved lifecycle assessment (LCA) calibration is required before
+    operational use. Use the interactive worksheet below to enter real observed values.
+</div>
+
+<!-- ── Concept panel ── -->
+<div class="concept-panel">
+    <h2>What is TVPCI-R?</h2>
+    <p>
+        Every supply chain phase generates outputs beyond the finished product: tailings, process water, emissions, waste,
+        and heat. These streams flow back to the parent system — the ecosystem, society, and commons that enabled the chain
+        to exist. TVPCI-R scores how observable and accountable each phase's ecological return is, using the same
+        three-role structure (N, D, C) as the primary custody chain.
+    </p>
+    <p>
+        The primary chain (TVPCI) <strong>defines</strong> what was extracted and claimed — it is the bounding, forward
+        structure (role D at the chain level). The recycling chain (TVPCI-R) <strong>contributes</strong> that material back,
+        closing the loop to the parent holon — it is the integrating return flow (role C at the chain level).
+        The balance between them produces an emergent negotiated state (B_chain, role N) measuring how equitably
+        the chain balances extraction against return.
+    </p>
+    <div class="role-row">
+        <div class="role-card">
+            <div class="role-label">Chain-level D</div>
+            <div class="role-var">TVPCI</div>
+            <div class="role-name">Primary custody chain</div>
+            <div class="role-desc">The bounding, defining forward structure. What was extracted, claimed, and commercialised.</div>
+        </div>
+        <div class="role-card">
+            <div class="role-label">Chain-level C</div>
+            <div class="role-var">TVPCI-R</div>
+            <div class="role-name">Ecological return chain</div>
+            <div class="role-desc">The integrating, returning ecological flow. What the chain gives back to the parent system.</div>
+        </div>
+        <div class="role-card">
+            <div class="role-label">Emergent N</div>
+            <div class="role-var">B<sub style="font-size:14px">chain</sub></div>
+            <div class="role-name">Negotiated holon state</div>
+            <div class="role-desc">Balance between extraction and return. High when the chain is as accountable for what it gives back as for what it takes.</div>
+        </div>
+    </div>
+</div>
+
+<!-- ── KPI cards ── -->
+<div class="kpi-section">
+    <div class="kpi-card tvpci-card">
+        <div class="kpi-label">TVPCI — Forward Custody (D role)</div>
+        <div class="kpi-value" id="kpi-tvpci">82.5</div>
+        <div class="kpi-sub">Primary chain transparency score</div>
+        <div class="kpi-bar-bg"><div class="kpi-bar" id="bar-tvpci" style="width:82.5%;background:linear-gradient(90deg,#667eea,#764ba2)"></div></div>
+        <div class="kpi-zone" id="zone-tvpci"></div>
+    </div>
+    <div class="kpi-card tvpcir-card">
+        <div class="kpi-label">TVPCI-R — Ecological Return (C role)</div>
+        <div class="kpi-value" id="kpi-tvpcir">—</div>
+        <div class="kpi-sub">Recycling chain transparency score</div>
+        <div class="kpi-bar-bg"><div class="kpi-bar" id="bar-tvpcir" style="background:#28a745"></div></div>
+        <div class="kpi-zone" id="zone-tvpcir"></div>
+    </div>
+    <div class="kpi-card bchain-card">
+        <div class="kpi-label">B_chain — Emergent Holon State (N role)</div>
+        <div class="kpi-value" id="kpi-bchain">—</div>
+        <div class="kpi-sub">Balance between forward and return</div>
+        <div class="kpi-bar-bg"><div class="kpi-bar" id="bar-bchain" style="background:#c9922a"></div></div>
+        <div class="kpi-zone" id="zone-bchain"></div>
+    </div>
+</div>
+
+<!-- ── Delta bar ── -->
+<div class="delta-section">
+    <h3>Δ_chain = TVPCI − TVPCI-R  (signed imbalance diagnostic)</h3>
+    <div class="delta-track">
+        <div class="delta-center"></div>
+        <div class="delta-fill" id="delta-fill"></div>
+    </div>
+    <div class="delta-labels">
+        <span>Over-returning (TVPCI-R > TVPCI)</span>
+        <span>Balanced</span>
+        <span>Over-extracting (TVPCI > TVPCI-R)</span>
+    </div>
+    <div class="delta-value-label" id="delta-label"></div>
+</div>
+
+<!-- ── Chain-level spider and per-phase profile ── -->
+<div class="section-header">Chain-level Comparison</div>
+<div class="spider-container">
+    <div class="spider-box">
+        <h3>Phase Profile: TVPCI vs TVPCI-R</h3>
+        <div class="spider-sub">8-spoke radar — spoke length = phase score, weighted by ω_p</div>
+        <svg id="chain-spider" width="320" height="320" viewBox="0 0 320 320"></svg>
+        <div class="spider-legend">
+            <span><span class="legend-dot" style="background:#667eea"></span>TVPCI (custody)</span>
+            <span><span class="legend-dot" style="background:#28a745"></span>TVPCI-R (ecological)</span>
+        </div>
+    </div>
+    <div class="spider-box">
+        <h3>B_chain Across Scenarios</h3>
+        <div class="spider-sub">How the chain-level balance varies by scenario</div>
+        <svg id="scenario-spider" width="320" height="320" viewBox="0 0 320 320"></svg>
+        <div class="spider-legend">
+            <span><span class="legend-dot" style="background:#c9922a"></span>B_chain</span>
+            <span style="font-size:10px;color:#888">Dashed = phi-threshold (61.8)</span>
+        </div>
+    </div>
+</div>
+
+<!-- ── Per-phase recycling cards ── -->
+<div class="section-header">Per-Phase Recycling Scores (R_p)</div>
+<div class="phase-grid" id="phase-grid">
+    <!-- populated by JS -->
+</div>
+
+<!-- ── Questionnaire ── -->
+<div class="section-header">Interactive Questionnaire Worksheet</div>
+<div class="questionnaire">
+    <div class="q-header">
+        <h3>Enter observed indicator values to compute real TVPCI-R</h3>
+        <div class="q-controls">
+            <button class="q-btn" onclick="resetToProvisional()">Reset to Provisional</button>
+            <button class="q-btn primary" onclick="computeFromWorksheet()">Recompute TVPCI-R</button>
+        </div>
+    </div>
+    <div id="questionnaire-body">
+        <!-- populated by JS -->
+    </div>
+    <div class="q-summary-bar">
+        <div class="q-summary-item">
+            <div class="qs-label">TVPCI-R (worksheet)</div>
+            <div class="qs-value" id="ws-tvpcir">—</div>
+        </div>
+        <div class="q-summary-item">
+            <div class="qs-label">TVPCI (primary)</div>
+            <div class="qs-value" id="ws-tvpci">82.5</div>
+        </div>
+        <div class="q-summary-item">
+            <div class="qs-label">B_chain (worksheet)</div>
+            <div class="qs-value" id="ws-bchain">—</div>
+        </div>
+        <div class="q-summary-item">
+            <div class="qs-label">Δ_chain (worksheet)</div>
+            <div class="qs-value" id="ws-delta">—</div>
+        </div>
+    </div>
+</div>
+
+<div class="page-footer">
+    TVPCI-R Ecological Return Chain — Gold. All data provisional (Foran 2005; Newmont 2024 SR; WGC 2019).
+    Formula: B_r = 100 × exp(−2 × |D_r − C_r| / max(D_r, C_r)); TVPCI_R = Σ(ω_p × B_r_p);
+    B_chain = 100 × exp(−2 × |TVPCI − TVPCI_R| / max(TVPCI, TVPCI_R)).
+    Role assignment: TVPCI=D, TVPCI_R=C, B_chain=N at chain level.
+    See: docnav/Research/papers/2_supply-chain-transparency-tvpci.md §8.7.
+</div>
+</div><!-- /.page -->
+
+<script>
+// ── Constants ──────────────────────────────────────────────────────────────
+const RECYCLING_URL  = '/frontend/project/gold/data/processed/gold_recycling_ui.json';
+const INDICATORS_URL = '/frontend/project/gold/data/schema/gold_recycling_indicators.csv';
+const PHI = (1 + Math.sqrt(5)) / 2;
+const ZONE_COHERENT = 80;
+const ZONE_STRESSED = 100 / PHI;   // ~61.8
+const ZONE_FAILURE  = 100 * (1 - 1/PHI); // ~38.2
+
+let RD = null;       // recycling JSON
+let INDICATORS = []; // parsed indicator CSV rows
+let WS_VALUES = {};  // worksheet inputs keyed by indicator_id
+
+// ── Utility ────────────────────────────────────────────────────────────────
+function bExp(d, c) {
+    const eps = 1e-6;
+    const imb = Math.abs(d - c);
+    const den = Math.max(d, c, eps);
+    return 100 * Math.exp(-2 * imb / den);
+}
+
+function zoneClass(score) {
+    if (score >= ZONE_COHERENT) return 'zone-coherent';
+    if (score >= ZONE_STRESSED) return 'zone-stressed';
+    if (score >= ZONE_FAILURE)  return 'zone-failure';
+    return 'zone-breakdown';
+}
+function zoneLabel(score) {
+    if (score >= ZONE_COHERENT) return 'Coherent';
+    if (score >= ZONE_STRESSED) return 'Stressed';
+    if (score >= ZONE_FAILURE)  return 'Failure';
+    return 'Breakdown';
+}
+function bgZoneClass(score) {
+    if (score >= ZONE_COHERENT) return 'bg-coherent';
+    if (score >= ZONE_STRESSED) return 'bg-stressed';
+    if (score >= ZONE_FAILURE)  return 'bg-failure';
+    return 'bg-breakdown';
+}
+
+function parseCSV(text) {
+    const lines = text.trim().split('\n');
+    const headers = lines[0].split(',');
+    return lines.slice(1).map(line => {
+        const vals = line.split(',');
+        const obj = {};
+        headers.forEach((h, i) => { obj[h.trim()] = (vals[i] || '').trim(); });
+        return obj;
+    });
+}
+
+// ── SVG spider chart ────────────────────────────────────────────────────────
+function polarPoint(cx, cy, r, angleDeg) {
+    const rad = (angleDeg - 90) * Math.PI / 180;
+    return [cx + r * Math.cos(rad), cy + r * Math.sin(rad)];
+}
+
+function drawChainSpider(svgId, labels, datasets) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    const n = labels.length;
+    const cx = 160, cy = 160, R = 120;
+    let html = '';
+
+    // Grid rings
+    [25, 50, 75, 100].forEach(pct => {
+        const r = R * pct / 100;
+        const pts = labels.map((_, i) => polarPoint(cx, cy, r, 360 * i / n).join(','));
+        html += `<polygon points="${pts.join(' ')}" fill="none" stroke="#e0e0e0" stroke-width="1"/>`;
+        html += `<text x="${cx + r + 2}" y="${cy}" font-size="9" fill="#bbb">${pct}</text>`;
+    });
+
+    // Spokes
+    labels.forEach((lbl, i) => {
+        const [x, y] = polarPoint(cx, cy, R, 360 * i / n);
+        html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#ddd" stroke-width="1"/>`;
+        const [lx, ly] = polarPoint(cx, cy, R + 18, 360 * i / n);
+        html += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="9" fill="#555">${lbl}</text>`;
+    });
+
+    // Datasets
+    datasets.forEach(ds => {
+        const pts = ds.values.map((v, i) => polarPoint(cx, cy, R * Math.min(v, 100) / 100, 360 * i / n).join(','));
+        html += `<polygon points="${pts.join(' ')}" fill="${ds.fill}" stroke="${ds.color}" stroke-width="2" opacity="0.65"/>`;
+    });
+
+    svg.innerHTML = html;
+}
+
+function drawPhaseSpider(svgId, Nr, Dr, Cr, size) {
+    const svg = document.getElementById(svgId);
+    if (!svg) return;
+    const cx = size/2, cy = size/2, R = size*0.38;
+    const labels = ['N', 'D', 'C'];
+    const values = [Nr, Dr, Cr];
+    let html = '';
+
+    [33, 67, 100].forEach(pct => {
+        const r = R * pct / 100;
+        const pts = [0,1,2].map(i => polarPoint(cx, cy, r, 120*i).join(','));
+        html += `<polygon points="${pts.join(' ')}" fill="none" stroke="#e8e8e8" stroke-width="1"/>`;
+    });
+    [0,1,2].forEach(i => {
+        const [x,y] = polarPoint(cx, cy, R, 120*i);
+        html += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#ddd" stroke-width="1"/>`;
+        const [lx,ly] = polarPoint(cx, cy, R+10, 120*i);
+        html += `<text x="${lx}" y="${ly}" text-anchor="middle" dominant-baseline="middle" font-size="8" fill="#777">${labels[i]}</text>`;
+    });
+    const pts = values.map((v,i) => polarPoint(cx, cy, R * Math.min(v,100)/100, 120*i).join(','));
+    html += `<polygon points="${pts.join(' ')}" fill="rgba(45,90,61,0.3)" stroke="#2d5a3d" stroke-width="2"/>`;
+    svg.innerHTML = html;
+}
+
+// ── Render KPI cards ────────────────────────────────────────────────────────
+function renderKPIs(tvpci, tvpcir) {
+    const bchain = bExp(tvpci, tvpcir);
+    const delta  = tvpci - tvpcir;
+
+    document.getElementById('kpi-tvpci').textContent  = tvpci.toFixed(1);
+    document.getElementById('kpi-tvpcir').textContent = tvpcir.toFixed(1);
+    document.getElementById('kpi-bchain').textContent = bchain.toFixed(1);
+
+    document.getElementById('bar-tvpci').style.width  = tvpci + '%';
+    document.getElementById('bar-tvpcir').style.width = tvpcir + '%';
+    document.getElementById('bar-bchain').style.width = bchain + '%';
+
+    document.getElementById('zone-tvpci').className  = 'kpi-zone ' + zoneClass(tvpci);
+    document.getElementById('zone-tvpcir').className = 'kpi-zone ' + zoneClass(tvpcir);
+    document.getElementById('zone-bchain').className = 'kpi-zone ' + zoneClass(bchain);
+    document.getElementById('zone-tvpci').textContent  = zoneLabel(tvpci);
+    document.getElementById('zone-tvpcir').textContent = zoneLabel(tvpcir);
+    document.getElementById('zone-bchain').textContent = zoneLabel(bchain);
+
+    // Delta bar: centre at 50%, positive delta fills right
+    const maxDelta = 100;
+    const pct = Math.min(Math.abs(delta) / maxDelta * 50, 50);
+    const fill = document.getElementById('delta-fill');
+    if (delta >= 0) {
+        fill.style.left = '50%';
+        fill.style.width = pct + '%';
+        fill.style.background = 'linear-gradient(90deg, #ffc107, #dc3545)';
+    } else {
+        fill.style.left = (50 - pct) + '%';
+        fill.style.width = pct + '%';
+        fill.style.background = 'linear-gradient(90deg, #17a2b8, #28a745)';
+    }
+    const sign = delta >= 0 ? '+' : '';
+    document.getElementById('delta-label').textContent =
+        `Δ_chain = ${sign}${delta.toFixed(1)} — ${delta > 10 ? 'Over-extracting: forward transparency significantly exceeds ecological return accountability' : delta < -10 ? 'Over-returning: unusual — ecological reporting exceeds custody transparency' : 'Near-balanced: within 10-point tolerance'}`;
+    document.getElementById('delta-label').style.color = delta > 20 ? '#dc3545' : delta > 5 ? '#856404' : '#28a745';
+}
+
+// ── Render phase grid ───────────────────────────────────────────────────────
+function renderPhaseGrid(phases, omegas) {
+    const grid = document.getElementById('phase-grid');
+    let html = '';
+    for (let p = 0; p <= 7; p++) {
+        const ph = phases[String(p)];
+        if (!ph) continue;
+        const Br = ph.B_r;
+        const zc = bgZoneClass(Br);
+        const zl = zoneLabel(Br);
+        const deltaSign = ph.delta_r >= 0 ? '+' : '';
+        html += `
+        <div class="phase-r-card" onclick="togglePhaseDetail(${p})">
+            <div class="pr-header">
+                <div class="pr-name">Phase ${p}: ${ph.phase_name}</div>
+                <div class="pr-omega">ω=${(ph.omega_p*100).toFixed(0)}%</div>
+            </div>
+            <div class="pr-score ${zoneClass(Br)}">${Br.toFixed(1)}</div>
+            <div class="pr-score-label">B_r — <span class="${zc}" style="padding:2px 6px;border-radius:4px;">${zl}</span></div>
+            <svg id="spider-p${p}" width="100" height="100" viewBox="0 0 100 100" style="display:block;margin:0 auto"></svg>
+            <div class="pr-ndc">
+                <span><span class="val">${ph.N_r}</span>N</span>
+                <span><span class="val">${ph.D_r}</span>D</span>
+                <span><span class="val">${ph.C_r}</span>C</span>
+            </div>
+            <div class="pr-delta ${bgZoneClass(Br)}" style="border-radius:4px;padding:4px;">
+                Δ = ${deltaSign}${ph.delta_r} ${ph.delta_r > 0 ? '(D-heavy: policy without verification)' : ph.delta_r < 0 ? '(C-heavy: monitoring without governance)' : '(balanced)'}
+            </div>
+            <div class="pr-waste">${ph.dominant_waste}</div>
+        </div>`;
+    }
+    grid.innerHTML = html;
+    for (let p = 0; p <= 7; p++) {
+        const ph = phases[String(p)];
+        if (ph) drawPhaseSpider(`spider-p${p}`, ph.N_r, ph.D_r, ph.C_r, 100);
+    }
+}
+
+// ── Chain spider ────────────────────────────────────────────────────────────
+function renderChainSpider(phases, omegas, tvpciScores) {
+    const phaseLabels = ['P0','P1','P2','P3','P4','P5','P6','P7'];
+    const recyclingVals = phaseLabels.map((_, i) => {
+        const ph = phases[String(i)];
+        return ph ? ph.B_r : 0;
+    });
+    // Primary TVPCI scores from scenarios current
+    const tvpciVals = tvpciScores || [84, 95, 96, 89, 95, 95, 66, 92];
+    drawChainSpider('chain-spider', phaseLabels, [
+        { values: tvpciVals, color: '#667eea', fill: 'rgba(102,126,234,0.2)' },
+        { values: recyclingVals, color: '#28a745', fill: 'rgba(40,167,69,0.2)' }
+    ]);
+}
+
+function renderScenarioSpider(scenarios) {
+    const keys = Object.keys(scenarios);
+    const labels = keys.map(k => scenarios[k].label.replace(/^[^\w]*/, '').substring(0,8));
+    const bchainVals = keys.map(k => scenarios[k].b_chain);
+    // Threshold overlay at 61.8
+    const threshVals = keys.map(() => ZONE_STRESSED);
+    drawChainSpider('scenario-spider', labels, [
+        { values: bchainVals, color: '#c9922a', fill: 'rgba(201,146,42,0.25)' },
+        { values: threshVals, color: '#adb5bd', fill: 'none' }
+    ]);
+}
+
+// ── Questionnaire ───────────────────────────────────────────────────────────
+function buildQuestionnaire(indicators, phases) {
+    const byPhase = {};
+    indicators.forEach(ind => {
+        const p = ind.phase_id;
+        if (!byPhase[p]) byPhase[p] = [];
+        byPhase[p].push(ind);
+    });
+
+    const phaseNames = {
+        '0':'Geological Prospecting','1':'Mine Extraction','2':'Ore Processing',
+        '3':'Doré Production','4':'Refining','5':'Bar Casting & Assay',
+        '6':'Logistics & Vaulting','7':'Exchange Registration'
+    };
+
+    let html = '';
+    for (let p = 0; p <= 7; p++) {
+        const pStr = String(p);
+        const inds = byPhase[pStr] || [];
+        const ph = phases[pStr];
+        const Br = ph ? ph.B_r.toFixed(1) : '—';
+        const omega = ph ? (ph.omega_p * 100).toFixed(0) + '%' : '—';
+
+        html += `<div class="q-phase-block">
+            <button class="q-phase-toggle" onclick="toggleQ(${p})">
+                <span>Phase ${p}: ${phaseNames[pStr]}</span>
+                <span class="q-phase-scores">
+                    B_r: <span id="qb-${p}">${Br}</span> &nbsp;|&nbsp;
+                    ω: ${omega} &nbsp;|&nbsp;
+                    N: <span id="qn-${p}">${ph ? ph.N_r : '—'}</span>
+                    D: <span id="qd-${p}">${ph ? ph.D_r : '—'}</span>
+                    C: <span id="qc-${p}">${ph ? ph.C_r : '—'}</span>
+                    <span>▼</span>
+                </span>
+            </button>
+            <div class="q-phase-body" id="qbody-${p}">`;
+
+        inds.forEach(ind => {
+            const defaultVal = getDefaultVal(ind, phases);
+            WS_VALUES[ind.indicator_id] = defaultVal;
+            html += `
+            <div class="q-indicator-row">
+                <div>
+                    <span class="q-role-badge badge-${ind.role}">${ind.role}</span>
+                    ${ind.indicator_label}
+                    <div style="font-size:10px;color:#888;margin-top:2px;">${ind.scoring_rule}</div>
+                </div>
+                <div class="q-max-pts">/${ind.max_points}</div>
+                <div>
+                    <input class="q-input" type="number" min="0" max="${ind.max_points}"
+                        id="qi-${ind.indicator_id}" value="${defaultVal}"
+                        onchange="onIndicatorChange('${ind.indicator_id}', ${p}, '${ind.role}', ${ind.max_points})">
+                </div>
+                <div style="font-size:10px;color:#888;">${ind.source_hint}</div>
+            </div>`;
+        });
+
+        html += `
+            <div class="q-subtotal-row" id="qsubtotal-${p}"></div>
+            </div>
+        </div>`;
+    }
+    document.getElementById('questionnaire-body').innerHTML = html;
+    updateAllSubtotals(phases);
+}
+
+function getDefaultVal(ind, phases) {
+    // Scale provisional N_r/D_r/C_r to indicator points proportionally
+    const ph = phases[ind.phase_id];
+    if (!ph) return 0;
+    const roleVal = ind.role === 'N' ? ph.N_r : ind.role === 'D' ? ph.D_r : ph.C_r;
+    return Math.round(Math.min(parseInt(ind.max_points) * roleVal / 100, parseInt(ind.max_points)));
+}
+
+function toggleQ(p) {
+    const body = document.getElementById('qbody-' + p);
+    if (body) body.classList.toggle('open');
+}
+
+function onIndicatorChange(id, phase, role, max) {
+    const input = document.getElementById('qi-' + id);
+    let val = parseInt(input.value) || 0;
+    val = Math.max(0, Math.min(val, parseInt(max)));
+    input.value = val;
+    WS_VALUES[id] = val;
+    recomputePhaseFromWorksheet(phase);
+    computeFromWorksheet();
+}
+
+function recomputePhaseFromWorksheet(p) {
+    const inds = INDICATORS.filter(i => parseInt(i.phase_id) === p);
+    let Ns = 0, Ds = 0, Cs = 0, Nm = 0, Dm = 0, Cm = 0;
+    inds.forEach(ind => {
+        const v = WS_VALUES[ind.indicator_id] || 0;
+        const m = parseInt(ind.max_points);
+        if (ind.role === 'N') { Ns += v; Nm += m; }
+        else if (ind.role === 'D') { Ds += v; Dm += m; }
+        else { Cs += v; Cm += m; }
+    });
+    const Nr = Nm > 0 ? Math.round(Ns / Nm * 100) : 0;
+    const Dr = Dm > 0 ? Math.round(Ds / Dm * 100) : 0;
+    const Cr = Cm > 0 ? Math.round(Cs / Cm * 100) : 0;
+    const Br = bExp(Dr, Cr);
+
+    const el = id => document.getElementById(id);
+    if (el('qn-'+p)) el('qn-'+p).textContent = Nr;
+    if (el('qd-'+p)) el('qd-'+p).textContent = Dr;
+    if (el('qc-'+p)) el('qc-'+p).textContent = Cr;
+    if (el('qb-'+p)) el('qb-'+p).textContent = Br.toFixed(1);
+
+    // Update subtotals
+    const sub = el('qsubtotal-'+p);
+    if (sub) sub.innerHTML = `
+        <span>N_r: ${Nr}</span>
+        <span>D_r: ${Dr}</span>
+        <span>C_r: ${Cr}</span>
+        <span>B_r: <strong>${Br.toFixed(1)}</strong></span>`;
+
+    return { Nr, Dr, Cr, Br };
+}
+
+function updateAllSubtotals(phases) {
+    for (let p = 0; p <= 7; p++) {
+        recomputePhaseFromWorksheet(p);
+    }
+}
+
+function computeFromWorksheet() {
+    if (!RD) return;
+    const omegas = RD.omega_weights;
+    let tvpcir = 0;
+    for (let p = 0; p <= 7; p++) {
+        const inds = INDICATORS.filter(i => parseInt(i.phase_id) === p);
+        let Ds = 0, Cs = 0, Dm = 0, Cm = 0;
+        inds.forEach(ind => {
+            const v = WS_VALUES[ind.indicator_id] || 0;
+            const m = parseInt(ind.max_points);
+            if (ind.role === 'D') { Ds += v; Dm += m; }
+            else if (ind.role === 'C') { Cs += v; Cm += m; }
+        });
+        const Dr = Dm > 0 ? Ds / Dm * 100 : 0;
+        const Cr = Cm > 0 ? Cs / Cm * 100 : 0;
+        const Br = bExp(Dr, Cr);
+        const w = parseFloat(omegas[String(p)] || 0);
+        tvpcir += w * Br;
+    }
+    const tvpci = parseFloat(document.getElementById('kpi-tvpci').textContent) || 82.5;
+    const bchain = bExp(tvpci, tvpcir);
+    const delta  = tvpci - tvpcir;
+    const sign   = delta >= 0 ? '+' : '';
+
+    const el = id => document.getElementById(id);
+    if (el('ws-tvpcir')) el('ws-tvpcir').textContent = tvpcir.toFixed(1);
+    if (el('ws-bchain')) el('ws-bchain').textContent = bchain.toFixed(1);
+    if (el('ws-delta'))  el('ws-delta').textContent  = sign + delta.toFixed(1);
+}
+
+function resetToProvisional() {
+    INDICATORS.forEach(ind => {
+        const ph = RD && RD.phases && RD.phases.synthetic && RD.phases.synthetic[ind.phase_id];
+        WS_VALUES[ind.indicator_id] = getDefaultVal(ind, RD.phases.synthetic);
+        const el = document.getElementById('qi-' + ind.indicator_id);
+        if (el) el.value = WS_VALUES[ind.indicator_id];
+    });
+    updateAllSubtotals(RD.phases.synthetic);
+    computeFromWorksheet();
+}
+
+function togglePhaseDetail(p) { /* reserved for future modal */ }
+
+// ── Bootstrap ───────────────────────────────────────────────────────────────
+async function init() {
+    try {
+        const [rdRes, indRes] = await Promise.all([
+            fetch(RECYCLING_URL, { cache: 'no-store' }),
+            fetch(INDICATORS_URL, { cache: 'no-store' })
+        ]);
+        if (!rdRes.ok) throw new Error('Failed to load recycling JSON');
+        RD = await rdRes.json();
+
+        const indText = await indRes.text();
+        INDICATORS = parseCSV(indText);
+
+        const phases  = RD.phases.synthetic;
+        const omegas  = RD.omega_weights;
+        const chain   = RD.chain.synthetic;
+        const scens   = RD.scenarios;
+
+        renderKPIs(chain.tvpci, chain.tvpci_r);
+        renderPhaseGrid(phases, omegas);
+        renderChainSpider(phases, omegas, [84, 95, 96, 89, 95, 95, 66, 92]);
+        renderScenarioSpider(scens);
+        buildQuestionnaire(INDICATORS, phases);
+        computeFromWorksheet();
+
+    } catch (err) {
+        console.error('[recycling] Failed to load data:', err);
+        document.getElementById('phase-grid').innerHTML =
+            '<div style="padding:20px;color:#dc3545;">Failed to load recycling data: ' + err.message + '</div>';
+    }
+}
+
+init();
+</script>
+
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','shea':'Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'recycling_analysis.html':'Recycling Analysis',
+    'dashboard.html':'Dashboard','index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'supply_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}#tv-bc a:hover{color:#fff;text-decoration:underline;}#tv-bc .bc-sep{opacity:.45;font-size:10px;}#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    crumbs.push({label:lbl, href:isLast?null:href});
+  }
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>' : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+  var nav = document.createElement('div'); nav.id = 'tv-bc'; nav.innerHTML = html;
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode) hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    else document.body.insertAdjacentElement('afterbegin', nav);
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>
