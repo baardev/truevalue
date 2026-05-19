@@ -1,0 +1,478 @@
+# TVF Document Registry
+#
+# Curated top-level registry of official and support documents for TrueValue
+# Analytics projects. AI notes under docnav/.ai_notes/ are self-describing and
+# kept separate. Schema files, generated JSON, and frontend HTML are listed at
+# summary level only; see the relevant project folder for the full inventory.
+#
+# Field reference:
+#   doc_id        unique slug used by content-sync and cross-references
+#   path          path relative to repo root
+#   title         human-readable label
+#   type          official | support | schema | frontend | archive
+#   status        active | draft | deprecated | provisional
+#   domain        primary domain (tvpci | tholonic | gold | shea | pdi | meta)
+#   tags          concept tags used by content-sync to build work lists
+#   last_updated  ISO date of last substantive edit
+#   description   one-line summary
+#   related_docs  list of doc_ids (not file paths)
+#   derived       artifacts regenerated from this source (tex, pdf, json, etc.)
+#
+# Tag vocabulary (use consistently):
+#   tvpci        TVPCI scoring methodology and parameters
+#   tvpci-r      Parallel recycling observable R_p and TVPCI-R aggregate
+#   b-chain      Chain-level balance score B_chain
+#   tholonic     N-D-C tholonic framework
+#   ndc          N-D-C triadic structure (supply/value chain application)
+#   supply-chain Physical supply chain phases and phase map
+#   value-chain  Value chain and margin analysis
+#   recycling    Ecological return, waste streams, R_p
+#   gold         Gold supply chain specific content
+#   shea         Shea supply chain specific content
+#   pdi          Phase Discovery Instrument methodology
+#   phi          Golden ratio / phi engine
+#   constants    Five tholonic constants (phi, e, ln2, sqrt2, pi/4)
+#
+schema_version: "1"
+last_updated: "2026-05-10"
+
+documents:
+
+  # ── SITE MANAGEMENT ───────────────────────────────────────────────────────
+
+  - doc_id: readme
+    path: README.md
+    title: "TrueValue Analytics Platform — Site Management Reference"
+    type: official
+    status: active
+    domain: meta
+    tags: [meta, site-management, supply-chain, tvpci, pdi, gold]
+    last_updated: "2026-05-10"
+    description: "Master site management reference: repo structure, all config and management files explained, content workflows, deployment, and operating principles."
+    related_docs: [skills_ref, document_registry, tree]
+    derived: []
+
+  - doc_id: user_manual
+    path: docs/user-manual.md
+    title: "TrueValue Analytics Platform: User Manual"
+    type: official
+    status: active
+    domain: meta
+    tags: [meta, site-management, tvpci, tvpci-r, b-chain, supply-chain, pdi, gold]
+    last_updated: "2026-05-10"
+    description: "Two-part user manual: Part A for analysts (scoring model, navigation, interpreting TVPCI/B_chain scores), Part B for developers (adding projects, propagating changes, data pipeline, PDI updates, key constraints)."
+    related_docs: [readme, skills_ref, document_registry]
+    derived: []
+
+  - doc_id: skills_ref
+    path: docs/skills.md
+    title: "Skills and Rules Reference"
+    type: official
+    status: active
+    domain: meta
+    tags: [meta, site-management]
+    last_updated: "2026-05-10"
+    description: "Human-readable reference for every AI skill and Cursor rule in this project. Single source of truth for AI tooling. Maintained automatically by the agent."
+    related_docs: [readme]
+    derived: []
+
+  - doc_id: tree
+    path: tree.md
+    title: "HTML Page Tree"
+    type: official
+    status: active
+    domain: meta
+    tags: [meta, site-management, frontend]
+    last_updated: "2026-04-01"
+    description: "Complete map of all HTML pages in the project organized by commodity hierarchy, with navigation link maps."
+    related_docs: [readme]
+    derived: []
+
+  # ── TVPCI SPECIFICATION TIER ──────────────────────────────────────────────
+
+  - doc_id: tvpci_foundation
+    path: docnav/Repos/intra/TVPCI/TVPCI_FOUNDATION.md
+    title: "TVPCI Foundation: Ground-Up Derivation"
+    type: official
+    status: active
+    domain: tvpci
+    tags: [tvpci, tvpci-r, b-chain, tholonic, constants, supply-chain, gold, recycling]
+    last_updated: "2026-05-10"
+    description: "Full first-principles derivation of the Tholonic model and TVPCI, including the gold phase map (Phases 0-7) and the canonical R_p parallel recycling structure with B_chain formula."
+    related_docs: [tvpci_foundation_intro, tvpci_foundation_simple, tvpci_explained_math, tvpci_overview, paper_2]
+    derived: []
+
+  - doc_id: tvpci_foundation_intro
+    path: docnav/Repos/intra/TVPCI/TVPCI_FOUNDATION_INTRO.md
+    title: "TVPCI Foundation: Introductory Overview"
+    type: official
+    status: active
+    domain: tvpci
+    tags: [tvpci, tholonic, constants, supply-chain, gold, recycling]
+    last_updated: "2026-04-01"
+    description: "Accessible introduction to the TVPCI framework, five-constant rationale, and stakeholder questions. Includes pi/4 equilibrium and recycling statistics."
+    related_docs: [tvpci_foundation, tvpci_foundation_simple]
+    derived: []
+
+  - doc_id: tvpci_foundation_simple
+    path: docnav/Repos/intra/TVPCI/TVPCI_FOUNDATION_SIMPLE.md
+    title: "TVPCI Foundation: Simplified Version"
+    type: official
+    status: active
+    domain: tvpci
+    tags: [tvpci, tvpci-r, tholonic, constants, supply-chain, gold, recycling]
+    last_updated: "2026-05-10"
+    description: "Simplified treatment of the TVPCI for non-technical audiences, now using R_p parallel recycling language instead of Phase 8."
+    related_docs: [tvpci_foundation, tvpci_foundation_intro]
+    derived: []
+
+  - doc_id: tvpci_explained_math
+    path: docnav/Repos/intra/TVPCI/TVPCI_EXPLAINED_MATH.md
+    title: "TVPCI: Mathematical Walkthrough"
+    type: official
+    status: active
+    domain: tvpci
+    tags: [tvpci, tholonic, constants, ndc, mathematics]
+    last_updated: "2026-04-01"
+    description: "Step-by-step mathematical derivation of the five constants and their role as TVPCI benchmarks."
+    related_docs: [tvpci_foundation, tvpci_overview]
+    derived: []
+
+  - doc_id: tvpci_overview
+    path: docnav/Repos/intra/TVPCI/TVPCI_TRUE_VALUE_PRICING_CONVERGENCE_INDEX.md
+    title: "TVPCI: Overview Document"
+    type: official
+    status: active
+    domain: tvpci
+    tags: [tvpci, supply-chain, gold, shea, ndc]
+    last_updated: "2026-04-01"
+    description: "High-level overview of the TVPCI index: formula, phase balance, transparency penalty, and synthetic gold/shea benchmarks."
+    related_docs: [tvpci_foundation, paper_2]
+    derived: []
+
+  # ── RESEARCH PAPERS ───────────────────────────────────────────────────────
+
+  - doc_id: paper_1
+    path: docnav/Research/papers/1_recursive-tholonic-five-constants.md
+    title: "Paper 1: Recursive Tholonic Five Constants"
+    type: official
+    status: active
+    domain: tholonic
+    tags: [tholonic, constants, mathematics, phi, ndc]
+    last_updated: "2026-03-01"
+    description: "Derives the five tholonic constants from binary recursive first principles."
+    related_docs: [tvpci_foundation, tvpci_explained_math]
+    derived:
+      - docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.tex
+      - docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf
+
+  - doc_id: paper_2
+    path: docnav/Research/papers/2_supply-chain-transparency-tvpci.md
+    title: "Paper 2: Supply Chain Transparency via TVPCI"
+    type: official
+    status: active
+    domain: tvpci
+    tags: [tvpci, tvpci-r, b-chain, supply-chain, gold, shea, recycling, ndc, pdi]
+    last_updated: "2026-05-10"
+    description: "Formal specification of the TVPCI framework: phase-resolved triadic scoring, balance functional, transparency penalty, R_p parallel recycling observable, B_chain formula, and tholonic role assignment. Canonical reference for the full model."
+    related_docs: [tvpci_foundation, paper_3, paper_1]
+    derived:
+      - docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.tex
+      - docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf
+
+  - doc_id: paper_3
+    path: docnav/Research/papers/3_minimal-recursive-triadic-framework.md
+    title: "Paper 3: Minimal Recursive Triadic Framework"
+    type: official
+    status: active
+    domain: tholonic
+    tags: [tholonic, ndc, constants, supply-chain, tvpci]
+    last_updated: "2026-04-01"
+    description: "Establishes the minimal recursive triadic (N-D-C) framework as the structural foundation for TVPCI and supply chain analysis."
+    related_docs: [paper_1, paper_2, tvpci_foundation]
+    derived:
+      - docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.tex
+      - docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf
+
+  - doc_id: paper_4
+    path: docnav/Research/papers/4_game-theoretic-triadic-balance.md
+    title: "Paper 4: Game-Theoretic Triadic Balance"
+    type: official
+    status: active
+    domain: tholonic
+    tags: [tholonic, ndc, tvpci, constants, mathematics]
+    last_updated: "2026-04-01"
+    description: "Game-theoretic grounding of N-D-C triadic balance; connects tholonic equilibrium to strategic stability conditions."
+    related_docs: [paper_3, tvpci_foundation]
+    derived:
+      - docnav/Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.tex
+      - docnav/Research/papers/4_game-theoretic-triadic-balance/4_game-theoretic-triadic-balance.pdf
+
+  - doc_id: paper_5
+    path: docnav/Research/papers/5_tholonic-twistor-connection.md
+    title: "Paper 5: Tholonic-Twistor Connection"
+    type: official
+    status: active
+    domain: tholonic
+    tags: [tholonic, constants, mathematics, tvpci]
+    last_updated: "2026-04-01"
+    description: "Identifies structural parallels between the tholonic convergence geometry and twistor theory."
+    related_docs: [paper_1, paper_3]
+    derived:
+      - docnav/Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.tex
+      - docnav/Research/papers/5_tholonic-twistor-connection/5_tholonic-twistor-connection.pdf
+
+  - doc_id: paper_6
+    path: docnav/Research/papers/6_qualitative-nature-integers-triadic-roles.md
+    title: "Paper 6: Qualitative Nature of Integers in Triadic Roles"
+    type: official
+    status: active
+    domain: tholonic
+    tags: [tholonic, ndc, constants, mathematics, tvpci]
+    last_updated: "2026-05-01"
+    description: "Argues that integers 1, 2, 3 carry inherent qualitative roles (N, D, C) and that the tholonic constants follow structurally from this assignment."
+    related_docs: [paper_1, paper_3, tvpci_foundation]
+    derived:
+      - docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.tex
+      - docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf
+
+  - doc_id: paper_7
+    path: docnav/Research/papers/7_cambridge-semantics-tholonic-framework.md
+    title: "Paper 7: Engineering Toward N: Cambridge Semantics as Empirical Validation of the Tholonic N-D-C Framework"
+    type: official
+    status: active
+    domain: tholonic
+    tags: [tholonic, ndc, knowledge-graph, rdf, owl, cambridge-semantics, empirical-validation]
+    last_updated: "2026-05-10"
+    description: "Shows that Cambridge Semantics independently re-discovered the tholonic N-D-C structure through two decades of production knowledge graph engineering. Ontology = D, data = C, knowledge graph = N. Bidirectional analysis: what each system offers the other. Includes May 2026 implementation status via Cognee."
+    related_docs: [paper_1, paper_2, paper_3, paper_6, cambridge_analysis]
+    derived:
+      - docnav/Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.tex
+      - docnav/Research/papers/7_cambridge-semantics-tholonic-framework/7_cambridge-semantics-tholonic-framework.pdf
+
+  # ── MODELING AND ANALYSIS ─────────────────────────────────────────────────
+
+  - doc_id: tholonic_integration
+    path: docnav/Research/modeling/THOLONIC_INTEGRATION.md
+    title: "Tholonic Integration: Supply and Value Chain Application"
+    type: support
+    status: active
+    domain: tholonic
+    tags: [tholonic, ndc, supply-chain, value-chain, tvpci, gold]
+    last_updated: "2026-04-01"
+    description: "Applies the N-D-C framework to supply chain and value chain layers; bridges tholonic theory and operational TVPCI use."
+    related_docs: [tvpci_foundation, paper_2, paper_3]
+    derived: []
+
+  - doc_id: supply_chain_rules
+    path: docnav/Research/modeling/SUPPLY_CHAIN_RULES.md
+    title: "Supply Chain Rules"
+    type: support
+    status: active
+    domain: gold
+    tags: [supply-chain, gold, ndc, tvpci]
+    last_updated: "2026-04-01"
+    description: "Operational rules governing supply chain phase definitions, custody boundaries, and data requirements."
+    related_docs: [paper_2, tvpci_overview]
+    derived: []
+
+  - doc_id: phi_sustainability_threshold
+    path: docnav/Research/modeling/PHI_SUSTAINABILITY_THRESHOLD.md
+    title: "Phi Sustainability Threshold"
+    type: support
+    status: active
+    domain: tholonic
+    tags: [phi, constants, tvpci, supply-chain]
+    last_updated: "2026-04-01"
+    description: "Analyzes the phi-derived sustainability thresholds used in TVPCI zone scoring."
+    related_docs: [tvpci_foundation, tvpci_explained_math]
+    derived: []
+
+  - doc_id: tvpci_r_integration_plan
+    path: docnav/Research/papers/latex/tvpci-r_recycling_integration_plan.tex
+    title: "TVPCI-R Recycling Chain Integration Plan"
+    type: support
+    status: active
+    domain: tvpci
+    tags: [tvpci-r, b-chain, recycling, gold, supply-chain, schema, frontend]
+    last_updated: "2026-05-01"
+    description: "Five-step integration plan for TVPCI-R: new CSV schemas, generated JSON, recycling_analysis.html page, dashboard updates, and Paper 2 Section 8.7 update. Most steps already implemented."
+    related_docs: [paper_2, gold_recycling_schema_phases, gold_recycling_schema_indicators]
+    derived: []
+
+  # ── GOLD DATA SCHEMAS ─────────────────────────────────────────────────────
+
+  - doc_id: gold_supply_chain_phases
+    path: frontend/project/gold/data/schema/supply_chain_phases.csv
+    title: "Gold Supply Chain Phases Schema"
+    type: schema
+    status: active
+    domain: gold
+    tags: [supply-chain, gold, ndc, schema]
+    last_updated: "2026-04-01"
+    description: "Canonical phase definitions for the gold supply chain (Phases 0-7): names, N/D/C roles, custodians, transparency ratings."
+    related_docs: [paper_2, tvpci_overview]
+    derived:
+      - frontend/project/gold/data/processed/gold_supply_chain_ui.json
+
+  - doc_id: gold_recycling_schema_phases
+    path: frontend/project/gold/data/schema/gold_recycling_phases.csv
+    title: "Gold Recycling Phases Schema"
+    type: schema
+    status: provisional
+    domain: gold
+    tags: [recycling, tvpci-r, gold, schema, supply-chain]
+    last_updated: "2026-05-01"
+    description: "Per-phase waste streams and omega_p weights for TVPCI-R scoring. Provisional values derived from Foran 2005 and Newmont 2024."
+    related_docs: [gold_recycling_schema_indicators, paper_2, tvpci_r_integration_plan]
+    derived:
+      - frontend/project/gold/data/processed/gold_recycling_ui.json
+
+  - doc_id: gold_recycling_schema_indicators
+    path: frontend/project/gold/data/schema/gold_recycling_indicators.csv
+    title: "Gold Recycling Indicators Schema"
+    type: schema
+    status: provisional
+    domain: gold
+    tags: [recycling, tvpci-r, gold, schema, ndc]
+    last_updated: "2026-05-01"
+    description: "N/D/C indicator dictionary for R_p scoring across all eight gold supply chain phases. Provisional."
+    related_docs: [gold_recycling_schema_phases, paper_2]
+    derived:
+      - frontend/project/gold/data/processed/gold_recycling_ui.json
+
+  - doc_id: gold_supply_chain_metrics
+    path: frontend/project/gold/data/schema/gold_supply_chain_metrics.csv
+    title: "Gold Supply Chain Metrics Schema"
+    type: schema
+    status: active
+    domain: gold
+    tags: [supply-chain, gold, ndc, schema, tvpci]
+    last_updated: "2026-04-01"
+    description: "Phase-level N/D/C metric definitions and target values for the gold supply chain TVPCI scoring."
+    related_docs: [gold_supply_chain_phases, paper_2]
+    derived: []
+
+  # ── PDI INSTRUMENT FILES ──────────────────────────────────────────────────
+
+  - doc_id: pdi_template
+    path: docnav/Repos/intra/PDI/PDI_TEMPLATE.yaml
+    title: "PDI Master Template"
+    type: official
+    status: active
+    domain: pdi
+    tags: [pdi, supply-chain, recycling, gold, shea]
+    last_updated: "2026-05-10"
+    description: "Master PDI YAML template v1.1. Adds chain_type (forward|recycling|ecosystem), primary_chain_link block, reentry_primary_phase per phase, and C5_reentry_documented in Module 4. All new instances must copy this file."
+    related_docs: [pdi_protocol, pdi_html_form, pdi_gold_primary, pdi_gold_recycling]
+    derived: []
+
+  - doc_id: pdi_protocol
+    path: docnav/Repos/intra/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md
+    title: "PDI Material-Agnostic Phase Mapping Protocol"
+    type: official
+    status: active
+    domain: pdi
+    tags: [pdi, supply-chain, recycling]
+    last_updated: "2026-05-10"
+    description: "Authoritative narrative protocol for PDI completion. Updated to include A0 chain_type question, A0b primary_chain_link (recycling only), Re-entry phase column in Module 3 table, C5 question in Module 4, and separate opacity scoring bands for recycling chains."
+    related_docs: [pdi_template, pdi_html_form]
+    derived: []
+
+  - doc_id: pdi_html_form
+    path: docnav/Repos/intra/PDI/PDI.html
+    title: "PDI HTML Form"
+    type: frontend
+    status: active
+    domain: pdi
+    tags: [pdi, supply-chain, recycling, frontend]
+    last_updated: "2026-05-10"
+    description: "Interactive HTML form for PDI completion. Updated to include chain_type radio selector (forward|recycling|ecosystem), conditional A0b primary_chain_link block, C5 opacity question (shown for recycling chains), and updated scoring logic (max 5 for recycling, max 4 for others)."
+    related_docs: [pdi_template, pdi_protocol]
+    derived: []
+
+  - doc_id: pdi_gold_primary
+    path: docnav/Repos/intra/PDI/PDI_WORKED_EXAMPLE_GOLD_SUPPLY_CHAIN.md
+    title: "PDI Worked Example: Gold Primary Supply Chain"
+    type: support
+    status: active
+    domain: pdi
+    tags: [pdi, gold, supply-chain]
+    last_updated: "2026-04-01"
+    description: "Fully completed PDI walkthrough for the primary gold supply chain (Phases 0-7). Reference example for forward chain PDI completion."
+    related_docs: [pdi_template, pdi_protocol, pdi_gold_recycling]
+    derived: []
+
+  - doc_id: pdi_gold_recycling
+    path: frontend/project/gold/data/PDI_gold_recycling_2026.yaml
+    title: "PDI: Gold Recycling Chain"
+    type: official
+    status: provisional
+    domain: pdi
+    tags: [pdi, gold, recycling, tvpci-r, supply-chain]
+    last_updated: "2026-05-10"
+    description: "First completed recycling-chain PDI instance. Documents five phases of the gold recycling chain (Collection through Re-entry Delivery), using chain_type: recycling. Phase 4 (Re-entry Delivery) carries reentry_primary_phase: [4, 5] linking back to the primary gold chain. All omega_p weights PROVISIONAL."
+    related_docs: [pdi_template, pdi_protocol, pdi_gold_primary, paper_2, gold_recycling_schema_phases]
+    derived: []
+
+  # ── GOLD FRONTEND ─────────────────────────────────────────────────────────
+
+  - doc_id: gold_sc_index
+    path: frontend/project/gold/supply_chain/index.html
+    title: "Gold Supply Chain Hub"
+    type: frontend
+    status: active
+    domain: gold
+    tags: [supply-chain, gold, tvpci, frontend]
+    last_updated: "2026-05-10"
+    description: "Navigation hub for all gold supply chain analysis pages."
+    related_docs: [gold_sc_dashboard, gold_sc_recycling]
+    derived: []
+
+  - doc_id: gold_sc_dashboard
+    path: frontend/project/gold/supply_chain/dashboard.html
+    title: "Gold Supply Chain Dashboard"
+    type: frontend
+    status: active
+    domain: gold
+    tags: [supply-chain, gold, tvpci, tvpci-r, b-chain, recycling, frontend, ndc]
+    last_updated: "2026-05-10"
+    description: "Main TVPCI dashboard: phase scores, five-constant panels, TVPCI-R and B_chain KPI cards."
+    related_docs: [gold_sc_recycling, gold_supply_chain_phases]
+    derived: []
+
+  - doc_id: gold_sc_recycling
+    path: frontend/project/gold/supply_chain/recycling_analysis.html
+    title: "Gold Recycling Analysis Page"
+    type: frontend
+    status: provisional
+    domain: gold
+    tags: [recycling, tvpci-r, b-chain, gold, frontend]
+    last_updated: "2026-05-01"
+    description: "TVPCI-R deep-dive page: per-phase R_p spider chart, waste-stream cards, interactive questionnaire worksheet, and B_chain computation."
+    related_docs: [gold_sc_dashboard, gold_recycling_schema_phases, gold_recycling_schema_indicators]
+    derived: []
+
+  - doc_id: roadmap
+    path: docs/roadmap.md
+    title: "TrueValue Analytics: Project Roadmap"
+    type: support
+    status: active
+    domain: meta
+    tags: [meta, planning, pdi, tvpci, all-projects]
+    last_updated: "2026-05-10"
+    description: "Per-project PDI and TVPCI completion status, open tasks for papers, frontend, infrastructure, and documentation. Primary planning tracker for the platform."
+    related_docs: [readme, skills_ref, document_registry]
+    derived: []
+
+  - doc_id: gold_sc_scenarios
+    path: frontend/project/gold/supply_chain/scenarios.json
+    title: "Gold Supply Chain Scenarios"
+    type: support
+    status: active
+    domain: gold
+    tags: [supply-chain, gold, tvpci, tvpci-r, b-chain, frontend]
+    last_updated: "2026-05-10"
+    description: "Scenario definitions including TVPCI, TVPCI-R, and B_chain values for baseline, regulatory, and intervention scenarios."
+    related_docs: [gold_sc_dashboard, paper_2]
+    derived: []

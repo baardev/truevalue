@@ -1,0 +1,671 @@
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\title{Engineering Toward $N$: Cambridge Semantics as Empirical Validation\\
+{\large of the Tholonic N-D-C Framework}}
+\author{Jeffrey W. Milton\\[4pt]\small Independent Researcher}
+\date{2026}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Provisional arXiv subjects:} cs.AI; cs.DB (secondary: cs.LO; math.HO)
+
+\begin{abstract}
+The tholonic framework models any coherent system as a recursive triadic
+structure in which a stable emergent state \(N\) (negotiation) arises
+from the balance of a bounding parameter \(D\) (definition) and an
+integrating parameter \(C\) (contribution). Prior papers in this series
+establish the mathematical grounding of this framework in prime
+recursion (paper 1), apply it to supply chain transparency scoring
+(paper 2), prove the structural necessity of exactly three roles (paper
+3), and examine its game-theoretic and geometric extensions (papers 4
+and 5). These applications are theoretical: the framework has been
+instantiated by design.
+
+This paper presents a different class of evidence: an independent
+empirical convergence. Cambridge Semantics, a knowledge graph company
+founded in 2007 and acquired by Altair (2024) and subsequently Siemens
+(2025), spent two decades engineering large-scale semantic data fabrics.
+Their architecture, built entirely from engineering necessity and
+validated against production deployments handling hundreds of billions
+of RDF triples, exhibits a precise structural correspondence to the
+tholonic N-D-C hierarchy across every level: ontology as \(D\), data as
+\(C\), knowledge graph as \(N\); the \(D \approx C\) balance principle
+as the discovered condition for ontology stability; opacity as a
+structural break in the parent-to-child-N chain; entity explosion as
+\(C\) outrunning \(D\); and provenance as a property of the recursive
+hierarchy rather than a metadata add-on.
+
+Cambridge Semantics discovered these structural facts without any
+knowledge of the tholonic framework. The convergence is therefore not an
+analogy constructed after the fact. It is an independent rediscovery of
+the same underlying structure by practitioners engineering toward a goal
+they could not formally name.
+
+We further show that the relationship is bidirectional: Cambridge
+Semantics' empirical methodology provides the tholonic model with a
+construction sequence (bottom-up ontology lifecycle), a philosophy of
+provisional N states, and a proof-of-concept implementation architecture
+(Cognee, as of May 2026). The paper concludes with a summary table of
+open gaps in both systems and a statement of the most important
+remaining formal problem: recursive SPARQL-based tholonic chain
+traversal at the entity level.
+\end{abstract}
+
+\section{Introduction}\label{introduction}
+
+\subsection{The problem with purely theoretical frameworks}\label{the-problem-with-purely-theoretical-frameworks}
+
+The tholonic N-D-C framework has been argued from mathematical first
+principles across five prior papers. Papers 1 through 6 of this series
+establish that the framework is internally consistent, that its
+constants emerge naturally from prime recursion, and that it maps
+coherently onto supply chain scoring, game theory, and twistor geometry.
+What these papers do not establish is whether the framework describes
+something real about how complex systems actually behave, or whether it
+is an elegant formal construction whose applicability to the world is
+limited.
+
+The standard response to this concern is empirical: find a domain where
+the framework's predictions can be tested against observed behavior.
+This paper takes a different approach. Rather than testing predictions,
+we identify an independent engineering effort that, over two decades and
+under the pressure of production failures and successes at enterprise
+scale, converged on the same structural architecture that the tholonic
+framework predicts from first principles.
+
+The convergence is not a proof. It is a form of consilience: multiple
+independent lines of evidence pointing to the same structure, where the
+independence of the sources rules out the possibility that the
+correspondence is an artifact of shared assumptions.
+
+\subsection{Cambridge Semantics as evidence}\label{cambridge-semantics-as-evidence}
+
+Cambridge Semantics was a knowledge graph company that built production
+systems for some of the most data-complex domains in enterprise
+computing: clinical trial integration across fifteen siloed research
+centers, insider trading surveillance integrating trading records with
+communications and physical access logs, pharmaceutical adverse event
+pipelines processing hundreds of thousands of reports per year. Their
+architecture, AnzoGraph and Anzo, handled tens to hundreds of billions
+of RDF triples in production with clusters benchmarked against a
+trillion triples.
+
+They discovered, through failure and iteration, that robust systems
+require three things to be in balance: a formal constraint structure
+that gives meaning (the ontology), a flow of real-world facts (the
+data), and a stable emergent synthesis of the two (the knowledge graph).
+They discovered that over-specifying the constraint structure before the
+data arrives causes the synthesis to fail. They discovered that loading
+data without adequate constraint structure produces an incoherent and
+unusable result. They discovered that the stability of the synthesis is
+always provisional, always dependent on the current state of both
+constraint and data.
+
+These are not independently motivated philosophical conclusions. They
+are engineering findings, extracted from the practical experience of
+building systems that could not be made to work any other way.
+
+\subsection{Structure of this paper}\label{structure-of-this-paper}
+
+Section 2 recaps the relevant structure of the tholonic framework.
+Section 3 describes the Cambridge Semantics architecture from primary
+sources. Section 4 develops the structural alignment in detail. Section
+5 reverses the direction and asks what Cambridge Semantics offers the
+tholonic model. Section 6 distinguishes the domains of the two systems
+and shows why they are complementary rather than competing. Section 7
+reports confirmed implementation status as of May 2026. Section 8 states
+the open problems and summarizes the contribution.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{The Tholonic Framework: Relevant Structure}\label{the-tholonic-framework-relevant-structure}
+
+The Tholonic N-D-C framework models any coherent system as a recursive
+triadic structure:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{\(N\) (Negotiation):} the stable, coherent instantiation at a
+  given level. It is not directly measured. It emerges from the balance
+  of \(D\) and \(C\). It is simultaneously the product of the level
+  above and the source for the level below.
+\item
+  \textbf{\(D\) (Definition):} constraints, limitations, boundaries, and
+  specifications. Defines what a thing IS. Internally focused.
+\item
+  \textbf{\(C\) (Contribution):} outputs, applications, connections, and
+  integrations. Defines what a thing DOES. Externally focused.
+\end{itemize}
+
+The full recursive cycle:
+
+\[\text{Parent } N \;\to\; \text{differentiates into } D \text{ and } C \;\to\; D \text{ and } C \text{ negotiate} \;\to\; \text{Child } N \text{ instantiates}\]
+
+\[\text{Child } N \;\to\; \text{becomes next Parent } N\]
+
+The sustainability principle: systems are most stable and efficient when
+\(D \approx C\). Imbalance in either direction increases energy cost and
+degrades the \(N\) state. When \(D \gg C\), the system is
+over-constrained: the negotiation space is so narrow that no real-world
+data can instantiate a valid \(N\). When \(C \gg D\), the system is
+under-constrained: data flows without sufficient definition to produce a
+coherent synthesis.
+
+The mathematical grounding: when the first three prime numbers (2, 3, 5)
+are assigned to N, D, and C respectively and the recursive model is
+applied, the fundamental constants emerge naturally: \(\pi\), \(\phi\)
+(golden ratio), \(\sqrt{2}\), \(e\), and \(\ln 2\). The framework is
+grounded in the irreducible relationships between the first primes.
+
+Paper 6 of this series shows that the assignment of roles to positions
+is not arbitrary: the cardinality-1, cardinality-2, and cardinality-3
+structures each exhibit a qualitative transition at the corresponding
+integer that is isomorphic to the \(N \to D \to C\) role transition,
+across five independent mathematical domains and independently recovered
+by Kant (Unity, Plurality, Totality), Peirce (Firstness, Secondness,
+Thirdness), and Spencer-Brown (distinction, marked state, re-entry). The
+role assignment follows from what the integers structurally are.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{The Cambridge Semantics Architecture}\label{the-cambridge-semantics-architecture}
+
+\subsection{The founding problem}\label{the-founding-problem}
+
+Cambridge Semantics was founded in 2007 by engineers who had spent years
+at IBM wrestling with a problem that defeated relational databases: how
+do you integrate radically heterogeneous enterprise data when the data
+never stops changing and you cannot predict all the questions users will
+ask?
+
+The relational database model assumes a fixed schema defined upfront. It
+fails when entity types proliferate beyond what any fixed schema can
+contain (what the founders called ``entity explosion''), when entities
+have complex subclass relationships, when data evolves continuously, and
+when users need to ask questions nobody anticipated. Their insight was
+that the relational model forces storage optimized for the machine
+rather than for actual knowledge structure.
+
+\subsection{The technical solution}\label{the-technical-solution}
+
+Their answer was the semantic knowledge graph based on W3C open
+standards.
+
+\textbf{RDF (Resource Description Framework)} represents every fact as a
+triple: subject-predicate-object. Every entity is a node. Every
+relationship is an edge. The enterprise data universe becomes a
+connected graph of triples.
+
+\textbf{OWL (Web Ontology Language)} provides the ontology: an abstract
+schema that describes what everything in the graph means. The ontology
+travels with the data, making the data self-describing independent of
+any originating application.
+
+\textbf{SPARQL} is the graph traversal query language: it lets you ask
+questions of the entire integrated fabric without knowing upfront where
+the answer lives.
+
+Sean Martin, Cambridge Semantics CTO, summarized the architecture in one
+sentence: ``The knowledge graph is the ontology with the data.''
+
+\subsection{The scale breakthrough}\label{the-scale-breakthrough}
+
+Their critical engineering achievement was AnzoGraph: a massively
+parallel, in-memory graph OLAP database. Production deployments handled
+tens to hundreds of billions of RDF triples. Major use cases included
+insider trading surveillance (30 billion triples per year with 3-year
+rolling windows), FDA drug data integration, and pharmaceutical adverse
+event pipelines (quarter-million reports per year). Altair Engineering
+acquired Cambridge Semantics in April 2024; Siemens acquired Altair in
+March 2025.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{The Structural Alignment}\label{the-structural-alignment}
+
+\subsection{The direct mapping}\label{the-direct-mapping}
+
+Sean Martin's one-sentence definition of the knowledge graph is a direct
+tholonic statement. ``The knowledge graph is the ontology with the
+data'' maps precisely to ``\(N\) is \(D\) with \(C\).''
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Cambridge Semantics
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Tholonic role
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Reason
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Ontology (OWL) & \(D\) (Definition) & Defines classes, properties,
+constraints, hierarchies: what everything IS. Does not flow. Limits,
+specifies, constrains. \\
+Data (RDF triples) & \(C\) (Contribution) & Real-world facts,
+relationships, measurements, events: what the enterprise DOES and
+PRODUCES. Flows, connects, integrates. \\
+Knowledge graph & \(N\) (Negotiation) & The emergent, stable, coherent
+synthesis. Remove the ontology and the data is meaningless. Remove the
+data and the ontology is an empty schema. \\
+\end{longtable}
+
+Cambridge Semantics discovered this empirically across two decades of
+engineering. The tholonic model names it formally.
+
+\subsection{The recursive hierarchy}\label{the-recursive-hierarchy}
+
+The tholonic model specifies that each child \(N\) becomes the parent
+\(N\) for the next level down. Cambridge Semantics built exactly this
+three-level recursive structure:
+
+\textbf{Level 1: Enterprise data fabric.} Parent \(N\) is the enterprise
+knowledge graph. \(D\) is the upper ontology (canonical business
+concepts, their definitions and relationships). \(C\) is all data flows
+from all source systems. Child \(N\) is the Graphmart: the negotiated,
+activated instance of a specific analytic domain.
+
+\textbf{Level 2: The Graphmart.} Parent \(N\) is the Graphmart itself.
+\(D\) is the data layer definitions, transformation rules, SPARQL
+integration queries, and access control policies. \(C\) is actual data
+loaded from specific sources through specific pipelines. Child \(N\) is
+the activated, queryable in-memory graph.
+
+\textbf{Level 3: The data layer.} Parent \(N\) is the data layer
+definition. \(D\) is source schema mappings, ontology mappings, step
+sequences, and validation rules. \(C\) is raw data ingested from the
+specific source system. Child \(N\) is the sub-graph contributed to the
+graphmart.
+
+Three levels of the tholonic hierarchy, all present and operating in
+Cambridge Semantics' architecture, with child \(N\) becoming parent
+\(N\) at each step down. They built this structure because it works. The
+tholonic model explains why it works.
+
+\subsubsection{\texorpdfstring{4.3 The \(D \approx C\) sustainability
+discovery}{4.3 The D \textbackslash approx C sustainability discovery}}\label{the-d-approx-c-sustainability-discovery}
+
+Cambridge Semantics' most empirically validated finding was this:
+ontologies designed before the data (\(D \gg C\)) almost always fail.
+Martin stated it directly: ``We find it's very important to maintain
+flexibility and essentially model the data you actually have, then use
+upper ontology as a kind of highway map to the concepts. You get these
+very low-level representations bubbling up out of the data and then you
+try to abstract them as much as you can.''
+
+This is the tholonic \(D \approx C\) balance principle, stated in
+engineering terms.
+
+\begin{itemize}
+\tightlist
+\item
+  When \(D \gg C\): over-specified ontology, rigid upfront schema. The
+  system becomes brittle. The \(N\) that ``emerges'' does not correspond
+  to any real stable state in the data. It is a formal constraint
+  imposed on reality rather than emerging from it.
+\item
+  When \(C \gg D\): raw data ingestion with no ontological structure.
+  The result is an unusable pile of triples with no coherent meaning.
+  \(N\) has no definition to stabilize it.
+\item
+  When \(D \approx C\): the ontology is expressive enough to give
+  meaning, flexible enough to accommodate the actual shape of real data.
+  \(N\) is stable and productive.
+\end{itemize}
+
+Cambridge Semantics' customers who succeeded followed this pattern.
+Their customers who failed tended to either over-specify ontologies
+upfront or load massive data with inadequate semantic modeling.
+
+\subsubsection{\texorpdfstring{4.4 Entity explosion as \(C\) outrunning
+\(D\)}{4.4 Entity explosion as C outrunning D}}\label{entity-explosion-as-c-outrunning-d}
+
+Cambridge Semantics identified ``entity explosion'' as the core failure
+mode of relational models: too many entity types and too many complex
+relationships for a fixed schema to contain. In tholonic terms this is
+precise: entity explosion is \(C\) outrunning \(D\). The contribution
+space (the actual complexity of real-world entities and relationships)
+grows faster than the definition structure (the relational schema) can
+classify and constrain it. The negotiation collapses because there is no
+stable \(N\) that can emerge from an overloaded \(C\) with an
+insufficient \(D\).
+
+Their solution, semantic graphs with flexible OWL ontologies, is exactly
+a \(D\) designed to expand to meet the \(C\). OWL ontologies can be
+extended with new classes and properties without breaking existing
+queries. This is \(D\) engineered for \(D \approx C\) balance, which is
+the structural reason it works where relational models fail.
+
+\subsection{Opacity as structural chain break}\label{opacity-as-structural-chain-break}
+
+Cambridge Semantics encountered many ``opaque'' domains: data sources
+they could not integrate because source system owners refused access, or
+because transformation logic was proprietary. They treated opacity as a
+practical obstacle.
+
+The tholonic framework elevates opacity to a structural finding. A phase
+where the parent-\(N\) to child-\(N\) transition cannot be traced is not
+merely an obstacle to work around. It is a structural break in the
+tholonic hierarchy, diagnostically significant in itself.
+
+Opacity occurs when \(C\) cannot be constrained by \(D\) (the data
+source refuses to be described), when \(D\) cannot be populated by \(C\)
+(the source refuses to provide data), or when the parent \(N\) governing
+the negotiation is itself inaccessible (the owning authority refuses to
+participate at all). These are structurally distinct situations that
+require structurally distinct responses, something Cambridge Semantics
+did not formally distinguish.
+
+\subsection{Provenance as hierarchical chain property}\label{provenance-as-hierarchical-chain-property}
+
+Martin identified provenance as a pressing unsolved problem: ``Keeping
+track of what was established by a human versus what was inferred, and
+which models and training data were used.'' As knowledge graphs grow
+through automated inference and LLM-based extraction, facts appear whose
+lineage is opaque.
+
+The tholonic framework solves this structurally. Because each \(N\) can
+be traced to its parent \(D\) and \(C\), and each of those to the \(N\)
+above them, provenance is not a metadata problem to be bolted on after
+the fact. It is a structural property of the hierarchy. Every triple has
+a position in the recursive chain: which ontological constraint (\(D\))
+permitted it to exist, which data flow (\(C\)) produced it, and which
+parent \(N\) authorized the negotiation space in which it emerged.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{What Cambridge Semantics Offers the Tholonic Model}\label{what-cambridge-semantics-offers-the-tholonic-model}
+
+The previous section asked how the tholonic framework could enhance
+Cambridge Semantics. This section inverts the question.
+
+\subsection{The bottom-up construction sequence}\label{the-bottom-up-construction-sequence}
+
+Cambridge Semantics discovered empirically that the correct sequence for
+building ontologies is not to define everything upfront and then match
+data to it. Start by ingesting real data, let the actual shape of that
+data define low-level concepts, and then progressively abstract those
+concepts upward toward a stable upper ontology.
+
+Translated into tholonic terms: when building a new tholonic hierarchy
+for an unfamiliar domain, do not start by defining the parent \(N\).
+Start by observing \(C\) (what is actually produced and flowing), let
+the \(D\) constraints surface from the boundaries that actually govern
+those flows, and allow the \(N\) to emerge from their negotiation. Only
+then attempt to connect that bottom-level \(N\) to a higher-level \(N\).
+
+The tholonic framework describes the structure of a hierarchy. It does
+not specify how to build one. Cambridge Semantics provides that
+construction sequence.
+
+\subsubsection{\texorpdfstring{5.2 The provisional \(N\)
+concept}{5.2 The provisional N concept}}\label{the-provisional-n-concept}
+
+AnzoGraph can load unstructured or schema-less data directly into a
+graph without pre-mapping, and then apply transformation layers on top
+to shape it into meaningful structures. This suggests that the tholonic
+model benefits from a concept of a ``provisional \(N\)'': an entity that
+appears to be a stable emergent point but has not yet had its \(D\) and
+\(C\) fully formalized. A provisional \(N\) can be treated as a working
+hypothesis, refined as more \(D\) constraints are identified and more
+\(C\) flows are observed. This allows tholonic modeling to begin before
+the structure of a domain is fully understood.
+
+\subsection{The metadata-as-data principle}\label{the-metadata-as-data-principle}
+
+Cambridge Semantics made all metadata (schemas, mappings, transformation
+rules, access policies, provenance records) into first-class citizens of
+the same graph as the data itself. The implication for the tholonic
+model: the description of the hierarchy should be IN the hierarchy
+itself. A hierarchy that requires an external document to explain its
+own structure violates the same principle that makes Cambridge
+Semantics' approach robust.
+
+\subsection{The living model philosophy}\label{the-living-model-philosophy}
+
+Cambridge Semantics concluded that a knowledge graph is never complete.
+It is a continuously evolving artifact. New \(C\) flows in. New \(D\)
+constraints are discovered. The \(N\) at any given level is always
+provisional, always subject to refinement.
+
+The tholonic model implicitly treats \(N\) as a stable resolved state.
+Cambridge Semantics challenges this framing. \(N\) is stable relative to
+the \(D\) and \(C\) present at a given moment. As \(D\) and \(C\)
+evolve, \(N\) must renegotiate. The ``stability'' of \(N\) is not
+permanence. It is coherence under current conditions. Every tholonic
+hierarchy is always in process, always a snapshot of an ongoing
+negotiation.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Domain Distinction: Why the Two Systems Are Complementary}\label{domain-distinction-why-the-two-systems-are-complementary}
+
+Despite the structural overlap, Cambridge Semantics and the tholonic
+model as applied in the cTVF project target fundamentally different
+domains.
+
+Cambridge Semantics was built to solve problems inside large
+organizations. The unit of analysis was the individual instance: a
+specific patient, a specific transaction, a specific regulatory
+submission. The knowledge graph was pointed inward: what does our
+organization know about this specific case?
+
+The cTVF application of the tholonic model operates at the phase level
+of entire supply chains across multiple custodians and jurisdictions.
+The unit of analysis is the phase: a discrete physical transformation or
+custody change in a multi-step supply chain. The relevant measures are
+physical flow rates, custody transitions, efficiency gaps across phases,
+opacity classification, and predictive modeling of end-to-end behavior.
+The question is: what is the structural integrity of this supply chain
+as a whole system, where are the stress points, and what does the
+phase-level data predict about downstream behavior?
+
+In Cambridge Semantics' deployments, a node is typically an instance.
+The graph is dense with individuals. In the cTVF model, a node is
+typically a phase-level aggregate. The graph is sparse in individuals
+but dense in structural relationships between abstract supply chain
+concepts.
+
+These are not competing applications. They are complementary. The cTVF
+tholonic model provides the phase-level structural map: where are the
+bottlenecks, which phases are opaque, what does the \(D\)-\(C\) balance
+predict about system stability. A Cambridge Semantics-style knowledge
+graph would provide the instance-level detail within any single phase:
+the specific custodians, the specific transactions, the specific
+compliance records.
+
+In tholonic terms: cTVF operates at the level of the Phase Map (child
+\(N\) at Level 1). Cambridge Semantics operates inside each individual
+phase (child \(N\) at Level 2). Both are necessary. Neither replaces the
+other.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Implementation Evidence (May 2026)}\label{implementation-evidence-may-2026}
+
+As of May 2026, the tholonic framework has a working implementation
+vehicle: Cognee, an open-source knowledge engine combining vector
+search, graph storage, and LLM context grounding. A local deployment
+extends Cognee with a Tholonic semantic layer.
+
+The Tholonic knowledge graph ontology is live under the IRI
+\texttt{http://tholonia.org/ontology/merged-kg}, declaring 590+
+\texttt{owl:Class} entries under the \texttt{thol:} prefix, merging
+three knowledge graph collections: TVF modeling, the Tholonia
+theoretical corpus, and I Ching trigram structure. Every Tholonic
+concept is a first-class RDF citizen with a stable IRI, a label, and
+graph traversal access.
+
+The Tholonic N-D-C framework has been formally expressed in OWL. A
+\texttt{tholonic\_ndc} abstract property group defines child
+\texttt{owl:ObjectProperty} entries including \texttt{has\_ndc\_role},
+\texttt{has\_n\_state}, \texttt{has\_d\_parameter},
+\texttt{has\_c\_parameter}, \texttt{has\_balance\_score},
+\texttt{has\_coupling\_ratio}, \texttt{exhibits\_self\_similarity}, and
+\texttt{recursive\_architecture}. These predicates carry formal
+semantics and subproperty hierarchies and can be reasoned over by any
+OWL-compliant tool. The \texttt{has\_balance\_score} and
+\texttt{has\_coupling\_ratio} properties create a direct hook for the
+quantitative \(D \approx C\) balance metrics: the hook exists;
+populating it with computed values is the remaining step.
+
+SPARQL is implemented at the ontology layer, querying the formal TTL
+files via rdflib and caching results in PostgreSQL. What is not yet
+implemented is SPARQL for recursive entity-level chain traversal using
+\texttt{+}/\texttt{*} property path operators. The ontology is
+well-formed and ready; a SPARQL endpoint over it would close this gap
+without changing the cache architecture.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary and Open Problems}\label{summary-and-open-problems}
+
+Cambridge Semantics built a machine for instantiating \(N\) states at
+enterprise scale, without a theory of what \(N\) is or why the machine
+works. The tholonic model provides a theory of what \(N\) is and why the
+machine works, without a production-proven implementation path. Together
+they constitute something closer to a complete system.
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2500}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cambridge Semantics Provides
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Tholonic Framework Provides
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Status (May 2026)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Formal structure & Absent (empirical only) & Present (N-D-C recursive
+hierarchy) & Implemented in OWL \\
+Mathematical grounding & Absent & Present (\(\phi\), \(\pi\), \(e\) from
+prime recursion) & Not yet wired to computed metrics \\
+Production implementation & Present (Anzo, AnzoGraph) & Absent &
+Implemented via Cognee \\
+RDF encoding of tholonics & Present (methodology) & Absent & Done: 590+
+classes, \texttt{http://tholonia.org/ontology/} \\
+OWL ontology of N-D-C & Present (methodology) & Absent & Done:
+\texttt{tholonic\_ndc} property group \\
+SPARQL query layer & Present & Absent & Partial: ontology layer done;
+entity recursive traversal not yet \\
+Balance metrics (\(D \approx C\)) & Absent & Present (principle) &
+Properties exist; computation not wired \\
+Opacity classification & Informal & Formal (structural break in chain) &
+Not yet implemented \\
+Provenance & Partially solved & Fully structural (chain traceability) &
+Partial: lineage fields present \\
+Construction sequence & Present (bottom-up lifecycle) & Absent & Adopted
+informally in KG build process \\
+Self-description & Present (metadata-as-data) & Absent & Partial:
+metadata in relational cache, not in graph \\
+Living model philosophy & Present & Absent (\(N\) treated as stable) &
+Implemented: Cognee continuously ingests \\
+Propagation rules & Absent & Present & Not yet implemented \\
+\end{longtable}
+
+The most important open formal problem identified by this analysis is
+recursive tholonic chain traversal at the entity level: given any
+entity, return all ancestors in the tholonic hierarchy up to the root
+\(N\); given a \(D\) constraint, find all entities it governs; identify
+all entities where the \(D\)-\(C\) balance score falls outside a
+specified range. These cross-cutting structural queries require the
+\texttt{+}/\texttt{*} path operators in SPARQL operating against a
+combined graph of OWL ontology and entity data. Closing this gap would
+make the tholonic hierarchy fully queryable as a formal structure rather
+than only as a cached flat triple store.
+
+A second open problem is the computation and validation of the
+\(D \approx C\) balance metric for a concrete graph domain. The formal
+hook exists. The philosophical argument for why \(\phi\) governs the
+optimal balance point in self-similar recursive systems is made in paper
+1. What is missing is an empirical study: take a production knowledge
+graph, compute the \(D\)-\(C\) balance at each level, and verify that
+the stability and query performance of the graph correlates with
+proximity to the predicted balance point.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{References}\label{references}
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Milton 2026a}: Milton, J. W. ``Recursive Tholonic Five
+  Constants.'' 2026. (Paper 1 of this series.)
+\item
+  \textbf{Milton 2026b}: Milton, J. W. ``Supply Chain Transparency via
+  Phase-resolved Classification and Indexing (TVPCI).'' 2026. (Paper 2
+  of this series.)
+\item
+  \textbf{Milton 2026c}: Milton, J. W. ``Minimal Recursive Triadic
+  Framework.'' 2026. (Paper 3 of this series.)
+\item
+  \textbf{Milton 2026d}: Milton, J. W. ``Game-Theoretic Triadic
+  Balance.'' 2026. (Paper 4 of this series.)
+\item
+  \textbf{Milton 2026e}: Milton, J. W. ``Tholonic Twistor Connection.''
+  2026. (Paper 5 of this series.)
+\item
+  \textbf{Milton 2026f}: Milton, J. W. ``The Qualitative Nature of One,
+  Two, and Three: Structural Role Assignment in Minimal Recursive
+  Systems.'' 2026.
+  (\texttt{docnav/Research/papers/6\_qualitative-nature-integers-triadic-roles/})
+\item
+  \textbf{Kant 1781}: Kant, I. \emph{Critique of Pure Reason.}
+  Translated by N. K. Smith. Macmillan, 1929 {[}1781{]}. (A80/B106:
+  Table of categories; categories of quantity: Unity, Plurality,
+  Totality.)
+\item
+  \textbf{Peirce 1931}: Peirce, C. S. \emph{Collected Papers of Charles
+  Sanders Peirce.} Vol. 1. Harvard University Press, 1931. (§§300-353:
+  Firstness, Secondness, Thirdness; §346: formal irreducibility of
+  Thirdness.)
+\item
+  \textbf{Spencer-Brown 1969}: Spencer-Brown, G. \emph{Laws of Form.}
+  Allen and Unwin, 1969.
+\item
+  \textbf{Martin 2022}: Martin, S. ``Cambridge Semantics CTO
+  Interview.'' Earley AI Podcast, 2022.
+\item
+  \textbf{Szekely 2020}: Szekely, B. ``Can Graph Integrate Data At
+  Scale?'' Medium, 2020.
+\end{itemize}
+
+\end{document}

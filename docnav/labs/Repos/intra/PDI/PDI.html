@@ -384,6 +384,23 @@ textarea { resize: vertical; min-height: 70px; }
     <input id="dateField" type="text" placeholder="Date">
     <input id="sourcesField" type="text" placeholder="Primary sources consulted">
   </div>
+  <div style="margin-top:1rem;">
+    <div class="material-field-label">A0. Chain Type</div>
+    <div style="display:flex;gap:0.75rem;flex-wrap:wrap;margin-top:0.35rem;">
+      <label style="display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.85);font-size:0.9rem;cursor:pointer;">
+        <input type="radio" name="chainType" id="ct-forward" value="forward" checked onchange="updateChainType()"> Forward</label>
+      <label style="display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.85);font-size:0.9rem;cursor:pointer;">
+        <input type="radio" name="chainType" id="ct-recycling" value="recycling" onchange="updateChainType()"> Recycling (inverse)</label>
+      <label style="display:flex;align-items:center;gap:0.4rem;color:rgba(255,255,255,0.85);font-size:0.9rem;cursor:pointer;">
+        <input type="radio" name="chainType" id="ct-ecosystem" value="ecosystem" onchange="updateChainType()"> Ecosystem</label>
+    </div>
+  </div>
+  <div id="primaryChainLinkBlock" style="display:none;margin-top:0.85rem;background:rgba(255,255,255,0.08);border-radius:8px;padding:0.75rem 1rem;">
+    <div class="material-field-label" style="margin-bottom:0.5rem;">A0b. Primary Chain Link (recycling chains only)</div>
+    <input id="primaryChainMaterial" type="text" class="material-input" placeholder="Primary chain material (e.g. gold)" style="margin-bottom:0.5rem;">
+    <input id="reentryPhases" type="text" class="material-input" placeholder="Re-entry phase number(s) in primary chain (e.g. 4, 5)" style="margin-bottom:0.5rem;">
+    <input id="reentryNotes" type="text" class="material-input" placeholder="Physical form and condition of material at re-entry">
+  </div>
 </div>
 
 <!-- ═══ MODULE 1 ═══════════════════════════════ -->
@@ -1072,9 +1089,13 @@ function addOpacityRecord() {
         'Could an independent analyst, auditor, or regulator observe or confirm that the stated transformation is occurring and producing the stated output?')}
       ${buildOpacityQuestion(id,4,'C4','Can the child-N output of this phase — the handoff to the next phase — be independently confirmed?',
         'Is there a way to verify from outside this phase that the output is the actual quantity and form being transferred?')}
+      <div id="c5-block-${id}" style="display:none;">
+        ${buildOpacityQuestion(id,5,'C5','(Recycling chains only) Is the re-entry of secondary material into the primary chain documented with a traceable record?',
+          'At the re-entry phase identified in A0b, is there a document, assay certificate, custody record, or registry entry confirming secondary material entered the primary chain?')}
+      </div>
       <div class="opacity-score-box">
         <div>
-          <div style="font-size:0.8rem;color:var(--muted);">Yes count (0–4)</div>
+          <div style="font-size:0.8rem;color:var(--muted);" id="oscore-max-label-${id}">Yes count (0–4)</div>
           <div style="font-size:1.75rem;font-weight:800;color:var(--navy);" id="oscore-${id}">—</div>
         </div>
         <div>
@@ -1125,17 +1146,47 @@ function selectOpacityRadio(label, opId, qNum, value) {
   updateOpacityScore(opId);
 }
 
+function getChainType() {
+  return document.querySelector('input[name="chainType"]:checked')?.value || 'forward';
+}
+
+function updateChainType() {
+  const ct = getChainType();
+  const linkBlock = document.getElementById('primaryChainLinkBlock');
+  if (linkBlock) linkBlock.style.display = ct === 'recycling' ? 'block' : 'none';
+  document.querySelectorAll('[id^="c5-block-"]').forEach(el => {
+    el.style.display = ct === 'recycling' ? 'block' : 'none';
+  });
+  document.querySelectorAll('[id^="oscore-max-label-"]').forEach(el => {
+    el.textContent = ct === 'recycling' ? 'Yes count (0–5)' : 'Yes count (0–4)';
+  });
+  document.querySelectorAll('[id^="oscore-"]').forEach(el => {
+    if (!el.id.startsWith('oscore-label-') && !el.id.startsWith('oscore-max-')) {
+      const opId = el.id.replace('oscore-', '');
+      if (opId && !isNaN(opId)) updateOpacityScore(parseInt(opId));
+    }
+  });
+}
+
 function updateOpacityScore(opId) {
+  const isRecycling = getChainType() === 'recycling';
+  const maxQ = isRecycling ? 5 : 4;
   let score = 0;
-  for (let q = 1; q <= 4; q++) {
+  for (let q = 1; q <= maxQ; q++) {
     if (document.querySelector(`[name="o${opId}-c${q}"]:checked`)?.value === 'yes') score++;
   }
   const scoreEl = document.getElementById(`oscore-${opId}`);
   const labelEl = document.getElementById(`oscore-label-${opId}`);
   const badgeEl = document.getElementById(`trans-badge-${opId}`);
   if (scoreEl) scoreEl.textContent = score;
-  let label = score === 4 ? 'High' : score >= 2 ? 'Medium' : 'Low';
-  let cls = score === 4 ? 'trans-high' : score >= 2 ? 'trans-medium' : 'trans-low';
+  let label, cls;
+  if (isRecycling) {
+    label = score === 5 ? 'High' : score >= 3 ? 'Medium' : 'Low';
+    cls   = score === 5 ? 'trans-high' : score >= 3 ? 'trans-medium' : 'trans-low';
+  } else {
+    label = score === 4 ? 'High' : score >= 2 ? 'Medium' : 'Low';
+    cls   = score === 4 ? 'trans-high' : score >= 2 ? 'trans-medium' : 'trans-low';
+  }
   if (labelEl) { labelEl.textContent = label; labelEl.className = `transparency-badge ${cls}`; }
   if (badgeEl) { badgeEl.textContent = label; badgeEl.className = `transparency-badge ${cls}`; }
 }

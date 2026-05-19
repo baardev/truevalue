@@ -1,0 +1,34 @@
+[Unit]
+Description=TrueValue Analytics static web server (HTTP + HTTPS)
+Documentation=https://github.com/jw/tv
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=jw
+Group=jw
+WorkingDirectory=/home/jw/src/tv
+
+# Serve HTTPS on 8443 and redirect HTTP 8000 -> 8443.
+# Adjust --http / --https / --bind as needed.
+ExecStart=/usr/bin/python3 /home/jw/src/tv/scripts/serve.py \
+    --bind 127.0.0.1 \
+    --http  8000 \
+    --https 8443
+
+# Clean restart on unexpected exit.
+Restart=on-failure
+RestartSec=5s
+
+# Write logs to the journal (view with: journalctl -u tv-web -f).
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=tv-web
+
+# Harden the service slightly.
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target

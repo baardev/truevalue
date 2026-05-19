@@ -441,21 +441,21 @@ function buildSVG(chains) {
     let svg = `<svg viewBox="-55 -35 510 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;max-width:400px;overflow:visible;">`;
 
     // Background color zones — drawn as explicit rings using evenodd fill rule.
-    // Outer ring (70–100%): very light cyan
-    svg += `<path d="${pentagonPath(R, 1.0)} ${pentagonPath(R, 0.70)}" fill="#e0f7fa" fill-rule="evenodd" stroke="none"/>`;
-    // Middle ring (40–70%): medium cyan
-    svg += `<path d="${pentagonPath(R, 0.70)} ${pentagonPath(R, 0.40)}" fill="#80deea" fill-rule="evenodd" stroke="none"/>`;
-    // Inner zone (0–40%): dark cyan
-    svg += `<path d="${pentagonPath(R, 0.40)}" fill="#00838f" stroke="none"/>`;
+    // Outer ring (61.8–100%, coherent): very light cyan
+    svg += `<path d="${pentagonPath(R, 1.0)} ${pentagonPath(R, 0.618)}" fill="#e0f7fa" fill-rule="evenodd" stroke="none"/>`;
+    // Middle ring (38.2–61.8%, failure): light orange-red
+    svg += `<path d="${pentagonPath(R, 0.618)} ${pentagonPath(R, 0.382)}" fill="#ffccbc" fill-rule="evenodd" stroke="none"/>`;
+    // Inner zone (<38.2%, breakdown): dark red
+    svg += `<path d="${pentagonPath(R, 0.382)}" fill="#b71c1c" stroke="none"/>`;
 
     // Grid rings (concentric pentagons at 25, 50, 75, 100)
     [0.25, 0.50, 0.75, 1.0].forEach(s => {
         svg += `<path d="${pentagonPath(R, s)}" fill="none" stroke="rgba(0,0,0,0.12)" stroke-width="${s===1?1.5:0.8}"/>`;
     });
 
-    // Zone boundary lines (40% and 70%)
-    svg += `<path d="${pentagonPath(R, 0.40)}" fill="none" stroke="rgba(255,255,255,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
-    svg += `<path d="${pentagonPath(R, 0.70)}" fill="none" stroke="rgba(0,96,100,0.5)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+    // Zone boundary lines (38.2% and 61.8%)
+    svg += `<path d="${pentagonPath(R, 0.382)}" fill="none" stroke="rgba(239,83,80,0.55)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
+    svg += `<path d="${pentagonPath(R, 0.618)}" fill="none" stroke="rgba(62,207,142,0.50)" stroke-width="1.5" stroke-dasharray="4,3"/>`;
 
     // Axis lines — all five always shown; zero-score axes rendered dimmer
     AXES.forEach(a => {

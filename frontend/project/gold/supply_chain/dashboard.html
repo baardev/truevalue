@@ -50,10 +50,18 @@
         
         .score-cards {
             display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            padding: 30px;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 16px;
+            padding: 24px 30px;
             background: #f8f9fa;
+        }
+        .card.tvpcir-card  { border-top: 3px solid #28a745; }
+        .card.bchain-card  { border-top: 3px solid #c9922a; }
+        .card.provisional-card .card-label::after {
+            content: ' [PROV]';
+            font-size: 9px;
+            color: #ffc107;
+            font-weight: 700;
         }
         
         .card {
@@ -464,6 +472,22 @@
 </div>
 <div class="card-status" id="cs-energy">🌱 Transitioning</div>
 </div>
+<div class="card tvpcir-card provisional-card" id="card-tvpcir">
+<div class="card-label">TVPCI-R (Ecological Return)</div>
+<div class="card-value" id="cv-tvpcir">—</div>
+<div class="card-bar">
+<div class="card-bar-fill" id="cb-tvpcir" style="background: #28a745;"></div>
+</div>
+<div class="card-status" id="cs-tvpcir">Loading…</div>
+</div>
+<div class="card bchain-card provisional-card" id="card-bchain">
+<div class="card-label">B_chain (Holon Balance)</div>
+<div class="card-value" id="cv-bchain">—</div>
+<div class="card-bar">
+<div class="card-bar-fill" id="cb-bchain" style="background: #c9922a;"></div>
+</div>
+<div class="card-status" id="cs-bchain">Loading…</div>
+</div>
 </div>
 <div class="main-content">
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
@@ -474,7 +498,7 @@
 <!-- Dynamically rendered by renderPhases() -->
 </div>
 <div id="recycling-section" style="margin-top: 40px; padding: 20px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #17a2b8;">
-<h3 style="font-size: 16px; color: #2c3e50; margin-bottom: 10px;">♻️ Circular Economy: Phase 8 (Recycling)</h3>
+<h3 style="font-size: 16px; color: #2c3e50; margin-bottom: 10px;">♻️ Ecological Return Chain (TVPCI-R) <a href="recycling_analysis.html" style="font-size:13px;font-weight:400;color:#17a2b8;margin-left:12px;">Full Analysis →</a></h3>
 <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 15px;">
 <div class="phase" id="phase8-box" onclick="showPhaseDetail(8)">
 <!-- Dynamically rendered -->
@@ -582,10 +606,29 @@
 </div>
 <script>
         // ── Data-driven: all phase data loaded from JSON at startup ──
-        const DATA_URL = '/frontend/project/gold/data/processed/gold_supply_chain_ui.json';
+        const DATA_URL      = '/frontend/project/gold/data/processed/gold_supply_chain_ui.json';
+        const RECYCLING_URL = '/frontend/project/gold/data/processed/gold_recycling_ui.json';
         let UI_DATA = null;         // full JSON payload
+        let RD      = null;         // recycling JSON payload
         let currentEntity = 'synthetic';
         let phaseData = {};         // merged view for current entity
+
+        // ── Phi-derived zone thresholds ──────────────────────────────────────────
+        const PHI_SC = (1 + Math.sqrt(5)) / 2;
+        const ZONE_FAILURE_SC = 100 * (1 - 1 / PHI_SC); // ~38.2
+        const ZONE_STRESSED_SC = 100 / PHI_SC;           // ~61.8
+
+        function bExpSC(d, c) {
+            const imb = Math.abs(d - c);
+            const den = Math.max(d, c, 1e-6);
+            return 100 * Math.exp(-2 * imb / den);
+        }
+        function zoneStatusSC(score) {
+            if (score >= 80)               return 'Coherent ⭐⭐⭐⭐⭐';
+            if (score >= ZONE_STRESSED_SC) return 'Stressed ⭐⭐⭐';
+            if (score >= ZONE_FAILURE_SC)  return 'Failure ⭐⭐';
+            return 'Breakdown ⭐';
+        }
 
         // ── Phase metadata (names) ─────────────────────────────────────────────────
         const PHASE_NAMES = {
@@ -647,6 +690,27 @@
                     cardEl.className = 'card ' + d.cls;
                 }
             });
+
+            // TVPCI-R and B_chain from recycling JSON (scenario-aware if available)
+            if (RD) {
+                const scenKey = Object.keys(SCENARIOS).find(k => SCENARIOS[k] === currentScenario) || 'current';
+                const rscen = RD.scenarios && RD.scenarios[scenKey] ? RD.scenarios[scenKey] : RD.chain.synthetic;
+                const tvpcir = rscen.tvpci_r;
+                const tvpci  = rscen.tvpci;
+                const bchain = bExpSC(tvpci, tvpcir);
+
+                const set = (id, val, pct, status) => {
+                    const vEl = document.getElementById('cv-' + id);
+                    const bEl = document.getElementById('cb-' + id);
+                    const sEl = document.getElementById('cs-' + id);
+                    if (vEl) vEl.textContent = typeof val === 'number' ? val.toFixed(1) : val;
+                    if (bEl) bEl.style.width = pct + '%';
+                    if (sEl) sEl.textContent = status;
+                };
+
+                set('tvpcir', tvpcir, tvpcir, zoneStatusSC(tvpcir));
+                set('bchain',  bchain, bchain,  zoneStatusSC(bchain));
+            }
         }
 
         function renderPhases() {
@@ -671,18 +735,31 @@
                     ${i < ps.length - 1 ? '<div class="flow-arrow">→</div>' : ''}`;
             });
 
-            // Phase 8 recycling box
+            // Phase 8 recycling box (now shows TVPCI-R summary if recycling data loaded)
             const p8box = document.getElementById('phase8-box');
             if (p8box) {
                 const p8 = currentScenario.p8;
                 const cls8 = scoreClass(p8.score);
-                p8box.innerHTML = `
-                    <div class="phase-box ${cls8}" style="width:80px;height:80px;">
-                        <div class="phase-id">Phase 8</div>
-                        <div class="phase-score">${p8.score}</div>
-                        <div class="phase-n">N: ${p8.N}</div>
-                    </div>
-                    <div class="phase-name">Recycling</div>`;
+                if (RD) {
+                    const chain = RD.chain.synthetic;
+                    const tvpcir = chain.tvpci_r.toFixed(1);
+                    const bchain  = bExpSC(chain.tvpci, chain.tvpci_r).toFixed(1);
+                    p8box.innerHTML = `
+                        <div class="phase-box ${cls8}" style="width:80px;height:80px;">
+                            <div class="phase-id" style="font-size:9px;">TVPCI-R</div>
+                            <div class="phase-score">${tvpcir}</div>
+                            <div class="phase-n">B: ${bchain}</div>
+                        </div>
+                        <div class="phase-name"><a href="recycling_analysis.html" style="color:inherit;text-decoration:underline dotted;">Ecological Return</a></div>`;
+                } else {
+                    p8box.innerHTML = `
+                        <div class="phase-box ${cls8}" style="width:80px;height:80px;">
+                            <div class="phase-id">Phase 8</div>
+                            <div class="phase-score">${p8.score}</div>
+                            <div class="phase-n">N: ${p8.N}</div>
+                        </div>
+                        <div class="phase-name">Recycling</div>`;
+                }
             }
 
             // Sync phaseData scores with scenario for the detail modal
@@ -854,9 +931,10 @@
         // ── Bootstrap: fetch JSON, then render ──
         async function init() {
             try {
-                const [uiRes, scenRes] = await Promise.all([
-                    fetch(DATA_URL, { cache: 'no-store' }),
-                    fetch('scenarios.json', { cache: 'no-store' })
+                const [uiRes, scenRes, rdRes] = await Promise.all([
+                    fetch(DATA_URL,      { cache: 'no-store' }),
+                    fetch('scenarios.json', { cache: 'no-store' }),
+                    fetch(RECYCLING_URL, { cache: 'no-store' })
                 ]);
                 if (!uiRes.ok) throw new Error(`HTTP ${uiRes.status} loading ${DATA_URL}`);
                 UI_DATA = await uiRes.json();
@@ -869,6 +947,12 @@
                     currentScenario = SCENARIOS.current;
                 } else {
                     console.warn('[gold-sc] scenarios.json not found — scenario bar will be empty');
+                }
+                if (rdRes.ok) {
+                    RD = await rdRes.json();
+                    console.info('[gold-sc] Loaded recycling data (provisional)');
+                } else {
+                    console.warn('[gold-sc] gold_recycling_ui.json not found — recycling cards will be empty');
                 }
             } catch (err) {
                 console.error('[gold-sc] Failed to load UI data, falling back to empty dataset:', err);

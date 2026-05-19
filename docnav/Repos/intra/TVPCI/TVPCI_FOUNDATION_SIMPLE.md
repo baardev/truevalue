@@ -172,9 +172,11 @@ compensating the people whose labour created the chain. $\pi/4$ measures whether
 closes.
 
 A chain where terminal-market value does not return to primary producers has a broken cycle.
-The gold chain's Phase 8 (recycling and recovery) is the physical expression of this closure
-mechanism: gold already in the market re-enters the refining process, reducing the burden on
-primary extraction. Measuring whether that cycle is structurally complete is the $\pi/4$ question.
+The parallel recycling observable $R_p$ is the physical expression of this closure mechanism:
+each of the eight primary chain phases carries an $R_p$ score measuring how visible and managed
+its waste outputs and ecological return flows are. Aggregated as $\text{TVPCI-R}$ and combined
+with the primary TVPCI into $B_\text{chain}$, it measures whether the material and value cycles
+close. This is the $\pi/4$ question made quantitative.
 
 ---
 
