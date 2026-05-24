@@ -1,0 +1,54 @@
+id: tholonic_regularizer_training
+name: Tholonic Balance Regularizer Training Experiment
+parent: tholonic_ai
+type: experimental
+description: >
+  Training experiment that adds the tholonic balance regularizer (paper Section 11.2)
+  to a standard training objective. Penalizes D-C imbalance at every layer simultaneously.
+  Matched pairs (with / without regularizer) trained from the same random seed and
+  initialization. Tests whether tholonic structural constraint produces faster convergence,
+  better OOD robustness, and reduced specification gaming compared to an unregularized baseline.
+regularizer:
+  formula: "L_total = L_task + lambda * sum_l |sigma_D_l - 0.5 * sigma_C_l|^2"
+  target_ratio: "1:2 (D:C) — mirrors virial theorem equilibrium condition"
+  sigma_D_l: "RMS activation magnitude of D-sublayer outputs at layer l (normalization sublayer)"
+  sigma_C_l: "RMS activation magnitude of C-sublayer outputs at layer l (attention/MLP sublayer)"
+  lambda: 0.01
+  note: >
+    The 1:2 D:C target ratio is motivated by the virial theorem (paper §11.2): for a bound
+    physical system in equilibrium, <T> = -1/2 <V>, where T is kinetic energy (C-role) and V
+    is potential energy (D-role). This is identified as the universal tholonic equilibrium
+    condition. The specific value of lambda is a hyperparameter requiring tuning.
+predictions_tested:
+  - paper_section: "12 (row 2)"
+    text: "Tholonically-balanced networks converge faster than matched unbalanced networks"
+    test: "Fewer training steps to reach target validation loss on CIFAR-100 and WikiText-103"
+    null: "Tholonic balance is not a useful training signal"
+  - paper_section: "12 (row 3)"
+    text: "Optimal depth approximates log_phi(H_0 / H_L)"
+    test: "Vary depth for fixed-width models; compare empirical optimum to predicted depth"
+    null: "Depth optimization is not predictable from entropy arguments"
+  - paper_section: "12 (row 4)"
+    text: "Tholonically-constrained networks are more robust to distributional shift"
+    test: "Compare OOD performance on WILDS benchmark — smaller OOD gap for tholonic networks"
+    null: "D-C balance has no bearing on distributional robustness"
+  - paper_section: "12 (row 5)"
+    text: "Reward hacking is reduced in tholonically-structured RLHF"
+    test: "Train RLHF models with/without tholonic constraint; measure reward vs. preference alignment"
+    null: "Structural D does not reduce specification gaming"
+design:
+  architecture: small transformer (6 layers, 256 hidden dim)
+  baseline: standard cross-entropy only
+  treatment: cross-entropy + L_tholonic regularizer
+  benchmarks:
+    - CIFAR-100 (image classification)
+    - WikiText-103 (language modeling)
+    - WILDS (OOD robustness)
+  n_seeds: 5
+  batch_size: 128
+  optimizer: AdamW
+  learning_rate: 3.0e-4
+  max_steps: 50000
+status: design_complete
+implementation_status: pending
+created: "2026-05-23"

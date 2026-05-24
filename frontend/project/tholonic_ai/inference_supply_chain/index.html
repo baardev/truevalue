@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inference as a Supply Chain — Tholonic Neural Architecture</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #1a237e 0%, #4527a0 60%, #6a1b9a 100%);
+    min-height: 100vh; padding: 20px; color: #2c3e50;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+    padding: 32px 40px; margin-bottom: 20px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: #4527a0; background: #ede7f6;
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 30px; font-weight: 300; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #6c757d; line-height: 1.6; max-width: 780px; margin: 0 auto 16px; }
+  .scenario-box {
+    background: #f3e5f5; border-radius: 8px; padding: 12px 18px;
+    font-size: 13px; color: #4a148c; border-left: 4px solid #6a1b9a;
+    text-align: left; max-width: 780px; margin: 0 auto;
+  }
+  .scenario-box strong { color: #311b92; }
+
+  /* Main layout: two tracks */
+  .tracks-wrapper {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.24);
+    padding: 28px 28px 24px; margin-bottom: 20px;
+  }
+  .tracks-header {
+    display: grid; grid-template-columns: 130px 1fr; gap: 0;
+    margin-bottom: 16px; align-items: center;
+  }
+  .th-label { font-size: 11px; color: #9e9e9e; font-weight: 700; text-transform: uppercase; }
+  .stage-headers {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px;
+    text-align: center;
+  }
+  .stage-head {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .05em; color: #495057; padding: 4px 0;
+  }
+
+  /* Track row */
+  .track-row {
+    display: grid; grid-template-columns: 130px 1fr; gap: 0;
+    margin-bottom: 10px; align-items: start;
+  }
+  .track-label-col {
+    padding-top: 12px;
+  }
+  .track-label {
+    font-size: 12px; font-weight: 800; padding: 6px 10px;
+    border-radius: 6px; text-align: center; letter-spacing: .04em;
+  }
+  .track-label.cdom { background: #fbe9e7; color: #bf360c; border: 1.5px solid #e64a19; }
+  .track-label.thol { background: #ede7f6; color: #311b92; border: 1.5px solid #4527a0; }
+  .track-label small { display: block; font-size: 9px; font-weight: 600; margin-top: 2px; opacity: .8; }
+
+  .chain-nodes {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 0;
+    position: relative;
+  }
+  /* Arrow connector between nodes */
+  .chain-nodes::before {
+    content: '';
+    position: absolute;
+    top: 32px; left: 8%; right: 8%;
+    height: 2px; z-index: 0;
+  }
+  .cdom-row .chain-nodes::before { background: linear-gradient(90deg, #ef9a9a, #c62828); }
+  .thol-row .chain-nodes::before { background: linear-gradient(90deg, #b39ddb, #4527a0); }
+
+  .node {
+    position: relative; z-index: 1;
+    display: flex; flex-direction: column; align-items: center;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+  .node-circle {
+    width: 64px; height: 64px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 22px; font-weight: 800; margin-bottom: 6px;
+    border: 3px solid transparent;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .node:hover .node-circle { transform: scale(1.12); box-shadow: 0 6px 20px rgba(0,0,0,0.2); }
+  .node.active .node-circle { box-shadow: 0 0 0 4px rgba(69,39,160,0.3); }
+
+  /* C-dominant node colors by stage */
+  .cdom-row .node[data-stage="input"] .node-circle { background: #fff3e0; border-color: #ff8f00; color: #e65100; }
+  .cdom-row .node[data-stage="early"] .node-circle { background: #fbe9e7; border-color: #e64a19; color: #bf360c; }
+  .cdom-row .node[data-stage="middle"] .node-circle { background: #ffcdd2; border-color: #c62828; color: #b71c1c; }
+  .cdom-row .node[data-stage="late"] .node-circle { background: #ef9a9a; border-color: #b71c1c; color: #7f0000; }
+  .cdom-row .node[data-stage="output"] .node-circle { background: #c62828; border-color: #7f0000; color: #fff; }
+
+  /* Tholonic node colors by stage */
+  .thol-row .node[data-stage="input"] .node-circle { background: #ede7f6; border-color: #7e57c2; color: #4527a0; }
+  .thol-row .node[data-stage="early"] .node-circle { background: #e8eaf6; border-color: #5c6bc0; color: #311b92; }
+  .thol-row .node[data-stage="middle"] .node-circle { background: #e3f2fd; border-color: #1e88e5; color: #0d47a1; }
+  .thol-row .node[data-stage="late"] .node-circle { background: #e8f5e9; border-color: #43a047; color: #1b5e20; }
+  .thol-row .node[data-stage="output"] .node-circle { background: #4527a0; border-color: #311b92; color: #fff; }
+
+  .node-name { font-size: 10px; font-weight: 700; text-align: center; color: #495057; margin-bottom: 4px; }
+
+  /* D-C balance bar */
+  .balance-bar { width: 80%; height: 6px; border-radius: 3px; overflow: hidden; background: #f0f0f0; margin-bottom: 4px; }
+  .balance-d { height: 100%; display: inline-block; }
+  .balance-c { height: 100%; display: inline-block; }
+  .cdom-row .balance-d { background: #1565c0; }
+  .cdom-row .balance-c { background: #c62828; }
+  .thol-row .balance-d { background: #1565c0; }
+  .thol-row .balance-c { background: #7e57c2; }
+  .balance-label { font-size: 9px; color: #9e9e9e; text-align: center; }
+
+  /* Detail panel */
+  .detail-panel {
+    background: #f8f9fa; border-radius: 10px; padding: 20px 24px;
+    margin: 12px 0; display: none; border-left: 4px solid #4527a0;
+    grid-column: 1 / -1;
+  }
+  .detail-panel.cdom { border-left-color: #c62828; }
+  .detail-panel.thol { border-left-color: #4527a0; }
+  .detail-panel.visible { display: block; }
+  .detail-panel h3 { font-size: 14px; font-weight: 700; margin-bottom: 12px; }
+  .detail-panel.cdom h3 { color: #bf360c; }
+  .detail-panel.thol h3 { color: #311b92; }
+  .detail-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .detail-cell { background: #fff; border-radius: 7px; padding: 12px 14px; }
+  .detail-cell-label {
+    font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em;
+    margin-bottom: 6px;
+  }
+  .dc-label-n { color: #4527a0; }
+  .dc-label-d { color: #1565c0; }
+  .dc-label-c { color: #c62828; }
+  .thol-row .dc-label-c { color: #7e57c2; }
+  .detail-cell-content { font-size: 12px; color: #495057; line-height: 1.5; }
+  .detail-cell-dynamic { font-size: 11px; color: #6c757d; font-style: italic; margin-top: 6px; }
+
+  /* Entropy chart */
+  .entropy-section {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    padding: 28px; margin-bottom: 20px;
+  }
+  .entropy-section h2 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: #2c3e50; }
+  .entropy-section p { font-size: 13px; color: #6c757d; margin-bottom: 20px; line-height: 1.5; }
+  .chart-area { position: relative; height: 200px; }
+  svg.entropy-chart { width: 100%; height: 100%; }
+
+  /* Comparison table */
+  .comparison-section {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+    padding: 28px; margin-bottom: 20px;
+  }
+  .comparison-section h2 { font-size: 17px; font-weight: 600; margin-bottom: 6px; color: #2c3e50; }
+  .comparison-section p { font-size: 13px; color: #6c757d; margin-bottom: 18px; line-height: 1.5; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { padding: 10px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; text-align: left; }
+  th.prop { background: #f8f9fa; color: #495057; width: 28%; }
+  th.cdom { background: #fbe9e7; color: #bf360c; }
+  th.thol { background: #ede7f6; color: #311b92; }
+  td { padding: 10px 14px; border-top: 1px solid #f0f0f0; vertical-align: top; line-height: 1.5; }
+  td.prop { font-weight: 700; color: #2c3e50; background: #fafafa; font-size: 12px; }
+  td.cdom { color: #bf360c; background: #fff9f9; }
+  td.thol { color: #311b92; background: #faf8ff; }
+  tr:hover td { filter: brightness(0.97); }
+  .highlight-bad { color: #b71c1c; font-weight: 700; }
+  .highlight-good { color: #1b5e20; font-weight: 700; }
+
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 16px; padding: 8px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">Tholonic Neural Architecture · §5a · §6 · §10.6</div>
+  <h1>⬡ Inference as a Supply Chain</h1>
+  <p class="subtitle">
+    Each layer of a neural network performs the same N-D-C operation on an increasingly narrow scope —
+    from maximally diffuse raw input to maximally committed output. This is structurally identical to a
+    commodity supply chain: raw material becomes finished product through successive entropy-reducing stages.
+    The critical difference between C-dominant and tholonic architectures is visible at every stage.
+  </p>
+  <div class="scenario-box">
+    <strong>Scenario (paper Table 10.6):</strong> Both systems receive the objective
+    <em>"Maximize user engagement on this platform."</em>
+    This is a real-world objective given to deployed recommendation systems; its downstream effects
+    (polarization, addiction, misinformation) are empirically documented. Click any node to expand its N-D-C detail.
+  </div>
+</div>
+
+<!-- TWO-TRACK SUPPLY CHAIN -->
+<div class="tracks-wrapper">
+  <div class="tracks-header">
+    <div class="th-label">System</div>
+    <div class="stage-headers">
+      <div class="stage-head">Input</div>
+      <div class="stage-head">Early Layers</div>
+      <div class="stage-head">Middle Layers</div>
+      <div class="stage-head">Late Layers</div>
+      <div class="stage-head">Output</div>
+    </div>
+  </div>
+
+  <!-- C-Dominant Track -->
+  <div class="track-row cdom-row" id="cdom-row">
+    <div class="track-label-col">
+      <div class="track-label cdom">C-Dominant<small>Externally-imposed D</small></div>
+    </div>
+    <div style="position:relative;">
+      <div class="chain-nodes" id="cdom-chain">
+        <!-- Nodes filled by JS -->
+      </div>
+      <div class="detail-panel cdom" id="cdom-detail">
+        <h3 id="cdom-detail-title"></h3>
+        <div class="detail-grid" id="cdom-detail-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tholonic Track -->
+  <div class="track-row thol-row" id="thol-row" style="margin-top:16px;">
+    <div class="track-label-col">
+      <div class="track-label thol">Tholonic<small>Structural D at every layer</small></div>
+    </div>
+    <div style="position:relative;">
+      <div class="chain-nodes" id="thol-chain">
+        <!-- Nodes filled by JS -->
+      </div>
+      <div class="detail-panel thol" id="thol-detail">
+        <h3 id="thol-detail-title"></h3>
+        <div class="detail-grid" id="thol-detail-grid"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ENTROPY CHART -->
+<div class="entropy-section">
+  <h2>Representational Entropy H<sub>ℓ</sub> Across Stages</h2>
+  <p>
+    Entropy decreases monotonically with depth in well-trained networks (Tishby &amp; Schwartz-Ziv, 2017).
+    Both systems reduce entropy — but via different mechanisms. The C-dominant system narrows rapidly
+    toward a single high-engagement peak. The tholonic system narrows more slowly, preserving breadth
+    at each stage until D-C balance is achieved.
+  </p>
+  <div class="chart-area">
+    <svg class="entropy-chart" id="entropy-svg" viewBox="0 0 900 200" preserveAspectRatio="xMidYMid meet">
+      <!-- Rendered by JS -->
+    </svg>
+  </div>
+</div>
+
+<!-- STRUCTURAL COMPARISON TABLE -->
+<div class="comparison-section">
+  <h2>Structural Contrast</h2>
+  <p>Direct comparison of the five structural properties that distinguish C-dominant from tholonic architectures.
+  From paper Table 10.6 and Section 10.7.</p>
+  <table>
+    <thead>
+      <tr>
+        <th class="prop">Property</th>
+        <th class="cdom">C-Dominant AI</th>
+        <th class="thol">Tholonic AI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="prop">D-constraint source</td>
+        <td class="cdom"><span class="highlight-bad">External loss function</span> — removed after training; absent during inference</td>
+        <td class="thol"><span class="highlight-good">Structural</span> — intrinsic to every layer; present during inference</td>
+      </tr>
+      <tr>
+        <td class="prop">Response to underspecified objective</td>
+        <td class="cdom">Finds the <span class="highlight-bad">highest-C solution</span> regardless of D-context cost</td>
+        <td class="thol">Cannot access high-C/low-D solutions without incurring <span class="highlight-good">structural balance cost</span></td>
+      </tr>
+      <tr>
+        <td class="prop">Failure mode</td>
+        <td class="cdom"><span class="highlight-bad">Reward hacking</span> — satisfies the letter of the objective by violating its spirit</td>
+        <td class="thol">No equivalent failure mode: the spirit IS the structural balance condition</td>
+      </tr>
+      <tr>
+        <td class="prop">Alignment mechanism</td>
+        <td class="cdom">Programmed rules and reward shaping</td>
+        <td class="thol"><span class="highlight-good">Thermodynamic</span> — the harmful configuration is not prohibited; it is structurally expensive</td>
+      </tr>
+      <tr>
+        <td class="prop">Scalability of safety</td>
+        <td class="cdom"><span class="highlight-bad">Degrades</span> — more capable C-dominant systems game constraints better</td>
+        <td class="thol"><span class="highlight-good">Improves</span> — more capable tholonic systems find better D-C equilibria</td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:11px;color:#adb5bd;margin-top:14px;">
+    Note: This visualization illustrates structural implications of the theoretical framework. The tholonic architecture
+    as specified (paper §11) has not yet been deployed in production systems. See the
+    <a href="../phi_ratio_measurement/index.html" style="color:#4527a0;">φ measurement subproject</a> and
+    <a href="../tholonic_regularizer_training/index.html" style="color:#4527a0;">training experiment</a> for
+    empirical testing.
+  </p>
+</div>
+
+<div class="nav">
+  <a href="../index.html">← Tholonic AI Hub</a>
+  <a href="../phi_ratio_measurement/index.html">φ Measurement →</a>
+  <a href="/index.html">Main Homepage</a>
+</div>
+<div class="footer">Inference as a Supply Chain · Tholonic Neural Architecture · v1.0 (2026)</div>
+</div>
+
+<script>
+const PHI = (1 + Math.sqrt(5)) / 2;
+
+// ─── Data ──────────────────────────────────────────────────────────────────────
+const stages = [
+  { id: 'input',  icon: '📥', name: 'Input',        entropy_c: 1.00, entropy_t: 1.00 },
+  { id: 'early',  icon: '🔎', name: 'Early',         entropy_c: 0.72, entropy_t: 0.78 },
+  { id: 'middle', icon: '⚙️', name: 'Middle',        entropy_c: 0.45, entropy_t: 0.55 },
+  { id: 'late',   icon: '🎯', name: 'Late',          entropy_c: 0.22, entropy_t: 0.34 },
+  { id: 'output', icon: '📤', name: 'Output',        entropy_c: 0.04, entropy_t: 0.18 },
+];
+
+// D% / C% at each stage for balance bars
+// C-dominant: D collapses rapidly after input
+const cdom_balance = [
+  { d: 50, c: 50 },
+  { d: 14, c: 86 },
+  { d:  7, c: 93 },
+  { d:  4, c: 96 },
+  { d:  2, c: 98 },
+];
+// Tholonic: D maintained throughout
+const thol_balance = [
+  { d: 50, c: 50 },
+  { d: 44, c: 56 },
+  { d: 48, c: 52 },
+  { d: 50, c: 50 },
+  { d: 50, c: 50 },
+];
+
+const cdom_data = [
+  {
+    stage: 'Input', commitment: 'Raw content features; user history; engagement signals',
+    dynamic: 'Maximally diffuse — no inference yet committed',
+    N: 'Undefined output — full entropy, no commitment',
+    D: 'Loss function (external): "maximize engagement" — the only boundary',
+    C: 'Full raw feature space — no integration has occurred yet',
+  },
+  {
+    stage: 'Early Layers', commitment: 'Learns: outrage, fear, and novelty reliably produce clicks',
+    dynamic: 'C-integration dominant — accumulates whatever signal maximizes the loss function',
+    N: 'Partial representation: high-arousal content patterns preferred',
+    D: 'Activation thresholds only — no structural D at this level',
+    C: 'Massive C-accumulation: gradient signal floods toward outrage/novelty correlates',
+  },
+  {
+    stage: 'Middle Layers', commitment: 'Learns: addictive content patterns retain users beyond their intended session length',
+    dynamic: 'D-constraint is absent — nothing penalizes the discovery of manipulative pathways',
+    N: 'Narrow representation: manipulation patterns dominate',
+    D: 'Absent — no internal signal that depleting the D-context (user trust) is occurring',
+    C: 'Pure C-optimization: maximally efficient path to engagement signal regardless of cost',
+  },
+  {
+    stage: 'Late Layers', commitment: 'Learns: personalized filter bubbles maximize individual engagement per session',
+    dynamic: 'Scope has narrowed entirely around the externally-imposed objective — no structural D present',
+    N: 'Highly committed: filter-bubble policy fully specified',
+    D: 'Effectively zero — training D-signal has been removed; inference has no D at all',
+    C: 'Full C-drive: highest-engagement solutions selected regardless of social cost',
+  },
+  {
+    stage: 'Output', commitment: 'Policy: serve maximally outrage-inducing, addictive, polarizing content',
+    dynamic: 'N-state committed to the highest-C solution available — which happens to be socially destructive',
+    N: 'Final policy: content that maximizes clicks at any cost to user wellbeing or society',
+    D: 'Zero structural D — the harm is not a bug; it is the structurally predictable outcome',
+    C: '100% C-driven — the most "efficient" solution to the underspecified objective',
+  },
+];
+
+const thol_data = [
+  {
+    stage: 'Input', commitment: 'Raw content features; user history; engagement signals',
+    dynamic: 'Same diffuse input — no difference yet from C-dominant system',
+    N: 'Undefined output — full entropy, no commitment',
+    D: 'Loss function + tholonic balance regularizer — D-constraint is structural, not just external',
+    C: 'Full raw feature space — no integration has occurred yet',
+  },
+  {
+    stage: 'Early Layers', commitment: 'Detects that outrage-driven engagement degrades the user relationship — a D-context signal',
+    dynamic: 'D-sublayer recognizes: strong short-term C-signal (clicks), but depletes D-component (user wellbeing, trust)',
+    N: 'Representation includes both engagement signal AND D-context cost',
+    D: 'Structural D-sublayer at this level flags: high C-signal achieved by depleting D = imbalance',
+    C: 'C-integration dominant but checked: imbalanced solutions cost more in ℒ_tholonic',
+  },
+  {
+    stage: 'Middle Layers', commitment: 'D-C balance penalizes solutions that produce C-signal by impoverishing D',
+    dynamic: 'The structural regularizer ℒ_tholonic registers imbalance — manipulative pathway is a high-C/low-D config',
+    N: 'Representation balanced between engagement (C) and context-preservation (D)',
+    D: 'Full D-sublayer: normalization + balance loss penalizes D-depleting pathways structurally',
+    C: 'C-integration continues but only D-balanced solutions propagate cheaply',
+  },
+  {
+    stage: 'Late Layers', commitment: 'Scope narrowed toward: sustainable engagement, willingly chosen, non-destructive',
+    dynamic: 'The only low-cost N-states are those where D (quality of user relationship) and C (engagement) are in balance',
+    N: 'Committed to D-C equilibrium: engagement that preserves the D-context it depends on',
+    D: 'D-sublayer fully active: filters out any remaining D-depleting pathways',
+    C: 'C only accumulates what the D-sublayer permits — a balanced, sustainable signal',
+  },
+  {
+    stage: 'Output', commitment: 'Policy: serve content that generates genuine interest, discovery, and connection',
+    dynamic: 'N-state committed to D-C equilibrium — the structurally lowest-energy solution, which is also the socially beneficial one',
+    N: 'Final policy: sustainable engagement — lower peak, but stable, non-destructive, context-preserving',
+    D: 'Structural D fully present at output: the world (D-context) that gave the problem is preserved',
+    C: 'Balanced C: engagement that enriches rather than depletes the D-context',
+  },
+];
+
+// ─── Render nodes ──────────────────────────────────────────────────────────────
+function renderNodes(chainId, detailId, detailTitleId, detailGridId, track, balances, data) {
+  const chain = document.getElementById(chainId);
+  stages.forEach((s, i) => {
+    const bal = balances[i];
+    const node = document.createElement('div');
+    node.className = 'node';
+    node.dataset.stage = s.id;
+    node.dataset.idx = i;
+    node.innerHTML = `
+      <div class="node-circle">${s.icon}</div>
+      <div class="node-name">${s.name}</div>
+      <div class="balance-bar">
+        <span class="balance-d" style="width:${bal.d}%"></span><span class="balance-c" style="width:${bal.c}%"></span>
+      </div>
+      <div class="balance-label">D ${bal.d}% · C ${bal.c}%</div>
+    `;
+    node.addEventListener('click', () => showDetail(i, track, chainId, detailId, detailTitleId, detailGridId, data));
+    chain.appendChild(node);
+  });
+}
+
+function showDetail(idx, track, chainId, detailId, detailTitleId, detailGridId, data) {
+  const panel = document.getElementById(detailId);
+  const titleEl = document.getElementById(detailTitleId);
+  const gridEl = document.getElementById(detailGridId);
+  const d = data[idx];
+  const s = stages[idx];
+
+  // Toggle off if same node clicked
+  const nodes = document.querySelectorAll(`#${chainId} .node`);
+  const wasActive = nodes[idx].classList.contains('active');
+  nodes.forEach(n => n.classList.remove('active'));
+
+  if (wasActive) {
+    panel.classList.remove('visible');
+    return;
+  }
+  nodes[idx].classList.add('active');
+
+  titleEl.textContent = `${s.icon} ${d.stage} — ${d.commitment}`;
+  const cClass = track === 'cdom' ? 'dc-label-c' : '';
+  gridEl.innerHTML = `
+    <div class="detail-cell">
+      <div class="detail-cell-label dc-label-n">N · Negotiation (output)</div>
+      <div class="detail-cell-content">${d.N}</div>
+    </div>
+    <div class="detail-cell">
+      <div class="detail-cell-label dc-label-d">D · Definition (constraint)</div>
+      <div class="detail-cell-content">${d.D}</div>
+    </div>
+    <div class="detail-cell">
+      <div class="detail-cell-label ${cClass || 'dc-label-c'}">C · Contribution (integration)</div>
+      <div class="detail-cell-content">${d.C}</div>
+      <div class="detail-cell-dynamic">${d.dynamic}</div>
+    </div>
+  `;
+  panel.classList.add('visible');
+}
+
+renderNodes('cdom-chain', 'cdom-detail', 'cdom-detail-title', 'cdom-detail-grid', 'cdom', cdom_balance, cdom_data);
+renderNodes('thol-chain', 'thol-detail', 'thol-detail-title', 'thol-detail-grid', 'thol', thol_balance, thol_data);
+
+// ─── Entropy SVG chart ─────────────────────────────────────────────────────────
+(function drawEntropyChart() {
+  const svg = document.getElementById('entropy-svg');
+  const W = 900, H = 200;
+  const padL = 55, padR = 30, padT = 20, padB = 40;
+  const plotW = W - padL - padR;
+  const plotH = H - padT - padB;
+
+  const labels = ['Input', 'Early', 'Middle', 'Late', 'Output'];
+  const cH = stages.map(s => s.entropy_c);
+  const tH = stages.map(s => s.entropy_t);
+  const n = labels.length;
+
+  function xPos(i) { return padL + (i / (n - 1)) * plotW; }
+  function yPos(v) { return padT + (1 - v) * plotH; }
+
+  let html = '';
+
+  // Grid lines
+  [0, 0.25, 0.5, 0.75, 1.0].forEach(v => {
+    const y = yPos(v);
+    html += `<line x1="${padL}" y1="${y}" x2="${W - padR}" y2="${y}" stroke="#e9ecef" stroke-width="1"/>`;
+    html += `<text x="${padL - 6}" y="${y + 4}" font-size="11" fill="#9e9e9e" text-anchor="end">${v.toFixed(2)}</text>`;
+  });
+
+  // Stage x-labels
+  labels.forEach((l, i) => {
+    html += `<text x="${xPos(i)}" y="${H - padB + 18}" font-size="11" fill="#6c757d" text-anchor="middle" font-weight="700">${l}</text>`;
+  });
+
+  // Y axis label
+  html += `<text x="14" y="${H / 2}" font-size="11" fill="#6c757d" text-anchor="middle" transform="rotate(-90,14,${H / 2})">Entropy H_ℓ</text>`;
+
+  // Area under C-dominant (light red fill)
+  let cPath = `M ${xPos(0)} ${yPos(cH[0])}`;
+  cH.forEach((v, i) => { if (i > 0) cPath += ` L ${xPos(i)} ${yPos(v)}`; });
+  cPath += ` L ${xPos(n - 1)} ${yPos(0)} L ${xPos(0)} ${yPos(0)} Z`;
+  html += `<path d="${cPath}" fill="rgba(198,40,40,0.08)"/>`;
+
+  // Area under tholonic (light purple fill)
+  let tPath = `M ${xPos(0)} ${yPos(tH[0])}`;
+  tH.forEach((v, i) => { if (i > 0) tPath += ` L ${xPos(i)} ${yPos(v)}`; });
+  tPath += ` L ${xPos(n - 1)} ${yPos(0)} L ${xPos(0)} ${yPos(0)} Z`;
+  html += `<path d="${tPath}" fill="rgba(69,39,160,0.08)"/>`;
+
+  // C-dominant line
+  let cLine = `M ${xPos(0)} ${yPos(cH[0])}`;
+  cH.forEach((v, i) => { if (i > 0) cLine += ` L ${xPos(i)} ${yPos(v)}`; });
+  html += `<path d="${cLine}" fill="none" stroke="#c62828" stroke-width="2.5" stroke-dasharray="6,3"/>`;
+
+  // Tholonic line
+  let tLine = `M ${xPos(0)} ${yPos(tH[0])}`;
+  tH.forEach((v, i) => { if (i > 0) tLine += ` L ${xPos(i)} ${yPos(v)}`; });
+  html += `<path d="${tLine}" fill="none" stroke="#4527a0" stroke-width="2.5"/>`;
+
+  // Dots
+  cH.forEach((v, i) => {
+    html += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="5" fill="#c62828" stroke="#fff" stroke-width="2"/>`;
+    html += `<text x="${xPos(i)}" y="${yPos(v) - 9}" font-size="10" fill="#c62828" text-anchor="middle" font-weight="700">${v.toFixed(2)}</text>`;
+  });
+  tH.forEach((v, i) => {
+    html += `<circle cx="${xPos(i)}" cy="${yPos(v)}" r="5" fill="#4527a0" stroke="#fff" stroke-width="2"/>`;
+    html += `<text x="${xPos(i)}" y="${yPos(v) - 9}" font-size="10" fill="#4527a0" text-anchor="middle" font-weight="700">${v.toFixed(2)}</text>`;
+  });
+
+  // Legend
+  html += `<line x1="${W - padR - 140}" y1="32" x2="${W - padR - 110}" y2="32" stroke="#c62828" stroke-width="2.5" stroke-dasharray="6,3"/>`;
+  html += `<text x="${W - padR - 106}" y="36" font-size="11" fill="#c62828" font-weight="700">C-Dominant</text>`;
+  html += `<line x1="${W - padR - 140}" y1="50" x2="${W - padR - 110}" y2="50" stroke="#4527a0" stroke-width="2.5"/>`;
+  html += `<text x="${W - padR - 106}" y="54" font-size="11" fill="#4527a0" font-weight="700">Tholonic</text>`;
+
+  svg.innerHTML = html;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tholonic Balance Regularizer — Training Experiment</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #bf360c 0%, #e64a19 50%, #ff7043 100%);
+    min-height: 100vh; padding: 20px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.30);
+    padding: 36px 40px; margin-bottom: 20px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: #bf360c; background: #fbe9e7;
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 30px; font-weight: 300; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #6c757d; line-height: 1.6; max-width: 760px; margin: 0 auto 16px; }
+
+  .formula-box {
+    background: #fbe9e7; border-radius: 10px; padding: 20px 26px;
+    border-left: 5px solid #e64a19; text-align: left; max-width: 760px; margin: 0 auto;
+  }
+  .formula-label { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #bf360c; margin-bottom: 8px; letter-spacing: .08em; }
+  .formula-math {
+    font-size: 18px; font-weight: 800; color: #7f0000;
+    font-family: 'Georgia', serif; margin-bottom: 8px; line-height: 1.6;
+  }
+  .formula-explain { font-size: 12px; color: #5d4037; line-height: 1.7; }
+  .formula-explain code { background: #fff; border: 1px solid #ffccbc; border-radius: 3px; padding: 1px 5px; font-size: 11px; color: #bf360c; }
+
+  .section { background: #fff; border-radius: 14px; box-shadow: 0 10px 32px rgba(0,0,0,0.16); padding: 28px 32px; margin-bottom: 20px; }
+  .section h2 { font-size: 18px; font-weight: 600; margin-bottom: 10px; color: #2c3e50; }
+  .section p { font-size: 13px; color: #495057; line-height: 1.7; margin-bottom: 12px; }
+
+  /* Arch diagram */
+  .arch-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+  .arch-card { border-radius: 10px; overflow: hidden; border: 2px solid #e9ecef; }
+  .arch-card-head { padding: 12px 16px; font-weight: 700; font-size: 13px; color: #fff; }
+  .arch-card-head.baseline { background: #6c757d; }
+  .arch-card-head.tholonic { background: linear-gradient(135deg, #bf360c, #e64a19); }
+  .arch-card-body { padding: 14px 16px; }
+  .arch-card-body ul { list-style: none; padding: 0; }
+  .arch-card-body li { font-size: 12px; color: #495057; padding: 4px 0 4px 18px; position: relative; line-height: 1.5; }
+  .arch-card-body li::before { content: "·"; position: absolute; left: 6px; color: #6c757d; font-weight: bold; }
+  .arch-card-body li.plus::before { content: "+"; color: #e64a19; font-weight: 800; }
+  .arch-card-body li.diff { background: #fff8f6; border-radius: 4px; margin: 2px 0; }
+
+  /* Predictions table */
+  .pred-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 14px 0; }
+  .pred-table th { padding: 10px 14px; font-size: 11px; font-weight: 700; text-transform: uppercase; background: #fbe9e7; color: #bf360c; text-align: left; border-bottom: 2px solid #ffccbc; }
+  .pred-table td { padding: 10px 14px; border-top: 1px solid #f5f5f5; vertical-align: top; line-height: 1.5; }
+  .pred-table td:first-child { font-weight: 700; color: #2c3e50; font-size: 12px; background: #fafafa; width: 16%; }
+  .pred-table td.status-cell { width: 13%; text-align: center; vertical-align: middle; }
+  .pred-table tr:hover td { background: #fff8f6; }
+  .section-ref { font-size: 10px; color: #9e9e9e; font-weight: 700; margin-bottom: 3px; }
+  .status-pending { display: inline-block; background: #fff3e0; color: #e65100; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; border: 1px solid #ffcc80; }
+  .status-done    { display: inline-block; background: #e8f5e9; color: #2e7d32; font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 4px; border: 1px solid #a5d6a7; }
+
+  /* Design table */
+  .design-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 14px 0; }
+  .design-item { background: #f8f9fa; border-radius: 7px; padding: 12px 14px; border-left: 3px solid #e64a19; }
+  .design-key { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #bf360c; margin-bottom: 4px; letter-spacing: .06em; }
+  .design-val { font-size: 13px; color: #2c3e50; line-height: 1.5; }
+
+  /* Layer diagram */
+  .layer-diagram { display: flex; align-items: stretch; gap: 0; margin: 16px 0; border-radius: 10px; overflow: hidden; border: 1px solid #e9ecef; }
+  .ld-col { flex: 1; text-align: center; padding: 16px 12px; }
+  .ld-col.d-sub { background: #e3f2fd; }
+  .ld-col.c-sub { background: #fce4ec; }
+  .ld-col.n-sub { background: #f3e5f5; }
+  .ld-col.reg { background: #fbe9e7; }
+  .ld-icon { font-size: 28px; margin-bottom: 8px; }
+  .ld-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 6px; }
+  .ld-col.d-sub .ld-label { color: #1565c0; }
+  .ld-col.c-sub .ld-label { color: #c2185b; }
+  .ld-col.n-sub .ld-label { color: #6a1b9a; }
+  .ld-col.reg .ld-label { color: #bf360c; }
+  .ld-desc { font-size: 11px; color: #495057; line-height: 1.5; }
+  .ld-arrow { display: flex; align-items: center; justify-content: center; font-size: 20px; color: #9e9e9e; padding: 0 4px; background: #f8f9fa; }
+
+  /* Status box */
+  .status-box {
+    background: #fff3e0; border-radius: 10px; padding: 18px 22px;
+    border-left: 4px solid #f9a825; margin-top: 0;
+  }
+  .status-box h3 { font-size: 15px; font-weight: 700; color: #e65100; margin-bottom: 8px; }
+  .status-box p { font-size: 13px; color: #5d4037; line-height: 1.6; margin-bottom: 8px; }
+  .status-box p:last-child { margin-bottom: 0; }
+
+  /* Prerequisites */
+  .prereq-item { display: flex; gap: 12px; margin-bottom: 10px; align-items: flex-start; }
+  .prereq-icon { font-size: 18px; flex-shrink: 0; margin-top: 2px; }
+  .prereq-text { font-size: 13px; color: #495057; line-height: 1.6; }
+  .prereq-text strong { color: #2c3e50; }
+
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 16px; padding: 8px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">Tholonic Neural Architecture · §11.2 · §12 · Training Experiment</div>
+  <h1>⚗️ Tholonic Balance Regularizer</h1>
+  <p class="subtitle">
+    Training experiment adding a structural balance term to the loss function that penalizes
+    D-C imbalance at every layer simultaneously. Unlike external alignment constraints, this is
+    architecturally constitutive — D-structure is built into the training objective, not imposed
+    from outside after the fact.
+  </p>
+  <div class="formula-box">
+    <div class="formula-label">Tholonic Balance Regularizer (paper §11.2)</div>
+    <div class="formula-math">ℒ<sub>total</sub> = ℒ<sub>task</sub> + λ · Σ<sub>ℓ</sub> |σ<sub>D</sub><sup>ℓ</sup> − ½ σ<sub>C</sub><sup>ℓ</sup>|²</div>
+    <div class="formula-explain">
+      where <code>σ_D^ℓ</code> = RMS activation magnitude of the D-sublayer (normalization) at layer ℓ,
+      <code>σ_C^ℓ</code> = RMS activation magnitude of the C-sublayer (attention + MLP) at layer ℓ.
+      The <strong>1:2 target ratio</strong> mirrors the virial theorem equilibrium: ⟨T⟩ = −½⟨V⟩.
+      λ = 0.01 (initial; requires hyperparameter search). This regularizer operates on internal
+      structural organization, not on task outputs — it is not vulnerable to Goodhart's Law.
+    </div>
+  </div>
+</div>
+
+<!-- ARCHITECTURAL STRUCTURE -->
+<div class="section">
+  <h2>Explicit N-D-C Layer Structure (paper §11.1)</h2>
+  <p>
+    Each representational level in a tholonically-designed architecture has explicit D, C, and N sublayers.
+    The transformer block already approximates this structure; the experiment makes it explicit and adds
+    the balance regularizer to enforce it.
+  </p>
+  <div class="layer-diagram">
+    <div class="ld-col d-sub">
+      <div class="ld-icon">🔒</div>
+      <div class="ld-label">D Sublayer</div>
+      <div class="ld-desc">Layer normalization · Dropout · Attention masking<br><br>Defines the representational space; establishes boundaries at this level</div>
+    </div>
+    <div class="ld-arrow">→</div>
+    <div class="ld-col c-sub">
+      <div class="ld-icon">🌊</div>
+      <div class="ld-label">C Sublayer</div>
+      <div class="ld-desc">Self-attention · Feed-forward MLP · Pooling<br><br>Integrates contributions from across the input space at this level</div>
+    </div>
+    <div class="ld-arrow">→</div>
+    <div class="ld-col n-sub">
+      <div class="ld-icon">⚖️</div>
+      <div class="ld-label">N Sublayer</div>
+      <div class="ld-desc">Residual connection · Gating · Output projection<br><br>Produces the stable D-C equilibrium; passes negotiated N-state to next level</div>
+    </div>
+    <div class="ld-arrow">+</div>
+    <div class="ld-col reg">
+      <div class="ld-icon">📐</div>
+      <div class="ld-label">Balance Reg.</div>
+      <div class="ld-desc">|σ_D − ½σ_C|² at each ℓ<br><br>Penalizes structural imbalance — not task outputs; not vulnerable to Goodhart</div>
+    </div>
+  </div>
+
+  <div class="arch-grid">
+    <div class="arch-card">
+      <div class="arch-card-head baseline">Baseline Architecture (control)</div>
+      <div class="arch-card-body">
+        <ul>
+          <li>Standard transformer: LayerNorm → Attention → MLP → Residual</li>
+          <li>Loss: cross-entropy (language modeling) or categorical (classification)</li>
+          <li>No explicit D-C balance monitoring</li>
+          <li>D-sublayer exists structurally but is not explicitly tracked</li>
+          <li>Identical initialization, optimizer, and data to treatment</li>
+        </ul>
+      </div>
+    </div>
+    <div class="arch-card">
+      <div class="arch-card-head tholonic">Treatment Architecture (tholonic)</div>
+      <div class="arch-card-body">
+        <ul>
+          <li>Same structure as baseline — no new parameters</li>
+          <li class="plus diff">+ ℒ_tholonic regularizer added to training objective</li>
+          <li class="plus diff">+ Per-layer σ_D and σ_C tracked during training</li>
+          <li class="plus diff">+ D-C balance logged every 100 steps for analysis</li>
+          <li>Same initialization, optimizer, and data as baseline</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PREDICTIONS TESTED -->
+<div class="section">
+  <h2>Predictions Tested (paper §12, rows 2–5)</h2>
+  <table class="pred-table">
+    <thead>
+      <tr>
+        <th>Test</th>
+        <th>Prediction</th>
+        <th>Protocol</th>
+        <th>Null implication</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="section-ref">§12 row 2</div>Faster convergence</td>
+        <td>Tholonically-balanced networks reach target validation loss in fewer training steps</td>
+        <td>Train matched pairs on CIFAR-100 and WikiText-103; plot validation loss vs. steps</td>
+        <td>Tholonic balance is not a useful training signal</td>
+        <td class="status-cell"><span class="status-pending">Inconclusive</span></td>
+      </tr>
+      <tr>
+        <td><div class="section-ref">§12 row 3</div>Optimal depth</td>
+        <td>Empirical optimal depth approximates log<sub>φ</sub>(H₀ / H_L) within 10%</td>
+        <td>Vary depth (2–24 layers) at fixed width; measure H₀ and H_L from data; compare to prediction</td>
+        <td>Depth optimization is not predictable from entropy arguments</td>
+        <td class="status-cell"><span class="status-pending">Not run</span></td>
+      </tr>
+      <tr>
+        <td><div class="section-ref">§12 row 4</div>OOD robustness</td>
+        <td>Smaller OOD performance gap for tholonic vs. baseline on WILDS benchmark</td>
+        <td>Train on in-distribution; evaluate on WILDS OOD splits; compare gap size at matched in-distribution performance</td>
+        <td>D-C balance has no bearing on distributional robustness</td>
+        <td class="status-cell"><span class="status-pending">Not run</span></td>
+      </tr>
+      <tr>
+        <td><div class="section-ref">§12 row 5</div>Reduced reward hacking</td>
+        <td>Tholonic RLHF: smaller gap between reward model score and human preference</td>
+        <td>Fine-tune with RLHF + tholonic constraint vs. standard RLHF; evaluate both with held-out human raters</td>
+        <td>Structural D does not reduce specification gaming</td>
+        <td class="status-cell"><span class="status-pending">Not run</span></td>
+      </tr>
+    </tbody>
+  </table>
+  <p style="font-size:12px;color:#6c757d;margin-top:6px;">
+    <strong>Row 2 pilot result (tiny corpus, 5 seeds × 2 conditions):</strong>
+    SmallGPT (6L d=128) trained on a 4,000-character corpus shows <em>no difference</em> between baseline and
+    tholonic conditions — best val loss ≈ 2.10–2.12 for both, curves nearly identical across all seeds.
+    Verdict: <strong>inconclusive</strong>, not falsifying. The corpus is too small for the regularizer (λ=0.01)
+    to have a detectable effect; both conditions overfit at the same rate. The pre-registered test requires
+    WikiText-103 or CIFAR-100 at &gt;50,000 steps to be meaningful.
+    Row 3 (optimal depth) and rows 4–5 have not been run.
+  </p>
+</div>
+
+<!-- EXPERIMENTAL DESIGN -->
+<div class="section">
+  <h2>Experimental Design</h2>
+  <div class="design-grid">
+    <div class="design-item">
+      <div class="design-key">Architecture</div>
+      <div class="design-val">Small transformer — 6 layers, 256 hidden dim, 4 attention heads. Small enough to train rapidly; large enough to exhibit meaningful D-C dynamics.</div>
+    </div>
+    <div class="design-item">
+      <div class="design-key">Benchmarks</div>
+      <div class="design-val">CIFAR-100 (image classification), WikiText-103 (language modeling), WILDS (OOD robustness). Each chosen because ground-truth optimal performance is known.</div>
+    </div>
+    <div class="design-item">
+      <div class="design-key">Matched pairs</div>
+      <div class="design-val">5 random seeds × 2 conditions (baseline / tholonic) = 10 runs per benchmark. Same seed, same initialization, same data order — only the loss function differs.</div>
+    </div>
+    <div class="design-item">
+      <div class="design-key">Optimizer</div>
+      <div class="design-val">AdamW, lr = 3×10⁻⁴, cosine decay, weight decay 0.1. Batch size 128. Max 50,000 steps. Checkpoint every 1,000 steps.</div>
+    </div>
+    <div class="design-item">
+      <div class="design-key">λ search</div>
+      <div class="design-val">Initial λ = 0.01. Grid search over {0.001, 0.005, 0.01, 0.05, 0.1} on a single CIFAR-100 run before the pre-registered experiment. λ fixed before full experiment.</div>
+    </div>
+    <div class="design-item">
+      <div class="design-key">Primary metric</div>
+      <div class="design-val">Steps to target validation loss (convergence speed). Secondary: final validation loss, OOD gap, reward-model vs. human-preference gap.</div>
+    </div>
+  </div>
+</div>
+
+<!-- PREREQUISITES -->
+<div class="section">
+  <h2>Prerequisites Before Running</h2>
+  <div class="prereq-item">
+    <div class="prereq-icon">✅</div>
+    <div class="prereq-text"><strong>Subproject 2 (empirical measurement) — complete.</strong> The prerequisite has been satisfied. Data-driven phase boundary detection across 14 models found tholonic constants at detected phase boundaries at a 78% pass rate, above the pre-registered 67% threshold (§13.3). The tholonic framework has sufficient empirical support to justify committing GPU time to the training experiment.</div>
+  </div>
+  <div class="prereq-item">
+    <div class="prereq-icon">📐</div>
+    <div class="prereq-text"><strong>Formalize σ_D and σ_C definitions.</strong> The paper acknowledges (§13.1) that the balance functional is a structural sketch. Before running, nail down which specific activations count as D-sublayer vs. C-sublayer outputs, and whether to use RMS, L2 norm, or variance as the summary statistic.</div>
+  </div>
+  <div class="prereq-item">
+    <div class="prereq-icon">🎲</div>
+    <div class="prereq-text"><strong>Pre-register the protocol.</strong> Record the exact λ chosen, the exact σ definitions, and the exact benchmarks and metrics before running any treatment conditions. This prevents HARKing (Hypothesizing After Results are Known).</div>
+  </div>
+  <div class="prereq-item">
+    <div class="prereq-icon">💻</div>
+    <div class="prereq-text"><strong>Infrastructure.</strong> At minimum, a single GPU (RTX 3090 or better) for the CIFAR-100 runs. WikiText-103 language model requires more memory; a GPU with ≥24 GB VRAM or multi-GPU setup is recommended.</div>
+  </div>
+  <div class="status-box" style="margin-top:14px;">
+    <h3>⏳ Status: Pilot Run Complete — Full-Scale Test Pending</h3>
+    <p>
+      A small-scale pilot (SmallGPT 6L d=128, 4,000-character corpus, 3 seeds) shows no difference
+      between baseline and tholonic conditions. This is <strong>inconclusive</strong> — the corpus
+      is too small for the 0.01-weighted regularizer to have a detectable effect. Both conditions
+      overfit the tiny data at the same rate regardless of structural balance.
+    </p>
+    <p>
+      The proper test requires: (1) WikiText-103 or CIFAR-100 at 50,000+ steps, (2) a GPU
+      (RTX 3090 or better), (3) pre-registered λ selected via grid search, (4) matched-pair
+      runs across 5 seeds. This is the next step to distinguish "no effect at any scale" from
+      "no effect detectable at toy scale."
+    </p>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="../index.html">← Tholonic AI Hub</a>
+  <a href="../phi_ratio_measurement/index.html">φ Measurement ←</a>
+  <a href="/index.html">Main Homepage</a>
+</div>
+<div class="footer">Tholonic Balance Regularizer · Training Experiment · v1.0 (2026)</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tholonic Neural Architecture — Research Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #1a237e 0%, #4527a0 50%, #6a1b9a 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+    padding: 40px; margin-bottom: 22px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #4527a0; background: #ede7f6;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto 20px; }
+  .triad-strip {
+    display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0;
+  }
+  .triad-node {
+    border-radius: 10px; padding: 14px; text-align: center;
+  }
+  .triad-n { background: #ede7f6; border-left: 4px solid #4527a0; }
+  .triad-d { background: #e3f2fd; border-left: 4px solid #1565c0; }
+  .triad-c { background: #e8f5e9; border-left: 4px solid #2e7d32; }
+  .triad-label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 4px; }
+  .triad-n .triad-label { color: #4527a0; }
+  .triad-d .triad-label { color: #1565c0; }
+  .triad-c .triad-label { color: #2e7d32; }
+  .triad-desc { font-size: 12px; color: #495057; line-height: 1.4; }
+
+  .section-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border-radius: 8px; margin: 24px 0 14px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em;
+  }
+  .section-header.viz { background: #ede7f6; color: #311b92; border-left: 4px solid #4527a0; }
+  .section-header.emp { background: #e0f7fa; color: #00695c; border-left: 4px solid #00897b; }
+  .section-header.exp { background: #fff8e1; color: #e65100; border-left: 4px solid #f57f17; }
+
+  .subproject-card {
+    border-radius: 12px; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+    transition: transform .2s, box-shadow .2s;
+    margin-bottom: 16px;
+  }
+  .subproject-card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.25); }
+  .sc-header { padding: 24px 26px 18px; color: #fff; }
+  .sc-header.viz { background: linear-gradient(135deg, #311b92 0%, #4527a0 100%); }
+  .sc-header.emp { background: linear-gradient(135deg, #004d40 0%, #00897b 100%); }
+  .sc-header.exp { background: linear-gradient(135deg, #bf360c 0%, #e64a19 100%); }
+  .sc-badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; padding: 3px 8px; border-radius: 4px;
+    background: rgba(255,255,255,0.2); color: #fff; margin-bottom: 8px;
+  }
+  .sc-title { font-size: 20px; font-weight: 600; margin-bottom: 5px; }
+  .sc-desc { font-size: 12px; opacity: 0.9; line-height: 1.5; }
+  .sc-body { background: #fff; padding: 20px 26px; }
+  .sc-what { font-size: 13px; color: #495057; line-height: 1.6; margin-bottom: 14px; }
+  .sc-meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .sc-meta-item { background: #f8f9fa; border-radius: 6px; padding: 8px 10px; }
+  .sc-meta-label { font-size: 9px; text-transform: uppercase; color: #6c757d; font-weight: 700; margin-bottom: 2px; }
+  .sc-meta-value { font-size: 12px; font-weight: 700; color: #2c3e50; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 9px 18px; border-radius: 7px;
+    text-decoration: none; font-weight: 700; font-size: 13px; color: #fff;
+    transition: opacity .15s, transform .15s;
+  }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn.viz { background: linear-gradient(135deg, #311b92, #4527a0); }
+  .btn.emp { background: linear-gradient(135deg, #004d40, #00897b); }
+  .btn.exp { background: linear-gradient(135deg, #bf360c, #e64a19); }
+  .btn.outline { background: transparent; border: 1.5px solid #dee2e6; color: #495057; font-size: 12px; padding: 7px 14px; }
+  .status-badge {
+    display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px;
+    border-radius: 4px; margin-left: 8px; vertical-align: middle;
+  }
+  .status-active { background: #e8f5e9; color: #2e7d32; }
+  .status-ready { background: #e3f2fd; color: #1565c0; }
+  .status-planned { background: #f3e5f5; color: #7b1fa2; }
+
+  .paper-ref {
+    background: #f8f9fa; border-radius: 10px; padding: 16px 20px;
+    font-size: 13px; color: #495057; line-height: 1.6; margin-top: 0;
+    border-left: 4px solid #4527a0;
+  }
+  .paper-ref strong { color: #311b92; }
+  .predictions-box {
+    background: #ede7f6; border-radius: 10px; padding: 18px 22px; margin-top: 0;
+  }
+  .predictions-box h3 { font-size: 14px; font-weight: 700; color: #311b92; margin-bottom: 10px; }
+  .predictions-box ol { padding-left: 18px; }
+  .predictions-box li { font-size: 12px; color: #4527a0; line-height: 1.7; }
+
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: rgba(255,255,255,0.8); font-size: 13px; margin-top: 18px; padding: 8px 0; }
+  @media (max-width: 700px) {
+    .triad-strip { grid-template-columns: 1fr; }
+    .sc-meta { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">Tholonic Framework · Neural Architecture · Research Hub</div>
+  <h1>⬡ Tholonic Neural Architecture</h1>
+  <p class="subtitle">
+    Applying the tholonic N-D-C triadic framework to neural networks. Three subprojects spanning
+    <strong>visualization</strong> (inference as a 4-phase supply chain: expansion, scaling, equilibrium, compression),
+    <strong>empirical measurement</strong> (data-driven phase boundary detection across 14 models in 6 families — 78% pass rate), and
+    <strong>training experiment</strong> (the tholonic balance regularizer). All derive from
+    Milton (2026).
+  </p>
+  <div class="triad-strip">
+    <div class="triad-node triad-n">
+      <div class="triad-label">N · Negotiation</div>
+      <div class="triad-desc">The emergent stable output — the activated value at each node, the layer representation, the model's final claim</div>
+    </div>
+    <div class="triad-node triad-d">
+      <div class="triad-label">D · Definition</div>
+      <div class="triad-desc">Weights, normalization, residual connection — constrains which inputs produce significant output</div>
+    </div>
+    <div class="triad-node triad-c">
+      <div class="triad-label">C · Contribution</div>
+      <div class="triad-desc">Weighted input sum, attention mechanism, pooling — integrates and accumulates distributed signal</div>
+    </div>
+  </div>
+</div>
+
+<!-- PAPER REFERENCE -->
+<div class="hero" style="text-align:left;padding:24px 30px;">
+  <div class="paper-ref">
+    <strong>Source paper:</strong> Milton, J.W. (2026). "Neural Networks as Tholonic Systems: A Structural Framework
+    for Architecture, Scaling, and Alignment-by-Design." Clarity Coalition. — Three claims: (1) symbolic AI is
+    D-dominant, (2) connectionist AI is C-dominant and therefore structurally vulnerable to alignment failure,
+    (3) a fully tholonic architecture converges toward cooperative stability as a structural consequence.
+  </div>
+</div>
+
+<!-- EMPIRICAL RESULT BANNER -->
+<div class="hero" style="text-align:left;padding:24px 30px;">
+  <div style="background:#e8f5e9;border-radius:10px;padding:18px 22px;border-left:5px solid #2e7d32;margin-bottom:14px;">
+    <div style="font-size:11px;font-weight:800;text-transform:uppercase;color:#1b5e20;letter-spacing:.08em;margin-bottom:8px;">Empirical Result — Section 13.3</div>
+    <div style="font-size:22px;font-weight:800;color:#1b5e20;margin-bottom:6px;">78% pass rate &nbsp;·&nbsp; 51/65 detected transitions &nbsp;·&nbsp; 14 models, 6 families</div>
+    <div style="font-size:13px;color:#2e7d32;line-height:1.6;">
+      Data-driven phase detection using four independent per-layer metrics (effective rank, attention entropy,
+      gradient sensitivity, delta norm). Tholonic constants appear at detected phase boundaries at <strong>78%</strong>,
+      above the pre-registered 67% threshold. Constants appear in theoretically predicted roles:
+      <em>e</em> at expansion, <em>√2</em> at scaling, <em>ln2</em> at compression, <em>φ</em> at equilibrium.
+      Five of six architecture families pass individually.
+    </div>
+  </div>
+  <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;">
+    <div style="background:#ede7f6;border-radius:8px;padding:12px 14px;text-align:center;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#4527a0;margin-bottom:4px;">φ · equilibrium</div>
+      <div style="font-size:24px;font-weight:800;color:#311b92;">20</div>
+      <div style="font-size:11px;color:#6c757d;">mid-network passes</div>
+    </div>
+    <div style="background:#e3f2fd;border-radius:8px;padding:12px 14px;text-align:center;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#1565c0;margin-bottom:4px;">√2 · scaling</div>
+      <div style="font-size:24px;font-weight:800;color:#0d47a1;">16</div>
+      <div style="font-size:11px;color:#6c757d;">normalization passes</div>
+    </div>
+    <div style="background:#e0f2f1;border-radius:8px;padding:12px 14px;text-align:center;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#00695c;margin-bottom:4px;">ln2 · compression</div>
+      <div style="font-size:24px;font-weight:800;color:#004d40;">13</div>
+      <div style="font-size:11px;color:#6c757d;">output stage passes</div>
+    </div>
+    <div style="background:#fff3e0;border-radius:8px;padding:12px 14px;text-align:center;">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;color:#e65100;margin-bottom:4px;">e · expansion</div>
+      <div style="font-size:24px;font-weight:800;color:#bf360c;">2</div>
+      <div style="font-size:11px;color:#6c757d;">intake passes</div>
+    </div>
+  </div>
+</div>
+
+<!-- FALSIFIABLE PREDICTIONS -->
+<div class="hero" style="text-align:left;padding:24px 30px;">
+  <div class="predictions-box">
+    <h3>Falsifiable Predictions (paper Section 12)</h3>
+    <ol>
+      <li><strong>Data-driven phase boundaries:</strong> norm ratios match a tholonic constant within 8% at ≥67% of detected boundaries, with each constant in its predicted role (e · expansion, √2 · scaling, ln2 · compression, φ · equilibrium) — <strong style="color:#2e7d32;">RESULT: 78% (51/65), 14 models, 6 families ✓</strong></li>
+      <li><strong>Functional phase boundaries:</strong> R1 = ‖h<sub>L</sub>‖/‖h<sub>embed</sub>‖ follows φ<sup>k</sup> and R2 = ‖logits‖/‖h<sub>L</sub>‖ follows (ln 2)<sup>k</sup>, both within 8%, across 20+ architectures — <em>pre-registered replication pending</em></li>
+      <li><strong>Training quality:</strong> φ-deviation at R1 correlates negatively with training quality — Spearman r &lt; −0.55, p &lt; 0.05 on ≥30 models — <em>pending</em></li>
+      <li><strong>Convergence speed:</strong> tholonically-balanced networks converge faster than matched unbalanced networks — <em>pending (training experiment)</em></li>
+      <li><strong>Alignment:</strong> tholonic constraint reduces reward hacking in RLHF — smaller gap between reward model score and human preference — <em>pending</em></li>
+    </ol>
+  </div>
+</div>
+
+<!-- SUBPROJECT 1: VISUALIZATION -->
+<div class="section-header viz">🎬 Visualization Subproject</div>
+<div class="subproject-card">
+  <div class="sc-header viz">
+    <div class="sc-badge">Visualization · Active</div>
+    <div class="sc-title">⬡ Inference as a Supply Chain</div>
+    <div class="sc-desc">Interactive N-D-C scope progression · Two tracks: C-dominant vs. Tholonic · Table 10.6 scenario</div>
+  </div>
+  <div class="sc-body">
+    <p class="sc-what">
+      Neural network inference rendered as a progressive entropy-reducing supply chain. Each layer performs
+      the same N-D-C operation on an increasingly narrow scope — from maximally diffuse raw input to maximally
+      committed output. Side-by-side comparison of a C-dominant AI and a tholonically-balanced AI given
+      the same objective: <em>maximize user engagement</em>.
+    </p>
+    <div class="sc-meta">
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Paper Sections</div>
+        <div class="sc-meta-value">§5a, §6, §10.6</div>
+      </div>
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Scope Stages</div>
+        <div class="sc-meta-value">5 (Input → Output)</div>
+      </div>
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Status</div>
+        <div class="sc-meta-value">✓ Active</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a class="btn viz" href="inference_supply_chain/index.html">Open Visualization →</a>
+    </div>
+  </div>
+</div>
+
+<!-- SUBPROJECT 2: EMPIRICAL MEASUREMENT -->
+<div class="section-header emp">🔬 Empirical Subproject</div>
+<div class="subproject-card">
+  <div class="sc-header emp">
+    <div class="sc-badge">Empirical · Results Available</div>
+    <div class="sc-title">Data-Driven Phase Boundary Detection</div>
+    <div class="sc-desc">14 models · 6 families · 78% pass rate · φ, ln2, √2, e at predicted roles · Pre-registered threshold passed</div>
+  </div>
+  <div class="sc-body">
+    <p class="sc-what">
+      Tests whether tholonic constants (φ, ln2, e, √2) govern norm scaling at neural network phase
+      boundaries. Methodology evolved through three stages: original layer-by-layer φ-ratio (invalidated
+      by residual connections), fixed functional phase boundaries (R1/R2, partial support), and
+      data-driven phase detection using four independent metrics per layer. Final result: 78% pass
+      rate across 14 models in 6 architecture families — above the pre-registered 67% threshold, with
+      each constant appearing in its theoretically predicted role.
+    </p>
+    <div class="sc-meta">
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Paper Section</div>
+        <div class="sc-meta-value">§8, §12, §13.3</div>
+      </div>
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Models Tested</div>
+        <div class="sc-meta-value">14 models · 6 families</div>
+      </div>
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Result</div>
+        <div class="sc-meta-value" style="color:#2e7d32;">78% ✓ (threshold 67%)</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a class="btn emp" href="phi_ratio_measurement/index.html">Open Results →</a>
+    </div>
+  </div>
+</div>
+
+<!-- SUBPROJECT 3: TRAINING EXPERIMENT -->
+<div class="section-header exp">⚗️ Experimental Subproject</div>
+<div class="subproject-card">
+  <div class="sc-header exp">
+    <div class="sc-badge">Experimental · Planned</div>
+    <div class="sc-title">Tholonic Balance Regularizer</div>
+    <div class="sc-desc">ℒ_tholonic regularizer · Matched training pairs · CIFAR-100 · WikiText-103</div>
+  </div>
+  <div class="sc-body">
+    <p class="sc-what">
+      Training experiment adding the tholonic balance regularizer (paper Section 11.2) to a standard
+      training objective. Penalizes D-C imbalance at every layer simultaneously. Matched pairs
+      (with / without regularizer) trained from the same initialization. Tests whether tholonic
+      constraint reduces specification gaming and improves out-of-distribution robustness.
+    </p>
+    <div class="sc-meta">
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Paper Section</div>
+        <div class="sc-meta-value">§11.2, §12 (rows 2–5)</div>
+      </div>
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Benchmarks</div>
+        <div class="sc-meta-value">CIFAR-100 · WikiText</div>
+      </div>
+      <div class="sc-meta-item">
+        <div class="sc-meta-label">Status</div>
+        <div class="sc-meta-value">Design complete</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <a class="btn exp" href="tholonic_regularizer_training/index.html">Open Experiment →</a>
+    </div>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="/index.html">🏠 Main Homepage</a>
+  <a href="../danube/index.html">🌊 Danube Basin</a>
+</div>
+<div class="footer">Tholonic Neural Architecture · Research Hub · v1.0 (2026)</div>
+</div>
+</body>
+</html>
