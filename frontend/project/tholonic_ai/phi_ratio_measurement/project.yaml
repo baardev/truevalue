@@ -1,0 +1,79 @@
+id: phi_ratio_measurement
+name: Tholonic Phase Boundary Detection — Empirical Results
+parent: tholonic_ai
+type: empirical
+description: >
+  Empirical measurement subproject testing whether tholonic constants (φ, ln2, e, √2)
+  appear at phase boundaries within neural network inference. The original test
+  (layer-by-layer φ-ratio ||h_l|| / ||h_{l-1}||) was invalidated by residual connections.
+  Methodology evolved through three stages to data-driven phase detection using four
+  independent per-layer metrics (effective rank, attention entropy, gradient sensitivity,
+  delta norm). Final result: 78% pass rate (51/65 detected transitions) across 14 models
+  spanning 6 architecture families — above the pre-registered 67% threshold.
+methodology_evolution:
+  stage_1:
+    name: "Layer-by-layer φ-ratio"
+    prediction: "||h_l|| / ||h_{l-1}|| clusters near φ⁻¹ ≈ 0.618"
+    result: "INVALIDATED — residual connections constrain consecutive layer norms"
+  stage_2:
+    name: "Fixed functional phase boundaries (R1, R2)"
+    prediction: "R1 follows φ^k, R2 follows (ln2)^k within 8%"
+    result: "PARTIAL — R2/ln2 passes 58% (below 67% threshold); R1 architecturally determined"
+  stage_3:
+    name: "Data-driven phase detection"
+    prediction: "≥67% of detected boundaries match a tholonic constant within 8%"
+    result: "PASSES — 78% (51/65) across 14 models, 6 families"
+current_prediction:
+  text: >
+    At data-driven detected phase boundaries (effective rank, attention entropy,
+    gradient sensitivity, delta norm), norm ratios match an integer power of a
+    tholonic constant within 8% at ≥67% of boundaries, with each constant in its
+    theoretically predicted role.
+  paper_section: "12 (row 3), 13.3"
+phase_structure:
+  n_phases: 4
+  phases:
+    expansion: "e (embedding to early layers)"
+    scaling: "√2 (early to mid)"
+    equilibrium: "φ (mid-network steady state)"
+    compression: "ln2 (final layers to logits)"
+models_tested:
+  count: 14
+  families: 6
+  list:
+    - GPT-1
+    - distilGPT-2
+    - GPT-2 small/medium/large/XL
+    - GPT-Neo 125m/1.3B
+    - Pythia 160m/410m
+    - OPT 125m
+    - Qwen2.5-0.5B / Qwen3-0.6B
+    - TinyLlama 1.1B
+results:
+  overall_pass_rate: "78% (51/65)"
+  threshold: "67%"
+  verdict: "PASSES"
+  non_trivial_pass_rate: "81% (34/42)"
+  constant_scorecard:
+    phi: 20
+    sqrt2: 16
+    ln2: 13
+    e: 2
+  family_rates:
+    GPT-1: "67%"
+    GPT-2: "71%"
+    GPT-Neo: "82%"
+    Pythia: "90%"
+    OPT: "100%"
+    Qwen: "85%"
+    LLaMA: "50%"
+dependencies:
+  python: ">=3.9"
+  packages:
+    - torch
+    - transformers
+    - numpy
+    - scipy
+status: results_available
+created: "2026-05-23"
+last_updated: "2026-05-24"
