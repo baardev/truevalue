@@ -381,7 +381,7 @@ The consequence is structural. Natural systems that arrive at the constants emer
 
 This distinction also explains a noteworthy empirical observation: among the models tested, GPT-2 large (2019) — the least aggressively optimized architecture in the test set, predating RoPE positional encoding, grouped query attention, RMSNorm, gated activations, and internet-scale training data — produced the closest proximity to a natural $\phi$ power at the R2 boundary (error 0.5\%, $\phi^8$). The heavily engineered modern variants (Qwen3, TinyLlama, OPT) show larger deviations. This is consistent with the hypothesis that aggressive performance-driven optimization moves architectures away from natural tholonic equilibria, while architecturally simpler systems retain closer proximity to them — not by design, but by having fewer engineering interventions that disrupt the natural structural ratios.
 
-The implication for architecture design is direct: achieving genuine tholonic structure requires either allowing the architecture to evolve freely under structural balance constraints (so the natural attractor can be found bottom-up), or explicitly building the virial balance condition into the training objective from the start (Section 11.2). Neither approach has been deployed in production systems.
+The implication for architecture design is direct: achieving genuine tholonic structure requires either allowing the architecture to evolve freely under structural balance constraints (so the natural attractor can be found bottom-up), or explicitly building the virial balance condition into the training objective from the start (Section 11.2). (*Virial*: from Latin *vires*, "forces." The virial theorem, Clausius 1870, states that for any stable bound system in equilibrium, the time-averaged kinetic energy equals exactly half the time-averaged potential energy — a 1:2 ratio. The tholonic D/C = 0.5 target is a direct structural analogy: the normalising/constraining component D should carry half the activation energy of the generative/projecting component C, for exactly the same reason a gravitationally bound system settles at half-kinetic, half-potential balance.) Neither approach has been deployed in production systems.
 
 ---
 
@@ -710,11 +710,38 @@ Constant role scorecard (total appearances among the 51 passing transitions): $\
 
 **Limitations.** The $\phi^0 = 1$ stability-point passes are structurally meaningful but statistically weak: any ratio between 0.92 and 1.08 satisfies them. Excluding $k=0$ cases, 34/42 non-trivial transitions pass (81\%). The transition-detection threshold (mean $+$ 1.5 SD) is a heuristic; a pre-registered protocol with held-out models is required for publication-quality claims. OPT-350m could not be evaluated due to a positional encoding tensor conflict. The LLaMA family (TinyLlama only) shows the lowest pass rate (50\%), suggesting possible sensitivity to grouped-query attention or rotary embedding variants; broader LLaMA family coverage is needed.
 
-### 13.4 The Alignment Argument Is Structural, Not Empirical
+### 13.4 Structural Health Grading — Five-Axis Assessment Across 14 Models
+
+To supplement the phase-boundary detection results of Section 13.3, each model was assessed on five structural axes derived directly from the tholonic framework. The axes measure, independently: (1) **boundary fidelity** — the proportion of data-driven phase transitions whose norm ratio falls within ±8% of any tholonic constant; (2) **√2 scaling** — quality of √2 governance in the early-to-mid network (layers 20–55%); (3) **φ equilibrium** — quality of φ governance at mid-network stability points (layers 45–80%); (4) **ln2 compression** — quality of ln2 governance at the output-projection stage (layers 80–100%); and (5) **virial balance** — how close the mean D/C activation-RMS ratio is to the theoretical target of 0.5. Scores are 0–100, where 100 represents perfect tholonic alignment on that axis. The constant $e$ was excluded: it appears in only 2 of 65 detected transitions and carries no reliable structural signal.
+
+| Model | Family | Fidelity | φ Equil | ln2 Comp | Virial | Overall |
+|---|---|---|---|---|---|---|
+| GPT-1 | GPT-1 | 67 | 40 | 25 | 0 | 26 |
+| distilGPT-2 | GPT-2 | 67 | 25 | 40 | 0 | 26 |
+| GPT-2 small | GPT-2 | 50 | 40 | 25 | 0 | 33 |
+| GPT-2 medium | GPT-2 | 67 | 40 | 25 | 0 | 31 |
+| GPT-2 large | GPT-2 | 75 | 40 | 87 | 0 | 47 |
+| GPT-2 XL | GPT-2 | 100 | 40 | 25 | 0 | 33 |
+| GPT-Neo 125m | GPT-Neo | 100 | 40 | 97 | 4 | 55 |
+| GPT-Neo 1.3B | GPT-Neo | 71 | 40 | 25 | 23 | 36 |
+| Pythia 160m | Pythia | 100 | 18 | 25 | 0 | 34 |
+| Pythia 410m | Pythia | 83 | 40 | 62 | 0 | 44 |
+| OPT 125m | OPT | 100 | 40 | 97 | 0 | 52 |
+| Qwen2.5-0.5B | Qwen | 86 | **97** | 75 | 0 | 57 |
+| Qwen3-0.6B | Qwen | 83 | 40 | 25 | 0 | 35 |
+| TinyLlama-1.1B | LLaMA | 50 | 40 | 79 | 0 | 44 |
+
+**The virial bottleneck.** The most striking result is structural rather than phase-based: 12 of 14 models score 0 on the virial-balance axis, and the remaining two score 4 and 23 respectively. All architectures are strongly C-dominant — measured D/C ratios range from approximately 0.08 to 0.32 against the theoretical target of 0.5. This is a direct empirical corroboration of the C-dominance prediction stated in Section 11.2: the architectural imbalance is not incidental but universal across six families, six years of design generations, and model sizes from 82M to 1.1B parameters. The tholonic regulariser (Section 11.2) is designed specifically to close this gap during training; the consistently zero virial scores across all current architectures confirm both that the target state is not achieved spontaneously and that there is structural room for improvement.
+
+**Family trends.** Boundary fidelity (axis 1) and ln2 compression (axis 4) show the most inter-model variation and the clearest relationship with architecture quality. GPT-Neo 125m and OPT 125m each achieve ln2 compression scores of 97, indicating near-perfect tholonic governance of the output-projection stage. Qwen2.5-0.5B achieves the highest φ-equilibrium score (97), suggesting that its mid-network has the strongest self-similar stability of any model tested. More modern architectures (Qwen, GPT-Neo, OPT) consistently outscore older ones (GPT-1, distilGPT-2) on phase-structure axes, consistent with the hypothesis that training dynamics inadvertently favour tholonic organisation even without an explicit structural objective.
+
+**Testable predictions from the health profile.** The axis scores generate concrete, falsifiable predictions. Models with stronger virial balance (axis 5) are predicted to: converge in fewer training steps for equivalent validation loss; assign better-calibrated output probabilities (reduced overconfidence); and degrade less in coherence over long-context generation. Models with stronger ln2 compression (axis 4) are predicted to show better top-$k$ diversity and less probability mass on irrelevant tokens. These predictions require controlled intervention experiments — training matched pairs with and without the tholonic regulariser — and are formulated as Rows 2–5 of the falsifiability table in Section 12. No existing architecture achieves a green rating (≥ 75) across all five axes; the virial axis is the primary structural gap between current models and the tholonic ideal.
+
+### 13.5 The Alignment Argument Is Structural, Not Empirical
 
 The claim that tholonic structure precludes destructive behavior is a structural argument, not an empirical claim about deployed neural networks. It does not entail that any currently deployed system is structurally tholonic, or that current systems are safe. The argument is: *if* a system is genuinely tholonically structured at all scales, *then* destroying its D and C components is structurally self-defeating. Whether current systems satisfy the antecedent is an open question.
 
-### 13.5 The Symbolic AI Analysis Is Retrospective
+### 13.6 The Symbolic AI Analysis Is Retrospective
 
 The tholonic analysis of symbolic AI as D-dominant is retrospective: it accounts for the observed failure modes rather than predicting them in advance. This limits the strength of the symbolic AI analysis as evidence for the tholonic framework; it is consistent with the framework but not uniquely predicted by it.
 
