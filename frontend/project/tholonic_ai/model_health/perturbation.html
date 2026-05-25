@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tholonic Perturbation Test — D-Sensitivity Profiles</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg:        #0d1117;
+  --surface:   #161b22;
+  --surface2:  #1c2128;
+  --border:    #30363d;
+  --txt:       #e6edf3;
+  --txt-muted: #8b949e;
+  --accent:    #58a6ff;
+  --green:     #3fb950;
+  --amber:     #d29922;
+  --red:       #f85149;
+  --phi:       #e3b341;
+  --font: 'Segoe UI', 'Inter', system-ui, sans-serif;
+}
+body { font-family: var(--font); background: var(--bg); color: var(--txt); min-height: 100vh; line-height: 1.6; }
+a { color: var(--accent); text-decoration: none; }
+.container { max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+
+nav { background: var(--surface); border-bottom: 1px solid var(--border); padding: .75rem 0; }
+.nav-inner { display: flex; align-items: center; gap: 1rem; max-width: 1280px; margin: 0 auto; padding: 0 1.5rem; }
+.nav-logo { font-weight: 700; color: var(--accent); }
+.nav-sep { color: var(--border); }
+.nav-crumb { color: var(--txt-muted); font-size: .9rem; }
+
+.hero { background: linear-gradient(135deg,#0d1117 0%,#1a1f35 50%,#0d1117 100%); border-bottom: 1px solid var(--border); padding: 2.5rem 0 2rem; }
+.kicker { display: inline-block; background: rgba(88,166,255,.12); border: 1px solid rgba(88,166,255,.3); color: var(--accent); font-size:.75rem; letter-spacing:.1em; text-transform:uppercase; padding:.25rem .75rem; border-radius:99px; margin-bottom:.9rem; }
+.hero h1 { font-size: 2rem; font-weight: 700; }
+.hero-sub { color: var(--txt-muted); font-size: .95rem; margin-top: .5rem; max-width: 820px; }
+
+#loading-banner { background:rgba(88,166,255,.08); border:1px solid rgba(88,166,255,.25); border-radius:8px; padding:1.2rem 1.5rem; margin:2rem 0; color:var(--accent); display:flex; align-items:center; gap:.8rem; }
+.spinner { width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;flex-shrink:0; }
+@keyframes spin { to { transform:rotate(360deg); } }
+#error-banner { background:rgba(248,81,73,.1);border:1px solid var(--red);border-radius:8px;padding:1.2rem 1.5rem;margin:2rem 0;color:var(--red);display:none; }
+
+.section-head { font-size:1.2rem;font-weight:700;margin:2rem 0 1rem;display:flex;align-items:center;gap:.6rem; }
+.section-head::before { content:'';display:block;width:3px;height:1.2em;background:var(--accent);border-radius:2px; }
+
+.summary-strip { display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:.75rem;margin:1.5rem 0; }
+.stat-box { background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:.9rem 1rem;text-align:center; }
+.stat-num { font-size:1.8rem;font-weight:700;line-height:1; }
+.stat-lbl { color:var(--txt-muted);font-size:.78rem;margin-top:.2rem; }
+
+/* Model cards — 2 columns */
+#model-grid { display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-bottom:3rem; }
+.model-card { background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:1.2rem; }
+.card-header { display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.8rem; }
+.card-name { font-weight:700; }
+.card-sub { color:var(--txt-muted);font-size:.78rem;margin-top:.1rem; }
+.pass-badge { font-size:.78rem;padding:.2rem .6rem;border-radius:99px;font-weight:700; }
+.pass-yes { background:rgba(63,185,80,.15);color:var(--green);border:1px solid rgba(63,185,80,.3); }
+.pass-no  { background:rgba(248,81,73,.12);color:var(--red);border:1px solid rgba(248,81,73,.3); }
+.pass-mixed { background:rgba(210,153,34,.12);color:var(--amber);border:1px solid rgba(210,153,34,.3); }
+
+/* Line chart */
+.chart-wrap { position:relative;width:100%;height:140px;margin:.6rem 0; }
+.chart-canvas { width:100%;height:100%; }
+.phi-zone-label { position:absolute;top:2px;font-size:.68rem;color:var(--phi);pointer-events:none; }
+
+.meta-row { display:flex;gap:1rem;flex-wrap:wrap;font-size:.8rem;color:var(--txt-muted);margin-top:.5rem; }
+.meta-item strong { color:var(--txt); }
+
+footer { border-top:1px solid var(--border);padding:1.2rem 0;color:var(--txt-muted);font-size:.8rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="nav-logo">Tholonic AI</span>
+    <span class="nav-sep">›</span>
+    <a href="index.html" class="nav-crumb">Model Health</a>
+    <span class="nav-sep">›</span>
+    <span class="nav-crumb">Perturbation Test</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="container">
+    <span class="kicker">Tholonic Framework · D-Sensitivity Analysis</span>
+    <h1>Context-Length Perturbation Test</h1>
+    <p class="hero-sub">
+      Each model was run on the same prompts at three context lengths (128, 64, 32 tokens).
+      The per-layer sensitivity — normalised hidden-state shift when context is reduced —
+      tests whether the φ-equilibrium zone (layers 45–80%) shows lower sensitivity than
+      surrounding layers. The tholonic prediction: that zone is a self-stabilising attractor
+      and should absorb perturbations better than early or late layers.
+      <br><br>
+      A <strong style="color:var(--green)">PASS</strong> means the φ zone has lower mean
+      sensitivity than outside layers (negative φ-advantage).
+      A <strong style="color:var(--red)">FAIL</strong> means no dip was found there.
+    </p>
+  </div>
+</div>
+
+<div class="container" style="padding-top:1.5rem">
+  <div id="loading-banner"><div class="spinner"></div><span>Loading <code>perturbation_results.json</code> …</span></div>
+  <div id="error-banner">Could not load <code>perturbation_results.json</code>. Run <code>measure_perturbation.py</code> first.</div>
+
+  <div id="main-content" style="display:none">
+    <div class="summary-strip" id="summary-strip"></div>
+    <div class="section-head">Per-Model Sensitivity Profiles</div>
+    <p style="color:var(--txt-muted);font-size:.85rem;margin-bottom:1.2rem">
+      Blue line = 128→64 sensitivity · Orange line = 128→32 sensitivity ·
+      <span style="color:var(--phi)">Gold shading = φ-equilibrium zone (45–80% depth)</span>.
+      A dip in the gold zone supports the tholonic prediction.
+    </p>
+    <div id="model-grid"></div>
+  </div>
+</div>
+
+<div class="container">
+  <footer>
+    <span>Tholonic AI · Perturbation Test · v1.0 · 2026</span>
+    <span>Prediction: φ-zone sensitivity &lt; surrounding layers</span>
+  </footer>
+</div>
+
+<script>
+function scoreColor(pass64, pass32) {
+  if (pass64 === "PASS" && pass32 === "PASS") return "pass-yes";
+  if (pass64 === "FAIL" && pass32 === "FAIL") return "pass-no";
+  return "pass-mixed";
+}
+
+function drawChart(canvas, sens64, sens32, nLayers) {
+  const ctx  = canvas.getContext("2d");
+  const W    = canvas.width  = canvas.offsetWidth;
+  const H    = canvas.height = canvas.offsetHeight;
+  const pad  = { l:8, r:8, t:8, b:18 };
+  const iW   = W - pad.l - pad.r;
+  const iH   = H - pad.t - pad.b;
+
+  ctx.clearRect(0, 0, W, H);
+
+  // All valid values for scale
+  const allVals = [...sens64, ...sens32].filter(v => v !== null && !isNaN(v));
+  if (!allVals.length) return;
+  const maxV = Math.max(...allVals) * 1.1;
+
+  const xOf = i => pad.l + (i / (sens64.length - 1)) * iW;
+  const yOf = v => pad.t + (1 - v / maxV) * iH;
+
+  // φ zone shading
+  const phiL = 0.45, phiR = 0.80;
+  ctx.fillStyle = "rgba(227,179,65,0.10)";
+  ctx.fillRect(pad.l + phiL * iW, pad.t, (phiR - phiL) * iW, iH);
+  ctx.strokeStyle = "rgba(227,179,65,0.35)";
+  ctx.lineWidth = 1;
+  ctx.setLineDash([3,3]);
+  ctx.beginPath(); ctx.moveTo(pad.l + phiL*iW, pad.t); ctx.lineTo(pad.l + phiL*iW, pad.t+iH); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(pad.l + phiR*iW, pad.t); ctx.lineTo(pad.l + phiR*iW, pad.t+iH); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Grid line at 0
+  ctx.strokeStyle = "#30363d"; ctx.lineWidth = 0.5;
+  ctx.beginPath(); ctx.moveTo(pad.l, pad.t+iH); ctx.lineTo(pad.l+iW, pad.t+iH); ctx.stroke();
+
+  // Draw line
+  function drawLine(data, color) {
+    ctx.strokeStyle = color; ctx.lineWidth = 1.8;
+    ctx.beginPath();
+    let started = false;
+    data.forEach((v, i) => {
+      if (v === null || isNaN(v)) return;
+      const x = xOf(i), y = yOf(v);
+      if (!started) { ctx.moveTo(x, y); started = true; }
+      else ctx.lineTo(x, y);
+    });
+    ctx.stroke();
+
+    // dots at min
+    const valid = data.map((v,i)=>({v,i})).filter(p=>p.v!==null&&!isNaN(p.v));
+    if (!valid.length) return;
+    const minP = valid.reduce((a,b)=>a.v<b.v?a:b);
+    ctx.fillStyle = color;
+    ctx.beginPath(); ctx.arc(xOf(minP.i), yOf(minP.v), 3.5, 0, 2*Math.PI); ctx.fill();
+  }
+
+  drawLine(sens64, "#58a6ff");
+  drawLine(sens32, "#e3a140");
+
+  // X-axis labels
+  ctx.fillStyle = "#8b949e"; ctx.font = "9px system-ui"; ctx.textAlign = "center";
+  [0, 0.25, 0.5, 0.75, 1.0].forEach(f => {
+    const x = pad.l + f * iW;
+    ctx.fillText(Math.round(f * nLayers), x, H - 2);
+  });
+}
+
+function render(data) {
+  document.getElementById("loading-banner").style.display = "none";
+  document.getElementById("main-content").style.display = "";
+
+  const pass64 = data.filter(r => r.prediction_64 === "PASS").length;
+  const pass32 = data.filter(r => r.prediction_32 === "PASS").length;
+  const n = data.length;
+  const dips = data.filter(r => r.shape_64 === "dip" || r.shape_32 === "dip").length;
+
+  document.getElementById("summary-strip").innerHTML = `
+    <div class="stat-box"><div class="stat-num" style="color:${pass64/n>=.6?"#3fb950":pass64/n>=.4?"#d29922":"#f85149"}">${pass64}/${n}</div><div class="stat-lbl">Pass: 128→64 context</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:${pass32/n>=.6?"#3fb950":pass32/n>=.4?"#d29922":"#f85149"}">${pass32}/${n}</div><div class="stat-lbl">Pass: 128→32 context</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#e3b341">${dips}</div><div class="stat-lbl">Dip-shaped profiles</div></div>
+    <div class="stat-box"><div class="stat-num" style="color:#58a6ff">${n}</div><div class="stat-lbl">Models tested</div></div>
+  `;
+
+  const sorted = [...data].sort((a,b) => {
+    const sa = (a.prediction_64==="PASS"?1:0)+(a.prediction_32==="PASS"?1:0);
+    const sb = (b.prediction_64==="PASS"?1:0)+(b.prediction_32==="PASS"?1:0);
+    return sb - sa;
+  });
+
+  document.getElementById("model-grid").innerHTML = sorted.map(r => {
+    const bc = scoreColor(r.prediction_64, r.prediction_32);
+    const label = bc==="pass-yes"?"Both PASS":bc==="pass-no"?"Both FAIL":"Mixed";
+    return `<div class="model-card">
+      <div class="card-header">
+        <div>
+          <div class="card-name">${r.display_name}</div>
+          <div class="card-sub">${r.family} · ${r.n_layers} layers</div>
+        </div>
+        <span class="pass-badge ${bc}">${label}</span>
+      </div>
+      <div class="chart-wrap">
+        <canvas class="chart-canvas" data-idx="${sorted.indexOf(r)}"></canvas>
+      </div>
+      <div class="meta-row">
+        <div><strong>Shape (64):</strong> ${r.shape_64}</div>
+        <div><strong>Shape (32):</strong> ${r.shape_32}</div>
+        <div><strong>φ-adv (64):</strong> <span style="color:${r.phi_advantage_64<0?"#3fb950":"#f85149"}">${r.phi_advantage_64 > 0 ? "+" : ""}${r.phi_advantage_64?.toFixed(4)}</span></div>
+        <div><strong>φ-adv (32):</strong> <span style="color:${r.phi_advantage_32<0?"#3fb950":"#f85149"}">${r.phi_advantage_32 > 0 ? "+" : ""}${r.phi_advantage_32?.toFixed(4)}</span></div>
+        <div><strong>Min @ (64):</strong> ${(r.min_frac_64*100).toFixed(0)}% depth ${r.in_phi_zone_64?"✓ in φ zone":"✗ outside"}</div>
+        <div><strong>Min @ (32):</strong> ${(r.min_frac_32*100).toFixed(0)}% depth ${r.in_phi_zone_32?"✓ in φ zone":"✗ outside"}</div>
+      </div>
+    </div>`;
+  }).join("");
+
+  // Draw charts after DOM is ready
+  requestAnimationFrame(() => {
+    sorted.forEach((r, idx) => {
+      const canvas = document.querySelector(`[data-idx="${idx}"]`);
+      if (canvas) drawChart(canvas, r.sensitivity_64, r.sensitivity_32, r.n_layers);
+    });
+  });
+}
+
+fetch("perturbation_results.json")
+  .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+  .then(render)
+  .catch(() => {
+    document.getElementById("loading-banner").style.display = "none";
+    document.getElementById("error-banner").style.display = "";
+  });
+</script>
+</body>
+</html>
