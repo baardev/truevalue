@@ -166,15 +166,13 @@ nav {
 .health-badge {
   font-size: 1.4rem; font-weight: 800; letter-spacing: -.02em;
 }
-.card-body { display: flex; gap: 1rem; align-items: flex-start; }
-.radar-wrap { flex-shrink: 0; }
-.card-metrics { flex: 1; display: flex; flex-direction: column; gap: .35rem; }
-.metric-row { display: flex; justify-content: space-between; align-items: center; font-size: .82rem; }
-.metric-label { color: var(--txt-muted); display: flex; align-items: center; gap: .35rem; }
-.metric-dot { width: 8px; height: 8px; border-radius: 50%; }
-.metric-bar-wrap { flex: 1; margin: 0 .5rem; background: var(--surface2); border-radius: 3px; overflow: hidden; height: 6px; }
-.metric-bar { height: 100%; border-radius: 3px; }
-.metric-val { font-weight: 700; min-width: 2.5rem; text-align: right; }
+.card-body { display: flex; flex-direction: column; gap: .45rem; margin-top: .2rem; }
+.bar-row { display: grid; grid-template-columns: 7.5rem 1fr 2.8rem; align-items: center; gap: .5rem; font-size: .84rem; }
+.bar-label { color: var(--txt-muted); display: flex; align-items: center; gap: .4rem; font-weight: 500; }
+.bar-dot { width: 9px; height: 9px; border-radius: 50%; flex-shrink: 0; }
+.bar-track { background: var(--surface2); border-radius: 4px; overflow: hidden; height: 18px; position: relative; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width .4s ease; }
+.bar-val { font-weight: 700; text-align: right; font-size: .85rem; }
 .bottleneck-pill {
   font-size: .75rem; background: rgba(248,81,73,.12);
   border: 1px solid rgba(248,81,73,.3);
@@ -236,9 +234,9 @@ footer {
     <h1>Model Health Assessment</h1>
     <p class="hero-sub">
       Each model is graded on the three empirically supported tholonic constants
-      plus structural virial balance. The constant <em>e</em> was excluded — it
-      appears in only 2 of 65 detected boundaries across all 14 models and carries
-      no reliable signal.
+      plus structural virial balance. Scores are 0–100 where <strong>100 = ideal alignment</strong>
+      on every axis. The constant <em>e</em> was excluded — it appears in only 2 of 65 detected
+      boundaries and carries no reliable signal.
     </p>
     <div class="axes-legend">
       <div class="axis-pill"><div class="axis-dot" style="background:#58a6ff"></div>Boundary fidelity — % of detected transitions matching any tholonic constant (±8%)</div>
@@ -269,9 +267,9 @@ footer {
       <div class="section-head">How to Read These Charts</div>
 
       <p style="color:var(--txt-muted);font-size:.95rem;max-width:860px;margin-bottom:1.2rem">
-        Each model is graded on five axes derived from the tholonic framework. The spider chart shows
-        how close a model sits to the theoretical ideal — a perfect score on every axis would form a
-        full pentagon. What these scores predict about real-world behaviour is explained below.
+        Each model is graded on five axes derived from the tholonic framework. The bar chart shows
+        how close a model sits to the theoretical ideal — a perfect score on every axis would fill
+        every bar to 100. What these scores predict about real-world behaviour is explained below.
       </p>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:.9rem;margin-bottom:1.4rem">
@@ -358,7 +356,19 @@ footer {
     <div class="section-head">Model Ranking</div>
     <div id="ranking-bars"></div>
 
-    <div class="section-head">Per-Model Spider Charts</div>
+    <div class="section-head">Related Analyses</div>
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:1rem 1.2rem;margin-bottom:2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem">
+      <div>
+        <div style="font-weight:700;margin-bottom:.2rem">Context-Length Perturbation Test</div>
+        <div style="font-size:.83rem;color:var(--txt-muted)">
+          Measures per-layer D-sensitivity by comparing hidden states at 128, 64, and 32 token contexts.
+          Prediction: φ-equilibrium zone (45–80%) shows lower sensitivity. Result: <strong style="color:var(--amber)">43% pass (6/14)</strong> — below 67% threshold. GPT-Neo family passes cleanly; GPT-2 family fails consistently.
+        </div>
+      </div>
+      <a href="perturbation.html" style="background:rgba(88,166,255,.12);border:1px solid rgba(88,166,255,.3);color:var(--accent);padding:.45rem 1rem;border-radius:6px;font-size:.85rem;font-weight:600;white-space:nowrap">View Profiles →</a>
+    </div>
+
+    <div class="section-head">Per-Model Bar Charts</div>
     <div id="model-grid"></div>
 
     <details>
@@ -377,10 +387,14 @@ footer {
 </div>
 
 <script>
-// ── 5-axis radar: fidelity · √2 · φ · ln2 · virial  (e excluded) ─────────
-const AXIS_LABELS = ["Fidelity", "√2", "φ", "ln2", "Virial"];
-const AXIS_COLORS = ["#58a6ff", "#bc8cff", "#e3b341", "#56d364", "#ff7b72"];
-const AXIS_KEYS_5 = ["fidelity", "sqrt2", "equilibrium", "compression", "virial"];
+// ── 5-axis bar chart: fidelity · √2 · φ · ln2 · virial  (e excluded) ────
+const AXES = [
+  { label: "Boundary fidelity", col: "#58a6ff" },
+  { label: "√2 Scaling",        col: "#bc8cff" },
+  { label: "φ Equilibrium",     col: "#e3b341" },
+  { label: "ln2 Compression",   col: "#56d364" },
+  { label: "Virial balance",    col: "#ff7b72" },
+];
 
 const BOTTLENECK_PREDICTIONS = {
   fidelity: {
@@ -437,66 +451,21 @@ function axisVals(r) {
   ];
 }
 
-function makeRadar(vals, size) {
-  const cx = size/2, cy = size/2, r = size*0.38;
-  const N = 5;
-  const pts = i => {
-    const a = (i / N) * 2 * Math.PI - Math.PI/2;
-    return [cx + r * Math.cos(a), cy + r * Math.sin(a)];
-  };
-
-  // Background rings
-  let rings = "";
-  [0.25, 0.5, 0.75, 1.0].forEach(frac => {
-    const rp = r * frac;
-    const ring = Array.from({length: N}, (_, i) => {
-      const a = (i/N)*2*Math.PI - Math.PI/2;
-      return `${cx + rp*Math.cos(a)},${cy + rp*Math.sin(a)}`;
-    }).join(" ");
-    rings += `<polygon points="${ring}" fill="none" stroke="#30363d" stroke-width="${frac===1?1.2:0.5}"/>`;
-  });
-
-  // Axes
-  let axes = "";
-  for (let i = 0; i < N; i++) {
-    const [x, y] = pts(i);
-    axes += `<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="#30363d" stroke-width="1"/>`;
-  }
-
-  // Score polygon
-  const poly = vals.map((v, i) => {
-    const frac = v / 100;
-    const a = (i/N)*2*Math.PI - Math.PI/2;
-    return `${cx + r*frac*Math.cos(a)},${cy + r*frac*Math.sin(a)}`;
-  }).join(" ");
-  const avg  = vals.reduce((a,b)=>a+b,0)/N;
-  const fill = scoreColor(avg);
-
-  // Labels
-  let labels = "";
-  AXIS_LABELS.forEach((lbl, i) => {
-    const [x, y] = pts(i);
-    const dx = (x - cx) * 0.28, dy = (y - cy) * 0.28;
-    const nx = x + dx, ny = y + dy;
-    const anchor = Math.abs(nx - cx) < 5 ? "middle" : (nx < cx ? "end" : "start");
-    labels += `<text x="${nx}" y="${ny+4}" text-anchor="${anchor}" fill="${AXIS_COLORS[i]}"
-      font-size="10" font-family="system-ui" font-weight="700">${lbl}</text>`;
-  });
-
-  // Score dots
-  let dots = "";
-  vals.forEach((v, i) => {
-    const frac = v/100;
-    const a = (i/N)*2*Math.PI - Math.PI/2;
-    const x = cx + r*frac*Math.cos(a), y2 = cy + r*frac*Math.sin(a);
-    dots += `<circle cx="${x}" cy="${y2}" r="2.5" fill="${AXIS_COLORS[i]}" stroke="#0d1117" stroke-width="1"/>`;
-  });
-
-  return `<svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">
-    ${rings}${axes}
-    <polygon points="${poly}" fill="${fill}" fill-opacity="0.18" stroke="${fill}" stroke-width="1.5"/>
-    ${dots}${labels}
-  </svg>`;
+// Build horizontal bar chart HTML for a model's 5 axis values
+function makeBarChart(vals) {
+  return vals.map((v, i) => {
+    const ax = AXES[i];
+    const vc = scoreColor(v);
+    return `<div class="bar-row">
+      <span class="bar-label">
+        <span class="bar-dot" style="background:${ax.col}"></span>${ax.label}
+      </span>
+      <div class="bar-track">
+        <div class="bar-fill" style="width:${v}%;background:${vc}"></div>
+      </div>
+      <span class="bar-val" style="color:${vc}">${v}</span>
+    </div>`;
+  }).join("");
 }
 
 // ── Rendering ─────────────────────────────────────────────────────────────
@@ -559,27 +528,7 @@ function render(data) {
   document.getElementById("model-grid").innerHTML = sorted.map(r => {
     const overall4 = r._overall4;
     const cl       = scoreColor(overall4);
-    const [sfid, sv2, sphi, sln2, svir] = r._axes;
-    const radar    = makeRadar(r._axes, 180);
-
-    const metricRows = [
-      {val: sfid, label:"Boundary fidelity", col:"#58a6ff"},
-      {val: sv2,  label:"√2 Scaling",        col:"#bc8cff"},
-      {val: sphi, label:"φ Equilibrium",      col:"#e3b341"},
-      {val: sln2, label:"ln2 Compression",    col:"#56d364"},
-      {val: svir, label:"Virial balance",      col:"#ff7b72"},
-    ].map(({val, label, col}) => {
-      const vc = scoreColor(val);
-      return `<div class="metric-row">
-        <span class="metric-label">
-          <span class="metric-dot" style="background:${col}"></span>${label}
-        </span>
-        <div class="metric-bar-wrap">
-          <div class="metric-bar" style="width:${val}%;background:${vc}"></div>
-        </div>
-        <span class="metric-val" style="color:${vc}">${val}</span>
-      </div>`;
-    }).join("");
+    const barChart = makeBarChart(r._axes);
 
     const dcLabel = r.mean_dc_ratio != null
       ? ` (D/C ≈ ${r.mean_dc_ratio})`
@@ -605,10 +554,7 @@ function render(data) {
           <div class="card-family">${r.family}</div>
         </div>
       </div>
-      <div class="card-body">
-        <div class="radar-wrap">${radar}</div>
-        <div class="card-metrics">${metricRows}</div>
-      </div>
+      <div class="card-body">${barChart}</div>
       <div class="bottleneck-pill">
         <em class="bottleneck-icon">⚠</em>
         <span class="bottleneck-text"><strong>Bottleneck: ${bn.label}${bnExtra}</strong></span>
