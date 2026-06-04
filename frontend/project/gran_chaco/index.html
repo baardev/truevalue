@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light"/>
+<title>Gran Chaco — Soy, Beef &amp; Forest Ecosystem Services Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #1b5e20 0%, #33691e 40%, #bf360c 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+    padding: 40px; margin-bottom: 22px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #2e7d32; background: #e8f5e9;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 { font-size: 34px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto; }
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 14px; margin-top: 28px;
+  }
+  .kpi {
+    background: #f8f9fa; border-radius: 10px; padding: 16px 14px; text-align: center;
+    border-top: 3px solid #2e7d32;
+  }
+  .kpi.alert { border-top-color: #e65100; background: #fff3e0; }
+  .kpi-label { font-size: 10px; font-weight: 700; text-transform: uppercase;
+    color: #6c757d; letter-spacing: .06em; margin-bottom: 6px; }
+  .kpi-value { font-size: 22px; font-weight: 800; color: #1b5e20; }
+  .kpi.alert .kpi-value { color: #e65100; }
+  .kpi-unit { font-size: 10px; color: #6c757d; margin-top: 3px; }
+
+  .alert-panel {
+    background: #fff3e0; border-radius: 10px; padding: 18px 22px;
+    border-left: 5px solid #e65100; margin-top: 22px; text-align: left;
+  }
+  .alert-panel .alert-label {
+    font-size: 10px; font-weight: 800; text-transform: uppercase;
+    color: #bf360c; letter-spacing: .08em; margin-bottom: 8px;
+  }
+  .alert-panel p { font-size: 13px; color: #37474f; line-height: 1.7; }
+
+  .section-label {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .08em; color: rgba(255,255,255,0.7);
+    margin: 28px 0 10px;
+  }
+  .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+  .card {
+    background: #fff; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    transition: transform .2s, box-shadow .2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,0.28); }
+  .card-hdr { padding: 22px 22px 16px; color: #fff; }
+  .card-hdr.soy   { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+  .card-hdr.beef  { background: linear-gradient(135deg, #33691e, #558b2f); }
+  .card-hdr.eco   { background: linear-gradient(135deg, #1a237e, #283593); }
+  .card-hdr.deferred { background: linear-gradient(135deg, #424242, #616161); opacity: .85; }
+  .card-badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; padding: 2px 8px; border-radius: 4px;
+    background: rgba(255,255,255,0.2); color: #fff; margin-bottom: 7px;
+  }
+  .card-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .card-desc { font-size: 11px; opacity: 0.9; line-height: 1.5; }
+  .card-body { padding: 18px 22px 22px; }
+  .card-body ul { list-style: none; margin-bottom: 16px; }
+  .card-body li { font-size: 12px; color: #495057; padding: 4px 0 4px 18px; position: relative; line-height: 1.5; }
+  .card-body li::before { content: "▸"; position: absolute; left: 0; color: #2e7d32; font-weight: bold; }
+  .card-body li.deferred::before { content: "○"; color: #9e9e9e; }
+  .btn {
+    display: inline-block; padding: 9px 18px; border-radius: 7px;
+    text-decoration: none; font-weight: 700; font-size: 12px; color: #fff;
+    transition: opacity .15s, transform .15s; margin-right: 6px; margin-top: 4px;
+  }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .btn.soy   { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+  .btn.outline { background: transparent; border: 1.5px solid #dee2e6; color: #495057; font-size: 11px; padding: 7px 14px; }
+
+  /* Five-model coherence panel */
+  .coherence-panel {
+    background: #fff; border-radius: 12px; padding: 24px 26px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18);
+  }
+  .coherence-title { font-size: 13px; font-weight: 700; color: #1b5e20; margin-bottom: 4px; }
+  .coherence-sub { font-size: 11px; color: #6c757d; margin-bottom: 18px; }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 10px; }
+  .c-item { text-align: center; }
+  .c-symbol { font-size: 18px; font-weight: 800; color: #1b5e20; }
+  .c-bar-track { height: 8px; background: #e9ecef; border-radius: 4px; margin: 6px 0 4px; overflow: hidden; }
+  .c-bar-fill { height: 100%; border-radius: 4px; background: #2e7d32; }
+  .c-val { font-size: 12px; font-weight: 700; color: #2c3e50; }
+  .c-label { font-size: 9px; text-transform: uppercase; color: #6c757d; letter-spacing: .05em; }
+
+  /* Phase strip */
+  .phase-strip {
+    background: #fff; border-radius: 12px; padding: 22px 24px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.18); margin-top: 0;
+  }
+  .phase-strip-title { font-size: 13px; font-weight: 700; color: #1b5e20; margin-bottom: 14px; }
+  .phases { display: grid; grid-template-columns: repeat(5,1fr); gap: 8px; }
+  .phase-item { text-align: center; }
+  .phase-num { font-size: 10px; font-weight: 700; color: #fff; background: #2e7d32;
+    border-radius: 50%; width: 22px; height: 22px; display: flex; align-items: center;
+    justify-content: center; margin: 0 auto 6px; }
+  .phase-num.bottleneck { background: #e65100; }
+  .phase-name { font-size: 10px; color: #495057; line-height: 1.3; margin-bottom: 4px; }
+  .phase-bal { font-size: 13px; font-weight: 800; }
+  .phase-bal.excellent { color: #2e7d32; }
+  .phase-bal.good      { color: #00796b; }
+  .phase-bal.fair      { color: #e65100; }
+  .phase-bal.poor      { color: #c62828; }
+  .phase-transp { font-size: 9px; text-transform: uppercase; color: #9e9e9e; }
+  .phase-connector { border-top: 2px dashed #dee2e6; margin: 18px 0 0; }
+
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none;
+    font-size: 14px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 20px; padding: 8px 0; }
+
+  @media (max-width: 750px) {
+    .grid-3 { grid-template-columns: 1fr; }
+    .kpi-strip { grid-template-columns: 1fr 1fr; }
+    .coherence-grid { grid-template-columns: repeat(3,1fr); }
+    .phases { grid-template-columns: repeat(3,1fr); }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- NAV -->
+<div class="nav" style="margin-bottom:14px;">
+  <a href="/">← Homepage</a>
+  <a href="/frontend/project/danube/index.html">Danube Basin</a>
+  <a href="/frontend/project/shea/index.html">Shea</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="kicker">Gran Chaco · Soy · Beef · Forest Ecosystem Services · EUDR</div>
+  <h1>🌿 Gran Chaco</h1>
+  <p class="subtitle">
+    South America's second-largest forest system: <strong>107 million hectares</strong> across Argentina (65 Mha, 60.4%),
+    Paraguay (30 Mha), Bolivia (12 Mha) and Brazil — the largest dry forest in South America.
+    Under accelerating deforestation pressure from soy and beef expansion. Five-phase soy supply chain analysis
+    from land conversion through EUDR export compliance, with deferred beef and ecosystem services chains.
+    <strong>Bond focus: sustainability-linked instruments tied to deforestation-free sourcing KPIs.</strong>
+  </p>
+
+  <!-- KPI STRIP -->
+  <div class="kpi-strip">
+    <div class="kpi alert">
+      <div class="kpi-label">Deforestation 2024</div>
+      <div class="kpi-value">149,649</div>
+      <div class="kpi-unit">ha lost in Argentina</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Soy Area (Chaco)</div>
+      <div class="kpi-value">2.7 Mha</div>
+      <div class="kpi-unit">6.6–8.9 Mt/year</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Chain Balance</div>
+      <div class="kpi-value">81.2%</div>
+      <div class="kpi-unit">A+ bond grade</div>
+    </div>
+    <div class="kpi alert">
+      <div class="kpi-label">Bottleneck</div>
+      <div class="kpi-value">Phase 2</div>
+      <div class="kpi-unit">62.9% — Aggregation</div>
+    </div>
+  </div>
+
+  <!-- ALERT PANEL -->
+  <div class="alert-panel">
+    <div class="alert-label">Structural Issue — Aggregation Transparency Gap</div>
+    <p>
+      Soy from multiple farms and countries (Paraguay supplies 82% of imports) is physically mixed
+      at Rosario-bound silos, severing the provenance chain. This is the binding constraint for
+      EUDR compliance, deforestation-free certification, and sustainability-linked bond KPI verification.
+      Twelve traders control 88% of Gran Chaco soy exports: voluntary disaggregated data disclosure
+      from this concentrated group could resolve the bottleneck. The EU Deforestation Regulation
+      (EUDR 1115/2023) currently excludes the Chaco biome due to its canopy structure, creating
+      an additional policy gap that removes the primary compliance incentive.
+    </p>
+  </div>
+</div>
+
+<!-- PHASE STRIP -->
+<div class="section-label">Soy Supply Chain — Phase Structure</div>
+<div class="phase-strip">
+  <div class="phase-strip-title">5-Phase Soy Supply Chain · Chain Balance 81.2% (A+) · Bottleneck: Phase 2 (Aggregation)</div>
+  <div class="phases">
+    <div class="phase-item">
+      <div class="phase-num">0</div>
+      <div class="phase-name">Land Conversion &amp; Farm</div>
+      <div class="phase-bal fair">75.3%</div>
+      <div class="phase-transp">Low transparency</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">1</div>
+      <div class="phase-name">Cultivation &amp; Harvest</div>
+      <div class="phase-bal good">83.9%</div>
+      <div class="phase-transp">Medium transparency</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num bottleneck">2</div>
+      <div class="phase-name">Aggregation &amp; Transport</div>
+      <div class="phase-bal poor">62.9%</div>
+      <div class="phase-transp">Low — BOTTLENECK</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">3</div>
+      <div class="phase-name">Crushing &amp; Processing</div>
+      <div class="phase-bal good">90.9%</div>
+      <div class="phase-transp">High transparency</div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-num">4</div>
+      <div class="phase-name">Export &amp; EUDR Compliance</div>
+      <div class="phase-bal excellent">92.9%</div>
+      <div class="phase-transp">Medium transparency</div>
+    </div>
+  </div>
+</div>
+
+<!-- SUPPLY CHAIN CARDS -->
+<div class="section-label">Supply Chains</div>
+<div class="grid-3">
+
+  <!-- SOY — ACTIVE -->
+  <div class="card">
+    <div class="card-hdr soy">
+      <div class="card-badge">Active · 5 Phases</div>
+      <div class="card-title">🫘 Soy Supply Chain</div>
+      <div class="card-desc">Land conversion through EUDR export compliance. Deforestation-free certification and bond KPI verification.</div>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li>5-phase model from land clearing to export</li>
+        <li>149,649 ha deforested in 2024 (Argentina)</li>
+        <li>Phase 2 bottleneck: aggregation mixing breaks provenance</li>
+        <li>12 traders control 88% of Chaco soy exports</li>
+        <li>EUDR compliance gap: Chaco excluded from regulation</li>
+        <li>Isotopic traceability: 192 km accuracy (Maor et al. 2026)</li>
+      </ul>
+      <a class="btn soy" href="supply_chain/index.html">Supply Chain Analysis</a>
+      <a class="btn outline" href="supply_chain/dashboard.html">Dashboard</a>
+    </div>
+  </div>
+
+  <!-- BEEF — DEFERRED -->
+  <div class="card">
+    <div class="card-hdr deferred">
+      <div class="card-badge">Deferred</div>
+      <div class="card-title">🐄 Beef Supply Chain</div>
+      <div class="card-desc">Pasture establishment through export. 33% of Argentina national cattle stock from the Gran Chaco.</div>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li class="deferred">5 million calves/year marketed from Gran Chaco</li>
+        <li class="deferred">Paraguay: 67.4% of beef exports from Gran Chaco</li>
+        <li class="deferred">Cattle ranching as intermediate step toward soy</li>
+        <li class="deferred">EUDR indirect exposure through displaced pasture</li>
+        <li class="deferred">Bond linkage: calf tracking and herd registry KPIs</li>
+      </ul>
+      <span style="font-size:11px;color:#9e9e9e;font-style:italic;">Supply chain analysis pending. PDI to be completed.</span>
+    </div>
+  </div>
+
+  <!-- ECOSYSTEM SERVICES — DEFERRED -->
+  <div class="card">
+    <div class="card-hdr deferred">
+      <div class="card-badge">Deferred</div>
+      <div class="card-title">🌳 Forest Ecosystem Services</div>
+      <div class="card-desc">Carbon sequestration, water regulation, biodiversity. Natural capital layer for green bond covenants.</div>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li class="deferred">65 Mha forest — second largest in South America</li>
+        <li class="deferred">Carbon stock: dry forest biomass sequestration</li>
+        <li class="deferred">Water regulation: sub-surface flow, rainfall cycling</li>
+        <li class="deferred">Biodiversity: endemic species, habitat connectivity</li>
+        <li class="deferred">Blue carbon / REDD+ bond structure potential</li>
+      </ul>
+      <span style="font-size:11px;color:#9e9e9e;font-style:italic;">Ecosystem PDI to be completed. Paired with soy chain.</span>
+    </div>
+  </div>
+
+</div>
+
+<!-- VALUE CHAIN CARD -->
+<div class="section-label">Value Chain</div>
+<div class="grid-3">
+  <div class="card" style="grid-column: 1 / -1;">
+    <div class="card-hdr" style="background: linear-gradient(135deg, #4a148c, #6a1b9a); padding: 18px 22px 14px;">
+      <div class="card-badge">Deferred</div>
+      <div class="card-title" style="font-size:16px;">💰 Value Chain — Soy Cake, Soy Oil, and Bond Instruments</div>
+      <div class="card-desc">Revenue distribution, margin analysis, and sustainability-linked bond structuring across the 5-phase soy chain.</div>
+    </div>
+    <div class="card-body" style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#4a148c;margin-bottom:6px;">REVENUE ANCHORS</div>
+        <ul>
+          <li class="deferred">EU soy cake imports: 9.4 Mt (2019)</li>
+          <li class="deferred">China soybeans: 4.7 Mt (2021)</li>
+          <li class="deferred">India soy oil: 4.2 Mt (2021)</li>
+          <li class="deferred">Brazil export revenue: US$61B for context</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#4a148c;margin-bottom:6px;">SLB STRUCTURE</div>
+        <ul>
+          <li class="deferred">KPI 1: Annual Chaco deforestation rate (ha/year)</li>
+          <li class="deferred">KPI 2: % export volume with ZDC (target: 80%)</li>
+          <li class="deferred">KPI 3: Disaggregated Sio-granos access</li>
+          <li class="deferred">Step-up: 25 bps per KPI missed</li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#4a148c;margin-bottom:6px;">GREEN BOND USE</div>
+        <ul>
+          <li class="deferred">Isotopic fingerprinting infrastructure (Maor 2026)</li>
+          <li class="deferred">Disaggregated data disclosure platform</li>
+          <li class="deferred">EUDR Chaco advocacy and biome inclusion</li>
+          <li class="deferred">Forest restoration in degraded zones</li>
+        </ul>
+      </div>
+    </div>
+    <div style="padding: 0 22px 18px;">
+      <a class="btn outline" href="value_chain/index.html">Value Chain Overview</a>
+    </div>
+  </div>
+</div>
+
+<!-- FIVE-MODEL COHERENCE PANEL -->
+<div class="section-label">Five-Model Coherence Analysis</div>
+<div class="coherence-panel">
+  <div class="coherence-title">Tholonic Five-Constant Coherence — Soy Supply Chain Baseline (2026)</div>
+  <div class="coherence-sub">
+    Scores reflect structural coherence of the soy chain across five measurement dimensions.
+    Chain baseline derived from PDI data. Higher = more coherent. e-layer deferred (financial abstraction unmeasured).
+  </div>
+  <div class="coherence-grid">
+    <div class="c-item">
+      <div class="c-symbol">π</div>
+      <div class="c-bar-track"><div class="c-bar-fill" style="width:81.2%"></div></div>
+      <div class="c-val">81.2</div>
+      <div class="c-label">Operational</div>
+    </div>
+    <div class="c-item">
+      <div class="c-symbol">φ</div>
+      <div class="c-bar-track"><div class="c-bar-fill" style="width:72%;background:#388e3c"></div></div>
+      <div class="c-val">72.0</div>
+      <div class="c-label">Proportional</div>
+    </div>
+    <div class="c-item">
+      <div class="c-symbol">√2</div>
+      <div class="c-bar-track"><div class="c-bar-fill" style="width:68%;background:#1565c0"></div></div>
+      <div class="c-val">68.0</div>
+      <div class="c-label">Structural</div>
+    </div>
+    <div class="c-item">
+      <div class="c-symbol">ln2</div>
+      <div class="c-bar-track"><div class="c-bar-fill" style="width:75%;background:#00796b"></div></div>
+      <div class="c-val">75.0</div>
+      <div class="c-label">Growth</div>
+    </div>
+    <div class="c-item">
+      <div class="c-symbol">e</div>
+      <div class="c-bar-track"><div class="c-bar-fill" style="width:0%;background:#9e9e9e"></div></div>
+      <div class="c-val">—</div>
+      <div class="c-label">Abstract (deferred)</div>
+    </div>
+  </div>
+  <div style="margin-top:14px;font-size:11px;color:#6c757d;line-height:1.6;">
+    <strong>π (Operational, 81.2):</strong> Chain average balance — A+ grade.
+    <strong>φ (Proportional, 72.0):</strong> Value distribution efficiency reduced by aggregation-layer intermediation costs.
+    <strong>√2 (Structural, 68.0):</strong> High structural overhead from multi-origin supply mixing.
+    <strong>ln2 (Growth, 75.0):</strong> Moderate value transformation from raw bean to processed cake and oil.
+    <strong>e (Abstract, deferred):</strong> CBOT futures, trading finance, and financial abstraction not yet modelled.
+  </div>
+</div>
+
+<!-- ECOSYSTEM SERVICES DATA -->
+<div class="section-label">Ecosystem Services — Carbon, Soil &amp; Water (Paruelo et al. 2009 / Vida Silvestre)</div>
+<div style="background:#fff;border-radius:12px;padding:22px 26px;box-shadow:0 8px 24px rgba(0,0,0,0.18);">
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:18px;">
+
+    <div style="background:#e8f5e9;border-radius:8px;padding:16px;border-top:3px solid #2e7d32;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#1b5e20;letter-spacing:.06em;margin-bottom:8px;">Carbon — Deforestation Emissions</div>
+      <div style="font-size:22px;font-weight:800;color:#1b5e20;margin-bottom:4px;">20,875 GgC</div>
+      <div style="font-size:11px;color:#495057;line-height:1.6;">
+        Argentina annual CO₂ from deforestation (1996–2005 avg). <strong>75% originated from the Gran Chaco</strong> — approximately 15,656 GgC/year.
+        Source: Paruelo et al. (2009).
+      </div>
+    </div>
+
+    <div style="background:#fff3e0;border-radius:8px;padding:16px;border-top:3px solid #e65100;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#bf360c;letter-spacing:.06em;margin-bottom:8px;">Soil — Erosion Loss</div>
+      <div style="font-size:22px;font-weight:800;color:#e65100;margin-bottom:4px;">40–60%</div>
+      <div style="font-size:11px;color:#495057;line-height:1.6;">
+        Reduction in original soil cover in the Chaco-Salteño region, caused by water and wind erosion following vegetation clearance.
+        Source: Paruelo et al. (2009).
+      </div>
+    </div>
+
+    <div style="background:#e3f2fd;border-radius:8px;padding:16px;border-top:3px solid #1565c0;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;color:#1565c0;letter-spacing:.06em;margin-bottom:8px;">Water Regulation — Degraded</div>
+      <div style="font-size:22px;font-weight:800;color:#1565c0;margin-bottom:4px;">Disrupted</div>
+      <div style="font-size:11px;color:#495057;line-height:1.6;">
+        Wetlands and forests that regulate water flow are already affected by higher evaporation rates. Groundwater is polluted by agricultural nutrients and agrochemicals.
+        Source: Paruelo et al. (2009).
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#1b5e20;margin-bottom:8px;">Protected Area Status (Vida Silvestre / Argentina)</div>
+      <table style="width:100%;font-size:11px;border-collapse:collapse;">
+        <tr style="background:#e8f5e9;">
+          <th style="padding:5px 8px;text-align:left;color:#1b5e20;font-weight:700;">Zone</th>
+          <th style="padding:5px 8px;text-align:right;color:#1b5e20;font-weight:700;">Total ha</th>
+          <th style="padding:5px 8px;text-align:right;color:#1b5e20;font-weight:700;">Protected ha</th>
+          <th style="padding:5px 8px;text-align:right;color:#1b5e20;font-weight:700;">%</th>
+        </tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Chaco Seco</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">49,298,000</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">3,917,434</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;color:#e65100;">8.0%</td></tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Chaco Húmedo</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">11,850,000</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">554,719</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;color:#c62828;">4.7%</td></tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Esteros del Iberá</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">3,793,000</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">1,402,321</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;color:#e65100;">37.0%</td></tr>
+        <tr style="font-weight:700;background:#f8f9fa;"><td style="padding:5px 8px;">Total</td><td style="padding:5px 8px;text-align:right;">64,941,000</td><td style="padding:5px 8px;text-align:right;">5,874,474</td><td style="padding:5px 8px;text-align:right;color:#c62828;">9.0%</td></tr>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:#6c757d;">12 national parks/reserves · 60 provincial · 75 private · 4 Ramsar sites · 1 Biosphere Reserve</div>
+    </div>
+
+    <div>
+      <div style="font-size:12px;font-weight:700;color:#1b5e20;margin-bottom:8px;">Country Breakdown — Total Gran Chaco (107 Mha)</div>
+      <table style="width:100%;font-size:11px;border-collapse:collapse;">
+        <tr style="background:#e8f5e9;">
+          <th style="padding:5px 8px;text-align:left;color:#1b5e20;font-weight:700;">Country</th>
+          <th style="padding:5px 8px;text-align:right;color:#1b5e20;font-weight:700;">Area (Mha)</th>
+          <th style="padding:5px 8px;text-align:right;color:#1b5e20;font-weight:700;">Share</th>
+        </tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Argentina</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">65.0</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">60.4%</td></tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Paraguay</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">30.0</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">28.0%</td></tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Bolivia</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">12.0</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">11.4%</td></tr>
+        <tr><td style="padding:4px 8px;border-bottom:1px solid #e9ecef;">Brazil</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">0.14</td><td style="padding:4px 8px;text-align:right;border-bottom:1px solid #e9ecef;">0.1%</td></tr>
+        <tr style="font-weight:700;background:#f8f9fa;"><td style="padding:5px 8px;">Total</td><td style="padding:5px 8px;text-align:right;">~107</td><td style="padding:5px 8px;text-align:right;">100%</td></tr>
+      </table>
+      <div style="margin-top:6px;font-size:10px;color:#6c757d;">Source: Fundación Vida Silvestre Argentina / WWF. Total extent: "more than 100 million hectares."</div>
+    </div>
+  </div>
+</div>
+
+<!-- REGULATORY CONTEXT -->
+<div class="section-label">Regulatory Context — EUDR and Bond Opportunity</div>
+<div style="background:#fff;border-radius:12px;padding:22px 26px;box-shadow:0 8px 24px rgba(0,0,0,0.18);">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;">
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#1b5e20;margin-bottom:10px;">EUDR Status (Regulation 1115/2023)</div>
+      <div style="font-size:12px;color:#495057;line-height:1.7;">
+        <strong style="color:#e65100;">Critical gap:</strong> The Gran Chaco biome is currently <strong>excluded</strong> from EUDR scope because its dry-forest canopy cover falls below the regulation's 10% dense-canopy threshold — despite being the second-most threatened biome in South America. The Cerrado faces the same exclusion.<br><br>
+        This means Argentine soy cake exported to the EU is not subject to EUDR due diligence requirements, removing the primary compliance incentive for deforestation-free sourcing from the Chaco.
+        Advocacy to amend the biome definition is ongoing and is a direct SLB covenant opportunity.
+      </div>
+    </div>
+    <div>
+      <div style="font-size:13px;font-weight:700;color:#1b5e20;margin-bottom:10px;">Sustainability-Linked Bond Structure</div>
+      <table style="width:100%;font-size:11px;border-collapse:collapse;">
+        <tr style="background:#e8f5e9;">
+          <th style="padding:6px 8px;text-align:left;font-weight:700;color:#1b5e20;">Element</th>
+          <th style="padding:6px 8px;text-align:left;font-weight:700;color:#1b5e20;">Specification</th>
+        </tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">Type</td><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">Sustainability-linked bond (SLB)</td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">KPI 1</td><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">Annual Chaco deforestation &lt; 100,000 ha</td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">KPI 2</td><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">ZDC coverage &gt; 80% of export volume</td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">KPI 3</td><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">Disaggregated Sio-granos accessible to auditors</td></tr>
+        <tr><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">Step-up</td><td style="padding:5px 8px;border-bottom:1px solid #e9ecef;">25 bps per KPI missed</td></tr>
+        <tr><td style="padding:5px 8px;">Eligible issuers</td><td style="padding:5px 8px;">Argentine trading companies; CIARA members</td></tr>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- SOURCES -->
+<div class="section-label">Key Sources</div>
+<div style="background:#fff;border-radius:12px;padding:20px 24px;box-shadow:0 8px 24px rgba(0,0,0,0.18);">
+  <ul style="list-style:none;font-size:12px;color:#495057;line-height:1.9;">
+    <li>▸ <a href="https://granchaco.vidasilvestre.org.ar/" style="color:#1b5e20;">Fundación Vida Silvestre Argentina / WWF — Gran Chaco Ecoregion (area, country breakdown, protected areas)</a></li>
+    <li>▸ Paruelo J. et al. (2009) — Elementos conceptuales y metodológicos para la Evaluación de Impactos Ambientales Acumulativos (EIAAc) en bosques subtropicales. El caso del este de Salta. [Carbon 20,875 GgC/yr; soil erosion 40–60%; water regulation]</li>
+    <li>▸ <a href="https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy" style="color:#1b5e20;">Trase Earth — Argentina: The Overlooked Hub of South American Soy</a></li>
+    <li>▸ <a href="https://doi.org/10.1038/s43247-026-03380-8" style="color:#1b5e20;">Maor et al. (2026) — High-resolution soybean tracing for deforestation-free supply chains. Nature Comm. Earth &amp; Env. 7:310</a></li>
+    <li>▸ <a href="https://reports.weforum.org/docs/WEF_The_Gran_Chaco_Pathways_Towards_a_Sustainable_Future_2025.pdf" style="color:#1b5e20;">WEF — Gran Chaco: Pathways Towards a Sustainable Future (2025)</a></li>
+    <li>▸ <a href="https://planet-tracker.org/wp-content/uploads/2022/03/Gran-Chaco-LD-report.pdf" style="color:#1b5e20;">Planet Tracker — Gran Chaco Landowner Report (2022)</a></li>
+    <li>▸ <a href="https://news.mongabay.com/2025/02/deforestation-boom-in-gran-chaco-raises-alarm-over-argentinas-forest-law/" style="color:#1b5e20;">Mongabay / Greenpeace Argentina — Deforestation boom in Gran Chaco 2024 data</a></li>
+  </ul>
+</div>
+
+<div class="footer">Gran Chaco · TrueValue Analytics · Milton (2026) · Data sources: Trase, Maor et al. 2026, WEF, Planet Tracker, USDA</div>
+
+</div>
+</body>
+</html>

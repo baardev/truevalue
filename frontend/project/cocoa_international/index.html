@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cocoa International — Global Supply &amp; Value Chain Hub</title>
+<style color-scheme="light">
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #5c3317 0%, #3a1f0d 50%, #2a1208 100%);
+    min-height: 100vh;
+    padding: 24px;
+    color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+    padding: 40px;
+    margin-bottom: 22px;
+    text-align: center;
+  }
+  .kicker {
+    display: inline-block;
+    font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #5c3317; background: #f5e6d8;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto; }
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px;
+    margin-top: 28px;
+  }
+  .kpi {
+    background: #f8f9fa; border-radius: 10px; padding: 16px 12px;
+    border-left: 4px solid #5c3317;
+  }
+  .kpi-val { font-size: 24px; font-weight: 700; color: #3a1f0d; }
+  .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; line-height: 1.3; }
+  .alert-panel {
+    background: #fff3cd; border-left: 5px solid #c0392b;
+    border-radius: 10px; padding: 18px 22px; margin-bottom: 22px;
+  }
+  .alert-panel h3 { color: #c0392b; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .alert-panel p { font-size: 14px; color: #495057; line-height: 1.6; }
+  .grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px;
+  }
+  .card {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+  .card-header { padding: 26px 28px 16px; color: #fff; }
+  .card-header.sc { background: linear-gradient(135deg, #3a1f0d 0%, #5c3317 100%); }
+  .card-header.vc { background: linear-gradient(135deg, #2a1208 0%, #4a2810 100%); }
+  .card-header.rc { background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 100%); }
+  .card-icon { font-size: 38px; margin-bottom: 8px; }
+  .card-title { font-size: 21px; font-weight: 600; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+  .card-body { padding: 20px 28px 24px; }
+  .card-body ul { list-style: none; margin-bottom: 16px; }
+  .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+  .card-body li::before { content: "✓"; position: absolute; left: 0; color: #5c3317; font-weight: bold; }
+  .btn {
+    display: inline-block; padding: 11px 22px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn.sc { background: linear-gradient(135deg, #3a1f0d 0%, #5c3317 100%); }
+  .btn.vc { background: linear-gradient(135deg, #2a1208 0%, #4a2810 100%); }
+  .btn.rc { background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 100%); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+  .sub-links { margin-top: 12px; font-size: 13px; }
+  .sub-links a { color: #5c3317; font-weight: 600; text-decoration: none; margin-right: 14px; }
+  .sub-links a:hover { text-decoration: underline; }
+  .phase-strip {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    padding: 28px 28px 24px; margin-bottom: 22px;
+  }
+  .phase-strip h2 { font-size: 16px; font-weight: 700; color: #3a1f0d; margin-bottom: 16px; }
+  .phases { display: flex; gap: 8px; flex-wrap: wrap; }
+  .phase {
+    flex: 1; min-width: 120px; padding: 12px 10px; border-radius: 10px;
+    text-align: center; background: #fdf4ec; border: 2px solid #d4b896;
+    position: relative;
+  }
+  .phase.bottleneck { background: #ffeaea; border-color: #c0392b; }
+  .phase.secondary { background: #fff8e1; border-color: #e67e22; }
+  .phase-num { font-size: 18px; font-weight: 800; color: #5c3317; }
+  .phase.bottleneck .phase-num { color: #c0392b; }
+  .phase.secondary .phase-num { color: #e67e22; }
+  .phase-name { font-size: 11px; color: #495057; margin-top: 4px; line-height: 1.3; }
+  .phase-balance { font-size: 12px; font-weight: 700; margin-top: 5px; color: #3a1f0d; }
+  .phase.bottleneck .phase-balance { color: #c0392b; }
+  .phase.secondary .phase-balance { color: #e67e22; }
+  .bottleneck-badge {
+    position: absolute; top: -8px; right: -8px;
+    background: #c0392b; color: #fff; font-size: 9px; font-weight: 700;
+    padding: 2px 6px; border-radius: 999px; text-transform: uppercase;
+  }
+  .secondary-badge {
+    position: absolute; top: -8px; right: -8px;
+    background: #e67e22; color: #fff; font-size: 9px; font-weight: 700;
+    padding: 2px 6px; border-radius: 999px; text-transform: uppercase;
+  }
+  .coherence-panel {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    padding: 28px; margin-bottom: 22px;
+  }
+  .coherence-panel h2 { font-size: 16px; font-weight: 700; color: #3a1f0d; margin-bottom: 18px; }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    text-align: center; padding: 16px 10px;
+    background: #fdf4ec; border-radius: 10px;
+    border: 2px solid #d4b896;
+  }
+  .coherence-val { font-size: 22px; font-weight: 800; color: #3a1f0d; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #5c3317; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #6c757d; line-height: 1.3; }
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a {
+    display: inline-block; color: rgba(255,255,255,0.9);
+    text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px;
+  }
+  .nav a:hover { text-decoration: underline; }
+  .footer {
+    text-align: center; color: rgba(255,255,255,0.8);
+    font-size: 12px; margin-top: 14px; padding: 8px 0;
+  }
+  @media (max-width: 700px) {
+    .grid { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .coherence-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="kicker">Cocoa · Global Commodity Hub · True Value</div>
+    <h1>🍫 Cocoa — Global Supply &amp; Value Chain</h1>
+    <p class="subtitle">
+      Ivory Coast (44%) and Ghana (16%) supply over 60% of global cocoa from approximately
+      5 million smallholder farms averaging 2 ha each. This hub models 7 phases from cultivation
+      through manufacturing and retail using N-D-C triadic analysis.
+      <strong>Structural finding:</strong> Phase 1 (Fermentation/Drying) has a 76.5% balance
+      because the most critical quality transformation in the chain occurs with no custody
+      documentation, no process monitoring, and concentrated child labor risk — rendering all
+      downstream sustainability certifications structurally unverifiable at origin.
+    </p>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-val">89.2%</div>
+        <div class="kpi-lbl">Chain Average Balance</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">76.5%</div>
+        <div class="kpi-lbl">Bottleneck — Phase 1 Fermentation (failure zone)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">~5M</div>
+        <div class="kpi-lbl">Smallholder farms, avg 2 ha (Ivory Coast + Ghana)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">1:6</div>
+        <div class="kpi-lbl">Farm-gate to retail price ratio (USD 1,400 vs USD 8,000+ per tonne)</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert-panel">
+    <h3>Primary Bottleneck: Fermentation and Drying Opacity (Phase 1, balance 76.5%)</h3>
+    <p>
+      The most critical quality-determining transformation in the global cocoa chain — biochemical
+      fermentation over 5-8 days followed by 7-14 days of sun drying — happens at farm level with
+      no standardized process, no temperature or humidity monitoring, no chain-of-custody
+      documentation, and no identity preservation. This is where approximately 85% of chocolate
+      flavor precursors develop. It is also where child labor is most concentrated (estimated
+      1.5 million children in Ivory Coast and Ghana alone). Sustainability certifications issued
+      at cooperative membership level (UTZ, Rainforest Alliance, Fairtrade) operate downstream of
+      this opacity and cannot verify the practices they claim to certify. EUDR compliance requires
+      deforestation-free geolocation polygon mapping at farm level, but the custody infrastructure
+      to document what happens between polygon mapping and export certification does not yet exist
+      at scale. The bond intervention point is here: CLMRS enrollment rates and verifiable
+      fermentation-batch documentation are the measurable KPIs that address the root cause.
+    </p>
+  </div>
+
+  <div class="phase-strip">
+    <h2>7-Phase Global Supply Chain Overview</h2>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">0</div>
+        <div class="phase-name">Cultivation</div>
+        <div class="phase-balance">89.4%</div>
+      </div>
+      <div class="phase bottleneck">
+        <div class="bottleneck-badge">BOTTLENECK</div>
+        <div class="phase-num">1</div>
+        <div class="phase-name">Fermentation &amp; Drying</div>
+        <div class="phase-balance">76.5%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-name">Aggregation &amp; Trading</div>
+        <div class="phase-balance">94.8%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">3</div>
+        <div class="phase-name">Export &amp; Origin Processing</div>
+        <div class="phase-balance">95.2%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">4</div>
+        <div class="phase-name">Oceanic Shipping</div>
+        <div class="phase-balance">94.4%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">5</div>
+        <div class="phase-name">Destination Processing</div>
+        <div class="phase-balance">93.8%</div>
+      </div>
+      <div class="phase secondary">
+        <div class="secondary-badge">WEAK</div>
+        <div class="phase-num">6</div>
+        <div class="phase-name">Manufacturing &amp; Retail</div>
+        <div class="phase-balance">80.2%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-header sc">
+        <div class="card-icon">🏭</div>
+        <div class="card-title">Supply Chain</div>
+        <div class="card-desc">Physical flow, custody, and N-D-C triadic analysis across 7 phases from West African farms to global manufacturing.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Phase-level D, C, N, and balance scores</li>
+          <li>Phase 1 bottleneck: fermentation opacity and certification gap</li>
+          <li>Ivory Coast origin-processing policy shift (35% domestic grinding)</li>
+          <li>Amsterdam grinding hub and EU EUDR compliance obligations</li>
+          <li>Five-model coherence panel (π, φ, √2, ln2, e)</li>
+        </ul>
+        <a class="btn sc" href="supply_chain/index.html">Explore Supply Chain</a>
+        <div class="sub-links">
+          <a href="supply_chain/dashboard.html">Dashboard</a>
+          <a href="supply_chain/project_context.html">Project Context</a>
+          <a href="supply_chain/recycling_analysis.html">Ecological Return Chain</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header vc">
+        <div class="card-icon">💵</div>
+        <div class="card-title">Value Chain</div>
+        <div class="card-desc">Pricing, margin structure, and the farm-to-retail gap: USD 1,400/tonne farm gate vs USD 8,000+ retail equivalent. Fairtrade premium only USD 200/tonne.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Farm-gate price structure and CCC/COCOBOD guarantee systems</li>
+          <li>Origin vs destination grinding value capture (35% shift to Ivory Coast)</li>
+          <li>Fairtrade and certification premium transmission analysis</li>
+          <li>Retail brand capture: Mars, Nestle, Mondelez, Ferrero margin structure</li>
+          <li>Value chain bond opportunity: living income and traceability KPIs</li>
+        </ul>
+        <a class="btn vc" href="value_chain/index.html">Explore Value Chain</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header rc">
+      <div class="card-icon">♻️</div>
+      <div class="card-title">Ecological Return Chain (TVPCI-R)</div>
+      <div class="card-desc">Cocoa waste streams, pod husk recovery, shell-to-energy, and circular economy flows. TVPCI-R: 46.0 (failure zone). B_chain: 37.9 (breakdown).</div>
+    </div>
+    <div class="card-body">
+      <ul>
+        <li>Pod husk: 10kg husks per 1kg dry beans, mostly burned or abandoned (Phase 0/1, highest omega weight)</li>
+        <li>Cocoa shell at destination grinding: 10-12% of bean weight, partial energy recovery</li>
+        <li>Packaging waste at manufacturing/retail: poorest recovery of any phase</li>
+        <li>Priority interventions: pod husk biochar, shell biogas, compostable packaging</li>
+        <li>All TVPCI-R scores provisional: no phase-resolved LCA data available</li>
+      </ul>
+      <a class="btn rc" href="supply_chain/recycling_analysis.html">View Ecological Return Chain</a>
+    </div>
+  </div>
+
+  <div class="coherence-panel">
+    <h2>Five-Model Coherence Baseline (N-D-C Framework)</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">π — Operational</div>
+        <div class="coherence-val">89.2</div>
+        <div class="coherence-desc">Chain average balance. Strong midchain (phases 2-5) but Phase 1 at 76.5% pulls the system into structural risk.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">φ — Proportional</div>
+        <div class="coherence-val">72.8</div>
+        <div class="coherence-desc">Value distribution efficiency. Farm-to-retail ratio of 1:6 with only USD 200/tonne Fairtrade premium reaching farmers.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">√2 — Structural</div>
+        <div class="coherence-val">81.4</div>
+        <div class="coherence-desc">Custody and transfer overhead. CCC/COCOBOD systems and bill-of-lading anchor are functional; Phase 1 is the structural gap.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2 — Growth</div>
+        <div class="coherence-val">68.5</div>
+        <div class="coherence-desc">Value transformation capture. Fermentation creates most chocolate value but farmers capture none of the resulting premium.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e — Financial</div>
+        <div class="coherence-val">58.3</div>
+        <div class="coherence-desc">Financial abstraction coupling. Sustainability premiums weakly coupled to farm-level supply chain performance. EUDR adds regulatory pressure.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <a href="../../../../index.html">← Main Homepage</a>
+    <a href="../cocoa_netherlands/index.html">🇳🇱 Cocoa Netherlands Hub</a>
+    <a href="../olive_oil/index.html">Olive Oil Hub</a>
+    <a href="../shea/index.html">Shea Hub</a>
+    <a href="../gold/index.html">Gold Hub</a>
+    <a href="../gran_chaco/index.html">Gran Chaco Hub</a>
+  </div>
+  <div class="footer">
+    TrueValue Analytics · Cocoa International Supply &amp; Value Chain Hub · Data: ICCO, World Cocoa Foundation, Barry Callebaut, CCC Ivory Coast, IDH Cocoa Barometer 2022, Fairtrade International · June 2026
+  </div>
+
+</div>
+</body>
+</html>

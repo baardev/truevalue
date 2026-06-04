@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cocoa Netherlands — Industrial Processing and Value Hub</title>
+<style color-scheme="light">
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #963d1a 0%, #5a2008 50%, #3a1008 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+    padding: 40px; margin-bottom: 22px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #963d1a; background: #fde8db;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto; }
+  .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+  .kpi { background: #f8f9fa; border-radius: 10px; padding: 16px 12px; border-left: 4px solid #963d1a; }
+  .kpi-val { font-size: 24px; font-weight: 700; color: #5a2008; }
+  .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; line-height: 1.3; }
+  /* Why Netherlands panel */
+  .rationale {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    overflow: hidden; margin-bottom: 22px;
+  }
+  .rationale-header {
+    background: linear-gradient(135deg, #5a2008 0%, #963d1a 100%);
+    color: #fff; padding: 20px 28px;
+  }
+  .rationale-header h2 { font-size: 17px; font-weight: 600; margin-bottom: 4px; }
+  .rationale-header p { font-size: 12px; color: #d4855a; }
+  .rationale-body { padding: 24px 28px; }
+  .rationale-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+  .rationale-item { border-left: 3px solid #963d1a; padding-left: 14px; }
+  .rationale-item h3 { font-size: 13px; font-weight: 700; color: #5a2008; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .rationale-item p { font-size: 13px; color: #495057; line-height: 1.65; }
+  /* Shea integration panel */
+  .shea-panel {
+    background: #f5f0ea; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    overflow: hidden; margin-bottom: 22px;
+    border: 2px solid #d4b896;
+  }
+  .shea-header {
+    background: linear-gradient(135deg, #8b6914 0%, #c9922a 100%);
+    color: #fff; padding: 18px 28px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .shea-header h2 { font-size: 17px; font-weight: 600; }
+  .shea-header p { font-size: 12px; color: #fde8a0; margin-top: 3px; }
+  .shea-badge {
+    background: #fff; color: #8b6914; font-size: 11px; font-weight: 700;
+    padding: 4px 12px; border-radius: 999px; white-space: nowrap;
+  }
+  .shea-body { padding: 22px 28px; }
+  .shea-body p { font-size: 14px; color: #495057; line-height: 1.7; margin-bottom: 12px; }
+  .shea-math {
+    background: #fff; border: 1px solid #d4b896; border-radius: 8px;
+    padding: 14px 18px; font-family: monospace; font-size: 12px;
+    color: #3a1f0d; line-height: 1.8; margin: 12px 0;
+  }
+  .shea-flow { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-top: 12px; }
+  .shea-node {
+    background: #fff; border-radius: 8px; padding: 12px 16px;
+    border: 1px solid #d4b896; text-align: center; min-width: 120px;
+  }
+  .shea-node .node-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; }
+  .shea-node .node-val { font-size: 18px; font-weight: 700; color: #5a2008; margin: 4px 0; }
+  .shea-node .node-name { font-size: 11px; color: #888; }
+  .shea-arrow { font-size: 20px; color: #963d1a; }
+  /* Alert and phase strip */
+  .alert-panel {
+    background: #fff3cd; border-left: 5px solid #c0392b;
+    border-radius: 10px; padding: 18px 22px; margin-bottom: 22px;
+  }
+  .alert-panel h3 { color: #c0392b; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .alert-panel p { font-size: 14px; color: #495057; line-height: 1.6; }
+  .phase-strip {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18);
+    padding: 28px 28px 24px; margin-bottom: 22px;
+  }
+  .phase-strip h2 { font-size: 16px; font-weight: 700; color: #5a2008; margin-bottom: 16px; }
+  .phases { display: flex; gap: 8px; flex-wrap: wrap; }
+  .phase {
+    flex: 1; min-width: 120px; padding: 12px 10px; border-radius: 10px;
+    text-align: center; background: #fdf3ed; border: 2px solid #d4b896; position: relative;
+  }
+  .phase.bottleneck { background: #fff8e1; border-color: #e67e22; }
+  .phase.composite { background: #f5f0ea; border-color: #8b6914; }
+  .phase-num { font-size: 18px; font-weight: 800; color: #963d1a; }
+  .phase.bottleneck .phase-num { color: #e67e22; }
+  .phase.composite .phase-num { color: #8b6914; }
+  .phase-name { font-size: 10px; color: #495057; margin-top: 4px; line-height: 1.3; }
+  .phase-balance { font-size: 12px; font-weight: 700; margin-top: 5px; color: #5a2008; }
+  .phase.bottleneck .phase-balance { color: #e67e22; }
+  .phase-badge {
+    position: absolute; top: -8px; right: -8px;
+    font-size: 9px; font-weight: 700;
+    padding: 2px 6px; border-radius: 999px; text-transform: uppercase;
+    color: #fff;
+  }
+  .phase-badge.bottleneck { background: #e67e22; }
+  .phase-badge.composite { background: #8b6914; }
+  /* Cards */
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .card {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+  .card-header { padding: 26px 28px 16px; color: #fff; }
+  .card-header.sc { background: linear-gradient(135deg, #5a2008 0%, #963d1a 100%); }
+  .card-header.vc { background: linear-gradient(135deg, #3a1008 0%, #6a2d14 100%); }
+  .card-header.rc { background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 100%); }
+  .card-icon { font-size: 38px; margin-bottom: 8px; }
+  .card-title { font-size: 21px; font-weight: 600; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+  .card-body { padding: 20px 28px 24px; }
+  .card-body ul { list-style: none; margin-bottom: 16px; }
+  .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+  .card-body li::before { content: "✓"; position: absolute; left: 0; color: #963d1a; font-weight: bold; }
+  .card-body.rc li::before { color: #2d7a2d; }
+  .btn {
+    display: inline-block; padding: 11px 22px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn.sc { background: linear-gradient(135deg, #5a2008 0%, #963d1a 100%); }
+  .btn.vc { background: linear-gradient(135deg, #3a1008 0%, #6a2d14 100%); }
+  .btn.rc { background: linear-gradient(135deg, #1a4a1a 0%, #2d7a2d 100%); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+  .sub-links { margin-top: 12px; font-size: 13px; }
+  .sub-links a { color: #963d1a; font-weight: 600; text-decoration: none; margin-right: 14px; }
+  .sub-links a:hover { text-decoration: underline; }
+  /* Coherence */
+  .coherence-panel {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18); padding: 28px; margin-bottom: 22px;
+  }
+  .coherence-panel h2 { font-size: 16px; font-weight: 700; color: #5a2008; margin-bottom: 18px; }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    text-align: center; padding: 16px 10px;
+    background: #fdf3ed; border-radius: 10px; border: 2px solid #d4b896;
+  }
+  .coherence-val { font-size: 22px; font-weight: 800; color: #5a2008; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #963d1a; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #6c757d; line-height: 1.3; }
+  /* Global comparison bar */
+  .compare-panel {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18); padding: 24px 28px; margin-bottom: 22px;
+  }
+  .compare-panel h2 { font-size: 15px; font-weight: 700; color: #5a2008; margin-bottom: 14px; }
+  .compare-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .compare-label { font-size: 12px; color: #495057; min-width: 220px; font-weight: 600; }
+  .compare-bar-bg { flex: 1; height: 10px; background: #e9ecef; border-radius: 5px; overflow: hidden; }
+  .compare-bar { height: 100%; border-radius: 5px; }
+  .compare-val { font-size: 12px; font-weight: 700; min-width: 44px; text-align: right; }
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: rgba(255,255,255,0.8); font-size: 12px; margin-top: 14px; padding: 8px 0; }
+  @media (max-width: 800px) {
+    .grid { grid-template-columns: 1fr; }
+    .kpis { grid-template-columns: 1fr 1fr; }
+    .coherence-grid { grid-template-columns: 1fr 1fr; }
+    .rationale-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <div class="kicker">Cocoa Netherlands · Industrial Processing Hub · True Value</div>
+    <h1>🇳🇱 Cocoa Netherlands — Industrial Processing and Value Hub</h1>
+    <p class="subtitle">
+      The Netherlands is the world's largest single cocoa processing node: Amsterdam grinds approximately
+      600,000 tonnes per year in a dense cluster of institutional documentation, EU regulation, and world-class
+      infrastructure. This project models 6 phases from port arrival through EU re-export using the same
+      N-D-C framework as <a href="../cocoa_international/index.html" style="color:#963d1a;">Cocoa International</a>,
+      but with data quality H throughout and a composite Phase 3 that integrates the TrueValue shea supply
+      chain at a 5% weight — reflecting the actual composition of EU chocolate fat systems.
+    </p>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-val">90.1%</div>
+        <div class="kpi-lbl">Chain Average Balance (vs 89.2% global)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">85.1%</div>
+        <div class="kpi-lbl">Bottleneck — Phase 4 Manufacturing (Fair zone, not failure)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">600K t</div>
+        <div class="kpi-lbl">Amsterdam annual grinding — world's largest single hub</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">Data: H</div>
+        <div class="kpi-lbl">All phases High data quality (vs M for global chain)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY NETHERLANDS RATIONALE PANEL -->
+  <div class="rationale">
+    <div class="rationale-header">
+      <h2>Why the Netherlands Data Is More Robust and More Indicative of Supply Chain Reality</h2>
+      <p>Three structural reasons this project outperforms the global chain in data quality and analytical precision</p>
+    </div>
+    <div class="rationale-body">
+      <div class="rationale-grid">
+        <div class="rationale-item">
+          <h3>Institutional Documentation Density</h3>
+          <p>
+            Every phase in the Netherlands chain is anchored by a named institutional data source. Port
+            arrivals are documented by the Port of Rotterdam Authority (public annual statistics). Quality
+            inspection is governed by ECA grading certificates and NVWA food safety records. Grinding volumes
+            are published by ICCO by country and confirmed in Barry Callebaut and Cargill annual reports.
+            The Dutch Sustainability Agreement on Cocoa (IDH, covering 75% of the Dutch market) produces
+            annual KPI progress reports. This contrasts sharply with the global chain, where Phase 1
+            (Fermentation/Drying at West African farm level) has zero institutional documentation and a
+            76.5% balance driven entirely by opacity.
+          </p>
+        </div>
+        <div class="rationale-item">
+          <h3>Regulatory Traceability Anchor</h3>
+          <p>
+            The Netherlands is the primary EU customs clearance point for European cocoa. Under EU
+            Regulation 2023/1115 (EUDR), every tonne of cocoa entering the Netherlands must be accompanied
+            by a verified deforestation-free due diligence statement from 2025-12-30 onward. This regulatory
+            requirement creates a mandatory documentation trail that does not exist anywhere else in the
+            global chain. NVWA cadmium and lead testing under EC 1881/2006 creates a second compulsory
+            measurement layer. These obligations make the Netherlands chain uniquely auditable — the
+            exact quality of data that N-D-C analysis requires to produce meaningful balance scores.
+          </p>
+        </div>
+        <div class="rationale-item">
+          <h3>The Shea Integration Is Physically Here</h3>
+          <p>
+            The global cocoa_international project notes that EU chocolate may contain up to 5% shea-derived
+            CBE as a cocoa butter substitute. But the convergence of the cocoa and shea supply chains is
+            not a theoretical abstraction: it physically happens in Wormerveer, Netherlands, at IOI Loders
+            Croklaan's specialty fats facility. Shea butter imported from Burkina Faso and West Africa
+            (the same supply chain modeled in the TrueValue shea project) is fractionated into shea stearin
+            and blended with cocoa butter here. No other node in the global chain can model this convergence
+            with equal precision. Phase 3 of this project uses the shea project's measured N-D-C values
+            (Phase 4 Export: D=210, C=165, balance=64.0%) at a 5% weight to compute a composite score
+            that reflects what EU chocolate fat systems actually contain.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHEA INTEGRATION PANEL -->
+  <div class="shea-panel">
+    <div class="shea-header">
+      <div>
+        <h2>🫒 Shea Butter Integration — Phase 3 Composite (CBE Manufacturing)</h2>
+        <p>Why shea is more relevant to cocoa_netherlands than to cocoa_international</p>
+      </div>
+      <div class="shea-badge">5% Weighted Composite · IOI Loders Croklaan · Wormerveer NL</div>
+    </div>
+    <div class="shea-body">
+      <p>
+        EU Chocolate Directive 2000/36/EC permits up to 5% of the cocoa butter content in chocolate to be
+        replaced by Cocoa Butter Equivalents (CBEs), of which shea stearin is the most widely used. This is
+        not a marginal adjustment: in the mass-market chocolate segment, the 5% CBE allowance is routinely
+        used for cost and technical reasons (improved snap, shelf-life stability). The substitution must be
+        declared on product labels as "contains vegetable fats in addition to cocoa butter."
+      </p>
+      <p>
+        The physical process happens at IOI Loders Croklaan in Wormerveer, Netherlands. Shea butter imported
+        from Burkina Faso, Ghana, and Mali — the same origin supply chain modeled in the TrueValue shea project
+        — is fractionated (dry fractionation or solvent extraction) to separate shea stearin from shea olein.
+        The stearin fraction, which has a cocoa-butter-compatible melting profile, is then blended with other
+        permitted CBE fats (illipe, sal, palm mid-fraction) and sold to European chocolate manufacturers.
+      </p>
+      <p>
+        In cocoa_international, the shea contribution is a 5% footnote at the global Phase 6 (Manufacturing),
+        far from the data-dense core of the analysis. In cocoa_netherlands, the shea input is a documented
+        composite at Phase 3, where the TrueValue shea project's measured export-phase values are incorporated
+        at precise 5% weight. The shea export phase (D=210, C=165, balance=64.0%) reflects real opacity in
+        West African shea trading systems — and that opacity flows into the Netherlands composite, giving a
+        more accurate picture of the integrated chain than either project alone provides.
+      </p>
+      <div class="shea-math">
+D_phase3 = 0.95 × D_cbe_base(268) + 0.05 × D_shea_export(210) = 254.6 + 10.5 = 265
+C_phase3 = 0.95 × C_cbe_base(248) + 0.05 × C_shea_export(165) = 235.6 + 8.3  = 244
+balance   = 100 − (|265−244| / 265) × 100 = 100 − 7.9 = 92.1%
+N         = √(265 × 244) × 0.921 = 254.3 × 0.921 = 234
+      </div>
+      <div class="shea-flow">
+        <div class="shea-node">
+          <div class="node-label">Shea Export (Phase 4)</div>
+          <div class="node-val" style="color:#8b6914;">D=210 C=165</div>
+          <div class="node-name">64.0% balance · 5% weight</div>
+        </div>
+        <div class="shea-arrow">+</div>
+        <div class="shea-node">
+          <div class="node-label">CBE Base</div>
+          <div class="node-val" style="color:#5a2008;">D=268 C=248</div>
+          <div class="node-name">IOI Loders Croklaan · 95% weight</div>
+        </div>
+        <div class="shea-arrow">→</div>
+        <div class="shea-node">
+          <div class="node-label">Phase 3 Composite</div>
+          <div class="node-val" style="color:#963d1a;">D=265 C=244</div>
+          <div class="node-name">92.1% balance · N=234</div>
+        </div>
+        <div class="shea-arrow">→</div>
+        <div class="shea-node">
+          <div class="node-label">vs. Global Chain</div>
+          <div class="node-val" style="color:#2e7d32;">+2.1%</div>
+          <div class="node-name">Phase 3 outperforms cocoa_international Phase 5 by 1.7%</div>
+        </div>
+      </div>
+      <p style="margin-top:12px;font-size:12px;color:#888;">
+        Source for shea values: TrueValue Analytics shea_international project — Phase 4 Export (D=210, C=165, balance=64.0%).
+        See <a href="../shea/index.html" style="color:#963d1a;font-weight:600;">Shea Hub</a> for full shea supply chain analysis.
+      </p>
+    </div>
+  </div>
+
+  <div class="alert-panel">
+    <h3>Primary Bottleneck: Phase 4 — Dutch Manufacturing (85.1% balance, Fair zone)</h3>
+    <p>
+      Unlike the global cocoa chain where the bottleneck is Phase 1 opacity (76.5%, failure zone), the
+      Netherlands' worst phase is Phase 4 (Manufacturing, 85.1%), which is structural rather than
+      opacity-driven. Two coexisting business models create D-C imbalance: Tony's Chocolonely (no CBE,
+      100% traceable, above-market farm premium targeting USD 2,700/tonne against a USD 1,400 market rate)
+      operates alongside conventional CBE-using manufacturers (Verkade/Mondelez, private label). Retail
+      buyer concentration (Albert Heijn at ~35% grocery share) and packaging complexity (EU PPWR requirements)
+      add D-constraints. The fact that the Netherlands bottleneck is in the Fair zone at 85.1% (vs global
+      failure zone at 76.5%) reflects the qualitative difference between a documentation-rich institutional
+      chain and the opacity-driven global average.
+    </p>
+  </div>
+
+  <!-- Phase comparison with global -->
+  <div class="compare-panel">
+    <h2>Netherlands vs Global Chain — Phase Balance Comparison</h2>
+    <div class="compare-row">
+      <span class="compare-label">NL Phase 0: Port Arrival and EUDR</span>
+      <div class="compare-bar-bg"><div class="compare-bar" style="width:89.9%;background:#963d1a;"></div></div>
+      <span class="compare-val" style="color:#963d1a;">89.9%</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-label">NL Phase 1: Warehousing and Inspection</span>
+      <div class="compare-bar-bg"><div class="compare-bar" style="width:93.3%;background:#963d1a;"></div></div>
+      <span class="compare-val" style="color:#963d1a;">93.3%</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-label">NL Phase 2: Industrial Grinding</span>
+      <div class="compare-bar-bg"><div class="compare-bar" style="width:91.3%;background:#963d1a;"></div></div>
+      <span class="compare-val" style="color:#963d1a;">91.3%</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-label">NL Phase 3: CBE Manufacturing (shea composite)</span>
+      <div class="compare-bar-bg"><div class="compare-bar" style="width:92.1%;background:#8b6914;"></div></div>
+      <span class="compare-val" style="color:#8b6914;">92.1% ⬡</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-label">NL Phase 4: Dutch Manufacturing (BOTTLENECK)</span>
+      <div class="compare-bar-bg"><div class="compare-bar" style="width:85.1%;background:#e67e22;"></div></div>
+      <span class="compare-val" style="color:#e67e22;">85.1%</span>
+    </div>
+    <div class="compare-row">
+      <span class="compare-label">NL Phase 5: Retail and EU Re-export</span>
+      <div class="compare-bar-bg"><div class="compare-bar" style="width:89.1%;background:#963d1a;"></div></div>
+      <span class="compare-val" style="color:#963d1a;">89.1%</span>
+    </div>
+    <div style="border-top:1px solid #e9ecef;margin-top:10px;padding-top:10px;">
+      <div class="compare-row">
+        <span class="compare-label" style="color:#c0392b;">Global: Phase 1 Fermentation (FAILURE ZONE)</span>
+        <div class="compare-bar-bg"><div class="compare-bar" style="width:76.5%;background:#c0392b;"></div></div>
+        <span class="compare-val" style="color:#c0392b;">76.5%</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#888;margin-top:8px;">⬡ = Phase 3 is a documented composite incorporating TrueValue shea Phase 4 Export values at 5% weight.</p>
+  </div>
+
+  <div class="phase-strip">
+    <h2>6-Phase Netherlands Processing Chain</h2>
+    <div class="phases">
+      <div class="phase">
+        <div class="phase-num">0</div>
+        <div class="phase-name">Port Arrival and EUDR Clearance</div>
+        <div class="phase-balance">89.9%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">1</div>
+        <div class="phase-name">Warehousing and Quality Inspection</div>
+        <div class="phase-balance">93.3%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">2</div>
+        <div class="phase-name">Industrial Grinding</div>
+        <div class="phase-balance">91.3%</div>
+      </div>
+      <div class="phase composite">
+        <div class="phase-badge composite">SHEA ⬡</div>
+        <div class="phase-num">3</div>
+        <div class="phase-name">CBE Manufacturing (composite)</div>
+        <div class="phase-balance">92.1%</div>
+      </div>
+      <div class="phase bottleneck">
+        <div class="phase-badge bottleneck">BOTTLENECK</div>
+        <div class="phase-num">4</div>
+        <div class="phase-name">Dutch Manufacturing</div>
+        <div class="phase-balance">85.1%</div>
+      </div>
+      <div class="phase">
+        <div class="phase-num">5</div>
+        <div class="phase-name">Retail and EU Re-export</div>
+        <div class="phase-balance">89.1%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-header sc">
+        <div class="card-icon">🏭</div>
+        <div class="card-title">Supply Chain</div>
+        <div class="card-desc">6-phase industrial chain from port arrival through EU re-export. Phase 3 composite incorporates TrueValue shea data. Data quality H throughout.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Phase-level D, C, N, balance scores with full source citations</li>
+          <li>Phase 3 shea composite: documented 95/5 weighted calculation</li>
+          <li>Phase 4 bottleneck: Tony's vs conventional manufacturer contrast</li>
+          <li>EUDR compliance documentation trail at Phase 0</li>
+          <li>Five-model coherence panel (π, φ, √2, ln2, e)</li>
+        </ul>
+        <a class="btn sc" href="supply_chain/index.html">Explore Supply Chain</a>
+        <div class="sub-links">
+          <a href="supply_chain/dashboard.html">Dashboard</a>
+          <a href="supply_chain/project_context.html">Project Context</a>
+          <a href="supply_chain/recycling_analysis.html">Ecological Return Chain</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header vc">
+        <div class="card-icon">💶</div>
+        <div class="card-title">Value Chain</div>
+        <div class="card-desc">Processing margin structure, Tony's Chocolonely vs conventional model, and CBE economics. e-layer score 64.2 — stronger financial coupling than global chain.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Grinding margin structure (Cargill, ADM, Barry Callebaut NL)</li>
+          <li>CBE economics: IOI Loders Croklaan shea stearin pricing</li>
+          <li>Tony's Chocolonely Living Income model vs industry standard</li>
+          <li>Dutch Cocoa Agreement SLB bond opportunity</li>
+          <li>EUDR compliance premium: Rotterdam as EU deforestation-free gate</li>
+        </ul>
+        <a class="btn vc" href="value_chain/index.html">Explore Value Chain</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-header rc">
+      <div class="card-icon">♻️</div>
+      <div class="card-title">Ecological Return Chain (TVPCI-R)</div>
+      <div class="card-desc">TVPCI-R: 65.0 (stressed zone, vs 46.0 globally). B_chain: 57.3 (failure zone, vs 37.9 globally). Dutch waste infrastructure significantly outperforms global average.</div>
+    </div>
+    <div class="card-body rc">
+      <ul>
+        <li>Phase 2 shell-to-energy: AEB Amsterdam; ~60,000-72,000 t/year cocoa shell</li>
+        <li>Phase 3 press cake fully valorized; fractionation residues managed under Dutch environmental permits</li>
+        <li>Phase 4-5 packaging waste: better than global average due to Dutch EPR system and PPWR</li>
+        <li>TVPCI-R 65.0 vs global 46.0: Dutch infrastructure is measurably better</li>
+        <li>All scores provisional: no phase-resolved LCA data available</li>
+      </ul>
+      <a class="btn rc" href="supply_chain/recycling_analysis.html">View Ecological Return Chain</a>
+    </div>
+  </div>
+
+  <div class="coherence-panel">
+    <h2>Five-Model Coherence Baseline (N-D-C Framework)</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">π — Operational</div>
+        <div class="coherence-val">90.1</div>
+        <div class="coherence-desc">Chain average. All phases in Good or Fair zone. No failure-zone phases — a structural distinction from the global chain.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">φ — Proportional</div>
+        <div class="coherence-val">78.2</div>
+        <div class="coherence-desc">Value distribution. Better than global (72.8) because the Netherlands captures grinding margin. Tony's model shows a higher-phi alternative exists.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">√2 — Structural</div>
+        <div class="coherence-val">86.5</div>
+        <div class="coherence-desc">Custody overhead. Port of Rotterdam and ECA grading infrastructure provide the strongest custody documentation in the global cocoa chain.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2 — Growth</div>
+        <div class="coherence-val">75.4</div>
+        <div class="coherence-desc">Value transformation capture. CBE manufacturing adds a new value layer. IOI single-actor concentration limits competitive upward pressure on this axis.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e — Financial</div>
+        <div class="coherence-val">64.2</div>
+        <div class="coherence-desc">Financial coupling. Stronger than global (58.3): EUDR compliance premium and Dutch Cocoa Agreement SLB structure create traceable financial signals.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav">
+    <a href="../../../../index.html">← Main Homepage</a>
+    <a href="../cocoa_international/index.html">Cocoa International Hub</a>
+    <a href="../shea/index.html">Shea Hub</a>
+    <a href="../olive_oil/index.html">Olive Oil Hub</a>
+    <a href="../gold/index.html">Gold Hub</a>
+  </div>
+  <div class="footer">
+    TrueValue Analytics · Cocoa Netherlands Industrial Processing Hub · Data: Port of Rotterdam, IDH, NVWA, ECA, Barry Callebaut, Cargill, IOI Loders Croklaan, EU Regulation 2023/1115, Tony's Chocolonely · June 2026
+  </div>
+
+</div>
+</body>
+</html>

@@ -20,6 +20,30 @@ To add a new skill, describe the workflow to the agent and ask it to "create a s
 
 ## Project skills
 
+### `create-project`
+
+**File:** `.cursor/skills/create-project/SKILL.md`
+
+**What it does:** End-to-end guide for creating any new project in this repo. Handles two project types:
+
+- **Type A (standalone hub):** Gold/Shea/AUBEB/water hub pattern. Creates the full `frontend/project/<slug>/` folder tree, required HTML pages (hub, supply chain, value chain), and a mandatory `supply_chain/recycling_analysis.html` (TVPCI-R Ecological Return Chain page with R_p scores, B_chain KPI, waste stream table, and circular economy interventions). Also generates processed JSON, applies N-D-C formulas, and registers the project on the homepage.
+- **Type B (basin subproject):** Danube natural/human/paired pattern. Creates `project.yaml`, PDI YAML, CSV schema files, runs the basin data generation script, builds all six HTML pages, updates the basin hub index and bond prospectus, and registers the project.
+
+Both paths end with the same post-creation steps: homepage registration (via `add-homepage-section`), `tree.md` update, rebuild, and a final checklist covering JSON validation, nav links, coherence panels, recycling analysis presence, em-dash check, and color-scheme declarations.
+
+**When to use it:** Any time you say "create a new project," "add a new hub," "scaffold a new supply chain," "set up a basin subproject," or "start a new project page."
+
+**Files it touches (varies by type):**
+- `frontend/project/<slug>/` (entire new folder)
+- `frontend/site-index.json` and `frontend/homepage-layout.json` (via `add-homepage-section`)
+- `index.html` (homepage registration, Type B hub sections)
+- `tree.md`
+- `scripts/generate_danube_data.py` (Type B only)
+
+**Rules it consolidates:** `project-homepage-template.mdc`, `basin-subproject-architecture.mdc`, `rebuild-on-change.mdc`, `tv-project-workflow.mdc`, and the `add-homepage-section` skill.
+
+---
+
 ### `add-homepage-section`
 
 **File:** `.cursor/skills/add-homepage-section/SKILL.md`

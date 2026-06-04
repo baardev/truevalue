@@ -1,8 +1,10 @@
 # Phase-Resolved Transparency Classification in Commodity Supply Chains: A Structural Triadic Scoring Framework (TVPCI)
 
-**Author:** Jeffrey W. Milton, Independent Researcher
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 9 April 2026
 
 **Provisional arXiv subjects:** econ.GN; q-fin.EC (secondary: cs.SY)
 

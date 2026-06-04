@@ -45,6 +45,50 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   └── value_chain/index.html      Shea Value Chain hub
 │       ├── dashboard.html
 │       └── what_if_simulator.html
+├── frontend/project/olive_oil/index.html   Olive Oil — Spanish supply and value chain hub
+│   ├── project.yaml                Olive oil project metadata, key metrics, bond relevance
+│   ├── supply_chain/index.html     Supply Chain hub — 8-phase analysis
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and coherence scores
+│   │   ├── recycling_analysis.html TVPCI-R ecological return chain (alperujo, alpechin, packaging)
+│   │   └── project_context.html    Context, key actors, bond opportunity analysis, 16 sources
+│   ├── value_chain/index.html      Value Chain — price structure, EUR 1.20/kg premium gap
+│   └── data/
+│       ├── schema/olive_oil_supply_chain_phases.csv
+│       ├── schema/olive_oil_supply_chain_metrics.csv
+│       └── processed/olive_oil_supply_chain_ui.json
+├── frontend/project/cocoa_international/index.html  Cocoa International — Global Supply and Value Chain hub
+│   ├── project.yaml                Cocoa project metadata, 7-phase structure, bond relevance, key metrics
+│   ├── supply_chain/index.html     Supply Chain hub — 7-phase analysis, Phase 1 bottleneck
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and five-model coherence
+│   │   ├── recycling_analysis.html TVPCI-R ecological return chain (pod husks, shell, packaging)
+│   │   └── project_context.html    Context, country breakdown, bond structures, risk factors, 10 sources
+│   ├── value_chain/index.html      Value Chain — farm-to-retail 1:6 ratio, certification premium analysis
+│   └── data/
+│       ├── schema/cocoa_international_supply_chain_phases.csv
+│       ├── schema/cocoa_international_supply_chain_metrics.csv
+│       └── processed/cocoa_international_supply_chain_ui.json
+├── frontend/project/cocoa_netherlands/index.html  Cocoa Netherlands — Industrial Processing and Value Hub (6 phases, shea composite at Phase 3, data quality H)
+│   ├── project.yaml                Cocoa Netherlands project metadata, 6-phase structure, shea integration, bond relevance
+│   ├── supply_chain/index.html     Supply Chain hub — 6-phase analysis, Phase 4 bottleneck (85.1%), shea composite at Phase 3
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars, Five-Model coherence, Phase Detail Table
+│   │   ├── project_context.html    Context, shea composite calculation, Tony's vs conventional, bond structures, 15 sources
+│   │   └── recycling_analysis.html TVPCI-R ecological return chain — TVPCI-R 65.0 vs global 46.0; shell-to-energy; EPR
+│   ├── value_chain/index.html      Value Chain — Tony's Chocolonely Living Income model, CBE economics, bond structures
+│   └── data/
+│       ├── schema/cocoa_netherlands_supply_chain_phases.csv
+│       ├── schema/cocoa_netherlands_supply_chain_metrics.csv
+│       └── processed/cocoa_netherlands_supply_chain_ui.json
+├── frontend/project/gran_chaco/index.html  Gran Chaco — Soy, Beef & Forest Ecosystem Services hub
+│   ├── project.yaml                Gran Chaco project metadata and bond relevance
+│   ├── supply_chain/index.html     Soy Supply Chain — 5-phase analysis
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and coherence pentagon
+│   │   └── project_context.html    Context, bond opportunity analysis, risk factors
+│   ├── value_chain/index.html      Value Chain (deferred — pending beef and ecosystem PDIs)
+│   └── data/
+│       ├── PDI_soy_gran_chaco_2026.yaml
+│       ├── schema/gran_chaco_supply_chain_phases.csv
+│       ├── schema/gran_chaco_supply_chain_metrics.csv
+│       └── processed/gran_chaco_supply_chain_ui.json
 ├── frontend/project/aubeb/index.html       AUBEB commodity hub
 │   ├── supply_chain/index.html     AUBEB Supply Chain hub
 │   │   ├── project_context.html

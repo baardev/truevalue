@@ -1,10 +1,10 @@
 # Neural Networks as Tholonic Systems: A Structural Framework for Architecture, Scaling, and Alignment-by-Design
 
-**Author:** Jeffrey W. Milton, Clarity Coalition
+**Author:** J. W. Milton, Clarity Coalition
 
-**Affiliation:** Independent Researcher
+**Version:** 1.0
 
-**Date:** 2026
+**Date:** 8 April 2026
 
 **arXiv subject classifications:** cs.AI (primary); cs.LG; cs.NE; cs.CY
 

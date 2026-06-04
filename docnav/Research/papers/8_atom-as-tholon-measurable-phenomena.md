@@ -1,8 +1,10 @@
 # The Atom as a Measurable Tholon: From Einstein's Incomplete Electron to a Field-First Ontology
 
-**Author:** Jeffrey W. Milton, Clarity Coalition
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 10 April 2026
 
 **Keywords:** tholonic model, N-D-C triad, atomic structure, electron, field ontology, quark charges, virial theorem, Tesla, Einstein, quantum field theory, unified field theory, Koide formula, fine structure constant, fermion generations, falsifiability
 

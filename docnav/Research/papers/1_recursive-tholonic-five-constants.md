@@ -1,8 +1,10 @@
 # Emergence of Classical Constants from a Minimal Recursive Triadic Framework
 
-**Author:** Jeffrey W. Milton, Clarity Coalition
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 12 May 2026
 
 **Proposed arXiv subjects:** math.CA; math.NT (secondary: math.CO)
 

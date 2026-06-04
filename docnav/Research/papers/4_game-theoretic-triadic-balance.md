@@ -1,8 +1,10 @@
 # Game-Theoretic Framing of the Triadic Balance Condition
 
-**Author:** Jeffrey W. Milton, Clarity Coalition
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 19 May 2026
 
 **Provisional arXiv subjects:** math.OC; cs.GT (secondary: math.DS)
 

@@ -1,8 +1,10 @@
 # The Qualitative Nature of One, Two, and Three: Structural Role Assignment in Minimal Recursive Systems
 
-**Author:** Jeffrey W. Milton, Independent Researcher
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 17 April 2026
 
 **Provisional arXiv subjects:** math.HO; math.LO (secondary: cs.LO; q-bio.NC)
 

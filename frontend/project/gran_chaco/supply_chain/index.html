@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light"/>
+<title>Gran Chaco Soy — Supply Chain Analysis</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #1b5e20 0%, #33691e 50%, #bf360c 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 960px; margin: 0 auto; }
+  .card { background: #fff; border-radius: 14px; box-shadow: 0 14px 40px rgba(0,0,0,0.28); padding: 32px; margin-bottom: 20px; }
+  .kicker { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: #2e7d32; background: #e8f5e9; padding: 5px 12px; border-radius: 999px; margin-bottom: 12px; }
+  h1 { font-size: 28px; font-weight: 300; margin-bottom: 10px; }
+  .subtitle { font-size: 14px; color: #6c757d; line-height: 1.7; margin-bottom: 22px; }
+  .phase-list { list-style: none; }
+  .phase-row {
+    display: grid; grid-template-columns: 40px 1fr 90px 90px 80px;
+    align-items: center; gap: 12px; padding: 14px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  .phase-row:last-child { border-bottom: none; }
+  .phase-dot {
+    width: 36px; height: 36px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 800; font-size: 14px; color: #fff;
+    background: #2e7d32; flex-shrink: 0;
+  }
+  .phase-dot.bottleneck { background: #e65100; }
+  .phase-info-name { font-weight: 700; font-size: 13px; color: #2c3e50; margin-bottom: 3px; }
+  .phase-info-desc { font-size: 11px; color: #6c757d; line-height: 1.4; }
+  .balance-col { text-align: right; }
+  .balance-num { font-size: 18px; font-weight: 800; }
+  .excellent { color: #2e7d32; } .good { color: #00796b; }
+  .fair { color: #e65100; } .poor { color: #c62828; }
+  .balance-bar-track { height: 6px; background: #e9ecef; border-radius: 3px; margin-top: 4px; }
+  .balance-bar-fill { height: 100%; border-radius: 3px; }
+  .transp-badge {
+    display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase;
+    padding: 2px 7px; border-radius: 4px; letter-spacing: .04em;
+  }
+  .transp-high { background: #e8f5e9; color: #1b5e20; }
+  .transp-med  { background: #fff8e1; color: #e65100; }
+  .transp-low  { background: #fce4ec; color: #c62828; }
+  .sub-links { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+  .btn {
+    display: inline-block; padding: 10px 20px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; font-size: 13px; color: #fff;
+    transition: opacity .15s;
+  }
+  .btn:hover { opacity: .85; }
+  .btn-primary { background: linear-gradient(135deg, #1b5e20, #2e7d32); }
+  .btn-outline { background: transparent; border: 1.5px solid #dee2e6; color: #495057; }
+  .system-summary { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; margin-top: 22px; }
+  .sys-item { background: #f8f9fa; border-radius: 8px; padding: 14px; text-align: center; border-top: 3px solid #2e7d32; }
+  .sys-item.warn { border-top-color: #e65100; background: #fff3e0; }
+  .sys-label { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #6c757d; margin-bottom: 5px; }
+  .sys-value { font-size: 20px; font-weight: 800; color: #1b5e20; }
+  .sys-item.warn .sys-value { color: #e65100; }
+  .sys-unit { font-size: 10px; color: #6c757d; }
+  .nav { text-align: center; margin-bottom: 14px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.9); text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .footer { text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 18px; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="nav">
+  <a href="/">← Homepage</a>
+  <a href="../index.html">← Gran Chaco Hub</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="project_context.html">Context &amp; Bond Analysis</a>
+</div>
+
+<div class="card">
+  <div class="kicker">Gran Chaco · Soy Supply Chain · 5 Phases</div>
+  <h1>🫘 Soy Supply Chain — Phase Analysis</h1>
+  <p class="subtitle">
+    Five-phase analysis from land conversion through EUDR export compliance.
+    Chain average balance: <strong>81.2% (A+)</strong>. Critical bottleneck at Phase 2
+    (Aggregation and Transport, 62.9%) where commingling of multiple-origin beans
+    severs the provenance chain required for deforestation-free certification.
+  </p>
+
+  <div class="system-summary">
+    <div class="sys-item">
+      <div class="sys-label">Chain Average Balance</div>
+      <div class="sys-value">81.2%</div>
+      <div class="sys-unit">A+ bond grade</div>
+    </div>
+    <div class="sys-item warn">
+      <div class="sys-label">Bottleneck Phase</div>
+      <div class="sys-value">Phase 2</div>
+      <div class="sys-unit">62.9% — Poor</div>
+    </div>
+    <div class="sys-item">
+      <div class="sys-label">Average N</div>
+      <div class="sys-value">232</div>
+      <div class="sys-unit">emergent chain state</div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2 style="font-size:16px;font-weight:700;color:#1b5e20;margin-bottom:18px;">Phase-by-Phase Detail</h2>
+  <ul class="phase-list">
+    <li class="phase-row">
+      <div class="phase-dot">0</div>
+      <div>
+        <div class="phase-info-name">Land Conversion &amp; Farm Establishment</div>
+        <div class="phase-info-desc">Native woodland cleared for soy. 149,649 ha deforested in Argentina in 2024. Farm-level provenance not publicly disclosed. D-C imbalance: weak land governance vs strong economic expansion pressure.</div>
+      </div>
+      <div class="balance-col">
+        <div class="balance-num fair">75.3%</div>
+        <div class="balance-bar-track"><div class="balance-bar-fill fair" style="width:75.3%;background:#e65100"></div></div>
+        <div style="font-size:9px;color:#6c757d;margin-top:3px;">Fair</div>
+      </div>
+      <div><span class="transp-badge transp-low">Low transparency</span></div>
+      <div style="font-size:10px;color:#6c757d;text-align:right;">D 244 / C 324<br>N = 212</div>
+    </li>
+    <li class="phase-row">
+      <div class="phase-dot">1</div>
+      <div>
+        <div class="phase-info-name">Cultivation &amp; Harvest</div>
+        <div class="phase-info-desc">2.7 Mha producing 6.6–8.9 Mt/year. National aggregates well-documented. Farm-level data opaque; certified volumes (RTRS) under 1%. Isotopic fingerprinting emerging as verification tool.</div>
+      </div>
+      <div class="balance-col">
+        <div class="balance-num good">83.9%</div>
+        <div class="balance-bar-track"><div class="balance-bar-fill" style="width:83.9%;background:#00796b"></div></div>
+        <div style="font-size:9px;color:#6c757d;margin-top:3px;">Good</div>
+      </div>
+      <div><span class="transp-badge transp-med">Medium</span></div>
+      <div style="font-size:10px;color:#6c757d;text-align:right;">D 260 / C 310<br>N = 238</div>
+    </li>
+    <li class="phase-row" style="background:#fff3e0;border-radius:8px;padding:14px 8px;">
+      <div class="phase-dot bottleneck">2</div>
+      <div>
+        <div class="phase-info-name" style="color:#e65100;">⚠ Aggregation &amp; Inland Transport — BOTTLENECK</div>
+        <div class="phase-info-desc">Beans from multiple farms and countries (Paraguay 82% of imports) commingled at Rosario-bound silos. Sio-granos data publicly available only at zone level. Origin mixing severs provenance chain. 12 traders control 88% of exports — voluntary disclosure could resolve this.</div>
+      </div>
+      <div class="balance-col">
+        <div class="balance-num poor">62.9%</div>
+        <div class="balance-bar-track"><div class="balance-bar-fill" style="width:62.9%;background:#c62828"></div></div>
+        <div style="font-size:9px;color:#c62828;margin-top:3px;">Poor</div>
+      </div>
+      <div><span class="transp-badge transp-low">Low transparency</span></div>
+      <div style="font-size:10px;color:#6c757d;text-align:right;">D 220 / C 350<br>N = 175</div>
+    </li>
+    <li class="phase-row">
+      <div class="phase-dot">3</div>
+      <div>
+        <div class="phase-info-name">Crushing &amp; Processing</div>
+        <div class="phase-info-desc">62 Mt/year crushing capacity at Rosario. 60% utilisation. Soy cake (80%) and oil (20%) separation. CIARA and Bolsa de Cereales provide high-quality throughput data. Deforestation signal embedded but undetectable here.</div>
+      </div>
+      <div class="balance-col">
+        <div class="balance-num good">90.9%</div>
+        <div class="balance-bar-track"><div class="balance-bar-fill" style="width:90.9%;background:#00796b"></div></div>
+        <div style="font-size:9px;color:#6c757d;margin-top:3px;">Good</div>
+      </div>
+      <div><span class="transp-badge transp-high">High</span></div>
+      <div style="font-size:10px;color:#6c757d;text-align:right;">D 300 / C 330<br>N = 286</div>
+    </li>
+    <li class="phase-row">
+      <div class="phase-dot">4</div>
+      <div>
+        <div class="phase-info-name">Export &amp; EUDR Compliance</div>
+        <div class="phase-info-desc">Soy cake to EU (9.4 Mt, 2019); soybeans to China; oil to India. EUDR 1115/2023 compliance required for importers — but Chaco biome currently excluded from EUDR scope. 55% of volume covered by zero-deforestation commitment (2019).</div>
+      </div>
+      <div class="balance-col">
+        <div class="balance-num excellent">92.9%</div>
+        <div class="balance-bar-track"><div class="balance-bar-fill" style="width:92.9%;background:#2e7d32"></div></div>
+        <div style="font-size:9px;color:#6c757d;margin-top:3px;">Good</div>
+      </div>
+      <div><span class="transp-badge transp-med">Medium</span></div>
+      <div style="font-size:10px;color:#6c757d;text-align:right;">D 260 / C 280<br>N = 251</div>
+    </li>
+  </ul>
+
+  <div class="sub-links">
+    <a class="btn btn-primary" href="dashboard.html">Full Dashboard</a>
+    <a class="btn btn-outline" href="project_context.html">Context &amp; Bond Analysis</a>
+    <a class="btn btn-outline" href="../index.html">Hub Overview</a>
+  </div>
+</div>
+
+<div class="footer">Gran Chaco Soy Supply Chain · TrueValue Analytics · Data: Trase, Maor et al. 2026, WEF, USDA</div>
+</div>
+</body>
+</html>

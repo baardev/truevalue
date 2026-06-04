@@ -1,6 +1,10 @@
 # A tholonic perspective on twistor geometry: structural parallels and mutual enrichment
 
-**Jeffrey W. Milton, Clarity Coalition**
+**J. W. Milton, Clarity Coalition**
+
+**Version:** 1.0
+
+**Date:** 19 April 2026
 
 ## Abstract
 

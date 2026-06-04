@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cocoa International — Project Context</title>
+<style color-scheme="light">
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #5c3317 0%, #3a1f0d 60%, #2a1208 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .page {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28); overflow: hidden;
+  }
+  .page-header {
+    background: linear-gradient(135deg, #3a1f0d 0%, #5c3317 100%);
+    color: #fff; padding: 28px 36px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .page-header h1 { font-size: 24px; font-weight: 300; }
+  .page-header p { font-size: 13px; color: #c8a26e; margin-top: 4px; }
+  .nav-links a { color: #c8a26e; text-decoration: none; margin-left: 20px; font-size: 13px; }
+  .nav-links a:hover { color: #fff; }
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    border-bottom: 1px solid #e9ecef;
+  }
+  .kpi-cell {
+    padding: 20px 24px; border-right: 1px solid #e9ecef;
+  }
+  .kpi-cell:last-child { border-right: none; }
+  .kpi-val { font-size: 24px; font-weight: 700; color: #3a1f0d; }
+  .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; }
+  .content { padding: 32px 36px; }
+  h2 { font-size: 18px; font-weight: 700; color: #3a1f0d; margin: 28px 0 16px; border-bottom: 2px solid #f5e6d8; padding-bottom: 8px; }
+  h2:first-of-type { margin-top: 0; }
+  p { font-size: 14px; line-height: 1.7; color: #495057; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 20px; }
+  th {
+    text-align: left; padding: 10px 14px;
+    background: #f5e6d8; color: #3a1f0d; font-weight: 700; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+  tr:hover td { background: #fdf9f6; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; text-transform: uppercase;
+  }
+  .badge.high { background: #d4edda; color: #155724; }
+  .badge.medium { background: #fff3cd; color: #856404; }
+  .badge.low { background: #f8d7da; color: #721c24; }
+  .badge.bottleneck { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+  .bond-panel {
+    background: #fdf4ec; border: 1px solid #d4b896; border-radius: 10px;
+    padding: 24px; margin: 20px 0;
+  }
+  .bond-panel h3 { font-size: 15px; font-weight: 700; color: #3a1f0d; margin-bottom: 12px; }
+  .bond-panel p { margin-bottom: 8px; }
+  .risk-table td:first-child { font-weight: 600; color: #3a1f0d; }
+  .source-list { list-style: none; }
+  .source-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; font-size: 13px; }
+  .source-list a { color: #5c3317; text-decoration: none; }
+  .source-list a:hover { text-decoration: underline; }
+  .nav-bottom { text-align: center; padding: 24px; border-top: 1px solid #e9ecef; }
+  .nav-bottom a {
+    color: #5c3317; text-decoration: none; font-weight: 600; font-size: 14px; margin: 0 12px;
+  }
+  .nav-bottom a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="page">
+
+  <div class="page-header">
+    <div>
+      <h1>🍫 Cocoa International — Project Context</h1>
+      <p>Global supply chain · 7 phases · ICCO, CCC Ivory Coast, IDH Cocoa Barometer, EU EUDR</p>
+    </div>
+    <div class="nav-links">
+      <a href="../index.html">Hub</a>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="recycling_analysis.html">TVPCI-R</a>
+      <a href="../../../../index.html">Homepage</a>
+    </div>
+  </div>
+
+  <div class="kpi-strip">
+    <div class="kpi-cell">
+      <div class="kpi-val">~5M</div>
+      <div class="kpi-lbl">Smallholder farms (avg 2 ha)</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-val">60%+</div>
+      <div class="kpi-lbl">West Africa share of global supply</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-val">35%</div>
+      <div class="kpi-lbl">Ivory Coast harvest origin-processed</div>
+    </div>
+    <div class="kpi-cell">
+      <div class="kpi-val">76.5%</div>
+      <div class="kpi-lbl">Phase 1 balance (primary bottleneck)</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <h2 id="geography">Geographic Scope and Production Structure</h2>
+    <p>
+      The global cocoa supply chain is extraordinarily concentrated. Ivory Coast alone accounts for
+      approximately 44% of global production at 2.2 million tonnes per year, and Ghana adds another
+      16% (800,000 tonnes), giving West Africa a combined 60%+ share. Ecuador (350,000 t), Cameroon
+      (280,000 t), Indonesia (220,000 t), and Nigeria round out the major producers. This geographic
+      concentration is unlike most global commodity chains and creates systemic fragility: a single
+      mid-migratory crop disease event (swollen-shoot virus) or climate shock affecting West Africa
+      would affect the majority of global chocolate production.
+    </p>
+    <p>
+      Ivory Coast has deliberately pursued a domestic processing strategy. Under CCC (Conseil
+      Cafe-Cacao) policy, Ivory Coast now grinds approximately 700,000-800,000 tonnes per year
+      domestically (35% of its harvest), producing cocoa liquor, butter, and powder for export.
+      ADM, Cargill, Olam, and Barry Callebaut all have grinding plants in Abidjan and San Pedro.
+      The stated national goal is 50% domestic processing by 2030. This shift is fundamentally
+      restructuring the value distribution in the global chain.
+    </p>
+
+    <h2>Supply Chain Phases</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Name</th>
+          <th>Balance</th>
+          <th>Transparency</th>
+          <th>Key Actors</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td><td>Cultivation</td>
+          <td>89.4%</td>
+          <td><span class="badge low">Low</span></td>
+          <td>5M smallholder farms, CCC cooperatives, NGO extension services</td>
+          <td>Good</td>
+        </tr>
+        <tr style="background:#fff5f5;">
+          <td>1</td><td>Fermentation and Drying</td>
+          <td style="color:#721c24;font-weight:700;">76.5%</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Individual farmers, village cooperatives, no institutional oversight</td>
+          <td><span class="badge bottleneck">BOTTLENECK</span></td>
+        </tr>
+        <tr>
+          <td>2</td><td>Aggregation and Domestic Trading</td>
+          <td>94.8%</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>CCC Licensed Buying Companies (190 in Ivory Coast), COCOBOD (Ghana)</td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>3</td><td>Export and Origin Processing</td>
+          <td>95.2%</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Port Autonome d'Abidjan, ADM, Cargill, Olam, Barry Callebaut origin plants</td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>4</td><td>Oceanic Shipping</td>
+          <td>94.4%</td>
+          <td><span class="badge high">High</span></td>
+          <td>Major shipping lines, Port of Rotterdam, Port of Amsterdam</td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>5</td><td>Destination Processing</td>
+          <td>93.8%</td>
+          <td><span class="badge high">High</span></td>
+          <td>Barry Callebaut, Cargill, Olam (combined >60% destination grinding)</td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>6</td><td>Manufacturing and Retail</td>
+          <td>80.2%</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Mars, Nestle, Mondelez, Ferrero, Hershey, Lindt; supermarket retail chains</td>
+          <td>Fair</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Country Production Breakdown</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Country</th>
+          <th>Production (Mt/year)</th>
+          <th>Global Share (%)</th>
+          <th>Regulatory System</th>
+          <th>Origin Grinding</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Ivory Coast</td><td>2,200,000</td><td>44%</td><td>CCC — guaranteed farm-gate, LBC system, forward sales</td><td>750,000 Mt/year (35%)</td></tr>
+        <tr><td>Ghana</td><td>800,000</td><td>16%</td><td>COCOBOD — state monopsony, quality certification</td><td>~200,000 Mt/year (25%)</td></tr>
+        <tr><td>Ecuador</td><td>350,000</td><td>7%</td><td>Private market, some cooperatives</td><td>Limited</td></tr>
+        <tr><td>Cameroon</td><td>280,000</td><td>6%</td><td>ONCC oversight, partially liberalized</td><td>Minimal</td></tr>
+        <tr><td>Indonesia</td><td>220,000</td><td>4%</td><td>Private market, mostly Sulawesi/Papua</td><td>Limited</td></tr>
+        <tr><td>Nigeria</td><td>190,000</td><td>4%</td><td>COCOBOD Nigeria, partially liberalized</td><td>Minimal</td></tr>
+        <tr><td>Other</td><td>960,000</td><td>19%</td><td>Various</td><td>Various</td></tr>
+      </tbody>
+    </table>
+
+    <h2>Bond Opportunity Analysis</h2>
+    <div class="bond-panel">
+      <h3>Bond Structure 1: Phase 1 Traceability and Child-Labor-Free SLB</h3>
+      <p><strong>Performance trigger:</strong> CLMRS household enrollment rate in Ivory Coast (baseline ~700,000 households; target trajectory toward full coverage of ~600,000 registered farms).</p>
+      <p><strong>Secondary trigger:</strong> Share of cocoa covered by geolocation polygon mapping verified against deforestation databases (baseline ~24% of supply certified; EUDR requires 100% by 2025-12-30).</p>
+      <p><strong>Use of proceeds:</strong> Funding for cooperative fermentation infrastructure (fermentation box standardization, temperature/humidity monitoring equipment), CLMRS digital enrollment platforms, and farm-level extension training.</p>
+      <p><strong>Measurement basis:</strong> ICI (International Cocoa Initiative) CLMRS annual audit; ICCO certification statistics; satellite geolocation polygon registry (Rainforest Alliance, IDH Cocoa Compass).</p>
+      <p><strong>Revenue basis:</strong> Processor and manufacturer sourcing contracts indexed to verified supply volumes. Barry Callebaut Forever Chocolate, Cargill Cocoa Promise, and Nestle Cocoa Plan all have published sourcing commitments that could anchor bond coupon structures.</p>
+      <p><strong>Indicative scale:</strong> USD 200-500 million (aligned with major processor sourcing program investments).</p>
+    </div>
+    <div class="bond-panel">
+      <h3>Bond Structure 2: EUDR Deforestation-Free Sourcing Compliance Bond</h3>
+      <p><strong>Performance trigger:</strong> Share of total cocoa procurement covered by EUDR-compliant due diligence documentation (geolocation polygon, deforestation-free verification, risk assessment) as reported under EU Regulation 2023/1115.</p>
+      <p><strong>Use of proceeds:</strong> Funding for satellite monitoring platforms, cooperative-level traceability system deployment (Trace platform, SourceTrace, Farmforce), and national registry development in Ivory Coast and Ghana.</p>
+      <p><strong>Revenue basis:</strong> EU market access premium for EUDR-verified supply. Manufacturers who cannot demonstrate compliant sourcing risk losing EU market access after 2025-12-30.</p>
+      <p><strong>Indicative scale:</strong> USD 100-300 million per major sourcing company; could be structured as a consortium bond across Barry Callebaut, Cargill, and Olam.</p>
+    </div>
+
+    <h2>Risk Factors</h2>
+    <table class="risk-table">
+      <thead>
+        <tr><th>Risk</th><th>Phase</th><th>Description</th><th>Severity</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Phase 1 opacity</td><td>1</td>
+          <td>No chain-of-custody documentation at fermentation/drying phase. Certifications cannot verify practices. CLMRS systems do not monitor fermentation quality.</td>
+          <td>Critical</td>
+        </tr>
+        <tr>
+          <td>Child labor concentration</td><td>0-1</td>
+          <td>An estimated 1.5 million children in hazardous work in Ivory Coast and Ghana (NORC 2020). Most concentrated during harvest and fermentation/drying phases.</td>
+          <td>Critical</td>
+        </tr>
+        <tr>
+          <td>EUDR compliance deadline</td><td>0-3</td>
+          <td>EU Regulation 2023/1115 requires geolocation polygon traceability to farm level for all cocoa products imported to EU by 2025-12-30. Certification infrastructure is not yet at scale.</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Deforestation linkage</td><td>0</td>
+          <td>Estimated 100,000+ ha of cocoa grown inside protected forests in Ivory Coast. EUDR will require retroactive verification of land status.</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Climate stress on West Africa</td><td>0</td>
+          <td>Rising temperatures and changing rainfall patterns projected to reduce suitable cocoa cultivation area in Ivory Coast and Ghana by 25-50% by 2050 without variety and shade adaptation.</td>
+          <td>High</td>
+        </tr>
+        <tr>
+          <td>Swollen-shoot virus</td><td>0</td>
+          <td>Cacao Swollen Shoot Virus (CSSV) is endemic in West Africa. An estimated 16 million trees infected in Ghana alone. No cure; affected trees must be removed. Systemic risk to 60% of global supply.</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td>Processor oligopoly</td><td>5</td>
+          <td>Three companies (Barry Callebaut, Cargill, Olam) control >60% of global destination grinding. Single-actor failure or regulatory action would disrupt the chain.</td>
+          <td>Medium</td>
+        </tr>
+        <tr>
+          <td>Shipping route disruption</td><td>4</td>
+          <td>Red Sea disruptions (2024) extended transit by 10+ days and added 30-40% freight cost premium for some routes. Affects all Atlantic-Europe cocoa shipping.</td>
+          <td>Medium</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>Data Sources</h2>
+    <ul class="source-list">
+      <li><strong>ICCO:</strong> International Cocoa Organization Quarterly Bulletin of Cocoa Statistics. Production, grinding, and stock data by country. <a href="https://www.icco.org/statistics/" target="_blank">icco.org/statistics/</a></li>
+      <li><strong>World Cocoa Foundation:</strong> Cocoa Market Update 2024. Farm-gate prices, sustainability program enrollment, and market trends. <a href="https://worldcocoafoundation.org/" target="_blank">worldcocoafoundation.org</a></li>
+      <li><strong>IDH Cocoa Barometer 2022:</strong> Certification coverage, farm income gap, and sustainability program effectiveness. <a href="https://cocoabarometer.org/" target="_blank">cocoabarometer.org</a></li>
+      <li><strong>Conseil Cafe-Cacao (CCC):</strong> Ivory Coast cocoa sector regulation, LBC licensing, farm-gate price announcements. <a href="https://www.conseilcafecacao.ci/" target="_blank">conseilcafecacao.ci</a></li>
+      <li><strong>Barry Callebaut Annual Report 2024:</strong> Global grinding volumes and origin processing footprint. <a href="https://www.barry-callebaut.com/en/investors/annual-report" target="_blank">barry-callebaut.com</a></li>
+      <li><strong>Mighty Earth Cocoa Scorecard 2023:</strong> Child labor and deforestation data, certification gaps. <a href="https://www.mightyearth.org/cocoa-scorecard/" target="_blank">mightyearth.org</a></li>
+      <li><strong>EU EUDR Regulation 2023/1115:</strong> Deforestation-free due diligence requirements for cocoa and other commodities. <a href="https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en" target="_blank">environment.ec.europa.eu</a></li>
+      <li><strong>Fairtrade International Cocoa 2023:</strong> Premium flows, certified volume, and farm-level premium utilization. <a href="https://www.fairtrade.net/issue/cocoa" target="_blank">fairtrade.net/issue/cocoa</a></li>
+      <li><strong>Cargill Cocoa Promise 2023:</strong> CLMRS enrollment data and origin processing capacity. <a href="https://www.cargill.com/sustainability/cocoa" target="_blank">cargill.com/sustainability/cocoa</a></li>
+      <li><strong>Port of Rotterdam Authority:</strong> Commodity flow statistics including cocoa bean and semi-finished volumes. <a href="https://www.portofrotterdam.com/" target="_blank">portofrotterdam.com</a></li>
+    </ul>
+
+  </div>
+
+  <div class="nav-bottom">
+    <a href="../index.html">← Cocoa Hub</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="recycling_analysis.html">Ecological Return Chain</a>
+    <a href="../value_chain/index.html">Value Chain</a>
+    <a href="../../../../index.html">Main Homepage</a>
+  </div>
+</div>
+</div>
+</body>
+</html>
