@@ -1,8 +1,10 @@
 # Engineering Toward N: Cambridge Semantics as Empirical Validation of the Tholonic N-D-C Framework
 
-**Author:** Jeffrey W. Milton, Independent Researcher
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 16 April 2026
 
 **Provisional arXiv subjects:** cs.AI; cs.DB (secondary: cs.LO; math.HO)
 

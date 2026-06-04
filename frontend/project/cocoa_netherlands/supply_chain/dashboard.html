@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cocoa Netherlands — Supply Chain Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #1a0d08; min-height: 100vh; padding: 24px; color: #e0d4cc;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { margin-bottom: 22px; }
+  .header h1 { font-size: 28px; font-weight: 300; color: #d4855a; }
+  .header p { font-size: 13px; color: #888; margin-top: 6px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 22px; }
+  .kpi { background: #2a1208; border-radius: 10px; padding: 16px 14px; border: 1px solid #5a2008; }
+  .kpi-val { font-size: 28px; font-weight: 700; color: #d4855a; }
+  .kpi-lbl { font-size: 11px; color: #888; margin-top: 4px; }
+  .alert-bar { background: #2a1208; border-left: 4px solid #e67e22; border-radius: 8px; padding: 14px 18px; margin-bottom: 22px; }
+  .alert-bar h3 { color: #e67e22; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .alert-bar p { font-size: 13px; color: #aaa; line-height: 1.55; }
+  .panel { background: #2a1208; border-radius: 12px; padding: 22px 24px; margin-bottom: 22px; border: 1px solid #3d1c10; }
+  .panel h2 { font-size: 15px; font-weight: 700; color: #d4855a; margin-bottom: 18px; text-transform: uppercase; letter-spacing: 0.05em; }
+  .phase-row { margin-bottom: 18px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 5px; }
+  .phase-name { font-size: 13px; font-weight: 600; color: #e0d4cc; }
+  .phase-name .num { color: #d4855a; margin-right: 8px; }
+  .phase-name .composite-tag { font-size: 10px; background: #8b6914; color: #fff; padding: 2px 6px; border-radius: 4px; margin-left: 6px; }
+  .phase-stats { font-size: 11px; color: #888; }
+  .bar-bg { background: #3d1c10; border-radius: 5px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 5px; }
+  .bar-fill.good { background: linear-gradient(90deg, #1a4a1a, #2d7a2d); }
+  .bar-fill.fair { background: linear-gradient(90deg, #7a4a00, #c07a00); }
+  .bar-fill.bottleneck { background: linear-gradient(90deg, #7a2000, #e67e22); }
+  .bar-fill.composite { background: linear-gradient(90deg, #5a3a00, #8b6914); }
+  .phase-note { font-size: 11px; color: #666; margin-top: 4px; line-height: 1.4; }
+  .five-model { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; }
+  .model-item { text-align: center; padding: 14px 8px; background: #1a0d08; border-radius: 8px; border: 1px solid #5a2008; }
+  .model-name { font-size: 11px; color: #d4855a; font-weight: 700; margin-bottom: 6px; }
+  .model-val { font-size: 22px; font-weight: 800; color: #e0d4cc; }
+  .model-desc { font-size: 10px; color: #666; margin-top: 4px; line-height: 1.3; }
+  .phase-table-wrap { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #888; padding: 8px 10px; text-align: left; border-bottom: 1px solid #3d1c10; }
+  td { padding: 8px 10px; border-bottom: 1px solid #2d1208; color: #aaa; vertical-align: top; }
+  tr:hover td { background: #3d1c10; }
+  .badge { display: inline-block; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; }
+  .badge.good { background: #1a4a1a; color: #82d882; }
+  .badge.fair { background: #4a3000; color: #ffc107; }
+  .badge.composite { background: #4a3000; color: #d4855a; }
+  .nav { text-align: center; margin-top: 14px; }
+  .nav a { display: inline-block; color: #d4855a; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <h1>🏭 Cocoa Netherlands — Supply Chain Dashboard</h1>
+    <p>N-D-C Phase Analysis · 6 Phases · Data Quality: High · Chain Average Balance: 90.1% · Bottleneck: Phase 4 (85.1%)</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">90.1%</div>
+      <div class="kpi-lbl">Chain Average Balance</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">223</div>
+      <div class="kpi-lbl">Average Neutrality (N)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">85.1%</div>
+      <div class="kpi-lbl">Bottleneck: Phase 4 (Fair zone)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">Data: H</div>
+      <div class="kpi-lbl">All phases High quality — institutional anchors</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <h3>Bottleneck: Phase 4 — Dutch Manufacturing (85.1%, Fair zone)</h3>
+    <p>
+      Phase 4 is structural rather than opacity-driven. Two coexisting business models create D-C imbalance:
+      Tony's Chocolonely (no CBE, 100% traceable, USD 2,700/t farm premium target) versus conventional
+      CBE-using manufacturers (Verkade/Mondelez, private-label). Retail buyer concentration (Albert Heijn
+      ~35% grocery share, Jumbo ~22%) and EU PPWR packaging requirements drive D=268. C=228 reflects
+      Dutch consumer sustainability leadership and Tony's model as industry benchmark. At 85.1%, this is
+      in the Fair zone — far better than the global cocoa Phase 1 bottleneck at 76.5% (failure zone).
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2>N-D-C Phase Balance Analysis</h2>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-name"><span class="num">0</span>Port Arrival and EUDR Clearance</span>
+        <span class="phase-stats">D=232 · C=258 · N=220 · 89.9%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill good" style="width:89.9%;"></div></div>
+      <div class="phase-note">C&gt;D: Dutch/EU port infrastructure exceeds constraint. EUDR due diligence documentation is primary D-driver. Port of Rotterdam Authority publishes annual commodity statistics.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-name"><span class="num">1</span>Port Warehousing and Quality Inspection</span>
+        <span class="phase-stats">D=235 · C=252 · N=227 · 93.3%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill good" style="width:93.3%;"></div></div>
+      <div class="phase-note">C&gt;D: ECA standardised grading certificates, LIFFE exchange warehouse receipts, and electronic warehouse management provide strong C. Basis risk and cadmium test uncertainty are main D-constraints.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-name"><span class="num">2</span>Industrial Grinding</span>
+        <span class="phase-stats">D=242 · C=265 · N=231 · 91.3%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill good" style="width:91.3%;"></div></div>
+      <div class="phase-note">C&gt;D: World-class Amsterdam grinding infrastructure (600,000 t/yr) and EU food safety compliance drive C. Cadmium limits requiring origin blending and oligopoly concentration are D-constraints.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-name"><span class="num">3</span>CBE and Specialty Fat Manufacturing <span class="composite-tag">⬡ SHEA COMPOSITE</span></span>
+        <span class="phase-stats">D=265 · C=244 · N=234 · 92.1%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill composite" style="width:92.1%;"></div></div>
+      <div class="phase-note">COMPOSITE: D = 0.95×268 + 0.05×210(shea) = 265. C = 0.95×248 + 0.05×165(shea) = 244. IOI Loders Croklaan at Wormerveer. Shea export opacity (D=210, C=165, balance=64.0% from TrueValue shea project) pulls composite slightly below a pure-cocoa phase. D&gt;C: single-site concentration and shea supply opacity.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-name"><span class="num">4</span>Dutch Chocolate Manufacturing — BOTTLENECK</span>
+        <span class="phase-stats">D=268 · C=228 · N=210 · 85.1%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill bottleneck" style="width:85.1%;"></div></div>
+      <div class="phase-note">D&gt;C (Fair zone): Retail buyer power, CBE sourcing complexity, and Tony's/conventional model bifurcation drive D=268. C=228 reflects Tony's transparency benchmark and Dutch consumer leadership. Bond intervention point.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-name"><span class="num">5</span>Domestic Retail and EU Re-export</span>
+        <span class="phase-stats">D=258 · C=230 · N=217 · 89.1%</span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill good" style="width:89.1%;"></div></div>
+      <div class="phase-note">D&gt;C: Retail oligopoly (AH/Jumbo/Lidl) and re-export price compression from German buyers drive D. Dutch EU single-market access and consumer sustainability literacy provide C-contribution.</div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Five-Model Coherence</h2>
+    <div class="five-model">
+      <div class="model-item">
+        <div class="model-name">π — Operational</div>
+        <div class="model-val">90.1</div>
+        <div class="model-desc">Chain balance. All phases in Good or Fair zone. No failure-zone phases.</div>
+      </div>
+      <div class="model-item">
+        <div class="model-name">φ — Proportional</div>
+        <div class="model-val">78.2</div>
+        <div class="model-desc">Value distribution. Better than global (72.8) — Netherlands captures grinding margin.</div>
+      </div>
+      <div class="model-item">
+        <div class="model-name">√2 — Structural</div>
+        <div class="model-val">86.5</div>
+        <div class="model-desc">Custody overhead. Port of Rotterdam and ECA grading provide strongest cocoa custody documentation globally.</div>
+      </div>
+      <div class="model-item">
+        <div class="model-name">ln2 — Growth</div>
+        <div class="model-val">75.4</div>
+        <div class="model-desc">Value transformation. CBE manufacturing creates new value layer; IOI single-actor concentration limits upward pressure.</div>
+      </div>
+      <div class="model-item">
+        <div class="model-name">e — Financial</div>
+        <div class="model-val">64.2</div>
+        <div class="model-desc">Financial coupling. Stronger than global (58.3): EUDR compliance premium and IDH SLB create traceable financial signals.</div>
+      </div>
+    </div>
+    <details style="margin-top:14px;font-size:12px;color:#555;">
+      <summary style="cursor:pointer;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:0.05em;font-size:11px;">Reference: cTVF Constant Convergence Values</summary>
+      <table style="width:100%;border-collapse:collapse;margin-top:10px;font-size:12px;">
+        <thead><tr style="background:#f5f5f5;">
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid #ddd;">Axis</th>
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid #ddd;">Constant</th>
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid #ddd;">Reference value</th>
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid #ddd;">% equivalent</th>
+          <th style="text-align:left;padding:6px 8px;border-bottom:1px solid #ddd;">Meaning at reference</th>
+        </tr></thead>
+        <tbody>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #eee;">Operational</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">pi/4</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">0.7854</td><td style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:700;">78.5%</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">Phases perfectly integrated; constraints match integration capacity</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #eee;">Proportional</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">1/phi (phi-1)</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">0.6180</td><td style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:700;">61.8%</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">Sustainability floor: value escalates at natural golden ratio between phases</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #eee;">Structural</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">1/sqrt(2)</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">0.7071</td><td style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:700;">70.7%</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">Transfer overhead at irreducible minimum cost of crossing a phase boundary</td></tr>
+          <tr><td style="padding:5px 8px;border-bottom:1px solid #eee;">Growth</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">ln(2)</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">0.6931</td><td style="padding:5px 8px;border-bottom:1px solid #eee;font-weight:700;">69.3%</td><td style="padding:5px 8px;border-bottom:1px solid #eee;">Transformation phases doubling value at natural rate</td></tr>
+          <tr><td style="padding:5px 8px;">Financial/Abstract</td><td style="padding:5px 8px;">1/e (e&minus;1)</td><td style="padding:5px 8px;">0.3679</td><td style="padding:5px 8px;font-weight:700;">36.8%</td><td style="padding:5px 8px;">Financial coupling at natural decay rate; above 61.8% = coherent coupling</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:8px;color:#888;">Zone thresholds (phi-derived, universal): above 61.8% = Coherent; 38.2–61.8% = Failure; below 38.2% = Breakdown.</p>
+    </details>
+  </div>
+
+  <div class="panel">
+    <h2>Phase Detail Table</h2>
+    <div class="phase-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Ph.</th>
+            <th>Name</th>
+            <th>D</th>
+            <th>C</th>
+            <th>Balance</th>
+            <th>N</th>
+            <th>Status</th>
+            <th>Key Data Sources</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>0</td>
+            <td>Port Arrival and EUDR Clearance</td>
+            <td>232</td>
+            <td>258</td>
+            <td>89.9%</td>
+            <td>220</td>
+            <td><span class="badge good">Good</span></td>
+            <td>Port of Rotterdam Authority; NVWA; EU 2023/1115</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>Warehousing and Quality Inspection</td>
+            <td>235</td>
+            <td>252</td>
+            <td>93.3%</td>
+            <td>227</td>
+            <td><span class="badge good">Good</span></td>
+            <td>ECA grading standards; LIFFE warehouse receipts; NVWA</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>Industrial Grinding</td>
+            <td>242</td>
+            <td>265</td>
+            <td>91.3%</td>
+            <td>231</td>
+            <td><span class="badge good">Good</span></td>
+            <td>ICCO grinding by country; Barry Callebaut AR; Cargill Cocoa Promise</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>CBE Manufacturing (⬡ composite)</td>
+            <td>265</td>
+            <td>244</td>
+            <td>92.1%</td>
+            <td>234</td>
+            <td><span class="badge composite">⬡ Composite</span></td>
+            <td>IOI Loders Croklaan; EU Directive 2000/36/EC; TrueValue shea Phase 4</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>Dutch Chocolate Manufacturing</td>
+            <td>268</td>
+            <td>228</td>
+            <td>85.1%</td>
+            <td>210</td>
+            <td><span class="badge fair">Fair — Bottleneck</span></td>
+            <td>Tony's Chocolonely Annual FAIR Report; Kantar market share data</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>Domestic Retail and EU Re-export</td>
+            <td>258</td>
+            <td>230</td>
+            <td>89.1%</td>
+            <td>217</td>
+            <td><span class="badge good">Good</span></td>
+            <td>CBS Netherlands Statistics; Kantar; Fairtrade Consumer Survey 2023</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="font-size:11px;color:#555;margin-top:10px;">
+      ⬡ Phase 3 is a documented composite (95% cocoa base + 5% shea Phase 4 Export values). See project JSON for full calculation.
+    </p>
+  </div>
+
+  <div class="nav">
+    <a href="../index.html">← Cocoa Netherlands Hub</a>
+    <a href="index.html">Supply Chain Overview</a>
+    <a href="project_context.html">Project Context</a>
+    <a href="recycling_analysis.html">Ecological Return Chain</a>
+    <a href="../value_chain/index.html">Value Chain</a>
+  </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,701 @@
+Delivered-To: jeff.milton@gmail.com
+Received: by 2002:a2e:92c7:0:b0:392:4416:431e with SMTP id k7csp2619373ljh;
+        Wed, 3 Jun 2026 03:47:57 -0700 (PDT)
+X-Received: by 2002:a05:651c:1444:b0:393:9ee6:1b7b with SMTP id 38308e7fff4ca-396af470f91mr8344941fa.22.1780483676904;
+        Wed, 03 Jun 2026 03:47:56 -0700 (PDT)
+ARC-Seal: i=2; a=rsa-sha256; t=1780483676; cv=pass;
+        d=google.com; s=arc-20240605;
+        b=YYn6WxK67yZXl1y+IhR+IlNVrEsPbFgejPCD+8qeRqJcW8dtszJUzk+PB5a49fGm4y
+         jq9oWQn+YlDA/tNt8tVvke7dAP0itlG70zsu2qTRJzFz/aGc1RSM1Q3/b5/25EYdi/SL
+         Fx9cCXxyMBXoRr9D98vwWCYH2KaAbYS8qcGbPVYoDcxV7d7LEWoTwk8SG7Qft5OCNCYc
+         wVobzgfoww65e2ZXc999OjK8htzPSXbV9/WCH5/f48eRgZOdDlzTkWRDVAjHrYDDnzlE
+         2u5tSEeuQAtBIWIvHz8/naLNGf5l5XHiPtEIKuyUKN/ZbJYa36zE/7yMe8vMCYsWvIKn
+         Ls2A==
+ARC-Message-Signature: i=2; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=MxsUU4hPy14AVWirf6h9+YgZAG9CSYJx0GSb8FprdU8=;
+        fh=nTf70mjCMxAXTxvlq4alu+7UGksr/FVWUBiXI5Eb0EE=;
+        b=YVV3TYRi3qKWFyufgs3hVn9qwN0Y7jDI8dLTleJHp3BfMVVi/ZYFJzB2pp8iJRkjzD
+         /Fv069/Zr/QRCNwCvOPMTon1+jG7ChOX+WXsNex55Hmv+7eUjZ1bNWKq6082nMkroxac
+         JJ1hXOS6YYXpr18eL9zaSpAJWU3OG065ioPNHhtlis3Q+gtD+PBpVuX1To7IZWOD+BcE
+         AC8qwlWWpGkv0iMGlvMoVMRFXrw1dFwpSvXOlcK9Kiv0yUoocePAVP/IGW2WcG82xc24
+         eAUTFak/RwQcvCg3VGfCpvCiy3aQhhkiQxBGOsKBD781XHygS8jo0yDKqdvpqX6bgkAn
+         2Dng==;
+        dara=google.com
+ARC-Authentication-Results: i=2; mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=ON+tWpDZ;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of sarah.jones175@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=sarah.jones175@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+Return-Path: <sarah.jones175@gmail.com>
+Received: from mail-sor-f41.google.com (mail-sor-f41.google.com. [209.85.220.41])
+        by mx.google.com with SMTPS id 38308e7fff4ca-396ad169e35sor4278181fa.17.2026.06.03.03.47.56
+        for <jeff.milton@gmail.com>
+        (Google Transport Security);
+        Wed, 03 Jun 2026 03:47:56 -0700 (PDT)
+Received-SPF: pass (google.com: domain of sarah.jones175@gmail.com designates 209.85.220.41 as permitted sender) client-ip=209.85.220.41;
+Authentication-Results: mx.google.com;
+       dkim=pass header.i=@gmail.com header.s=20251104 header.b=ON+tWpDZ;
+       arc=pass (i=1);
+       spf=pass (google.com: domain of sarah.jones175@gmail.com designates 209.85.220.41 as permitted sender) smtp.mailfrom=sarah.jones175@gmail.com;
+       dmarc=pass (p=NONE sp=QUARANTINE dis=NONE) header.from=gmail.com;
+       dara=pass header.i=@gmail.com
+ARC-Seal: i=1; a=rsa-sha256; t=1780483676; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jfMYkBMwz1EKestATf6n/G+/uQi4vATkqoXzqa6Rp8hHcKijDjcq4ZIGXOTEd9glYG
+         UvaCFdulzRWEHwXNNEZ2c0Tcobvz/pe+2rYIBLHftUJSr30KAzcMyMBXalDFJTJ0B22i
+         y3WmtgiOvpoHoUfzZZ+DhPUQF3FV3vSfA/ouRBacSmsxzkDcylvYBmqbKkj/kBQl14j4
+         ZA/L1vzzZIRePuWtMsFsHNqk9espOfqjluvtZrD3svt1SUuKY2mjWkbXBHxssvXJpN6k
+         iC8oyn6aNwu/f1kcj6HLIln3WcwQi/M+sCk5By+DmdUVJ2IjZm3dMXvZWO93UtIs3A7D
+         YWtg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :dkim-signature;
+        bh=MxsUU4hPy14AVWirf6h9+YgZAG9CSYJx0GSb8FprdU8=;
+        fh=nTf70mjCMxAXTxvlq4alu+7UGksr/FVWUBiXI5Eb0EE=;
+        b=hT45NnGVHQVbeuvpgJvnJCkiQ2yoiJOsyHzaA+B+mPPuk1qlxAdveAys4xRGiCjus9
+         MWDpOI44PaW/HKSvvuUGb2OOqslmFlfemRcvN0jF9xUYDJttZLWXSkCcGpQotBcH9/SY
+         uYRCP8cgNCZuR+IFDZJDi44OofttGpBPp7xlr6NNFJgp2mWucbqqyLNDCOkKGSY1Kjg6
+         SADHfJXtNm5Jg2x1QQ5xQnX/S0TTa/IOv8qxrnXyAa7iDwDec2oAh/34RZ3SMNDn/ESI
+         T7Ey4jjWrFJ5SiYnOtH59DomUdOC3onFb/t3L5pOb3eMxO62zAODYg6846nPzyCdADhr
+         AwrQ==;
+        dara=google.com
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1780483676; x=1781088476; dara=google.com;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=MxsUU4hPy14AVWirf6h9+YgZAG9CSYJx0GSb8FprdU8=;
+        b=ON+tWpDZalkG1qvxAPR9RURShBPbN0lg2yHfPZMtdoS2Tuqf/U56CZuyxKq6Gw/fYO
+         S3bYJ+BPgqa8yluZRenqx6SxaEsQ+hUlVpADbzFtmOLUtEtJnWT6tQ2EKVKl8mlZxgma
+         ulj4WmMiUGykE6Rw1MJYJCblNfPR0oizp3v/XU0h0obSY+GyOex4xgi/SXHpPZImyDeJ
+         dE4ujtcqfBj+WmOvWS5KvqNnmN/LN35mS6a7DArhjSvpZ3qSvLEEAXqvoMiNRFgjDq6r
+         4QayCDXGar2yZt0gul/p/GnMbAS9zGcD9DV7ubHLSV+sStvDUZkGKas+EIT+r+v8GuLY
+         Pqjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1780483676; x=1781088476;
+        h=to:subject:message-id:date:from:in-reply-to:references:mime-version
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MxsUU4hPy14AVWirf6h9+YgZAG9CSYJx0GSb8FprdU8=;
+        b=PWXGJvERindMflTrkrx/pHQtp/mllhi108TYiGumGxqYbSAZuBVvlX1YLugZWoC7Oc
+         v7BICVLiC3EXrIp4uwlY2PqtLsKEZFiIMlbur7sp5GZURRnvbIgWPvaN6YvhffugQiPL
+         PNcKEpZgtlpE6Hm4LlOgl1MWAPYgUpsFlbLZ/psT9Ao4hryWpmgFosXgkDHMZtq2R635
+         EnOhXMsow2z7fHrm7RrEHvQHCDGkcq5Zl2ry6GONWMph8LwizW9uW/0Cy6U6vp2o3/W4
+         Fv0/VFTF3eS9XrLK26G2qQ0VOIBgmtqSLh7P0zi00k9O4E5XPphLyRjLVHG1ynZSXhCf
+         J2KQ==
+X-Gm-Message-State: AOJu0YyI/8nSdMCxl2QitaLyxalKehlpDHK/FLjDqCQc3LXsef8YM2Lm
+	V+7pLtrQbFGq3QZ/V7n+d/fp3I98VSr2P/GuQRjdE560MQt7Y8ubhOd8HQxpNOxSIQGX1qLnPUb
+	2cmmbir+tNzINCf/Ffm0DCSe+sLOzkMjVeQ==
+X-Gm-Gg: Acq92OFtHPFNIUiO24VPShK/iILcUK6wRGx+Cf98lJxifxkB4XF3gdcZxwxv7DJ9rri
+	ehzGtc8EX+EyazGS8EVvIyfvVGYeLXpEF/B8O+BPuknEh9GNY1FIyCDMntIuVoEOHNkOBid1GwM
+	s7jHiuwkUwslSCJdEcI00KqnXdeNtCrqxqHYaSbDHHuo9PTnwB60oH772V64lkGseRSJjy3iH6a
+	5jAJOuMrKNXTjusYyd4sZdBEX3IZlxYI2b0PstznsBCvwUD2CtWkCgifuXSFFOTSwA/6gx4J2W1
+	lLh8JRpFZMNMn8U=
+X-Received: by 2002:a05:651c:150d:b0:396:7b8a:3da0 with SMTP id
+ 38308e7fff4ca-396af4d5d09mr9486861fa.26.1780483676006; Wed, 03 Jun 2026
+ 03:47:56 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAEf0BDDo2ssY8LXhLfqaO9inpq7xEqbofx0GHLk-N9+U+Sy7vA@mail.gmail.com>
+ <CAEf0BDAE06tcDZ9qduFCh7Eb1i6-GYg3rg24B8L7R4LSe18Cew@mail.gmail.com>
+In-Reply-To: <CAEf0BDAE06tcDZ9qduFCh7Eb1i6-GYg3rg24B8L7R4LSe18Cew@mail.gmail.com>
+From: Sarah Jones <sarah.jones175@gmail.com>
+Date: Wed, 3 Jun 2026 11:47:44 +0100
+X-Gm-Features: AVHnY4JL8XOq0S3b3aiMfsDj_9A0uFRbImUJ6RUW3yl3z-gBEUr2z0jW4surGhE
+Message-ID: <CAEf0BDBmkF0X6Jbyz_-+P1Ydgt161TL9PvtU_3xCePkoavDLew@mail.gmail.com>
+Subject: Fwd: Olive Oil Supply Chain
+To: Jeff Milton <jeff.milton@gmail.com>
+Content-Type: multipart/alternative; boundary="000000000000096b7f065357290f"
+
+--000000000000096b7f065357290f
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+Here's my research on Spanish Olive Oil yesterday.
+
+
+Spain produces nearly half of the world's olive oil, with 75% originating
+in Andalusia, particularly Ja=C3=A9n. The supply chain operates as a vast
+network spanning roughly 2.5 million hectares. It moves from massive
+agricultural cooperatives and advanced milling facilities through to global
+export networks. [1
+<https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-ch=
+allenges-776804>,
+2 <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>, 3
+<https://www.youtube.com/watch?v=3DMoPqPsebq28&t=3D1>, 4
+<https://en.wikipedia.org/wiki/Olive_oil>, 5
+<https://oliveoilsfromspain.org/industry/>]
+1. Agriculture & Harvesting
+
+   - *Cultivation:* Spain has over 340 million olive trees. The growing,
+   maintenance, and harvesting are heavily managed by agricultural engineer=
+s.
+   [1 <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>, 2
+   <https://oliveoilsfromspain.org/industry/>]
+   - *Harvest Season:* Olives are primarily harvested from November to
+   January. [1 <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>]
+   - *Mechanization:* Modern groves utilize advanced shaking machinery (
+   *vibradoras*) to efficiently harvest olives without damaging the trees
+   or the fruit. [1 <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>]
+
+2. Milling & Processing (*Almazaras*)
+
+   - *Milling:* Harvested olives are sent to local mills. Spain contains
+   over 1,700 active oil mills, including the world=E2=80=99s largest mill =
+located in
+   Villacarrillo (Ja=C3=A9n), which can process up to 2,500 tonnes of olive=
+s per
+   day. [1 <https://en.wikipedia.org/wiki/Olive_oil>, 2
+   <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>, 3
+   <https://oliveoilsfromspain.org/industry/>, 4
+   <https://www.foodswinesfromspain.com/en/food/products/olive-oil>]
+   - *Extraction:* Olives are washed, ground into a paste, and the oil is
+   extracted via mechanical decanters without the use of excessive heat or
+   chemicals. [1 <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>]
+   - *Waste Management:* Olive waste (*alperujo*) is highly valued in the
+   circular economy, often being composted for fertilizer, used as biomass =
+for
+   energy, or used in animal feed. [1
+   <https://www.oliveoiltimes.com/business/europe/spains-olive-pomace-oil-i=
+ndustry-gets-a-voice/50290>,
+   2 <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>]
+
+3. Storage & Packaging
+
+   - *Storage:* To maintain freshness, the oil is stored in massive, dark
+   stainless steel tanks that are often blanketed with nitrogen to prevent
+   oxidation.
+   - *Bottling:* Over 1,500 bottlers process the raw oil before it enters
+   retail or bulk distribution. [1
+   <https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&t=3D1>, 2
+   <https://oliveoilsfromspain.org/industry/>]
+
+4. Logistics & Distribution
+
+   - *Bulk vs. Bottled:* The supply chain is highly export-oriented. A
+   significant portion of production (particularly for top destinations lik=
+e
+   Italy and Portugal) is transported in bulk utilizing specialized liquid
+   logistics (like flexibags holding up to 24,000 liters in shipping
+   containers). [1
+   <https://www.msc.com/en/local-information/europe/spain/spain-olive-oil>,
+   2
+   <https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish=
+-olive-oil-liquid-gold-must-be-developed-further>,
+   3 <https://oec.world/en/profile/bilateral-product/olive-oil/reporter/esp=
+>,
+   4
+   <https://sustainablefoodtrust.org/news-views/the-supply-chain-of-fats-ol=
+ive-oil/>
+   ]
+   - *International Brands:* High-end bottled products are shipped directly
+   to markets like the USA, Mexico, and the UAE by major companies like
+   *Atasur* and *La Espa=C3=B1ola*. [1
+   <https://oec.world/en/profile/bilateral-product/olive-oil/reporter/esp>,
+   2 <https://www.youtube.com/watch?v=3DMoPqPsebq28&t=3D1>]
+
+5. Key Market & Supply Chain Challenges
+
+   - *Climate Volatility:* The Spanish olive oil supply chain is highly
+   vulnerable to extreme heat and prolonged droughts in Southern Europe.
+   Consecutive years of poor production have occasionally forced Spain to
+   import oil from countries like Portugal and Tunisia to meet global deman=
+d.
+   [1
+   <https://www.oliveoiltimes.com/business/europe/olive-oil-exports-from-sp=
+ain-reach-record-high-defying-production-hurdles/135898>,
+   2
+   <https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain=
+-challenges-776804>,
+   3 <https://oec.world/en/profile/bilateral-product/olive-oil/reporter/esp=
+>
+   ]
+   - *Price Volatility:* Prices at origin can fluctuate dramatically,
+   creating strain along the supply chain. Retail pricing models sometimes
+   lag, squeezing profit margins for smaller producers. [1
+   <https://www.oliveoiltimes.com/business/europe/olive-oil-exports-from-sp=
+ain-reach-record-high-defying-production-hurdles/135898>,
+   2
+   <https://newmedit.ciheam.org/2025/06/10/distribution-strategies-in-the-v=
+alue-chain-of-spanish-virgin-olive-oils/>,
+   3
+   <https://www.cde.unibe.ch/insights__media/blogs/coffee_corner/in_the_hea=
+rt_of_empty_spain_the_uncertain_future_of_olive_oil/index_eng.html>,
+   4
+   <https://sustainablefoodtrust.org/news-views/the-supply-chain-of-fats-ol=
+ive-oil/>,
+   5
+   <https://www.persistencemarketresearch.com/market-research/europe-olive-=
+oil-market.asp>
+   ]
+
+Explore the broader structure and economic weight of the industry through
+the Olive Oils from Spain <https://oliveoilsfromspain.org/industry/>
+portal, or analyze global trade metrics using the Observatory of Economic
+Complexity
+<https://oec.world/en/profile/bilateral-product/olive-oil/reporter/esp>
+database.
+If you are researching a specific part of the chain, would you like
+information on:
+
+   - The *export destinations* and global trade volumes?
+   - *Sustainable farming* and supply chain certifications?
+   - How recent *climate disruptions* affected crop yields?
+
+
+*--*
+*Dr Sarah Jones*
+Secretary General, CLARITY Coalition
+Bridging the Gaps: Between Investment and Global Resource Trends
+sarahjones@claritycoalition.net
+
+claritycoalition.net <http://www.longfinance.net>
+longfinance.net <http://www.longfinance.net>
+
+[image: TrueValue Analytics]
+<https://truevalueanalytics.claritycoalition.net/>*TrueValue Analytics*
+
+Buenos Aires Hub, Peru 1699, Ciudad Autonoma de Buenos Aires, 1141,
+Argentina
+TrueValue Analytics, c/o C/Marqu=C3=A9s de Campo, no 31, piso 3, puerta 5, =
+03700
+D=C3=A9nia, Alicante, Espa=C3=B1a
+
+
+
+
+
+
+
+
+
+---------- Forwarded message ---------
+De: Sarah Jones <sarah.jones175@gmail.com>
+Date: mar, 2 jun 2026 a las 12:23
+Subject: Olive Oil Supply Chain
+To: Sarah Jones <sarah.jones175@gmail.com>
+
+https://www.youtube.com/watch?v=3DMoPqPsebq28
+Deusche Bank How a Spanish Company is revolutionalising the Olive OIl
+Supply CHain
+
+
+*--*
+*Dr Sarah Jones*
+Secretary General, CLARITY Coalition
+Bridging the Gaps: Between Investment and Global Resource Trends
+sarahjones@claritycoalition.net
+
+claritycoalition.net <http://www.longfinance.net>
+longfinance.net <http://www.longfinance.net>
+
+[image: TrueValue Analytics]
+<https://truevalueanalytics.claritycoalition.net/>*TrueValue Analytics*
+
+Buenos Aires Hub, Peru 1699, Ciudad Autonoma de Buenos Aires, 1141,
+Argentina
+TrueValue Analytics, c/o C/Marqu=C3=A9s de Campo, no 31, piso 3, puerta 5, =
+03700
+D=C3=A9nia, Alicante, Espa=C3=B1a
+
+--000000000000096b7f065357290f
+Content-Type: text/html; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+<div dir=3D"auto"><div><div><br></div><div>Here&#39;s my research on Spanis=
+h Olive Oil yesterday.</div><div class=3D"gmail_quote gmail_quote_container=
+"><br><br><div dir=3D"ltr"><div dir=3D"ltr"><div><div style=3D"font-family:=
+tahoma,sans-serif;font-size:small" class=3D"gmail_default">
+<div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-=
+weight:400;margin:0px 0px 16px;text-decoration:none;border-bottom:0px rgb(1=
+0,10,10)"><span style=3D"font-family:Google Sans,Arial,sans-serif;font-size=
+:16px;font-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb=
+(10,10,10)">Spain produces nearly half of the world&#39;s olive oil</span>,=
+ with 75% originating in Andalusia, particularly Ja=C3=A9n. The supply chai=
+n operates as a vast network spanning roughly 2.5 million hectares. It move=
+s from massive agricultural cooperatives and advanced milling facilities th=
+rough to global export networks.<span> [<a href=3D"https://www.shop.bottega=
+delsarto.com/feed/global-olive-oil-supply-chain-challenges-776804" target=
+=3D"_blank" rel=3D"noreferrer">1</a>, <a href=3D"https://www.youtube.com/wa=
+tch?v=3DoD3Zg0d3T-s&amp;t=3D1" target=3D"_blank" rel=3D"noreferrer">2</a>, =
+<a href=3D"https://www.youtube.com/watch?v=3DMoPqPsebq28&amp;t=3D1" target=
+=3D"_blank" rel=3D"noreferrer">3</a>, <a href=3D"https://en.wikipedia.org/w=
+iki/Olive_oil" target=3D"_blank" rel=3D"noreferrer">4</a>, <a href=3D"https=
+://oliveoilsfromspain.org/industry/" target=3D"_blank" rel=3D"noreferrer">5=
+</a>]</span></div><div style=3D"font-family:Google Sans,Arial,sans-serif;fo=
+nt-size:16px;font-weight:400;margin:0px;text-decoration:none;border-bottom:=
+0px rgb(10,10,10)"></div><div role=3D"heading" style=3D"font-family:Google =
+Sans,Arial,sans-serif;font-size:20px;font-weight:600;margin:24px 0px 12px;t=
+ext-decoration:none;border-bottom:0px rgb(0,29,53)">1. Agriculture &amp; Ha=
+rvesting<span></span></div><div style=3D"font-family:Google Sans,Arial,sans=
+-serif;font-size:16px;font-weight:400;margin:0px;text-decoration:none;borde=
+r-bottom:0px rgb(10,10,10)"><ul style=3D"font-family:Google Sans,Arial,sans=
+-serif;font-size:16px;font-weight:400;margin:12px 0px 16px;text-decoration:=
+none;border-bottom:0px rgb(10,10,10)"><li style=3D"font-family:Google Sans,=
+Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0px 12px;text-de=
+coration:none;border-bottom:0px rgb(10,10,10)"><span style=3D"font-family:G=
+oogle Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;text-=
+decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"font-family:Go=
+ogle Sans,Arial,sans-serif;font-size:16px;font-weight:600;margin:0px;text-d=
+ecoration:none;border-bottom:0px rgb(10,10,10)">Cultivation:</b> Spain has =
+over 340 million olive trees. The growing, maintenance, and harvesting are =
+heavily managed by agricultural engineers.</span><span> [<a href=3D"https:/=
+/www.youtube.com/watch?v=3DoD3Zg0d3T-s&amp;t=3D1" target=3D"_blank" rel=3D"=
+noreferrer">1</a>, <a href=3D"https://oliveoilsfromspain.org/industry/" tar=
+get=3D"_blank" rel=3D"noreferrer">2</a>]</span></li><li style=3D"font-famil=
+y:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0p=
+x 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><span style=3D=
+"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;ma=
+rgin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"=
+font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:600;mar=
+gin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">Harvest Seaso=
+n:</b> Olives are primarily harvested from November to January.</span><span=
+> [<a href=3D"https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&amp;t=3D1" targ=
+et=3D"_blank" rel=3D"noreferrer">1</a>]</span></li><li style=3D"font-family=
+:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0px=
+ 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><span style=3D"=
+font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;mar=
+gin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"f=
+ont-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:600;marg=
+in:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">Mechanization:=
+</b> Modern groves utilize advanced shaking machinery (<i style=3D"font-fam=
+ily:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;=
+text-decoration:none;border-bottom:0px rgb(10,10,10)">vibradoras</i>) to ef=
+ficiently harvest olives without damaging the trees or the fruit.</span><sp=
+an> [<a href=3D"https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&amp;t=3D1" ta=
+rget=3D"_blank" rel=3D"noreferrer">1</a>]</span></li></ul></div><div style=
+=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400=
+;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"></div><di=
+v style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-wei=
+ght:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><d=
+iv role=3D"heading" style=3D"font-family:Google Sans,Arial,sans-serif;font-=
+size:20px;font-weight:600;margin:24px 0px 12px;text-decoration:none;border-=
+bottom:0px rgb(0,29,53)">2. Milling &amp; Processing (<i style=3D"font-fami=
+ly:Google Sans,Arial,sans-serif;font-size:20px;font-weight:600;margin:0px;t=
+ext-decoration:none;border-bottom:0px rgb(0,29,53)">Almazaras</i>)<span></s=
+pan></div></div><div style=3D"font-family:Google Sans,Arial,sans-serif;font=
+-size:16px;font-weight:400;margin:0px;text-decoration:none;border-bottom:0p=
+x rgb(10,10,10)"><ul style=3D"font-family:Google Sans,Arial,sans-serif;font=
+-size:16px;font-weight:400;margin:12px 0px 16px;text-decoration:none;border=
+-bottom:0px rgb(10,10,10)"><li style=3D"font-family:Google Sans,Arial,sans-=
+serif;font-size:16px;font-weight:400;margin:0px 0px 12px;text-decoration:no=
+ne;border-bottom:0px rgb(10,10,10)"><span style=3D"font-family:Google Sans,=
+Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;text-decoration:=
+none;border-bottom:0px rgb(10,10,10)"><b style=3D"font-family:Google Sans,A=
+rial,sans-serif;font-size:16px;font-weight:600;margin:0px;text-decoration:n=
+one;border-bottom:0px rgb(10,10,10)">Milling:</b> Harvested olives are sent=
+ to local mills. Spain contains over 1,700 active oil mills, including the =
+world=E2=80=99s largest mill located in Villacarrillo (Ja=C3=A9n), which ca=
+n process up to 2,500 tonnes of olives per day.</span><span> [<a href=3D"ht=
+tps://en.wikipedia.org/wiki/Olive_oil" target=3D"_blank" rel=3D"noreferrer"=
+>1</a>, <a href=3D"https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&amp;t=3D1"=
+ target=3D"_blank" rel=3D"noreferrer">2</a>, <a href=3D"https://oliveoilsfr=
+omspain.org/industry/" target=3D"_blank" rel=3D"noreferrer">3</a>, <a href=
+=3D"https://www.foodswinesfromspain.com/en/food/products/olive-oil" target=
+=3D"_blank" rel=3D"noreferrer">4</a>]</span></li><li style=3D"font-family:G=
+oogle Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0px 1=
+2px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><span style=3D"fo=
+nt-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margi=
+n:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"fon=
+t-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:600;margin=
+:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">Extraction:</b> =
+Olives are washed, ground into a paste, and the oil is extracted via mechan=
+ical decanters without the use of excessive heat or chemicals.</span><span>=
+ [<a href=3D"https://www.youtube.com/watch?v=3DoD3Zg0d3T-s&amp;t=3D1" targe=
+t=3D"_blank" rel=3D"noreferrer">1</a>]</span></li><li style=3D"font-family:=
+Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0px =
+12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><span style=3D"f=
+ont-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;marg=
+in:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"fo=
+nt-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:600;margi=
+n:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">Waste Managemen=
+t:</b> Olive waste (<i style=3D"font-family:Google Sans,Arial,sans-serif;fo=
+nt-size:16px;font-weight:400;margin:0px;text-decoration:none;border-bottom:=
+0px rgb(10,10,10)">alperujo</i>) is highly valued in the circular economy, =
+often being composted for fertilizer, used as biomass for energy, or used i=
+n animal feed.</span><span> [<a href=3D"https://www.oliveoiltimes.com/busin=
+ess/europe/spains-olive-pomace-oil-industry-gets-a-voice/50290" target=3D"_=
+blank" rel=3D"noreferrer">1</a>, <a href=3D"https://www.youtube.com/watch?v=
+=3DoD3Zg0d3T-s&amp;t=3D1" target=3D"_blank" rel=3D"noreferrer">2</a>]</span=
+></li></ul></div><div style=3D"font-family:Google Sans,Arial,sans-serif;fon=
+t-size:16px;font-weight:400;margin:0px;text-decoration:none;border-bottom:0=
+px rgb(10,10,10)"></div><div style=3D"font-family:Google Sans,Arial,sans-se=
+rif;font-size:16px;font-weight:400;margin:0px;text-decoration:none;border-b=
+ottom:0px rgb(10,10,10)"><div role=3D"heading" style=3D"font-family:Google =
+Sans,Arial,sans-serif;font-size:20px;font-weight:600;margin:24px 0px 12px;t=
+ext-decoration:none;border-bottom:0px rgb(0,29,53)">3. Storage &amp; Packag=
+ing<span></span></div></div><div style=3D"font-family:Google Sans,Arial,san=
+s-serif;font-size:16px;font-weight:400;margin:0px;text-decoration:none;bord=
+er-bottom:0px rgb(10,10,10)"><ul style=3D"font-family:Google Sans,Arial,san=
+s-serif;font-size:16px;font-weight:400;margin:12px 0px 16px;text-decoration=
+:none;border-bottom:0px rgb(10,10,10)"><li style=3D"font-family:Google Sans=
+,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0px 12px;text-d=
+ecoration:none;border-bottom:0px rgb(10,10,10)"><span style=3D"font-family:=
+Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;text=
+-decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"font-family:G=
+oogle Sans,Arial,sans-serif;font-size:16px;font-weight:600;margin:0px;text-=
+decoration:none;border-bottom:0px rgb(10,10,10)">Storage:</b> To maintain f=
+reshness, the oil is stored in massive, dark stainless steel tanks that are=
+ often blanketed with nitrogen to prevent oxidation.</span></li><li style=
+=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400=
+;margin:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)">=
+<span style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font=
+-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)=
+"><b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-=
+weight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"=
+>Bottling:</b> Over 1,500 bottlers process the raw oil before it enters ret=
+ail or bulk distribution.</span><span> [<a href=3D"https://www.youtube.com/=
+watch?v=3DoD3Zg0d3T-s&amp;t=3D1" target=3D"_blank" rel=3D"noreferrer">1</a>=
+, <a href=3D"https://oliveoilsfromspain.org/industry/" target=3D"_blank" re=
+l=3D"noreferrer">2</a>]</span></li></ul></div><div style=3D"font-family:Goo=
+gle Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;text-de=
+coration:none;border-bottom:0px rgb(10,10,10)"></div><div style=3D"font-fam=
+ily:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;=
+text-decoration:none;border-bottom:0px rgb(10,10,10)"><div role=3D"heading"=
+ style=3D"font-family:Google Sans,Arial,sans-serif;font-size:20px;font-weig=
+ht:600;margin:24px 0px 12px;text-decoration:none;border-bottom:0px rgb(0,29=
+,53)">4. Logistics &amp; Distribution<span></span></div></div><div style=3D=
+"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;ma=
+rgin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><ul style=3D=
+"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;ma=
+rgin:12px 0px 16px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><l=
+i style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-wei=
+ght:400;margin:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,1=
+0,10)"><span style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16=
+px;font-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10=
+,10,10)"><b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16p=
+x;font-weight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,=
+10,10)">Bulk vs. Bottled:</b> The supply chain is highly export-oriented. A=
+ significant portion of production (particularly for top destinations like =
+Italy and Portugal) is transported in bulk utilizing specialized liquid log=
+istics (like flexibags holding up to 24,000 liters in shipping containers).=
+</span><span> [<a href=3D"https://www.msc.com/en/local-information/europe/s=
+pain/spain-olive-oil" target=3D"_blank" rel=3D"noreferrer">1</a>, <a href=
+=3D"https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish=
+-olive-oil-liquid-gold-must-be-developed-further" target=3D"_blank" rel=3D"=
+noreferrer">2</a>, <a href=3D"https://oec.world/en/profile/bilateral-produc=
+t/olive-oil/reporter/esp" target=3D"_blank" rel=3D"noreferrer">3</a>, <a hr=
+ef=3D"https://sustainablefoodtrust.org/news-views/the-supply-chain-of-fats-=
+olive-oil/" target=3D"_blank" rel=3D"noreferrer">4</a>]</span></li><li styl=
+e=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:40=
+0;margin:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"=
+><span style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;fon=
+t-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10=
+)"><b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font=
+-weight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)=
+">International Brands:</b> High-end bottled products are shipped directly =
+to markets like the USA, Mexico, and the UAE by major companies like <b sty=
+le=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:6=
+00;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">Atasur<=
+/b> and <b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px=
+;font-weight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,1=
+0,10)">La Espa=C3=B1ola</b>.</span><span> [<a href=3D"https://oec.world/en/=
+profile/bilateral-product/olive-oil/reporter/esp" target=3D"_blank" rel=3D"=
+noreferrer">1</a>, <a href=3D"https://www.youtube.com/watch?v=3DMoPqPsebq28=
+&amp;t=3D1" target=3D"_blank" rel=3D"noreferrer">2</a>]</span></li></ul></d=
+iv><div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;fo=
+nt-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,1=
+0)"></div><div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:=
+16px;font-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(=
+10,10,10)"><div role=3D"heading" style=3D"font-family:Google Sans,Arial,san=
+s-serif;font-size:20px;font-weight:600;margin:24px 0px 12px;text-decoration=
+:none;border-bottom:0px rgb(0,29,53)">5. Key Market &amp; Supply Chain Chal=
+lenges<span></span></div></div><div style=3D"font-family:Google Sans,Arial,=
+sans-serif;font-size:16px;font-weight:400;margin:0px;text-decoration:none;b=
+order-bottom:0px rgb(10,10,10)"><ul style=3D"font-family:Google Sans,Arial,=
+sans-serif;font-size:16px;font-weight:400;margin:12px 0px 16px;text-decorat=
+ion:none;border-bottom:0px rgb(10,10,10)"><li style=3D"font-family:Google S=
+ans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px 0px 12px;tex=
+t-decoration:none;border-bottom:0px rgb(10,10,10)"><span style=3D"font-fami=
+ly:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;t=
+ext-decoration:none;border-bottom:0px rgb(10,10,10)"><b style=3D"font-famil=
+y:Google Sans,Arial,sans-serif;font-size:16px;font-weight:600;margin:0px;te=
+xt-decoration:none;border-bottom:0px rgb(10,10,10)">Climate Volatility:</b>=
+ The Spanish olive oil supply chain is highly vulnerable to extreme heat an=
+d prolonged droughts in Southern Europe. Consecutive years of poor producti=
+on have occasionally forced Spain to import oil from countries like Portuga=
+l and Tunisia to meet global demand.</span><span> [<a href=3D"https://www.o=
+liveoiltimes.com/business/europe/olive-oil-exports-from-spain-reach-record-=
+high-defying-production-hurdles/135898" target=3D"_blank" rel=3D"noreferrer=
+">1</a>, <a href=3D"https://www.shop.bottegadelsarto.com/feed/global-olive-=
+oil-supply-chain-challenges-776804" target=3D"_blank" rel=3D"noreferrer">2<=
+/a>, <a href=3D"https://oec.world/en/profile/bilateral-product/olive-oil/re=
+porter/esp" target=3D"_blank" rel=3D"noreferrer">3</a>]</span></li><li styl=
+e=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:40=
+0;margin:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"=
+><span style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;fon=
+t-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10=
+)"><b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font=
+-weight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)=
+">Price Volatility:</b> Prices at origin can fluctuate dramatically, creati=
+ng strain along the supply chain. Retail pricing models sometimes lag, sque=
+ezing profit margins for smaller producers.</span><span> [<a href=3D"https:=
+//www.oliveoiltimes.com/business/europe/olive-oil-exports-from-spain-reach-=
+record-high-defying-production-hurdles/135898" target=3D"_blank" rel=3D"nor=
+eferrer">1</a>, <a href=3D"https://newmedit.ciheam.org/2025/06/10/distribut=
+ion-strategies-in-the-value-chain-of-spanish-virgin-olive-oils/" target=3D"=
+_blank" rel=3D"noreferrer">2</a>, <a href=3D"https://www.cde.unibe.ch/insig=
+hts__media/blogs/coffee_corner/in_the_heart_of_empty_spain_the_uncertain_fu=
+ture_of_olive_oil/index_eng.html" target=3D"_blank" rel=3D"noreferrer">3</a=
+>, <a href=3D"https://sustainablefoodtrust.org/news-views/the-supply-chain-=
+of-fats-olive-oil/" target=3D"_blank" rel=3D"noreferrer">4</a>, <a href=3D"=
+https://www.persistencemarketresearch.com/market-research/europe-olive-oil-=
+market.asp" target=3D"_blank" rel=3D"noreferrer">5</a>]</span></li></ul></d=
+iv><div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;fo=
+nt-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,1=
+0)"><div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;f=
+ont-weight:400;margin:12px 0px 16px;text-decoration:none;border-bottom:0px =
+rgb(10,10,10)">Explore the broader structure and economic weight of the ind=
+ustry through the <span style=3D"font-family:Google Sans,Arial,sans-serif;f=
+ont-size:16px;font-weight:400;margin:0px;text-decoration:none;border-bottom=
+:0px rgb(10,10,10)"><a rel=3D"noopener noreferrer" href=3D"https://oliveoil=
+sfromspain.org/industry/" style=3D"font-family:Google Sans,Arial,sans-serif=
+;font-size:16px;font-weight:500;margin:0px;text-decoration:underline 1px rg=
+b(26,13,171);border-bottom:0px rgb(26,13,171)" target=3D"_blank">Olive Oils=
+ from Spain</a></span> portal, or analyze global trade metrics using the <s=
+pan style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-w=
+eight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">=
+<a rel=3D"noopener noreferrer" href=3D"https://oec.world/en/profile/bilater=
+al-product/olive-oil/reporter/esp" style=3D"font-family:Google Sans,Arial,s=
+ans-serif;font-size:16px;font-weight:500;margin:0px;text-decoration:underli=
+ne 1px rgb(26,13,171);border-bottom:0px rgb(26,13,171)" target=3D"_blank">O=
+bservatory of Economic Complexity</a></span> database.<span></span></div></=
+div><div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;f=
+ont-weight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,=
+10)"><div style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;=
+font-weight:400;margin:12px 0px 16px;text-decoration:none;border-bottom:0px=
+ rgb(10,10,10)">If you are researching a specific part of the chain, would =
+you like information on:<span></span></div></div><div style=3D"font-family:=
+Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:0px;text=
+-decoration:none;border-bottom:0px rgb(10,10,10)"><ul style=3D"font-family:=
+Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margin:12px 0px=
+ 16px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><li style=3D"fo=
+nt-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margi=
+n:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><span =
+style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weigh=
+t:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">The =
+<b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-we=
+ight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">e=
+xport destinations</b> and global trade volumes?</span></li><li style=3D"fo=
+nt-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;margi=
+n:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><span =
+style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weigh=
+t:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><b s=
+tyle=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight=
+:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">Susta=
+inable farming</b> and supply chain certifications?</span></li><li style=3D=
+"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-weight:400;ma=
+rgin:0px 0px 12px;text-decoration:none;border-bottom:0px rgb(10,10,10)"><sp=
+an style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16px;font-we=
+ight:400;margin:0px;text-decoration:none;border-bottom:0px rgb(10,10,10)">H=
+ow recent <b style=3D"font-family:Google Sans,Arial,sans-serif;font-size:16=
+px;font-weight:600;margin:0px;text-decoration:none;border-bottom:0px rgb(10=
+,10,10)">climate disruptions</b> affected crop yields?</span><span></span><=
+/li></ul></div>
+
+</div><br clear=3D"all"></div><div><div dir=3D"ltr" class=3D"gmail_signatur=
+e" data-smartmail=3D"gmail_signature"><div dir=3D"ltr"><div dir=3D"ltr"><di=
+v dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=
+=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div><font styl=
+e=3D"font-size:small" face=3D"Verdana" color=3D"#531b93"><b>--</b></font></=
+div><div><font style=3D"font-size:small" face=3D"Verdana" color=3D"#531b93"=
+><b>Dr Sarah Jones</b></font></div><div><span style=3D"font-family:&#39;ari=
+al black&#39;,sans-serif"><font color=3D"#3a88fe">Secretary General, CLARIT=
+Y Coalition</font></span><br><font style=3D"color:rgb(103,78,167);font-size=
+:9px" face=3D"Verdana"><font style=3D"color:rgb(103,78,167);font-size:9px" =
+face=3D"Verdana">Bridging the Gaps: Between Investment and Global Resource =
+Trends</font></font></div><div><div style=3D"font-size:small;font-family:ar=
+ial"><a href=3D"mailto:sarahjones@claritycoalition.net" style=3D"font-famil=
+y:Verdana;color:rgb(17,85,204)" target=3D"_blank" rel=3D"noreferrer">sarahj=
+ones@claritycoalition.net</a></div><div style=3D"font-size:small;font-famil=
+y:arial"><br></div><div style=3D"font-family:arial"><div><span style=3D"col=
+or:rgb(83,27,147);font-family:Verdana;font-size:small"><a href=3D"http://ww=
+w.longfinance.net" target=3D"_blank" rel=3D"noreferrer">claritycoalition.ne=
+t</a></span></div><div><span style=3D"color:rgb(83,27,147);font-family:Verd=
+ana;font-size:small"><a href=3D"http://www.longfinance.net" target=3D"_blan=
+k" rel=3D"noreferrer">longfinance.net</a></span></div><div><span style=3D"c=
+olor:rgb(83,27,147);font-family:Verdana;font-size:small"><br></span></div><=
+a href=3D"https://truevalueanalytics.claritycoalition.net/" target=3D"_blan=
+k" rel=3D"noreferrer"><img width=3D"96" height=3D"96" alt=3D"TrueValue Anal=
+ytics" src=3D"https://ci3.googleusercontent.com/mail-sig/AIorK4x1BBLblqgx9Q=
+q6Uedc-bAuLGNGEKsKW5wZaF0yq2KU_U-OJ5Tx1Sd-4T_25eiDhSznqU4v0cVffVYK"></a><fo=
+nt face=3D"arial black,sans-serif"><b>TrueValue Analytics</b></font><div><b=
+r></div><span><div style=3D"font-size:small;font-family:arial"><span><font =
+style=3D"font-size:9px" face=3D"Verdana" color=3D"#531b93">Buenos Aires Hub=
+, Peru 1699, Ciudad Autonoma de Buenos Aires, 1141, Argentina=C2=A0</font><=
+/span></div><div style=3D"font-size:small;font-family:arial"><span><span><f=
+ont style=3D"font-size:9px" face=3D"Verdana" color=3D"#531b93">TrueValue An=
+alytics, c/o C/Marqu=C3=A9s de Campo, no 31, piso 3</font><font style=3D"fo=
+nt-size:9px" face=3D"Verdana" color=3D"#531b93">, puerta 5, 03700 D=C3=A9ni=
+a, Alicante, Espa=C3=B1a=C2=A0</font></span></span></div><div style=3D"font=
+-size:small;font-family:arial"><br></div></span><span><font style=3D"font-s=
+ize:9px" face=3D"Verdana" color=3D"#531b93"><br></font></span><br><span sty=
+le=3D"color:rgb(83,27,147);font-family:Verdana;font-size:small"></span><div=
+><span style=3D"color:rgb(83,27,147);font-family:Verdana;font-size:small"><=
+br></span></div><div><font size=3D"2" face=3D"Verdana" color=3D"#3d85c6"><b=
+r></font></div><div><font size=3D"2" face=3D"Verdana" color=3D"#3d85c6"><br=
+></font></div><div><br></div></div></div></div></div></div></div></div></di=
+v></div></div></div></div></div></div><br><br><div class=3D"gmail_quote"><d=
+iv dir=3D"ltr" class=3D"gmail_attr">---------- Forwarded message ---------<=
+br>De: <b class=3D"gmail_sendername" dir=3D"auto">Sarah Jones</b> <span dir=
+=3D"auto">&lt;<a href=3D"mailto:sarah.jones175@gmail.com" target=3D"_blank"=
+ rel=3D"noreferrer">sarah.jones175@gmail.com</a>&gt;</span><br>Date: mar, 2=
+ jun 2026 a las 12:23<br>Subject: Olive Oil Supply Chain<br>To: Sarah Jones=
+ &lt;<a href=3D"mailto:sarah.jones175@gmail.com" target=3D"_blank" rel=3D"n=
+oreferrer">sarah.jones175@gmail.com</a>&gt;<br></div><br><div style=3D"font=
+-family:tahoma,sans-serif;font-size:small" class=3D"gmail_default"><a href=
+=3D"https://www.youtube.com/watch?v=3DMoPqPsebq28" target=3D"_blank" rel=3D=
+"noreferrer">https://www.youtube.com/watch?v=3DMoPqPsebq28</a></div><div st=
+yle=3D"font-family:tahoma,sans-serif;font-size:small" class=3D"gmail_defaul=
+t">Deusche Bank How a Spanish Company is revolutionalising the Olive OIl Su=
+pply CHain</div><br><div dir=3D"ltr"><div><br clear=3D"all"></div><div><div=
+ dir=3D"ltr" class=3D"gmail_signature" data-smartmail=3D"gmail_signature"><=
+div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=
+=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr"><div dir=3D"ltr=
+"><div dir=3D"ltr"><div><font style=3D"font-size:small" face=3D"Verdana" co=
+lor=3D"#531b93"><b>--</b></font></div><div><font style=3D"font-size:small" =
+face=3D"Verdana" color=3D"#531b93"><b>Dr Sarah Jones</b></font></div><div><=
+span style=3D"font-family:&#39;arial black&#39;,sans-serif"><font color=3D"=
+#3a88fe">Secretary General, CLARITY Coalition</font></span><br><font style=
+=3D"color:rgb(103,78,167);font-size:9px" face=3D"Verdana"><font style=3D"co=
+lor:rgb(103,78,167);font-size:9px" face=3D"Verdana">Bridging the Gaps: Betw=
+een Investment and Global Resource Trends</font></font></div><div><div styl=
+e=3D"font-size:small;font-family:arial"><a href=3D"mailto:sarahjones@clarit=
+ycoalition.net" style=3D"font-family:Verdana;color:rgb(17,85,204)" target=
+=3D"_blank" rel=3D"noreferrer">sarahjones@claritycoalition.net</a></div><di=
+v style=3D"font-size:small;font-family:arial"><br></div><div style=3D"font-=
+family:arial"><div><span style=3D"color:rgb(83,27,147);font-family:Verdana;=
+font-size:small"><a href=3D"http://www.longfinance.net" target=3D"_blank" r=
+el=3D"noreferrer">claritycoalition.net</a></span></div><div><span style=3D"=
+color:rgb(83,27,147);font-family:Verdana;font-size:small"><a href=3D"http:/=
+/www.longfinance.net" target=3D"_blank" rel=3D"noreferrer">longfinance.net<=
+/a></span></div><div><span style=3D"color:rgb(83,27,147);font-family:Verdan=
+a;font-size:small"><br></span></div><a href=3D"https://truevalueanalytics.c=
+laritycoalition.net/" target=3D"_blank" rel=3D"noreferrer"><img width=3D"96=
+" height=3D"96" alt=3D"TrueValue Analytics" src=3D"https://ci3.googleuserco=
+ntent.com/mail-sig/AIorK4x1BBLblqgx9Qq6Uedc-bAuLGNGEKsKW5wZaF0yq2KU_U-OJ5Tx=
+1Sd-4T_25eiDhSznqU4v0cVffVYK"></a><font face=3D"arial black,sans-serif"><b>=
+TrueValue Analytics</b></font><div><br></div><span><div style=3D"font-size:=
+small;font-family:arial"><span><font style=3D"font-size:9px" face=3D"Verdan=
+a" color=3D"#531b93">Buenos Aires Hub, Peru 1699, Ciudad Autonoma de Buenos=
+ Aires, 1141, Argentina=C2=A0</font></span></div><div style=3D"font-size:sm=
+all;font-family:arial"><span><span><font style=3D"font-size:9px" face=3D"Ve=
+rdana" color=3D"#531b93">TrueValue Analytics, c/o C/Marqu=C3=A9s de Campo, =
+no 31, piso 3</font><font style=3D"font-size:9px" face=3D"Verdana" color=3D=
+"#531b93">, puerta 5, 03700 D=C3=A9nia, Alicante, Espa=C3=B1a=C2=A0</font><=
+/span></span></div><div style=3D"font-size:small;font-family:arial"><br></d=
+iv></span><span><font style=3D"font-size:9px" face=3D"Verdana" color=3D"#53=
+1b93"><br></font></span><br><span style=3D"color:rgb(83,27,147);font-family=
+:Verdana;font-size:small"></span><div><span style=3D"color:rgb(83,27,147);f=
+ont-family:Verdana;font-size:small"><br></span></div><div><font size=3D"2" =
+face=3D"Verdana" color=3D"#3d85c6"><br></font></div><div><font size=3D"2" f=
+ace=3D"Verdana" color=3D"#3d85c6"><br></font></div><div><br></div></div></d=
+iv></div></div></div></div></div></div></div></div></div></div></div></div>=
+</div>
+</div></div>
+</div>
+</div></div></div>
+
+--000000000000096b7f065357290f--

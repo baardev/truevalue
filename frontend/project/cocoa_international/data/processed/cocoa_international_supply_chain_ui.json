@@ -1,0 +1,390 @@
+{
+  "_meta": {
+    "generated": "2026-06-03",
+    "generator": "manual-from-source-data",
+    "material": "cocoa_international",
+    "sources": [
+      "ICCO Quarterly Bulletin of Cocoa Statistics — icco.org/statistics/",
+      "World Cocoa Foundation — Cocoa Market Update 2024",
+      "Barry Callebaut Annual Report 2024 — barry-callebaut.com",
+      "Conseil Cafe-Cacao (CCC) — conseilcafecacao.ci/",
+      "IDH Cocoa Barometer 2022 — cocoabarometer.org",
+      "Mighty Earth Cocoa Scorecard 2023 — mightyearth.org",
+      "EU EUDR Regulation 2023/1115 — environment.ec.europa.eu",
+      "Fairtrade International Cocoa 2023 — fairtrade.net/issue/cocoa",
+      "Cargill Cocoa Promise Annual Report 2023 — cargill.com/sustainability/cocoa",
+      "Port of Rotterdam Authority — portofrotterdam.com"
+    ],
+    "note": "N-D-C values derived from source data using formulas: balance=100-(|D-C|/max(D,C))*100; N=sqrt(D*C)*(balance/100); sustainability=100/((|D-C|^2)+10). Phase 1 (Fermentation/Drying) is the structural bottleneck at 76.5% balance due to near-total opacity at farm level and absence of chain-of-custody documentation."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "Synthetic Baseline",
+      "description": "Baseline N-D-C values derived from ICCO, World Cocoa Foundation, Conseil Cafe-Cacao, IDH Cocoa Barometer, and EU regulatory data. See _source_index for citations."
+    }
+  },
+  "phases": {
+    "0": {
+      "name": "Cultivation",
+      "D": 255,
+      "C": 228,
+      "balance": 89.4,
+      "N": 216,
+      "sustainability": 0.135,
+      "notes": "Soil + rain + shade trees -> cocoa pods on tree. ~5-6 million smallholder farms, average 2 ha. Ivory Coast 44%, Ghana 16%, West Africa 60%+ combined. Deforestation pressure (protected forests encroached for cultivation), climate stress (rising temperatures threaten yields by 2050), child labor risk (estimated 1.5M children), soil degradation from monoculture. Cooperative and extension service infrastructure provides C. EUDR requires geolocation polygon traceability to farm level.",
+      "data_quality": "medium",
+      "metrics": {
+        "global_production_mt": {
+          "value": 5000000,
+          "unit": "metric tonnes per year",
+          "source": "ICCO Quarterly Bulletin 2024"
+        },
+        "ivory_coast_share_pct": {
+          "value": 44,
+          "unit": "percent of global production",
+          "source": "ICCO Quarterly Bulletin 2024"
+        },
+        "ghana_share_pct": {
+          "value": 16,
+          "unit": "percent of global production",
+          "source": "ICCO Quarterly Bulletin 2024"
+        },
+        "farm_count_approx": {
+          "value": 5000000,
+          "unit": "smallholder farms",
+          "source": "World Cocoa Foundation / IDH Cocoa Barometer 2022"
+        },
+        "avg_farm_ha": {
+          "value": 2,
+          "unit": "hectares",
+          "source": "IDH Cocoa Barometer 2022"
+        },
+        "child_labor_estimated": {
+          "value": 1500000,
+          "unit": "children (Ivory Coast + Ghana)",
+          "source": "Mighty Earth Cocoa Scorecard 2023 / NORC 2020 study"
+        },
+        "eudr_geolocation_requirement": {
+          "value": "polygon-level farm traceability",
+          "unit": "regulatory standard",
+          "source": "EU Regulation 2023/1115 (EUDR)"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — agricultural emissions and land-use change require separate LCA data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    },
+    "1": {
+      "name": "Fermentation and Drying",
+      "D": 272,
+      "C": 208,
+      "balance": 76.5,
+      "N": 182,
+      "sustainability": 0.024,
+      "notes": "BOTTLENECK. Cocoa pods split -> wet beans -> fermented 5-8 days -> sun-dried 1-2 weeks -> bagged dry beans. The most critical quality-determining transformation in the chain. Fermentation develops 80-90% of final chocolate flavor precursors. Carried out at farm or village cooperative level with no standard process, no chain-of-custody documentation, no temperature logging, and no identity preservation. Child labor is most concentrated at this phase. Sustainability certifications (UTZ, Rainforest Alliance, Fairtrade) are issued at cooperative membership level and cannot verify individual fermentation or drying practices. D significantly exceeds C: institutional opacity and the absence of any measurement infrastructure dominate.",
+      "data_quality": "low",
+      "metrics": {
+        "fermentation_days": {
+          "value": "5-8",
+          "unit": "days",
+          "source": "World Cocoa Foundation — cocoa post-harvest guidelines"
+        },
+        "drying_days": {
+          "value": "7-14",
+          "unit": "days sun drying",
+          "source": "World Cocoa Foundation — cocoa post-harvest guidelines"
+        },
+        "flavor_precursor_development_pct": {
+          "value": 85,
+          "unit": "percent (approximate, fermentation-derived)",
+          "source": "Cargill Cocoa technical documentation / industry standard"
+        },
+        "certification_coverage_pct": {
+          "value": 24,
+          "unit": "percent of global supply with sustainability certification",
+          "source": "IDH Cocoa Barometer 2022"
+        },
+        "clmrs_enrollment_ivory_coast": {
+          "value": 700000,
+          "unit": "farm households enrolled in CLMRS",
+          "source": "ILO / Cargill Cocoa Promise 2023 (approx.)"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — farm-level fermentation/drying emissions require separate data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    },
+    "2": {
+      "name": "Aggregation and Domestic Trading",
+      "D": 248,
+      "C": 235,
+      "balance": 94.8,
+      "N": 229,
+      "sustainability": 0.559,
+      "notes": "Dry beans -> collected by Licensed Buying Companies (LBCs) -> cooperative or private trader aggregation -> CCC-guaranteed farm-gate price in Ivory Coast. The Ivory Coast CCC (Conseil Cafe-Cacao) operates a forward sales system that sets a minimum farm-gate price each season (~60-70% of CIF price). Ghana's COCOBOD operates a similar state monopsony model. Both systems provide price floor stability but reduce farmer ability to capture premium pricing. Multiple intermediary layers between farm and port. Internal transport uses motorbikes, trucks, local warehouses.",
+      "data_quality": "medium",
+      "metrics": {
+        "ivory_coast_farm_gate_guaranteed_pct_cif": {
+          "value": 64,
+          "unit": "percent of CIF price (2023-24 season)",
+          "source": "Conseil Cafe-Cacao (CCC) price announcement"
+        },
+        "ghana_cocobod_model": {
+          "value": "state monopsony — COCOBOD purchases all export beans",
+          "unit": "institutional structure",
+          "source": "World Cocoa Foundation / ICCO"
+        },
+        "lbc_count_ivory_coast": {
+          "value": 190,
+          "unit": "Licensed Buying Companies",
+          "source": "Conseil Cafe-Cacao 2023"
+        },
+        "farm_gate_price_usd_per_mt": {
+          "value": 1400,
+          "unit": "USD per metric tonne (2023-24 approximate)",
+          "source": "ICCO / World Cocoa Foundation Market Update 2024"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — domestic transport emissions require separate data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    },
+    "3": {
+      "name": "Export and Origin Processing",
+      "D": 252,
+      "C": 240,
+      "balance": 95.2,
+      "N": 234,
+      "sustainability": 0.649,
+      "notes": "Aggregated beans -> port warehouses -> export (65% of Ivory Coast harvest) OR origin processing (35%). Origin processing: ADM, Cargill, Olam, Barry Callebaut, and local processors grind beans to cocoa liquor, butter, and powder at Abidjan and San Pedro plants. Ivory Coast aims to process 50%+ domestically by 2030 under national policy. Ghana's COCOBOD also promotes origin grinding at Tema. Port operations at Abidjan (San Pedro): Abidjan handles ~1.0 Mt/year cocoa, San Pedro ~0.8 Mt/year. CCC export registration and quality grading is required for all exports. CCC-issued export certificates are the primary official custody documents.",
+      "data_quality": "medium",
+      "metrics": {
+        "ivory_coast_origin_grinding_mt": {
+          "value": 750000,
+          "unit": "metric tonnes per year",
+          "source": "ICCO / Barry Callebaut Annual Report 2024"
+        },
+        "origin_grinding_share_ivory_coast_pct": {
+          "value": 35,
+          "unit": "percent of Ivory Coast harvest",
+          "source": "ICCO Quarterly Bulletin 2024"
+        },
+        "abidjan_port_cocoa_mt": {
+          "value": 1000000,
+          "unit": "metric tonnes per year (approximate)",
+          "source": "Port Autonome d'Abidjan / ICCO"
+        },
+        "major_origin_processors": {
+          "value": "ADM, Cargill, Olam, Barry Callebaut, SACO (Ivory Coast national)",
+          "unit": "principal processors",
+          "source": "Barry Callebaut Annual Report 2024 / Cargill Cocoa Promise 2023"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — grinding energy and port logistics emissions require separate data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    },
+    "4": {
+      "name": "Oceanic Shipping",
+      "D": 238,
+      "C": 252,
+      "balance": 94.4,
+      "N": 231,
+      "sustainability": 0.485,
+      "notes": "Bagged cocoa beans or semi-finished products (liquor, butter, powder in containers/isotanks) -> Atlantic Ocean transit -> European, Asian, and North American ports. Rotterdam/Amsterdam are the primary European destination ports. Typical transit Abidjan to Rotterdam: 10-14 days. Bills of lading and weight manifests are the primary custody documents. Temperature and humidity control critical for bean quality (avoid fermentation restart, mold). Commodity shipping rates volatile (Red Sea disruptions 2024 added 8-12 days and 30-40% freight cost premium for some routes). C slightly exceeds D: the maritime infrastructure and documentation system is the most transparent phase in the chain.",
+      "data_quality": "high",
+      "metrics": {
+        "abidjan_to_rotterdam_days": {
+          "value": 12,
+          "unit": "days (typical transit)",
+          "source": "Port of Rotterdam Authority / shipping industry"
+        },
+        "rotterdam_amsterdam_cocoa_mt": {
+          "value": 1200000,
+          "unit": "metric tonnes per year through Rotterdam/Amsterdam combined",
+          "source": "Port of Rotterdam Authority — commodity flows 2024"
+        },
+        "red_sea_delay_days": {
+          "value": 10,
+          "unit": "days added via Cape of Good Hope routing (2024)",
+          "source": "Port of Rotterdam Authority / shipping industry press 2024"
+        },
+        "shipping_container_type": {
+          "value": "20ft/40ft standard dry containers (beans); isotank containers (butter/liquor)",
+          "unit": "container type",
+          "source": "Industry standard logistics"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — maritime bunker fuel emissions require separate data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    },
+    "5": {
+      "name": "Destination Processing",
+      "D": 242,
+      "C": 258,
+      "balance": 93.8,
+      "N": 234,
+      "sustainability": 0.376,
+      "notes": "Cocoa beans -> cleaned, roasted, cracked, winnowed, ground -> cocoa liquor; pressed -> cocoa butter + press cake; milled press cake -> cocoa powder. Amsterdam is the world's largest single grinding center at ~600,000 mt/year. Top three destination processors globally: Barry Callebaut, Cargill, Olam (combined >60% of global destination grinding). EU food safety standards (EC 1881/2006 for heavy metals) and EU sustainability due diligence obligations apply. Traceability systems are company-run (Cargill Cocoa Promise, BC Cocoa Horizons, Olam AtSource). C exceeds D: world-class industrial infrastructure and regulatory framework provide more contribution than constraint at this phase. Oligopoly concentration (3 firms, >60%) is a D-risk.",
+      "data_quality": "high",
+      "metrics": {
+        "amsterdam_grinding_capacity_mt": {
+          "value": 600000,
+          "unit": "metric tonnes per year",
+          "source": "Port of Amsterdam / ICCO grinding data"
+        },
+        "barry_callebaut_global_volume_mt": {
+          "value": 2200000,
+          "unit": "metric tonnes (cocoa and chocolate processed, FY2023/24)",
+          "source": "Barry Callebaut Annual Report 2024"
+        },
+        "top3_processors_share_pct": {
+          "value": 60,
+          "unit": "percent of global destination grinding",
+          "source": "ICCO / industry analysis"
+        },
+        "eu_regulatory_standard": {
+          "value": "EC 1881/2006 (cadmium/lead limits); EUDR 2023/1115 (deforestation-free)",
+          "unit": "applicable EU regulations",
+          "source": "European Commission"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — industrial grinding energy emissions require separate data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    },
+    "6": {
+      "name": "Manufacturing and Retail",
+      "D": 268,
+      "C": 215,
+      "balance": 80.2,
+      "N": 192,
+      "sustainability": 0.035,
+      "notes": "Cocoa butter + liquor + sugar + milk -> chocolate and confectionery products; cocoa powder -> beverages, baking, industrial applications. Major chocolate manufacturers: Mars, Nestle, Mondelez, Ferrero, Hershey, Lindt. Sustainability labels (Fairtrade, UTZ/RA, organic) command retail premium but Fairtrade price premium to farmers is only USD 200/mt (on a USD 1,400/mt farm gate price: 14%). Retail chocolate avg USD 8/kg. Consumer-facing marketing emphasizes sustainability but farm-gate price remains structurally depressed. Packaging waste is a significant return-chain gap. D significantly exceeds C: brand capture, retail concentration (supermarket oligopoly), and weak premium transmission to origin dominate.",
+      "data_quality": "medium",
+      "metrics": {
+        "fairtrade_premium_usd_per_mt": {
+          "value": 200,
+          "unit": "USD per metric tonne premium",
+          "source": "Fairtrade International — Cocoa 2023 Monitoring Report"
+        },
+        "farm_gate_vs_retail_ratio": {
+          "value": "approx 1:6 (USD 1,400 farm gate vs USD 8,000+ retail equivalent)",
+          "unit": "farm-to-retail ratio",
+          "source": "ICCO / World Cocoa Foundation / Fairtrade 2023"
+        },
+        "major_manufacturers": {
+          "value": "Mars, Nestle, Mondelez, Ferrero, Hershey, Lindt, Meiji",
+          "unit": "principal manufacturers",
+          "source": "Industry"
+        },
+        "global_chocolate_market_usd": {
+          "value": 130000000000,
+          "unit": "USD (retail chocolate market 2024)",
+          "source": "Euromonitor / Statista 2024"
+        },
+        "certification_retail_premium_pct": {
+          "value": "10-30",
+          "unit": "percent retail price premium for certified products",
+          "source": "Fairtrade / market research estimates"
+        }
+      },
+      "scope1_tco2": null,
+      "scope2_tco2": null,
+      "scope_source": "Not provided — manufacturing and retail emissions require separate data input",
+      "scope_quality": "No data",
+      "water": null,
+      "energy": null,
+      "water_recycling_pct": null,
+      "energy_clean_pct": null
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Cultivation",
+      "transparency": "Low",
+      "transformation": "Biological growth, shade agroforestry"
+    },
+    "1": {
+      "name": "Fermentation and Drying",
+      "transparency": "Low",
+      "transformation": "Biochemical flavor development — BOTTLENECK"
+    },
+    "2": {
+      "name": "Aggregation and Domestic Trading",
+      "transparency": "Medium",
+      "transformation": "Cooperative and LBC aggregation"
+    },
+    "3": {
+      "name": "Export and Origin Processing",
+      "transparency": "Medium",
+      "transformation": "Port export or origin grinding"
+    },
+    "4": {
+      "name": "Oceanic Shipping",
+      "transparency": "High",
+      "transformation": "Maritime bulk transport"
+    },
+    "5": {
+      "name": "Destination Processing",
+      "transparency": "High",
+      "transformation": "Industrial grinding and refining"
+    },
+    "6": {
+      "name": "Manufacturing and Retail",
+      "transparency": "Low",
+      "transformation": "Brand capture — secondary bottleneck"
+    }
+  },
+  "system": {
+    "balance": 89.2,
+    "average_N": 217,
+    "bottleneck_phase_ids": [1, 6],
+    "bottleneck_count": 2,
+    "phases_count": 7,
+    "interpretation": "The global cocoa supply chain is structurally divided into two distinct failure modes. Phase 1 (Fermentation/Drying, balance 76.5%) is the primary and most severe bottleneck: the most critical quality-determining transformation in the chain happens at farm level with no process standardization, no chain-of-custody documentation, and high child labor risk. Sustainability certifications cannot validate practices at this phase because no measurement infrastructure exists. Phase 6 (Manufacturing/Retail, balance 80.2%) is the secondary bottleneck: a 1:6 farm-to-retail price ratio with only USD 200/mt Fairtrade premium reaching farmers demonstrates that brand-layer value capture is structurally decoupled from origin welfare. Phases 2-5 perform well (93.8-95.2%) anchored by the Ivory Coast CCC system, maritime bill-of-lading documentation, and world-class Amsterdam grinding infrastructure. The structural intervention point for sustainability-linked bonds is Phase 1: CLMRS enrollment rates, geolocation polygon coverage, and deforestation-free area certification are measurable KPIs that directly address the root cause."
+  },
+  "_source_index": {
+    "1": "ICCO — International Cocoa Organization Quarterly Bulletin of Cocoa Statistics — icco.org/statistics/",
+    "2": "World Cocoa Foundation — Cocoa Market Update 2024 — worldcocoafoundation.org",
+    "3": "Barry Callebaut Annual Report 2024 — barry-callebaut.com/en/investors/annual-report",
+    "4": "Conseil Cafe-Cacao (CCC) — conseilcafecacao.ci/",
+    "5": "IDH — Cocoa Barometer 2022 — cocoabarometer.org",
+    "6": "Mighty Earth Cocoa Scorecard 2023 — mightyearth.org/cocoa-scorecard/",
+    "7": "EU EUDR — Regulation 2023/1115 — environment.ec.europa.eu",
+    "8": "Fairtrade International Cocoa 2023 Monitoring Report — fairtrade.net/issue/cocoa",
+    "9": "Cargill Cocoa Promise Annual Report 2023 — cargill.com/sustainability/cocoa",
+    "10": "Port of Rotterdam Authority — portofrotterdam.com/en/news-and-press-releases/commodities-handled"
+  }
+}

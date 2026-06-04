@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ecological Return Chain — Olive Oil TVPCI-R Analysis</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #3d5016 0%, #2a3810 100%);
+    min-height: 100vh; padding: 20px; color: #333;
+}
+.page {
+    max-width: 1300px; margin: 0 auto;
+    background: #f5f9e8; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.header {
+    background: linear-gradient(135deg, #3d5016 0%, #6b8c2a 100%);
+    color: white; padding: 20px 30px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+.header-left p  { font-size: 12px; color: #c5e077; margin-top: 4px; }
+.nav-link { color: #c5e077; text-decoration: none; margin-left: 20px; font-size: 13px; }
+.nav-link:hover { color: #fff; }
+.provisional-banner {
+    background: #fff3cd; border-left: 4px solid #ffc107;
+    padding: 12px 30px; font-size: 13px; color: #856404;
+    display: flex; align-items: center; gap: 10px;
+}
+.concept-panel {
+    background: white; margin: 24px; border-radius: 10px;
+    padding: 28px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #6b8c2a;
+}
+.concept-panel h2 { font-size: 18px; color: #3d5016; margin-bottom: 12px; font-weight: 600; }
+.concept-panel p  { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 10px; }
+.role-row { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.role-card {
+    flex: 1; min-width: 180px; background: #f5f9e8;
+    border: 1px solid #c5dfa0; border-radius: 8px;
+    padding: 14px 16px; text-align: center;
+}
+.role-card .role-label  { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 4px; }
+.role-card .role-var    { font-size: 22px; font-weight: 700; color: #3d5016; }
+.role-card .role-name   { font-size: 13px; color: #555; margin-top: 4px; }
+.role-card .role-desc   { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4; }
+.kpi-section {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; padding: 0 24px 24px;
+}
+.kpi-card {
+    background: white; border-radius: 10px; padding: 22px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.kpi-card .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 6px; }
+.kpi-card .kpi-value { font-size: 42px; font-weight: 200; color: #2c3e50; line-height: 1; }
+.kpi-card .kpi-sub   { font-size: 12px; color: #888; margin-top: 6px; }
+.kpi-card .kpi-bar-bg { height: 6px; background: #e9ecef; border-radius: 3px; margin-top: 12px; }
+.kpi-card .kpi-bar    { height: 6px; border-radius: 3px; }
+.kpi-card .kpi-zone   { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.kpi-card.tvpci-card   { border-top: 4px solid #6b8c2a; }
+.kpi-card.tvpcir-card  { border-top: 4px solid #28a745; }
+.kpi-card.bchain-card  { border-top: 4px solid #c9922a; }
+.delta-section {
+    margin: 0 24px 24px; background: white; border-radius: 10px;
+    padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.delta-section h3 { font-size: 14px; color: #2c3e50; margin-bottom: 12px; font-weight: 600; }
+.delta-track   { height: 24px; background: #e9ecef; border-radius: 12px; position: relative; margin-top: 8px; }
+.delta-center  { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: #adb5bd; }
+.delta-fill    { height: 100%; border-radius: 12px; position: absolute; top: 0; }
+.delta-labels  { display: flex; justify-content: space-between; font-size: 11px; color: #888; margin-top: 4px; }
+.delta-value-label { text-align: center; font-size: 13px; font-weight: 600; margin-top: 8px; }
+.section-header {
+    padding: 12px 24px 8px; font-size: 16px; font-weight: 600; color: #3d5016;
+    border-bottom: 2px solid #e9ecef; margin: 0 24px 16px;
+}
+.phase-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 16px; padding: 0 24px 24px;
+}
+.phase-r-card {
+    background: white; border-radius: 10px; padding: 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.phase-r-card .pr-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+.phase-r-card .pr-name   { font-size: 12px; font-weight: 600; color: #2c3e50; }
+.phase-r-card .pr-omega  { font-size: 11px; color: #888; }
+.phase-r-card .pr-score  { font-size: 36px; font-weight: 200; text-align: center; margin: 8px 0 2px; }
+.phase-r-card .pr-score-label { font-size: 10px; color: #888; text-align: center; margin-bottom: 8px; }
+.phase-r-card .pr-waste  { font-size: 10px; color: #666; margin-top: 8px; line-height: 1.4; border-top: 1px solid #e9ecef; padding-top: 8px; }
+.zone-coherent { color: #28a745; }
+.zone-stressed  { color: #17a2b8; }
+.zone-failure   { color: #ffc107; }
+.zone-breakdown { color: #dc3545; }
+.bg-coherent { background: #d4edda; border-radius: 4px; padding: 2px 6px; }
+.bg-stressed  { background: #d1ecf1; border-radius: 4px; padding: 2px 6px; }
+.bg-failure   { background: #fff3cd; border-radius: 4px; padding: 2px 6px; }
+.bg-breakdown { background: #f8d7da; border-radius: 4px; padding: 2px 6px; }
+.waste-table-section {
+    margin: 0 24px 24px; background: white; border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden;
+}
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: #e8f0d0; color: #3d5016; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; text-align: left; }
+td { padding: 10px 14px; border-bottom: 1px solid #e8f0d0; color: #495057; vertical-align: top; }
+tr:nth-child(even) td { background: #fafcf5; }
+.page-footer {
+    background: #3d5016; color: #c5e077;
+    padding: 16px 30px; font-size: 12px; line-height: 1.6;
+}
+@media (max-width: 700px) {
+    .kpi-section { grid-template-columns: 1fr; }
+    .phase-grid  { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+    <div class="header-left">
+        <h1>🫒 Olive Oil — Ecological Return Chain (TVPCI-R)</h1>
+        <p>Phase-resolved waste, byproduct, and circular-economy return scoring alongside the primary custody chain</p>
+    </div>
+    <nav>
+        <a class="nav-link" href="index.html">Supply Chain Hub</a>
+        <a class="nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav-link" href="../index.html">Olive Oil Hub</a>
+    </nav>
+</div>
+
+<div class="provisional-banner">
+    <strong>PROVISIONAL DATA</strong> — All R_p scores and omega_p weights are synthetic baselines derived from published aggregate data
+    (oliveoilsfromspain.org; CaixaBank Research 2022; Bottega del Sarto 2025; IOC definitions). Phase-resolved lifecycle assessment (LCA)
+    calibration is required before operational use.
+</div>
+
+<div class="concept-panel">
+    <h2>What is TVPCI-R?</h2>
+    <p>
+        Every supply chain phase generates outputs beyond the finished product: alperujo (wet olive paste), vegetation water
+        (alpechin), pruning biomass, packaging glass, flexibag residues, and consumer containers. These streams flow back
+        to the parent system — the ecosystem, soil, atmosphere, and commons that enabled the chain.
+        TVPCI-R scores how observable and accountable each phase's ecological return is, using the same three-role
+        structure (N, D, C) as the primary custody chain.
+    </p>
+    <p>
+        <strong>Note on scope:</strong> The TVPCI (TrueValue Physical Custody Index) is a comprehensive framework encompassing
+        living wage measurement, provenance integrity, custody transparency across all chain phases, and environmental
+        accounting. The recycling/return chain analysis here represents one application of the TVPCI — the ecological
+        return and waste valorisation dimension. It does not represent the full TVPCI. For the complete definition, see the
+        TrueValue Analytics website front page.
+    </p>
+    <p>
+        The primary chain (TVPCI) <strong>defines</strong> what was extracted and claimed — it is the bounding, forward
+        structure (role D at the chain level). The return chain (TVPCI-R) <strong>contributes</strong> that material back,
+        closing the loop to the parent holon (a holon is any entity that is simultaneously a whole in itself and a part of a
+        larger system — here each phase is a holon, and the full chain is also a holon within the broader food system and
+        ecosystem). The balance between them produces an emergent negotiated state (B_chain, role N) measuring how equitably
+        the chain balances extraction against return.
+        <strong>Olive oil structural finding:</strong> Phase 2 (Milling) has the highest return accountability (alperujo
+        recovery is well-established); Phase 1 (Harvesting) and Phase 5 (Packaging) are the weakest return phases.
+    </p>
+    <div class="role-row">
+        <div class="role-card">
+            <div class="role-label">Chain-level D</div>
+            <div class="role-var">TVPCI</div>
+            <div class="role-name">Primary custody chain</div>
+            <div class="role-desc">Bounding, defining forward structure. What was extracted, claimed, and commercialised from grove to global market. The TVPCI encompasses custody transparency, provenance integrity, living wage compliance, and environmental accounting across all phases.</div>
+        </div>
+        <div class="role-card">
+            <div class="role-label">Chain-level C</div>
+            <div class="role-var">TVPCI-R</div>
+            <div class="role-name">Ecological return chain</div>
+            <div class="role-desc">Integrating, returning ecological flow. Alperujo, alpechin, pruning biomass, packaging return, and soil inputs given back to parent system.</div>
+        </div>
+        <div class="role-card">
+            <div class="role-label">Emergent N</div>
+            <div class="role-var">B<sub style="font-size:14px">chain</sub></div>
+            <div class="role-name">Negotiated holon state</div>
+            <div class="role-desc">Balance between extraction and return. High when the chain is as accountable for what it gives back as for what it takes from Andalusian groves.</div>
+        </div>
+    </div>
+</div>
+
+<!-- KPI cards -->
+<div class="kpi-section">
+    <div class="kpi-card tvpci-card">
+        <div class="kpi-label">TVPCI — Forward Custody (D role)</div>
+        <div class="kpi-value">89.1</div>
+        <div class="kpi-sub">Primary chain average balance (8 phases)</div>
+        <div class="kpi-bar-bg"><div class="kpi-bar" style="width:89.1%;background:linear-gradient(90deg,#3d5016,#6b8c2a)"></div></div>
+        <div class="kpi-zone zone-coherent">Coherent</div>
+    </div>
+    <div class="kpi-card tvpcir-card">
+        <div class="kpi-label">TVPCI-R — Ecological Return (C role)</div>
+        <div class="kpi-value">62.2</div>
+        <div class="kpi-sub">Recycling chain weighted score (8 phases, provisional)</div>
+        <div class="kpi-bar-bg"><div class="kpi-bar" style="width:62.2%;background:linear-gradient(90deg,#1a6b2d,#28a745)"></div></div>
+        <div class="kpi-zone zone-stressed">Stressed (near failure floor 61.8)</div>
+    </div>
+    <div class="kpi-card bchain-card">
+        <div class="kpi-label">B_chain — Emergent Holon State (N role)</div>
+        <div class="kpi-value">54.7</div>
+        <div class="kpi-sub">Balance between forward custody and ecological return</div>
+        <div class="kpi-bar-bg"><div class="kpi-bar" style="width:54.7%;background:linear-gradient(90deg,#7a5c00,#c9922a)"></div></div>
+        <div class="kpi-zone zone-failure">Failure zone (below phi threshold 61.8)</div>
+    </div>
+</div>
+
+<!-- Delta bar -->
+<div class="delta-section">
+    <h3>Delta_chain = TVPCI − TVPCI-R = +26.9 (signed imbalance diagnostic)</h3>
+    <div class="delta-track">
+        <div class="delta-center"></div>
+        <!-- Delta = +26.9: fills right from center, 26.9/100 * 50% = 13.45% -->
+        <div class="delta-fill" style="left:50%;width:13.5%;background:linear-gradient(90deg,#ffc107,#dc3545)"></div>
+    </div>
+    <div class="delta-labels">
+        <span>Over-returning (TVPCI-R &gt; TVPCI)</span>
+        <span>Balanced</span>
+        <span>Over-extracting (TVPCI &gt; TVPCI-R)</span>
+    </div>
+    <div class="delta-value-label" style="color:#856404">
+        Delta_chain = +26.9 — Over-extracting: forward custody chain transparency (89.1) significantly
+        exceeds ecological return accountability (62.2). Spain's alperujo recovery is a strength, but
+        packaging return, vegetation water treatment, and agricultural waste accounting are underdeveloped.
+    </div>
+</div>
+
+<!-- Per-phase recycling cards -->
+<div class="section-header">Per-Phase Recycling Scores (R_p) — 8 Phases</div>
+<div class="phase-grid">
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 0: Cultivation</div>
+            <div class="pr-omega">ω=12%</div>
+        </div>
+        <div class="pr-score zone-failure">45.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-failure">Failure zone</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams:</strong> Pruning biomass (~1t/ha; often burned); pesticide/herbicide runoff;
+            irrigation drainage; soil amendment (some compost return from alperujo). Limited formal circular
+            accounting. CAP agri-environment measures partially incentivise cover crops and mulching but compliance varies.
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 1: Harvesting</div>
+            <div class="pr-omega">ω=8%</div>
+        </div>
+        <div class="pr-score zone-breakdown">35.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-breakdown">Breakdown zone</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams:</strong> Leaf and branch waste from vibradoras (mechanically detached
+            foliage); equipment washing water; oil contaminated with soil. Very limited formal recovery
+            pathway for harvesting residues. Leaves can be composted but rarely are systematically.
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 2: Milling</div>
+            <div class="pr-omega">ω=32%</div>
+        </div>
+        <div class="pr-score zone-coherent">72.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-coherent">Coherent</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams (highest weight):</strong> Alperujo ~0.8t/t olives (partially recovered
+            — Phase 3); vegetation water (alpechin): 0.5–1.5 L/kg olives (highly polluting,
+            BOD ~100g/L; partial land spreading); olive leaves ~60 kg/t olives (emerging
+            biomass use). Spain world leader in alperujo recovery (Professional Organization 2016).
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 3: Waste/Byproduct Recovery</div>
+            <div class="pr-omega">ω=10%</div>
+        </div>
+        <div class="pr-score zone-coherent">92.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-coherent">Coherent (highest R_p)</span></div>
+        <div class="pr-waste">
+            <strong>This phase IS the return chain:</strong> Pomace oil extraction; alperujo composting for
+            soil; biomass energy generation; animal feed. Spain Professional Organization recognized 2016.
+            Circular economy integration is the primary function of this phase. R_p high by design.
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 4: Storage</div>
+            <div class="pr-omega">ω=8%</div>
+        </div>
+        <div class="pr-score zone-stressed">65.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-stressed">Stressed</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams:</strong> CIP cleaning water with residual oil and surfactants;
+            nitrogen gas release (nitrogen-blanket system); minor oil residues during tank drainage.
+            Dcoop (world's largest facility 300K MT) has professional waste management; smaller storers
+            less accountable. Traceability of tank residues not publicly reported.
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 5: Packaging</div>
+            <div class="pr-omega">ω=14%</div>
+        </div>
+        <div class="pr-score zone-failure">48.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-failure">Failure zone</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams:</strong> Glass bottles (Spain national glass recycling rate ~72% but
+            olive oil specific labeling complicates food-grade recycling); PET containers (lower recycling);
+            label waste; cardboard; oil residues in used bottles. Fragmented 1,500 bottlers means no
+            coordinated end-of-life packaging standard for Spanish olive oil.
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 6: Logistics</div>
+            <div class="pr-omega">ω=8%</div>
+        </div>
+        <div class="pr-score zone-stressed">55.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-stressed">Stressed</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams:</strong> MSC flexibags: largely single-use (24,000L capacity);
+            Rubino RS intermodal tanks: reusable and ISO certified (higher R_p contribution);
+            tank washing residuals (oily water); shipping emissions not offset. Mixed performance:
+            reusable tank operators (Rubino RS) significantly better than single-use flexibag operators.
+        </div>
+    </div>
+
+    <div class="phase-r-card">
+        <div class="pr-header">
+            <div class="pr-name">Phase 7: Trade</div>
+            <div class="pr-omega">ω=8%</div>
+        </div>
+        <div class="pr-score zone-stressed">68.0</div>
+        <div class="pr-score-label">R_p — <span class="bg-stressed">Stressed</span></div>
+        <div class="pr-waste">
+            <strong>Key waste streams:</strong> Consumer glass bottles (EU glass recycling ~76% on average;
+            varies by country); used cooking oil (Spain UCO collection growing via AENOR certified
+            collectors; partly biofuel feedstock); consumer residual oil disposal. Italy rebranding
+            of Spanish oil reduces traceability of container return to origin producer.
+        </div>
+    </div>
+
+</div>
+
+<!-- Waste streams table -->
+<div class="section-header">Olive Oil Waste Stream Summary</div>
+<div class="waste-table-section">
+    <table>
+        <tr>
+            <th>Phase</th><th>Primary Waste Stream</th><th>Volume / Intensity</th>
+            <th>Current Disposal / Recovery</th><th>Recovery Potential</th><th>R_p</th>
+        </tr>
+        <tr>
+            <td>0 — Cultivation</td>
+            <td>Pruning biomass, pesticide runoff, irrigation drainage</td>
+            <td>~1t pruning/ha/year; runoff varies by grove type</td>
+            <td>Often burned (biomass) or left in situ; limited formal recovery accounting</td>
+            <td>Pruning biomass to energy/compost; cover cropping; precision irrigation</td>
+            <td style="color:#ffc107"><strong>45.0</strong></td>
+        </tr>
+        <tr>
+            <td>1 — Harvesting</td>
+            <td>Leaf/branch detachment from vibradoras, equipment washing</td>
+            <td>~60 kg leaves per tonne olives</td>
+            <td>Leaves typically left on ground or burned; minimal systematic composting</td>
+            <td>Olive leaves to herbal extract / compost / animal feed (emerging market)</td>
+            <td style="color:#dc3545"><strong>35.0</strong></td>
+        </tr>
+        <tr>
+            <td>2 — Milling</td>
+            <td>Alperujo (wet paste), alpechin (vegetation water), olive leaves</td>
+            <td>~0.8t alperujo/t olives; 0.5-1.5 L alpechin/kg olives</td>
+            <td>Alperujo: partially recovered for pomace oil / compost / biomass. Alpechin: highly toxic (BOD ~100g/L), requires treatment before land spreading or discharge</td>
+            <td>Spain world leader in alperujo recovery. Alpechin biogas and composting at scale possible. Highest impact waste stream.</td>
+            <td style="color:#28a745"><strong>72.0</strong></td>
+        </tr>
+        <tr>
+            <td>3 — Waste/Byproduct Recovery</td>
+            <td>This phase IS the circular return pathway</td>
+            <td>N/A (recovery phase)</td>
+            <td>Pomace oil extraction (solvent), composting, biomass energy, animal feed</td>
+            <td>Spain Professional Organization of Olive Pomace Oil (2016). Highest formal circular economy accountability.</td>
+            <td style="color:#28a745"><strong>92.0</strong></td>
+        </tr>
+        <tr>
+            <td>4 — Storage</td>
+            <td>CIP cleaning water, nitrogen gas, minor oil residues</td>
+            <td>Low volume; Dcoop has professional management</td>
+            <td>CIP water treated; nitrogen vented; residual oil limited</td>
+            <td>Closed-loop CIP water recycling achievable; N2 recapture possible at scale</td>
+            <td style="color:#17a2b8"><strong>65.0</strong></td>
+        </tr>
+        <tr>
+            <td>5 — Packaging</td>
+            <td>Glass bottles, PET containers, label waste, oil residues</td>
+            <td>Glass: main container type; Spain national glass recycling ~72%</td>
+            <td>National glass recycling via ECOEMBES system; food-grade olive oil bottles lower rate due to contamination</td>
+            <td>Extended producer responsibility (EPR) scheme for olive oil sector; deposit-return system; lighter glass specification</td>
+            <td style="color:#ffc107"><strong>48.0</strong></td>
+        </tr>
+        <tr>
+            <td>6 — Logistics</td>
+            <td>Flexibag single-use containers, tank wash residuals, bunker emissions</td>
+            <td>MSC flexibag 24,000L single-use; Rubino RS tanks reusable</td>
+            <td>Flexibags largely landfilled; Rubino RS ISO 9001/14001 certified; shipping emissions unaccounted</td>
+            <td>Shift from flexibag to reusable tank containers; IMO 2050 decarbonisation; biofuel blending</td>
+            <td style="color:#17a2b8"><strong>55.0</strong></td>
+        </tr>
+        <tr>
+            <td>7 — Trade</td>
+            <td>Consumer glass, used cooking oil (UCO)</td>
+            <td>EU glass recycling avg ~76%; UCO collection growing</td>
+            <td>EU glass recycling infrastructure; Spain UCO collection network (AENOR certified); biofuel feedstock</td>
+            <td>UCO to FAME biodiesel / SAF; consumer education; deposit-return bottle schemes in Spain/EU</td>
+            <td style="color:#17a2b8"><strong>68.0</strong></td>
+        </tr>
+    </table>
+</div>
+
+<!-- Circular economy opportunities -->
+<div class="section-header">Priority Circular Economy Interventions</div>
+<div style="margin:0 24px 24px;background:white;border-radius:10px;padding:24px 28px;box-shadow:0 2px 8px rgba(0,0,0,0.08)">
+    <table>
+        <tr>
+            <th>Priority</th><th>Phase</th><th>Intervention</th><th>Impact on R_p</th><th>Bond / Finance Link</th>
+        </tr>
+        <tr>
+            <td><strong>1</strong></td>
+            <td>Phase 2 — Milling</td>
+            <td>Alpechin (vegetation water) biogas capture and composting at scale. Estimated 80,000+ tonnes BOD load per year across 1,755 mills.</td>
+            <td>+10 to +18 pts (72 → 82-90)</td>
+            <td>Green bond use of proceeds: biogas infrastructure at cooperative mills. Eligible under EU Taxonomy 5.4 (biological treatment of bio-waste).</td>
+        </tr>
+        <tr>
+            <td><strong>2</strong></td>
+            <td>Phase 5 — Packaging</td>
+            <td>Extended Producer Responsibility (EPR) scheme specific to olive oil glass. Deposit-return or coordinated collection via Spanish olive oil sector body.</td>
+            <td>+15 to +22 pts (48 → 63-70)</td>
+            <td>SLB KPI: share of bottles entering EPR-certified recovery. Ties directly to Phase 5 bottleneck (brand development requires accountability at packaging level).</td>
+        </tr>
+        <tr>
+            <td><strong>3</strong></td>
+            <td>Phase 1 — Harvesting</td>
+            <td>Olive leaf valorisation: leaves to polyphenol extract (emerging cosmetic/pharma market) or compost. Requires pre-sorting at mill intake.</td>
+            <td>+20 to +30 pts (35 → 55-65)</td>
+            <td>Social bond: small/medium farm income diversification. Leaf extract market EUR 50-200/kg polyphenols (EFSA-approved antioxidant source).</td>
+        </tr>
+        <tr>
+            <td><strong>4</strong></td>
+            <td>Phase 0 — Cultivation</td>
+            <td>Pruning biomass to pellets for cooperative mill heating (replacing diesel); cover crop programme for soil carbon sequestration.</td>
+            <td>+10 to +15 pts (45 → 55-60)</td>
+            <td>Climate bond: Scope 1 mill emissions reduction. CAP agri-environment payment linkage.</td>
+        </tr>
+    </table>
+</div>
+
+<div class="page-footer">
+    TVPCI-R Ecological Return Chain — Olive Oil. Data provisional (oliveoilsfromspain.org; CaixaBank Research 2022; IOC definitions; Bottega del Sarto 2025). TVPCI=89.1; TVPCI-R=62.2 (ω-weighted R_p average); B_chain=54.7; Delta_chain=+26.9 (over-extracting).
+    Formula: B_r = 100 × exp(−2 × |D_r − C_r| / max(D_r, C_r)); TVPCI_R = Σ(ω_p × R_p); B_chain = 100 × exp(−2 × |TVPCI − TVPCI_R| / max(TVPCI, TVPCI_R)).
+    Role assignment: TVPCI=D, TVPCI_R=C, B_chain=N at chain level.
+    <br>Navigation: <a class="nav-link" href="index.html">Supply Chain</a> · <a class="nav-link" href="dashboard.html">Dashboard</a> · <a class="nav-link" href="../index.html">Olive Oil Hub</a> · <a class="nav-link" href="../../../../index.html">Homepage</a>
+</div>
+
+</div><!-- /.page -->
+</body>
+</html>

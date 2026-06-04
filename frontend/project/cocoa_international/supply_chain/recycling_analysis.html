@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Ecological Return Chain — Cocoa International TVPCI-R Analysis</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #3a1f0d 0%, #2a1208 100%);
+    min-height: 100vh; padding: 20px; color: #333;
+}
+.page {
+    max-width: 1300px; margin: 0 auto;
+    background: #fdf4ec; border-radius: 12px; overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+.header {
+    background: linear-gradient(135deg, #3a1f0d 0%, #5c3317 100%);
+    color: white; padding: 20px 30px;
+    display: flex; justify-content: space-between; align-items: center;
+}
+.header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+.header-left p  { font-size: 12px; color: #c8a26e; margin-top: 4px; }
+.nav-link { color: #c8a26e; text-decoration: none; margin-left: 20px; font-size: 13px; }
+.nav-link:hover { color: #fff; }
+.provisional-banner {
+    background: #fff3cd; border-left: 4px solid #ffc107;
+    padding: 12px 30px; font-size: 13px; color: #856404;
+    display: flex; align-items: center; gap: 10px;
+}
+.concept-panel {
+    background: white; margin: 24px; border-radius: 10px;
+    padding: 28px 32px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    border-left: 4px solid #5c3317;
+}
+.concept-panel h2 { font-size: 18px; color: #3a1f0d; margin-bottom: 12px; font-weight: 600; }
+.concept-panel p  { font-size: 14px; line-height: 1.7; color: #555; margin-bottom: 10px; }
+.role-row { display: flex; gap: 16px; margin-top: 16px; flex-wrap: wrap; }
+.role-card {
+    flex: 1; min-width: 180px; background: #fdf4ec;
+    border: 1px solid #d4b896; border-radius: 8px;
+    padding: 14px 16px; text-align: center;
+}
+.role-card .role-label  { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 4px; }
+.role-card .role-var    { font-size: 22px; font-weight: 700; color: #3a1f0d; }
+.role-card .role-name   { font-size: 13px; color: #555; margin-top: 4px; }
+.role-card .role-desc   { font-size: 11px; color: #888; margin-top: 6px; line-height: 1.4; }
+.kpi-section {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px; padding: 0 24px 24px;
+}
+.kpi-card {
+    background: white; border-radius: 10px; padding: 22px 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.kpi-card .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 6px; }
+.kpi-card .kpi-value { font-size: 42px; font-weight: 200; color: #2c3e50; line-height: 1; }
+.kpi-card .kpi-sub   { font-size: 12px; color: #888; margin-top: 6px; }
+.kpi-card .kpi-bar-bg { height: 6px; background: #e9ecef; border-radius: 3px; margin-top: 12px; }
+.kpi-card .kpi-bar    { height: 6px; border-radius: 3px; }
+.kpi-card .kpi-zone   { font-size: 11px; font-weight: 600; margin-top: 6px; }
+.kpi-card.tvpci-card   { border-top: 4px solid #5c3317; }
+.kpi-card.tvpcir-card  { border-top: 4px solid #28a745; }
+.kpi-card.bchain-card  { border-top: 4px solid #c9922a; }
+.delta-section {
+    margin: 0 24px 24px; background: white; border-radius: 10px;
+    padding: 20px 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.delta-section h3 { font-size: 14px; color: #2c3e50; margin-bottom: 12px; font-weight: 600; }
+.delta-track   { height: 24px; background: #e9ecef; border-radius: 12px; position: relative; margin-top: 8px; }
+.delta-center  { position: absolute; left: 50%; top: 0; width: 2px; height: 100%; background: #adb5bd; }
+.delta-fill    { height: 100%; border-radius: 12px; position: absolute; top: 0; }
+.delta-labels  { display: flex; justify-content: space-between; font-size: 11px; color: #888; margin-top: 4px; }
+.delta-value-label { text-align: center; font-size: 13px; font-weight: 600; margin-top: 8px; }
+.section-header {
+    padding: 12px 24px 8px; font-size: 16px; font-weight: 600; color: #3a1f0d;
+    border-bottom: 2px solid #e9ecef; margin: 0 24px 16px;
+}
+.phase-cards { padding: 0 24px 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+@media (max-width: 900px) { .phase-cards { grid-template-columns: repeat(2, 1fr); } }
+.rp-card {
+    background: white; border-radius: 10px; padding: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08); border-top: 3px solid #dee2e6;
+}
+.rp-card.coherent   { border-top-color: #28a745; }
+.rp-card.stressed   { border-top-color: #ffc107; }
+.rp-card.failure    { border-top-color: #fd7e14; }
+.rp-card.breakdown  { border-top-color: #dc3545; }
+.rp-phase { font-size: 11px; text-transform: uppercase; letter-spacing: 1px; color: #6c757d; margin-bottom: 6px; }
+.rp-name  { font-size: 14px; font-weight: 600; color: #2c3e50; margin-bottom: 8px; }
+.rp-score { font-size: 32px; font-weight: 700; margin-bottom: 4px; }
+.rp-card.coherent  .rp-score { color: #28a745; }
+.rp-card.stressed  .rp-score { color: #ffc107; }
+.rp-card.failure   .rp-score { color: #fd7e14; }
+.rp-card.breakdown .rp-score { color: #dc3545; }
+.rp-zone    { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+.rp-omega   { font-size: 12px; color: #6c757d; margin-bottom: 6px; }
+.rp-desc    { font-size: 11px; color: #666; line-height: 1.4; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { background: #f5e6d8; color: #3a1f0d; font-weight: 700; font-size: 11px;
+     text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 14px; text-align: left; }
+td { padding: 10px 14px; border-bottom: 1px solid #f0f0f0; }
+tr:hover td { background: #fdf9f6; }
+.waste-section, .intervention-section {
+    margin: 0 24px 24px; background: white; border-radius: 10px;
+    padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+.waste-section h3, .intervention-section h3 {
+    font-size: 14px; font-weight: 700; color: #3a1f0d; margin-bottom: 14px;
+}
+.nav-bottom { text-align: center; padding: 20px; border-top: 2px solid #e9ecef; }
+.nav-bottom a { color: #5c3317; text-decoration: none; font-weight: 600; margin: 0 12px; font-size: 13px; }
+.nav-bottom a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="header-left">
+      <h1>♻️ Ecological Return Chain — Cocoa International TVPCI-R</h1>
+      <p>Waste streams, pod husk recovery, shell-to-energy, and circular economy flows across 7 phases</p>
+    </div>
+    <div>
+      <a class="nav-link" href="../index.html">Hub</a>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="project_context.html">Context</a>
+      <a class="nav-link" href="../../../../index.html">Homepage</a>
+    </div>
+  </div>
+
+  <div class="provisional-banner">
+    ⚠️ <strong>PROVISIONAL:</strong> All TVPCI-R scores are provisional baselines. No phase-resolved LCA data is available for cocoa. Scores are derived from publicly available waste-stream descriptions and analog commodity LCA literature. These figures should be replaced with verified data as LCA studies become available.
+  </div>
+
+  <div class="concept-panel">
+    <h2>Tholonic N-D-C: Ecological Return Chain Framework</h2>
+    <p>
+      The primary TVPCI chain measures forward flow: how efficiently constraints (D) and contributions (C)
+      balance to create equilibrium (N) at each phase. The Ecological Return Chain (TVPCI-R) applies the
+      same framework to the reverse: how well each phase recovers, recycles, or regenerates waste into
+      system inputs, closing the loop.
+    </p>
+    <p>
+      <strong>Note on scope:</strong> The TVPCI (TrueValue Physical Custody Index) is a comprehensive framework encompassing
+      living wage measurement, provenance integrity, custody transparency across all chain phases, and environmental
+      accounting. The recycling/return chain analysis here represents one application of the TVPCI — the ecological
+      return and waste valorisation dimension. It does not represent the full TVPCI. For the complete definition, see the
+      TrueValue Analytics website front page.
+    </p>
+    <p>
+      Cocoa generates substantial waste at every phase. The most significant by volume is cocoa pod husks
+      at the farm level: approximately 10 kg of pod husk is generated for every 1 kg of dry cocoa beans.
+      In Ivory Coast alone, this represents approximately 22 million tonnes of pod husk per year, of which
+      the vast majority is burned in place or left to decompose. Cocoa shell at destination processing
+      adds another 10-12% of bean weight as a byproduct. These waste streams are largely unrecovered.
+    </p>
+    <div class="role-row">
+      <div class="role-card">
+        <div class="role-label">D role</div>
+        <div class="role-var">TVPCI</div>
+        <div class="role-name">Primary Chain</div>
+        <div class="role-desc">Forward supply chain: farm to retail. Balance 89.2%. The TVPCI encompasses custody transparency, provenance integrity, living wage compliance, and environmental accounting across all phases.</div>
+      </div>
+      <div class="role-card">
+        <div class="role-label">C role</div>
+        <div class="role-var">TVPCI-R</div>
+        <div class="role-name">Return Chain</div>
+        <div class="role-desc">Ecological return: waste recovery, byproduct valorization, circular flows. Score 46.0. Failure zone. Pod husks dominate.</div>
+      </div>
+      <div class="role-card">
+        <div class="role-label">N role</div>
+        <div class="role-var">B_chain</div>
+        <div class="role-name">Holon Balance</div>
+        <div class="role-desc">Composite balance of forward and return chains. Score 37.9 (breakdown zone). Cocoa's circular economy is structurally underdeveloped.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-section">
+    <div class="kpi-card tvpci-card">
+      <div class="kpi-label">TVPCI — Primary Chain</div>
+      <div class="kpi-value">89.2</div>
+      <div class="kpi-sub">Chain average balance (phases 0-6)</div>
+      <div class="kpi-bar-bg"><div class="kpi-bar" style="width:89.2%;background:#5c3317;"></div></div>
+      <div class="kpi-zone" style="color:#5c3317;">Good — Phase 1 bottleneck at 76.5%</div>
+    </div>
+    <div class="kpi-card tvpcir-card">
+      <div class="kpi-label">TVPCI-R — Return Chain (PROVISIONAL)</div>
+      <div class="kpi-value">46.0</div>
+      <div class="kpi-sub">Weighted R_p score across 7 phases</div>
+      <div class="kpi-bar-bg"><div class="kpi-bar" style="width:46%;background:#28a745;"></div></div>
+      <div class="kpi-zone" style="color:#fd7e14;">Failure zone (38.2 to 61.8)</div>
+    </div>
+    <div class="kpi-card bchain-card">
+      <div class="kpi-label">B_chain — Holon Balance</div>
+      <div class="kpi-value">37.9</div>
+      <div class="kpi-sub">100 × exp(−2 × |89.2−46.0| / 89.2)</div>
+      <div class="kpi-bar-bg"><div class="kpi-bar" style="width:37.9%;background:#c9922a;"></div></div>
+      <div class="kpi-zone" style="color:#dc3545;">Breakdown zone (&lt; 38.2). Cocoa circular economy is structurally undeveloped.</div>
+    </div>
+  </div>
+
+  <div class="delta-section">
+    <h3>Delta_chain = TVPCI − TVPCI-R = 89.2 − 46.0 = +43.2</h3>
+    <div class="delta-track">
+      <div class="delta-center"></div>
+      <div class="delta-fill" style="left:50%;width:24.2%;background:linear-gradient(90deg,#fd7e14,#dc3545);"></div>
+    </div>
+    <div class="delta-labels">
+      <span>TVPCI-R 0</span>
+      <span>Balanced</span>
+      <span>TVPCI 100</span>
+    </div>
+    <div class="delta-value-label" style="color:#dc3545;">
+      +43.2 imbalance — forward chain far outperforms return chain. Primary cause: pod husk burns and unrecovered shell at origin.
+    </div>
+  </div>
+
+  <div class="section-header">Per-Phase Ecological Return Scores (R_p) — PROVISIONAL</div>
+  <div class="phase-cards">
+    <div class="rp-card breakdown">
+      <div class="rp-phase">Phase 0</div>
+      <div class="rp-name">Cultivation</div>
+      <div class="rp-score">38</div>
+      <div class="rp-zone" style="color:#dc3545;">Breakdown</div>
+      <div class="rp-omega">omega = 0.25 (highest weight)</div>
+      <div class="rp-desc">Pod husks: 10 kg per 1 kg dry beans. Most burned in field or abandoned. Minimal composting programs exist. Some biochar initiatives (IDH, Barry Callebaut) but far below scale. Agricultural residue (leaf litter, shade tree prunings) largely unmanaged.</div>
+    </div>
+    <div class="rp-card breakdown">
+      <div class="rp-phase">Phase 1</div>
+      <div class="rp-name">Fermentation and Drying</div>
+      <div class="rp-score">25</div>
+      <div class="rp-zone" style="color:#dc3545;">Breakdown</div>
+      <div class="rp-omega">omega = 0.15</div>
+      <div class="rp-desc">Fermentation liquid (pulp mucilage, highly acidic, rich in ethanol and organic acids) largely allowed to drain into soil or watercourses. Some small-scale ethanol recovery pilots exist (Ghana). No systematic recovery infrastructure at farm or cooperative level.</div>
+    </div>
+    <div class="rp-card failure">
+      <div class="rp-phase">Phase 2</div>
+      <div class="rp-name">Aggregation and Trading</div>
+      <div class="rp-score">45</div>
+      <div class="rp-zone" style="color:#fd7e14;">Failure</div>
+      <div class="rp-omega">omega = 0.08</div>
+      <div class="rp-desc">Jute sack reuse is common practice. Some cooperative-level composting of sweep-up debris. LBC warehouse waste (off-grade beans, broken bags) partially recovered for animal feed. Limited but present.</div>
+    </div>
+    <div class="rp-card failure">
+      <div class="rp-phase">Phase 3</div>
+      <div class="rp-name">Export and Origin Processing</div>
+      <div class="rp-score">52</div>
+      <div class="rp-zone" style="color:#fd7e14;">Failure</div>
+      <div class="rp-omega">omega = 0.12</div>
+      <div class="rp-desc">Origin processors (ADM, Cargill, Olam) in Ivory Coast increasingly use cocoa shell and press cake as boiler fuel for grinding energy. Some shell-to-energy recovery. Port dust and sweep-up managed under environmental permits. Recovery is partial but institutionalized at major plants.</div>
+    </div>
+    <div class="rp-card stressed">
+      <div class="rp-phase">Phase 4</div>
+      <div class="rp-name">Oceanic Shipping</div>
+      <div class="rp-score">72</div>
+      <div class="rp-zone" style="color:#ffc107;">Stressed</div>
+      <div class="rp-omega">omega = 0.05</div>
+      <div class="rp-desc">Shipping emissions are tracked by IMO regulations. Container reuse is standard. Bunker fuel is the primary waste stream (emissions). Transition to LNG/methanol shipping underway at some carriers. Relatively high R_p compared to other phases due to maritime regulatory framework.</div>
+    </div>
+    <div class="rp-card stressed">
+      <div class="rp-phase">Phase 5</div>
+      <div class="rp-name">Destination Processing</div>
+      <div class="rp-score">65</div>
+      <div class="rp-zone" style="color:#ffc107;">Stressed</div>
+      <div class="rp-omega">omega = 0.20</div>
+      <div class="rp-desc">Cocoa shell (10-12% of bean weight) partially recovered as boiler fuel at Amsterdam and Hamburg facilities. Barry Callebaut and Cargill both report shell-to-energy programs. Wastewater treatment systems are standard. Press cake (from butter pressing) is fully valorized as cocoa powder. Better than origin but scale of shell recovery remains partial.</div>
+    </div>
+    <div class="rp-card failure">
+      <div class="rp-phase">Phase 6</div>
+      <div class="rp-name">Manufacturing and Retail</div>
+      <div class="rp-score">42</div>
+      <div class="rp-zone" style="color:#fd7e14;">Failure</div>
+      <div class="rp-omega">omega = 0.15</div>
+      <div class="rp-desc">Packaging waste: chocolate is one of the most heavily packaged food categories. Foil, plastic film, cardboard, and composite materials. Post-consumer chocolate packaging recovery rates are low globally. Expired product waste. Mars and Nestle have packaging sustainability commitments but execution lags. No significant consumer cocoa-product return chain exists.</div>
+    </div>
+  </div>
+
+  <div class="waste-section">
+    <h3>Waste Stream Summary Table</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Primary Waste Stream</th>
+          <th>Volume / Intensity</th>
+          <th>Current Disposal</th>
+          <th>Recovery Potential</th>
+          <th>R_p</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0 — Cultivation</td>
+          <td>Cocoa pod husks</td>
+          <td>~22 Mt/year in Ivory Coast alone (10:1 husk:bean ratio)</td>
+          <td>Burned in field (majority), left to decompose (minority)</td>
+          <td>High: biochar, compost, potash fertilizer, animal feed, biogas substrate</td>
+          <td style="color:#dc3545;font-weight:700;">38</td>
+        </tr>
+        <tr>
+          <td>1 — Fermentation</td>
+          <td>Cocoa pulp liquid (mucilage)</td>
+          <td>~40-50 liters per tonne of wet beans processed</td>
+          <td>Drained to soil / watercourses (highly acidic, pH 3-4)</td>
+          <td>Medium: ethanol distillation, vinegar production, probiotic beverages (pulp drink)</td>
+          <td style="color:#dc3545;font-weight:700;">25</td>
+        </tr>
+        <tr>
+          <td>2 — Aggregation</td>
+          <td>Off-grade and broken beans, jute sack waste</td>
+          <td>Low volume relative to total throughput</td>
+          <td>Jute sacks reused; broken beans to animal feed or local confectionery</td>
+          <td>Low: already partially recovered informally</td>
+          <td style="color:#fd7e14;font-weight:700;">45</td>
+        </tr>
+        <tr>
+          <td>3 — Origin Processing</td>
+          <td>Cocoa shell, press cake dust, wastewater</td>
+          <td>10-12% of bean weight as shell; wastewater from bean washing</td>
+          <td>Shell to boiler fuel at major plants; wastewater to treatment</td>
+          <td>Medium: full shell-to-energy at all origin processors</td>
+          <td style="color:#fd7e14;font-weight:700;">52</td>
+        </tr>
+        <tr>
+          <td>4 — Shipping</td>
+          <td>Bunker fuel emissions, container cleaning waste</td>
+          <td>Low relative to cargo value; CO2 tracked under IMO</td>
+          <td>Atmospheric emission (bunker fuel); cleaning waste to port facilities</td>
+          <td>High: transition to LNG/methanol/green ammonia</td>
+          <td style="color:#ffc107;font-weight:700;">72</td>
+        </tr>
+        <tr>
+          <td>5 — Destination Processing</td>
+          <td>Cocoa shell, press cake (valorized), wastewater</td>
+          <td>Shell: 60,000-72,000 Mt/year at Amsterdam alone (600,000 Mt beans × 10-12%)</td>
+          <td>Shell: partial boiler fuel recovery; press cake fully valorized as powder; wastewater treatment</td>
+          <td>High: full shell-to-energy or shell-to-biogas at all facilities</td>
+          <td style="color:#ffc107;font-weight:700;">65</td>
+        </tr>
+        <tr>
+          <td>6 — Manufacturing/Retail</td>
+          <td>Multi-layer packaging waste (foil, film, cardboard)</td>
+          <td>High intensity per consumer unit; billions of units globally</td>
+          <td>Mixed recycling (low recovery due to multi-layer construction); landfill</td>
+          <td>Medium: mono-material redesign, compostable packaging, return schemes</td>
+          <td style="color:#fd7e14;font-weight:700;">42</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="intervention-section">
+    <h3>Priority Circular Economy Interventions (Bond Candidates)</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Phase</th>
+          <th>Intervention</th>
+          <th>Expected R_p Impact</th>
+          <th>Bond/Finance Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>0 — Cultivation</td>
+          <td>
+            <strong>Pod Husk Biochar and Compost at Cooperative Scale:</strong> Establish centralized pod-processing units at cooperative level to convert pod husks to biochar (soil amendment, carbon sequestration) and compost (replacing synthetic fertilizer). Existing pilots by IDH and Barry Callebaut show 5-8 tonne biochar per hectare potential.
+          </td>
+          <td>R_p 38 to 58+ (failure to stressed zone)</td>
+          <td>Sustainability-linked bond on CLMRS-enrolled farm clusters. Use of proceeds: pod-processing equipment, cooperative infrastructure. KPI: tonnes of pod husk composted or biocharred per enrolled farm per year.</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>5 — Destination Processing</td>
+          <td>
+            <strong>Full Shell-to-Energy or Shell-to-Biogas at Amsterdam/Hamburg:</strong> Upgrade all destination processing facilities to full cocoa-shell recovery. Amsterdam alone generates 60,000-72,000 Mt shell per year. Transition from partial boiler fuel to dedicated biogas anaerobic digestion with grid injection or on-site electricity generation.
+          </td>
+          <td>R_p 65 to 82+ (stressed to coherent)</td>
+          <td>Green bond from Barry Callebaut or Cargill. Use of proceeds: biogas plant capex. KPI: percentage of cocoa shell recovered as energy equivalent. Revenue basis: avoided energy cost and renewable energy certificate value.</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>1 — Fermentation</td>
+          <td>
+            <strong>Pulp Mucilage Recovery for Cocoa Pulp Beverages:</strong> The cocoa pulp liquid (mucilage) extracted during fermentation is naturally sweet (12-16 Brix), acidic, and has distinct flavor characteristics. Several commercial cocoa pulp drink products now exist (Cacaotera, Repurposed, Cacao Joy). Establishing cooperative-level pulp collection infrastructure would create a new revenue stream while reducing waterway contamination.
+          </td>
+          <td>R_p 25 to 45+ (breakdown to failure zone)</td>
+          <td>Value chain bond on pulp-beverage processing cooperatives. Use of proceeds: pulp collection equipment, pasteurization, cold-chain access. KPI: volume of pulp collected per cooperative per season. Revenue basis: cocoa pulp product sales.</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>6 — Manufacturing/Retail</td>
+          <td>
+            <strong>Mono-Material Chocolate Packaging and Extended Producer Responsibility:</strong> Major manufacturers (Mars, Nestle, Mondelez) commit to mono-material or compostable packaging redesign combined with EPR schemes for post-consumer collection. Aligned with EU Packaging and Packaging Waste Regulation (PPWR) requirements entering force 2025-2030.
+          </td>
+          <td>R_p 42 to 60+ (failure to stressed zone)</td>
+          <td>Manufacturer SLB with packaging recyclability rate as performance trigger. Revenue basis: EPR levy avoidance and brand sustainability premium.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="nav-bottom">
+    <a href="../index.html">← Cocoa Hub</a>
+    <a href="index.html">Supply Chain</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="project_context.html">Project Context</a>
+    <a href="../value_chain/index.html">Value Chain</a>
+    <a href="../../../../index.html">Main Homepage</a>
+  </div>
+
+</div>
+</body>
+</html>

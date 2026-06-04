@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Olive Oil — Supply Chain Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #a5d65b; background: rgba(107,140,42,0.2);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 28px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8b949e; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi {
+    background: #161b22; border-radius: 10px; padding: 18px 16px;
+    border-left: 4px solid #6b8c2a;
+  }
+  .kpi.alert-kpi { border-left-color: #c0392b; }
+  .kpi-val { font-size: 26px; font-weight: 800; color: #a5d65b; }
+  .kpi.alert-kpi .kpi-val { color: #f97066; }
+  .kpi-lbl { font-size: 11px; color: #8b949e; margin-top: 4px; }
+  .alert-bar {
+    background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.4);
+    border-left: 5px solid #c0392b;
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+  }
+  .alert-bar h3 { color: #f97066; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .alert-bar p { font-size: 13px; color: #8b949e; line-height: 1.6; }
+  .panel { background: #161b22; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .panel h2 { font-size: 14px; font-weight: 700; color: #a5d65b; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px; }
+  .phase-row { margin-bottom: 14px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .phase-label { font-size: 13px; color: #e6edf3; font-weight: 600; }
+  .phase-scores { font-size: 11px; color: #8b949e; }
+  .phase-scores span { margin-left: 8px; }
+  .bar-bg { background: #21262d; border-radius: 6px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s ease; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; margin-left: 8px;
+    text-transform: uppercase;
+  }
+  .badge.high { background: rgba(63,185,80,0.2); color: #3fb950; }
+  .badge.medium { background: rgba(255,195,0,0.2); color: #ffc300; }
+  .badge.low { background: rgba(249,112,102,0.2); color: #f97066; }
+  .badge.bottleneck { background: rgba(192,57,43,0.3); color: #f97066; border: 1px solid rgba(192,57,43,0.5); }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    background: #21262d; border-radius: 10px; padding: 16px 10px; text-align: center;
+    border: 1px solid rgba(107,140,42,0.3);
+  }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #a5d65b; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #6b8c2a; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; padding: 10px 12px;
+    background: #21262d; color: #a5d65b; font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e6edf3; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a {
+    display: inline-block; color: rgba(165,214,91,0.8);
+    text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 12px;
+  }
+  .nav a:hover { color: #a5d65b; text-decoration: underline; }
+  @media (max-width: 700px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .coherence-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="kicker">Olive Oil · Supply Chain · Analytics Dashboard</div>
+    <h1>🫒 Supply Chain Dashboard</h1>
+    <p class="subtitle">N-D-C triadic analysis · 8 phases · Spain production to global trade</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">89.1%</div>
+      <div class="kpi-lbl">Chain Average Balance</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">N = 215</div>
+      <div class="kpi-lbl">Average N Value (all phases)</div>
+    </div>
+    <div class="kpi alert-kpi">
+      <div class="kpi-val">81.1%</div>
+      <div class="kpi-lbl">Bottleneck — Phase 5 Packaging</div>
+    </div>
+    <div class="kpi alert-kpi">
+      <div class="kpi-val">EUR 1.20/kg</div>
+      <div class="kpi-lbl">Brand premium Spain foregoes to Italy</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <h3>Primary Bottleneck: Phase 5 — Packaging and Bottling (Balance 81.1%)</h3>
+    <p>
+      Spain exports approximately 67% of its olive oil as undifferentiated bulk at EUR 3.22/kg average.
+      Italian companies (Salov/Filippo Berio, Deoleo/Bertolli) blend and rebrand this oil at EUR 4.42/kg,
+      capturing EUR 1.20/kg in brand premium. This is not a logistics problem but a market positioning
+      failure: D (brand fragmentation, 1,500 independent bottlers, no coordinated export brand strategy)
+      significantly exceeds C (contribution from Spanish brand investment). On 742,500 tonnes shipped
+      in 2023/24, this gap represents approximately EUR 890 million in foregone annual revenues.
+    </p>
+  </div>
+
+  <div class="alert-bar" style="border-left-color:#f0a500;background:rgba(240,165,0,0.08);">
+    <h3 style="color:#f0a500;">Climate Constraint: Phase 0 Production — Drought as Structural Bottleneck</h3>
+    <p>
+      Climate stress (drought frequency, heat extremes) is a structural constraint at Phase 0 (Cultivation),
+      not an exceptional event. The 2022 drought reduced Spanish harvests by approximately 48% below historical
+      average (Europe's worst drought in 500 years). Dcoop reported daily yields falling from 8,000 kg/day to
+      1,000 kg/day, an 87.5% intraday reduction at peak heat. This structural climate risk depresses the
+      Phase 0 D-C balance because the C dimension (ecological contribution from rainfall and climate
+      system) is becoming systematically less reliable. Any supply chain analysis that treats 2019-2021
+      production volumes as the baseline is overstating the chain's structural capacity. Climate risk must
+      be modelled as a permanent Phase 0 constraint, not a shock scenario.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2>Phase D-C-N Balance Analysis</h2>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 0 — Cultivation <span class="badge medium">Medium</span> <span class="badge bottleneck">CLIMATE CONSTRAINT</span></div>
+        <div class="phase-scores"><span>D: 248</span><span>C: 228</span><span>N: 219</span><span style="color:#a5d65b">91.9%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:91.9%;background:linear-gradient(90deg,#3d5016,#6b8c2a)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:6px;padding:6px 8px;background:rgba(240,165,0,0.06);border-radius:4px;">Climate constraint: drought frequency and heat stress are structural D-drivers at this phase. 2022 harvest: &minus;48% vs. historical average. Structural climate risk must be modelled as a permanent Phase 0 constraint.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 1 — Harvesting <span class="badge high">High</span></div>
+        <div class="phase-scores"><span>D: 255</span><span>C: 242</span><span>N: 236</span><span style="color:#3fb950">94.9%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:94.9%;background:linear-gradient(90deg,#2d7a2d,#3fb950)"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 2 — Milling and Processing <span class="badge high">High</span></div>
+        <div class="phase-scores"><span>D: 235</span><span>C: 258</span><span>N: 224</span><span style="color:#3fb950">91.1%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:91.1%;background:linear-gradient(90deg,#3d5016,#6b8c2a)"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 3 — Waste and Byproduct Recovery <span class="badge medium">Medium</span></div>
+        <div class="phase-scores"><span>D: 215</span><span>C: 242</span><span>N: 203</span><span style="color:#a5d65b">88.8%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:88.8%;background:linear-gradient(90deg,#3d5016,#6b8c2a)"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 4 — Storage <span class="badge high">High</span></div>
+        <div class="phase-scores"><span>D: 225</span><span>C: 248</span><span>N: 214</span><span style="color:#a5d65b">90.7%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:90.7%;background:linear-gradient(90deg,#3d5016,#6b8c2a)"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 5 — Packaging and Bottling <span class="badge bottleneck">BOTTLENECK</span> <span class="badge low">Low</span></div>
+        <div class="phase-scores"><span>D: 265</span><span>C: 215</span><span>N: 194</span><span style="color:#f97066">81.1%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:81.1%;background:linear-gradient(90deg,#8b1a10,#c0392b)"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 6 — Bulk Logistics and Export <span class="badge medium">Medium</span></div>
+        <div class="phase-scores"><span>D: 258</span><span>C: 228</span><span>N: 214</span><span style="color:#a5d65b">88.4%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:88.4%;background:linear-gradient(90deg,#3d5016,#6b8c2a)"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <div class="phase-label">Phase 7 — Trade and International Markets <span class="badge low">Low</span></div>
+        <div class="phase-scores"><span>D: 275</span><span>C: 235</span><span>N: 217</span><span style="color:#ffc300">85.5%</span></div>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:85.5%;background:linear-gradient(90deg,#7a5c00,#ffc300)"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Five-Model Coherence (π φ √2 ln2 e)</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">π — Operational</div>
+        <div class="coherence-val">89.1</div>
+        <div class="coherence-desc">Chain average balance. Well above 85% floor. Phase 5 is the single degrading factor.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">φ — Proportional</div>
+        <div class="coherence-val">74.5</div>
+        <div class="coherence-desc">Value distribution. Spain-Italy premium gap (EUR 1.20/kg) drives below sustainable threshold.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">√2 — Structural</div>
+        <div class="coherence-val">82.0</div>
+        <div class="coherence-desc">Custody transfer. MSC/Rubino RS logistics competent. Bulk relabeling adds opacity layer.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2 — Growth</div>
+        <div class="coherence-val">71.5</div>
+        <div class="coherence-desc">Value transformation. Spain produces; Italy brands. Low capture of value addition. Below floor.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e — Trade Structure</div>
+        <div class="coherence-val">62.0</div>
+        <div class="coherence-desc">Trade structure coupling. Export contracts, PDO/PGI provenance certification, and commodity pricing mechanisms vs. physical chain performance. Commodity pricing dominates; limited cooperative-level hedging instruments.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Phase Summary Table</h2>
+    <table>
+      <tr>
+        <th>Phase</th><th>Name</th><th>D</th><th>C</th><th>N</th><th>Balance</th><th>Transparency</th>
+      </tr>
+      <tr><td>0</td><td>Cultivation</td><td>248</td><td>228</td><td>219</td><td style="color:#a5d65b">91.9%</td><td><span class="badge medium">Medium</span></td></tr>
+      <tr><td>1</td><td>Harvesting</td><td>255</td><td>242</td><td>236</td><td style="color:#3fb950">94.9%</td><td><span class="badge high">High</span></td></tr>
+      <tr><td>2</td><td>Milling and Processing</td><td>235</td><td>258</td><td>224</td><td style="color:#a5d65b">91.1%</td><td><span class="badge high">High</span></td></tr>
+      <tr><td>3</td><td>Waste and Byproduct Recovery</td><td>215</td><td>242</td><td>203</td><td style="color:#a5d65b">88.8%</td><td><span class="badge medium">Medium</span></td></tr>
+      <tr><td>4</td><td>Storage</td><td>225</td><td>248</td><td>214</td><td style="color:#a5d65b">90.7%</td><td><span class="badge high">High</span></td></tr>
+      <tr><td>5</td><td>Packaging and Bottling</td><td>265</td><td>215</td><td>194</td><td style="color:#f97066"><strong>81.1% ⚠</strong></td><td><span class="badge low">Low</span></td></tr>
+      <tr><td>6</td><td>Bulk Logistics and Export</td><td>258</td><td>228</td><td>214</td><td style="color:#a5d65b">88.4%</td><td><span class="badge medium">Medium</span></td></tr>
+      <tr><td>7</td><td>Trade and International Markets</td><td>275</td><td>235</td><td>217</td><td style="color:#ffc300">85.5%</td><td><span class="badge low">Low</span></td></tr>
+      <tr style="background:#21262d"><td colspan="3"><strong>System Average</strong></td><td colspan="2"><strong>N = 215</strong></td><td style="color:#a5d65b"><strong>89.1%</strong></td><td></td></tr>
+    </table>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">← Supply Chain Index</a>
+    <a href="project_context.html">Project Context</a>
+    <a href="../index.html">← Olive Oil Hub</a>
+    <a href="../../../../index.html">← Main Homepage</a>
+  </div>
+
+</div>
+</body>
+</html>

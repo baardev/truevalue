@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "project": "gran_chaco",
+    "chain": "soy_supply_chain",
+    "region": "Gran Chaco — Argentina, Paraguay, Bolivia, Brazil",
+    "generated": "2026-05-27",
+    "source": "PDI_soy_gran_chaco_2026.yaml",
+    "version": "1.0"
+  },
+  "entities": {
+    "synthetic": {
+      "name": "Gran Chaco Soy Supply Chain",
+      "region": "Argentina (primary) — Paraguay / Bolivia / Brazil (indirect)",
+      "chain_type": "Agricultural commodity — deforestation-risk DDC under EUDR"
+    }
+  },
+  "phase_meta": [
+    {"name": "Land Conversion & Farm", "transparency": "Low",    "transformation": "Native woodland to soy farmland"},
+    {"name": "Cultivation & Harvest",   "transparency": "Medium", "transformation": "Prepared land to raw soybean"},
+    {"name": "Aggregation & Transport", "transparency": "Low",    "transformation": "Farm-gate to Rosario crushing hub"},
+    {"name": "Crushing & Processing",   "transparency": "High",   "transformation": "Raw bean to soy cake and oil"},
+    {"name": "Export & EUDR Compliance","transparency": "Medium", "transformation": "Processed product to international market"}
+  ],
+  "phases": {
+    "synthetic": [
+      {
+        "id": 0,
+        "name": "Land Conversion & Farm",
+        "D": 244, "C": 324,
+        "balance": 75.3, "N": 212, "sustainability": 1.6,
+        "status": "Fair",
+        "notes": "Frontier expansion driven by weak land governance. 149,649 ha deforested in Argentina in 2024. Land title disputes and zoning manipulation documented.",
+        "data_quality": "Low — farm-level deforestation data not publicly disclosed per plot",
+        "metrics": {
+          "deforestation_2024_ha": 149649,
+          "soy_area_chaco_mha": 2.7,
+          "soy_deforestation_2019_ha": 37000,
+          "opacity_score": 3
+        }
+      },
+      {
+        "id": 1,
+        "name": "Cultivation & Harvest",
+        "D": 260, "C": 310,
+        "balance": 83.9, "N": 238, "sustainability": 4.0,
+        "status": "Good",
+        "notes": "Primary production well-documented at national level. Farm-level provenance remains opaque. Certified volumes (RTRS) under 1%.",
+        "data_quality": "Medium — national aggregates reliable; farm-level provenance opaque",
+        "metrics": {
+          "soy_production_chaco_mt_per_year": 7750000,
+          "yield_kg_per_ha": 2800,
+          "planting_area_mha": 2.7,
+          "cattle_stock_national_share_pct": 33
+        }
+      },
+      {
+        "id": 2,
+        "name": "Aggregation & Transport",
+        "D": 220, "C": 350,
+        "balance": 62.9, "N": 175, "sustainability": 0.6,
+        "status": "Poor",
+        "notes": "BOTTLENECK. Beans from multiple origins commingled at silos. Sio-granos data aggregated by zone, not farm. 82% of imports from Paraguay — mixed without origin segregation.",
+        "data_quality": "Low — Sio-granos publicly available only in aggregated form; origin mixing is the core traceability gap",
+        "metrics": {
+          "paraguay_import_share_pct": 82,
+          "annual_import_volume_mt": 5000000,
+          "hidrovía_transport_share_pct": 70,
+          "trader_concentration_pct": 88
+        }
+      },
+      {
+        "id": 3,
+        "name": "Crushing & Processing",
+        "D": 300, "C": 330,
+        "balance": 90.9, "N": 286, "sustainability": 11.0,
+        "status": "Good",
+        "notes": "World-class crushing hub at Rosario. 62 Mt/year capacity, 60% utilisation. Operations well-documented by CIARA and Bolsa de Cereales.",
+        "data_quality": "High — crusher operations and trade volumes tracked by industry associations",
+        "metrics": {
+          "crushing_capacity_mt": 62000000,
+          "capacity_utilisation_pct": 60,
+          "rosario_share_pct": 80,
+          "soy_cake_output_mt": 26000000
+        }
+      },
+      {
+        "id": 4,
+        "name": "Export & EUDR Compliance",
+        "D": 260, "C": 280,
+        "balance": 92.9, "N": 251, "sustainability": 24.4,
+        "status": "Good",
+        "notes": "Export data well-documented. EUDR creates compliance pressure but Chaco is currently excluded from EUDR scope (canopy threshold gap). 55% ZDC coverage as of 2019.",
+        "data_quality": "Medium — volumes reliable; EUDR compliance status unresolved for Chaco-origin soy",
+        "metrics": {
+          "eu_soy_cake_imports_mt_2019": 9400000,
+          "zdc_coverage_2019_pct": 55,
+          "eudr_chaco_status": "Excluded — canopy below 10% threshold"
+        }
+      }
+    ]
+  },
+  "system": {
+    "balance": 81.2,
+    "average_N": 232,
+    "bottleneck_phase_ids": [2],
+    "interpretation": "The Gran Chaco soy supply chain scores A+ (81.2% average balance). Phase 2 — Aggregation and Transport — is the structural bottleneck at 62.9% (Poor). The commingling of soybeans from multiple geographic origins at silo collection points severs the provenance chain required for EUDR compliance, deforestation-free certification, and sustainability-linked bond KPI verification. The D-C imbalance at Phase 2 (D=220, C=350) reflects a system that integrates volumes efficiently but cannot govern their origin. Resolving this bottleneck — via disaggregated Sio-granos disclosure, isotopic fingerprinting, or trader-level data sharing — would raise the chain grade to AA- or better."
+  },
+  "scenarios": {
+    "baseline": {
+      "label": "Current state (2026 baseline)",
+      "scores": {
+        "pi": 81.2,
+        "phi": 72.0,
+        "sqrt2": 68.0,
+        "ln2": 75.0,
+        "e": 0
+      },
+      "notes": "pi = chain average balance. phi = value distribution efficiency (heavy intermediation from aggregation mixing). sqrt2 = structural overhead from multi-origin supply. ln2 = value transformation from raw bean to processed product. e = financial abstraction layer deferred."
+    }
+  }
+}

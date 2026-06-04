@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Cocoa International — Supply Chain Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #c8a26e; background: rgba(92,51,23,0.3);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 28px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8b949e; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi {
+    background: #161b22; border-radius: 10px; padding: 18px 16px;
+    border-left: 4px solid #5c3317;
+  }
+  .kpi.alert-kpi { border-left-color: #c0392b; }
+  .kpi-val { font-size: 26px; font-weight: 800; color: #c8a26e; }
+  .kpi.alert-kpi .kpi-val { color: #f97066; }
+  .kpi-lbl { font-size: 11px; color: #8b949e; margin-top: 4px; }
+  .alert-bar {
+    background: rgba(192,57,43,0.15); border: 1px solid rgba(192,57,43,0.4);
+    border-left: 5px solid #c0392b;
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+  }
+  .alert-bar h3 { color: #f97066; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .alert-bar p { font-size: 13px; color: #8b949e; line-height: 1.6; }
+  .panel { background: #161b22; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .panel h2 { font-size: 14px; font-weight: 700; color: #c8a26e; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px; }
+  .phase-row { margin-bottom: 14px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .phase-label { font-size: 13px; color: #e6edf3; font-weight: 600; }
+  .phase-scores { font-size: 11px; color: #8b949e; }
+  .phase-scores span { margin-left: 8px; }
+  .bar-bg { background: #21262d; border-radius: 6px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; margin-left: 8px;
+    text-transform: uppercase;
+  }
+  .badge.high { background: rgba(63,185,80,0.2); color: #3fb950; }
+  .badge.medium { background: rgba(255,195,0,0.2); color: #ffc300; }
+  .badge.low { background: rgba(249,112,102,0.2); color: #f97066; }
+  .badge.bottleneck { background: rgba(192,57,43,0.3); color: #f97066; border: 1px solid rgba(192,57,43,0.5); }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    background: #21262d; border-radius: 10px; padding: 16px 10px; text-align: center;
+    border: 1px solid rgba(92,51,23,0.5);
+  }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #c8a26e; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #8b5a2b; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th {
+    text-align: left; padding: 10px 12px;
+    background: #21262d; color: #c8a26e; font-size: 11px;
+    font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  td { padding: 10px 12px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e6edf3; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a {
+    display: inline-block; color: rgba(200,162,110,0.8);
+    text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 12px;
+  }
+  .nav a:hover { color: #c8a26e; text-decoration: underline; }
+  @media (max-width: 700px) {
+    .kpi-row { grid-template-columns: 1fr 1fr; }
+    .coherence-grid { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="kicker">Cocoa International · Supply Chain · Analytics Dashboard</div>
+    <h1>🍫 Supply Chain Dashboard</h1>
+    <p class="subtitle">N-D-C triadic analysis · 7 phases · West African farms to global manufacturing</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">89.2%</div>
+      <div class="kpi-lbl">Chain Average Balance</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">N = 217</div>
+      <div class="kpi-lbl">Average N (chain equilibrium)</div>
+    </div>
+    <div class="kpi alert-kpi">
+      <div class="kpi-val">76.5%</div>
+      <div class="kpi-lbl">Bottleneck — Phase 1 Fermentation/Drying</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">2</div>
+      <div class="kpi-lbl">Phases below 85% balance threshold</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <h3>Structural Bottleneck: Phase 1 — Fermentation and Drying (76.5% balance, failure zone)</h3>
+    <p>
+      Fermentation and sun-drying at farm level develops approximately 85% of chocolate flavor precursors
+      over 12-22 days. No standardized process, no temperature monitoring, no chain-of-custody documents,
+      and no identity preservation exist at this phase. Child labor is most concentrated here.
+      Sustainability certifications issued at cooperative membership level are structurally incapable of
+      verifying what happens during fermentation. D=272, C=208: institutional opacity and absence of
+      measurement infrastructure dominate. Phase 6 (Manufacturing/Retail) is a secondary weak point at
+      80.2% due to the 1:6 farm-to-retail price ratio with only USD 200/tonne Fairtrade premium.
+    </p>
+  </div>
+
+  <div class="panel">
+    <h2>Phase N-D-C Balance Analysis</h2>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 0 — Cultivation<span class="badge low">Low Transparency</span></span>
+        <span class="phase-scores">D=255 <span>C=228</span> <span>N=216</span> <span>Balance: 89.4%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:89.4%;background:#5c3317;"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 1 — Fermentation and Drying<span class="badge bottleneck">BOTTLENECK</span><span class="badge low">Low Transparency</span></span>
+        <span class="phase-scores">D=272 <span>C=208</span> <span>N=182</span> <span>Balance: 76.5%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:76.5%;background:#c0392b;"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 2 — Aggregation and Domestic Trading<span class="badge medium">Medium Transparency</span></span>
+        <span class="phase-scores">D=248 <span>C=235</span> <span>N=229</span> <span>Balance: 94.8%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:94.8%;background:#8b5a2b;"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 3 — Export and Origin Processing<span class="badge medium">Medium Transparency</span></span>
+        <span class="phase-scores">D=252 <span>C=240</span> <span>N=234</span> <span>Balance: 95.2%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:95.2%;background:#8b5a2b;"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 4 — Oceanic Shipping<span class="badge high">High Transparency</span></span>
+        <span class="phase-scores">D=238 <span>C=252</span> <span>N=231</span> <span>Balance: 94.4%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:94.4%;background:#c8a26e;"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 5 — Destination Processing<span class="badge high">High Transparency</span></span>
+        <span class="phase-scores">D=242 <span>C=258</span> <span>N=234</span> <span>Balance: 93.8%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:93.8%;background:#c8a26e;"></div></div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label">Phase 6 — Manufacturing and Retail<span class="badge low">Low Transparency</span></span>
+        <span class="phase-scores">D=268 <span>C=215</span> <span>N=192</span> <span>Balance: 80.2%</span></span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:80.2%;background:#e67e22;"></div></div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Five-Model Coherence (Baseline)</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">π — Operational</div>
+        <div class="coherence-val">89.2</div>
+        <div class="coherence-desc">Chain average. Phase 1 at 76.5% is the critical system vulnerability.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">φ — Proportional</div>
+        <div class="coherence-val">72.8</div>
+        <div class="coherence-desc">Value distribution. Farm-to-retail 1:6 ratio with USD 200/tonne Fairtrade premium only.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">√2 — Structural</div>
+        <div class="coherence-val">81.4</div>
+        <div class="coherence-desc">Custody overhead. CCC and bill-of-lading anchor mid-chain; Phase 1 is the structural gap.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2 — Growth</div>
+        <div class="coherence-val">68.5</div>
+        <div class="coherence-desc">Value-add capture. Fermentation creates most chocolate value; farmers capture none of the premium.</div>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e — Financial</div>
+        <div class="coherence-val">58.3</div>
+        <div class="coherence-desc">Financial coupling. Sustainability premiums weakly linked to supply chain performance.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>Phase Detail Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Name</th>
+          <th>D</th>
+          <th>C</th>
+          <th>N</th>
+          <th>Balance</th>
+          <th>Transparency</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td>
+          <td>Cultivation</td>
+          <td>255</td><td>228</td><td>216</td>
+          <td>89.4%</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Good</td>
+        </tr>
+        <tr style="background:rgba(192,57,43,0.08);">
+          <td>1</td>
+          <td>Fermentation and Drying</td>
+          <td>272</td><td>208</td><td>182</td>
+          <td style="color:#f97066;font-weight:700;">76.5%</td>
+          <td><span class="badge low">Low</span></td>
+          <td><span class="badge bottleneck">BOTTLENECK</span></td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Aggregation and Domestic Trading</td>
+          <td>248</td><td>235</td><td>229</td>
+          <td>94.8%</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Export and Origin Processing</td>
+          <td>252</td><td>240</td><td>234</td>
+          <td>95.2%</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Oceanic Shipping</td>
+          <td>238</td><td>252</td><td>231</td>
+          <td>94.4%</td>
+          <td><span class="badge high">High</span></td>
+          <td>Excellent</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Destination Processing</td>
+          <td>242</td><td>258</td><td>234</td>
+          <td>93.8%</td>
+          <td><span class="badge high">High</span></td>
+          <td>Excellent</td>
+        </tr>
+        <tr style="background:rgba(230,126,34,0.06);">
+          <td>6</td>
+          <td>Manufacturing and Retail</td>
+          <td>268</td><td>215</td><td>192</td>
+          <td style="color:#ffc300;font-weight:700;">80.2%</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Fair</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="nav">
+    <a href="index.html">← Supply Chain Overview</a>
+    <a href="../index.html">Cocoa Hub</a>
+    <a href="project_context.html">Project Context</a>
+    <a href="recycling_analysis.html">Ecological Return Chain</a>
+    <a href="../../../../index.html">Main Homepage</a>
+  </div>
+
+</div>
+</body>
+</html>

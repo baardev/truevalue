@@ -1,8 +1,10 @@
 # A Minimal Recursive Triadic Framework for Self-Similar Hierarchical Systems
 
-**Author:** Jeffrey W. Milton, Clarity Coalition
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 3 April 2026
 
 **Proposed arXiv subjects:** nlin.AO; math.DS (secondary: cs.SY)
 

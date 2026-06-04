@@ -1,8 +1,10 @@
 # The Tholonic Model as a Candidate Alternative to the Standard Model: Structural Derivations and Parameter Reduction
 
-**Author:** Jeffrey W. Milton, Clarity Coalition
+**Author:** J. W. Milton, Clarity Coalition
 
-**Date:** 2026
+**Version:** 1.0
+
+**Date:** 19 May 2026
 
 **Keywords:** tholonic model, Standard Model, N-D-C triad, fine structure constant, fermion generations, color charge, quark confinement, Koide formula, parameter reduction, unified field theory, falsifiability
 
