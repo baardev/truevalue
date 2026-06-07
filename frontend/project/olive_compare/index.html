@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marina Alta vs. Andalucia: Olive Ecosystem Comparison</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #0d0d1a 0%, #121e0f 50%, #1a1505 100%);
+    min-height: 100vh; padding: 24px; color: #e0e6ef;
+  }
+  .container { max-width: 1120px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    background: linear-gradient(135deg, #1a0a0a 0%, #1e1508 50%, #0a1a0a 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px; padding: 44px; margin-bottom: 24px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: 0.1em;
+    text-transform: uppercase; color: #c9aa5b; background: rgba(201,170,91,0.12);
+    border: 1px solid rgba(201,170,91,0.28); padding: 6px 16px; border-radius: 999px; margin-bottom: 18px;
+  }
+  h1 { font-size: 36px; font-weight: 200; margin-bottom: 12px; line-height: 1.2; color: #e6edf3; }
+  .subtitle { font-size: 15px; color: #8b949e; line-height: 1.7; max-width: 780px; margin: 0 auto; }
+
+  /* Section */
+  .section {
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+    border-radius: 14px; padding: 36px; margin-bottom: 24px;
+  }
+  .section-title { font-size: 20px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+  .section-sub { font-size: 14px; color: #8b949e; margin-bottom: 24px; line-height: 1.6; }
+
+  /* System ID cards */
+  .systems { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 24px; }
+  .sys-card {
+    border-radius: 12px; padding: 24px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .sys-card.marina { background: linear-gradient(135deg, rgba(90,15,15,0.35), rgba(50,10,10,0.25)); border-color: rgba(139,26,26,0.5); }
+  .sys-card.andalucia { background: linear-gradient(135deg, rgba(40,65,8,0.35), rgba(60,90,20,0.25)); border-color: rgba(107,140,42,0.5); }
+  .sys-label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+  .sys-label.ma { color: #e07070; }
+  .sys-label.and { color: #a5d65b; }
+  .sys-name { font-size: 22px; font-weight: 600; margin-bottom: 6px; color: #e6edf3; }
+  .sys-sub { font-size: 13px; color: #8b949e; margin-bottom: 14px; line-height: 1.5; }
+  .sys-kpis { display: grid; grid-template-columns: repeat(2,1fr); gap: 10px; }
+  .sys-kpi { background: rgba(0,0,0,0.25); border-radius: 8px; padding: 10px 12px; }
+  .sys-kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #6c757d; margin-bottom: 3px; }
+  .sys-kpi-value { font-size: 17px; font-weight: 800; }
+  .sys-kpi-value.ma { color: #e07070; }
+  .sys-kpi-value.and { color: #a5d65b; }
+
+  /* Premise */
+  .premise {
+    background: rgba(201,170,91,0.06); border: 1px solid rgba(201,170,91,0.2);
+    border-radius: 12px; padding: 24px; margin-bottom: 24px;
+  }
+  .premise h3 { font-size: 16px; color: #c9aa5b; margin-bottom: 10px; font-weight: 600; }
+  .premise p { font-size: 14px; color: #cdd4db; line-height: 1.7; margin-bottom: 8px; }
+  .premise strong { color: #e6edf3; }
+
+  /* Dimension panels */
+  .dim-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 24px; }
+  .dim-card {
+    border-radius: 12px; padding: 22px;
+    border: 1px solid rgba(255,255,255,0.08);
+    background: rgba(0,0,0,0.2);
+  }
+  .dim-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+  .dim-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 8px; }
+  .dim-side { font-size: 13px; color: #cdd4db; line-height: 1.55; }
+  .dim-side strong { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px; }
+  .dim-side.ma strong { color: #e07070; }
+  .dim-side.and strong { color: #a5d65b; }
+  .dim-finding { margin-top: 10px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.06); font-size: 12px; color: #8b949e; line-height: 1.6; }
+  .dim-finding strong { color: #c9aa5b; }
+
+  /* Phase table */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: rgba(0,0,0,0.4); color: #8b949e; padding: 10px 12px; text-align: left; font-weight: 700; font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  tbody tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody td { padding: 10px 12px; color: #cdd4db; vertical-align: middle; }
+  .td-phase { color: #8b949e; font-weight: 700; }
+  .td-name { color: #e6edf3; font-weight: 600; }
+  .badge-high { background: rgba(0,137,123,0.2); color: #4db6ac; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .badge-med  { background: rgba(245,127,23,0.2); color: #ffb74d; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .badge-low  { background: rgba(198,40,40,0.2); color: #ef9a9a; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 700; }
+  .val-ma { color: #e07070; font-weight: 700; }
+  .val-and { color: #a5d65b; font-weight: 700; }
+  .val-delta-pos { color: #4db6ac; font-weight: 700; font-size: 12px; }
+  .val-delta-neg { color: #ef9a9a; font-weight: 700; font-size: 12px; }
+  .row-bottleneck-ma { background: rgba(139,26,26,0.07); }
+  .row-bottleneck-and { background: rgba(40,65,8,0.12); }
+  .row-cross { background: rgba(201,170,91,0.05); }
+
+  /* N stability chart */
+  .n-chart { margin-top: 20px; }
+  .n-row { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; font-size: 12px; }
+  .n-label { width: 190px; flex-shrink: 0; color: #8b949e; }
+  .n-bars { flex: 1; display: flex; flex-direction: column; gap: 3px; }
+  .n-bar-wrap { background: rgba(255,255,255,0.06); border-radius: 4px; height: 14px; position: relative; overflow: hidden; }
+  .n-bar { height: 14px; border-radius: 4px; display: flex; align-items: center; padding-left: 6px; font-size: 10px; font-weight: 700; white-space: nowrap; transition: width 0.9s ease; }
+  .n-bar.ma { background: linear-gradient(90deg,rgba(139,26,26,0.85),rgba(139,26,26,0.5)); color: #fdd; }
+  .n-bar.and { background: linear-gradient(90deg,rgba(107,140,42,0.85),rgba(107,140,42,0.5)); color: #dfd; }
+  .n-delta { width: 80px; flex-shrink: 0; font-weight: 700; font-size: 12px; text-align: right; }
+
+  /* Intervention matrix */
+  .int-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+  .int-card { border-radius: 10px; padding: 20px; border: 1px solid rgba(255,255,255,0.07); }
+  .int-card.ma { background: rgba(90,15,15,0.18); border-color: rgba(139,26,26,0.35); }
+  .int-card.and { background: rgba(40,65,8,0.2); border-color: rgba(107,140,42,0.35); }
+  .int-title { font-size: 13px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 12px; }
+  .int-title.ma { color: #e07070; }
+  .int-title.and { color: #a5d65b; }
+  .int-step { font-size: 13px; color: #cdd4db; padding: 8px 12px; border-radius: 6px; margin-bottom: 6px; line-height: 1.5; }
+  .int-step.priority-1 { background: rgba(255,152,0,0.1); border-left: 3px solid #ffb74d; }
+  .int-step.priority-2 { background: rgba(0,137,123,0.1); border-left: 3px solid #4db6ac; }
+  .int-step.priority-3 { background: rgba(100,100,100,0.1); border-left: 3px solid #666; }
+  .int-step .phase-tag { font-size: 10px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 3px; color: #ffb74d; }
+
+  /* Footer nav */
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.75); text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 10px; padding: 8px 18px; border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; transition: border-color 0.2s; }
+  .nav a:hover { border-color: rgba(255,255,255,0.4); color: #fff; }
+
+  /* KPI compare strip */
+  .kpi-compare { width: 100%; border-collapse: collapse; font-size: 14px; }
+  .kpi-compare th { padding: 10px 16px; text-align: left; background: rgba(0,0,0,0.3); color: #8b949e; font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .kpi-compare td { padding: 12px 16px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #cdd4db; }
+  .kpi-compare tr:hover td { background: rgba(255,255,255,0.02); }
+
+  @media (max-width: 768px) {
+    .systems, .dim-grid, .int-grid { grid-template-columns: 1fr; }
+    h1 { font-size: 24px; }
+    .n-label { width: 130px; font-size: 11px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="kicker">TrueValue Analytics · Tholonic Comparative Analysis · Mediterranean Olive</div>
+  <h1>Marina Alta vs. Andalucia<br>Olive Ecosystem Comparison</h1>
+  <p class="subtitle">
+    Two Spanish olive-growing regions under the same climate stress, failing in different phases for
+    structurally different reasons. The N-D-C model reveals <strong>crossing failure curves</strong>:
+    Marina Alta crashes at harvest (Phase 2); Andalucia crashes at the ecosystem foundation (Phase 0)
+    and at trade (Phase 5). <strong>Different diagnoses require different interventions.</strong>
+  </p>
+</div>
+
+<!-- System ID Cards -->
+<div class="systems">
+  <div class="sys-card marina">
+    <div class="sys-label ma">Marina Alta · Alicante Mountain Ecosystem</div>
+    <div class="sys-name">Marina Alta, Valencian Community</div>
+    <div class="sys-sub">Multi-commodity terraced polyculture: PGI cherry (anchor), premium EVOO, almonds, drought-resilient alternatives. 8-phase ecosystem analysis. Acute climate stress with 94% cherry collapse. Recovery funded through EU Horizon Climate Adaptation.</div>
+    <div class="sys-kpis">
+      <div class="sys-kpi"><div class="sys-kpi-label">System Balance</div><div class="sys-kpi-value ma">86.3%</div></div>
+      <div class="sys-kpi"><div class="sys-kpi-label">Active Farmland</div><div class="sys-kpi-value ma">13,150 ha</div></div>
+      <div class="sys-kpi"><div class="sys-kpi-label">Aquifer Recharge</div><div class="sys-kpi-value ma">24% / 189mm</div></div>
+      <div class="sys-kpi"><div class="sys-kpi-label">Bottleneck Phases</div><div class="sys-kpi-value ma">Ph 2, Ph 6</div></div>
+    </div>
+  </div>
+  <div class="sys-card andalucia">
+    <div class="sys-label and">Andalucia · Interior Olive Monoculture</div>
+    <div class="sys-name">Andalucia (Jaen, Cordoba, Granada)</div>
+    <div class="sys-sub">World's largest olive oil producing region: 1.8M ha, 72% of Spanish output, 37% of global output. Monoculture management with bare-soil herbicide regime. Record exports but EUR 890M annual value gap vs Italian bottling premium.</div>
+    <div class="sys-kpis">
+      <div class="sys-kpi"><div class="sys-kpi-label">System Balance</div><div class="sys-kpi-value and">75.9%</div></div>
+      <div class="sys-kpi"><div class="sys-kpi-label">Olive Grove Area</div><div class="sys-kpi-value and">1.8M ha</div></div>
+      <div class="sys-kpi"><div class="sys-kpi-label">Water System</div><div class="sys-kpi-value and">Guadalquivir</div></div>
+      <div class="sys-kpi"><div class="sys-kpi-label">Bottleneck Phases</div><div class="sys-kpi-value and">Ph 0, Ph 5, Ph 7</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Tholonic Premise -->
+<div class="premise">
+  <h3>The Comparative Premise: Same Climate Stress, Different Failure Modes</h3>
+  <p>
+    Both systems operate in the same Mediterranean semi-arid climate under intensifying drought. Both grow olives.
+    Yet the <strong>Tholonic N-D-C model reveals structurally different failure patterns</strong>.
+    Contribution (C) is suppressed at different phases for different reasons, creating a characteristic
+    "crossing curves" pattern when N-values are plotted by phase.
+  </p>
+  <p>
+    <strong>Marina Alta:</strong> high ecosystem baseline (aquifer recharge 24%; dry-stone terrace biodiversity) undermined by a governance vacuum (CASAMA inactive since 1987). System collapses at Phase 2 (harvest: labour intensity, weather exposure) and Phase 6 (crop transition: capital gap). Recovers strongly in the middle chain (processing, certification, agrotourism).
+  </p>
+  <p>
+    <strong>Andalucia:</strong> degraded ecosystem baseline (0.5-1.5% soil organic matter; 50-100 T/ha/yr erosion; no karstic aquifer fallback). System holds moderate through mechanised harvest and processing (Phases 1-3) but collapses at Phase 5 (trade: EUR 890M annual bulk-export value gap) and remains near-zero through Phases 6-7. The soil failure at Phase 0 is the root cause of all downstream fragility.
+  </p>
+  <p>
+    <strong>The comparison finding:</strong> Marina Alta's water problem is a governance problem, fixable with policy. Andalucia's water problem is a soil biology problem, requiring physical restoration before governance improvements have leverage. The same climate, two different primary interventions.
+  </p>
+  <p style="font-size:13px;color:#b0bec5;margin-top:4px;">
+    <strong style="color:#c9aa5b;">N-D-C framework note:</strong>
+    <strong>N</strong> (Negotiation) is the emergent phase stability value: N = sqrt(D &times; C) &times; (balance / 100).
+    <strong>D</strong> (Definition) and <strong>C</strong> (Contribution) are derived from PDI boundary <strong>flags</strong>: binary criteria (B3, B4, B6 push D upward; B9, B11 push C upward) that score whether a phase has crossed a qualitative boundary in constraint load or integration capacity. <strong>Delta N</strong> = N(Marina Alta) minus N(Andalucia) for the same phase. It is a derived subtraction only: positive means Marina Alta is more stable in that phase; negative means Andalucia is. Delta N is independent of the flag count once D and C are set.
+  </p>
+</div>
+
+<!-- 4 Dimension Panels -->
+<div class="dim-grid">
+  <div class="dim-card">
+    <div class="dim-title" style="color:#64b5f6;">Water Management</div>
+    <div class="dim-row">
+      <div class="dim-side ma">
+        <strong>Marina Alta</strong>
+        Highest aquifer recharge in Alicante province: 24% of precipitation (189mm/yr). Karstic limestone system with 30-40% recharge in mountain outcrops. CASAMA water governance body inactive since 1987. Marine intrusion at coastal margins.
+      </div>
+      <div class="dim-side and">
+        <strong>Andalucia</strong>
+        No equivalent karstic high-recharge aquifer. Fully dependent on Guadalquivir reservoir system. Annual watershed deficit 2.5 km3 in recent drought years. Bare-soil management prevents rainfall infiltration; most rain runs off as erosion.
+      </div>
+    </div>
+    <div class="dim-finding">
+      <strong>Finding:</strong> Marina Alta's water problem is institutional (CASAMA reactivation + drip infrastructure). Andalucia's is physical (soil organic matter must increase to retain rainfall). Identical climate trajectory; opposite intervention sequence.
+    </div>
+  </div>
+
+  <div class="dim-card">
+    <div class="dim-title" style="color:#ce93d8;">Biodiversity and Soil</div>
+    <div class="dim-row">
+      <div class="dim-side ma">
+        <strong>Marina Alta</strong>
+        Centuries-old dry-stone terracing supports native Mediterranean flora. Biodiversity declining due to farm abandonment but baseline is polyculture. Ecosystem services: pollination, erosion control, ecotourism. Cherry, almond, olive coexist as habitat.
+      </div>
+      <div class="dim-side and">
+        <strong>Andalucia</strong>
+        Monoculture bare-soil: 60-80% fewer bird species vs polyculture reference (Olivares Vivos monitoring). Soil organic matter 0.5-1.5% vs EU target 3.5%. Erosion 50-100 T/ha/yr. Danyadara (Cadiz) and Olivares Vivos (Jaen) demonstrate recovery is achievable within 3-5 years.
+      </div>
+    </div>
+    <div class="dim-finding">
+      <strong>Finding:</strong> Marina Alta has higher biodiversity per-hectare potential from its terraced polyculture baseline. Andalucia's regenerative transition (cover crops, syntropic understory) produces measurable gains faster because the degradation is recent and reversible. Both regions benefit from biodiversity investment but for different reasons.
+    </div>
+  </div>
+
+  <div class="dim-card">
+    <div class="dim-title" style="color:#ffb74d;">Trade Value Capture</div>
+    <div class="dim-row">
+      <div class="dim-side ma">
+        <strong>Marina Alta</strong>
+        Premium positioning already functioning: PGI certification (Cerezas de la Montana de Alicante), Flos Olei rankings (Masia el Altet), Slow Food Presidium, UNESCO Gastronomy City (Denia). Agrotourism integrated (oleotourism, cherry festivals). Phase 5 balance: 93.0%.
+      </div>
+      <div class="dim-side and">
+        <strong>Andalucia</strong>
+        12 DOP designations; only 8% of production certified. 67% bulk export at EUR 3.22/kg vs Italy EUR 4.42/kg. Dcoop: world's largest olive operator, yet sells commodity bulk. Foregone brand premium: EUR 890M/yr. Phase 5 balance: 65.3%.
+      </div>
+    </div>
+    <div class="dim-finding">
+      <strong>Finding:</strong> Marina Alta already demonstrates the premium model that Andalucia lacks. The EUR 890M Andalucia value gap is not a product quality problem (Picual is among the world's highest-polyphenol oils). It is a brand infrastructure and cooperative incentive problem. Marina Alta's PGI-agrotourism model is directly applicable.
+    </div>
+  </div>
+
+  <div class="dim-card">
+    <div class="dim-title" style="color:#80cbc4;">Climate Resilience Trajectory</div>
+    <div class="dim-row">
+      <div class="dim-side ma">
+        <strong>Marina Alta</strong>
+        Diverse commodity base (cherry, EVOO, almond, pistachio, carob) provides natural portfolio hedge. Crop transition to drought-resilient alternatives (pistachio, carob) underway. EU Horizon Climate Adaptation funding (EUR 83M) available. Technology path identified: UFO pruning, artificial pollination.
+      </div>
+      <div class="dim-side and">
+        <strong>Andalucia</strong>
+        Monoculture concentration: 95% of Jaen UAA is olive. No equivalent commodity diversification buffer. Regenerative transition would improve drought resilience through soil water retention but faces the year-1 yield-drop barrier. No equivalent EU Horizon deployment specifically for Andalucia olive landscapes.
+      </div>
+    </div>
+    <div class="dim-finding">
+      <strong>Finding:</strong> Marina Alta is structurally more resilient to climate stress because diversification is already embedded. Andalucia's scale creates both its production power and its resilience weakness. The cross-learning opportunity: Andalucia's syntropic farming methodology (Danyadara, Olivares Vivos) could be applied to Marina Alta's ecosystem regeneration phase (currently balance 79.4%).
+    </div>
+  </div>
+</div>
+
+<!-- Phase Comparison Table -->
+<div class="section">
+  <div class="section-title">Phase-by-Phase N-D-C Comparison</div>
+  <div class="section-sub">
+    Both systems use the same 8-phase ecosystem-focused structure to enable direct comparison. Rows in red highlight Marina Alta bottlenecks; rows in green highlight Andalucia bottlenecks. The gold row marks the crossing point where Andalucia overtakes Marina Alta in phase balance. Reference thresholds: pi/4 = 78.5% (operational bottleneck floor); phi zone: Coherent above 61.8%.
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Ph</th>
+        <th>Phase Name</th>
+        <th>Marina Alta Balance</th>
+        <th>Marina Alta N</th>
+        <th>Andalucia Balance</th>
+        <th>Andalucia N</th>
+        <th>Delta N (MA minus And)</th>
+        <th>Structural Difference</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-phase">0</td>
+        <td class="td-name">Ecosystem Baseline</td>
+        <td><span style="color:#a5d65b;font-weight:700;">90.9%</span></td>
+        <td class="val-ma">191</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">65.4% ⚠</span></td>
+        <td class="val-and">138</td>
+        <td class="val-delta-pos">+53</td>
+        <td>Marina Alta: high recharge, governance gap. Andalucia: soil biology collapse, no aquifer.</td>
+      </tr>
+      <tr>
+        <td class="td-phase">1</td>
+        <td class="td-name">Agricultural Production</td>
+        <td><span style="color:#ffb74d;font-weight:700;">81.6%</span></td>
+        <td class="val-ma">181</td>
+        <td><span style="color:#a5d65b;font-weight:700;">87.8%</span></td>
+        <td class="val-and">202</td>
+        <td class="val-delta-neg">-21</td>
+        <td>Marina Alta: triple crisis (pest, pollination, Xylella). Andalucia: monoculture efficient but input-dependent.</td>
+      </tr>
+      <tr class="row-cross">
+        <td class="td-phase">2</td>
+        <td class="td-name">Harvest</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">76.5% ⚠</span></td>
+        <td class="val-ma">171</td>
+        <td><span style="color:#a5d65b;font-weight:700;">88.7%</span></td>
+        <td class="val-and">207</td>
+        <td class="val-delta-neg">-36</td>
+        <td>Crossing point. Marina Alta: 30 people/acre/day; weather-exposed. Andalucia: 90% mechanised; 80% labour cost reduction.</td>
+      </tr>
+      <tr>
+        <td class="td-phase">3</td>
+        <td class="td-name">Primary Processing</td>
+        <td><span style="color:#a5d65b;font-weight:700;">95.8%</span></td>
+        <td class="val-ma">223</td>
+        <td><span style="color:#a5d65b;font-weight:700;">93.1%</span></td>
+        <td class="val-and">220</td>
+        <td class="val-delta-pos">+3</td>
+        <td>Near parity. Both have well-organised mills (Flos Olei for MA; Dcoop scale for Andalucia). Dcoop lacks traceability; MA has CrowdFarming model.</td>
+      </tr>
+      <tr>
+        <td class="td-phase">4</td>
+        <td class="td-name">Quality Certification</td>
+        <td><span style="color:#a5d65b;font-weight:700;">98.3%</span></td>
+        <td class="val-ma">226</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">74.5% ⚠</span></td>
+        <td class="val-and">164</td>
+        <td class="val-delta-pos">+62</td>
+        <td>Largest gap. Marina Alta: PGI, Flos Olei, Slow Food, UNESCO. Andalucia: 12 DOPs but only 8% certified; 92% exits as bulk commodity.</td>
+      </tr>
+      <tr>
+        <td class="td-phase">5</td>
+        <td class="td-name">Market Distribution and Trade</td>
+        <td><span style="color:#a5d65b;font-weight:700;">93.0%</span></td>
+        <td class="val-ma">217</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">65.3% ⚠</span></td>
+        <td class="val-and">141</td>
+        <td class="val-delta-pos">+76</td>
+        <td>Second largest gap. Marina Alta: premium agrotourism model functioning. Andalucia: EUR 890M annual foregone brand value; 67% bulk export.</td>
+      </tr>
+      <tr>
+        <td class="td-phase">6</td>
+        <td class="td-name">Transition / Regenerative Investment</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">75.0% ⚠</span></td>
+        <td class="val-ma">169</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">67.9% ⚠</span></td>
+        <td class="val-and">147</td>
+        <td class="val-delta-pos">+22</td>
+        <td>Both weak. Marina Alta: capital gap for pistachio/carob transition. Andalucia: Danyadara/Olivares Vivos exist but sub-5% penetration, no financial instrument.</td>
+      </tr>
+      <tr>
+        <td class="td-phase">7</td>
+        <td class="td-name">Ecosystem Regeneration / Restoration</td>
+        <td><span style="color:#ffb74d;font-weight:700;">79.4%</span></td>
+        <td class="val-ma">178</td>
+        <td><span style="color:#ef9a9a;font-weight:700;">64.9% ⚠</span></td>
+        <td class="val-and">139</td>
+        <td class="val-delta-pos">+39</td>
+        <td>Marina Alta: CASAMA reactivation path exists; aquifer physics are favourable. Andalucia: no national programme; Guadalquivir deficit; most opaque phase.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- N Stability Chart (dynamic) -->
+<div class="section">
+  <div class="section-title">N Stability Cascade: Phase-by-Phase Comparison</div>
+  <div class="section-sub">
+    Live N-values fetched from both supply chain datasets. Each phase shows Marina Alta (red) and Andalucia (green) side-by-side. The crossing at Phase 2 (harvest) is the key structural divergence: Marina Alta's labour-intensive harvest is its weakest operational phase; Andalucia's mechanised harvest is its strongest.
+  </div>
+  <div style="display:flex;gap:20px;margin-bottom:12px;font-size:12px;">
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:16px;height:10px;border-radius:3px;background:rgba(139,26,26,0.85);display:inline-block;"></span> Marina Alta</span>
+    <span style="display:flex;align-items:center;gap:6px;"><span style="width:16px;height:10px;border-radius:3px;background:rgba(107,140,42,0.85);display:inline-block;"></span> Andalucia</span>
+    <span style="color:#8b949e;">Delta = Marina Alta N minus Andalucia N for the same phase (positive: MA more stable; negative: Andalucia more stable)</span>
+  </div>
+  <div id="n-chart" class="n-chart">
+    <div style="color:#8b949e;font-size:13px;padding:20px 0;">Loading phase data...</div>
+  </div>
+</div>
+
+<!-- KPI Comparison Table -->
+<div class="section">
+  <div class="section-title">Key System Metrics</div>
+  <table class="kpi-compare">
+    <thead>
+      <tr>
+        <th>Metric</th>
+        <th style="color:#e07070;">Marina Alta</th>
+        <th style="color:#a5d65b;">Andalucia</th>
+        <th>Interpretation</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>System N-D-C balance</td>
+        <td class="val-ma">86.3%</td>
+        <td class="val-and">75.9%</td>
+        <td>Marina Alta 10.4 pp advantage; different bottleneck profile</td>
+      </tr>
+      <tr>
+        <td>Average N-value across chain</td>
+        <td class="val-ma">194.5</td>
+        <td class="val-and">169.8</td>
+        <td>Marina Alta higher mean stability despite acute crisis phases</td>
+      </tr>
+      <tr>
+        <td>Phase 0 balance (Ecosystem Baseline)</td>
+        <td class="val-ma">90.9%</td>
+        <td class="val-and">65.4%</td>
+        <td>Andalucia starts 25.5 pp below Marina Alta at the foundation</td>
+      </tr>
+      <tr>
+        <td>Phase 2 balance (Harvest)</td>
+        <td style="color:#ef9a9a;font-weight:700;">76.5%</td>
+        <td class="val-and">88.7%</td>
+        <td>Crossing point: mechanisation reverses relative position</td>
+      </tr>
+      <tr>
+        <td>Phase 5 balance (Market / Trade)</td>
+        <td class="val-ma">93.0%</td>
+        <td style="color:#ef9a9a;font-weight:700;">65.3%</td>
+        <td>EUR 890M Andalucia annual value gap; PGI-agrotourism model working in Marina Alta</td>
+      </tr>
+      <tr>
+        <td>Water availability</td>
+        <td class="val-ma">24% recharge / 189mm/yr (aquifer)</td>
+        <td class="val-and">2.5 km3 deficit (Guadalquivir)</td>
+        <td>Opposite water failure types: governance vs. physical soil retention</td>
+      </tr>
+      <tr>
+        <td>Soil organic matter</td>
+        <td class="val-ma">Low but recovering (polyculture base)</td>
+        <td style="color:#ef9a9a;font-weight:700;">0.5-1.5% (EU target 3.5%)</td>
+        <td>Andalucia soil degradation is the root constraint for Phases 0, 6, and 7</td>
+      </tr>
+      <tr>
+        <td>Biodiversity status</td>
+        <td class="val-ma">Declining (farm abandonment) from high baseline</td>
+        <td style="color:#ef9a9a;font-weight:700;">60-80% below reference (monoculture)</td>
+        <td>Marina Alta has higher recovery potential per EUR invested</td>
+      </tr>
+      <tr>
+        <td>Export price premium capture</td>
+        <td class="val-ma">High (PGI, Flos Olei, agrotourism)</td>
+        <td style="color:#ef9a9a;font-weight:700;">EUR 1.20/kg below Italy</td>
+        <td>Same quality product; different brand infrastructure</td>
+      </tr>
+      <tr>
+        <td>Transition programme available</td>
+        <td class="val-ma">EU Horizon EUR 83M (Climate Adaptation)</td>
+        <td class="val-and">Danyadara, Olivares Vivos (demonstration scale)</td>
+        <td>Marina Alta has larger deployed financial mechanism; Andalucia lacks equivalent</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Intervention Priority Matrix -->
+<div class="section">
+  <div class="section-title">Intervention Priority Sequence</div>
+  <div class="section-sub">
+    The structural finding from the comparison: both regions need investment, but in different phases and in different order. Applying the wrong intervention first reduces leverage. The N-D-C model makes the sequence explicit.
+  </div>
+  <div class="int-grid">
+    <div class="int-card ma">
+      <div class="int-title ma">Marina Alta Priority Sequence</div>
+      <div class="int-step priority-1">
+        <span class="phase-tag">Phase 2: Priority 1 (balance 76.5%)</span>
+        Harvest technology: Evaluate UFO orchard design (50% labour saving potential), artificial pollination system, and multi-function covers as options appropriate to scale and terrain. Addresses labour bottleneck and weather vulnerability before crop transition becomes viable.
+      </div>
+      <div class="int-step priority-1">
+        <span class="phase-tag">Phase 0: Priority 1 (parallel)</span>
+        Governance: CASAMA water body reactivation. Drip irrigation infrastructure on terraced terrain. The high recharge rate (24%) means governance repair immediately unlocks existing physical capacity.
+      </div>
+      <div class="int-step priority-2">
+        <span class="phase-tag">Phase 6: Priority 2 (balance 75.0%)</span>
+        Crop transition capital: Consider EU Horizon EUR 83M (Climate Adaptation Mission Call) and EU CAP 2023-2027 (EUR 386.6B total; EUR 44.7B ring-fenced eco-schemes) for pistachio, carob, and modern almond establishment. Patient capital instrument for the 5-7 year establishment horizon. Further CAP allocation expected post-2027.
+      </div>
+      <div class="int-step priority-3">
+        <span class="phase-tag">Phase 7: Priority 3 (balance 79.4%)</span>
+        Evaluate Managed Aquifer Recharge (MAR) options for the karstic limestone system: (1) direct injection wells, which can handle 1,000 L/s in comparable Valencian karstic formations (Llíria precedent); (2) check dams and surface spreading in upper catchments (Mediterranean Arc application: ~200 Mm3/year additional recharge); (3) traditional acequia-type infiltration networks. Also: reclaimed water from coastal treatment plants, terrace restoration. Follows from governance repair (Phase 0) rather than preceding it.
+      </div>
+    </div>
+    <div class="int-card and">
+      <div class="int-title and">Andalucia Priority Sequence</div>
+      <div class="int-step priority-1">
+        <span class="phase-tag">Phase 0: Priority 1 (balance 65.4%)</span>
+        Soil restoration: cover crop introduction, transition away from bare-soil herbicide regime, understory planting (Danyadara methodology). Soil organic matter increase improves water retention 20-35% in 3 years. This is the physical precondition for all downstream improvement.
+      </div>
+      <div class="int-step priority-1">
+        <span class="phase-tag">Phase 5: Priority 1 (parallel, balance 65.3%)</span>
+        Brand infrastructure: increase DOP certification take-up from 8% to 20%+. Olivares Vivos premium linkage. Direct-to-consumer channels. Agrotourism routes (Jaen, Cordoba). Directly captures the EUR 890M foregone annual value.
+      </div>
+      <div class="int-step priority-2">
+        <span class="phase-tag">Phase 6: Priority 2 (balance 67.9%)</span>
+        Regenerative transition financial instrument: bridge the year-1 yield-drop barrier (10-25%) that prevents conventional farmers from transitioning. No EU instrument currently deployed for this purpose in Andalucia olive landscapes.
+      </div>
+      <div class="int-step priority-3">
+        <span class="phase-tag">Phase 7: Priority 3 (balance 64.9%)</span>
+        Landscape-scale ecosystem restoration: Olivares Vivos 100,000 ha by 2030 target (from 12,000 ha current). Guadalquivir watershed management. Follows from Phase 0 individual farm improvements aggregated to catchment scale. Evaluate EU Horizon EUR 83M (Climate Adaptation Mission Call) and EU CAP 2023-2027 eco-schemes (EUR 44.7B ring-fenced) as funding instruments; further CAP allocation expected post-2027.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav">
+  <a href="/frontend/project/marina_alta/index.html">Marina Alta Project</a>
+  <a href="/frontend/project/olive_oil/index.html">Olive Oil Supply Chain</a>
+  <a href="/index.html">Main Homepage</a>
+</div>
+
+</div><!-- /container -->
+
+<script>
+(function() {
+  var MA_URL  = '/frontend/project/marina_alta/data/processed/marina_alta_supply_chain_ui.json';
+  var AND_URL = '/frontend/project/olive_compare/data/andalucia_olive_supply_chain_ui.json';
+
+  Promise.all([
+    fetch(MA_URL).then(function(r){ return r.json(); }).catch(function(){ return null; }),
+    fetch(AND_URL).then(function(r){ return r.json(); }).catch(function(){ return null; })
+  ]).then(function(results) {
+    var maData  = results[0];
+    var andData = results[1];
+
+    if (!maData || !andData) {
+      document.getElementById('n-chart').innerHTML =
+        '<div style="color:#ef9a9a;font-size:13px;">Could not load one or both data files. Check that the server is running and paths are correct.</div>';
+      return;
+    }
+
+    var maPhases  = (maData.phases  || {}).synthetic || {};
+    var andPhases = (andData.phases || {}).synthetic || {};
+    var maMeta    = maData.phase_meta  || {};
+    var andMeta   = andData.phase_meta || {};
+
+    // Collect phase ids from Marina Alta (source of truth for phase numbering)
+    var ids = [];
+    for (var k in maPhases) {
+      if (/^\d+$/.test(k)) ids.push(+k);
+    }
+    ids.sort(function(a, b){ return a - b; });
+
+    var maxN = 290, minN = 120;
+
+    // Phase meta may be array or object; normalise to object
+    function getMeta(meta, id) {
+      if (Array.isArray(meta)) {
+        for (var i = 0; i < meta.length; i++) {
+          if (meta[i].id === id || +meta[i].id === id) return meta[i];
+        }
+        return {};
+      }
+      return meta[id + ''] || meta[id] || {};
+    }
+
+    var rows = '';
+    ids.forEach(function(id) {
+      var maPhase  = maPhases[id + '']  || {};
+      var andPhase = andPhases[id + ''] || {};
+
+      var maN  = +(maPhase.N)  || 0;
+      var andN = +(andPhase.N) || 0;
+
+      var maPct  = Math.max(2, Math.min(100, (maN  - minN) / (maxN - minN) * 100));
+      var andPct = Math.max(2, Math.min(100, (andN - minN) / (maxN - minN) * 100));
+
+      var delta      = maN - andN;
+      var deltaStr   = (delta >= 0 ? '+' : '') + delta.toFixed(0);
+      var deltaColor = delta >= 0 ? '#a5d65b' : '#ef9a9a';
+
+      var maMet  = getMeta(maMeta,  id);
+      var andMet = getMeta(andMeta, id);
+      var name   = (maMet.name || ('Phase ' + id));
+      if (name.length > 26) name = name.slice(0, 25) + '\u2026';
+
+      // Flag crossing at Phase 2 and bottlenecks
+      var isCross = (id === 2);
+      var rowStyle = isCross ? 'padding: 2px 0; border-left: 2px solid rgba(201,170,91,0.5); padding-left: 6px; margin-bottom: 10px;' : '';
+
+      rows += '<div class="n-row" style="' + rowStyle + '">';
+      rows += '<div class="n-label"><span style="color:#8b949e;font-size:10px;">Ph\u00a0' + id + '</span> ';
+      rows += '<span style="color:#cdd4db;">' + name + '</span>';
+      if (isCross) rows += ' <span style="color:#c9aa5b;font-size:10px;font-weight:800;">CROSS</span>';
+      rows += '</div>';
+
+      rows += '<div class="n-bars">';
+      rows += '<div style="font-size:10px;color:#e07070;margin-bottom:1px;">MA: ' + maN + '</div>';
+      rows += '<div class="n-bar-wrap"><div class="n-bar ma" style="width:' + maPct.toFixed(1) + '%;">' + maN + '</div></div>';
+      rows += '<div style="font-size:10px;color:#a5d65b;margin-bottom:1px;">And: ' + andN + '</div>';
+      rows += '<div class="n-bar-wrap"><div class="n-bar and" style="width:' + andPct.toFixed(1) + '%;">' + andN + '</div></div>';
+      rows += '</div>';
+
+      rows += '<div class="n-delta" style="color:' + deltaColor + ';">' + deltaStr + '</div>';
+      rows += '</div>';
+    });
+
+    document.getElementById('n-chart').innerHTML = rows || '<div style="color:#8b949e;">No phase data found.</div>';
+  }).catch(function(err) {
+    document.getElementById('n-chart').innerHTML =
+      '<div style="color:#ef9a9a;font-size:13px;">Error loading data: ' + err.message + '</div>';
+  });
+})();
+</script>
+
+</body>
+</html>

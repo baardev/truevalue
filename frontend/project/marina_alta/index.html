@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marina Alta Mountain Ecosystem: Supply and Value Chain Hub</title>
+<style color-scheme="light">
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #8B1A1A 0%, #2D4A3E 50%, #1a2e26 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+    padding: 40px; margin-bottom: 22px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #8B1A1A; background: #fde8e8;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; color: #1a1a1a; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 720px; margin: 0 auto 8px; }
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+  .tag {
+    font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tag.cherry { background: #fde8e8; color: #8B1A1A; }
+  .tag.olive { background: #e8f0d0; color: #3d5016; }
+  .tag.almond { background: #fff3cd; color: #856404; }
+  .tag.pistachio { background: #e8f5e9; color: #1b5e20; }
+  .tag.water { background: #e3f2fd; color: #0d47a1; }
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px;
+  }
+  .kpi {
+    background: #f8f9fa; border-radius: 10px; padding: 16px 12px;
+    border-left: 4px solid #8B1A1A;
+  }
+  .kpi.green { border-left-color: #2D4A3E; }
+  .kpi.orange { border-left-color: #c0392b; }
+  .kpi-val { font-size: 24px; font-weight: 700; color: #8B1A1A; }
+  .kpi.green .kpi-val { color: #2D4A3E; }
+  .kpi.orange .kpi-val { color: #c0392b; }
+  .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; line-height: 1.3; }
+  .alert-panel {
+    background: #fff3cd; border-left: 5px solid #c0392b;
+    border-radius: 10px; padding: 18px 22px; margin-bottom: 22px;
+  }
+  .alert-panel h3 { color: #c0392b; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .alert-panel p { font-size: 14px; color: #495057; line-height: 1.6; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .card {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+  .card-header { padding: 26px 28px 16px; color: #fff; }
+  .card-header.sc { background: linear-gradient(135deg, #8B1A1A 0%, #c0392b 100%); }
+  .card-header.vc { background: linear-gradient(135deg, #2D4A3E 0%, #4a7a65 100%); }
+  .card-header.lc { background: linear-gradient(135deg, #1a2e26 0%, #2D4A3E 100%); }
+  .card-header.deferred { background: linear-gradient(135deg, #5c5c5c 0%, #888 100%); }
+  .card-icon { font-size: 38px; margin-bottom: 8px; }
+  .card-title { font-size: 21px; font-weight: 600; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+  .card-body { padding: 20px 28px 24px; }
+  .card-body ul { list-style: none; margin-bottom: 16px; }
+  .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+  .card-body li::before { content: "✓"; position: absolute; left: 0; color: #8B1A1A; font-weight: bold; }
+  .btn {
+    display: inline-block; padding: 11px 22px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn.sc { background: linear-gradient(135deg, #8B1A1A 0%, #c0392b 100%); }
+  .btn.vc { background: linear-gradient(135deg, #2D4A3E 0%, #4a7a65 100%); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+  .sub-links { margin-top: 12px; font-size: 13px; }
+  .sub-links a { color: #8B1A1A; font-weight: 600; text-decoration: none; margin-right: 14px; }
+  .sub-links a:hover { text-decoration: underline; }
+  /* Phase strip */
+  .phase-strip { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .phase-strip h2 { font-size: 14px; font-weight: 700; color: #8B1A1A; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+  .phases-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .phase-cell { text-align: center; }
+  .phase-num { font-size: 22px; font-weight: 800; }
+  .phase-lbl { font-size: 9px; color: #6c757d; margin-top: 3px; line-height: 1.2; }
+  .phase-bar-bg { background: #f0f0f0; border-radius: 4px; height: 8px; margin: 6px 0; overflow: hidden; }
+  .phase-bar-fill { height: 100%; border-radius: 4px; }
+  .phase-balance { font-size: 10px; font-weight: 700; }
+  /* Commodity cards */
+  .commodity-card {
+    background: #fff; border-radius: 12px; padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-top: 4px solid #8B1A1A;
+  }
+  .commodity-card.olive { border-top-color: #3d5016; }
+  .commodity-card.almond { border-top-color: #856404; }
+  .commodity-card.alt { border-top-color: #1b5e20; }
+  .commodity-card .c-icon { font-size: 28px; margin-bottom: 8px; }
+  .commodity-card h3 { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .commodity-card .c-status {
+    font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+    display: inline-block; margin-bottom: 10px;
+  }
+  .status-crisis { background: #fde8e8; color: #8B1A1A; }
+  .status-stressed { background: #fff3cd; color: #856404; }
+  .status-recovery { background: #e8f5e9; color: #1b5e20; }
+  .commodity-card p { font-size: 12px; color: #6c757d; line-height: 1.5; }
+  /* Coherence */
+  .coherence-panel { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .coherence-panel h2 { font-size: 14px; font-weight: 700; color: #8B1A1A; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item { background: #fde8e8; border-radius: 10px; padding: 16px 10px; text-align: center; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #8B1A1A; margin-bottom: 4px; }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #c0392b; }
+  .coherence-desc { font-size: 10px; color: #6c757d; margin-top: 4px; line-height: 1.3; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent { background: #d4edda; color: #155724; }
+  .zone-stressed { background: #fff3cd; color: #856404; }
+  /* Nav */
+  .nav { text-align: center; margin-top: 20px; padding: 16px 0; }
+  .nav a { display: inline-block; color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 14px; opacity: 0.85; }
+  .nav a:hover { opacity: 1; text-decoration: underline; }
+  @media (max-width: 700px) { .kpis, .grid, .grid-3, .phases-grid, .coherence-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="kicker">Marina Alta, Alicante, Spain</div>
+    <h1>🍒 Marina Alta Mountain Ecosystem</h1>
+    <p class="subtitle">
+      Multi-commodity climate adaptation analysis: 8 phases from aquifer baseline through crop
+      transition and ecosystem regeneration. Anchor commodity: Cerezas de la Montana de Alicante
+      (PGI). Critical EU Climate Change Adaptation case study.
+    </p>
+    <div class="tag-row">
+      <span class="tag cherry">Cherries (PGI)</span>
+      <span class="tag olive">Premium EVOO</span>
+      <span class="tag almond">Almonds</span>
+      <span class="tag pistachio">Pistachios</span>
+      <span class="tag water">Aquifer</span>
+    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-val">13,150</div>
+        <div class="kpi-lbl">Active farmland (ha): 9.5% of Alicante province</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-val">94%</div>
+        <div class="kpi-lbl">Cherry production collapse: 800K kg to 47K kg (2017-2025)</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-val">86.3%</div>
+        <div class="kpi-lbl">System chain balance: Good zone; Phases 2 and 6 bottleneck</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">EUR 83M</div>
+        <div class="kpi-lbl">EU Horizon Climate Adaptation funding available 2025-2026</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert panel -->
+  <div class="alert-panel">
+    <h3>Structural Alert: Triple Agricultural Crisis + Governance Vacuum</h3>
+    <p>
+      The Marina Alta ecosystem faces simultaneous collapse across all three anchor commodities.
+      Cherry production fell 94% in Vall de Gallinera (800,000 kg to 40,000-50,000 kg) primarily
+      because pollinator trees now flower at a different time than cultivator trees due to climate
+      shift. Almond groves have been devastated by Xylella fastidiosa (no cure; hundreds of thousands
+      of trees felled). Olive oil production is down from extended drought. The underlying aquifer
+      water governance body (CASAMA) has been inactive since 1987. Phase 6 (Crop Transition, balance
+      75.0%) and Phase 2 (Harvest, balance 76.5%) are the critical intervention points.
+    </p>
+  </div>
+
+  <!-- Phase strip -->
+  <div class="phase-strip">
+    <h2>8-Phase Supply and Ecosystem Chain</h2>
+    <div class="phases-grid">
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#8B8B8B">0</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:90.9%;background:#8B8B8B"></div></div>
+        <div class="phase-balance" style="color:#8B8B8B">90.9%</div>
+        <div class="phase-lbl">Ecosystem Baseline</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#c0392b">1</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:81.6%;background:#c0392b"></div></div>
+        <div class="phase-balance" style="color:#c0392b">81.6%</div>
+        <div class="phase-lbl">Agricultural Production</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#e74c3c">2</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:76.5%;background:#e74c3c"></div></div>
+        <div class="phase-balance" style="color:#e74c3c">76.5%</div>
+        <div class="phase-lbl">Harvest ⚠</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#27ae60">3</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:95.8%;background:#27ae60"></div></div>
+        <div class="phase-balance" style="color:#27ae60">95.8%</div>
+        <div class="phase-lbl">Primary Processing</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#16a085">4</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:98.3%;background:#16a085"></div></div>
+        <div class="phase-balance" style="color:#16a085">98.3%</div>
+        <div class="phase-lbl">Quality Certification</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#2980b9">5</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:93.0%;background:#2980b9"></div></div>
+        <div class="phase-balance" style="color:#2980b9">93.0%</div>
+        <div class="phase-lbl">Market and Agrotourism</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#e74c3c">6</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:75.0%;background:#e74c3c"></div></div>
+        <div class="phase-balance" style="color:#e74c3c">75.0%</div>
+        <div class="phase-lbl">Crop Transition ⚠</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#8B1A1A">7</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:79.4%;background:#8B1A1A"></div></div>
+        <div class="phase-balance" style="color:#8B1A1A">79.4%</div>
+        <div class="phase-lbl">Ecosystem Regen.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Commodity cards -->
+  <div class="grid-3">
+    <div class="commodity-card">
+      <div class="c-icon">🍒</div>
+      <h3>Cherries (PGI Anchor)</h3>
+      <span class="c-status status-crisis">In Crisis</span>
+      <p>Cerezas de la Montana de Alicante PGI. Production collapsed 94% in Vall de Gallinera.
+        2026 first recovery (3-4M kg, EUR 25M projected). Key threat: pollinator tree timing
+        mismatch from climate shift. Response: artificial pollination, 2D orchard design.</p>
+    </div>
+    <div class="commodity-card olive">
+      <div class="c-icon">🫒</div>
+      <h3>Premium EVOO</h3>
+      <span class="c-status status-stressed">Stressed</span>
+      <p>Native varietals: Blanqueta, Alfafarenca, Mancanella. Top producers: Masia el Altet
+        (Flos Olei), Senorios de Relleu (oleotourism), Almazara La Alqueria (CrowdFarming),
+        Finca Rontonar (Slow Food). Production down from drought.</p>
+    </div>
+    <div class="commodity-card almond">
+      <div class="c-icon">🌰</div>
+      <h3>Almonds</h3>
+      <span class="c-status status-stressed">Stressed</span>
+      <p>Devastated by Xylella fastidiosa (no cure). 2025/26 surge to 16,500 T in-shell after
+        good winter rains. New varieties: Guara and Soleta (self-pollinating, late-blooming).
+        Revenue EUR 3-6/kg. Quicker ROI than pistachio.</p>
+    </div>
+  </div>
+  <div class="grid-3">
+    <div class="commodity-card alt">
+      <div class="c-icon">🍃</div>
+      <h3>Pistachios</h3>
+      <span class="c-status status-recovery">Opportunity</span>
+      <p>Green gold. EUR 7-12/kg vs EUR 0.63-0.83/kg for bulk olives. Spain: 70,000+ ha
+        national. Semi-arid inland (Alto Vinalopo, Alcoia). 5-7 year establishment.
+        La Mancha farmers achieve 2,000 kg/ha.</p>
+    </div>
+    <div class="commodity-card alt">
+      <div class="c-icon">🌱</div>
+      <h3>Carob (Algarroba)</h3>
+      <span class="c-status status-recovery">Opportunity</span>
+      <p>350mm rainfall minimum. Limestone soil-adapted. High demand in pharmacological,
+        cosmetic, health food industries (chocolate substitute, locust bean gum).
+        Viveros Hernandorena leading intensification programme.</p>
+    </div>
+    <div class="commodity-card">
+      <div class="c-icon">💧</div>
+      <h3>Aquifer Management</h3>
+      <span class="c-status status-crisis">Critical Gap</span>
+      <p>Highest recharge rate in province (24%, 189mm/yr) but CASAMA water governance
+        inactive since 1987. Marine intrusion active. Drip irrigation vs potable water
+        trade-off. Solutions: reclaimed water, storage ponds, integrated governance.</p>
+    </div>
+  </div>
+
+  <!-- Layer cards -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header sc">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Supply Chain Analysis</div>
+        <div class="card-desc">8-phase chain from ecosystem baseline through harvest, processing, certification, market, and ecosystem regeneration. Bottleneck at Phase 2 (Harvest, 76.5%) and Phase 6 (Crop Transition, 75.0%).</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Phase-level N-D-C analysis (8 phases)</li>
+          <li>Cherry, EVOO, almond and replacement crop chains</li>
+          <li>Aquifer and ecosystem services integration</li>
+          <li>TVPCI-R ecological return chain</li>
+        </ul>
+        <a class="btn sc" href="supply_chain/index.html">Supply Chain Hub</a>
+        <div class="sub-links">
+          <a href="supply_chain/dashboard.html">Dashboard</a>
+          <a href="supply_chain/project_context.html">Project Context</a>
+          <a href="supply_chain/recycling_analysis.html">Ecological Return</a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header deferred">
+        <div class="card-icon">💼</div>
+        <div class="card-title">Value Chain Analysis</div>
+        <div class="card-desc">Investment scenario modelling for crop transition, technology adoption, and EU Horizon funding leverage. Financial data being assembled from PPTX business plan and public sources.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Cherry: EUR 54K-627K/10 Ha gross income range</li>
+          <li>Pistachio: EUR 7-12/kg; 5-7 yr establishment</li>
+          <li>EU Horizon funding: EUR 83M available</li>
+          <li>Los Grobos scaling model (USD 500M+ template)</li>
+        </ul>
+        <a class="btn vc" href="value_chain/index.html">Value Chain Hub</a>
+        <div class="sub-links" style="color:#888; font-size:12px; margin-top:8px;">
+          Financial analysis being developed: supply value metrics to activate full dashboard
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Five-model coherence -->
+  <div class="coherence-panel">
+    <h2>Five-Model Coherence: Chain Baseline</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">pi (π)</div>
+        <div class="coherence-val">86.3</div>
+        <div class="coherence-desc">Operational balance: chain average across 8 phases</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">phi (φ)</div>
+        <div class="coherence-val">82.0</div>
+        <div class="coherence-desc">Proportional distribution: value flows between phases</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">sqrt2 (√2)</div>
+        <div class="coherence-val">78.0</div>
+        <div class="coherence-desc">Structural overhead: terraced terrain adds custody cost</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2</div>
+        <div class="coherence-val">80.0</div>
+        <div class="coherence-desc">Growth transformation: EVOO premium not fully captured</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e</div>
+        <div class="coherence-val">71.0</div>
+        <div class="coherence-desc">Financial abstraction: EU funding potential, not yet linked</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#6c757d;margin-top:14px;font-style:italic;">
+      All scores are PROVISIONAL baselines derived from PDI research data. Phi-derived coherence thresholds: Coherent above 61.8% (phi-inverse); Failure zone 38.2-61.8%; Breakdown below 38.2%.
+    </p>
+  </div>
+
+  <!-- EU Funding context -->
+  <div style="background:#fff;border-radius:12px;padding:24px 28px;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+    <h2 style="font-size:14px;font-weight:700;color:#8B1A1A;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px;">EU Horizon Funding and Investment Context</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+      <div style="background:#fde8e8;border-radius:8px;padding:16px;">
+        <div style="font-size:20px;font-weight:800;color:#8B1A1A;">EUR 83M</div>
+        <div style="font-size:11px;color:#6c757d;margin-top:4px;">EU Horizon 2025-2026: Climate Change Adaptation priority (nature-based and technology-based solutions)</div>
+      </div>
+      <div style="background:#e8f5e9;border-radius:8px;padding:16px;">
+        <div style="font-size:20px;font-weight:800;color:#1b5e20;">EUR 27.4M</div>
+        <div style="font-size:11px;color:#6c757d;margin-top:4px;">Valencian Community generational renewal grants (548 packages, EUR 49,701 avg per young farmer in Alicante 2026)</div>
+      </div>
+      <div style="background:#fff3cd;border-radius:8px;padding:16px;">
+        <div style="font-size:20px;font-weight:800;color:#856404;">EUR 1.66M</div>
+        <div style="font-size:11px;color:#6c757d;margin-top:4px;">Spain specific climate aid for cherry growers (irrigated + rainfed holdings, announced 2026)</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <a href="../../index.html">← Main Homepage</a>
+  <a href="../../project/olive_oil/index.html">Olive Oil Hub</a>
+  <a href="../../project/olive_compare/index.html">vs. Andalucia Comparison</a>
+  <a href="../../project/danube/index.html">Danube Basin</a>
+  <a href="../../project/aubeb/index.html">AUBEB (Mangrove)</a>
+  <a href="supply_chain/index.html">Supply Chain Hub →</a>
+</div>
+
+</body>
+</html>

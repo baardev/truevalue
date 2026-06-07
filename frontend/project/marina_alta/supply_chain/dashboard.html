@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Marina Alta: Supply Chain Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #e8a0a0; background: rgba(139,26,26,0.25);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 28px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8b949e; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #161b22; border-radius: 10px; padding: 18px 16px; border-left: 4px solid #8B1A1A; }
+  .kpi.alert-kpi { border-left-color: #e74c3c; }
+  .kpi.good-kpi { border-left-color: #27ae60; }
+  .kpi-val { font-size: 26px; font-weight: 800; color: #e8a0a0; }
+  .kpi.alert-kpi .kpi-val { color: #f97066; }
+  .kpi.good-kpi .kpi-val { color: #56d364; }
+  .kpi-lbl { font-size: 11px; color: #8b949e; margin-top: 4px; }
+  .alert-bar {
+    background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.35);
+    border-left: 5px solid #c0392b; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+  }
+  .alert-bar h3 { color: #f97066; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .alert-bar p { font-size: 13px; color: #8b949e; line-height: 1.6; }
+  .panel { background: #161b22; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .panel h2 { font-size: 14px; font-weight: 700; color: #e8a0a0; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px; }
+  .phase-row { margin-bottom: 14px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .phase-label { font-size: 13px; color: #e6edf3; font-weight: 600; }
+  .phase-scores { font-size: 11px; color: #8b949e; }
+  .phase-scores span { margin-left: 8px; }
+  .bar-bg { background: #21262d; border-radius: 6px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s ease; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; margin-left: 8px; text-transform: uppercase;
+  }
+  .badge.high { background: rgba(63,185,80,0.2); color: #3fb950; }
+  .badge.medium { background: rgba(255,195,0,0.2); color: #ffc300; }
+  .badge.low { background: rgba(249,112,102,0.2); color: #f97066; }
+  .badge.bottleneck { background: rgba(192,57,43,0.3); color: #f97066; border: 1px solid rgba(192,57,43,0.5); }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    background: #21262d; border-radius: 10px; padding: 16px 10px; text-align: center;
+    border: 1px solid rgba(139,26,26,0.3);
+  }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #e8a0a0; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #8B1A1A; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .zone-stressed { background: rgba(255,195,0,0.18); color: #ffc300; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #21262d; color: #e8a0a0; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; }
+  td { padding: 10px 12px; border-bottom: 1px solid #21262d; color: #8b949e; vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+  .phase-num { font-size: 16px; font-weight: 800; color: #e8a0a0; }
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a { color: #e8a0a0; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 14px; opacity: 0.85; }
+  .nav a:hover { opacity: 1; text-decoration: underline; }
+  @media (max-width:700px) { .kpi-row, .coherence-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="kicker">Marina Alta, Alicante, Spain</div>
+    <h1>🍒 Marina Alta Mountain Ecosystem</h1>
+    <p class="subtitle">Supply Chain N-D-C Dashboard: 8 Phases | Chain balance: 86.3% | Bottleneck: Phase 6 (75.0%) and Phase 2 (76.5%)</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">86.3%</div>
+      <div class="kpi-lbl">Chain average balance (Good zone)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">194.5</div>
+      <div class="kpi-lbl">Average N value across 8 phases</div>
+    </div>
+    <div class="kpi alert-kpi">
+      <div class="kpi-val">75.0%</div>
+      <div class="kpi-lbl">Phase 6 bottleneck: Crop Transition (highest D, lowest C)</div>
+    </div>
+    <div class="kpi good-kpi">
+      <div class="kpi-val">98.3%</div>
+      <div class="kpi-lbl">Phase 4 strongest: Quality Certification (EU PGI, Flos Olei)</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <h3>Bottleneck Alert: Phases 6 and 2: Investment Gap and Harvest Labour Crisis</h3>
+    <p>Phase 6 (Crop Transition, balance 75.0%) has the highest D-value in the chain (D=260) because the
+      5-7 year establishment period for pistachio and carob requires patient capital that small mountain
+      farms cannot self-finance. Phase 2 (Harvest, balance 76.5%) is broken by the intersection of
+      three simultaneous failures: pollinator tree timing mismatch (cherry), Xylella fastidiosa
+      (almond), and extreme weather sensitivity (4 days of fog = 50% crop loss). The D-C imbalance in
+      Phase 6 (gap = 65) is the primary bond intervention target.</p>
+  </div>
+
+  <!-- Phase bars -->
+  <div class="panel">
+    <h2>Phase N-D-C Balance Analysis</h2>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">0</span> Ecosystem Baseline</span>
+        <span class="phase-scores">
+          D=220 <span>C=200</span> <span>N=191</span>
+          <span class="badge medium">Medium</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:90.9%;background:linear-gradient(90deg,#8B1A1A,#c0392b)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">90.9%: Aquifer recharge rate 24% (highest in province) but CASAMA inactive since 1987</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">1</span> Agricultural Production</span>
+        <span class="phase-scores">
+          D=245 <span>C=200</span> <span>N=181</span>
+          <span class="badge low">Low</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:81.6%;background:linear-gradient(90deg,#8B1A1A,#c0392b)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">81.6%: Triple crisis: Drosophila suzukii, pollinator mismatch, Xylella. 25% cherry farmers abandoned in 3 years.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">2</span> Harvest and Field Processing</span>
+        <span class="phase-scores">
+          D=255 <span>C=195</span> <span>N=171</span>
+          <span class="badge low">Low</span>
+          <span class="badge bottleneck">Bottleneck</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:76.5%;background:linear-gradient(90deg,#7b1010,#e74c3c)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">76.5%: 30 people/acre/day; 4-day fog = 50% loss (2025). 2D UFO system reduces labour 50%. KEY BOTTLENECK.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">3</span> Primary Processing</span>
+        <span class="phase-scores">
+          D=238 <span>C=228</span> <span>N=223</span>
+          <span class="badge medium">Medium</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:95.8%;background:linear-gradient(90deg,#1b7a3d,#27ae60)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">95.8%: Best-managed phase. Flos Olei EVOO mills, cooperative packing, CrowdFarming traceability.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">4</span> Quality Certification</span>
+        <span class="phase-scores">
+          D=228 <span>C=232</span> <span>N=226</span>
+          <span class="badge high">High</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:98.3%;background:linear-gradient(90deg,#0e7a6a,#16a085)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">98.3%: Strongest phase. EU PGI (cherries), Flos Olei (EVOO), UNESCO Gastronomy Denia. C exceeds D.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">5</span> Market Distribution and Agrotourism</span>
+        <span class="phase-scores">
+          D=242 <span>C=225</span> <span>N=217</span>
+          <span class="badge medium">Medium</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:93.0%;background:linear-gradient(90deg,#154f80,#2980b9)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">93.0%: Local market well-established. EUR 25M projected 2026. GetYourGuide, Ruta del Vino, CrowdFarming.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">6</span> Crop Transition and Investment</span>
+        <span class="phase-scores">
+          D=260 <span>C=195</span> <span>N=169</span>
+          <span class="badge low">Low</span>
+          <span class="badge bottleneck">Bottleneck</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:75.0%;background:linear-gradient(90deg,#7b1010,#e74c3c)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">75.0%: Highest D in chain (D=260). 5-7yr pistachio establishment. EU Horizon EUR 83M available but not yet linked.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">7</span> Ecosystem Regeneration</span>
+        <span class="phase-scores">
+          D=252 <span>C=200</span> <span>N=178</span>
+          <span class="badge low">Low</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:79.4%;background:linear-gradient(90deg,#8B1A1A,#c0392b)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">79.4%: CASAMA inactive since 1987; marine intrusion; drip vs potable water trade-off. Karstic recharge insight.</div>
+    </div>
+  </div>
+
+  <!-- Coherence pentagon -->
+  <div class="panel">
+    <h2>Five-Model Coherence: Baseline Scores</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">pi (π)</div>
+        <div class="coherence-val">86.3</div>
+        <div class="coherence-desc">Operational balance: chain average; Good zone</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">phi (φ)</div>
+        <div class="coherence-val">82.0</div>
+        <div class="coherence-desc">Proportional value distribution across phases</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">sqrt2 (√2)</div>
+        <div class="coherence-val">78.0</div>
+        <div class="coherence-desc">Structural overhead from terraced mountain terrain</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2</div>
+        <div class="coherence-val">80.0</div>
+        <div class="coherence-desc">Growth transformation: EVOO premium not fully captured</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e</div>
+        <div class="coherence-val">71.0</div>
+        <div class="coherence-desc">Financial abstraction: EU funding not yet activated</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#8b949e;margin-top:12px;font-style:italic;">
+      Phi-derived thresholds: Coherent above 61.8% (phi-inverse); Failure 38.2-61.8%; Breakdown below 38.2%.
+      All scores PROVISIONAL: derived from PDI research data.
+    </p>
+  </div>
+
+  <!-- Phase detail table -->
+  <div class="panel">
+    <h2>Phase Detail Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Name</th>
+          <th>D</th>
+          <th>C</th>
+          <th>Balance</th>
+          <th>N</th>
+          <th>Transparency</th>
+          <th>Key Metric</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phase-num">0</td>
+          <td>Ecosystem Baseline</td>
+          <td>220</td><td>200</td>
+          <td style="color:#ffc300;font-weight:700;">90.9%</td>
+          <td>191</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Aquifer recharge 24% (189mm/yr); CASAMA inactive 1987</td>
+        </tr>
+        <tr>
+          <td class="phase-num">1</td>
+          <td>Agricultural Production</td>
+          <td>245</td><td>200</td>
+          <td style="color:#ffc300;font-weight:700;">81.6%</td>
+          <td>181</td>
+          <td><span class="badge low">Low</span></td>
+          <td>25% growers abandoned; 122 ha lost (Vall Gallinera 2017-22)</td>
+        </tr>
+        <tr>
+          <td class="phase-num">2</td>
+          <td>Harvest and Field Processing</td>
+          <td>255</td><td>195</td>
+          <td style="color:#f97066;font-weight:700;">76.5% ⚠</td>
+          <td>171</td>
+          <td><span class="badge low">Low</span></td>
+          <td>30 people/acre/day; 47,500 kg harvested 2025 (5% of normal)</td>
+        </tr>
+        <tr>
+          <td class="phase-num">3</td>
+          <td>Primary Processing</td>
+          <td>238</td><td>228</td>
+          <td style="color:#56d364;font-weight:700;">95.8%</td>
+          <td>223</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Flos Olei (Masia el Altet); CrowdFarming (La Alqueria)</td>
+        </tr>
+        <tr>
+          <td class="phase-num">4</td>
+          <td>Quality Certification</td>
+          <td>228</td><td>232</td>
+          <td style="color:#56d364;font-weight:700;">98.3%</td>
+          <td>226</td>
+          <td><span class="badge high">High</span></td>
+          <td>EU PGI; Flos Olei; Slow Food; UNESCO Gastronomy Denia</td>
+        </tr>
+        <tr>
+          <td class="phase-num">5</td>
+          <td>Market and Agrotourism</td>
+          <td>242</td><td>225</td>
+          <td style="color:#56d364;font-weight:700;">93.0%</td>
+          <td>217</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>EUR 25M cherry revenue projected 2026; olive oil tours</td>
+        </tr>
+        <tr>
+          <td class="phase-num">6</td>
+          <td>Crop Transition and Investment</td>
+          <td>260</td><td>195</td>
+          <td style="color:#f97066;font-weight:700;">75.0% ⚠</td>
+          <td>169</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Pistachio EUR 7-12/kg; 5-7yr; EU Horizon EUR 83M available</td>
+        </tr>
+        <tr>
+          <td class="phase-num">7</td>
+          <td>Ecosystem Regeneration</td>
+          <td>252</td><td>200</td>
+          <td style="color:#ffc300;font-weight:700;">79.4%</td>
+          <td>178</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Marine intrusion active; reforestation reduces recharge 32%</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Priority interventions -->
+  <div class="panel">
+    <h2>Priority Interventions: Bottleneck Phases</h2>
+    <p style="font-size:12px;color:#8b949e;margin-bottom:16px;font-style:italic;">
+      Each intervention is grounded in the five-model axis that diagnoses the failure type.
+      All impact estimates are PROVISIONAL. See Project Context for full analysis and funding detail.
+    </p>
+
+    <!-- Constant legend -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px;">
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #e8a0a0;">
+        <div style="font-size:11px;font-weight:700;color:#e8a0a0;">pi (π) 86.3</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Operational: chain average. Phases below this drag the system.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #ffc300;">
+        <div style="font-size:11px;font-weight:700;color:#ffc300;">phi (φ) 82.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Proportional: value flow across phase transitions.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #f97066;">
+        <div style="font-size:11px;font-weight:700;color:#f97066;">sqrt2 (√2) 78.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Structural: physical / institutional friction raising D.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #f97066;">
+        <div style="font-size:11px;font-weight:700;color:#f97066;">ln2 80.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Growth: value transformation blocked by time or capital gap.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #f97066;">
+        <div style="font-size:11px;font-weight:700;color:#f97066;">e 71.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Financial abstraction: funding exists but not yet linked.</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Current Balance</th>
+          <th>Failure Axis</th>
+          <th>Top Intervention</th>
+          <th>D-C Impact</th>
+          <th>Target Balance</th>
+          <th>Timeline</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">2</span> Harvest</td>
+          <td style="color:#f97066;font-weight:700;">76.5%</td>
+          <td><span style="color:#f97066;font-weight:700;">sqrt2</span>: terraced terrain + pollinator mismatch + Drosophila stack D to 255</td>
+          <td>
+            <strong>1.</strong> Artificial pollination (electrostatic sprayer; EUR 20-50K): removes principal D-flag from 2023 collapse.<br>
+            <strong>2.</strong> 2D UFO orchard conversion: 50% labour reduction, structural sqrt2 fix.<br>
+            <strong>3.</strong> Neem organic pest control: Drosophila D-flag removed.
+          </td>
+          <td>D 255 to ~220; C 195 to ~210. Gap closes from 60 to ~10.</td>
+          <td style="color:#56d364;font-weight:700;">87-90%</td>
+          <td>1-2 seasons (pollination); 3-5 yr (UFO)</td>
+        </tr>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">6</span> Crop Transition</td>
+          <td style="color:#f97066;font-weight:700;">75.0%</td>
+          <td><span style="color:#f97066;font-weight:700;">ln2 + e</span>: 5-7yr zero-revenue window is an ln2 transformation block; EUR 83M EU Horizon funding not yet activated (e = 71)</td>
+          <td>
+            <strong>1.</strong> Carob first, pistachio second (sequence): carob revenue Year 3-4 bridges ln2 gap.<br>
+            <strong>2.</strong> Multi-cropping (herbs, bees) during establishment: adds C while D is maximum.<br>
+            <strong>3.</strong> Agricultural Climate Adaptation Bond (EUR 10-25M): activates e-axis from 71 to 85+.
+          </td>
+          <td>D 260 to ~225 (bond converts time constraint to schedule); C 195 to ~215 (carob + multi-crop revenue).</td>
+          <td style="color:#ffc300;font-weight:700;">83-85%</td>
+          <td>Bond: 12-18 mo structuring; carob Year 1; pistachio Year 2-3</td>
+        </tr>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">7</span> Ecosystem Regen.</td>
+          <td style="color:#ffc300;font-weight:700;">79.4%</td>
+          <td><span style="color:#f97066;font-weight:700;">sqrt2</span>: CASAMA governance vacuum (inactive since 1987) is pure structural overhead blocking all C-raising actions</td>
+          <td>
+            <strong>1.</strong> CASAMA reactivation (pre-condition for all other Phase 7 actions).<br>
+            <strong>2.</strong> Reclaimed water pilot (Denia coastal): removes draw-down trade-off for 50-100 ha.<br>
+            <strong>3.</strong> Maintain agricultural land on at-risk plots: keeps 24% aquifer recharge rate (reforestation would reduce it 32%).
+          </td>
+          <td>C 200 to ~220 (CASAMA enables blocked contributions). D unchanged until governance resolved.</td>
+          <td style="color:#ffc300;font-weight:700;">86-88%</td>
+          <td>CASAMA: political process (1-3 yr); reclaimed water pilot: 2-4 yr</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;color:#8b949e;margin-top:14px;font-style:italic;">
+      If all three sets of interventions succeed: Phase 2 reaches 87-90%, Phase 6 reaches 83-85%, Phase 7 reaches 86-88%.
+      Chain average pi score rises from 86.3% to approximately 91-93%, entering the Excellent zone (95-100% = Excellent, 80-94% = Good).
+      The e-axis would rise from 71.0 to 82-85+ once the bond KPI cycle begins.
+      <a href="project_context.html" style="color:#e8a0a0;font-weight:600;">Full analysis in Project Context.</a>
+    </p>
+  </div>
+
+</div>
+<div class="nav">
+  <a href="../../index.html">← Main Homepage</a>
+  <a href="../index.html">Marina Alta Hub</a>
+  <a href="index.html">Supply Chain Hub</a>
+  <a href="project_context.html">Project Context</a>
+  <a href="recycling_analysis.html">Ecological Return</a>
+</div>
+</body>
+</html>

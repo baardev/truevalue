@@ -62,6 +62,37 @@
   .coherence-val { font-size: 24px; font-weight: 800; color: #a5d65b; }
   .coherence-name { font-size: 12px; font-weight: 700; color: #6b8c2a; margin-bottom: 4px; }
   .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent  { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .zone-failure   { background: rgba(249,112,102,0.18); color: #f97066; }
+  .zone-border    { background: rgba(255,195,0,0.18); color: #ffc300; }
+  .phi-key { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 14px; }
+  .phi-cell { border-radius: 8px; padding: 12px 14px; font-size: 12px; border-left: 4px solid #6b8c2a; background: #21262d; }
+  .phi-cell.coherent { border-left-color: #3fb950; }
+  .phi-cell.failure  { border-left-color: #f97066; }
+  .phi-cell.breakdown{ border-left-color: #555; }
+  .phi-cell-label { font-weight: 700; color: #e6edf3; margin-bottom: 4px; }
+  .phi-cell-range { color: #8b949e; font-size: 11px; }
+  .phi-cell-dc    { color: #8b949e; font-size: 11px; margin-top: 2px; }
+  .transparency-note { font-size: 11px; color: #8b949e; line-height: 1.6; margin-bottom: 14px; border-left: 3px solid rgba(107,140,42,0.5); padding-left: 10px; }
+  .stage-label { display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px; }
+  .stage-label.s1 { background: rgba(107,140,42,0.3); color: #a5d65b; }
+  .stage-label.s2 { background: rgba(63,185,80,0.15); color: #3fb950; }
+  .stage-intro { font-size: 12px; color: #8b949e; line-height: 1.6; margin-bottom: 14px; }
+  .stage1-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .stage1-table th { text-align: left; padding: 8px 10px; background: #21262d; color: #a5d65b; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+  .stage1-table td { padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e6edf3; vertical-align: middle; }
+  .stage1-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .s1-axis { font-weight: 600; }
+  .s1-score { font-weight: 800; color: #a5d65b; }
+  .s1-ref { color: #8b949e; font-size: 11px; }
+  .s1-margin.pos { color: #3fb950; font-size: 11px; }
+  .s1-margin.borderline { color: #ffc300; font-size: 11px; }
+  .s1-result { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .s1-result.pass { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .s1-result.borderline { background: rgba(255,195,0,0.18); color: #ffc300; }
+  .two-stage-note { background: rgba(107,140,42,0.1); border: 1px solid rgba(107,140,42,0.3); border-radius: 8px; padding: 12px 14px; margin-top: 12px; font-size: 11px; color: #8b949e; line-height: 1.6; }
+  .two-stage-note strong { color: #a5d65b; }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th {
     text-align: left; padding: 10px 12px;
@@ -110,8 +141,35 @@
     </div>
   </div>
 
+  <div class="panel" style="margin-bottom:20px;">
+    <h2>PHI Zone Key — Chain Coherence Framework</h2>
+    <div class="phi-key">
+      <div class="phi-cell coherent">
+        <div class="phi-cell-label">C &nbsp; Coherent</div>
+        <div class="phi-cell-range">Balance ≥ 61.8%</div>
+        <div class="phi-cell-dc">D:C ratio &lt; φ</div>
+      </div>
+      <div class="phi-cell failure">
+        <div class="phi-cell-label">F &nbsp; Failure</div>
+        <div class="phi-cell-range">Balance 38.2% – 61.8%</div>
+        <div class="phi-cell-dc">D:C ratio φ to φ²</div>
+      </div>
+      <div class="phi-cell breakdown">
+        <div class="phi-cell-label">B &nbsp; Breakdown</div>
+        <div class="phi-cell-range">Balance &lt; 38.2%</div>
+        <div class="phi-cell-dc">D:C ratio &gt; φ²</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#8b949e;line-height:1.6;">
+      A phase is flagged <strong style="color:#f97066;">BOTTLENECK</strong> when its balance falls below the
+      π/4 operational reference (78.5%). Phase 5 at 81.1% is above π/4 and in the Coherent PHI zone, making
+      it a structural weak point rather than a hard operational failure. Phase 7 at 85.5% is also above the
+      operational reference but notable for brand-capture opacity.
+    </p>
+  </div>
+
   <div class="alert-bar">
-    <h3>Primary Bottleneck: Phase 5 — Packaging and Bottling (Balance 81.1%)</h3>
+    <h3>Primary Bottleneck: Phase 5 — Packaging and Bottling (Balance 81.1%, above π/4 reference of 78.5%)</h3>
     <p>
       Spain exports approximately 67% of its olive oil as undifferentiated bulk at EUR 3.22/kg average.
       Italian companies (Salov/Filippo Berio, Deoleo/Bertolli) blend and rebrand this oil at EUR 4.42/kg,
@@ -138,6 +196,14 @@
 
   <div class="panel">
     <h2>Phase D-C-N Balance Analysis</h2>
+    <p class="transparency-note">
+      <strong style="color:#a5d65b;">Transparency ratings:</strong>
+      <strong style="color:#3fb950;">High</strong> = institutional custody documentation, regulatory filings, standardised reporting.
+      <strong style="color:#ffc300;">Medium</strong> = partial documentation, cooperative or state oversight.
+      <strong style="color:#f97066;">Low</strong> = no chain-of-custody documents, no standardised process at phase level.
+      Balance reference: π/4 = 78.5% (phases below this are operational bottlenecks by the Stage 1 standard).
+      PHI zones: Coherent ≥ 61.8%, Failure 38.2–61.8%, Breakdown &lt; 38.2%.
+    </p>
 
     <div class="phase-row">
       <div class="phase-header">
@@ -206,33 +272,107 @@
   </div>
 
   <div class="panel">
-    <h2>Five-Model Coherence (π φ √2 ln2 e)</h2>
+    <div class="stage-label s1">Stage 1 of 2</div>
+    <h2>Five Constants — Individual Axis Analysis</h2>
+    <p class="stage-intro">Each axis measured against its own natural mathematical reference. A score above the reference means the chain exceeds the dimension's own physical standard.</p>
+    <table class="stage1-table">
+      <thead>
+        <tr>
+          <th>Axis</th><th>Chain Score</th><th>Natural Reference</th><th>Meaning at Reference</th><th>Margin</th><th>Stage 1 Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="s1-axis">π — Operational</td>
+          <td class="s1-score">89.1%</td>
+          <td class="s1-ref">π/4 = 78.5%</td>
+          <td style="font-size:11px;color:#8b949e;">Phases perfectly integrated; constraints match capacity</td>
+          <td class="s1-margin pos">+10.6%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td class="s1-axis">φ — Proportional</td>
+          <td class="s1-score">74.5%</td>
+          <td class="s1-ref">1/φ = 61.8%</td>
+          <td style="font-size:11px;color:#8b949e;">Value escalates at natural golden ratio between phases</td>
+          <td class="s1-margin pos">+12.7%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td class="s1-axis">√2 — Structural</td>
+          <td class="s1-score">82.0%</td>
+          <td class="s1-ref">1/√2 = 70.7%</td>
+          <td style="font-size:11px;color:#8b949e;">Transfer overhead at irreducible minimum cost of a phase boundary</td>
+          <td class="s1-margin pos">+11.3%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td class="s1-axis">ln2 — Growth</td>
+          <td class="s1-score">71.5%</td>
+          <td class="s1-ref">ln2 = 69.3%</td>
+          <td style="font-size:11px;color:#8b949e;">Transformation phases doubling value at the natural rate</td>
+          <td class="s1-margin pos">+2.2%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr style="background:rgba(255,195,0,0.04);">
+          <td class="s1-axis">e — Trade Structure</td>
+          <td class="s1-score" style="color:#ffc300;">62.0%</td>
+          <td class="s1-ref">1/e = 36.8%</td>
+          <td style="font-size:11px;color:#8b949e;">Financial coupling at natural decay rate; above = better than minimum</td>
+          <td class="s1-margin pos">+25.2%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="two-stage-note" style="margin-top:12px;">
+      <strong>Stage 1 result:</strong> All five axes pass their individual natural references. ln2-Growth has the
+      smallest margin (+2.2%): Spain produces the oil but Italy captures the brand premium, suppressing the
+      growth transformation score. e-Trade Structure at 62.0% passes Stage 1 comfortably but sits only 0.2%
+      above the Stage 2 Phi coherence threshold — a borderline Stage 2 result.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="stage-label s2">Stage 2 of 2</div>
+    <h2>Phi Zone Coherence — Universal D:C Proportionality Standard</h2>
+    <p class="stage-intro">The Phi zone framework (Coherent ≥ 61.8%, Failure 38.2–61.8%, Breakdown &lt; 38.2%) applied as a universal proportionality test. All five Olive Oil axes are Coherent in Stage 2, but e-Trade Structure at 62.0% is borderline (0.2% above the threshold).</p>
     <div class="coherence-grid">
       <div class="coherence-item">
         <div class="coherence-name">π — Operational</div>
         <div class="coherence-val">89.1</div>
-        <div class="coherence-desc">Chain average balance. Well above 85% floor. Phase 5 is the single degrading factor.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Chain average. Phase 5 (81.1%) is the structural weak point but above the π/4 operational reference.</div>
       </div>
       <div class="coherence-item">
         <div class="coherence-name">φ — Proportional</div>
         <div class="coherence-val">74.5</div>
-        <div class="coherence-desc">Value distribution. Spain-Italy premium gap (EUR 1.20/kg) drives below sustainable threshold.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Spain-Italy EUR 1.20/kg premium gap drives proportional imbalance. Coherent but structurally pressured.</div>
       </div>
       <div class="coherence-item">
         <div class="coherence-name">√2 — Structural</div>
         <div class="coherence-val">82.0</div>
-        <div class="coherence-desc">Custody transfer. MSC/Rubino RS logistics competent. Bulk relabeling adds opacity layer.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Logistics competent (MSC/Rubino RS). Bulk relabeling at Phase 5 adds an opacity layer at the brand boundary.</div>
       </div>
       <div class="coherence-item">
         <div class="coherence-name">ln2 — Growth</div>
         <div class="coherence-val">71.5</div>
-        <div class="coherence-desc">Value transformation. Spain produces; Italy brands. Low capture of value addition. Below floor.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Spain produces; Italy brands. Value transformation exists but Spanish producers capture a disproportionately small share.</div>
       </div>
-      <div class="coherence-item">
+      <div class="coherence-item" style="border: 1px solid rgba(255,195,0,0.3);">
         <div class="coherence-name">e — Trade Structure</div>
-        <div class="coherence-val">62.0</div>
-        <div class="coherence-desc">Trade structure coupling. Export contracts, PDO/PGI provenance certification, and commodity pricing mechanisms vs. physical chain performance. Commodity pricing dominates; limited cooperative-level hedging instruments.</div>
+        <div class="coherence-val" style="color:#ffc300;">62.0</div>
+        <div class="coherence-zone zone-border">Borderline Coherent</div>
+        <div class="coherence-desc">0.2% above the 61.8% Phi threshold. PDO/PGI certification and commodity pricing provide weak financial-physical coupling. Monitor for deterioration.</div>
       </div>
+    </div>
+    <div class="two-stage-note">
+      <strong>Watch point:</strong> e-Trade Structure at 62.0% passes Stage 2 by only 0.2 percentage points.
+      Any reduction in PDO/PGI premium transmission or further commodity price suppression could push this
+      axis into the Phi Failure zone. Unlike the cocoa cases, all Olive Oil axes clear Stage 1; the risk is
+      concentrated in Stage 2 proportionality on the trade structure dimension.
     </div>
   </div>
 
