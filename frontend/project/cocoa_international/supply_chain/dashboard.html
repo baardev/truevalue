@@ -62,6 +62,58 @@
   .coherence-val { font-size: 24px; font-weight: 800; color: #c8a26e; }
   .coherence-name { font-size: 12px; font-weight: 700; color: #8b5a2b; margin-bottom: 4px; }
   .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  .coherence-ref { font-size: 10px; color: #5c3317; margin-top: 6px; font-weight: 600; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .zone-failure  { background: rgba(249,112,102,0.18); color: #f97066; }
+  .zone-border   { background: rgba(255,195,0,0.18); color: #ffc300; }
+  .phi-key { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+  .phi-cell {
+    background: #21262d; border-radius: 8px; padding: 12px 14px;
+    border-left: 4px solid #5c3317; font-size: 12px;
+  }
+  .phi-cell.coherent { border-left-color: #3fb950; }
+  .phi-cell.failure  { border-left-color: #f97066; }
+  .phi-cell.breakdown{ border-left-color: #8b949e; }
+  .phi-cell-label { font-weight: 700; color: #e6edf3; margin-bottom: 4px; }
+  .phi-cell-range { color: #8b949e; font-size: 11px; }
+  .phi-cell-dc    { color: #8b949e; font-size: 11px; margin-top: 2px; }
+  .two-stage-note {
+    background: rgba(92,51,23,0.15); border: 1px solid rgba(92,51,23,0.35);
+    border-radius: 8px; padding: 14px 16px; margin-top: 14px;
+    font-size: 11px; color: #8b949e; line-height: 1.6;
+  }
+  .two-stage-note strong { color: #c8a26e; }
+  .stage-intro { font-size: 12px; color: #8b949e; line-height: 1.6; margin-bottom: 14px; }
+  .stage1-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .stage1-table th {
+    text-align: left; padding: 8px 10px; background: #21262d;
+    color: #c8a26e; font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.05em;
+  }
+  .stage1-table td { padding: 9px 10px; border-bottom: 1px solid rgba(255,255,255,0.05); color: #e6edf3; vertical-align: middle; }
+  .stage1-table tr:hover td { background: rgba(255,255,255,0.03); }
+  .s1-axis { font-weight: 600; }
+  .s1-score { font-weight: 800; color: #c8a26e; }
+  .s1-ref { color: #8b949e; font-size: 11px; }
+  .s1-margin { font-size: 11px; }
+  .s1-margin.pos { color: #3fb950; }
+  .s1-margin.neg { color: #f97066; }
+  .s1-margin.borderline { color: #ffc300; }
+  .s1-result { font-size: 10px; font-weight: 700; padding: 3px 9px; border-radius: 999px; white-space: nowrap; }
+  .s1-result.pass { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .s1-result.below { background: rgba(249,112,102,0.18); color: #f97066; }
+  .s1-result.borderline { background: rgba(255,195,0,0.18); color: #ffc300; }
+  .stage-label {
+    display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 999px; margin-bottom: 10px;
+  }
+  .stage-label.s1 { background: rgba(92,51,23,0.4); color: #c8a26e; }
+  .stage-label.s2 { background: rgba(63,185,80,0.15); color: #3fb950; }
+  .transparency-note {
+    font-size: 11px; color: #8b949e; margin-bottom: 14px; line-height: 1.6;
+    border-left: 3px solid rgba(92,51,23,0.5); padding-left: 10px;
+  }
   table { width: 100%; border-collapse: collapse; font-size: 13px; }
   th {
     text-align: left; padding: 10px 12px;
@@ -110,8 +162,36 @@
     </div>
   </div>
 
+  <div class="panel" style="margin-bottom:20px;">
+    <h2>PHI Zone Key — Chain Coherence Framework</h2>
+    <div class="phi-key">
+      <div class="phi-cell coherent">
+        <div class="phi-cell-label">C &nbsp; Coherent</div>
+        <div class="phi-cell-range">Balance ≥ 61.8%</div>
+        <div class="phi-cell-dc">D:C ratio &lt; φ</div>
+      </div>
+      <div class="phi-cell failure">
+        <div class="phi-cell-label">F &nbsp; Failure</div>
+        <div class="phi-cell-range">Balance 38.2% – 61.8%</div>
+        <div class="phi-cell-dc">D:C ratio φ to φ²</div>
+      </div>
+      <div class="phi-cell breakdown">
+        <div class="phi-cell-label">B &nbsp; Breakdown</div>
+        <div class="phi-cell-range">Balance &lt; 38.2%</div>
+        <div class="phi-cell-dc">D:C ratio &gt; φ²</div>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#8b949e;line-height:1.6;">
+      Label colour and phase bar reflect each phase's PHI zone. D/C = Definition ÷ Contribution ratio.
+      A phase is flagged <strong style="color:#f97066;">BOTTLENECK</strong> when its balance falls below the
+      axis-specific natural reference for the operational constant (π/4 = 78.5%). Phase 1 at 76.5% is
+      in the Coherent PHI zone (above 61.8%) but below the π/4 operational reference, making it the
+      primary system constraint.
+    </p>
+  </div>
+
   <div class="alert-bar">
-    <h3>Structural Bottleneck: Phase 1 — Fermentation and Drying (76.5% balance, failure zone)</h3>
+    <h3>Structural Bottleneck: Phase 1 — Fermentation and Drying (76.5% balance, below π/4 operational reference of 78.5%)</h3>
     <p>
       Fermentation and sun-drying at farm level develops approximately 85% of chocolate flavor precursors
       over 12-22 days. No standardized process, no temperature monitoring, no chain-of-custody documents,
@@ -125,6 +205,13 @@
 
   <div class="panel">
     <h2>Phase N-D-C Balance Analysis</h2>
+    <p class="transparency-note">
+      <strong style="color:#c8a26e;">Transparency ratings:</strong>
+      <strong style="color:#3fb950;">High</strong> = institutional custody documentation, regulatory filings, standardised reporting.
+      <strong style="color:#ffc300;">Medium</strong> = partial documentation, cooperative or state oversight.
+      <strong style="color:#f97066;">Low</strong> = no chain-of-custody documents, no standardised process at phase level.
+      Balance reference: π/4 = 78.5% (operational coherence threshold).
+    </p>
 
     <div class="phase-row">
       <div class="phase-header">
@@ -184,32 +271,117 @@
   </div>
 
   <div class="panel">
-    <h2>Five-Model Coherence (Baseline)</h2>
+    <div class="stage-label s1">Stage 1 of 2</div>
+    <h2>Five Constants — Individual Axis Analysis</h2>
+    <p class="stage-intro">
+      Each axis is measured against its own natural mathematical reference. This tests whether the chain
+      meets each dimension's own physical standard independently of all other axes.
+      A score above the natural reference means the chain is performing better than the mathematical ideal
+      for that dimension. A score below means that dimension has a structural deficit even if it appears
+      proportionally balanced in Stage 2.
+    </p>
+    <table class="stage1-table">
+      <thead>
+        <tr>
+          <th>Axis</th>
+          <th>Chain Score</th>
+          <th>Natural Reference</th>
+          <th>Meaning at Reference</th>
+          <th>Margin</th>
+          <th>Stage 1 Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="s1-axis">π — Operational</td>
+          <td class="s1-score">89.2%</td>
+          <td class="s1-ref">π/4 = 78.5%</td>
+          <td style="font-size:11px;color:#8b949e;">Phases perfectly integrated; constraints match capacity</td>
+          <td class="s1-margin pos">+10.7%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td class="s1-axis">φ — Proportional</td>
+          <td class="s1-score">72.8%</td>
+          <td class="s1-ref">1/φ = 61.8%</td>
+          <td style="font-size:11px;color:#8b949e;">Value escalates at the natural golden ratio between phases</td>
+          <td class="s1-margin pos">+11.0%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr>
+          <td class="s1-axis">√2 — Structural</td>
+          <td class="s1-score">81.4%</td>
+          <td class="s1-ref">1/√2 = 70.7%</td>
+          <td style="font-size:11px;color:#8b949e;">Transfer overhead at irreducible minimum cost of a phase boundary</td>
+          <td class="s1-margin pos">+10.7%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+        <tr style="background:rgba(255,195,0,0.05);">
+          <td class="s1-axis">ln2 — Growth</td>
+          <td class="s1-score" style="color:#ffc300;">68.5%</td>
+          <td class="s1-ref">ln2 = 69.3%</td>
+          <td style="font-size:11px;color:#8b949e;">Transformation phases doubling value at the natural rate</td>
+          <td class="s1-margin borderline">−0.8%</td>
+          <td><span class="s1-result borderline">BELOW REF</span></td>
+        </tr>
+        <tr>
+          <td class="s1-axis">e — Financial</td>
+          <td class="s1-score">58.3%</td>
+          <td class="s1-ref">1/e = 36.8%</td>
+          <td style="font-size:11px;color:#8b949e;">Financial coupling at natural decay rate; above = better than minimum</td>
+          <td class="s1-margin pos">+21.5%</td>
+          <td><span class="s1-result pass">PASS</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="two-stage-note" style="margin-top:12px;">
+      <strong>Stage 1 reading:</strong> ln2 (Growth) is the only axis below its natural reference at −0.8%.
+      Fermentation creates most of chocolate's value; farmers capture none of that premium.
+      e (Financial) passes Stage 1 convincingly (58.3% &gt; 36.8%) — financial coupling is above the
+      natural decay floor — but this does not determine its Stage 2 Phi zone result.
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="stage-label s2">Stage 2 of 2</div>
+    <h2>Phi Zone Coherence — Universal D:C Proportionality Standard</h2>
+    <p class="stage-intro">
+      The Phi zone framework applies a universal proportionality test across all axes using the golden ratio
+      as the coherence threshold. Coherent ≥ 61.8% means D and C are in natural proportion. A Stage 1 pass
+      does not guarantee Stage 2 coherence: e-Financial passes Stage 1 (above its 36.8% natural floor) yet
+      falls into the Phi Failure zone (58.3% &lt; 61.8%). Conversely, ln2-Growth is Stage 2 Coherent despite
+      being 0.8% below its own Stage 1 reference.
+    </p>
     <div class="coherence-grid">
       <div class="coherence-item">
         <div class="coherence-name">π — Operational</div>
         <div class="coherence-val">89.2</div>
-        <div class="coherence-desc">Chain average. Phase 1 at 76.5% is the critical system vulnerability.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Chain average. Phase 1 at 76.5% is below the π/4 Stage 1 reference and is the primary constraint, but the chain as a whole clears the Phi threshold.</div>
       </div>
       <div class="coherence-item">
         <div class="coherence-name">φ — Proportional</div>
         <div class="coherence-val">72.8</div>
-        <div class="coherence-desc">Value distribution. Farm-to-retail 1:6 ratio with USD 200/tonne Fairtrade premium only.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Value distribution. Farm-to-retail 1:6 ratio with USD 200/tonne Fairtrade premium only. Coherent but below the 78.5% operational quality level.</div>
       </div>
       <div class="coherence-item">
         <div class="coherence-name">√2 — Structural</div>
         <div class="coherence-val">81.4</div>
-        <div class="coherence-desc">Custody overhead. CCC and bill-of-lading anchor mid-chain; Phase 1 is the structural gap.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Custody overhead. CCC and bill-of-lading anchor mid-chain. Phase 1 is the structural gap; Phase 4 and 5 are the anchor.</div>
       </div>
       <div class="coherence-item">
         <div class="coherence-name">ln2 — Growth</div>
         <div class="coherence-val">68.5</div>
-        <div class="coherence-desc">Value-add capture. Fermentation creates most chocolate value; farmers capture none of the premium.</div>
+        <div class="coherence-zone zone-coherent">Coherent</div>
+        <div class="coherence-desc">Stage 2 Coherent (68.5% &gt; 61.8%) but Stage 1 deficit: 0.8% below the ln2 natural reference. Transformation value exists but farmers capture none of the fermentation premium.</div>
       </div>
-      <div class="coherence-item">
+      <div class="coherence-item" style="border: 1px solid rgba(249,112,102,0.3);">
         <div class="coherence-name">e — Financial</div>
-        <div class="coherence-val">58.3</div>
-        <div class="coherence-desc">Financial coupling. Sustainability premiums weakly linked to supply chain performance.</div>
+        <div class="coherence-val" style="color:#f97066;">58.3</div>
+        <div class="coherence-zone zone-failure">Phi Failure Zone</div>
+        <div class="coherence-desc">Stage 1 pass (58.3% well above 36.8% natural floor) but Stage 2 failure (58.3% &lt; 61.8% Phi threshold). Sustainability premiums are structurally decoupled from supply chain performance.</div>
       </div>
     </div>
   </div>

@@ -130,6 +130,10 @@ Central curated registry of all official and support documents for TVF projects.
 
 AI notes under `docnav/.ai_notes/` are self-describing and not listed here. Add a new entry to the registry whenever a new official or support document is created. Update `last_updated` and `tags` as part of any content-sync run.
 
+### `docs/ndc_measurement_framework.md`
+
+Explains the Tholonic N-D-C measurement framework in plain terms: what a tholonic primitive is (and its three subtypes), how D and C values are currently derived from PDI binary flags, where the mathematical constants (phi) enter as convergence targets rather than computed outputs, the key distinction from AI training, and a structured analysis of current weaknesses (scale arbitrariness, sustainability metric scale-dependence, cross-commodity invalidity). Closes with four candidate approaches to a principled normalization scale, from threshold-ratio normalization (recommended near-term) to prime-ratio derivation (long-term theoretical goal). Intended as a conceptual reference for analysts and developers.
+
 ### `docs/roadmap.md`
 
 Platform-wide planning tracker. Organized into six sections: PDI status per project (with a conformance check for PDI v1.1), TVPCI scoring pipeline tasks, research paper status, frontend and site structure tasks, infrastructure and tooling, and documentation. Also contains a "Completed milestones" block for recent history. Update this file whenever a task is finished or a new task is identified. It is not a change log (use `docs/content-sync-log.json` for that).

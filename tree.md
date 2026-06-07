@@ -45,6 +45,18 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   └── value_chain/index.html      Shea Value Chain hub
 │       ├── dashboard.html
 │       └── what_if_simulator.html
+├── frontend/project/marina_alta/index.html  Marina Alta Mountain Ecosystem — Multi-commodity climate adaptation hub
+│   ├── project.yaml                Marina Alta project metadata, key metrics, EU Horizon funding context
+│   ├── research_notes.md           Comprehensive data: email, PPTX 19-slide plan, YouTube transcripts, web research
+│   ├── supply_chain/index.html     Supply Chain hub — 8-phase analysis
+│   │   ├── dashboard.html          Dark-theme N-D-C dashboard; bottleneck Phases 2 and 6
+│   │   ├── project_context.html    Context, actor network, 10-year cherry trend, bond opportunity analysis
+│   │   └── recycling_analysis.html TVPCI-R ecological return chain (alperujo, cherry marc, almond shells)
+│   ├── value_chain/index.html      Value Chain — investment model, EUR 10-25M SLB, Los Grobos scaling
+│   └── data/
+│       └── processed/marina_alta_supply_chain_ui.json
+├── frontend/docs/PDI/PDI_marina_alta_20260606.yaml   Marina Alta Physical Disclosure Index YAML (8 phases)
+├── frontend/docs/PDI/PDI_andalucia_olive_20260606.yaml  Andalucia olive ecosystem PDI (8 phases, paired with Marina Alta)
 ├── frontend/project/olive_oil/index.html   Olive Oil — Spanish supply and value chain hub
 │   ├── project.yaml                Olive oil project metadata, key metrics, bond relevance
 │   ├── supply_chain/index.html     Supply Chain hub — 8-phase analysis
@@ -129,7 +141,9 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   │   ├── system_lifecycle.html
 │   │   └── dashboard.html
 │   └── value_chain/index.html      ERCOT Uri deferred value layer
-└── frontend/project/water_compare/index.html   NEWater vs. OCWD comparative analysis
+├── frontend/project/water_compare/index.html   NEWater vs. OCWD comparative analysis
+├── frontend/project/olive_compare/index.html   Marina Alta vs. Andalucia olive ecosystem comparison
+│   └── data/andalucia_olive_supply_chain_ui.json  Andalucia 8-phase supply chain N-D-C data (phases.synthetic format)
 ```
 
 Every page follows a uniform depth: **Root → Commodity hub → Layer hub → View**.
