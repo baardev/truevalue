@@ -196,9 +196,9 @@
 <a href="/frontend/project/shared/sqrt2_analysis_test.html">√2-only test</a>
 <a href="/frontend/project/gold/supply_chain/ln2_dashboard.html">ln(2) Gold</a>
 <a href="/frontend/project/gold/supply_chain/e_dashboard.html">e Gold</a>
-<a href="/frontend/project/shea/supply_chain/index.html">🫒 Shea Supply Chain</a>
-<a href="/frontend/project/shea/supply_chain/sqrt2_dashboard.html">√2 Shea</a>
-<a href="/frontend/project/shea/supply_chain/ln2_dashboard.html">ln(2) Shea</a>
+<a href="/frontend/project/west_african_shea/supply_chain/index.html">🫒 Shea Supply Chain</a>
+<a href="/frontend/project/west_african_shea/supply_chain/sqrt2_dashboard.html">√2 Shea</a>
+<a href="/frontend/project/west_african_shea/supply_chain/ln2_dashboard.html">ln(2) Shea</a>
 <a href="/frontend/project/aubeb/supply_chain/index.html">🌿 AUBEB Supply Chain</a>
 <a href="/index.html">🏠 Home</a>
 </div>
@@ -350,7 +350,7 @@
 <div class="footer">
 <p>Five-Model N-D-C Coherence — Tholonic Framework  | 
         <a href="/frontend/project/gold/supply_chain/index.html">Gold Hub</a>  | 
-        <a href="/frontend/project/shea/supply_chain/index.html">Shea Hub</a>  | 
+        <a href="/frontend/project/west_african_shea/supply_chain/index.html">West African Shea Hub</a>  | 
         Framework Docs</p>
 </div>
 </div><!-- /page -->
@@ -378,7 +378,7 @@ const CHAIN_DATA = {
         stroke:"rgba(45,106,79,0.85)",
         scores: { pi: 81.6, phi: 53.6, sqrt2: 38.2, ln2: 39.7, e: 54 },
         notes: {
-            pi:    "System balance from π operational model (frontend/project/shea/data/shea_ndc_data.json)",
+            pi:    "System balance from π operational model (frontend/project/west_african_shea/data/shea_ndc_data.json)",
             phi:   "System φ-coherence: 53.6 — 6 boundaries, worst P3→P4 (30.4)",
             sqrt2: "System √2-coherence: 38.2 — two failure modes: under-specified early chain, extractive late chain",
             ln2:   "System ln(2)-coherence: 39.7 — REAL data: $150→$4,000→$47,500/MT; 317× total amplification",
@@ -715,7 +715,7 @@ function render() {
 // ── Load scenarios from JSON files ───────────────────────────────────────────
 Promise.all([
     fetch('/frontend/project/gold/supply_chain/scenarios.json').then(r => r.json()),
-    fetch('/frontend/project/shea/supply_chain/scenarios.json').then(r => r.json()),
+    fetch('/frontend/project/west_african_shea/supply_chain/scenarios.json').then(r => r.json()),
     fetch('/frontend/project/aubeb/supply_chain/scenarios.json').then(r => r.json()),
 ]).then(([goldData, sheaData, mangroveData]) => {
     GOLD_SCENARIOS    = goldData.coherence_scores.scenarios;
@@ -736,14 +736,14 @@ Promise.all([
 /* ── Auto-breadcrumb ─────────────────────────────────────── */
 (function(){
   var LABELS={
-    'gold':'Gold','shea':'Shea',
+    'gold':'Gold','west_african_shea':'West African Shea',
     'supply_chain':'Supply Chain','value_chain':'Value Chain',
     'five_model_coherence.html':'Five-Model Coherence',
     'index.html':null,'frontend':null
   };
   var HUBS={
     'gold':'/frontend/project/gold/index.html',
-    'shea':'/frontend/project/shea/index.html',
+    'west_african_shea':'/frontend/project/west_african_shea/index.html',
     'supply_chain':'/frontend/project/gold/supply_chain/index.html'
   };
   var css='#tv-bc{background:rgba(0,0,0,0.35);padding:6px 22px;font-size:11.5px;'+
@@ -787,7 +787,7 @@ Promise.all([
   // Detect project slug
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
-  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
   else if (/\/gold\//i.test(path))   project = 'gold';
 
   // Detect section
@@ -806,8 +806,8 @@ Promise.all([
     if (project === 'gold') {
       projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
     }
-    if (project === 'shea') {
-      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
     }
   }
 

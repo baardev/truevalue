@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gold V2 (Normalized) Supply Chain – Intelligence Platform</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .hero {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 60px 50px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .hero h1 {
+            font-size: 48px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-weight: 300;
+        }
+        
+        .hero .tagline {
+            font-size: 20px;
+            color: #6c757d;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .hero .version {
+            display: inline-block;
+            padding: 8px 16px;
+            background: #e7f3ff;
+            color: #17a2b8;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .feature-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+        
+        .feature h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .feature p {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+        
+        .interfaces {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .interface-card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .interface-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        
+        .interface-header {
+            padding: 40px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+        
+        .interface-header h2 {
+            font-size: 28px;
+            margin-bottom: 10px;
+            font-weight: 400;
+        }
+        
+        .interface-header .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        
+        .interface-header .status {
+            display: inline-block;
+            padding: 5px 12px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .interface-body {
+            padding: 30px;
+        }
+        
+        .interface-body h3 {
+            font-size: 18px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+        
+        .interface-body p {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .interface-body ul {
+            list-style: none;
+            margin-bottom: 20px;
+        }
+        
+        .interface-body li {
+            font-size: 14px;
+            color: #495057;
+            padding: 8px 0;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .interface-body li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #28a745;
+            font-weight: bold;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(102,126,234,0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            box-shadow: 0 8px 20px rgba(108,117,125,0.4);
+        }
+        
+        .coming-soon {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .coming-soon h2 {
+            font-size: 28px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .coming-soon-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .coming-soon-item {
+            padding: 30px 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            text-align: center;
+            border: 2px dashed #dee2e6;
+        }
+        
+        .coming-soon-item .icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+        
+        .coming-soon-item h3 {
+            font-size: 16px;
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+        
+        .coming-soon-item p {
+            font-size: 12px;
+            color: #adb5bd;
+        }
+        
+        .project-info {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            padding: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .project-info h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .info-section h3 {
+            font-size: 16px;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .info-section p, .info-section li {
+            font-size: 14px;
+            color: #6c757d;
+            line-height: 1.6;
+        }
+        
+        .info-section ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .info-section li {
+            padding: 5px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .info-section li:before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            background: #d4edda;
+            color: #155724;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+        
+        .badge.new {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .badge.beta {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        
+        .footer {
+            text-align: center;
+            color: white;
+            padding: 20px;
+            font-size: 14px;
+            opacity: 0.8;
+        }
+        
+        .quick-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .stat-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 36px;
+            font-weight: bold;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+<div style="background:#fff3cd;border-bottom:2px solid #ffc107;padding:12px 24px;font-size:13px;font-family:ui-sans-serif,system-ui,sans-serif;color:#664d03;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+  <span style="font-weight:700;text-transform:uppercase;letter-spacing:0.06em;font-size:11px;">Experimental Clone</span>
+  <span>This is <strong>gold_v2</strong>: threshold-ratio normalized. Select the <strong>Normalized</strong> entity in dashboards to see D/C values grounded in WGC, LBMA, and COMEX thresholds. See <code>docs/ndc_measurement_framework.md</code> Section 8.1.</span>
+  <a href="../../gold/supply_chain/index.html" style="color:#664d03;font-weight:700;text-decoration:underline;white-space:nowrap;">← Original gold supply chain</a>
+</div>
+<div class="container">
+<div class="hero">
+<div class="version">gold_v2 – Normalized Experimental</div>
+<h1>🏆 Gold Supply Chain Intelligence Platform (V2)</h1>
+<p class="tagline">
+                Quantitative, phase-resolved, physically grounded modeling of the gold supply chain<br/>
+                from geological origin to exchange-registered bullion, now with environmental sustainability metrics
+            </p>
+<div class="features">
+<div class="feature">
+<div class="feature-icon">📊</div>
+<h3>Phase-Based Analysis</h3>
+<p>9 discrete phases (0-8) including circular economy recycling</p>
+</div>
+<div class="feature">
+<div class="feature-icon">🌱</div>
+<h3>Environmental Metrics</h3>
+<p>Water, waste, and energy tracking per Sarah's TRUE VALUE framework</p>
+</div>
+<div class="feature">
+<div class="feature-icon">⚖️</div>
+<h3>N-D-C Balance</h3>
+<p>Tholonic framework for system sustainability and bottleneck detection</p>
+</div>
+</div>
+<div class="quick-stats">
+<div class="stat-card">
+<div class="stat-value">9</div>
+<div class="stat-label">Supply Chain Phases</div>
+</div>
+<div class="stat-card">
+<div class="stat-value">13</div>
+<div class="stat-label">Real Companies Mapped</div>
+</div>
+<div class="stat-card">
+<div class="stat-value">17</div>
+<div class="stat-label">Environmental Metrics</div>
+</div>
+<div class="stat-card">
+<div class="stat-value">5</div>
+<div class="stat-label">N-D-C Models Active</div>
+</div>
+</div>
+</div>
+<!-- π model section header -->
+<div style="background:#f8f9fa; border-radius:10px; padding:18px 24px; margin-bottom:16px; border-left:5px solid #667eea;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:32px; font-weight:900; color:#667eea;">π</span>
+<div>
+<div style="font-size:15px; font-weight:700; color:#2c3e50;">π Operational Model — Layer 1 of 5</div>
+<div style="font-size:13px; color:#6c757d;">Per-phase D-C balance. Measures operational sustainability of each phase in isolation. D=3, C=5 configuration → converges to π.</div>
+</div>
+</div>
+</div>
+<div class="interfaces">
+<div class="interface-card" onclick="window.location.href='dashboard.html'">
+<div class="interface-header">
+<div class="icon">📈</div>
+<h2>π — Phase Dashboard</h2>
+<span class="status">✓ ACTIVE</span>
+</div>
+<div class="interface-body">
+<h3>Operational D-C Balance — All Phases</h3>
+<p>Per-phase view of Definition vs Contribution balance, N-state, sustainability index, and environmental metrics across all 9 phases.</p>
+<ul>
+<li>Phase-by-phase D-C balance visualization</li>
+<li>Water recycling and waste circularity metrics</li>
+<li>Clean energy transition tracking</li>
+<li>Phase 8 circular economy integration</li>
+<li>Entity selector (Newmont, Barrick, UK Royal Mint)</li>
+<li>Critical alerts and recommendations</li>
+</ul>
+<a class="btn" href="dashboard.html">Launch π Dashboard →</a>
+</div>
+</div>
+<div class="interface-card" onclick="window.location.href='what_if_simulator.html'">
+<div class="interface-header">
+<div class="icon">🎛️</div>
+<h2>π — What-If Simulator</h2>
+<span class="status">✓ ACTIVE</span>
+</div>
+<div class="interface-body">
+<h3>Operational Parameter Modeling</h3>
+<p>Adjust individual D and C parameters per phase in real-time. Observe how changes to operational constraints and contributions cascade through the chain.</p>
+<ul>
+<li>Phase-by-phase D/C parameter sliders</li>
+<li>Live N-state and balance recalculation</li>
+<li>Environmental metric simulation</li>
+<li>Auto-optimization engine</li>
+<li>Scenario library (shock, expansion, optimization)</li>
+<li>Real-time sustainability calculations</li>
+</ul>
+<a class="btn" href="what_if_simulator.html">Launch π Simulator →</a>
+</div>
+</div>
+</div><!-- /interfaces π -->
+<!-- φ section header -->
+<div style="background:#faf7f0; border-radius:10px; padding:18px 24px; margin:30px 0 16px; border-left:5px solid #b8860b;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:32px; font-weight:900; color:#b8860b;">φ</span>
+<div>
+<div style="font-size:15px; font-weight:700; color:#2c3e50;">φ Proportional Model — Layer 2 of 5</div>
+<div style="font-size:13px; color:#6c757d;">Cross-phase N-value ratios. Measures proportional coherence between adjacent phases. D=2, C=3 configuration → converges to φ (1.618).</div>
+</div>
+</div>
+</div>
+<div class="interfaces" style="margin-bottom:40px;">
+<div class="interface-card" onclick="window.location.href='phi_dashboard.html'" style="border-top: 4px solid #b8860b;">
+<div class="interface-header" style="background: linear-gradient(135deg, #3d2b00 0%, #b8860b 100%);">
+<div class="icon">φ</div>
+<h2>φ Proportional Model</h2>
+<span class="status">✓ ACTIVE — NEW</span>
+</div>
+<div class="interface-body">
+<h3>Cross-Phase Proportional Coherence</h3>
+<p>Analyzes whether N-values grow in φ (golden ratio) proportions between adjacent phases. Chain-wide view — the second layer of the five-model N-D-C framework.</p>
+<ul>
+<li>All 7 phase boundaries scored against φ = 1.618</li>
+<li>Identifies disproportionate value capture between phases</li>
+<li>Live what-if: adjust any phase N-value, watch all ratios update</li>
+<li>φ reference scale showing all boundary ratios simultaneously</li>
+<li>Diagnoses bottleneck and recovery signatures (P5→P6 collapse)</li>
+<li>Model layer strip: navigate all five N-D-C models</li>
+</ul>
+<a class="btn" href="phi_dashboard.html" style="background: linear-gradient(135deg, #3d2b00, #b8860b);">Launch φ Model →</a>
+</div>
+</div>
+</div><!-- /interfaces φ -->
+<!-- √2 section header -->
+<div style="background:#f1f8e9; border-radius:10px; padding:18px 24px; margin:30px 0 16px; border-left:5px solid #2e7d32;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:28px; font-weight:900; color:#2e7d32;">√2</span>
+<div>
+<div style="font-size:15px; font-weight:700; color:#2c3e50;">√2 Structural Model — Layer 3 of 5</div>
+<div style="font-size:13px; color:#6c757d;">Structural symmetry at phase boundaries. Measures whether D (requirements) = C (deliverables) at each custody transfer. D=2, C=2 → converges to √2 (1.414). Gold system score: 72.1.</div>
+</div>
+</div>
+</div>
+<div class="interfaces" style="margin-bottom:40px;">
+<div class="interface-card" onclick="window.location.href='sqrt2_dashboard.html'" style="border-top: 4px solid #2e7d32;">
+<div class="interface-header" style="background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);">
+<div class="icon">√2</div>
+<h2>√2 Structural Model</h2>
+<span class="status">✓ ACTIVE — NEW</span>
+</div>
+<div class="interface-body">
+<h3>Boundary Structural Symmetry</h3>
+<p>Analyzes whether custody transfer phases impose symmetric D-C loads. What is structurally required at each boundary should match what is structurally delivered. System score: 72.1.</p>
+<ul>
+<li>7 boundaries scored: P3→P4 and P5→P6 achieve perfect symmetry (100.0)</li>
+<li>P0→P1 geological opacity is the worst boundary (score 28.7)</li>
+<li>Identifies extraction points (D &gt; C) vs. informal flow (D &lt; C)</li>
+<li>D/C bar visualization: see structural symmetry at a glance</li>
+<li>What-if simulator: adjust D and C for any boundary</li>
+<li>LBMA/COMEX downstream symmetry contrasts with geological upstream opacity</li>
+</ul>
+<a class="btn" href="sqrt2_dashboard.html" style="background: linear-gradient(135deg, #1b5e20, #2e7d32);">Launch √2 Model →</a>
+</div>
+</div>
+</div><!-- /interfaces √2 -->
+<!-- ln(2) section header -->
+<div style="background:#ffebee; border-radius:10px; padding:18px 24px; margin:30px 0 16px; border-left:5px solid #b71c1c;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:20px; font-weight:900; color:#b71c1c;">ln(2)</span>
+<div>
+<div style="font-size:15px; font-weight:700; color:#2c3e50;">ln(2) Growth Model — Layer 4 of 5</div>
+<div style="font-size:13px; color:#6c757d;">Growth conduit efficiency at transformation phases. Measures whether D-institutional suppresses natural value doubling. D=1, C=2 → converges to ln(2) (0.693). Gold system score: 40.4.</div>
+</div>
+</div>
+</div>
+<div class="interfaces" style="margin-bottom:40px;">
+<div class="interface-card" onclick="window.location.href='ln2_dashboard.html'" style="border-top: 4px solid #b71c1c;">
+<div class="interface-header" style="background: linear-gradient(135deg, #7f0000 0%, #b71c1c 100%);">
+<div class="icon" style="font-size:22px;">ln(2)</div>
+<h2>ln(2) Growth Model</h2>
+<span class="status">✓ ACTIVE — NEW</span>
+</div>
+<div class="interface-body">
+<h3>Growth Conduit Efficiency</h3>
+<p>Analyzes transformation phases (Mining, Processing, Smelting, Refining, Fabrication). Measures whether institutional constraints suppress natural value doubling. System score: 40.4 — systematic institutional capture.</p>
+<ul>
+<li>5 transformation phases scored: all score below 50</li>
+<li>Avg institutional load: 51% of total D across all phases</li>
+<li>D_natural vs D_institutional breakdown per phase</li>
+<li>C/D ratio reference scale (target: 2.0×)</li>
+<li>What-if simulator: reduce D-institutional, see score impact</li>
+<li>Identifies which institutional constraints are removable vs. natural</li>
+</ul>
+<a class="btn" href="ln2_dashboard.html" style="background: linear-gradient(135deg, #7f0000, #b71c1c);">Launch ln(2) Model →</a>
+</div>
+</div>
+</div><!-- /interfaces ln(2) -->
+<!-- e section header -->
+<div style="background:#f3e5f5; border-radius:10px; padding:18px 24px; margin:30px 0 16px; border-left:5px solid #4a148c;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:32px; font-weight:900; color:#4a148c;">e</span>
+<div>
+<div style="font-size:15px; font-weight:700; color:#2c3e50;">e Abstract Coherence Model — Layer 5 of 5</div>
+<div style="font-size:13px; color:#6c757d;">Physical–abstract coupling across the gold supply chain. Measures how far financial claims have drifted from the physical gold they reference. D=1, C=1 → continuous compounding limit: e (2.718). Gold system score: 37.</div>
+</div>
+</div>
+</div>
+<div class="interfaces" style="margin-bottom:40px;">
+<div class="interface-card" onclick="window.location.href='e_dashboard.html'" style="border-top: 4px solid #4a148c;">
+<div class="interface-header" style="background: linear-gradient(135deg, #1a0030 0%, #6a1b9a 100%);">
+<div class="icon" style="font-size:32px;">⚗️</div>
+<h2>e Abstract Coherence Model</h2>
+<span class="status">✓ ACTIVE — NEW</span>
+</div>
+<div class="interface-body">
+<h3>Physical–Abstract Coupling — All Claim Types</h3>
+<p>Maps every abstract financial claim operating on the gold supply chain (streaming, metal leases, ETFs, COMEX futures, unallocated positions) against its physical backing. System e-coherence score: 37 — severe decoupling at Phase 6 (LBMA unallocated) and Phase 7 (COMEX futures).</p>
+<ul>
+<li>9 claim types across 4 active phases scored by coupling ratio</li>
+<li>Primary opacity: LBMA unallocated positions — 50–100:1 estimated paper-to-physical</li>
+<li>COMEX futures coupling: 0.133 (only 13% of open interest is deliverable)</li>
+<li>Metal lease rehypothecation chain: same gold claimed 2–3× simultaneously</li>
+<li>Physical vs abstract value cascade chart</li>
+<li>What-if simulator: adjust coupling ratios, model regulatory scenarios</li>
+</ul>
+<a class="btn" href="e_dashboard.html" style="background: linear-gradient(135deg, #1a0030, #6a1b9a);">Launch e Model →</a>
+</div>
+</div>
+</div><!-- /interfaces e -->
+<!-- Five-Model Coherence section header -->
+<div style="background:#f0f0ff; border-radius:10px; padding:18px 24px; margin:30px 0 16px; border-left:5px solid #667eea;">
+<div style="display:flex; align-items:center; gap:14px;">
+<span style="font-size:22px; font-weight:900; color:#667eea;">π φ √2 ln(2) e</span>
+<div>
+<div style="font-size:15px; font-weight:700; color:#2c3e50;">Five-Model Coherence Signature — All Layers</div>
+<div style="font-size:13px; color:#6c757d;">Spider chart plotting all five N-D-C models simultaneously. A coherence signature — the shape reveals the nature and location of systemic failure.</div>
+</div>
+</div>
+</div>
+<div class="interfaces" style="margin-bottom:40px;">
+<div class="interface-card" onclick="window.location.href='/frontend/project/five_model_coherence.html'" style="border-top: 4px solid #667eea;">
+<div class="interface-header" style="background: linear-gradient(135deg, #0a0a1a 0%, #4a4a8a 100%);">
+<div class="icon" style="font-size:22px; letter-spacing:-1px;">π φ √2 ln e</div>
+<h2>Five-Model Coherence Chart</h2>
+<span class="status">✓ All 5 Models Active</span>
+</div>
+<div class="interface-body">
+<h3>Radar / Spider Chart — All 5 Dimensions</h3>
+<p>Plots all five N-D-C model scores simultaneously on a pentagon radar chart, with color-coded zones (red/yellow/green). The shape of the polygon is the chain's coherence signature — each axis is orthogonal and measures a different structural dimension.</p>
+<ul>
+<li>π operational (54) · φ proportional · √2 structural (72) · ln(2) growth (40) · e abstract (37)</li>
+<li>Color zones: red (0–40), yellow (40–70), green (70–100)</li>
+<li>Compare gold scenarios side by side</li>
+<li>Each axis orthogonal — five non-overlapping failure modes</li>
+<li>Description of each model's meaning and failure mode</li>
+<li>Navigate directly to any individual model dashboard</li>
+</ul>
+<a class="btn" href="/frontend/project/five_model_coherence.html" style="background: linear-gradient(135deg, #0a0a1a, #667eea);">Open Coherence Chart →</a>
+</div>
+</div>
+</div><!-- /interfaces five-model -->
+<div class="interfaces" style="margin-bottom:40px;">
+<div class="interface-card" onclick="window.location.href='project_context.html'">
+<div class="interface-header" style="background: linear-gradient(135deg, #1a2535 0%, #2c3e50 100%);">
+<div class="icon">📋</div>
+<h2>Project Context</h2>
+<span class="status">physical phase map</span>
+</div>
+<div class="interface-body">
+<h3>Scale, Constraints, and Integration</h3>
+<p>Global production context, supply-chain phases, structural constraints, integration pathways, and source references.</p>
+<ul>
+<li>Gold phase map from geological occurrence to recycling</li>
+<li>D-natural and D-institutional constraint categories</li>
+<li>Integration pathways through refining, custody, COMEX, LBMA, and recycling</li>
+<li>Global production, above-ground stock, and recycling share context</li>
+<li>Source references for phase coverage</li>
+</ul>
+<a class="btn" href="project_context.html" style="background: linear-gradient(135deg, #1a2535, #2c3e50);">Open Project Context →</a>
+</div>
+</div>
+<div class="interface-card" onclick="window.location.href='system_lifecycle.html'">
+<div class="interface-header" style="background: linear-gradient(135deg, #3d2b00 0%, #b8860b 100%);">
+<div class="icon">🔁</div>
+<h2>System Lifecycle N-D-C</h2>
+<span class="status">sustaining layer</span>
+</div>
+<div class="interface-body">
+<h3>Resource, Develop, Operate, Sustain, Close</h3>
+<p>Evaluates the maintained physical system that keeps gold production, custody, closure, and recycling coherent over time.</p>
+<ul>
+<li>Five lifecycle phases with D, C, N, balance, and transparency</li>
+<li>Links lifecycle phases back to supply phases 0-8</li>
+<li>Uses reserves, mine life, reclamation, water recycling, audits, and recycling share</li>
+<li>Marks vault custody maintenance and closure liability registers as OPAQUE</li>
+<li>Identifies sustaining assurance and closure/recycling as lifecycle bottlenecks</li>
+</ul>
+<a class="btn" href="system_lifecycle.html" style="background: linear-gradient(135deg, #3d2b00, #b8860b);">Open Lifecycle N-D-C →</a>
+</div>
+</div>
+<div class="interface-card" onclick="window.location.href='recycling_analysis.html'" style="border-top: 4px solid #28a745;">
+<div class="interface-header" style="background: linear-gradient(135deg, #0d2318 0%, #2d5a3d 100%);">
+<div class="icon">♻️</div>
+<h2>Ecological Return Chain</h2>
+<span class="status">TVPCI-R · provisional</span>
+</div>
+<div class="interface-body">
+<h3>Waste, Recycling, and Parent-Holon Balance</h3>
+<p>Phase-resolved ecological return chain (TVPCI-R) scoring alongside the primary custody chain, with a chain-level balance score (B_chain) measuring how equitably the supply chain accounts for what it gives back.</p>
+<ul>
+<li>Per-phase recycling N, D, C scores (R_p) with ω_p waste-intensity weights</li>
+<li>TVPCI-R aggregate and B_chain chain-level balance (emergent N at holon level)</li>
+<li>Interactive questionnaire worksheet: enter real indicator values to compute live TVPCI-R</li>
+<li>SVG spider charts comparing custody vs ecological transparency per phase</li>
+<li>Data provisional: Foran 2005, Newmont 2024 SR, WGC 2019</li>
+</ul>
+<a class="btn" href="recycling_analysis.html" style="background: linear-gradient(135deg, #0d2318, #2d5a3d);">Open Ecological Return →</a>
+</div>
+</div>
+</div>
+<div class="coming-soon">
+<h2>🚀 Coming Soon</h2>
+<div class="coming-soon-grid">
+<div class="coming-soon-item">
+<div class="icon">🌍</div>
+<h3>Environmental Dashboard</h3>
+<p>Detailed water/waste/energy metrics with company comparisons</p>
+</div>
+<div class="coming-soon-item">
+<div class="icon">🏢</div>
+<h3>Entity Deep Dive</h3>
+<p>Company-specific analysis (Newmont, Barrick, etc.)</p>
+</div>
+<div class="coming-soon-item">
+<div class="icon">🔬</div>
+<h3>LCA Calibration</h3>
+<p>Full phase-resolved lifecycle assessment to replace provisional ω_p weights</p>
+</div>
+<div class="coming-soon-item">
+<div class="icon">📊</div>
+<h3>COMEX Reconciliation</h3>
+<p>Live data integration with exchange inventories</p>
+</div>
+<div class="coming-soon-item">
+<div class="icon">🤖</div>
+<h3>AI Optimization Engine</h3>
+<p>Machine learning for bottleneck prediction</p>
+</div>
+<div class="coming-soon-item">
+<div class="icon">📱</div>
+<h3>Mobile Interface</h3>
+<p>Responsive dashboard for on-the-go monitoring</p>
+</div>
+</div>
+</div>
+<div class="project-info">
+<h2>📚 Project Information</h2>
+<div class="info-grid">
+<div class="info-section">
+<h3>Supply Chain Phases</h3>
+<ul>
+<li>Phase 0: Geological Prospecting</li>
+<li>Phase 1: Mine Extraction</li>
+<li>Phase 2: Ore Processing &amp; Concentration</li>
+<li>Phase 3: Doré Production</li>
+<li>Phase 4: Refining</li>
+<li>Phase 5: Bar Casting &amp; Assay</li>
+<li>Phase 6: Logistics &amp; Vaulting</li>
+<li>Phase 7: Exchange Registration (COMEX)</li>
+<li>Phase 8: Recycling &amp; Recovery <span class="badge new">NEW</span></li>
+</ul>
+</div>
+<div class="info-section">
+<h3>Environmental Metrics (Sarah Integration)</h3>
+<ul>
+<li>💧 Water consumption &amp; recycling rates</li>
+<li>♻️ Waste generation &amp; circularity</li>
+<li>⚡ Energy mix (clean vs. fossil)</li>
+<li>🏭 Phase 2 critical waste (95% tailings)</li>
+<li>🌍 Grid types (AC/DC/Hybrid/Off-grid)</li>
+<li>📱 E-waste recycling tracking</li>
+</ul>
+</div>
+<div class="info-section">
+<h3>Data Sources</h3>
+<ul>
+<li>Newmont Corporation (sustainability reports)</li>
+<li>Barrick Gold (TCFD-aligned disclosures)</li>
+<li>UK Royal Mint (e-waste recycling data)</li>
+<li>World Gold Council (industry benchmarks)</li>
+<li>COMEX daily inventories (Phase 7 anchor)</li>
+<li>ICMM (water &amp; waste standards)</li>
+</ul>
+</div>
+<div class="info-section">
+<h3>Operating Principles (9 Rule Sets)</h3>
+<ul>
+<li>Separation of Concerns (physical → value → financial)</li>
+<li>Phase-Based Modeling (everything maps to phases)</li>
+<li>Data-First Discipline (no speculation, mark opacity)</li>
+<li>Transparency Classification (high/medium/low)</li>
+<li>Custody Awareness (ownership ≠ custody ≠ control)</li>
+<li>Exchange Data as Anchor (COMEX = reconciliation target)</li>
+<li>Schema-First Development (all insights tabulated)</li>
+<li>Deferred Interpretation (map terrain before value)</li>
+<li>Reproducibility &amp; Auditability (traceable claims)</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<p>Gold Supply Chain Intelligence Platform v0.2 • Built January 2026</p>
+<p style="margin-top: 10px; font-size: 12px;">
+                Framework: 9 Rule Sets | Phases: 0-8 | Integration: Sarah's TRUE VALUE Metrics ✓
+            </p>
+</div>
+</div>
+<script>
+        // Add smooth hover effects and analytics placeholder
+        document.querySelectorAll('.interface-card').forEach(card => {
+            card.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-10px)';
+            });
+            card.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0)';
+            });
+        });
+        
+        // Placeholder for future analytics
+        console.log('Gold Supply Chain Intelligence Platform v0.2 loaded');
+        console.log('Sarah Integration: Complete ✓');
+        console.log('Phases: 9 (0-8 including Recycling)');
+        console.log('Environmental Metrics: Active');
+    </script>
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','west_african_shea':'West African Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'west_african_shea':'/frontend/project/west_african_shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

@@ -59,7 +59,7 @@ done < <(find . -type f \( -name "*.json" -o -name "*.yml" -o -name "*.yaml" \) 
 # Also place schema table viewers under frontend/.../data/schema/ (same path as
 # the source CSV) so /frontend/project/.../schema/*.html works for footers and
 # badges, not only /viewable/frontend/... (see rebuild-site.sh header).
-for d in "frontend/project/gold/data/schema" "frontend/project/shea/data/schema"; do
+for d in "frontend/project/gold/data/schema" "frontend/project/west_african_shea/data/schema"; do
   v="${VIEWABLE}/${d}"
   if [[ -d "$v" && -d "$d" ]]; then
     shopt -s nullglob

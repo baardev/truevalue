@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gold Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Gold Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>gold_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">27</span> / 27
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>production_tonnes_year</td><td>260</td><td>t/year</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Sectors 13140010+13170010. Annual gold production as of 2002-2003 reporting year.</td></tr>
+<tr><td>2</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>economic_demonstrated_reserves_tonnes</td><td>5165</td><td>t</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Economic demonstrated reserves as of 2003.</td></tr>
+<tr><td>3</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>economic_life_years</td><td>19</td><td>years</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>18-20 year midpoint estimate.</td></tr>
+<tr><td>4</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>gdp_contribution_pct</td><td>0.49</td><td>percent</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Ranked 40th of 135 sectors.</td></tr>
+<tr><td>5</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>sector_turnover_aud_billion</td><td>6</td><td>AUD billion</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>90 enterprises.</td></tr>
+<tr><td>6</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>employment_total_years</td><td>27000</td><td>employment-years</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>11000 direct + 16000 in upstream suppliers.</td></tr>
+<tr><td>7</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_ghg_intensity_vs_avg</td><td>-0.35</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>GHG emissions 35% below economy-wide average per $1 final demand.</td></tr>
+<tr><td>8</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_water_intensity_vs_avg</td><td>-0.85</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Water use 85% below economy-wide average per $1 final demand.</td></tr>
+<tr><td>9</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_land_disturbance_vs_avg</td><td>-0.95</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Land disturbance 95% below economy-wide average per $1 final demand.</td></tr>
+<tr><td>10</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_employment_generation_vs_avg</td><td>-0.60</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Employment generation 60% below economy-wide average per $1 final demand.</td></tr>
+<tr><td>11</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_income_vs_avg</td><td>-0.50</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Income indicator 50% below economy-wide average per $1 final demand.</td></tr>
+<tr><td>12</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_govt_revenue_vs_avg</td><td>-0.50</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Government revenue 50% below economy-wide average per $1 final demand.</td></tr>
+<tr><td>13</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_operating_surplus_vs_avg</td><td>0.10</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Operating surplus 10% above economy-wide average per $1 final demand.</td></tr>
+<tr><td>14</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>tbl_export_propensity_vs_avg</td><td>6.0</td><td>ratio_vs_economy_avg</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Export propensity ~6x economy-wide average. Exports = 12x imports.</td></tr>
+<tr><td>15</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>ghg_source_split_direct_pct</td><td>13</td><td>percent</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Direct mining operations share of total sector GHG emissions.</td></tr>
+<tr><td>16</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>ghg_source_split_electricity_pct</td><td>44</td><td>percent</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Grid electricity share of total sector GHG emissions. Largest single source.</td></tr>
+<tr><td>17</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>ghg_source_split_land_prep_pct</td><td>6</td><td>percent</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Land preparation share of total sector GHG emissions.</td></tr>
+<tr><td>18</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2003-06-30</td><td>ghg_source_split_diesel_pct</td><td>4</td><td>percent</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2</td><td>https://www.environment.gov.au/</td><td>Diesel refining (embodied) share of total sector GHG emissions.</td></tr>
+<tr><td>19</td><td>1</td><td>Australian Gold and Lead Sector</td><td>Australia</td><td>2050-01-01</td><td>production_forecast_tonnes_year</td><td>500</td><td>t/year</td><td>public</td><td>Foran et al. 2005 Balancing Act Vol 2 (CSIRO Future Dilemmas scenario)</td><td>https://www.environment.gov.au/</td><td>CSIRO 2050 forecast. Assumes continued exploration success and lift of central bank price constraints post-2020.</td></tr>
+<tr><td>20</td><td>1</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>land_reclaimed_ha</td><td>192</td><td>ha/year</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>Concurrent reclamation in 2024. Exceeded target of 162 ha. D-natural constraint evidence: land disturbance and progressive closure are irreducible physical obligations of Phase 1.</td></tr>
+<tr><td>21</td><td>1</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>lbma_rgg_audit_compliance</td><td>1</td><td>binary</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>Customer audits completed at Ahafo South (Ghana), Lihir (PNG), Yanacocha (Peru). No major non-compliance reported. D-institutional confirmation: LBMA Responsible Gold Guidance compliance is verified by customer audits at the mine level — the D-institutional burden of the LBMA standard extends upstream to Phase 1, not only to Phase 4 (Refining).</td></tr>
+<tr><td>22</td><td>1</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>supplier_human_rights_flagged_pct</td><td>24</td><td>percent</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>194 of 812 responding suppliers (from 1040 screened) flagged for higher human rights risk. 78% response rate. C-parameter: supplier network integrity and due diligence depth. Indicates 24% of supplier base carries elevated human rights exposure — structural C-fragility at Phase 1.</td></tr>
+<tr><td>23</td><td>1</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>direct_economic_contributions_usd_billion</td><td>16.0</td><td>USD billion/year</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>Total direct economic contributions in 2024 across all operations. Value chain context for Phase 1 at scale of world&#x27;s largest gold miner.</td></tr>
+<tr><td>24</td><td>1</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>community_investment_usd_million</td><td>69</td><td>USD million/year</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>Community investment in 2024. 0.43% of total direct economic contribution. C-parameter proxy: social integration investment at Phase 1.</td></tr>
+<tr><td>25</td><td>2</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>water_recycled_rate_pct</td><td>71</td><td>percent</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>Water recycled as percentage of total water used across all processing operations in 2024. Up from 65% in 2018 baseline. C-parameter for Phase 2: environmental integration / circular resource use at ore processing.</td></tr>
+<tr><td>26</td><td>2</td><td>Newmont Corporation</td><td>Global</td><td>2018-12-31</td><td>water_recycled_rate_baseline_pct</td><td>65</td><td>percent</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>2018 baseline water recycling rate. Provides trend context for 2024 figure of 71%.</td></tr>
+<tr><td>27</td><td>2</td><td>Newmont Corporation</td><td>Global</td><td>2024-12-31</td><td>cyanide_spills_count</td><td>30</td><td>count/year</td><td>public</td><td>Newmont 2024 Sustainability Report</td><td>https://sustainability.newmont.com/</td><td>30 cyanide-related spills in 2024. 33% decrease from 2023 in spills containing &gt;50 mg/L WAD CN (the higher-risk threshold). D-natural constraint evidence: cyanide management is an irreducible environmental cost of Phase 2 (leach processing). Part of Newmont&#x27;s Path to Zero Cyanide Spills program.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

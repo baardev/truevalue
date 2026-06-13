@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>West African Shea Supply Chain – ln(2) Growth Conduit Efficiency Model</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 50%, #7b1fa2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header-nav a { color: #ce93d8; text-decoration: none; margin-left: 18px; font-size: 13px; }
+        .header-nav a:hover { color: white; }
+
+        .model-strip {
+            display: flex; align-items: center; gap: 0;
+            background: #1a1a1a; overflow-x: auto;
+        }
+        .model-tab {
+            padding: 9px 20px; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.5px; white-space: nowrap; cursor: pointer;
+            border-right: 1px solid #333; color: #888;
+            text-decoration: none; display: block;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active { background: #6a1b9a; color: white; cursor: default; }
+        .model-tab.disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Scenario selector bar */
+        .scenario-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; background: #130a1e;
+            border-bottom: 2px solid #6a1b9a; flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #ce93d8; white-space: nowrap; flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            border: 1px solid #2d1040; background: #1a0a2e; color: #ce93d8;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #6a1b9a; color: #f3e5f5; }
+        .scen-btn.active { background: #6a1b9a; border-color: #6a1b9a; color: white; }
+        .scen-btn.shock  { border-color: #c62828; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #c62828; border-color: #c62828; color: white; }
+        .scen-btn.expand { border-color: #1565c0; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #1565c0; border-color: #1565c0; color: white; }
+        .scen-btn.sshea  { border-color: #2d6a4f; }
+        .scen-btn.sshea:hover, .scen-btn.sshea.active  { background: #2d6a4f; border-color: #2d6a4f; color: white; }
+        .scenario-desc {
+            font-size: 11px; color: #7a5a8a; font-style: italic; flex: 1; min-width: 180px;
+        }
+
+        .score-cards {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 20px; padding: 28px 30px; background: #f3e5f5;
+        }
+        .card {
+            background: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #e0e0e0;
+        }
+        .card.purple-border { border-top-color: #6a1b9a; }
+        .card.good-border   { border-top-color: #43a047; }
+        .card.warn-border   { border-top-color: #fbc02d; }
+        .card.poor-border   { border-top-color: #c62828; }
+        .card-label { font-size: 11px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 34px; font-weight: bold; color: #2c3e50; margin-bottom: 6px; }
+        .card-value.purple { color: #6a1b9a; }
+        .card-value.warn   { color: #f57f17; }
+        .card-value.green  { color: #2e7d32; }
+        .card-value.red    { color: #c62828; }
+        .card-sub { font-size: 12px; color: #6c757d; }
+
+        .main { padding: 28px 30px; }
+        .section-title { font-size: 17px; font-weight: 600; color: #2c3e50; margin-bottom: 6px; }
+        .section-sub { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+
+        .chain-flow {
+            background: #f3e5f5; border-radius: 10px;
+            padding: 30px 20px; margin-bottom: 28px; overflow-x: auto;
+        }
+        .phases-row { display: flex; align-items: center; min-width: 600px; }
+        .phase-node { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        .phase-box {
+            width: 108px; height: 108px; border-radius: 10px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+            border: 2px solid transparent; transition: transform 0.2s; cursor: default;
+        }
+        .phase-box:hover { transform: scale(1.07); }
+        .phase-box .pid    { font-size: 11px; font-weight: 700; opacity: 0.85; }
+        .phase-box .pname  { font-size: 11px; font-weight: 700; text-align: center; margin-top: 3px; }
+        .phase-box .pscore { font-size: 24px; font-weight: 900; margin-top: 2px; }
+        .phase-box .pmult  { font-size: 10px; opacity: 0.9; margin-top: 2px; }
+        .phase-label { font-size: 10px; color: #555; margin-top: 7px; text-align: center; max-width: 110px; }
+
+        .phase-box.excellent { background: linear-gradient(135deg,#1b5e20,#2e7d32); color:white; }
+        .phase-box.good      { background: linear-gradient(135deg,#2e7d32,#43a047); color:white; }
+        .phase-box.fair      { background: linear-gradient(135deg,#4a148c,#6a1b9a); color:white; }
+        .phase-box.poor      { background: linear-gradient(135deg,#7f0000,#b71c1c); color:white; }
+
+        .phase-connector { display: flex; flex-direction: column; align-items: center; padding: 0 8px; flex-shrink: 0; }
+        .conn-arrow { font-size: 24px; color: #aaa; }
+        .conn-mult  { font-size: 11px; font-weight: 700; color: #6a1b9a; }
+
+        /* Real monetary value section */
+        .monetary-panel {
+            background: linear-gradient(135deg,#f3e5f5,#e8f5e9);
+            border-radius: 10px; padding: 24px; margin-bottom: 28px;
+            border: 2px solid #ba68c8;
+        }
+        .monetary-panel h3 { font-size: 16px; font-weight: 700; color: #4a148c; margin-bottom: 16px; }
+        .money-flow { display: flex; align-items: center; gap: 0; flex-wrap: wrap; }
+        .money-node {
+            background: white; border-radius: 10px; padding: 14px 16px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center;
+            border-top: 3px solid #6a1b9a; min-width: 120px;
+        }
+        .money-node .mn-phase { font-size: 10px; color: #888; font-weight: 700; text-transform: uppercase; }
+        .money-node .mn-label { font-size: 12px; font-weight: 700; color: #2c3e50; margin: 4px 0; }
+        .money-node .mn-value { font-size: 20px; font-weight: 900; color: #6a1b9a; }
+        .money-node .mn-unit  { font-size: 10px; color: #888; }
+        .money-arrow {
+            display: flex; flex-direction: column; align-items: center;
+            padding: 0 12px; flex-shrink: 0;
+        }
+        .money-arrow .arr      { font-size: 22px; color: #6a1b9a; }
+        .money-arrow .arr-mult { font-size: 12px; font-weight: 900; color: #2e7d32; }
+        .money-arrow .arr-ln   { font-size: 10px; color: #888; }
+
+        /* Phase detail cards */
+        .phase-detail-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 16px; margin-bottom: 28px; }
+        .phase-detail-card { background: white; border-radius: 8px; border: 1px solid #e0e0e0; border-top: 4px solid #6a1b9a; padding: 16px; }
+        .phase-detail-card.excellent { border-top-color: #2e7d32; }
+        .phase-detail-card.good      { border-top-color: #43a047; }
+        .phase-detail-card.fair      { border-top-color: #6a1b9a; }
+        .phase-detail-card.poor      { border-top-color: #b71c1c; }
+        .pdc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .pdc-title  { font-size: 13px; font-weight: 700; color: #2c3e50; }
+        .pdc-score  { font-size: 24px; font-weight: 900; }
+        .pdc-grid   { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .pdc-stat   { background: #f9f9f9; border-radius: 6px; padding: 8px; }
+        .pdc-stat-label { font-size: 10px; color: #999; text-transform: uppercase; }
+        .pdc-stat-val   { font-size: 16px; font-weight: 700; color: #2c3e50; }
+        .inst-bar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+        .inst-bar-nat  { background: #ce93d8; }
+        .inst-bar-inst { background: #6a1b9a; }
+        .pdc-note { font-size: 11px; color: #777; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+
+        /* C/D scale */
+        .conduit-reference { background: #fce4ec; border-radius: 8px; padding: 18px; margin-bottom: 28px; border: 1px solid #f48fb1; }
+        .conduit-reference h4 { font-size: 13px; color: #2c3e50; margin-bottom: 12px; }
+        .cond-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .cond-label { font-size: 11px; width: 180px; flex-shrink: 0; color: #555; }
+        .cond-scale { flex: 1; height: 20px; background: #f0f0f0; border-radius: 6px; position: relative; overflow: visible; }
+        .cond-fill  { height: 100%; border-radius: 6px; }
+        .cond-target { position: absolute; top: -4px; bottom: -4px; width: 2px; background: #6a1b9a; }
+        .cond-target-label { position: absolute; top: -16px; left: -12px; font-size: 9px; color: #6a1b9a; font-weight: 700; white-space: nowrap; }
+        .cond-score { width: 42px; text-align: right; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+        .cond-val   { width: 36px; font-size: 11px; color: #888; flex-shrink: 0; }
+
+        /* Simulator */
+        .simulator { background: #f3e5f5; border-radius: 10px; padding: 24px; margin-bottom: 28px; border: 1px solid #ce93d8; }
+        .sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+        .sim-card { background: white; border-radius: 8px; padding: 16px; border: 1px solid #ce93d8; }
+        .sim-card h4 { font-size: 13px; font-weight: 700; color: #2c3e50; margin-bottom: 10px; }
+        .sim-slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .sim-slider-row label { font-size: 11px; color: #555; width: 100px; }
+        .sim-slider-row input[type=range] { flex: 1; accent-color: #6a1b9a; }
+        .sim-slider-row .sim-val { font-size: 12px; font-weight: 700; width: 30px; text-align: right; }
+        .sim-result { margin-top: 10px; padding: 8px 10px; background: #f3e5f5; border-radius: 6px; font-size: 12px; }
+        .sim-score { font-size: 20px; font-weight: 900; color: #6a1b9a; }
+
+        .data-note { background: #fff8e1; border-radius: 8px; padding: 18px; margin-bottom: 28px; border-left: 4px solid #fbc02d; }
+        .data-note h4 { font-size: 13px; color: #e65100; margin-bottom: 6px; }
+        .data-note p  { font-size: 13px; color: #6c757d; line-height: 1.6; }
+
+        .footer { padding: 16px 30px; background: #f3e5f5; text-align: center; font-size: 12px; color: #888; }
+        .footer a { color: #6a1b9a; text-decoration: none; }
+
+        @media (max-width: 768px) {
+            .score-cards { grid-template-columns: repeat(2, 1fr); }
+            .money-flow { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+<!-- Header -->
+<div class="header">
+<h1>🫒 West African Shea Supply Chain — ln(2) Growth Conduit Efficiency Model</h1>
+<div class="header-nav">
+<a href="dashboard.html">π Dashboard</a>
+<a href="phi_dashboard.html">φ Proportional</a>
+<a href="sqrt2_dashboard.html">√2 Structural</a>
+<a href="/frontend/project/five_model_coherence.html">🕸️ Five-Model</a>
+<a href="/index.html">🏠 Home</a>
+</div>
+</div>
+<!-- Model layer strip -->
+<div class="model-strip">
+<a class="model-tab" href="dashboard.html">π Operational</a>
+<a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
+<a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+<span class="model-tab active">ln(2) Growth ← current</span>
+<a class="model-tab" href="e_dashboard.html">e Abstract</a>
+</div>
+<!-- Scenario selector -->
+<div class="scenario-bar">
+<span class="scenario-label">Scenario:</span>
+<div class="scenario-btns" id="scenario-btns-container"></div>
+<span class="scenario-desc" id="scenario-desc"></span>
+</div>
+<!-- Score cards -->
+<div class="score-cards">
+<div class="card purple-border" id="sc-efficiency">
+<div class="card-label">System ln(2) Conduit Efficiency</div>
+<div class="card-value purple" id="sc-efficiency-val">39.7</div>
+<div class="card-sub" id="sc-efficiency-sub">Low efficiency — systematic<br/>institutional conduit capture</div>
+</div>
+<div class="card poor-border" id="sc-worst">
+<div class="card-label">Worst Phase</div>
+<div class="card-value red" id="sc-worst-val">P0 Collection</div>
+<div class="card-sub" id="sc-worst-sub">Score: 30.8 — C/D ratio 0.43<br/>No market support for collectors</div>
+</div>
+<div class="card good-border" id="sc-best">
+<div class="card-label">Best Phase</div>
+<div class="card-value green" id="sc-best-val">P3 Processing</div>
+<div class="card-sub" id="sc-best-sub">Score: 52.5 — C/D ratio 1.14<br/>Natural chemistry; partial capture</div>
+</div>
+<div class="card warn-border">
+<div class="card-label">Real Monetary Data</div>
+<div class="card-value warn">317×</div>
+<div class="card-sub">Total chain amplification:<br/>$150/MT → $47,500/MT (retail)</div>
+</div>
+</div>
+<div class="main">
+<!-- Real monetary value section — shea-specific -->
+<div class="section-title">Real Monetary Amplification — Shea Value Chain Anchors</div>
+<div class="section-sub">
+            The shea chain has three publicly documented monetary anchor points from West African markets and European retail. These are real values, not synthetic estimates. The ln(2) model can evaluate these directly.
+        </div>
+<div class="monetary-panel">
+<h3>📊 Shea Value Amplification — Real Data (USD/MT, West Africa → EU Retail)</h3>
+<div class="money-flow">
+<div class="money-node">
+<div class="mn-phase">P0 / P1</div>
+<div class="mn-label">Raw Nuts<br/>First Sale</div>
+<div class="mn-value">$150</div>
+<div class="mn-unit">USD/MT (WCA avg)</div>
+</div>
+<div class="money-arrow">
+<div class="arr">→</div>
+<div class="arr-mult">26.7×</div>
+<div class="arr-ln">≈ 4.7 ln(2)-steps</div>
+</div>
+<div class="money-node" style="border-top-color: #2e7d32;">
+<div class="mn-phase">P3</div>
+<div class="mn-label">Shea Butter<br/>Processor Price</div>
+<div class="mn-value" style="color:#2e7d32;">$4,000</div>
+<div class="mn-unit">USD/MT (export grade)</div>
+</div>
+<div class="money-arrow">
+<div class="arr">→</div>
+<div class="arr-mult">11.9×</div>
+<div class="arr-ln">≈ 3.6 ln(2)-steps</div>
+</div>
+<div class="money-node" style="border-top-color: #f57f17;">
+<div class="mn-phase">P5 / P6</div>
+<div class="mn-label">Cosmetic Product<br/>EU Retail</div>
+<div class="mn-value" style="color:#f57f17;">$47,500</div>
+<div class="mn-unit">USD/MT shea equivalent</div>
+</div>
+<div class="money-arrow">
+<div class="arr">→</div>
+<div class="arr-mult" style="color:#6a1b9a;">317×</div>
+<div class="arr-ln">total (origin→retail)</div>
+</div>
+<div class="money-node" style="border-top-color: #6a1b9a; background: linear-gradient(135deg,#f3e5f5,white);">
+<div class="mn-phase">TOTAL</div>
+<div class="mn-label">Chain-wide<br/>Amplification</div>
+<div class="mn-value" style="color:#6a1b9a;">317×</div>
+<div class="mn-unit">≈ 8.3 natural ln(2)-steps</div>
+</div>
+</div>
+<div style="margin-top:14px; font-size:12px; color:#555; line-height:1.6; background:white; padding:12px; border-radius:8px;">
+<strong>ln(2) interpretation:</strong> The 317× total amplification is equivalent to 8.3 natural doubling steps (log(317)/log(2) = 8.3). This means the shea chain compounds 8+ times over from origin to retail. However, the question the ln(2) model asks is not <em>how much</em> it amplifies — it asks <em>who captures each doubling step</em>, and whether artificial institutional constraints on growth phases are suppressing the portion that reaches origin communities.
+            </div>
+</div>
+<!-- Transformation phases flow -->
+<div class="section-title">Growth Conduit Analysis — Transformation Phases</div>
+<div class="section-sub">Three transformation phases in the shea chain where physical nature changes: Collection (harvest), Processing (nuts→butter), Manufacturing (butter→cosmetics).</div>
+<div class="chain-flow">
+<div class="phases-row" id="phases-row"><!-- Rendered by JS --></div>
+<div style="font-size:11px; color:#888; margin-top:16px; padding:0 8px;">
+                Score = growth conduit efficiency. D = constraint burden (purple=institutional, light=natural). C = contribution. Real monetary multiplier shown where available.
+            </div>
+</div>
+<!-- C/D scale -->
+<div class="section-title">C/D Ratio Reference Scale</div>
+<div class="section-sub">Target C/D = 2.0 (natural ln(2) doubling). Score = 100 × exp(-1.5 × |C/D − 2| / 2).</div>
+<div class="conduit-reference">
+<h4>Growth Conduit Efficiency — C/D Ratio (scale 0→4, target = 2.0)</h4>
+<div id="conduit-scale"><!-- Rendered by JS --></div>
+<div style="display:flex; justify-content:space-between; font-size:10px; color:#aaa; padding:0 4px; margin-top:4px;">
+<span>0×</span><span>0.5×</span><span>1.0×</span><span>1.5×</span><span>2.0×</span><span>2.5×</span><span>3.0×</span><span>3.5×</span><span>4.0×</span>
+</div>
+</div>
+<!-- Phase detail cards -->
+<div class="section-title">Phase-Level Conduit Analysis</div>
+<div class="section-sub">D_natural = physics/biology constraints. D_institutional = regulation, market structure, infrastructure gaps (movable). C = contribution output. 0–10 scale.</div>
+<div class="phase-detail-grid" id="phase-cards"><!-- Rendered by JS --></div>
+<!-- What-if simulator -->
+<div class="section-title">Conduit Liberation Simulator</div>
+<div class="section-sub">
+            Model the effect of removing D-institutional barriers. Shea-specific interventions: <em>What score does Processing reach if certification fees are eliminated (D_inst → 1)?</em> <em>What score does Collection reach if formal price discovery is introduced (D_inst → 1)?</em>
+</div>
+<div class="simulator">
+<div class="sim-grid" id="sim-grid"><!-- Rendered by JS --></div>
+</div>
+<!-- Data note -->
+<div class="data-note">
+<h4>📊 Data Note — Shea Transformation Phase Data (Best-Available in Project)</h4>
+<p>
+                Shea is the <strong>richest chain in the project for ln(2) analysis</strong> — it has three verified monetary anchor points ($150/MT, $4,000/MT, $47,500/MT) from public sources (RONGEAD, Acorn/EP Carbon reports). The D and C structural values are still inferred, but the monetary multipliers are real.
+                <br/><br/>
+                The <strong>collection phase</strong> has no formal first-sale price mechanism — the $150/MT is a market reference, not a formal floor price. <strong>Processing costs</strong> (mainly firewood/fuel) are well-documented. <strong>Manufacturing margins</strong> are the most opaque — the $47,500/MT retail equivalent is estimated from reverse calculation of Cleo cosmetics retail pricing. Sources: RONGEAD 2019 shea value chain report; Acorn/EP Carbon shea project documentation; Kering Foundation True Price model.
+            </p>
+</div>
+</div><!-- /main -->
+<div class="footer">
+        ln(2) Growth Model — Layer 4 of 5 | D=1, C=2 | Natural doubling constant | Real shea monetary data: $150→$4,000→$47,500/MT |
+        <a href="/frontend/project/five_model_coherence.html">Five-Model Coherence →</a>
+</div>
+</div><!-- /dashboard -->
+<script>
+const PHASES_BASE = [
+    { id:0, name:"Collection",    d_nat:3, d_inst:4, c:3,  value_in:null, value_out:150,   monetary_mult:null,   inst_examples:"No formal price discovery, land tenure insecurity for women collectors, no credit for tools/transport", note:"Collection has minimal D-natural (harvest timing, tree density) but significant D-institutional: women collectors have no formal market support, no land tenure security, and no access to credit. The output C=3 is low despite high physical effort.", intervention:"Key: reduce D_inst to 1 (introduce formal price floor + credit) → score rises from 31→52" },
+    { id:3, name:"Processing",    d_nat:4, d_inst:3, c:8,  value_in:150,  value_out:4000,  monetary_mult:26.67,  inst_examples:"Firewood/fuel cost barrier, Organic certification fees (~$5–15k), equipment financing gaps, buyer commitment uncertainty", note:"Processing is the most valuable single transformation in the shea chain: nuts → butter at 26.7× monetary amplification. D-natural (conversion chemistry) is well-matched by C=8 (specific, differentiated, export-grade output). D-institutional partially suppresses what would otherwise approach a ln(2) conduit.", intervention:"Key: reduce D_inst to 1 (eliminate cert fee, subsidize equipment) → C/D approaches 1.6" },
+    { id:5, name:"Manufacturing", d_nat:3, d_inst:7, c:6,  value_in:4000, value_out:47500, monetary_mult:11.875, inst_examples:"EU Cosmetics Regulation 1223/2009, REACH compliance, allergen labeling, MOQ minimums (100k–1M units), safety assessment dossier", note:"Manufacturing has the highest D-institutional in the shea chain. EU cosmetics regulation creates a hard institutional gate for market access. Despite 11.9× monetary amplification, the ln(2) score is low because D-institutional dominates total D, suppressing C/D far below 2.0.", intervention:"Key: reduce D_inst to 3 (EU simplified cosmetic pathway for natural ingredients) → significant improvement" },
+];
+
+// ── Scenarios (loaded from scenarios.json) ───────────────────────────────────
+let LN2_SCENARIOS = {};
+let currentPhases = [];
+
+function buildPhases(scenPhases) {
+    return PHASES_BASE.map((p, i) => ({ ...p, ...scenPhases[i] }));
+}
+
+function buildScenarioButtons(scenarios) {
+    const btnCls = key => {
+        if (key === 'current' || key === 'optimum') return '';
+        if (key === 'expansion') return 'expand';
+        if (key === 'regulatory') return 'regul';
+        if (key === 'serious_shea') return 'sshea';
+        return 'shock';
+    };
+    const container = document.getElementById('scenario-btns-container');
+    container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+        `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+    ).join('');
+}
+
+function setScenario(key) {
+    const scen = LN2_SCENARIOS[key];
+    if (!scen) return;
+    currentPhases = buildPhases(scen.phases);
+    document.querySelectorAll('.scen-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+    document.getElementById('scenario-desc').textContent = scen.description;
+    renderAll(currentPhases);
+}
+
+fetch('scenarios.json')
+    .then(r => r.json())
+    .then(data => {
+        LN2_SCENARIOS = data.ln2.scenarios;
+        buildScenarioButtons(LN2_SCENARIOS);
+        currentPhases = buildPhases(LN2_SCENARIOS.current.phases);
+        setScenario('current');
+    })
+    .catch(err => console.error('Failed to load scenarios.json:', err));
+
+const LN2 = Math.log(2);
+
+function ln2Score(d_nat, d_inst, c) {
+    const d_total = d_nat + d_inst;
+    if (d_total <= 0) return 0;
+    const ratio = c / d_total;
+    return +(100 * Math.exp(-1.5 * Math.abs(ratio - 2.0) / 2.0)).toFixed(1);
+}
+function scoreClass(s) { return s>=70?"excellent":s>=50?"good":s>=30?"fair":"poor"; }
+function scoreColor(s)  { return s>=70?"#2e7d32":s>=50?"#43a047":s>=30?"#6a1b9a":"#b71c1c"; }
+
+function renderChainFlow(ps) {
+    const row = document.getElementById("phases-row");
+    row.innerHTML = '';
+    ps.forEach((p, i) => {
+        const score   = ln2Score(p.d_nat, p.d_inst, p.c);
+        const cls     = scoreClass(score);
+        const d_total = p.d_nat + p.d_inst;
+        const ratio   = (p.c / d_total).toFixed(2);
+        const node = document.createElement("div");
+        node.className = "phase-node";
+        const multStr = p.monetary_mult ? `${p.monetary_mult}× ($${p.value_in}→$${p.value_out})` : p.value_out ? `→$${p.value_out}/MT` : '';
+        node.innerHTML = `
+            <div class="phase-box ${cls}">
+                <span class="pid">P${p.id}</span>
+                <span class="pname">${p.name}</span>
+                <span class="pscore">${score}</span>
+                ${p.monetary_mult ? `<span class="pmult">${p.monetary_mult}×</span>` : ''}
+            </div>
+            <div style="font-size:10px;color:#555;margin-top:7px;text-align:center;max-width:110px;">
+                D=${d_total} C=${p.c}<br>C/D=${ratio}<br>${multStr}</div>`;
+        row.appendChild(node);
+        if (i < ps.length - 1) {
+            const conn = document.createElement("div");
+            conn.className = "phase-connector";
+            const nextPhase = ps[i+1];
+            const stepMult = nextPhase.value_in && p.value_out ? (nextPhase.value_out/p.value_out).toFixed(1)+'×' : '';
+            conn.innerHTML = `<div class="conn-arrow">→</div>${stepMult?`<div class="conn-mult">${stepMult}</div>`:''}`;
+            row.appendChild(conn);
+        }
+    });
+}
+
+function renderConduitScale(ps) {
+    const container = document.getElementById("conduit-scale");
+    container.innerHTML = '';
+    const maxRatio = 4.0;
+    const targetPct = (2.0 / maxRatio) * 100;
+    ps.forEach(p => {
+        const d_total = p.d_nat + p.d_inst;
+        const ratio   = p.c / d_total;
+        const pct     = Math.min(100, (ratio / maxRatio) * 100);
+        const score   = ln2Score(p.d_nat, p.d_inst, p.c);
+        const col     = scoreColor(score);
+        const multNote = p.monetary_mult ? ` (${p.monetary_mult}× monetary)` : '';
+        const row = document.createElement("div");
+        row.className = "cond-row";
+        row.innerHTML = `
+            <div class="cond-label">P${p.id} ${p.name}${multNote}</div>
+            <div class="cond-scale">
+                <div class="cond-fill" style="width:${pct}%;background:${col};"></div>
+                <div class="cond-target" style="left:${targetPct}%;"><div class="cond-target-label">target 2.0</div></div>
+            </div>
+            <div class="cond-val">${ratio.toFixed(2)}×</div>
+            <div class="cond-score" style="color:${col};">${score}</div>`;
+        container.appendChild(row);
+    });
+}
+
+function renderPhaseCards(ps) {
+    const grid = document.getElementById("phase-cards");
+    grid.innerHTML = '';
+    ps.forEach(p => {
+        const d_total  = p.d_nat + p.d_inst;
+        const score    = ln2Score(p.d_nat, p.d_inst, p.c);
+        const cls      = scoreClass(score);
+        const ratio    = (p.c / d_total).toFixed(2);
+        const inst_pct = ((p.d_inst / d_total) * 100).toFixed(0);
+        const nat_pct  = ((p.d_nat  / d_total) * 100).toFixed(0);
+        const multHtml = p.monetary_mult
+            ? `<div style="margin:8px 0;padding:8px;background:linear-gradient(135deg,#f3e5f5,#e8f5e9);border-radius:6px;">
+                <span style="font-size:10px;color:#888;">REAL MONETARY MULTIPLIER</span><br>
+                <span style="font-size:22px;font-weight:900;color:#2e7d32;">${p.monetary_mult}×</span>
+                <span style="font-size:11px;color:#555;">  ($${p.value_in.toLocaleString()}/MT → $${p.value_out.toLocaleString()}/MT)</span>
+               </div>` : '';
+        const card = document.createElement("div");
+        card.className = `phase-detail-card ${cls}`;
+        card.innerHTML = `
+            <div class="pdc-header">
+                <div><div class="pdc-title">P${p.id} — ${p.name}</div><div style="font-size:11px;color:#888;">Transformation phase</div></div>
+                <div class="pdc-score" style="color:${scoreColor(score)};">${score}</div>
+            </div>
+            ${multHtml}
+            <div class="pdc-grid">
+                <div class="pdc-stat"><div class="pdc-stat-label">D Natural</div><div class="pdc-stat-val" style="color:#ce93d8;">${p.d_nat}</div></div>
+                <div class="pdc-stat"><div class="pdc-stat-label">D Institutional</div><div class="pdc-stat-val" style="color:#6a1b9a;">${p.d_inst}</div></div>
+                <div class="pdc-stat"><div class="pdc-stat-label">C Contribution</div><div class="pdc-stat-val" style="color:#2e7d32;">${p.c}</div></div>
+                <div class="pdc-stat"><div class="pdc-stat-label">C/D Ratio</div><div class="pdc-stat-val" style="color:${scoreColor(score)};">${ratio}×</div></div>
+            </div>
+            <div style="font-size:11px;color:#777;margin-bottom:4px;">D breakdown: ${nat_pct}% natural / ${inst_pct}% institutional</div>
+            <div class="inst-bar"><div class="inst-bar-nat" style="width:${nat_pct}%;"></div><div class="inst-bar-inst" style="width:${inst_pct}%;"></div></div>
+            <div style="display:flex;gap:10px;font-size:10px;color:#888;"><span>■ Natural (${p.d_nat})</span><span style="color:#6a1b9a;">■ Institutional (${p.d_inst})</span></div>
+            <div class="pdc-note">${p.note}<br><em style="color:#6a1b9a;">Institutional barriers: ${p.inst_examples}</em></div>`;
+        grid.appendChild(card);
+    });
+}
+
+// ── Summary cards (live) ──────────────────────────────────────────────────────
+function renderSummaryCards(ps) {
+    const scores    = ps.map(p => ln2Score(p.d_nat, p.d_inst, p.c));
+    const ratios    = ps.map(p => p.c / (p.d_nat + p.d_inst));
+    const instLoads = ps.map(p => p.d_inst / (p.d_nat + p.d_inst));
+    const avgScore  = (scores.reduce((a,b)=>a+b,0) / scores.length).toFixed(1);
+    const minScore  = Math.min(...scores);
+    const maxScore  = Math.max(...scores);
+    const worstIdx  = scores.indexOf(minScore);
+    const bestIdx   = scores.indexOf(maxScore);
+
+    const setEl = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
+    const setCls = (id, cls) => { const el = document.getElementById(id); if (el) el.className = 'card-value ' + cls; };
+
+    const effCls = avgScore >= 60 ? 'green' : avgScore >= 40 ? 'warn' : 'purple';
+    setEl('sc-efficiency-val', avgScore);
+    setCls('sc-efficiency-val', effCls);
+    setEl('sc-efficiency-sub', avgScore >= 60 ? 'Moderate — some phases near conduit target'
+                                              : 'Low efficiency — institutional conduit capture');
+
+    setEl('sc-worst-val', `P${ps[worstIdx].id} ${ps[worstIdx].name}`);
+    setEl('sc-worst-sub', `Score: ${minScore.toFixed(1)} — C/D ratio ${ratios[worstIdx].toFixed(2)}`);
+
+    setEl('sc-best-val', `P${ps[bestIdx].id} ${ps[bestIdx].name}`);
+    setCls('sc-best-val', maxScore >= 60 ? 'green' : 'warn');
+    setEl('sc-best-sub', `Score: ${maxScore.toFixed(1)} — C/D ratio ${ratios[bestIdx].toFixed(2)}`);
+}
+
+// ── Live refresh (called by sliders — skips simulator to avoid resetting) ─────
+function renderLive(ps) {
+    renderChainFlow(ps);
+    renderConduitScale(ps);
+    renderSummaryCards(ps);
+}
+
+function renderSim(ps) {
+    const grid = document.getElementById("sim-grid");
+    grid.innerHTML = '';
+    ps.forEach((p, idx) => {
+        const card = document.createElement("div");
+        card.className = "sim-card";
+        card.innerHTML = `
+            <h4>P${p.id} — ${p.name}</h4>
+            <div style="font-size:11px;color:#6a1b9a;margin-bottom:8px;">💡 ${p.intervention||''}</div>
+            <div class="sim-slider-row"><label>D Natural</label><input type="range" min="1" max="10" step="0.5" value="${p.d_nat}" id="dn-${idx}"><span class="sim-val" id="dnv-${idx}">${p.d_nat}</span></div>
+            <div class="sim-slider-row"><label>D Institutional</label><input type="range" min="0" max="10" step="0.5" value="${p.d_inst}" id="di-${idx}"><span class="sim-val" id="div-${idx}">${p.d_inst}</span></div>
+            <div class="sim-slider-row"><label>C Contribution</label><input type="range" min="1" max="10" step="0.5" value="${p.c}" id="c-${idx}"><span class="sim-val" id="cv-${idx}">${p.c}</span></div>
+            <div class="sim-result">
+                C/D: <span id="ratio-${idx}">${(p.c/(p.d_nat+p.d_inst)).toFixed(2)}</span>× &nbsp;|&nbsp;
+                Score: <span class="sim-score" id="score-${idx}">${ln2Score(p.d_nat, p.d_inst, p.c)}</span>
+                <div style="font-size:10px;color:#888;margin-top:4px;" id="inst-pct-${idx}">Institutional share: ${((p.d_inst/(p.d_nat+p.d_inst))*100).toFixed(0)}%</div>
+            </div>`;
+        grid.appendChild(card);
+        function update() {
+            const dn = +document.getElementById(`dn-${idx}`).value;
+            const di = +document.getElementById(`di-${idx}`).value;
+            const c  = +document.getElementById(`c-${idx}`).value;
+            document.getElementById(`dnv-${idx}`).textContent = dn;
+            document.getElementById(`div-${idx}`).textContent = di;
+            document.getElementById(`cv-${idx}`).textContent  = c;
+            document.getElementById(`ratio-${idx}`).textContent = (c/(dn+di)).toFixed(2);
+            const s = ln2Score(dn, di, c);
+            const el = document.getElementById(`score-${idx}`);
+            el.textContent = s; el.style.color = scoreColor(s);
+            document.getElementById(`inst-pct-${idx}`).textContent = `Institutional share: ${((di/(dn+di))*100).toFixed(0)}%`;
+            // propagate to live sections
+            currentPhases[idx].d_nat  = dn;
+            currentPhases[idx].d_inst = di;
+            currentPhases[idx].c      = c;
+            renderLive(currentPhases);
+        }
+        [`dn-${idx}`,`di-${idx}`,`c-${idx}`].forEach(id =>
+            document.getElementById(id).addEventListener("input", update));
+    });
+}
+
+function renderAll(ps) {
+    renderChainFlow(ps);
+    renderConduitScale(ps);
+    renderPhaseCards(ps);
+    renderSim(ps);
+}
+</script>
+<script>
+(function(){
+  var css='#tv-bc{background:rgba(0,0,0,0.35);padding:6px 22px;font-size:11.5px;'+
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;}'+
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}'+
+    '#tv-bc .bc-sep{opacity:.45;}#tv-bc .bc-cur{color:#ce93d8;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var nav=document.createElement('div');nav.id='tv-bc';
+  nav.innerHTML='<a href="/index.html">Home</a><span class="bc-sep">›</span><a href="/frontend/project/west_african_shea/index.html">West African Shea</a><span class="bc-sep">›</span><a href="index.html">Supply Chain</a><span class="bc-sep">›</span><span class="bc-cur">ln(2) Growth</span>';
+  function inject(){if(!document.getElementById('tv-bc'))document.body.insertAdjacentElement('afterbegin',nav);}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);else inject();
+})();
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

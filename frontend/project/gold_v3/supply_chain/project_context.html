@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gold – Project context &amp; supply chain</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2c3e50 0%, #c9922a 50%, #8b6914 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .page { max-width: 1000px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); overflow: hidden; }
+        .header {
+            background: linear-gradient(135deg, #1a2535 0%, #2c3e50 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 20px; font-weight: 300; }
+        .header a { color: #f0d080; text-decoration: none; margin-left: 12px; font-size: 14px; }
+        .header a:hover { color: white; }
+        .content { padding: 30px; }
+        .section { margin-bottom: 32px; }
+        .section h2 { font-size: 18px; color: #2c3e50; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #c9922a; }
+        .section p, .section li { font-size: 14px; color: #495057; line-height: 1.6; margin-bottom: 8px; }
+        .grid2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+        .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+        .kpi { background: #f8f9fa; padding: 14px; border-radius: 8px; border-left: 4px solid #c9922a; }
+        .kpi-label { font-size: 11px; text-transform: uppercase; color: #6c757d; margin-bottom: 4px; }
+        .kpi-value { font-size: 22px; font-weight: bold; color: #2c3e50; }
+        .kpi-source { font-size: 11px; color: #6c757d; margin-top: 6px; }
+        .phases-list { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; font-size: 13px; }
+        .phases-list span { background: #fdf3e0; padding: 6px 10px; border-radius: 4px; }
+        .sources-list { list-style: none; }
+        .sources-list li { padding: 8px 0; border-bottom: 1px solid #eee; font-size: 13px; }
+        .sources-list .src-name { font-weight: 600; color: #2c3e50; }
+        .sources-list .src-file { color: #6c757d; font-size: 12px; }
+        .ndc-note { background: #e7f3ff; padding: 14px; border-radius: 8px; border-left: 4px solid #17a2b8; font-size: 13px; margin-top: 16px; }
+        .chain-flow { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+        .chain-phase { background: #1a2535; color: #f0d080; padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; }
+        .chain-arrow { color: #c9922a; font-size: 18px; display: flex; align-items: center; }
+    </style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+<h1>🏅 Gold – Project context &amp; supply chain</h1>
+<div>
+<a href="index.html">Supply Chain Home</a>
+<a href="/index.html">Main Homepage</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="system_lifecycle.html">Lifecycle</a>
+<a href="what_if_simulator.html">Simulator</a>
+</div>
+</div>
+<div class="content">
+<div class="section">
+<h2>Global scale &amp; significance</h2>
+<div class="grid2" id="globalKpis"></div>
+<p class="ndc-note"><strong>N-D-C:</strong> Mine production volume and refinery output map to <strong>C (integration/contribution)</strong>; regulatory compliance, purity standards, and extraction constraints map to <strong>D (definition/constraint)</strong>. Phase balance is shown on the Dashboard.</p>
+</div>
+<div class="section">
+<h2>Supply chain phases (0–8)</h2>
+<p>The gold supply chain is modelled across nine phases from geological occurrence to recycling. Each phase has independently scored D (constraint) and C (integration) parameters.</p>
+<div class="chain-flow" id="chainFlow"></div>
+</div>
+<div class="section">
+<h2>Key producing regions</h2>
+<div class="grid3" id="regionsList"></div>
+</div>
+<div class="section">
+<h2>Structural constraints (D parameters)</h2>
+<p>Primary constraint categories across the chain:</p>
+<ul id="constraintsList"></ul>
+</div>
+<div class="section">
+<h2>Integration pathways (C parameters)</h2>
+<p>Primary integration categories across the chain:</p>
+<ul id="integrationList"></ul>
+</div>
+<div class="section">
+<h2>System lifecycle layer</h2>
+<p>The gold project now separates the maintained physical operating system from the material phase map. The lifecycle layer evaluates resource definition, development, operation, sustaining assurance, and closure or recycling re-entry with its own N-D-C scores, while linking each lifecycle phase back to affected supply-chain phases.</p>
+<p><a href="system_lifecycle.html">Open the System Lifecycle N-D-C view</a></p>
+</div>
+<div class="section">
+<h2>Data sources</h2>
+<ul class="sources-list" id="sourcesList"></ul>
+</div>
+</div>
+</div>
+<script>
+        const ctx = {
+            global: {
+                annual_production_tonnes: 3300,
+                above_ground_stock_tonnes: 205000,
+                recycling_share_pct: 28,
+                lbma_members: 150,
+                comex_daily_volume_bn_usd: 30,
+                phases: 9,
+            },
+            phases: [
+                { id: 0, name: "Geological Occurrence" },
+                { id: 1, name: "Mining & Extraction" },
+                { id: 2, name: "Processing & Refining" },
+                { id: 3, name: "Trading & Logistics" },
+                { id: 4, name: "Assay & Certification" },
+                { id: 5, name: "Fabrication" },
+                { id: 6, name: "Retail / Investment" },
+                { id: 7, name: "End Use" },
+                { id: 8, name: "Recycling & Recovery" },
+            ],
+            regions: ["South Africa", "Australia", "Russia", "Canada", "Ghana", "Peru", "China", "USA", "Mexico", "Uzbekistan", "Indonesia", "Papua New Guinea"],
+            constraints: [
+                "Ore grade thresholds (D-natural): geology sets minimum viable deposit grades",
+                "LBMA Good Delivery Standard (D-institutional): 99.99% purity requirement for traded bars",
+                "Royalty and export licence regimes (D-institutional): state-imposed extraction costs",
+                "Environmental compliance (D-institutional): tailings, cyanide, water discharge rules",
+                "Energy and water availability (D-natural): extraction energy intensity by deposit type",
+            ],
+            integrations: [
+                "Refinery offtake agreements: integration of mine output into global refining network",
+                "Logistics and custody chain: bonded warehouses, armoured transport, vault operators",
+                "COMEX and LBMA market access: integration into price-discovery and liquidity networks",
+                "Fabrication buyer relationships: jewellery, electronics, dental, industrial demand",
+                "Recycling collection networks: scrap dealers, e-waste processors, dental recyclers",
+            ],
+            sources: [
+                { name: "World Gold Council — Gold Demand Trends", file: "WGC annual reports", phase: "0–8" },
+                { name: "LBMA — Good Delivery Rules", file: "lbma.org.uk/good-delivery", phase: "2,4" },
+                { name: "USGS Mineral Commodity Summaries — Gold", file: "USGS MCS annual", phase: "0,1" },
+                { name: "COMEX / CME Group — Market Data", file: "cmegroup.com", phase: "3,6" },
+                { name: "Project synthetic baseline", file: "data/frontend/gold_supply_chain_ui.json", phase: "0–8" },
+            ],
+        };
+
+        const g = ctx.global;
+
+        document.getElementById("globalKpis").innerHTML = [
+            { label: "Annual mine production", value: (g.annual_production_tonnes / 1000).toFixed(1) + "kt/yr", src: "WGC / USGS" },
+            { label: "Above-ground stock", value: (g.above_ground_stock_tonnes / 1000).toFixed(0) + "kt total", src: "WGC" },
+            { label: "Recycling share", value: g.recycling_share_pct + "%", src: "WGC" },
+            { label: "Supply chain phases", value: g.phases, src: "This model" },
+        ].map(k => `<div class="kpi"><div class="kpi-label">${k.label}</div><div class="kpi-value">${k.value}</div><div class="kpi-source">Source: ${k.src}</div></div>`).join("");
+
+        document.getElementById("chainFlow").innerHTML = ctx.phases.map((p, i) =>
+            `<span class="chain-phase">${p.id}: ${p.name}</span>${i < ctx.phases.length - 1 ? '<span class="chain-arrow">→</span>' : ''}`
+        ).join("");
+
+        document.getElementById("regionsList").innerHTML = ctx.regions.map(r => `<span style="background:#fdf3e0;padding:6px 10px;border-radius:4px;font-size:13px;">${r}</span>`).join("");
+
+        document.getElementById("constraintsList").innerHTML = ctx.constraints.map(c => `<li>${c}</li>`).join("");
+        document.getElementById("integrationList").innerHTML = ctx.integrations.map(c => `<li>${c}</li>`).join("");
+
+        document.getElementById("sourcesList").innerHTML = ctx.sources.map(s =>
+            `<li><span class="src-name">${s.name}</span><br><span class="src-file">${s.file}</span> (phases ${s.phase})</li>`
+        ).join("");
+    </script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>    <!-- Phase 6 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">6</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Logistics and Vaulting</div>
+          <div style="font-size:12px;color:#888;">Balance 63.4% | D=2.208, C=1.704, gap=0.504 | Primary failure axis: <strong>sqrt2 (√2) and e</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Complex plane interpretation:</strong> Phase 6 sits in the Stressed angular zone (theta = 37.7 deg, below the 45-deg ideal balance line) with the highest modulus in the chain (|z| = 2.79). High modulus means high total operational load, not just imbalance. Interventions must reduce both the D/C ratio (moving theta toward 45 deg) and the total load (reducing modulus toward the sqrt2 unit circle at |z| = sqrt(2) = 1.41). sqrt2 axis failure (70) identifies structural fragmentation; e axis failure (60) confirms financial instrument decoupling from physical custody.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Unified custody registry pilot</strong></td>
+            <td>Reduces D from 2.208 to ~1.9; theta moves from 37.7 to ~42 deg; modulus decreases from 2.79 to ~2.47.</td>
+            <td>63.4% to 72%; theta to 42 deg</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Cross-jurisdiction audit harmonisation</strong></td>
+            <td>Reduces D by 0.2 ratio units; combined with registry, theta approaches 44 deg.</td>
+            <td>63.4% to 76-78%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>LBMA chain-of-custody extension</strong></td>
+            <td>Raises C from 1.704 to ~2.0; modulus decreases; theta moves toward 46 deg (slightly C-dominant, entering Coherent zone).</td>
+            <td>63.4% to 80%; theta >45 deg</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect in complex plane: theta moves from 37.7 to approx 45-46 deg (Coherent zone); modulus decreases from 2.79 to approx 2.1. Phase 6 exits the Stressed zone.</p>
+    </div>
+  </div>    <!-- Phase 6 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">6</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Logistics and Vaulting</div>
+          <div style="font-size:12px;color:#888;">Balance 63.4% | D=2.208, C=1.704, gap=0.504 | Primary failure axis: <strong>sqrt2 (√2) and e</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Complex plane interpretation:</strong> Phase 6 sits in the Stressed angular zone (theta = 37.7 deg, below the 45-deg ideal balance line) with the highest modulus in the chain (|z| = 2.79). High modulus means high total operational load, not just imbalance. Interventions must reduce both the D/C ratio (moving theta toward 45 deg) and the total load (reducing modulus toward the sqrt2 unit circle at |z| = sqrt(2) = 1.41). sqrt2 axis failure (70) identifies structural fragmentation; e axis failure (60) confirms financial instrument decoupling from physical custody.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Unified custody registry pilot</strong></td>
+            <td>Reduces D from 2.208 to ~1.9; theta moves from 37.7 to ~42 deg; modulus decreases from 2.79 to ~2.47.</td>
+            <td>63.4% to 72%; theta to 42 deg</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Cross-jurisdiction audit harmonisation</strong></td>
+            <td>Reduces D by 0.2 ratio units; combined with registry, theta approaches 44 deg.</td>
+            <td>63.4% to 76-78%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>LBMA chain-of-custody extension</strong></td>
+            <td>Raises C from 1.704 to ~2.0; modulus decreases; theta moves toward 46 deg (slightly C-dominant, entering Coherent zone).</td>
+            <td>63.4% to 80%; theta >45 deg</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect in complex plane: theta moves from 37.7 to approx 45-46 deg (Coherent zone); modulus decreases from 2.79 to approx 2.1. Phase 6 exits the Stressed zone.</p>
+    </div>
+  </div>
+
+
+  <!-- Phase Intervention Worksheet -->
+  <div class="section">
+    <h2>Phase Intervention Worksheet</h2>
+    <p style="font-size:13px;color:#6c757d;font-style:italic;margin-bottom:16px;">
+      PROVISIONAL: Recommendations are derived analytically from PDI phase-level N-D-C data and public sources.
+      Field validation is required before capital commitment. Each intervention is grounded in the specific
+      mathematical axis that identifies the type of failure.
+    </p>
+
+    <div style="background:#fdf5f5;border-radius:10px;padding:20px;margin-bottom:20px;border-left:4px solid #8B1A1A;">
+      <h3 style="margin-top:0;">How the Five-Model Constants Diagnose Failure: Gold Supply Chain (Complex Number Extension)</h3>
+      <p>
+        Each coherence axis (pi, phi, sqrt2, ln2, e) measures a different dimension of systemic health.
+        The N-D-C balance formula is <strong>balance = 100 - (|D - C| / max(D, C)) * 100</strong>.
+        A failing phase has D significantly greater than C: the constraint load exceeds contribution capacity.
+        Chain average balance: <strong>82.5%</strong>.
+      </p>
+    <table style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>Constant</th><th>Chain Score</th><th>What It Measures</th>
+            <th>If Below 80: The System Has...</th><th>Intervention Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>pi (π)</strong></td>
+            <td style="font-weight:700;color:#27ae60;">82.5</td>
+            <td>Operational balance: chain average across all phases</td>
+            <td>Phases pulling the aggregate below the sustainable threshold</td>
+            <td>Process improvement; technology adoption at the phase level</td>
+          </tr>
+          <tr>
+            <td><strong>phi (φ)</strong></td>
+            <td style="font-weight:700;color:#27ae60;">83</td>
+            <td>Proportional value distribution: each phase receives value proportional to contribution</td>
+            <td>Value trapped or lost at phase transitions</td>
+            <td>Market structure reform; cooperative integration; direct-to-consumer models</td>
+          </tr>
+          <tr>
+            <td><strong>sqrt2 (√2)</strong></td>
+            <td style="font-weight:700;color:#e67e22;">70</td>
+            <td>Structural overhead: physical or institutional friction raising D without adding C</td>
+            <td>Physical or regulatory constraints are the binding factor</td>
+            <td>Infrastructure investment; mechanisation; governance reform</td>
+          </tr>
+          <tr>
+            <td><strong>ln2</strong></td>
+            <td style="font-weight:700;color:#e67e22;">78</td>
+            <td>Value transformation: how effectively each phase converts inputs to higher-value outputs</td>
+            <td>Transformation blocked by a gap (time lag, capital absence, biological delay)</td>
+            <td>Patient capital instruments; multi-cropping; phased transition</td>
+          </tr>
+          <tr>
+            <td><strong>e</strong></td>
+            <td style="font-weight:700;color:#c0392b;">60</td>
+            <td>Financial abstraction: how well financial instruments are linked to real performance metrics</td>
+            <td>Available funding is not operationally connected to the ecosystem</td>
+            <td>Bond instrument design; KPI linkage; governance pre-conditions for finance activation</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;">In the complex model z = D + iC, Phase 6 has modulus |z| = sqrt(2.208^2 + 1.704^2) = 2.79 and argument theta = arctan(C/D) = arctan(1.704/2.208) = 37.7 deg. The low theta (37.7 vs ideal 45 deg) confirms D excess. The high modulus (2.79, vs chain median ~1.85) confirms Phase 6 is the highest-load phase in the chain. Interventions that reduce D reduce both the modulus and the argument gap simultaneously.</p>
+    </div>
+
+    <!-- Phase 6 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">6</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Logistics and Vaulting</div>
+          <div style="font-size:12px;color:#888;">Balance 63.4% | D=2.208, C=1.704, gap=0.504 | Primary failure axis: <strong>sqrt2 (√2) and e</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Complex plane interpretation:</strong> Phase 6 sits in the Stressed angular zone (theta = 37.7 deg, below the 45-deg ideal balance line) with the highest modulus in the chain (|z| = 2.79). High modulus means high total operational load, not just imbalance. Interventions must reduce both the D/C ratio (moving theta toward 45 deg) and the total load (reducing modulus toward the sqrt2 unit circle at |z| = sqrt(2) = 1.41). sqrt2 axis failure (70) identifies structural fragmentation; e axis failure (60) confirms financial instrument decoupling from physical custody.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Unified custody registry pilot</strong></td>
+            <td>Reduces D from 2.208 to ~1.9; theta moves from 37.7 to ~42 deg; modulus decreases from 2.79 to ~2.47.</td>
+            <td>63.4% to 72%; theta to 42 deg</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Cross-jurisdiction audit harmonisation</strong></td>
+            <td>Reduces D by 0.2 ratio units; combined with registry, theta approaches 44 deg.</td>
+            <td>63.4% to 76-78%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>LBMA chain-of-custody extension</strong></td>
+            <td>Raises C from 1.704 to ~2.0; modulus decreases; theta moves toward 46 deg (Coherent zone).</td>
+            <td>63.4% to 80%; theta >45 deg</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect in complex plane: theta moves from 37.7 to approx 45-46 deg (Coherent); modulus decreases from 2.79 to approx 2.1. Phase 6 exits the Stressed zone.</p>
+    </div>
+  </div>
+
+</body>
+</html>

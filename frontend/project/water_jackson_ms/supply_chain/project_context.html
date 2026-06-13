@@ -50,6 +50,227 @@
 <h2>Source Categories</h2>
 <p>Recommended source categories include EPA emergency orders, DOJ consent decree materials, Mississippi State Department of Health notices, city operational reports, public infrastructure assessments, and outage or boil-water notice time series.</p>
 </section>
-</main>
+</main>    <!-- Phase 5 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">5</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Distribution Network Pressure</div>
+          <div style="font-size:12px;color:#888;">Balance 43% | D=335, C=145, gap=190.0 | Primary failure axis: <strong>sqrt2 (√2)</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Why sqrt2 diagnoses this failure:</strong> D=335 is the highest in the chain: distribution system D-flags include main breaks (215 main breaks in 2021 alone, vs industry benchmark of ~15/100 miles/year), pressure zone failures, ageing cast iron mains with >50% of the system over 40 years old, and a pumping station (OB Curtis) with failed primary pumps. C=145 is near-zero: the distribution network cannot deliver water pressure to most service areas when treatment is operational because the physical pipes and pumps are failing. sqrt2 diagnoses structural overhead: the infrastructure is generating D-flags faster than any operational intervention can compensate.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>IIJA funding deployment: OB Curtis pump replacement</strong></td>
+            <td>EPA IIJA allocation to Jackson: USD 600M announced 2022. Priority 1 use: replace failed primary pumps at OB Curtis treatment plant. Each operational pump adds a critical C-flag. Estimated C increase Phase 5: +40 to +60.</td>
+            <td>43% to 60-65%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Main break prioritisation programme (worst-first replacement)</strong></td>
+            <td>Use GIS-mapped break rate data to prioritise replacement of the highest-break-rate segments. Each replaced segment removes a pressure-failure D-flag. Target: 25 km/year of highest-risk mains. Estimated D reduction: -15 to -20 per replaced segment group.</td>
+            <td>43% to 58-63%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Pressure zone boundary valve rehabilitation</strong></td>
+            <td>Restore pressure zone isolation valves to working condition. This is a low-cost intervention (USD 5,000-15,000 per valve) that prevents zone-wide pressure loss from a single main break. Each functional valve adds a system-resilience C-flag.</td>
+            <td>43% to 50-55% (valve rehab alone)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect: Phase 5 from 43% to 60-65% with pump replacement and main prioritisation. Full Coherent zone (above 61.8%) requires sustained IIJA investment over 5-10 years. Phase 3 Disinfection (50%) requires parallel treatment investment.</p>
+    </div>
+    <!-- Phase 3 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">3</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Disinfection and Chemical Treatment</div>
+          <div style="font-size:12px;color:#888;">Balance 50% | D=320, C=160, gap=160.0 | Primary failure axis: <strong>ln2</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Why ln2 diagnoses this failure:</strong> The disinfection phase is the critical transformation from raw to potable water. D=320 reflects the constraint load of: failed chemical dosing systems, unreliable chemical supply contracts, operator shortage (Jackson lost 30% of certified operators 2015-2022), and absent process control instrumentation. C=160 is critically low: the treatment plant was producing water that periodically met no potable standard at all (EPA Emergency Administrative Order, August 2022). ln2 identifies this as a transformation failure: the input (raw reservoir water) cannot be converted to potable water because the chemical and physical transformation pathway is non-functional.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Chemical feed system replacement and automated dosing</strong></td>
+            <td>Replace manual chemical dosing with SCADA-controlled automated systems. Each automated dosing point removes a manual-failure D-flag and adds a process-reliability C-flag. Estimated C increase: +30 to +50.</td>
+            <td>50% to 65-70%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Certified operator recruitment and retention programme</strong></td>
+            <td>EPA consent decree requirement: hire and retain Grade 4 certified operators. Each certified operator shift adds an operational-competence C-flag. Operator shortage is a direct ln2 failure: the transformation agent (human expertise) was absent.</td>
+            <td>50% to 62-68% (with chemical system)</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Backup chemical storage (30-day minimum supply)</strong></td>
+            <td>Maintain 30-day on-site chemical inventory (chlorine, coagulant, fluoride, pH adjustment). Each day of reserve removes a supply-chain disruption D-flag.</td>
+            <td>50% to 58-62% (storage alone)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect: Phase 3 from 50% to 65-70% with automated dosing + certified operators + chemical storage. This is the highest public health priority intervention in the chain.</p>
+    </div>
+  </div>
+
+
+  <!-- Phase Intervention Worksheet -->
+  <div class="section">
+    <h2>Phase Intervention Worksheet</h2>
+    <p style="font-size:13px;color:#6c757d;font-style:italic;margin-bottom:16px;">
+      PROVISIONAL: Recommendations are derived analytically from PDI phase-level N-D-C data and public sources.
+      Field validation is required before capital commitment. Each intervention is grounded in the specific
+      mathematical axis that identifies the type of failure.
+    </p>
+
+    <div style="background:#fdf5f5;border-radius:10px;padding:20px;margin-bottom:20px;border-left:4px solid #8B1A1A;">
+      <h3 style="margin-top:0;">How the Five-Model Constants Diagnose Failure: Jackson MS Water System (Infrastructure Failure 2022)</h3>
+      <p>
+        Each coherence axis (pi, phi, sqrt2, ln2, e) measures a different dimension of systemic health.
+        The N-D-C balance formula is <strong>balance = 100 - (|D - C| / max(D, C)) * 100</strong>.
+        A failing phase has D significantly greater than C: the constraint load exceeds contribution capacity.
+        Chain average balance: <strong>59%</strong>.
+      </p>
+    <table style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>Constant</th><th>Chain Score</th><th>What It Measures</th>
+            <th>If Below 80: The System Has...</th><th>Intervention Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>pi (π)</strong></td>
+            <td style="font-weight:700;color:#c0392b;">59</td>
+            <td>Operational balance: chain average across all phases</td>
+            <td>Phases pulling the aggregate below the sustainable threshold</td>
+            <td>Process improvement; technology adoption at the phase level</td>
+          </tr>
+          <tr>
+            <td><strong>phi (φ)</strong></td>
+            <td style="font-weight:700;color:#c0392b;">42</td>
+            <td>Proportional value distribution: each phase receives value proportional to contribution</td>
+            <td>Value trapped or lost at phase transitions</td>
+            <td>Market structure reform; cooperative integration; direct-to-consumer models</td>
+          </tr>
+          <tr>
+            <td><strong>sqrt2 (√2)</strong></td>
+            <td style="font-weight:700;color:#c0392b;">30</td>
+            <td>Structural overhead: physical or institutional friction raising D without adding C</td>
+            <td>Physical or regulatory constraints are the binding factor</td>
+            <td>Infrastructure investment; mechanisation; governance reform</td>
+          </tr>
+          <tr>
+            <td><strong>ln2</strong></td>
+            <td style="font-weight:700;color:#c0392b;">35</td>
+            <td>Value transformation: how effectively each phase converts inputs to higher-value outputs</td>
+            <td>Transformation blocked by a gap (time lag, capital absence, biological delay)</td>
+            <td>Patient capital instruments; multi-cropping; phased transition</td>
+          </tr>
+          <tr>
+            <td><strong>e</strong></td>
+            <td style="font-weight:700;color:#c0392b;">45</td>
+            <td>Financial abstraction: how well financial instruments are linked to real performance metrics</td>
+            <td>Available funding is not operationally connected to the ecosystem</td>
+            <td>Bond instrument design; KPI linkage; governance pre-conditions for finance activation</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;">Eight of 12 phases are in the Failure zone (below 61.8%). This is a systemic infrastructure collapse. sqrt2 (30) is the primary diagnostic: physical infrastructure (treatment plant built 1950s-1970s, distribution pipes avg >50 years old) accumulated D-flags from deferred maintenance for decades. ln2 (35) identifies treatment process failure: chemical dosing, filtration, and disinfection processes were non-functional. e (45) identifies that available federal funding (EPA WIFIA, SRF, IIJA) was not operationally linked to performance obligations or maintenance schedules.</p>
+    </div>
+
+    <!-- Phase 5 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">5</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Distribution Network Pressure</div>
+          <div style="font-size:12px;color:#888;">Balance 43% | D=335, C=145, gap=190.0 | Primary failure axis: <strong>sqrt2 (√2)</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Why sqrt2 diagnoses this failure:</strong> D=335 is the highest in the chain: 215 main breaks in 2021 alone (vs industry benchmark ~15/100 miles/year), pressure zone failures, >50% of the system over 40 years old, and failed primary pumps at OB Curtis. C=145 is near-zero: the distribution network cannot deliver water pressure because the physical pipes and pumps are failing. sqrt2 diagnoses structural overhead: infrastructure generating D-flags faster than any operational intervention can compensate.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>IIJA funding deployment: OB Curtis pump replacement</strong></td>
+            <td>EPA IIJA allocation to Jackson: USD 600M (2022). Priority 1: replace failed primary pumps at OB Curtis plant. Each operational pump adds a critical C-flag. Estimated C increase: +40 to +60.</td>
+            <td>43% to 60-65%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Main break prioritisation programme (worst-first replacement)</strong></td>
+            <td>Use GIS-mapped break rate data to prioritise highest-break-rate segments. Each replaced segment removes a pressure-failure D-flag. Target: 25 km/year of highest-risk mains. Estimated D reduction: -15 to -20.</td>
+            <td>43% to 58-63%</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Pressure zone boundary valve rehabilitation</strong></td>
+            <td>Restore pressure zone isolation valves (USD 5,000-15,000 per valve). Prevents zone-wide pressure loss from a single main break. Each functional valve adds a system-resilience C-flag.</td>
+            <td>43% to 50-55% (valves alone)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect: Phase 5 from 43% to 60-65% with pump replacement and main prioritisation. Full Coherent zone requires sustained IIJA investment over 5-10 years.</p>
+    </div>
+    <!-- Phase 3 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">3</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Disinfection and Chemical Treatment</div>
+          <div style="font-size:12px;color:#888;">Balance 50% | D=320, C=160, gap=160.0 | Primary failure axis: <strong>ln2</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;"><strong>Why ln2 diagnoses this failure:</strong> D=320 reflects failed chemical dosing systems, unreliable chemical supply, operator shortage (30% of certified operators lost 2015-2022), and absent process control instrumentation. C=160 is critically low: the treatment plant was periodically producing water meeting no potable standard (EPA Emergency Administrative Order, August 2022). ln2 identifies transformation failure: the input (raw reservoir water) cannot be converted to potable water because the chemical and physical transformation pathway is non-functional.</p>
+      <table>
+        <thead>
+          <tr><th>Rank</th><th>Intervention</th><th>D-C Mechanism</th><th>Projected Balance</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Chemical feed system replacement and automated dosing</strong></td>
+            <td>Replace manual dosing with SCADA-controlled automated systems. Each automated dosing point removes a manual-failure D-flag and adds a process-reliability C-flag. Estimated C increase: +30 to +50.</td>
+            <td>50% to 65-70%</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Certified operator recruitment and retention</strong></td>
+            <td>EPA consent decree requirement: hire and retain Grade 4 certified operators. Each certified operator shift adds an operational-competence C-flag.</td>
+            <td>50% to 62-68% (with chemical system)</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>30-day backup chemical storage</strong></td>
+            <td>Maintain 30-day on-site chemical inventory (chlorine, coagulant, fluoride). Each day of reserve removes a supply-chain disruption D-flag.</td>
+            <td>50% to 58-62% (storage alone)</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">Combined effect: Phase 3 from 50% to 65-70%. Highest public health priority.</p>
+    </div>
+  </div>
+
 </body>
 </html>

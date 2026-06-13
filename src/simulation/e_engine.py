@@ -18,7 +18,7 @@ from typing import Any, Dict, List, Optional
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 GOLD_CLAIMS_CSV = REPO_ROOT / "frontend" / "project" / "gold" / "data" / "schema" / "gold_e_model_claims.csv"
-SHEA_CLAIMS_CSV = REPO_ROOT / "frontend" / "project" / "shea" / "data" / "schema" / "shea_e_model_claims.csv"
+SHEA_CLAIMS_CSV = REPO_ROOT / "frontend" / "project" / "west_african_shea" / "data" / "schema" / "shea_e_model_claims.csv"
 
 E = math.e
 

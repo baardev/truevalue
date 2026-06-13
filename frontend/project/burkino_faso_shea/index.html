@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Burkina Faso Shea — TrueValue Analytics</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --amber: #d97706;
+    --amber-dark: #b45309;
+    --amber-light: #fbbf24;
+    --amber-pale: #fef3c7;
+    --amber-muted: #92400e;
+    --ss-green: #16a34a;
+    --ss-green-light: #bbf7d0;
+    --bau-red: #dc2626;
+    --bau-red-light: #fee2e2;
+    --neutral-900: #1a1614;
+    --neutral-800: #292116;
+    --neutral-700: #3d2e1e;
+    --neutral-200: #e7d9c8;
+    --neutral-100: #faf5ef;
+    --card-bg: #fffbf5;
+    --border: #e8d5b4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--neutral-100); color: var(--neutral-900); }
+
+  /* HERO */
+  .hero {
+    background: linear-gradient(135deg, var(--neutral-800) 0%, var(--amber-dark) 60%, var(--amber) 100%);
+    color: #fff;
+    padding: 3rem 2rem 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::after {
+    content: '🌰';
+    position: absolute; right: 3rem; top: 50%; transform: translateY(-50%);
+    font-size: 8rem; opacity: 0.12; pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(255,255,255,0.15);
+    border: 1px solid rgba(255,255,255,0.3);
+    border-radius: 20px;
+    padding: 0.25rem 0.85rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 0.8rem;
+  }
+  .hero h1 { font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 700; margin-bottom: 0.4rem; }
+  .hero p { font-size: 1rem; opacity: 0.85; max-width: 600px; line-height: 1.5; }
+  .hero-meta { margin-top: 1.2rem; display: flex; gap: 1.5rem; flex-wrap: wrap; font-size: 0.82rem; opacity: 0.75; }
+  .hero-meta span::before { content: '• '; }
+
+  /* SCENARIO ALERT */
+  .scenario-alert {
+    background: linear-gradient(90deg, var(--bau-red-light) 0%, #fff8e1 50%, var(--ss-green-light) 100%);
+    border: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+  }
+  .scenario-alert .label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; }
+  .scenario-alert .bau-badge { background: var(--bau-red); color: #fff; border-radius: 4px; padding: 0.15rem 0.6rem; font-size: 0.78rem; }
+  .scenario-alert .ss-badge { background: var(--ss-green); color: #fff; border-radius: 4px; padding: 0.15rem 0.6rem; font-size: 0.78rem; }
+  .scenario-alert .arrow { color: var(--amber-dark); font-weight: 700; font-size: 1.2rem; }
+  .scenario-alert p { font-size: 0.88rem; color: #555; flex: 1; }
+
+  /* MAIN LAYOUT */
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 1.5rem; }
+  .section { padding: 2rem 0; }
+  .section-title {
+    font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--amber-dark);
+    border-bottom: 2px solid var(--amber-light);
+    padding-bottom: 0.4rem; margin-bottom: 1.2rem;
+  }
+
+  /* KPI CARDS */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .kpi-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    position: relative;
+  }
+  .kpi-card.scenario-pair { border-left: 4px solid var(--amber); }
+  .kpi-label { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: #666; margin-bottom: 0.5rem; }
+  .kpi-row { display: flex; justify-content: space-between; align-items: baseline; gap: 0.5rem; }
+  .kpi-val-bau { font-size: 1.3rem; font-weight: 700; color: var(--bau-red); }
+  .kpi-val-ss { font-size: 1.3rem; font-weight: 700; color: var(--ss-green); }
+  .kpi-unit { font-size: 0.72rem; color: #888; }
+  .kpi-delta {
+    display: inline-block;
+    background: var(--ss-green-light);
+    color: var(--ss-green);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.1rem 0.4rem;
+    margin-top: 0.3rem;
+  }
+  .kpi-delta.negative { background: var(--bau-red-light); color: var(--bau-red); }
+
+  /* LAYER CARDS */
+  .layer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.2rem; }
+  .layer-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 1.4rem;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .layer-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .layer-card .icon { font-size: 1.8rem; margin-bottom: 0.6rem; }
+  .layer-card h3 { font-size: 1rem; font-weight: 700; color: var(--amber-dark); margin-bottom: 0.3rem; }
+  .layer-card a h3 { color: var(--amber-dark); }
+  .layer-card a { text-decoration: none; }
+  .layer-card a:hover h3 { text-decoration: underline; }
+  .layer-card p { font-size: 0.85rem; color: #555; line-height: 1.5; }
+  .layer-card .sub-links { margin-top: 0.8rem; display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .layer-card .sub-link {
+    background: var(--amber-pale);
+    color: var(--amber-muted);
+    border-radius: 4px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .layer-card .sub-link:hover { background: var(--amber-light); }
+
+  /* PHASE STRIP */
+  .phase-strip { display: flex; gap: 0; overflow-x: auto; border-radius: 8px; overflow: hidden; border: 1px solid var(--border); }
+  .phase-chip {
+    flex: 1; min-width: 90px;
+    padding: 0.6rem 0.3rem;
+    text-align: center;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: #fff;
+    position: relative;
+    cursor: default;
+  }
+  .phase-chip .num { font-size: 0.9rem; display: block; margin-bottom: 0.2rem; }
+  .phase-chip .name { opacity: 0.9; line-height: 1.2; }
+  .phase-chip.t-high { background: var(--ss-green); }
+  .phase-chip.t-medium { background: var(--amber); }
+  .phase-chip.t-low { background: var(--amber-muted); }
+
+  /* CHARTS */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+  @media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem;
+  }
+  .chart-card h4 { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #555; margin-bottom: 0.8rem; }
+  .chart-wrap { position: relative; height: 220px; }
+
+  /* FIVE-MODEL */
+  .fmc-wrap { position: relative; height: 300px; max-width: 400px; margin: 0 auto; }
+
+  /* FOOTER */
+  footer { background: var(--neutral-800); color: rgba(255,255,255,0.6); text-align: center; padding: 1.5rem; font-size: 0.78rem; }
+  footer a { color: var(--amber-light); text-decoration: none; }
+
+  /* LEGEND */
+  .legend { display: flex; gap: 1.2rem; flex-wrap: wrap; font-size: 0.78rem; margin-bottom: 1rem; }
+  .legend-item { display: flex; align-items: center; gap: 0.4rem; }
+  .legend-dot { width: 12px; height: 12px; border-radius: 50%; }
+  .legend-dot.bau { background: var(--bau-red); }
+  .legend-dot.ss { background: var(--ss-green); }
+
+  .note { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 0.5rem; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-badge">Burkina Faso · Shea Butter · Supply Chain Intelligence</div>
+    <h1>Burkina Faso Shea</h1>
+    <p>Phase-resolved N-D-C analysis of the shea butter value chain in Burkina Faso, comparing traditional BAU production against the Serious Shea eco-processing centre model. Grounded in AfDB/World Bank due diligence and women's group survey data from 300+ organizations.</p>
+    <div class="hero-meta">
+      <span>~6,000 women producers</span>
+      <span>8 supply chain phases</span>
+      <span>50 collection sites + 10 eco-processing centres (full scale)</span>
+      <span>AfDB + World Bank backed</span>
+    </div>
+  </div>
+</div>
+
+<div class="scenario-alert">
+  <div class="container" style="display:flex; align-items:center; gap:1.2rem; flex-wrap:wrap; width:100%;">
+    <span class="label">Scenario comparison</span>
+    <span class="bau-badge">BAU Traditional</span>
+    <span class="arrow">→</span>
+    <span class="ss-badge">Serious Shea Eco-Processing</span>
+    <p>This hub presents both production scenarios side by side. BAU: fuelwood processing, informal markets, ~USD 175/season income. Serious Shea: clean technology, certified export, >USD 450/season income, 95% GHG reduction per kg butter.</p>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- KPIs -->
+  <div class="section">
+    <div class="section-title">Key Performance Indicators — BAU vs. Serious Shea</div>
+    <div class="legend">
+      <div class="legend-item"><div class="legend-dot bau"></div> BAU (Traditional)</div>
+      <div class="legend-item"><div class="legend-dot ss"></div> Serious Shea</div>
+    </div>
+    <div class="kpi-grid" id="kpi-grid"></div>
+    <p class="note">Phase 1 figures. BAU estimated from TARA technical report and women's group Ecodata survey (Apr 2019). Serious Shea from 2022 Final Business Plan (DD 2022 zip) and AfDB Component 4 report.</p>
+  </div>
+
+  <!-- LAYERS -->
+  <div class="section">
+    <div class="section-title">Analytical Layers</div>
+    <div class="layer-grid">
+      <div class="layer-card">
+        <div class="icon">⛓️</div>
+        <a href="supply_chain/index.html"><h3>Supply Chain</h3></a>
+        <p>8-phase physical flow from shea parkland through collection, processing, certification, and export. BAU vs. Serious Shea balance scores per phase.</p>
+        <div class="sub-links">
+          <a href="supply_chain/index.html" class="sub-link">Phase Map</a>
+          <a href="supply_chain/dashboard.html" class="sub-link">Dashboard</a>
+          <a href="supply_chain/project_context.html" class="sub-link">Context</a>
+          <a href="supply_chain/recycling_analysis.html" class="sub-link">TVPCI-R</a>
+        </div>
+      </div>
+      <div class="layer-card">
+        <div class="icon">💰</div>
+        <a href="value_chain/index.html"><h3>Value Chain</h3></a>
+        <p>Kernel pricing, butter export prices by grade, CLEO retail unit economics, carbon credit revenue, and BAU vs. Serious Shea value gap analysis.</p>
+        <div class="sub-links">
+          <a href="value_chain/index.html" class="sub-link">Value Analysis</a>
+        </div>
+      </div>
+      <div class="layer-card" style="opacity:0.6; cursor:default;">
+        <div class="icon">🏦</div>
+        <h3>Financial Abstraction</h3>
+        <p>DFC blended finance structure, AfDB/World Bank grants, community fund, and private investor bridge. Deferred pending full supply chain mapping.</p>
+        <div class="sub-links">
+          <span class="sub-link" style="opacity:0.5;">Deferred</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PHASE STRIP -->
+  <div class="section">
+    <div class="section-title">Supply Chain Phase Map</div>
+    <div class="phase-strip" id="phase-strip"></div>
+    <p class="note" style="margin-top:0.5rem;">Color indicates transparency level: <span style="color:var(--ss-green);">high</span> / <span style="color:var(--amber);">medium</span> / <span style="color:var(--amber-muted);">low</span></p>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="section">
+    <div class="section-title">N-D-C Coherence Analysis</div>
+    <div class="charts-grid">
+      <div class="chart-card">
+        <h4>TVPCI — System Coherence by Scenario</h4>
+        <div class="chart-wrap"><canvas id="tvpci-bar"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>N Coherence by Phase</h4>
+        <div class="chart-wrap"><canvas id="n-line"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>D vs C Balance by Phase (Serious Shea)</h4>
+        <div class="chart-wrap"><canvas id="dc-bar"></canvas></div>
+      </div>
+      <div class="chart-card">
+        <h4>Five-Model Coherence</h4>
+        <div class="fmc-wrap"><canvas id="fmc-radar"></canvas></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <a href="../../index.html">← TrueValue Analytics</a> &nbsp;|&nbsp; Burkina Faso Shea &nbsp;|&nbsp;
+  Data: AfDB/TARA Technical Report 2020, Serious Shea Business Plan 2022, Women's Group Ecodata Survey 2019
+</footer>
+
+<script>
+const DATA_URL = 'data/processed/burkino_faso_shea_supply_chain_ui.json';
+
+const PHASE_NAMES = [
+  'Shea Parkland', 'Collection + Drying', 'QC + Storage', 'Roasting + Grinding',
+  'Water Kneading', 'Packaging + Export Prep', 'Certification + Carbon', 'Market Delivery'
+];
+
+const KPI_DEFS = [
+  { label: 'Butter Output (Phase 1)', bau: '10,000 t/yr', ss: '3,206 t/yr', unit: 'Phase 1', delta: null, note: 'SS Phase 1 partial; BAU national estimate' },
+  { label: "Women's Income", bau: '~USD 175', ss: '>USD 450', unit: '/season', delta: '+2.6x', positive: true },
+  { label: 'Kernel Price Paid', bau: 'USD 0.38', ss: 'USD 0.60', unit: '/kg', delta: '+58%', positive: true },
+  { label: 'GHG Intensity', bau: '25 kgCO2e', ss: '~1.2 kgCO2e', unit: '/kg butter', delta: '-95%', positive: true },
+  { label: 'Fuelwood per kg Butter', bau: '15 kg', ss: '0 kg', unit: 'wood', delta: '-100%', positive: true },
+  { label: 'Formal Jobs (Phase 1)', bau: '0', ss: '195', unit: 'FT jobs', delta: '+195', positive: true },
+  { label: 'System TVPCI', bau: '0.44', ss: '0.78', unit: 'index', delta: '+77%', positive: true },
+  { label: 'GHG Savings (full)', bau: 'n/a', ss: '320,000 t', unit: 'CO2e/yr', delta: 'vs BAU', positive: true }
+];
+
+fetch(DATA_URL).then(r => r.json()).then(data => {
+  renderKPIs();
+  renderPhaseStrip(data);
+  renderTVPCIBar(data);
+  renderNLine(data);
+  renderDCBar(data);
+  renderFMC(data);
+});
+
+function renderKPIs() {
+  const grid = document.getElementById('kpi-grid');
+  KPI_DEFS.forEach(k => {
+    const div = document.createElement('div');
+    div.className = 'kpi-card scenario-pair';
+    div.innerHTML = `
+      <div class="kpi-label">${k.label}</div>
+      <div class="kpi-row">
+        <div>
+          <div class="kpi-val-bau">${k.bau}</div>
+          <div class="kpi-unit">BAU ${k.unit}</div>
+        </div>
+        <div style="text-align:right;">
+          <div class="kpi-val-ss">${k.ss}</div>
+          <div class="kpi-unit">Serious Shea</div>
+        </div>
+      </div>
+      ${k.delta ? `<div class="kpi-delta${k.positive ? '' : ' negative'}">${k.delta}</div>` : ''}
+    `;
+    grid.appendChild(div);
+  });
+}
+
+function renderPhaseStrip(data) {
+  const strip = document.getElementById('phase-strip');
+  data.phase_meta.forEach(p => {
+    const chip = document.createElement('div');
+    chip.className = `phase-chip t-${p.transparency}`;
+    chip.innerHTML = `<span class="num">${p.id}</span><span class="name">${PHASE_NAMES[p.id]}</span>`;
+    strip.appendChild(chip);
+  });
+}
+
+const AMBER = '#d97706';
+const GREEN = '#16a34a';
+const RED = '#dc2626';
+
+function renderTVPCIBar(data) {
+  const bau = data.ndc_data.bau;
+  const ss = data.ndc_data.serious_shea;
+  new Chart(document.getElementById('tvpci-bar').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels: ['System TVPCI', 'B_chain'],
+      datasets: [
+        { label: 'BAU', data: [bau.system_tvpci, bau.B_chain], backgroundColor: RED + 'cc' },
+        { label: 'Serious Shea', data: [ss.system_tvpci, ss.B_chain], backgroundColor: GREEN + 'cc' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { size: 11 } } } },
+      scales: { y: { min: 0, max: 1, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
+    }
+  });
+}
+
+function renderNLine(data) {
+  const bau = data.ndc_data.bau.phases;
+  const ss = data.ndc_data.serious_shea.phases;
+  const labels = bau.map((_, i) => `P${i}`);
+  new Chart(document.getElementById('n-line').getContext('2d'), {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: 'BAU N', data: bau.map(p => p.N), borderColor: RED, backgroundColor: RED + '22', fill: true, tension: 0.4 },
+        { label: 'SS N', data: ss.map(p => p.N), borderColor: GREEN, backgroundColor: GREEN + '22', fill: true, tension: 0.4 }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { size: 11 } } } },
+      scales: { y: { min: 0, max: 10, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
+    }
+  });
+}
+
+function renderDCBar(data) {
+  const ss = data.ndc_data.serious_shea.phases;
+  const labels = ss.map((_, i) => `P${i}`);
+  new Chart(document.getElementById('dc-bar').getContext('2d'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'D (Constraint)', data: ss.map(p => p.D), backgroundColor: AMBER + 'bb' },
+        { label: 'C (Output)', data: ss.map(p => p.C), backgroundColor: GREEN + 'bb' }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { size: 11 } } } },
+      scales: { y: { min: 0, max: 10, ticks: { font: { size: 10 } } }, x: { ticks: { font: { size: 10 } } } }
+    }
+  });
+}
+
+function renderFMC(data) {
+  const bau = data.five_model_coherence.bau;
+  const ss = data.five_model_coherence.serious_shea;
+  const labels = ['Supply Chain', 'Value Chain', 'Environmental', 'Social', 'Financial'];
+  new Chart(document.getElementById('fmc-radar').getContext('2d'), {
+    type: 'radar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'BAU', data: [bau.supply_chain, bau.value_chain, bau.environmental, bau.social, bau.financial], borderColor: RED, backgroundColor: RED + '22', pointBackgroundColor: RED },
+        { label: 'Serious Shea', data: [ss.supply_chain, ss.value_chain, ss.environmental, ss.social, ss.financial], borderColor: GREEN, backgroundColor: GREEN + '22', pointBackgroundColor: GREEN }
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { labels: { font: { size: 11 } } } },
+      scales: { r: { min: 0, max: 1, ticks: { font: { size: 9 }, stepSize: 0.25 }, pointLabels: { font: { size: 10 } } } }
+    }
+  });
+}
+</script>
+</body>
+</html>

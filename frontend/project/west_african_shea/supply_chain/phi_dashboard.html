@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>West African Shea Supply Chain – φ Proportional Coherence Model</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #2d6a4f 0%, #1b4332 50%, #0d2b1f 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #0d2b1f 0%, #1b4332 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header-nav a {
+            color: #95d5b2;
+            text-decoration: none;
+            margin-left: 18px;
+            font-size: 13px;
+        }
+        .header-nav a:hover { color: white; }
+
+        /* Model layer strip */
+        .model-strip {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            background: #1a1a1a;
+            overflow-x: auto;
+        }
+        .model-tab {
+            padding: 9px 20px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            cursor: pointer;
+            border-right: 1px solid #333;
+            color: #888;
+            text-decoration: none;
+            display: block;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active { background: #2d6a4f; color: white; cursor: default; }
+        .model-tab.disabled { opacity: 0.4; cursor: not-allowed; }
+
+        /* Score cards */
+        .score-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 28px 30px;
+            background: #f0f7f4;
+        }
+        .card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #e0e0e0;
+        }
+        .card.green-border { border-top-color: #2d6a4f; }
+        .card.good-border  { border-top-color: #28a745; }
+        .card.warn-border  { border-top-color: #ffc107; }
+        .card.poor-border  { border-top-color: #dc3545; }
+        .card-label { font-size: 11px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 34px; font-weight: bold; color: #2c3e50; margin-bottom: 6px; }
+        .card-value.green { color: #2d6a4f; }
+        .card-value.amber { color: #b8860b; }
+        .card-value.red   { color: #dc3545; }
+        .card-value.goodc { color: #28a745; }
+        .card-sub { font-size: 12px; color: #6c757d; }
+
+        .main { padding: 28px 30px; }
+        .section-title { font-size: 17px; font-weight: 600; color: #2c3e50; margin-bottom: 6px; }
+        .section-sub   { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+
+        /* Chain flow */
+        .chain-flow {
+            background: #f0f7f4;
+            border-radius: 10px;
+            padding: 30px 20px;
+            margin-bottom: 28px;
+            overflow-x: auto;
+        }
+        .phases-row { display: flex; align-items: center; min-width: 900px; }
+        .phase-node { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        .phase-box {
+            width: 88px; height: 88px; border-radius: 10px;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15); border: 2px solid transparent;
+            transition: transform 0.2s; cursor: default;
+        }
+        .phase-box:hover { transform: scale(1.07); }
+        .phase-box .pid   { font-size: 11px; font-weight: 700; opacity: 0.85; }
+        .phase-box .pn    { font-size: 22px; font-weight: 900; }
+        .phase-box .plabel{ font-size: 10px; opacity: 0.8; margin-top: 2px; }
+        .phase-label { font-size: 10px; color: #555; margin-top: 7px; text-align: center; max-width: 90px; }
+
+        .phase-box.excellent { background: linear-gradient(135deg,#28a745,#20c997); color:white; border-color:#28a745; }
+        .phase-box.good      { background: linear-gradient(135deg,#20c997,#17a2b8); color:white; border-color:#17a2b8; }
+        .phase-box.fair      { background: linear-gradient(135deg,#ffc107,#fd7e14); color:white; border-color:#ffc107; }
+        .phase-box.poor      { background: linear-gradient(135deg,#dc3545,#c82333); color:white; border-color:#dc3545; }
+
+        .boundary-connector { display:flex; flex-direction:column; align-items:center; padding:0 4px; flex-shrink:0; }
+        .boundary-arrow { font-size: 22px; line-height: 1; }
+        .boundary-pill { padding: 3px 8px; border-radius: 10px; font-size: 10px; font-weight: 700; margin-top: 4px; white-space: nowrap; }
+        .boundary-score-bar { width: 48px; height: 5px; background: #e0e0e0; border-radius: 3px; margin-top: 3px; overflow: hidden; }
+        .boundary-score-fill { height: 100%; border-radius: 3px; }
+        .pill-good  { background:#d4edda; color:#155724; }
+        .pill-fair  { background:#fff3cd; color:#856404; }
+        .pill-poor  { background:#f8d7da; color:#721c24; }
+        .pill-warn  { background:#ffe5d0; color:#7d3c00; }
+        .arrow-good { color: #28a745; }
+        .arrow-fair { color: #ffc107; }
+        .arrow-poor { color: #dc3545; }
+        .arrow-warn { color: #fd7e14; }
+
+        /* φ reference scale */
+        .phi-reference {
+            margin-top: 20px; padding: 16px 20px;
+            background: white; border-radius: 8px; border-left: 4px solid #2d6a4f;
+        }
+        .phi-reference h4 { font-size: 13px; color: #0d2b1f; margin-bottom: 12px; font-weight: 700; }
+        .phi-scale-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+        .phi-scale-label { font-size: 11px; color: #6c757d; width: 80px; flex-shrink: 0; }
+        .phi-scale-bar {
+            flex: 1; height: 18px; background: #f0f0f0;
+            border-radius: 9px; position: relative; overflow: visible;
+        }
+        .phi-target-line {
+            position: absolute; top: -4px; width: 2px; height: 26px;
+            background: #2d6a4f; border-radius: 1px; z-index: 2;
+        }
+        .phi-target-label {
+            position: absolute; top: -20px; font-size: 10px;
+            color: #2d6a4f; font-weight: 700; white-space: nowrap; transform: translateX(-50%);
+        }
+        .ratio-dot {
+            position: absolute; top: 50%; transform: translate(-50%, -50%);
+            width: 12px; height: 12px; border-radius: 50%; z-index: 3; cursor: default;
+        }
+
+        /* Value amplification section */
+        .value-amp {
+            background: linear-gradient(135deg, #0d2b1f, #1b4332);
+            color: white;
+            border-radius: 10px;
+            padding: 24px;
+            margin-bottom: 28px;
+        }
+        .value-amp h3 { font-size: 16px; margin-bottom: 6px; }
+        .value-amp .sub { font-size: 13px; opacity: 0.8; margin-bottom: 20px; }
+        .amp-flow {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            overflow-x: auto;
+            padding-bottom: 8px;
+        }
+        .amp-node {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 16px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 10px;
+            min-width: 120px;
+        }
+        .amp-node .phase-n { font-size: 11px; opacity: 0.7; margin-bottom: 4px; }
+        .amp-node .value   { font-size: 22px; font-weight: 900; color: #95d5b2; }
+        .amp-node .unit    { font-size: 10px; opacity: 0.6; }
+        .amp-arrow {
+            flex-shrink: 0;
+            text-align: center;
+            padding: 0 12px;
+        }
+        .amp-arrow .mult  { font-size: 22px; font-weight: 900; color: #f5d97a; }
+        .amp-arrow .label { font-size: 10px; opacity: 0.6; margin-top: 2px; }
+        .amp-arrow .phi-steps { font-size: 11px; color: #95d5b2; margin-top: 3px; }
+        .amp-total {
+            margin-top: 16px;
+            padding: 12px 16px;
+            background: rgba(255,255,255,0.06);
+            border-radius: 8px;
+            font-size: 13px;
+            opacity: 0.9;
+        }
+
+        /* Boundary table */
+        .boundary-table-wrap {
+            background: white; border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.07);
+            overflow: hidden; margin-bottom: 28px;
+        }
+        .boundary-table-wrap h3 { padding: 16px 20px 0; font-size: 15px; color: #2c3e50; }
+        table.bt { width: 100%; border-collapse: collapse; font-size: 13px; }
+        table.bt th {
+            background: #f0f7f4; padding: 10px 14px; text-align: left;
+            font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px;
+            color: #6c757d; border-bottom: 2px solid #e9ecef;
+        }
+        table.bt td { padding: 11px 14px; border-bottom: 1px solid #f0f0f0; }
+        table.bt tr:last-child td { border-bottom: none; }
+        table.bt tr:hover td { background: #f0f7f4; }
+        .score-chip { display:inline-block; padding:3px 9px; border-radius:12px; font-weight:700; font-size:12px; }
+        .sc-good { background:#d4edda; color:#155724; }
+        .sc-fair { background:#fff3cd; color:#856404; }
+        .sc-poor { background:#f8d7da; color:#721c24; }
+        .sc-warn { background:#ffe5d0; color:#7d3c00; }
+
+        /* What-if */
+        .whatif-panel {
+            background: #f0f7f4; border-radius: 10px; padding: 24px;
+            margin-bottom: 28px; border: 1px solid #b7e4c7;
+        }
+        .whatif-panel h3 { font-size: 15px; color: #0d2b1f; margin-bottom: 6px; }
+        .whatif-panel p  { font-size: 13px; color: #6c757d; margin-bottom: 18px; }
+        .sliders-grid {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 16px; margin-bottom: 20px;
+        }
+        .slider-item label { display:block; font-size:11px; color:#555; margin-bottom:5px; font-weight:600; }
+        .slider-item input[type=range] { width:100%; accent-color:#2d6a4f; }
+        .slider-value { text-align:center; font-size:14px; font-weight:700; color:#0d2b1f; margin-top:3px; }
+        .whatif-results {
+            background: white; border-radius: 8px; padding: 16px; border: 1px solid #e9ecef;
+        }
+        .whatif-results h4 { font-size:13px; color:#2c3e50; margin-bottom:12px; }
+        .result-row { display:flex; align-items:center; gap:10px; margin-bottom:8px; font-size:12px; }
+        .result-label { width:120px; color:#6c757d; flex-shrink:0; }
+        .result-bar { flex:1; height:14px; background:#e9ecef; border-radius:7px; overflow:hidden; }
+        .result-bar-fill { height:100%; border-radius:7px; transition:width 0.3s; }
+        .result-score { width:40px; text-align:right; font-weight:700; color:#2c3e50; }
+
+        /* Model explainer */
+        .model-explainer {
+            background: linear-gradient(135deg, #0d2b1f, #1b4332);
+            color: white; border-radius: 10px; padding: 24px; margin-bottom: 28px;
+        }
+        .model-explainer h3 { font-size: 16px; margin-bottom: 12px; }
+        .explainer-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+        .explainer-col p, .explainer-col li { font-size:13px; line-height:1.6; opacity:0.9; }
+        .explainer-col ul { list-style:none; padding:0; }
+        .explainer-col li { padding:4px 0; padding-left:18px; position:relative; }
+        .explainer-col li::before { content:"φ"; position:absolute; left:0; color:#95d5b2; font-weight:700; font-size:11px; }
+        .phi-big { font-size:64px; font-weight:900; color:#95d5b2; line-height:1; margin-bottom:5px; }
+        .phi-desc { font-size:12px; opacity:0.7; }
+
+        .footer {
+            background: #1a1a1a; color: #888; padding: 16px 30px;
+            font-size: 12px; display:flex; justify-content:space-between;
+        }
+        .footer a { color: #95d5b2; text-decoration: none; }
+
+        /* Scenario selector bar */
+        .scenario-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; background: #0d1f15;
+            border-bottom: 2px solid #2d6a4f; flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #95d5b2; white-space: nowrap; flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            border: 1px solid #2d4a30; background: #182a1e; color: #95d5b2;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #2d6a4f; color: #d8f3dc; background: #1e3d26; }
+        .scen-btn.active { background: #2d6a4f; border-color: #2d6a4f; color: white; }
+        .scen-btn.shock  { border-color: #dc3545; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #dc3545; border-color: #dc3545; color: white; }
+        .scen-btn.expand { border-color: #28a745; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #28a745; border-color: #28a745; color: white; }
+        .scen-btn.sshea  { border-color: #17a2b8; }
+        .scen-btn.sshea:hover, .scen-btn.sshea.active { background: #17a2b8; border-color: #17a2b8; color: white; }
+        .scenario-desc {
+            font-size: 11px; color: #6c9e80; font-style: italic; flex: 1; min-width: 180px;
+        }
+
+        /* data note */
+        .data-note {
+            display: inline-block; padding: 2px 8px; background: #d4edda;
+            color: #155724; border-radius: 10px; font-size: 10px; font-weight: 700;
+            margin-left: 8px; vertical-align: middle;
+        }
+        .data-note.synthetic {
+            background: #e2e3e5; color: #383d41;
+        }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+<!-- Header -->
+<div class="header">
+<h1>🫒 West African Shea Supply Chain — φ Proportional Coherence Model</h1>
+<div class="header-nav">
+<a href="dashboard.html">π Dashboard</a>
+<a href="/frontend/project/five_model_coherence.html">🕸️ Five-Model Coherence</a>
+<a href="/index.html">🏠 Home</a>
+</div>
+</div>
+<!-- Model layer strip -->
+<div class="model-strip">
+<a class="model-tab" href="dashboard.html">π Operational</a>
+<span class="model-tab active">φ Proportional ← current</span>
+<a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+<a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
+<a class="model-tab" href="e_dashboard.html">e Abstract</a>
+</div>
+<!-- Scenario selector -->
+<div class="scenario-bar">
+<span class="scenario-label">Scenario:</span>
+<div class="scenario-btns" id="scenario-btns-container"></div>
+<span class="scenario-desc" id="scenario-desc"></span>
+</div>
+<!-- Score cards -->
+<div class="score-cards">
+<div class="card green-border">
+<div class="card-label">System φ-Coherence</div>
+<div class="card-value green" id="sys-score">53.6</div>
+<div class="card-sub">Low coherence — systemic<br/>proportionality breakdown</div>
+</div>
+<div class="card poor-border">
+<div class="card-label">Worst Boundary</div>
+<div class="card-value red">P3→P4</div>
+<div class="card-sub">Score: 30.4 — Export collapse<br/>ratio 0.656× (target 1.618)</div>
+</div>
+<div class="card good-border">
+<div class="card-label">Best Boundary</div>
+<div class="card-value goodc">P4→P5</div>
+<div class="card-sub">Score: 84.4 — Manufacturing ramp<br/>ratio 1.481× (nearest to φ)</div>
+</div>
+<div class="card warn-border">
+<div class="card-label">Real Value Amplification</div>
+<div class="card-value amber">317×</div>
+<div class="card-sub">First sale → Cleo retail<br/>≈ e<sup>5.76</sup> across the chain</div>
+</div>
+</div>
+<div class="main">
+<!-- Chain flow (N-values) -->
+<div class="section-title">
+            Chain-Wide Proportional Flow — N-Values
+            <span class="data-note synthetic">Synthetic N-values</span>
+</div>
+<div class="section-sub">Structural ratios computed from tholonic N-values. Target: φ = 1.618. Note P3→P4 collapse (export bottleneck) and near-φ recovery at P4→P5 (manufacturing).</div>
+<div class="chain-flow">
+<div class="phases-row" id="phases-row"></div>
+<div class="phi-reference">
+<h4>φ Reference Scale — Boundary Ratios (0 → 3.0)</h4>
+<div class="phi-scale-row">
+<div class="phi-scale-label">All 6 boundaries</div>
+<div class="phi-scale-bar" id="phi-scale">
+<div class="phi-target-line" style="left:53.9%;">
+<div class="phi-target-label">φ = 1.618</div>
+</div>
+</div>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:10px;color:#aaa;padding:0 4px;">
+<span>0</span><span>0.5</span><span>1.0</span><span>1.5</span><span>2.0</span><span>2.5</span><span>3.0</span>
+</div>
+<div style="margin-top:10px;font-size:11px;color:#888;">
+                    Shea finding: P3→P4 (export) collapses to 0.656× — custody opacity at the export boundary strips proportional value. P4→P5 (manufacturing) recovers to 1.481×, the closest point to φ in the chain.
+                </div>
+</div>
+</div>
+<!-- Real monetary amplification -->
+<div class="section-title">
+            Real Monetary Amplification — Value Chain
+            <span class="data-note">Real data</span>
+</div>
+<div class="section-sub">Actual monetary values at phases with empirical data (US$/MT). These φ-steps quantify how many golden-ratio multiplications separate each real value anchor point.</div>
+<div class="value-amp">
+<h3>Shea Value Amplification — Origin to Retail</h3>
+<div class="sub">Source: US AID 2013, Serious Shea BPlan V8 2023, Clarity/Cleo outline. Values in US$/MT equivalent.</div>
+<div class="amp-flow">
+<div class="amp-node">
+<div class="phase-n">Phase 1 · First Sale</div>
+<div class="value">$150</div>
+<div class="unit">US$/MT</div>
+<div style="font-size:10px;opacity:0.55;margin-top:4px;">Sellers at origin</div>
+</div>
+<div class="amp-arrow">
+<div class="mult">26.7×</div>
+<div class="label">amplification</div>
+<div class="phi-steps">≈ 7.3 φ-steps</div>
+</div>
+<div class="amp-node" style="border:2px solid #95d5b2;">
+<div class="phase-n">Phase 3 · Processing</div>
+<div class="value">$4,000</div>
+<div class="unit">US$/MT (Serious Shea)</div>
+<div style="font-size:10px;opacity:0.55;margin-top:4px;">Women's groups</div>
+</div>
+<div class="amp-arrow">
+<div class="mult">11.9×</div>
+<div class="label">amplification</div>
+<div class="phi-steps">≈ 5.1 φ-steps</div>
+</div>
+<div class="amp-node" style="border:2px solid #f5d97a;">
+<div class="phase-n">Phase 6 · Retail</div>
+<div class="value">$47,500</div>
+<div class="unit">US$/MT (Cleo 10% share)</div>
+<div style="font-size:10px;opacity:0.55;margin-top:4px;">Origin producers</div>
+</div>
+</div>
+<div class="amp-total">
+<strong>Total chain amplification:</strong> 317× from first sale to Cleo retail share  | 
+                ≈ e<sup>5.76</sup> continuous compounding growth  | 
+                ≈ 12.4 φ-steps across the full chain  | 
+                <strong>Serious Shea intervention</strong> captures 5.1 of those φ-steps for origin producers (vs. 0 under BAU)
+            </div>
+</div>
+<!-- Boundary table -->
+<div class="boundary-table-wrap">
+<h3>Boundary Detail — All 6 Phase Transitions
+                <span class="data-note synthetic" style="margin-left:8px;">Synthetic N-values</span>
+</h3>
+<table class="bt">
+<thead>
+<tr>
+<th>Boundary</th>
+<th>N From</th>
+<th>N To</th>
+<th>Ratio</th>
+<th>φ Target</th>
+<th>Distance</th>
+<th>φ Score</th>
+<th>Status</th>
+<th>Intervention</th>
+</tr>
+</thead>
+<tbody id="boundary-tbody"></tbody>
+</table>
+</div>
+<!-- What-if -->
+<div class="whatif-panel">
+<h3>What-If Simulator — Adjust Phase N-Values</h3>
+<p>Drag sliders to adjust any phase's operational N-value. The most impactful change: raising Phase 4 (Export) N-value toward Phase 3's level — this directly addresses the P3→P4 export collapse and is exactly what the Serious Shea custody-direct model achieves.</p>
+<div class="sliders-grid" id="sliders-grid"></div>
+<div class="whatif-results">
+<h4>Live Boundary Scores</h4>
+<div id="live-results"></div>
+<div style="margin-top:12px;padding-top:12px;border-top:1px solid #e9ecef;display:flex;align-items:center;gap:20px;">
+<span style="font-size:13px;color:#6c757d;">System φ-coherence:</span>
+<span id="live-sys-score" style="font-size:22px;font-weight:900;color:#2d6a4f;">53.6</span>
+<span id="live-sys-status" style="font-size:12px;color:#aaa;">Low coherence — systemic proportionality breakdown</span>
+</div>
+</div>
+</div>
+<!-- Model explainer -->
+<div class="model-explainer">
+<h3>About the φ (Proportional Coherence) Model — Shea Context</h3>
+<div class="explainer-grid">
+<div class="explainer-col">
+<div class="phi-big">φ</div>
+<div class="phi-desc">= 1.61803398... = (1 + √5) / 2</div>
+<p style="margin-top:12px;">
+                        In shea, the φ model reveals where the 317× value amplification 
+                        from origin to retail is flowing — and where it is being captured 
+                        before reaching producers. The P3→P4 collapse (export boundary)
+                        is the structural signature of the opacity gap: custody becomes
+                        invisible, and with it, value capture becomes unaccountable.
+                    </p>
+<p style="margin-top:10px;">
+                        The Serious Shea / Cleo intervention is a φ-restoration project:
+                        it creates direct custody relationships that bypass the opaque
+                        export boundary and connect origin processing (P3) directly to
+                        a known buyer (P4/P5), allowing the natural φ-proportional flow
+                        to be re-established.
+                    </p>
+</div>
+<div class="explainer-col">
+<ul>
+<li>Configuration: inst=2, D=2, C=3</li>
+<li>Score 100 = ratio exactly equals φ (1.618)</li>
+<li>P4→P5 achieves 84.4 — the closest to φ in the chain, and the boundary created by the direct producer-to-manufacturer relationship</li>
+<li>P3→P4 scores 30.4 — the export bottleneck. This is where 90% of shea entering global supply chains loses value visibility</li>
+<li>Real monetary data (US$/MT) is available for three phases, giving direct φ calibration anchors</li>
+<li>317× total amplification ≈ 12.4 φ-steps — the full chain's value multiplication expressed in golden ratio units</li>
+</ul>
+</div>
+</div>
+</div>
+</div><!-- /main -->
+<div class="footer">
+<span>Shea Supply Chain φ Model — Tholonic N-D-C Framework</span>
+<span>
+<a href="dashboard.html">← π Operational</a>  | 
+            <a href="index.html">Supply Chain Hub</a>  | 
+            Framework Docs
+</span>
+</div>
+</div>
+<script>
+const PHI = 1.6180339887;
+
+const PHASES = [
+    { id:0, name:"Collection",      N:178 },
+    { id:1, name:"First Sale",      N:192 },
+    { id:2, name:"Trading/Bulking", N:218 },
+    { id:3, name:"Processing",      N:241 },
+    { id:4, name:"Export",          N:158 },
+    { id:5, name:"Manufacturing",   N:234 },
+    { id:6, name:"Retail",          N:237 },
+];
+
+// ── Scenarios ────────────────────────────────────────────────────────────────
+let SCENARIOS = {};
+let currentScenario = 'current';
+let nValues = [];
+
+function buildScenarioButtons(scenarios) {
+    const btnCls = key => {
+        if (key === 'current' || key === 'optimum') return '';
+        if (key === 'expansion') return 'expand';
+        if (key === 'regulatory') return 'regul';
+        if (key === 'serious_shea') return 'sshea';
+        return 'shock';
+    };
+    const container = document.getElementById('scenario-btns-container');
+    container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+        `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+    ).join('');
+}
+
+function setScenario(key) {
+    const scen = SCENARIOS[key];
+    if (!scen) return;
+    currentScenario = key;
+    nValues = [...scen.values];
+    PHASES.forEach((p, i) => {
+        const slider = document.getElementById('slider-' + i);
+        if (slider) slider.value = nValues[i];
+        const sv = document.getElementById('sv-' + i);
+        if (sv) sv.textContent = 'N = ' + nValues[i];
+    });
+    document.querySelectorAll('.scen-btn').forEach(b => {
+        b.classList.toggle('active', b.dataset.key === key);
+    });
+    document.getElementById('scenario-desc').textContent = scen.description;
+    renderAll();
+}
+
+fetch('scenarios.json')
+    .then(r => r.json())
+    .then(data => {
+        SCENARIOS = data.phi.scenarios;
+        buildScenarioButtons(SCENARIOS);
+        nValues = [...SCENARIOS.current.values];
+        setScenario('current');
+    })
+    .catch(err => console.error('Failed to load scenarios.json:', err));
+
+function phiScore(ratio) {
+    if (ratio <= 0) return 0;
+    return 100 * Math.exp(-2 * Math.abs(ratio - PHI) / PHI);
+}
+function scoreClass(score) {
+    if (score >= 80) return 'good';
+    if (score >= 55) return 'fair';
+    if (score >= 35) return 'warn';
+    return 'poor';
+}
+function phaseBoxClass(score) {
+    if (score >= 80) return 'excellent';
+    if (score >= 60) return 'good';
+    if (score >= 40) return 'fair';
+    return 'poor';
+}
+function diagnosis(ratio, score) {
+    if (score >= 80) return 'φ-proportional';
+    if (score >= 55) return 'Near-proportional';
+    if (ratio < 1.0) return 'Value suppressed';
+    if (ratio > PHI * 1.5) return 'Disproportionate recovery';
+    return 'Under-proportional';
+}
+function intervention(ratio, score) {
+    if (score >= 80) return '—';
+    if (ratio < 0.7) return 'Investigate export boundary opacity: custody handoff, route, buyer identity. Direct buyer relationship (Serious Shea model) restores this boundary.';
+    if (ratio > 2.5) return 'Sharp recovery — examine preceding collapse. Bottleneck creates artificial scarcity resolved at next phase.';
+    if (ratio < 1.0) return 'Strengthen downstream C: buyer relationships, logistics access, market connections.';
+    return 'Monitor — mild compression. May improve with certification or direct trade relationships.';
+}
+function computeBoundaries(ns) {
+    return ns.slice(0,-1).map((n,i)=>{
+        const ratio = n>0 ? ns[i+1]/n : 0;
+        const score = phiScore(ratio);
+        return {fromId:i, toId:i+1, nFrom:n, nTo:ns[i+1], ratio, score};
+    });
+}
+function systemScore(boundaries) {
+    if (!boundaries.length) return 0;
+    return boundaries.reduce((s,b)=>s+b.score,0)/boundaries.length;
+}
+function sysStatus(score) {
+    if (score >= 75) return 'Harmonically coherent';
+    if (score >= 55) return 'Moderate coherence — isolated boundary failures';
+    if (score >= 35) return 'Low coherence — systemic proportionality breakdown';
+    return 'Critical — chain-wide proportionality failure';
+}
+
+function renderPhaseRow(ns) {
+    const boundaries = computeBoundaries(ns);
+    const row = document.getElementById('phases-row');
+    row.innerHTML = '';
+    const COLORS = {good:'#28a745', fair:'#ffc107', warn:'#fd7e14', poor:'#dc3545'};
+    PHASES.forEach((p,i)=>{
+        const adj = boundaries.filter(b=>b.fromId===i||b.toId===i);
+        const avgScore = adj.length ? adj.reduce((s,b)=>s+b.score,0)/adj.length : 50;
+        const cls = phaseBoxClass(avgScore);
+        const node = document.createElement('div');
+        node.className = 'phase-node';
+        node.innerHTML = `
+            <div class="phase-box ${cls}">
+                <div class="pid">Phase ${p.id}</div>
+                <div class="pn">${ns[i]}</div>
+                <div class="plabel">N-value</div>
+            </div>
+            <div class="phase-label">${p.name}</div>`;
+        row.appendChild(node);
+        if (i < PHASES.length-1) {
+            const b = boundaries[i];
+            const sc = scoreClass(b.score);
+            const conn = document.createElement('div');
+            conn.className = 'boundary-connector';
+            conn.innerHTML = `
+                <div class="boundary-arrow arrow-${sc}">→</div>
+                <div class="boundary-pill pill-${sc}">${b.ratio.toFixed(3)}×</div>
+                <div class="boundary-score-bar">
+                    <div class="boundary-score-fill" style="width:${b.score}%;background:${COLORS[sc]}"></div>
+                </div>
+                <div style="font-size:9px;color:#999;margin-top:2px;">${b.score.toFixed(0)}</div>`;
+            row.appendChild(conn);
+        }
+    });
+}
+
+function renderPhiScale(ns) {
+    const boundaries = computeBoundaries(ns);
+    const scale = document.getElementById('phi-scale');
+    scale.querySelectorAll('.ratio-dot').forEach(d=>d.remove());
+    const SCALE_MAX = 3.0;
+    const COLORS = {good:'#28a745', fair:'#ffc107', warn:'#fd7e14', poor:'#dc3545'};
+    boundaries.forEach(b=>{
+        const pct = Math.min((b.ratio/SCALE_MAX)*100, 100);
+        const sc = scoreClass(b.score);
+        const dot = document.createElement('div');
+        dot.className = 'ratio-dot';
+        dot.style.left = pct+'%';
+        dot.style.background = COLORS[sc];
+        dot.style.border = '2px solid white';
+        dot.title = `P${b.fromId}→P${b.toId}: ${b.ratio.toFixed(3)}× (score ${b.score.toFixed(0)})`;
+        scale.appendChild(dot);
+    });
+}
+
+function renderBoundaryTable(ns) {
+    const boundaries = computeBoundaries(ns);
+    const tbody = document.getElementById('boundary-tbody');
+    tbody.innerHTML = '';
+    boundaries.forEach(b=>{
+        const sc = scoreClass(b.score);
+        const dist = Math.abs(b.ratio-PHI).toFixed(4);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><strong>P${b.fromId}→P${b.toId}</strong><br><span style="font-size:11px;color:#999;">${PHASES[b.fromId].name} → ${PHASES[b.toId].name}</span></td>
+            <td>${b.nFrom}</td>
+            <td>${b.nTo}</td>
+            <td><strong>${b.ratio.toFixed(4)}</strong></td>
+            <td style="color:#2d6a4f;font-weight:700;">${PHI.toFixed(5)}</td>
+            <td>${dist}</td>
+            <td><span class="score-chip sc-${sc}">${b.score.toFixed(1)}</span></td>
+            <td>${diagnosis(b.ratio, b.score)}</td>
+            <td style="font-size:11px;color:#6c757d;max-width:220px;">${intervention(b.ratio, b.score)}</td>`;
+        tbody.appendChild(tr);
+    });
+}
+
+function renderSliders(ns) {
+    const grid = document.getElementById('sliders-grid');
+    grid.innerHTML = '';
+    PHASES.forEach((p,i)=>{
+        const item = document.createElement('div');
+        item.className = 'slider-item';
+        item.innerHTML = `
+            <label>Phase ${p.id}: ${p.name}</label>
+            <input type="range" min="5" max="400" value="${ns[i]}" oninput="updateN(${i},this.value)" id="slider-${i}">
+            <div class="slider-value" id="sv-${i}">N = ${ns[i]}</div>`;
+        grid.appendChild(item);
+    });
+}
+
+function renderLiveResults(ns) {
+    const boundaries = computeBoundaries(ns);
+    const div = document.getElementById('live-results');
+    div.innerHTML = '';
+    const COLORS = {good:'#28a745', fair:'#ffc107', warn:'#fd7e14', poor:'#dc3545'};
+    boundaries.forEach(b=>{
+        const sc = scoreClass(b.score);
+        const row = document.createElement('div');
+        row.className = 'result-row';
+        row.innerHTML = `
+            <div class="result-label">P${b.fromId}→P${b.toId} (${b.ratio.toFixed(3)}×)</div>
+            <div class="result-bar"><div class="result-bar-fill" style="width:${b.score}%;background:${COLORS[sc]}"></div></div>
+            <div class="result-score">${b.score.toFixed(0)}</div>`;
+        div.appendChild(row);
+    });
+    const sys = systemScore(boundaries);
+    document.getElementById('live-sys-score').textContent = sys.toFixed(1);
+    document.getElementById('live-sys-status').textContent = sysStatus(sys);
+    document.getElementById('sys-score').textContent = sys.toFixed(1);
+}
+
+function updateN(idx, val) {
+    nValues[idx] = parseInt(val);
+    document.getElementById('sv-'+idx).textContent = 'N = '+val;
+    renderAll();
+}
+
+function renderAll() {
+    renderPhaseRow(nValues);
+    renderPhiScale(nValues);
+    renderBoundaryTable(nValues);
+    renderLiveResults(nValues);
+}
+
+renderSliders(nValues);
+renderAll();
+</script>
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS={
+    'gold':'Gold','west_african_shea':'West African Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'π Dashboard',
+    'phi_dashboard.html':'φ Proportional',
+    'what_if_simulator.html':'What-If Simulator',
+    'index.html':null,'frontend':null
+  };
+  var HUBS={
+    'gold':'/frontend/project/gold/index.html',
+    'west_african_shea':'/frontend/project/west_african_shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css='#tv-bc{background:rgba(0,0,0,0.28);padding:6px 22px;font-size:11.5px;'+
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;'+
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}'+
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}'+
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}'+
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}'+
+    '#tv-bc .bc-cur{color:#95d5b2;font-weight:900;}';
+  var s=document.createElement('style');s.textContent=css;document.head.appendChild(s);
+  var parts=window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs=[{label:'Home',href:'/index.html'}];
+  var built='';
+  for(var i=0;i<parts.length;i++){
+    var p=parts[i],lbl=LABELS[p];
+    if(lbl===null||lbl===undefined)continue;
+    built+='/'+p;
+    var isLast=(i===parts.length-1);
+    var href=isLast?null:(HUBS[p]?HUBS[p]:built+'/index.html');
+    crumbs.push({label:lbl,href:isLast?null:href});
+  }
+  var html=crumbs.map(function(c,i){
+    var sep=i>0?'<span class="bc-sep">›</span>':'';
+    var node=c.href?'<a href="'+c.href+'">'+c.label+'</a>':'<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+  var nav=document.createElement('div');nav.id='tv-bc';nav.innerHTML=html;
+  function inject(){
+    if(document.getElementById('tv-bc'))return;
+    var hdr=document.querySelector('.header');
+    if(hdr&&hdr.parentNode)hdr.parentNode.insertBefore(nav,hdr.nextSibling);
+    else document.body.insertAdjacentElement('afterbegin',nav);
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

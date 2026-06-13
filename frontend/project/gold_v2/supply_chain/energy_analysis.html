@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Energy Analysis — Gold Supply Chain</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%); min-height: 100vh; padding: 20px; }
+        .page { max-width: 1400px; margin: 0 auto; background: #f4f6f9; border-radius: 12px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+        .header { background: linear-gradient(135deg, #1b5e20 0%, #33691e 100%); color: white; padding: 20px 30px; display: flex; justify-content: space-between; align-items: center; }
+        .header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+        .header-left p  { font-size: 12px; color: #a5d6a7; margin-top: 4px; }
+        .nav-link { color: #a5d6a7; text-decoration: none; margin-left: 20px; font-size: 13px; transition: color 0.2s; }
+        .nav-link:hover { color: white; }
+        #sourceBanner { background: #e8f5e9; border-left: 4px solid #2e7d32; padding: 10px 30px; font-size: 12px; color: #1b5e20; display: flex; align-items: center; gap: 8px; }
+        .kpi-strip { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1px; background: #dee2e6; }
+        .kpi-card { background: white; padding: 18px; text-align: center; }
+        .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 6px; }
+        .kpi-value { font-size: 22px; font-weight: 700; }
+        .kpi-sub   { font-size: 11px; color: #6c757d; margin-top: 4px; }
+        .grade-badge { display: inline-block; padding: 5px 18px; border-radius: 20px; font-size: 26px; font-weight: 900; }
+        .main-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; padding: 20px; }
+        .full-width { grid-column: 1 / -1; }
+        .card { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .card-title { font-size: 13px; font-weight: 700; color: #2c3e50; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; padding-bottom: 10px; border-bottom: 2px solid #f0f0f0; display: flex; align-items: center; gap: 8px; }
+        .chart-wrap { width: 100%; overflow-x: auto; }
+        svg.chart { width: 100%; display: block; }
+        .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .phase-table th { background: #2e7d32; color: white; padding: 9px 10px; text-align: left; font-weight: 600; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+        .phase-table td { padding: 9px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .phase-table tr:hover td { background: #f8f9fa; }
+        .pill { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 600; }
+        .pill-total   { background: #f3e5f5; color: #6a1b9a; }
+        .pill-clean   { background: #e8f5e9; color: #2e7d32; }
+        .pill-fossil  { background: #fff3e0; color: #bf360c; }
+        .rating-badge { display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+        .r-excellent  { background: #d4edda; color: #155724; }
+        .r-good       { background: #d1ecf1; color: #0c5460; }
+        .r-moderate   { background: #fff3cd; color: #856404; }
+        .r-poor       { background: #f8d7da; color: #721c24; }
+        .r-critical   { background: #343a40; color: white; }
+        .target-line  { stroke: #f44336; stroke-dasharray: 4 3; stroke-width: 1.5; }
+        .findings-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; }
+        .finding-card { padding: 16px; border-radius: 8px; border-left: 4px solid; }
+        .finding-card.positive { background: #d4edda; border-color: #28a745; }
+        .finding-card.warning  { background: #fff3cd; border-color: #ffc107; }
+        .finding-card.negative { background: #f8d7da; border-color: #dc3545; }
+        .finding-card .finding-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+        .finding-card .finding-body  { font-size: 11px; line-height: 1.5; color: #495057; }
+        .footnote { padding: 16px 30px; background: #f8f9fa; border-top: 1px solid #dee2e6; font-size: 10px; color: #adb5bd; line-height: 1.6; }
+        .progress-bar { height: 8px; border-radius: 4px; background: #e9ecef; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; }
+    </style>
+</head>
+<body>
+<div class="page">
+<div class="header">
+<div class="header-left">
+<h1>⚡ Energy Consumption Analysis — Gold Supply Chain</h1>
+<p>Total consumption · Clean vs fossil split · Per-phase intensity · WGC 2030 target tracking</p>
+</div>
+<div>
+<a class="nav-link" href="what_if_simulator.html">← Back to Simulator</a>
+<a class="nav-link" href="emissions_analysis.html">🌡️ Carbon</a>
+<a class="nav-link" href="water_analysis.html">💧 Water</a>
+<a class="nav-link" href="/index.html">🏠 Home</a>
+</div>
+</div>
+<div id="sourceBanner"><span>ℹ️</span><span id="sourceText">Loading energy data…</span></div>
+<div class="kpi-strip">
+<div class="kpi-card"><div class="kpi-label">Total Energy</div><div class="kpi-value" id="kpiTotal" style="color:#6a1b9a;">—</div><div class="kpi-sub">kWh (reference scale)</div></div>
+<div class="kpi-card"><div class="kpi-label">Clean Energy</div><div class="kpi-value" id="kpiClean" style="color:#2e7d32;">—</div><div class="kpi-sub">renewables / nuclear</div></div>
+<div class="kpi-card"><div class="kpi-label">Fossil Energy</div><div class="kpi-value" id="kpiFossil" style="color:#bf360c;">—</div><div class="kpi-sub">coal / oil / gas</div></div>
+<div class="kpi-card"><div class="kpi-label">Clean Mix</div><div class="kpi-value" id="kpiMix" style="color:#1565c0;">—</div><div class="kpi-sub" id="kpiMixSub">vs 60% WGC 2030 target</div></div>
+<div class="kpi-card"><div class="kpi-label">Dominant Phase</div><div class="kpi-value" id="kpiDominant" style="color:#6a1b9a;font-size:16px;">—</div><div class="kpi-sub">highest energy use</div></div>
+<div class="kpi-card"><div class="kpi-label">Decarbonisation Rating</div><div class="kpi-value" id="kpiGrade">—</div><div class="kpi-sub" id="kpiGradeSub">vs WGC 2030 target</div></div>
+</div>
+<div class="main-grid">
+<div class="card">
+<div class="card-title">📊 Clean vs Fossil Energy by Phase</div>
+<div class="chart-wrap"><svg class="chart" id="barChart" viewbox="0 0 600 320"></svg></div>
+</div>
+<div class="card">
+<div class="card-title">🎯 Clean Energy % vs WGC 2030 Target (60%)</div>
+<div class="chart-wrap"><svg class="chart" id="targetChart" viewbox="0 0 600 320"></svg></div>
+</div>
+<div class="card full-width">
+<div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+<table class="phase-table"><thead><tr>
+<th>Phase</th><th>Total Energy</th><th>Clean</th><th>Fossil</th>
+<th>Clean %</th><th>% of Chain</th><th>2030 Target Gap</th><th>Data Quality</th><th>Rating</th>
+</tr></thead><tbody id="phaseTableBody"></tbody></table>
+</div>
+<div class="card full-width">
+<div class="card-title">💡 Key Findings &amp; Analysis</div>
+<div class="findings-grid" id="findingsGrid"></div>
+</div>
+<div class="card full-width">
+<div class="card-title">🔋 Fossil Energy Reduction Opportunity Ranking</div>
+<p style="font-size:12px;color:#6c757d;margin-bottom:14px;">Phases ranked by fossil energy consumption. Reaching 60% clean mix would reduce these figures. Sources: WGC Gold and Climate 2023, Foran et al. 2005, WATER_WASTE_METHODOLOGY.md.</p>
+<div id="fossilRanking"></div>
+</div>
+</div>
+<div class="footnote">
+<strong>Data sources &amp; quality flags:</strong>
+        Phase 1: WGC 2023; Foran et al. 2005 (quality: Medium) ·
+        Phase 2: WGC 2023; Newmont 2024 SR (quality: Medium) ·
+        Phases 0, 3–8: Inferred from industry benchmarks and WATER_WASTE_METHODOLOGY.md (quality: Low) ·
+        WGC 2030 clean energy target: 60% for Scopes 1+2 across the industry ·
+        Values are reference-scale figures, not global annual totals. Per-phase clean % from WATER_WASTE_METHODOLOGY.md base_clean_pct.
+        Phase 8 (Recycling) saves 60-80% energy vs primary production — the most impactful single lever for energy reduction.
+        This page reads live state from the What-If Simulator if opened via the ⚡ Energy button.
+    </div>
+</div>
+<script>
+const DATA_URL = '/frontend/project/gold_v2/data/processed/gold_supply_chain_ui.json';
+const WGC_TARGET_CLEAN_PCT = 60;
+
+const FALLBACK = [
+    { id:0, name:'Prospecting',   D:227, C:208, energy:   5000, energy_unit:'kWh', energy_clean_pct:20, energy_quality:'Low',    energy_notes:'Field generators, mostly diesel.' },
+    { id:1, name:'Mining',        D:270, C:277, energy: 250000, energy_unit:'kWh', energy_clean_pct:25, energy_quality:'Medium', energy_notes:'Diesel dominant; growing renewables.' },
+    { id:2, name:'Ore Processing',D:276, C:271, energy: 180000, energy_unit:'kWh', energy_clean_pct:40, energy_quality:'Medium', energy_notes:'Grid electricity dominant (mills).' },
+    { id:3, name:'Doré',          D:264, C:249, energy:  30000, energy_unit:'kWh', energy_clean_pct:35, energy_quality:'Low',    energy_notes:'Furnace fuel + some grid.' },
+    { id:4, name:'Refining',      D:263, C:270, energy:  80000, energy_unit:'kWh', energy_clean_pct:50, energy_quality:'Low',    energy_notes:'Electrolytic cells + furnaces.' },
+    { id:5, name:'Bar Casting',   D:253, C:247, energy:  15000, energy_unit:'kWh', energy_clean_pct:50, energy_quality:'Low',    energy_notes:'Shares refinery grid profile.' },
+    { id:6, name:'Logistics',     D:204, C:161, energy:   5000, energy_unit:'kWh', energy_clean_pct:55, energy_quality:'Low',    energy_notes:'HVAC, lighting, security. Urban grid.' },
+    { id:7, name:'Exchange',      D:254, C:265, energy:   2000, energy_unit:'kWh', energy_clean_pct:60, energy_quality:'Low',    energy_notes:'IT infrastructure, growing renewables.' },
+    { id:8, name:'Recycling ♻️',  D:245, C:250, energy:  70000, energy_unit:'kWh', energy_clean_pct:45, energy_quality:'Low',    energy_notes:'Saves 60-80% vs primary production.' },
+];
+
+function calcBalance(D, C) { const i = Math.abs(D-C); return 100 * Math.exp(-2 * i / Math.max(D,C,1)); }
+
+function fmtE(v) {
+    if (v >= 1e12) return `${(v/1e12).toFixed(2)} TWh`;
+    if (v >= 1e9)  return `${(v/1e9).toFixed(2)} GWh`;
+    if (v >= 1e6)  return `${(v/1e6).toFixed(2)} MWh`;
+    if (v >= 1e3)  return `${(v/1e3).toFixed(0)} kWh`;
+    return `${v} Wh`;
+}
+
+function getGrade(cleanPct) {
+    if (cleanPct >= 60) return { grade:'A+', label:'Meets 2030 Target',  bg:'#d4edda', color:'#155724' };
+    if (cleanPct >= 50) return { grade:'A',  label:'Near Target',        bg:'#d1ecf1', color:'#0c5460' };
+    if (cleanPct >= 40) return { grade:'B',  label:'Progressing',        bg:'#fff3cd', color:'#856404' };
+    if (cleanPct >= 25) return { grade:'C',  label:'Lagging',            bg:'#f8d7da', color:'#721c24' };
+    return                     { grade:'D',  label:'Critical',           bg:'#343a40', color:'white'   };
+}
+
+function getPhaseRating(cleanPct, balance) {
+    if (balance < 65) return { label:'Bottlenecked', cls:'r-critical' };
+    if (cleanPct >= 60) return { label:'On target',  cls:'r-excellent' };
+    if (cleanPct >= 50) return { label:'Good',        cls:'r-good' };
+    if (cleanPct >= 35) return { label:'Moderate',    cls:'r-moderate' };
+    return                     { label:'Lagging',     cls:'r-poor' };
+}
+
+function render(rawPhases, sourceLabel) {
+    document.getElementById('sourceText').textContent = sourceLabel;
+
+    const data = rawPhases.map(p => {
+        const clean  = Math.round(p.energy * p.energy_clean_pct / 100);
+        const fossil = p.energy - clean;
+        const balance = calcBalance(p.D, p.C);
+        return { ...p, clean, fossil, balance };
+    });
+
+    const totalEnergy  = data.reduce((s,p) => s + p.energy, 0);
+    const totalClean   = data.reduce((s,p) => s + p.clean, 0);
+    const totalFossil  = data.reduce((s,p) => s + p.fossil, 0);
+    const chainCleanPct = totalEnergy > 0 ? ((totalClean / totalEnergy) * 100) : 0;
+    const dominant      = data.reduce((a,b) => b.energy > a.energy ? b : a);
+    const grade         = getGrade(chainCleanPct);
+
+    document.getElementById('kpiTotal').textContent    = fmtE(totalEnergy);
+    document.getElementById('kpiClean').textContent    = fmtE(totalClean);
+    document.getElementById('kpiFossil').textContent   = fmtE(totalFossil);
+    document.getElementById('kpiMix').textContent      = chainCleanPct.toFixed(1) + '%';
+    document.getElementById('kpiMixSub').textContent   = chainCleanPct >= WGC_TARGET_CLEAN_PCT
+        ? `✅ Meets ${WGC_TARGET_CLEAN_PCT}% WGC 2030 target` : `Gap: ${(WGC_TARGET_CLEAN_PCT - chainCleanPct).toFixed(1)}pp to ${WGC_TARGET_CLEAN_PCT}% WGC target`;
+    document.getElementById('kpiDominant').textContent = `P${dominant.id} ${dominant.name.split(' ')[0]}`;
+    document.getElementById('kpiGrade').innerHTML      = `<span class="grade-badge" style="background:${grade.bg};color:${grade.color};">${grade.grade}</span>`;
+    document.getElementById('kpiGradeSub').textContent = grade.label;
+
+    drawBarChart(data, totalEnergy);
+    drawTargetChart(data);
+    buildTable(data, totalEnergy);
+    buildFindings(data, totalEnergy, totalClean, totalFossil, chainCleanPct, grade);
+    buildRanking(data);
+}
+
+function drawBarChart(data, totalEnergy) {
+    const W=600,H=320, mL=100,mR=80,mT=20,mB=40, plotW=W-mL-mR, plotH=H-mT-mB;
+    const maxE = Math.max(...data.map(d => d.energy), 1);
+    const rowH = plotH / data.length;
+    let svg = '';
+    [0,0.25,0.5,0.75,1].forEach(f => {
+        const x = mL + f*plotW;
+        svg += `<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg += `<text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="#adb5bd">${fmtE(f*maxE)}</text>`;
+    });
+    data.forEach((p,i) => {
+        const y = mT + i*rowH, barH = rowH*0.6, barY = y+(rowH-barH)/2;
+        const totW  = (p.energy/maxE)*plotW;
+        const cW    = (p.clean /maxE)*plotW;
+        const fW    = (p.fossil/maxE)*plotW;
+        svg += `<text x="${mL-6}" y="${barY+barH/2+4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</text>`;
+        if (cW > 0) svg += `<rect x="${mL}" y="${barY}" width="${cW}" height="${barH}" fill="#2e7d32" rx="2"/>`;
+        if (fW > 0) svg += `<rect x="${mL+cW}" y="${barY}" width="${fW}" height="${barH}" fill="#bf360c" rx="2" opacity="0.7"/>`;
+        if (p.energy > 0) svg += `<text x="${mL+totW+4}" y="${barY+barH/2+4}" font-size="9" fill="#6c757d">${fmtE(p.energy)} (${p.energy_clean_pct}% clean)</text>`;
+    });
+    svg += `<rect x="${mL}" y="${H-16}" width="10" height="10" fill="#2e7d32" rx="2"/>`;
+    svg += `<text x="${mL+13}" y="${H-7}" font-size="10" fill="#6c757d">Clean energy</text>`;
+    svg += `<rect x="${mL+100}" y="${H-16}" width="10" height="10" fill="#bf360c" rx="2" opacity="0.7"/>`;
+    svg += `<text x="${mL+113}" y="${H-7}" font-size="10" fill="#6c757d">Fossil energy</text>`;
+    document.getElementById('barChart').innerHTML = svg;
+}
+
+function drawTargetChart(data) {
+    const W=600,H=320, mL=100,mR=30,mT=20,mB=50, plotW=W-mL-mR, plotH=H-mT-mB;
+    const rowH = plotH / data.length;
+    let svg = '';
+    [0,25,50,60,75,100].forEach(f => {
+        const x = mL + (f/100)*plotW;
+        const isTarget = f===60;
+        svg += `<line x1="${x}" y1="${mT}" x2="${x}" y2="${mT+plotH}" stroke="${isTarget?'#f44336':'#e9ecef'}" stroke-width="${isTarget?1.5:1}" stroke-dasharray="${isTarget?'4,3':'none'}"/>`;
+        svg += `<text x="${x}" y="${mT+plotH+14}" text-anchor="middle" font-size="9" fill="${isTarget?'#f44336':'#adb5bd'}">${f}%</text>`;
+    });
+    svg += `<text x="${mL+(60/100)*plotW}" y="${mT-4}" text-anchor="middle" font-size="9" fill="#f44336" font-weight="600">WGC 2030</text>`;
+    data.forEach((p,i) => {
+        const y = mT + i*rowH, barH = rowH*0.6, barY = y+(rowH-barH)/2;
+        const fillW = (p.energy_clean_pct/100)*plotW;
+        const color  = p.energy_clean_pct >= 60 ? '#2e7d32' : p.energy_clean_pct >= 50 ? '#1976d2' : p.energy_clean_pct >= 35 ? '#f9a825' : '#d32f2f';
+        svg += `<rect x="${mL}" y="${barY}" width="${plotW}" height="${barH}" fill="#e9ecef" rx="2"/>`;
+        if (fillW > 0) svg += `<rect x="${mL}" y="${barY}" width="${fillW}" height="${barH}" fill="${color}" rx="2"/>`;
+        svg += `<text x="${mL-6}" y="${barY+barH/2+4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</text>`;
+        svg += `<text x="${mL+fillW+4}" y="${barY+barH/2+4}" font-size="9" fill="${color}" font-weight="600">${p.energy_clean_pct}%</text>`;
+    });
+    const targetX = mL + (60/100)*plotW;
+    svg += `<line x1="${targetX}" y1="${mT}" x2="${targetX}" y2="${mT+plotH}" class="target-line"/>`;
+    document.getElementById('targetChart').innerHTML = svg;
+}
+
+function buildTable(data, totalEnergy) {
+    const rows = data.map(p => {
+        const chainPct  = totalEnergy > 0 ? (p.energy / totalEnergy * 100) : 0;
+        const gap       = Math.max(0, WGC_TARGET_CLEAN_PCT - p.energy_clean_pct);
+        const rating    = getPhaseRating(p.energy_clean_pct, p.balance);
+        return `<tr>
+            <td><strong>P${p.id}</strong> ${p.name}</td>
+            <td><span class="pill pill-total">${fmtE(p.energy)}</span></td>
+            <td><span class="pill pill-clean">${fmtE(p.clean)}</span></td>
+            <td><span class="pill pill-fossil">${fmtE(p.fossil)}</span></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:60px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${p.energy_clean_pct}%;height:100%;background:${p.energy_clean_pct>=60?'#2e7d32':p.energy_clean_pct>=40?'#1976d2':'#d32f2f'};"></div>
+                    </div>
+                    <span style="font-weight:600;color:${p.energy_clean_pct>=60?'#2e7d32':p.energy_clean_pct>=40?'#1976d2':'#d32f2f'};">${p.energy_clean_pct}%</span>
+                </div>
+            </td>
+            <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:50px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${Math.min(100,chainPct*2)}%;height:100%;background:#6a1b9a;"></div>
+                    </div>
+                    ${chainPct.toFixed(1)}%
+                </div>
+            </td>
+            <td style="color:${gap>0?'#d32f2f':'#2e7d32'};font-weight:600;font-size:11px;">${gap>0?`-${gap.toFixed(0)}pp`:'✅ Met'}</td>
+            <td style="font-size:11px;color:#6c757d;">${p.energy_quality}</td>
+            <td><span class="rating-badge ${rating.cls}">${rating.label}</span></td>
+        </tr>`;
+    });
+    document.getElementById('phaseTableBody').innerHTML = rows.join('');
+}
+
+function buildFindings(data, totalEnergy, totalClean, totalFossil, chainCleanPct, grade) {
+    const findings = [];
+    const gradeDesc = {'A+':'Chain clean energy mix ≥60% meets WGC 2030 target. Excellent decarbonisation trajectory.','A':'50-60% clean — close to WGC 2030 target. Targeted improvement in dominant phases can close the gap.','B':'40-50% clean — nearing industry average. Procurement of grid renewables for Phase 2 is highest-leverage lever.','C':'25-40% clean — significant fossil dependency. Long-term operational cost and regulatory risk.','D':'Below 25% clean — critically exposed to carbon pricing and regulatory action.'};
+    findings.push({ type: chainCleanPct>=50?'positive':'warning', title:`Overall Rating: ${grade.grade} — ${grade.label}`, body: gradeDesc[grade.grade] || `Chain clean energy mix: ${chainCleanPct.toFixed(1)}%` });
+
+    const dom = data.reduce((a,b)=>b.energy>a.energy?b:a);
+    const domPct = ((dom.energy/totalEnergy)*100).toFixed(0);
+    findings.push({ type:'warning', title:`Dominant Phase: P${dom.id} ${dom.name} (${domPct}%)`, body:`Phase ${dom.id} accounts for ${domPct}% of total energy (${fmtE(dom.energy)}). With ${dom.energy_clean_pct}% clean energy, raising this to 60% would eliminate ~${fmtE(dom.energy*(0.6-dom.energy_clean_pct/100))} of fossil energy — the single largest decarbonisation opportunity.` });
+
+    const p2 = data.find(p=>p.id===2);
+    if (p2) findings.push({ type: p2.energy_clean_pct>=60?'positive':'warning', title:`Phase 2 (Processing): Grid Electricity Dominates`, body:`Phase 2 is the most electricity-intensive phase (grinding mills). Its grid clean % (${p2.energy_clean_pct}%) directly reflects the national grid mix of host countries. Power Purchase Agreements (PPAs) for renewables are the fastest path to improvement here.` });
+
+    const p1 = data.find(p=>p.id===1);
+    if (p1) findings.push({ type:'negative', title:`Phase 1 (Mining): Diesel Lock-in at ${p1.energy_clean_pct}% Clean`, body:`Mining is the most diesel-dependent phase (haul trucks, excavators). With only ${p1.energy_clean_pct}% clean energy, electrification of the mining fleet is a 2025-2035 priority. Diesel accounts for ~60-80% of on-site energy. BEV trucks entering service at Newmont/Goldfields by 2027-28.` });
+
+    const p8 = data.find(p=>p.id===8);
+    if (p8) findings.push({ type:'positive', title:`Phase 8 (Recycling): 60-80% Energy Saving vs Primary`, body:`Secondary gold production saves 60-80% of the energy required for primary production. The ${fmtE(p8.energy)} used in Phase 8 replaces an equivalent output from Phases 0-5. Each tonne of recycled gold avoids ~${fmtE((data.reduce((s,p)=>s+p.energy,0)-p8.energy))} of upstream energy consumption.` });
+
+    const onTarget = data.filter(p=>p.energy_clean_pct>=60);
+    findings.push({ type: onTarget.length>=3?'positive':'warning', title:`${onTarget.length} phase(s) already meet the WGC 2030 target`, body: onTarget.length>0?`Phases ${onTarget.map(p=>`P${p.id} (${p.energy_clean_pct}%)`).join(', ')} already achieve ≥60% clean energy, demonstrating the target is operationally achievable. ${onTarget.length<3?'Scale these procurement strategies to energy-intensive upstream phases.':''}`:'No phase currently meets the 60% clean energy target. Grid decarbonisation and PPA procurement are essential.' });
+
+    document.getElementById('findingsGrid').innerHTML = findings.map(f=>`<div class="finding-card ${f.type}"><div class="finding-title">${f.title}</div><div class="finding-body">${f.body}</div></div>`).join('');
+}
+
+function buildRanking(data) {
+    const ranked = [...data].filter(p=>p.energy>0).sort((a,b)=>b.fossil-a.fossil);
+    const maxFossil = ranked[0]?.fossil||1;
+    const html = ranked.map((p,i) => {
+        const rating = getPhaseRating(p.energy_clean_pct, p.balance);
+        const gap    = Math.max(0, WGC_TARGET_CLEAN_PCT - p.energy_clean_pct);
+        const savings = Math.round(p.energy * gap/100);
+        return `<div style="display:grid;grid-template-columns:30px 140px 1fr 90px 90px 90px 90px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <div style="font-weight:700;color:#6c757d;">#${i+1}</div>
+            <div><strong>P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</strong></div>
+            <div>
+                <div style="display:flex;gap:1px;height:12px;border-radius:3px;overflow:hidden;background:#e9ecef;">
+                    <div style="width:${p.energy_clean_pct}%;background:#2e7d32;" title="Clean ${p.energy_clean_pct}%"></div>
+                    <div style="flex:1;background:#bf360c;" title="Fossil ${100-p.energy_clean_pct}%"></div>
+                </div>
+            </div>
+            <td><span class="pill pill-total">${fmtE(p.energy)}</span></td>
+            <td><span class="pill pill-fossil">${fmtE(p.fossil)}</span></td>
+            <div style="font-size:11px;color:#d32f2f;font-weight:600;">${gap>0?`-${gap}pp gap`:gap===0?'✅ Met':''}</div>
+            <div><span class="rating-badge ${rating.cls}">${rating.label}</span></div>
+        </div>`;
+    }).join('');
+    document.getElementById('fossilRanking').innerHTML = `
+        <div style="display:grid;grid-template-columns:30px 140px 1fr 90px 90px 90px 90px;gap:10px;padding:0 0 8px;border-bottom:2px solid #dee2e6;font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;">
+            <div>#</div><div>Phase</div><div>Clean / Fossil split</div><div>Total</div><div>Fossil energy</div><div>2030 gap</div><div>Rating</div>
+        </div>${html}
+        <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#f8f9fa;padding:10px;border-radius:6px;">
+            <strong>Green bar</strong> = clean energy proportion · <strong>Red bar</strong> = fossil proportion · WGC 2030 target: 60% clean energy mix. Dashed line on target chart indicates the 60% threshold.
+        </div>`;
+}
+
+async function init() {
+    try {
+        const stored = localStorage.getItem('gold_energy_analysis');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed?.data?.length) {
+                const age = parsed.timestamp ? Math.round((Date.now()-new Date(parsed.timestamp))/1000) : null;
+                render(parsed.data, `📡 Live what-if state from simulator${age!==null?` (${age}s ago)`:''} — click ⚡ Energy in simulator to refresh.`);
+                return;
+            }
+        }
+    } catch(e) {}
+    try {
+        const res = await fetch(DATA_URL, { cache:'no-store' });
+        if (res.ok) {
+            const json = await res.json();
+            const syn = (json.phases&&json.phases.synthetic)||{};
+            const phases = [];
+            for (let i=0;i<=8;i++) {
+                const p=syn[String(i)]||{}, meta=(json.phase_meta&&json.phase_meta[String(i)])||{};
+                phases.push({ id:i, name:p.name||meta.name||`Phase ${i}`, D:Number(p.D)||200, C:Number(p.C)||200, energy:Number(p.energy)||0, energy_unit:p.energy_unit||'kWh', energy_clean_pct:Number(p.energy_clean_pct)||0, energy_quality:p.energy_quality||'Unknown', energy_notes:p.energy_notes||'' });
+            }
+            render(phases, `📁 Baseline from gold_supply_chain_ui.json (${json._meta?.generated||'unknown'}). Open via simulator for live what-if state.`);
+            return;
+        }
+    } catch(e) {}
+    render(FALLBACK, '⚠️ Using hardcoded fallback data.');
+}
+init();
+</script>
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','west_african_shea':'West African Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'west_african_shea':'/frontend/project/west_african_shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

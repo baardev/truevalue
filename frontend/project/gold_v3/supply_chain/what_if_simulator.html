@@ -1,0 +1,1455 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>What-If Simulator - Gold Supply Chain</title>
+<style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .simulator {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            font-weight: 300;
+        }
+        
+        .nav-link {
+            color: #adb5bd;
+            text-decoration: none;
+            margin-left: 20px;
+            transition: color 0.2s;
+        }
+        
+        .nav-link:hover {
+            color: white;
+        }
+        
+        .main-layout {
+            display: grid;
+            grid-template-columns: 350px 1fr 350px;
+            height: calc(100vh - 100px);
+        }
+        
+        .left-panel, .right-panel {
+            background: #f8f9fa;
+            padding: 25px;
+            overflow-y: auto;
+        }
+        
+        .center-panel {
+            padding: 25px;
+            overflow-y: auto;
+            border-left: 1px solid #dee2e6;
+            border-right: 1px solid #dee2e6;
+        }
+        
+        .panel-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .phase-control {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .phase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .phase-title {
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .phase-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .status-good {
+            background: #d4edda;
+            color: #155724;
+        }
+        
+        .status-fair {
+            background: #fff3cd;
+            color: #856404;
+        }
+        
+        .status-poor {
+            background: #f8d7da;
+            color: #721c24;
+        }
+        
+        .slider-control {
+            margin-bottom: 15px;
+        }
+        
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: #6c757d;
+        }
+        
+        .slider-value {
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        input[type="range"] {
+            width: 100%;
+            height: 6px;
+            border-radius: 3px;
+            background: #dee2e6;
+            outline: none;
+            -webkit-appearance: none;
+        }
+        
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+            border: none;
+        }
+        
+        input[type="range"].d-slider {
+            background: linear-gradient(90deg, #f8d7da, #dc3545);
+        }
+        
+        input[type="range"].c-slider {
+            background: linear-gradient(90deg, #d1ecf1, #17a2b8);
+        }
+        
+        .metric-display {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .metric {
+            text-align: center;
+        }
+        
+        .metric-label {
+            font-size: 10px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .metric-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #2c3e50;
+        }
+        
+        .flow-visualization {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .flow-svg {
+            width: 100%;
+            height: 500px;
+        }
+        
+        .flow-node {
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .flow-node:hover {
+            transform: scale(1.05);
+        }
+        
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        
+        .metric-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            text-align: center;
+        }
+        
+        .metric-card-label {
+            font-size: 11px;
+            text-transform: uppercase;
+            color: #6c757d;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+        
+        .metric-card-value {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .metric-card-delta {
+            font-size: 13px;
+            font-weight: 600;
+        }
+        
+        .delta-positive {
+            color: #28a745;
+        }
+        
+        .delta-negative {
+            color: #dc3545;
+        }
+        
+        .impact-list {
+            list-style: none;
+        }
+        
+        .impact-item {
+            background: white;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            border-left: 4px solid;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .impact-item.positive {
+            border-color: #28a745;
+            background: #f0fff4;
+        }
+        
+        .impact-item.negative {
+            border-color: #dc3545;
+            background: #fff5f5;
+        }
+        
+        .impact-title {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+        
+        .impact-detail {
+            font-size: 12px;
+            color: #6c757d;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #667eea;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+        
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #218838;
+        }
+        
+        .scenario-selector {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        
+        .scenario-selector label {
+            font-size: 12px;
+            color: #6c757d;
+            margin-bottom: 8px;
+            display: block;
+        }
+        
+        .scenario-selector select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="simulator">
+<div class="header">
+<h1>🎛️ What-If Simulator</h1>
+<div>
+<a class="nav-link" href="dashboard.html">← Back to Dashboard</a>
+<a class="nav-link" href="/index.html">🏠 Main Homepage</a>
+<a class="nav-link" href="#">Settings</a>
+</div>
+</div>
+<div class="main-layout">
+<!-- Left Panel: Phase Controls -->
+<div class="left-panel">
+<div class="panel-title">
+                    🎚️ Phase Controls
+                </div>
+<div class="scenario-selector">
+<label>Quick Scenarios:</label>
+<select id="scenarioSelect" onchange="loadScenario(this.value)">
+<option value="current">Current State</option>
+<option value="optimize">Auto-Optimize All</option>
+<option value="bottleneck">Fix Phase 6 Bottleneck</option>
+<option value="shock">Simulate Supply Shock</option>
+<option value="expansion">10% Capacity Expansion</option>
+</select>
+</div>
+<div id="phaseControls">
+<!-- Phase controls will be generated by JavaScript -->
+</div>
+<div class="action-buttons">
+<button class="btn btn-secondary" onclick="resetAll()">↺ Reset</button>
+<button class="btn btn-success" onclick="applyChanges()">✓ Apply</button>
+<button class="btn btn-primary" onclick="openEmissionsAnalysis()" style="background:#6f42c1;border-color:#6f42c1;" title="View Scope 1/2/3 carbon analysis">🌡️ Carbon</button>
+<button class="btn btn-primary" onclick="openWaterAnalysis()" style="background:#0d6efd;border-color:#0d6efd;" title="View water consumption analysis">💧 Water</button>
+<button class="btn btn-primary" onclick="openEnergyAnalysis()" style="background:#198754;border-color:#198754;" title="View energy consumption analysis">⚡ Energy</button>
+</div>
+</div>
+<!-- Center Panel: Visualization -->
+<div class="center-panel">
+<div class="panel-title">
+                    📊 Live Impact Visualization
+                </div>
+<div class="metrics-grid">
+<div class="metric-card">
+<div class="metric-card-label">System Balance</div>
+<div class="metric-card-value" id="systemBalance">82.5</div>
+<div class="metric-card-delta delta-positive" id="balanceDelta">—</div>
+</div>
+<div class="metric-card">
+<div class="metric-card-label">Water Recycling</div>
+<div class="metric-card-value" id="waterRecycle">73%</div>
+<div class="metric-card-delta delta-positive" id="waterDelta">—</div>
+</div>
+<div class="metric-card">
+<div class="metric-card-label">Waste Circularity</div>
+<div class="metric-card-value" id="wasteCircular">5%</div>
+<div class="metric-card-delta delta-negative" id="wasteDelta">—</div>
+</div>
+<div class="metric-card">
+<div class="metric-card-label">Clean Energy</div>
+<div class="metric-card-value" id="cleanEnergy">42%</div>
+<div class="metric-card-delta delta-positive" id="energyDelta">—</div>
+</div>
+</div>
+<div class="flow-visualization">
+<svg class="flow-svg" id="flowSvg" viewbox="0 0 800 500">
+<!-- Flow visualization will be drawn here -->
+</svg>
+</div>
+</div>
+<!-- Right Panel: Impact Analysis -->
+<div class="right-panel">
+<div class="panel-title">
+                    💡 Impact Analysis
+                </div>
+<ul class="impact-list" id="impactList">
+<li class="impact-item negative">
+<div class="impact-title">⚠️ Phase 6 is a bottleneck</div>
+<div class="impact-detail">Constraining system flow by 35%</div>
+</li>
+<li class="impact-item positive">
+<div class="impact-title">✓ Phases 1-2 are optimal</div>
+<div class="impact-detail">Operating at peak efficiency</div>
+</li>
+</ul>
+<div class="action-buttons" style="margin-top: 20px;">
+<button class="btn btn-primary" onclick="autoOptimize()">✨ Auto-Optimize</button>
+</div>
+<div style="margin-top: 30px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+<h3 style="font-size: 14px; margin-bottom: 15px;">💰 Financial Impact</h3>
+<div style="margin-bottom: 10px;">
+<div style="font-size: 12px; color: #6c757d;">Current Annual Profit</div>
+<div style="font-size: 20px; font-weight: bold; color: #2c3e50;">$24,000,000</div>
+</div>
+<div style="margin-bottom: 10px;">
+<div style="font-size: 12px; color: #6c757d;">Projected (with changes)</div>
+<div id="projectedProfit" style="font-size: 20px; font-weight: bold; color: #28a745;">$24,000,000</div>
+</div>
+<div style="padding-top: 10px; border-top: 1px solid #dee2e6;">
+<div style="font-size: 12px; color: #6c757d;">Annual Gain</div>
+<div id="profitGain" style="font-size: 24px; font-weight: bold; color: #28a745;">+$0</div>
+</div>
+</div>
+<div style="margin-top: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+<h3 style="font-size: 14px; margin-bottom: 15px;">🌱 Environmental Impact (Sarah Metrics)</h3>
+<div style="margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+<span style="font-size: 12px;">💧 Water Efficiency</span>
+<span id="waterEff" style="font-size: 12px; font-weight: bold;">73%</span>
+</div>
+<div style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
+<div id="waterBar" style="height: 100%; width: 73%; background: linear-gradient(90deg, #17a2b8, #20c997); transition: width 0.3s;"></div>
+</div>
+</div>
+<div style="margin-bottom: 15px;">
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+<span style="font-size: 12px;">♻️ Waste Circularity</span>
+<span id="wasteCirc" style="font-size: 12px; font-weight: bold;">5%</span>
+</div>
+<div style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
+<div id="wasteBar" style="height: 100%; width: 5%; background: linear-gradient(90deg, #dc3545, #ffc107); transition: width 0.3s;"></div>
+</div>
+<div style="font-size: 11px; color: #856404; margin-top: 3px;">Target: 8% (industry avg)</div>
+</div>
+<div>
+<div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+<span style="font-size: 12px;">⚡ Clean Energy</span>
+<span id="cleanPct" style="font-size: 12px; font-weight: bold;">42%</span>
+</div>
+<div style="height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden;">
+<div id="cleanBar" style="height: 100%; width: 42%; background: linear-gradient(90deg, #ffc107, #28a745); transition: width 0.3s;"></div>
+</div>
+<div style="font-size: 11px; color: #28a745; margin-top: 3px;">Target: 60% by 2030</div>
+</div>
+</div>
+<div style="margin-top: 15px; padding: 15px; background: #e7f3ff; border-radius: 8px; border-left: 4px solid #17a2b8;">
+<div style="font-size: 12px; font-weight: 600; margin-bottom: 8px;">♻️ Phase 8: Recycling Impact</div>
+<div style="font-size: 11px; color: #6c757d;">
+                        • Saves 60-80% energy vs. primary production<br/>
+                        • Eliminates mining waste<br/>
+                        • Reduces water use by 90%<br/>
+                        • Feeds back to Phase 4 (Refining)<br/>
+                        • Currently ~28% of annual supply
+                    </div>
+</div>
+<div style="margin-top: 15px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05);">
+<h3 style="font-size: 14px; margin-bottom: 12px;">🌡️ Carbon Footprint — Chain Total</h3>
+<div id="carbonSummary" style="font-size:12px;">
+<!-- populated by updateCarbonSummary() -->
+</div>
+<div style="margin-top:12px;">
+<div style="font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:6px;">Scope 3 cascade (accumulated upstream)</div>
+<div id="carbonCascade" style="font-size:11px;line-height:1.8;">
+<!-- populated by updateCarbonSummary() -->
+</div>
+</div>
+<div style="margin-top:10px;font-size:10px;color:#adb5bd;border-top:1px solid #e9ecef;padding-top:6px;">
+                        S1 = direct combustion  |  S2 = purchased electricity<br/>
+                        S3↑ = accumulated burden from all upstream phases<br/>
+                        Values adjust with N-D-C imbalance. Sources: WGC 2023, Foran 2005, industry benchmarks.
+                    </div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // ── Data-driven: baseline D/C values loaded from JSON at startup ──
+        const DATA_URL = '/frontend/project/gold_v3/data/processed/gold_supply_chain_ui.json';
+
+        // Inline fallback for entity/company data — used when fetch() fails (e.g. file:// protocol).
+        // Keep in sync with data/frontend/gold_supply_chain_ui.json → entities + phases_companies.
+        const INLINE_ENTITY_DATA = {
+            entities: {
+                mining_co_a: {
+                    label: "Mining Co A — Efficient",
+                    description: "High-grade ore, streamlined permitting, 8 active sites.",
+                    profile: {
+                        ore_grade:             { value: 8,   unit: "/10" },
+                        regulatory_burden:     { value: 3,   unit: "/10" },
+                        active_sites:          { value: 8,   unit: "sites" },
+                        water_recycling_pct:   { value: 85,  unit: "%" },
+                        supplier_network_size: { value: 450, unit: "suppliers" },
+                        energy_clean_pct:      { value: 65,  unit: "%" }
+                    }
+                },
+                mining_co_b: {
+                    label: "Mining Co B — Inefficient",
+                    description: "Low-grade ore, heavy regulatory burden, 3 active sites.",
+                    profile: {
+                        ore_grade:             { value: 3,   unit: "/10" },
+                        regulatory_burden:     { value: 8,   unit: "/10" },
+                        active_sites:          { value: 3,   unit: "sites" },
+                        water_recycling_pct:   { value: 30,  unit: "%" },
+                        supplier_network_size: { value: 120, unit: "suppliers" },
+                        energy_clean_pct:      { value: 20,  unit: "%" }
+                    }
+                }
+            },
+            phases_companies: {
+                mining_co_a: {
+                    "1": {
+                        D: 255, C: 268, balance: 90.8, N: 237,
+                        derived_from: {
+                            D_calc: "215 + (3x7) + ((10-8)x5) = 255",
+                            C_calc: "148 + (8x8) + (85x0.3) + (450x0.04) + (65x0.2) = 268"
+                        }
+                    }
+                },
+                mining_co_b: {
+                    "1": {
+                        D: 306, C: 185, balance: 42.3, N: 192,
+                        derived_from: {
+                            D_calc: "215 + (8x7) + ((10-3)x5) = 306",
+                            C_calc: "148 + (3x8) + (30x0.3) + (120x0.04) + (20x0.2) = 185"
+                        }
+                    }
+                }
+            }
+        };
+
+        let UI_DATA = null;
+
+        // phases is the live working copy the simulator modifies
+        let phases = [];
+
+        function buildPhasesFromData(data) {
+            const syn = (data.phases && data.phases.synthetic) || {};
+            const result = [];
+            for (let i = 0; i <= 8; i++) {
+                const p   = syn[String(i)] || {};
+                const meta = (data.phase_meta && data.phase_meta[String(i)]) || {};
+                const name = p.name || meta.name || `Phase ${i}`;
+                const D = Number(p.D) || 200;
+                const C = Number(p.C) || 200;
+                result.push({
+                    id: i, name, D, C, defaultD: D, defaultC: C,
+                    scope1_tco2:        Number(p.scope1_tco2)        || 0,
+                    scope2_tco2:        Number(p.scope2_tco2)        || 0,
+                    scope_source:       p.scope_source               || 'Not available',
+                    scope_quality:      p.scope_quality              || 'Unknown',
+                    scope_notes:        p.scope_notes                || '',
+                    water:              Number(p.water)              || 0,
+                    water_recycling_pct:Number(p.water_recycling_pct)|| 0,
+                    water_quality:      p.water_quality              || 'Unknown',
+                    water_notes:        p.water_notes                || '',
+                    energy:             Number(p.energy)             || 0,
+                    energy_unit:        p.energy_unit                || 'kWh',
+                    energy_clean_pct:   Number(p.energy_clean_pct)   || 0,
+                    energy_quality:     p.energy_quality             || 'Unknown',
+                    energy_notes:       p.energy_notes               || '',
+                });
+            }
+            return result;
+        }
+        
+        // ── Per-phase entity selection ────────────────────────────────
+        // Tracks which entity is currently selected for each phase (key = phaseId)
+        const phaseEntitySelections = {};
+
+        // Return list of entities that have data for a given phase
+        function getPhaseEntities(phaseId) {
+            const result = [{ key: 'synthetic', label: 'Synthetic Baseline' }];
+            // Use live JSON if loaded, otherwise inline fallback
+            const src = UI_DATA || INLINE_ENTITY_DATA;
+
+            // Check real-entity overrides in phases
+            const phasesData = (src.phases) || {};
+            for (const [entityKey, entityPhases] of Object.entries(phasesData)) {
+                if (entityKey === '_ndc_notes' || entityKey === 'synthetic') continue;
+                if (entityPhases[String(phaseId)] && entityPhases[String(phaseId)].D) {
+                    const info = (src.entities || {})[entityKey] || {};
+                    if (!result.find(r => r.key === entityKey))
+                        result.push({ key: entityKey, label: info.label || entityKey });
+                }
+            }
+
+            // Check simulated company profiles in phases_companies
+            const companiesData = (src.phases_companies) || {};
+            for (const [entityKey, entityPhases] of Object.entries(companiesData)) {
+                if (entityPhases[String(phaseId)] && entityPhases[String(phaseId)].D) {
+                    const info = (src.entities || {})[entityKey] || {};
+                    if (!result.find(r => r.key === entityKey))
+                        result.push({ key: entityKey, label: info.label || entityKey });
+                }
+            }
+
+            return result;
+        }
+
+        // Build a compact HTML card showing how D and C were derived for the selected entity
+        function getPhaseProfileHtml(phaseId, entityKey) {
+            if (!entityKey || entityKey === 'synthetic') return '';
+            const src        = UI_DATA || INLINE_ENTITY_DATA;
+            const entityInfo = (src.entities || {})[entityKey] || {};
+            const phaseData  =
+                ((src.phases_companies || {})[entityKey] || {})[String(phaseId)] ||
+                ((src.phases           || {})[entityKey] || {})[String(phaseId)] || {};
+            const derived  = phaseData.derived_from || {};
+            const profile  = entityInfo.profile || {};
+
+            const profileRows = Object.entries(profile).map(([k, v]) => {
+                const val = (typeof v === 'object' && v !== null) ? `${v.value}${v.unit ? ' ' + v.unit : ''}` : v;
+                return `<div style="display:flex;justify-content:space-between;padding:2px 0;border-bottom:1px solid rgba(0,0,0,0.06);">
+                    <span style="color:#6c757d;">${k.replace(/_/g,' ')}</span>
+                    <strong>${val}</strong>
+                </div>`;
+            }).join('');
+
+            const isGood = (phaseData.balance || 0) >= 80;
+            const borderCol = isGood ? '#28a745' : (phaseData.balance || 0) >= 60 ? '#ffc107' : '#dc3545';
+            const bgCol     = isGood ? '#f0fff4' : (phaseData.balance || 0) >= 60 ? '#fffbea' : '#fff5f5';
+
+            return `
+            <div style="background:${bgCol};border-left:3px solid ${borderCol};border-radius:6px;padding:10px 12px;margin-bottom:10px;font-size:12px;">
+                <div style="font-weight:700;margin-bottom:6px;color:#2c3e50;">${entityInfo.label || entityKey}</div>
+                ${profileRows}
+                ${derived.D_calc ? `<div style="margin-top:6px;padding-top:6px;border-top:1px solid rgba(0,0,0,0.1);font-family:monospace;font-size:11px;color:#495057;">
+                    D = ${phaseData.D} &nbsp;|&nbsp; C = ${phaseData.C}<br>
+                    <span style="color:#6c757d;">${derived.D_calc}</span>
+                </div>` : ''}
+            </div>`;
+        }
+
+        // Called when user changes the entity dropdown on a phase
+        function selectPhaseEntity(phaseId, entityKey) {
+            phaseEntitySelections[phaseId] = entityKey;
+            const phase = phases[phaseId];
+            if (entityKey === 'synthetic') {
+                phase.D = phase.defaultD;
+                phase.C = phase.defaultC;
+            } else {
+                const src = UI_DATA || INLINE_ENTITY_DATA;
+                const override =
+                    ((src.phases_companies || {})[entityKey] || {})[String(phaseId)] ||
+                    ((src.phases           || {})[entityKey] || {})[String(phaseId)];
+                phase.D = (override && override.D) ? Number(override.D) : phase.defaultD;
+                phase.C = (override && override.C) ? Number(override.C) : phase.defaultC;
+            }
+            renderPhaseControls();
+            updateSystemMetrics();
+            updateFlowVisualization();
+            updateImpactAnalysis();
+        }
+
+        // Calculate metrics
+        function calculateMetrics(D, C) {
+            const imbalance = Math.abs(D - C);
+            const maxVal = Math.max(D, C, 1);
+            const balance = 100 * Math.exp(-2 * imbalance / maxVal);
+            const energyCost = Math.pow(imbalance, 2) + 10;
+            const sustainability = 100 / energyCost;
+            const N = Math.sqrt(D * C) * (balance / 100);
+            
+            return { balance, sustainability, N, imbalance };
+        }
+        
+        // Format a tCO₂e value as t / kt / Mt
+        function fmtCO2(v) {
+            if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)} Mt`;
+            if (v >= 1_000)     return `${(v / 1_000).toFixed(0)} kt`;
+            return `${v} t`;
+        }
+
+        function fmtLitres(v) {
+            if (v >= 1_000_000_000) return `${(v / 1_000_000_000).toFixed(1)} GL`;
+            if (v >= 1_000_000)     return `${(v / 1_000_000).toFixed(1)} ML`;
+            if (v >= 1_000)         return `${(v / 1_000).toFixed(0)} kL`;
+            return `${v} L`;
+        }
+
+        function fmtKwh(v) {
+            if (v >= 1_000_000_000) return `${(v / 1_000_000_000).toFixed(1)} TWh`;
+            if (v >= 1_000_000)     return `${(v / 1_000_000).toFixed(1)} GWh`;
+            if (v >= 1_000)         return `${(v / 1_000).toFixed(0)} MWh`;
+            return `${v} kWh`;
+        }
+
+        function getStatusClass(balance) {
+            if (balance >= 80) return 'status-good';
+            if (balance >= 60) return 'status-fair';
+            return 'status-poor';
+        }
+        
+        function getStatusText(balance) {
+            if (balance >= 80) return 'Good';
+            if (balance >= 60) return 'Fair';
+            return 'Poor';
+        }
+        
+        // Render phase controls
+        function renderPhaseControls() {
+            const container = document.getElementById('phaseControls');
+            container.innerHTML = '';
+            
+            phases.forEach(phase => {
+                const metrics = calculateMetrics(phase.D, phase.C);
+                const statusClass = getStatusClass(metrics.balance);
+                const statusText = getStatusText(metrics.balance);
+
+                // Per-phase entity selector (only shown when multiple entities are available)
+                const availableEntities = getPhaseEntities(phase.id);
+                const currentEntityKey  = phaseEntitySelections[phase.id] || 'synthetic';
+                const entitySelectorHtml = availableEntities.length > 1 ? `
+                    <div style="margin-bottom:10px;">
+                        <label style="font-size:11px;text-transform:uppercase;letter-spacing:0.05em;color:#6c757d;display:block;margin-bottom:4px;">Entity</label>
+                        <select onchange="selectPhaseEntity(${phase.id}, this.value)"
+                                style="width:100%;padding:6px 8px;border-radius:6px;border:1px solid #dee2e6;font-size:13px;font-weight:600;cursor:pointer;">
+                            ${availableEntities.map(e =>
+                                `<option value="${e.key}" ${e.key === currentEntityKey ? 'selected' : ''}>${e.label}</option>`
+                            ).join('')}
+                        </select>
+                    </div>
+                    ${getPhaseProfileHtml(phase.id, currentEntityKey)}
+                ` : '';
+
+                // Water badges — net consumption and recycling rate
+                const waterNet = Math.round(phase.water * (1 - phase.water_recycling_pct / 100));
+                const waterQualityColor = phase.water_quality === 'High' ? '#28a745' : phase.water_quality === 'Medium' ? '#17a2b8' : '#6c757d';
+                const waterHtml = phase.water > 0 ? `
+                    <div style="margin-top:8px;padding-top:7px;border-top:1px solid #e9ecef;">
+                        <div style="font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;">
+                            Water &nbsp;<span style="color:${waterQualityColor};font-weight:400;">(${phase.water_quality})</span>
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <span title="Water consumed" style="background:#e3f2fd;color:#0d47a1;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">💧 ${fmtLitres(phase.water)}</span>
+                            <span title="Recycled ${phase.water_recycling_pct}%" style="background:#e8f5e9;color:#2e7d32;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">♻️ ${phase.water_recycling_pct}%</span>
+                            <span title="Net freshwater consumed" style="background:#fff8e1;color:#e65100;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">Net ${fmtLitres(waterNet)}</span>
+                        </div>
+                    </div>` : '';
+
+                // Energy badges — clean vs fossil
+                const energyFossil = Math.round(phase.energy * (1 - phase.energy_clean_pct / 100));
+                const energyClean  = Math.round(phase.energy * phase.energy_clean_pct / 100);
+                const energyQualityColor = phase.energy_quality === 'High' ? '#28a745' : phase.energy_quality === 'Medium' ? '#17a2b8' : '#6c757d';
+                const energyHtml = phase.energy > 0 ? `
+                    <div style="margin-top:8px;padding-top:7px;border-top:1px solid #e9ecef;">
+                        <div style="font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;">
+                            Energy &nbsp;<span style="color:${energyQualityColor};font-weight:400;">(${phase.energy_quality})</span>
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <span title="Total energy consumption" style="background:#f3e5f5;color:#6a1b9a;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">⚡ ${fmtKwh(phase.energy)}</span>
+                            <span title="Clean energy ${phase.energy_clean_pct}%" style="background:#e8f5e9;color:#2e7d32;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">🌱 ${phase.energy_clean_pct}%</span>
+                            <span title="Fossil energy" style="background:#fff3e0;color:#bf360c;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">🔥 ${fmtKwh(energyFossil)}</span>
+                        </div>
+                    </div>` : '';
+                const imbalFactor = Math.abs(phase.D - phase.C) / Math.max(phase.D, phase.C, 1);
+                const effS1 = Math.round(phase.scope1_tco2 * (1 + imbalFactor * 0.15));
+                const effS2 = Math.round(phase.scope2_tco2 * (1 + imbalFactor * 0.25));
+                const scope3Upstream = phases
+                    .filter(p => p.id < phase.id)
+                    .reduce((sum, p) => {
+                        const iF = Math.abs(p.D - p.C) / Math.max(p.D, p.C, 1);
+                        return sum + Math.round(p.scope1_tco2 * (1 + iF * 0.15))
+                                   + Math.round(p.scope2_tco2 * (1 + iF * 0.25));
+                    }, 0);
+                const qualityColor = phase.scope_quality === 'Medium' ? '#28a745' : '#6c757d';
+                const scopeHtml = (effS1 + effS2 > 0) ? `
+                    <div style="margin-top:10px;padding-top:8px;border-top:1px solid #e9ecef;">
+                        <div style="font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:5px;">
+                            CO₂e Baseline &nbsp;<span style="color:${qualityColor};font-weight:400;">(${phase.scope_quality})</span>
+                        </div>
+                        <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                            <span title="Scope 1 — direct combustion" style="background:#fff3cd;color:#856404;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">S1 ${fmtCO2(effS1)}</span>
+                            <span title="Scope 2 — purchased electricity" style="background:#cce5ff;color:#004085;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">S2 ${fmtCO2(effS2)}</span>
+                            ${scope3Upstream > 0 ? `<span title="Scope 3 — accumulated from upstream phases" style="background:#d4edda;color:#155724;padding:2px 7px;border-radius:4px;font-size:11px;font-weight:600;">S3↑ ${fmtCO2(scope3Upstream)}</span>` : ''}
+                        </div>
+                    </div>` : '';
+                
+                
+                const html = `
+                    <div class="phase-control">
+                        <div class="phase-header">
+                            <div class="phase-title">Phase ${phase.id}: ${phase.name}</div>
+                            <div class="phase-status ${statusClass}">${statusText}</div>
+                        </div>
+                        ${entitySelectorHtml}
+                        <div class="slider-control">
+                            <div class="slider-label">
+                                <span>Definition (D)</span>
+                                <span class="slider-value" id="d-val-${phase.id}">${phase.D}</span>
+                            </div>
+                            <input type="range" class="d-slider" min="50" max="350" value="${phase.D}" 
+                                   oninput="updatePhase(${phase.id}, 'D', this.value)">
+                        </div>
+                        
+                        <div class="slider-control">
+                            <div class="slider-label">
+                                <span>Contribution (C)</span>
+                                <span class="slider-value" id="c-val-${phase.id}">${phase.C}</span>
+                            </div>
+                            <input type="range" class="c-slider" min="50" max="350" value="${phase.C}"
+                                   oninput="updatePhase(${phase.id}, 'C', this.value)">
+                        </div>
+                        
+                        <div class="metric-display">
+                            <div class="metric">
+                                <div class="metric-label">Balance</div>
+                                <div class="metric-value" id="balance-${phase.id}">${metrics.balance.toFixed(0)}</div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-label">N-State</div>
+                                <div class="metric-value" id="n-${phase.id}">${metrics.N.toFixed(0)}</div>
+                            </div>
+                        </div>
+                        ${scopeHtml}
+                        ${waterHtml}
+                        ${energyHtml}
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+        
+        // Update phase values
+        function updatePhase(phaseId, param, value) {
+            const phase = phases[phaseId];
+            phase[param] = parseInt(value);
+            
+            // Update display
+            document.getElementById(`${param.toLowerCase()}-val-${phaseId}`).textContent = value;
+            
+            // Recalculate metrics
+            const metrics = calculateMetrics(phase.D, phase.C);
+            document.getElementById(`balance-${phaseId}`).textContent = metrics.balance.toFixed(0);
+            document.getElementById(`n-${phaseId}`).textContent = metrics.N.toFixed(0);
+            
+            // Update system metrics
+            updateSystemMetrics();
+            updateFlowVisualization();
+            updateImpactAnalysis();
+        }
+        
+        // Calculate system-wide metrics
+        function updateSystemMetrics() {
+            let totalBalance = 0;
+            let totalSustain = 0;
+            let bottlenecks = 0;
+            
+            phases.forEach(phase => {
+                const metrics = calculateMetrics(phase.D, phase.C);
+                totalBalance += metrics.balance;
+                totalSustain += metrics.sustainability;
+                if (metrics.balance < 70) bottlenecks++;
+            });
+            
+            const avgBalance = totalBalance / phases.length;
+            const avgSustain = totalSustain / phases.length;
+            
+            // Update displays
+            document.getElementById('systemBalance').textContent = avgBalance.toFixed(1);
+            document.getElementById('waterRecycle').textContent = `${Math.min(95, 70 + avgBalance/10).toFixed(0)}%`;
+            document.getElementById('wasteCircular').textContent = `${Math.max(3, avgSustain * 3).toFixed(1)}%`;
+            document.getElementById('cleanEnergy').textContent = `${Math.min(65, 38 + avgBalance/6).toFixed(0)}%`;
+            
+            // Calculate profit (simplified model: profit scales with balance and sustainability)
+            const baseProfit = 24000000;
+            const profitMultiplier = (avgBalance / 82.5) * (avgSustain / 1.45);
+            const newProfit = baseProfit * profitMultiplier;
+            const profitGain = newProfit - baseProfit;
+            
+            document.getElementById('projectedProfit').textContent = `$${(newProfit/1000000).toFixed(1)}M`;
+            document.getElementById('profitGain').textContent = `${profitGain >= 0 ? '+' : ''}$${(profitGain/1000000).toFixed(1)}M`;
+            
+            // Update sustainability metrics
+            const water = Math.min(100, 70 + avgBalance/10);
+            const waste = Math.max(3, Math.min(12, avgSustain * 3));
+            const clean = Math.min(65, 38 + avgBalance/6);
+            
+            document.getElementById('waterEff').textContent = `${water.toFixed(0)}%`;
+            document.getElementById('waterBar').style.width = `${water}%`;
+            document.getElementById('wasteCirc').textContent = `${waste.toFixed(1)}%`;
+            document.getElementById('wasteBar').style.width = `${waste}%`;
+            document.getElementById('cleanPct').textContent = `${clean.toFixed(0)}%`;
+            document.getElementById('cleanBar').style.width = `${clean}%`;
+            
+            // Update deltas
+            const originalBalance = 82.5;
+            const balanceDelta = avgBalance - originalBalance;
+            document.getElementById('balanceDelta').textContent = `${balanceDelta >= 0 ? '+' : ''}${balanceDelta.toFixed(1)}`;
+            document.getElementById('balanceDelta').className = `metric-card-delta ${balanceDelta >= 0 ? 'delta-positive' : 'delta-negative'}`;
+
+            updateCarbonSummary();
+        }
+
+        // Build the carbon footprint summary panel
+        function updateCarbonSummary() {
+            const GLOBAL_OZ = 106_000_000; // approx annual gold production in troy oz
+
+            // Compute effective S1/S2 per phase (adjusted for imbalance)
+            const phaseEmissions = phases.map(p => {
+                const iF = Math.abs(p.D - p.C) / Math.max(p.D, p.C, 1);
+                return {
+                    id: p.id,
+                    name: p.name,
+                    s1: Math.round(p.scope1_tco2 * (1 + iF * 0.15)),
+                    s2: Math.round(p.scope2_tco2 * (1 + iF * 0.25)),
+                };
+            });
+
+            const totalS1 = phaseEmissions.reduce((s, p) => s + p.s1, 0);
+            const totalS2 = phaseEmissions.reduce((s, p) => s + p.s2, 0);
+            const totalS12 = totalS1 + totalS2;
+            const perOz = totalS12 / GLOBAL_OZ; // tCO2e per oz
+
+            const summaryEl = document.getElementById('carbonSummary');
+            if (!summaryEl) return;
+
+            summaryEl.innerHTML = `
+                <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;">
+                    <div style="background:#fff3cd;padding:8px;border-radius:6px;text-align:center;">
+                        <div style="font-size:10px;color:#856404;font-weight:600;text-transform:uppercase;">Scope 1</div>
+                        <div style="font-size:16px;font-weight:700;color:#856404;">${fmtCO2(totalS1)}</div>
+                        <div style="font-size:9px;color:#856404;">direct combustion</div>
+                    </div>
+                    <div style="background:#cce5ff;padding:8px;border-radius:6px;text-align:center;">
+                        <div style="font-size:10px;color:#004085;font-weight:600;text-transform:uppercase;">Scope 2</div>
+                        <div style="font-size:16px;font-weight:700;color:#004085;">${fmtCO2(totalS2)}</div>
+                        <div style="font-size:9px;color:#004085;">purchased electricity</div>
+                    </div>
+                </div>
+                <div style="background:#2c3e50;color:white;padding:8px 12px;border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
+                    <div>
+                        <div style="font-size:10px;opacity:0.7;font-weight:600;text-transform:uppercase;">Chain Total (S1+S2)</div>
+                        <div style="font-size:18px;font-weight:700;">${fmtCO2(totalS12)}</div>
+                    </div>
+                    <div style="text-align:right;">
+                        <div style="font-size:10px;opacity:0.7;">Per troy oz</div>
+                        <div style="font-size:14px;font-weight:700;">${perOz.toFixed(2)} t</div>
+                    </div>
+                </div>`;
+
+            // Build cascade table
+            let cumulative = 0;
+            const cascadeEl = document.getElementById('carbonCascade');
+            if (!cascadeEl) return;
+            cascadeEl.innerHTML = phaseEmissions.map(p => {
+                const phaseTotal = p.s1 + p.s2;
+                cumulative += phaseTotal;
+                const barPct = Math.min(100, (phaseTotal / (totalS12 / phases.length)) * 50);
+                return `<div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;">
+                    <span style="width:72px;color:#495057;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="Phase ${p.id}: ${p.name}">P${p.id} ${p.name.split(' ')[0]}</span>
+                    <div style="flex:1;background:#e9ecef;border-radius:3px;height:10px;overflow:hidden;">
+                        <div style="height:100%;width:${barPct}%;background:linear-gradient(90deg,#ffc107,#dc3545);transition:width 0.3s;"></div>
+                    </div>
+                    <span style="width:46px;text-align:right;color:#6c757d;">${fmtCO2(phaseTotal)}</span>
+                    <span style="width:52px;text-align:right;font-weight:600;color:#28a745;">↑${fmtCO2(cumulative)}</span>
+                </div>`;
+            }).join('');
+        }
+        
+        // Update flow visualization
+        function updateFlowVisualization() {
+            const svg = document.getElementById('flowSvg');
+            svg.innerHTML = '';
+            
+            const width = 800;
+            const height = 500;
+            const nodeWidth = 80;
+            const nodeHeight = 80;
+            const spacing = 80;
+            
+            // Layout: 3x3 grid
+            const positions = [
+                [50, 50],    // 0: Prospecting
+                [180, 50],   // 1: Mining
+                [310, 50],   // 2: Processing
+                [440, 50],   // 3: Doré
+                [570, 50],   // 4: Refining
+                [50, 200],   // 5: Casting
+                [180, 200],  // 6: Vaulting
+                [310, 200],  // 7: Exchange
+                [570, 350]   // 8: Recycling (bottom right with arrow back to Phase 4)
+            ];
+            
+            // Draw connections
+            const connections = [
+                [0,1], [1,2], [2,3], [3,4],  // Top row
+                [4,5], [5,6], [6,7],          // Down and across
+                [8,4]                          // Recycling back to Refining (circular!)
+            ];
+            
+            connections.forEach(([fromIdx, toIdx]) => {
+                const [x1, y1] = positions[fromIdx];
+                const [x2, y2] = positions[toIdx];
+                
+                const phase = phases[fromIdx];
+                const metrics = calculateMetrics(phase.D, phase.C);
+                const strokeColor = metrics.balance >= 80 ? '#28a745' : 
+                                  metrics.balance >= 60 ? '#ffc107' : '#dc3545';
+                const strokeWidth = 2 + (metrics.N / 80);
+                
+                // Special styling for recycling loop
+                const isRecycling = fromIdx === 8;
+                const dashArray = isRecycling ? "8,4" : "0";
+                const opacity = isRecycling ? "0.8" : "0.6";
+                
+                svg.innerHTML += `
+                    <line x1="${x1 + nodeWidth/2}" y1="${y1 + nodeHeight/2}" 
+                          x2="${x2 + nodeWidth/2}" y2="${y2 + nodeHeight/2}" 
+                          stroke="${isRecycling ? '#17a2b8' : strokeColor}" 
+                          stroke-width="${strokeWidth}" 
+                          stroke-dasharray="${dashArray}"
+                          opacity="${opacity}"/>
+                `;
+                
+                // Add arrow for recycling
+                if (isRecycling) {
+                    svg.innerHTML += `
+                        <text x="${(x1 + x2)/2 + nodeWidth/2 - 20}" y="${(y1 + y2)/2 + nodeHeight/2 - 10}" 
+                              font-size="24" fill="#17a2b8">↻</text>
+                    `;
+                }
+            });
+            
+            // Draw nodes
+            phases.forEach((phase, idx) => {
+                const [x, y] = positions[idx];
+                
+                const metrics = calculateMetrics(phase.D, phase.C);
+                const fillColor = metrics.balance >= 80 ? '#28a745' :
+                                metrics.balance >= 60 ? '#ffc107' : '#dc3545';
+                
+                // Special color for recycling phase
+                const isRecycling = idx === 8;
+                const nodeColor = isRecycling ? '#17a2b8' : fillColor;
+                
+                svg.innerHTML += `
+                    <g class="flow-node" onclick="alert('Phase ${phase.id}: ${phase.name}\\nD: ${phase.D}, C: ${phase.C}\\nBalance: ${metrics.balance.toFixed(1)}${isRecycling ? '\\n♻️ Circular Economy: Feeds to Phase 4' : ''}')">
+                        <rect x="${x}" y="${y}" width="${nodeWidth}" height="${nodeHeight}" 
+                              fill="${nodeColor}" rx="8" opacity="0.9"/>
+                        <text x="${x + nodeWidth/2}" y="${y + 20}" text-anchor="middle" 
+                              fill="white" font-size="10" font-weight="bold">Phase ${phase.id}</text>
+                        <text x="${x + nodeWidth/2}" y="${y + 45}" text-anchor="middle" 
+                              fill="white" font-size="18" font-weight="bold">${metrics.balance.toFixed(0)}</text>
+                        <text x="${x + nodeWidth/2}" y="${y + 65}" text-anchor="middle" 
+                              fill="white" font-size="10" opacity="0.9">N: ${metrics.N.toFixed(0)}</text>
+                    </g>
+                `;
+            });
+        }
+        
+        // Update impact analysis
+        function updateImpactAnalysis() {
+            const impactList = document.getElementById('impactList');
+            impactList.innerHTML = '';
+            
+            let impacts = [];
+            
+            // Check each phase
+            phases.forEach(phase => {
+                const metrics = calculateMetrics(phase.D, phase.C);
+                
+                if (metrics.balance < 70) {
+                    impacts.push({
+                        type: 'negative',
+                        title: `⚠️ Phase ${phase.id} (${phase.name}) is constrained`,
+                        detail: `Balance: ${metrics.balance.toFixed(0)} - ${phase.D > phase.C ? 'Over-defined' : 'Under-integrated'}`
+                    });
+                } else if (metrics.balance >= 95) {
+                    impacts.push({
+                        type: 'positive',
+                        title: `✓ Phase ${phase.id} (${phase.name}) is optimal`,
+                        detail: `Balance: ${metrics.balance.toFixed(0)} - Peak efficiency`
+                    });
+                }
+            });
+            
+            if (impacts.length === 0) {
+                impacts.push({
+                    type: 'positive',
+                    title: '✨ All phases balanced',
+                    detail: 'System is running optimally'
+                });
+            }
+            
+            impacts.forEach(impact => {
+                impactList.innerHTML += `
+                    <li class="impact-item ${impact.type}">
+                        <div class="impact-title">${impact.title}</div>
+                        <div class="impact-detail">${impact.detail}</div>
+                    </li>
+                `;
+            });
+        }
+        
+        // Reset all phases
+        function resetAll() {
+            phases.forEach(phase => {
+                phase.D = phase.defaultD;
+                phase.C = phase.defaultC;
+            });
+            // Clear per-phase entity selections back to synthetic
+            Object.keys(phaseEntitySelections).forEach(k => delete phaseEntitySelections[k]);
+            renderPhaseControls();
+            updateSystemMetrics();
+            updateFlowVisualization();
+            updateImpactAnalysis();
+        }
+        
+        // Auto-optimize
+        function autoOptimize() {
+            phases.forEach(phase => {
+                const targetBalance = (phase.D + phase.C) / 2;
+                phase.D = Math.round(targetBalance);
+                phase.C = Math.round(targetBalance);
+            });
+            renderPhaseControls();
+            updateSystemMetrics();
+            updateFlowVisualization();
+            updateImpactAnalysis();
+            alert('✨ All phases optimized for maximum balance!\n\nD and C values have been adjusted to minimize imbalance across the entire supply chain.');
+        }
+        
+        // Load scenario
+        function loadScenario(scenario) {
+            if (scenario === 'current') {
+                resetAll();
+            } else if (scenario === 'optimize') {
+                autoOptimize();
+            } else if (scenario === 'bottleneck') {
+                // Fix Phase 6
+                phases[6].C = 195;
+                phases[6].D = 200;
+                renderPhaseControls();
+                updateSystemMetrics();
+                updateFlowVisualization();
+                updateImpactAnalysis();
+            } else if (scenario === 'shock') {
+                // Simulate supply shock in Phase 2
+                phases[2].D = 180;
+                phases[2].C = 150;
+                renderPhaseControls();
+                updateSystemMetrics();
+                updateFlowVisualization();
+                updateImpactAnalysis();
+            } else if (scenario === 'expansion') {
+                // 10% capacity expansion
+                phases.forEach(phase => {
+                    phase.D = Math.round(phase.D * 1.1);
+                    phase.C = Math.round(phase.C * 1.1);
+                });
+                renderPhaseControls();
+                updateSystemMetrics();
+                updateFlowVisualization();
+                updateImpactAnalysis();
+            }
+        }
+        
+        function applyChanges() {
+            alert('✅ Changes applied!\n\nIn a production system, this would:\n• Update backend database\n• Recalculate all dependencies\n• Generate optimization report\n• Log changes for audit trail');
+        }
+
+        function openEmissionsAnalysis() {
+            const snapshot = phases.map(p => ({ id: p.id, name: p.name, D: p.D, C: p.C, scope1_tco2: p.scope1_tco2, scope2_tco2: p.scope2_tco2, scope_quality: p.scope_quality, scope_source: p.scope_source, scope_notes: p.scope_notes }));
+            try { localStorage.setItem('gold_emissions_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
+            window.open('emissions_analysis.html', '_blank');
+        }
+
+        function openWaterAnalysis() {
+            const snapshot = phases.map(p => ({ id: p.id, name: p.name, D: p.D, C: p.C, water: p.water, water_recycling_pct: p.water_recycling_pct, water_quality: p.water_quality, water_source: p.water_source, water_notes: p.water_notes }));
+            try { localStorage.setItem('gold_water_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
+            window.open('water_analysis.html', '_blank');
+        }
+
+        function openEnergyAnalysis() {
+            const snapshot = phases.map(p => ({ id: p.id, name: p.name, D: p.D, C: p.C, energy: p.energy, energy_unit: p.energy_unit, energy_clean_pct: p.energy_clean_pct, energy_quality: p.energy_quality, energy_source: p.energy_source, energy_notes: p.energy_notes }));
+            try { localStorage.setItem('gold_energy_analysis', JSON.stringify({ data: snapshot, timestamp: new Date().toISOString(), source: 'what_if_simulator' })); } catch(e) {}
+            window.open('energy_analysis.html', '_blank');
+        }
+        
+        // Initialize — load data from JSON, then render
+        async function init() {
+            try {
+                const res = await fetch(DATA_URL, { cache: 'no-store' });
+                if (!res.ok) throw new Error(`HTTP ${res.status} loading ${DATA_URL}`);
+                UI_DATA = await res.json();
+                phases  = buildPhasesFromData(UI_DATA);
+                console.info(`[gold-sim] Loaded UI data (generated: ${UI_DATA._meta && UI_DATA._meta.generated})`);
+            } catch (err) {
+                console.warn('[gold-sim] Could not load JSON, using hardcoded fallback:', err);
+                phases = [
+                    { id: 0, name: 'Prospecting', D: 227, C: 208, defaultD: 227, defaultC: 208, scope1_tco2:    120000, scope2_tco2:    25000, scope_quality: 'Low',    scope_source: 'Inferred — exploration benchmarks',         scope_notes: 'Diesel vehicles, drilling, seismic (S1); remote field power (S2).', water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'Negligible use.',                    energy:   5000, energy_unit:'kWh', energy_clean_pct: 20, energy_quality: 'Low',    energy_notes: 'Field generators, mostly diesel.'       },
+                    { id: 1, name: 'Mining',      D: 270, C: 277, defaultD: 270, defaultC: 277, scope1_tco2:   8200000, scope2_tco2: 27800000, scope_quality: 'Medium', scope_source: 'WGC 2023; Foran et al. 2005',               scope_notes: 'Diesel haul trucks, blasting (S1); ventilation, mills (S2).',        water: 2000000, water_recycling_pct: 20, water_quality: 'Medium', water_notes: 'Dust suppression, ore washing, cooling.', energy: 250000, energy_unit:'kWh', energy_clean_pct: 25, energy_quality: 'Medium', energy_notes: 'Diesel dominant; growing renewables.'  },
+                    { id: 2, name: 'Processing',  D: 276, C: 271, defaultD: 276, defaultC: 271, scope1_tco2:   3000000, scope2_tco2: 17000000, scope_quality: 'Medium', scope_source: 'WGC 2023; Newmont 2024 SR',                 scope_notes: 'Chemical heating (S1); grinding mills — most electricity-intensive phase (S2).', water: 8500000, water_recycling_pct: 75, water_quality: 'High',   water_notes: 'Leaching, flotation. Closed-loop.',      energy: 180000, energy_unit:'kWh', energy_clean_pct: 40, energy_quality: 'Medium', energy_notes: 'Grid electricity dominant (mills).'     },
+                    { id: 3, name: 'Doré',        D: 264, C: 249, defaultD: 264, defaultC: 249, scope1_tco2:   3800000, scope2_tco2:  2600000, scope_quality: 'Low',    scope_source: 'Inferred — smelting benchmarks',            scope_notes: 'Furnace fuel dominant (S1); ancillary electricity (S2).',            water:  300000, water_recycling_pct: 80, water_quality: 'Low',    water_notes: 'Furnace cooling. Closed-loop.',          energy:  30000, energy_unit:'kWh', energy_clean_pct: 35, energy_quality: 'Low',    energy_notes: 'Furnace fuel + some grid.'              },
+                    { id: 4, name: 'Refining',    D: 263, C: 270, defaultD: 263, defaultC: 270, scope1_tco2:   2000000, scope2_tco2:  3600000, scope_quality: 'Low',    scope_source: 'Inferred — LBMA refinery benchmarks',       scope_notes: 'Acid process heating (S1); electrolytic cells, ventilation (S2).',   water: 1000000, water_recycling_pct: 65, water_quality: 'Low',    water_notes: 'Electrolytic baths; ultra-pure needed.', energy:  80000, energy_unit:'kWh', energy_clean_pct: 50, energy_quality: 'Low',    energy_notes: 'Electrolytic cells + furnaces.'         },
+                    { id: 5, name: 'Casting',     D: 253, C: 247, defaultD: 253, defaultC: 247, scope1_tco2:    500000, scope2_tco2:   700000, scope_quality: 'Low',    scope_source: 'Inferred — metal casting benchmarks',       scope_notes: 'Casting furnace fuel (S1); assay equipment (S2).',                   water:   30000, water_recycling_pct: 30, water_quality: 'Low',    water_notes: 'Cooling water only. Small volume.',      energy:  15000, energy_unit:'kWh', energy_clean_pct: 50, energy_quality: 'Low',    energy_notes: 'Shares refinery grid profile.'          },
+                    { id: 6, name: 'Vaulting',    D: 204, C: 161, defaultD: 204, defaultC: 161, scope1_tco2:   3200000, scope2_tco2:   800000, scope_quality: 'Low',    scope_source: 'Inferred — ICCT transport benchmarks',      scope_notes: 'Air freight, armoured vehicles dominant (S1); vault HVAC (S2).',     water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'HVAC condensate only.',                  energy:   5000, energy_unit:'kWh', energy_clean_pct: 55, energy_quality: 'Low',    energy_notes: 'HVAC, lighting, security. Urban grid.'  },
+                    { id: 7, name: 'Exchange',    D: 254, C: 265, defaultD: 254, defaultC: 265, scope1_tco2:     40000, scope2_tco2:   200000, scope_quality: 'Low',    scope_source: 'Inferred — financial sector GHG Protocol',  scope_notes: 'Exchange operations minimal; IT, offices (S2 dominant).',            water:       0, water_recycling_pct:  0, water_quality: 'Low',    water_notes: 'Office/data centre only.',               energy:   2000, energy_unit:'kWh', energy_clean_pct: 60, energy_quality: 'Low',    energy_notes: 'IT infrastructure, growing renewables.' },
+                    { id: 8, name: 'Recycling ♻️',D: 245, C: 250, defaultD: 245, defaultC: 250, scope1_tco2:   1200000, scope2_tco2:  2000000, scope_quality: 'Low',    scope_source: 'WGC Recycling Report 2023',                 scope_notes: 'Secondary smelting (S1); processing electricity (S2).',              water: 1000000, water_recycling_pct: 70, water_quality: 'Low',    water_notes: 'Similar to Phase 4, variable input.',    energy:  70000, energy_unit:'kWh', energy_clean_pct: 45, energy_quality: 'Low',    energy_notes: 'Saves 60-80% vs primary production.'    },
+                ];
+            }
+            renderPhaseControls();
+            updateSystemMetrics();
+            updateFlowVisualization();
+            updateImpactAnalysis();
+        }
+
+        init();
+    </script>
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','west_african_shea':'West African Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'west_african_shea':'/frontend/project/west_african_shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

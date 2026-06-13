@@ -64,6 +64,19 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 
 ---
 
+### `create-research-paper`
+
+**File:** `.cursor/skills/create-research-paper/SKILL.md`
+
+**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, arXiv subjects, optional Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
+
+**When to use it:** Whenever the user asks to "create a paper", "write a paper", "make this a paper", or turn a notes or discovery file into a formal research paper in the series.
+
+**Files it touches:**
+- `docnav/Research/papers/<N>_<slug>.md` (the new paper)
+
+---
+
 ### `research-paper-latex`
 
 **File:** `.cursor/skills/research-paper-latex/SKILL.md`
@@ -78,6 +91,20 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 - `docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf` (after `research_paper_pdflatex.sh`)
 - `scripts/pandoc_paper_postprocess.py` (shared postprocessor; extend only with care)
 - `scripts/research_paper_pdflatex.sh` (two-pass compile helper)
+
+---
+
+### `paper-to-essay`
+
+**File:** `.cursor/skills/paper-to-essay/SKILL.md`
+
+**What it does:** Converts a technical research paper in `docnav/Research/papers/` into a well-written, accessible essay for educated non-expert readers. The essay re-presents the paper's ideas in plain prose with analogies and concrete examples, replacing equations with descriptions and jargon with clear substitutes. Supports four named audiences: `educated-layperson`, `magazine`, `humanities`, and `highschool`. Optionally generates illustrative images using the `GenerateImage` tool for concepts that are hard to grasp in prose alone. Output is saved to `docnav/Research/papers/essays/<N>_<slug>_<audience>.md`.
+
+**When to use it:** Whenever the user says "convert this paper to an essay", "make this readable for non-experts", "write a layperson version", "magazine version", "humanities version", "explain this paper to a general audience", or asks for an "accessible version" of any research paper.
+
+**Files it touches:**
+- `docnav/Research/papers/essays/<N>_<slug>_<audience>.md` (the new essay, always)
+- Images auto-saved by the `GenerateImage` tool (optional)
 
 ---
 
@@ -154,8 +181,10 @@ Rules live in `.cursor/rules/`. Rules with `alwaysApply: true` are active in eve
 
 The master workflow reference for this repo. Covers:
 
-- Dev server startup (`python3 -m http.server 8000`)
-- Frontend entry URLs for gold, shea, and other hubs
+- Terminology: **TVPCI**, **TVPCI-R**, **GGW** (always Great Green Wall)
+- Dev server startup (`python3 scripts/serve.py --http-only`, `bash scripts/restart_server`)
+- Protected project paths (`deploy/protected-paths.json`, `deploy/auth.env`)
+- Frontend entry URLs for gold, west African shea (`west_african_shea`), and other hubs
 - Data pipeline commands (`generate_frontend_data.py`, `generate_ui_data.py`, `comex_scraper.py`)
 - Health check script
 - Architecture overview (supply chain vs value chain vs financial abstraction layers)
@@ -219,6 +248,13 @@ Architecture and naming conventions for building ecosystem subprojects under a b
 **Triggers on:** `frontend/project/gold/supply_chain/**`, `src/api/**`
 
 Conventions for the Gold Supply Chain dashboard and what-if simulator: data contract between `generate_ui_data.py` and the JS frontend, chart patterns, slider behavior, and metric display format.
+
+### `intervention-worksheet`
+
+**File:** `.cursor/rules/intervention-worksheet.mdc`
+**Triggers on:** `alwaysApply: true` (changed from glob-only to ensure the rule fires even when creating project_context.html from scratch)
+
+Requires every `project_context.html` to contain a Phase Intervention Worksheet section. The section must include: a provisional disclaimer, a five-axis failure diagnosis table (pi, phi, sqrt2, ln2, e) with chain scores, one worksheet block per bottleneck phase with named interventions and estimated D/C effects, and a combined effect estimate. References `marina_alta/supply_chain/project_context.html` as the canonical template. Includes a completion checklist.
 
 ### `skills-maintenance` (always applied)
 

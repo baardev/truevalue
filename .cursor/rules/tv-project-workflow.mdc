@@ -28,6 +28,8 @@ Do not use em-dashes anywhere in output, documentation, or generated content. Us
 
 **TVPCI-R** is the return/recycling sub-application and expands to **True Value Pricing Convergence Index — Return**.
 
+**GGW** always means **Great Green Wall**. Do not expand GGW to any other phrase. On first use in a document, prefer "Great Green Wall (GGW)"; thereafter GGW alone is acceptable.
+
 ## Methodology and AI operating rules
 
 Separation of supply chain, value chain, and financial layers; phase-based modeling; data-first discipline; transparency classification; custody awareness; COMEX as anchor; schema-first work; deferred interpretation; auditability; and the full Tholonic N-D-C framework with mathematical grounding: follow **`.cursorrules`** (workspace rules). Those rules are non-negotiable for this project.
@@ -38,16 +40,18 @@ Separation of supply chain, value chain, and financial layers; phase-based model
 
 ```bash
 # Run from the repository root
-python3 -m http.server 8000 --bind 127.0.0.1
+python3 scripts/serve.py --http-only --bind 127.0.0.1 --http 8000
 ```
 
-Use Nginx in front when you need TLS, routing, or password gates. If the MkDocs `site/` tree was moved elsewhere, skip wiki-only helpers or rebuild into the path your server uses.
+`scripts/serve.py` is the canonical static server. It enforces HTTP Basic Auth on
+prefixes in `deploy/protected-paths.json` when `deploy/auth.env` is present.
+If the MkDocs `site/` tree was moved elsewhere, skip wiki-only helpers or rebuild into the path your server uses.
 
 ### Frontend entry examples
 
 - Gold hub: `http://localhost:8000/frontend/project/gold/index.html`
 - Gold supply chain: `http://localhost:8000/frontend/project/gold/supply_chain/index.html`
-- Shea hub: `http://localhost:8000/frontend/project/shea/index.html`
+- Shea hub: `http://localhost:8000/frontend/project/west_african_shea/index.html`
 
 ### Systemd (production pattern)
 
@@ -58,9 +62,12 @@ sudo systemctl daemon-reload && sudo systemctl enable --now tv-web.service
 
 A second unit for docs (`tv-docs.service`) is mentioned in older docs but may not exist under `deploy/`; add or copy only what is in the repo.
 
-### AUBEB password gate
+### Protected project paths
 
-See `deploy/README-aubeb-nginx.md`. Bind the Python static server to `127.0.0.1:8000` so browsers cannot bypass Nginx for protected paths.
+AUBEB and Senegal Agroforestry require HTTP Basic Auth. Prefixes are listed in
+`deploy/protected-paths.json`; credentials go in `deploy/auth.env` (copy from
+`deploy/auth.env.example`). Production loads the same file via `tv-web.service`.
+Restart with `bash scripts/restart_server` after credential changes.
 
 ### Generate frontend JSON from schemas
 

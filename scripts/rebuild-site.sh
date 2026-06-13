@@ -22,7 +22,7 @@
 #
 # [generate_ui]  python3 src/api/generate_ui_data.py
 #   Reads source CSVs (gold schema under schema/, shea CSVs under
-#   frontend/project/shea/data/) and writes processed JSON payloads used
+#   frontend/project/west_african_shea/data/) and writes processed JSON payloads used
 #   by the frontend simulators:
 #       data/frontend/gold_supply_chain_ui.json
 #       data/frontend/shea_supply_chain_ui.json
@@ -34,8 +34,8 @@
 # [viewable]     bash scripts/all2html.py
 #   Walks the whole repo tree and converts every .csv, .json, .yaml/.yml
 #   to an HTML table viewer under viewable/<same-relative-path>.html
-#   e.g.  frontend/project/shea/data/shea_phase_metrics.csv
-#         → viewable/frontend/project/shea/data/shea_phase_metrics.html
+#   e.g.  frontend/project/west_african_shea/data/shea_phase_metrics.csv
+#         → viewable/frontend/project/west_african_shea/data/shea_phase_metrics.html
 #   The green HTML badges in the data catalog (frontend/csv/index.html) resolve
 #   to /viewable/<path> — so re-run this after any rename, move, or new file.
 #   The same .html is also copied into frontend/project/.../data/schema/ next to
@@ -53,10 +53,9 @@
 #   Run this after any change under frontend/docs/, mkdocs.yml, or overrides/.
 #
 # [restart_server] (optional, off by default)
-#   Kills any running python http.server on the backend port and restarts it
-#   bound to localhost. Public traffic should reach it through Nginx on 8000.
+#   Restarts scripts/serve.py (or tv-web via systemd when that unit is active).
+#   Reloads deploy/auth.env for protected project paths.
 #   Also notes the mkdocs serve command if you want the live wiki preview.
-#   Only useful when running a local dev server.
 #
 # ----------------------------------------------------------------------------
 # WHEN TO RUN WHAT
@@ -84,7 +83,7 @@ cd "$REPO_ROOT"
 : "${RUN_GENERATE_UI:=0}"     # 1 = regenerate processed UI JSON from CSVs
 : "${RUN_VIEWABLE:=1}"        # 1 = regenerate viewable/ HTML viewers
 : "${RUN_MKDOCS:=1}"          # 1 = mkdocs build → site/
-: "${RUN_RESTART_SERVER:=0}"  # 1 = restart local http.server on port 8000
+: "${RUN_RESTART_SERVER:=0}"  # 1 = run scripts/restart_server
 : "${CLEAN_ARTIFACT:=1}"      # 1 = remove viewable/mkdocs.html after all2html
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -143,10 +142,8 @@ fi
 # ── optional: restart local dev server ───────────────────────────────────────
 sep
 if (( RUN_RESTART_SERVER )); then
-  echo "==> Restarting http.server on 127.0.0.1:8000"
-  pkill -f "http.server 8000" 2>/dev/null || true
-  nohup python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/tv-http.log 2>&1 &
-  echo "    started (pid $!); log: /tmp/tv-http.log"
+  echo "==> Restarting web server (scripts/restart_server)"
+  bash "$SCRIPT_DIR/restart_server"
   echo
   echo "    For the MkDocs live wiki preview (port 8001), run separately:"
   echo "      bash scripts/RUN_MKWIKI"

@@ -39,7 +39,7 @@ PROJECT_TERMS: dict[str, list[str]] = {
         r"\bBarrick\b",
         r"\bAISC\b",
     ],
-    "shea": [
+    "west_african_shea": [
         r"\bshea\b",
         r"\bBurkina\b",
         r"\bshea butter\b",

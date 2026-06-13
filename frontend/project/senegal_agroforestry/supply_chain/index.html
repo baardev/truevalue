@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Senegal Agroforestry – Supply Chain</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #f0f4f0;
+    min-height: 100vh;
+    padding: 24px;
+    color: #212529;
+    color-scheme: light;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .topnav {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px;
+  }
+  .topnav a {
+    color: #2e7d32; text-decoration: none; font-size: 13px; font-weight: 600;
+  }
+  .topnav a:hover { text-decoration: underline; }
+  .topnav span { color: #adb5bd; }
+
+  .hero {
+    background: linear-gradient(135deg, #1b5e20 0%, #2e7d32 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 36px 40px;
+    margin-bottom: 22px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  }
+  .kicker {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; opacity: 0.8; margin-bottom: 10px;
+  }
+  h1 { font-size: 30px; font-weight: 300; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; opacity: 0.85; line-height: 1.6; max-width: 700px; }
+
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; margin-bottom: 22px;
+  }
+  .kpi-card {
+    background: #fff; border-radius: 12px; padding: 18px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1); text-align: center;
+  }
+  .kpi-label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 5px; }
+  .kpi-value { font-size: 28px; font-weight: 200; color: #2e7d32; }
+  .kpi-unit { font-size: 11px; color: #6c757d; margin-top: 3px; }
+  .kpi-value.warn { color: #e53935; }
+
+  /* Phase flow diagram */
+  .phase-flow-section {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+    padding: 28px;
+    margin-bottom: 22px;
+  }
+  .section-title {
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #2e7d32; margin-bottom: 20px;
+  }
+  .phase-flow {
+    display: flex; flex-direction: column; gap: 0;
+  }
+  .phase-row {
+    display: grid;
+    grid-template-columns: 60px 200px 1fr 100px 120px;
+    align-items: stretch;
+    border-bottom: 1px solid #f0f0f0;
+    padding: 14px 0;
+    gap: 14px;
+  }
+  .phase-row:last-child { border-bottom: none; }
+  .phase-row.bottleneck { background: #fff8f8; border-radius: 8px; border-bottom: 1px solid #ffcdd2; }
+  .ph-num {
+    font-size: 11px; font-weight: 700; color: #78909c;
+    display: flex; align-items: center;
+  }
+  .ph-name {
+    font-size: 14px; font-weight: 600; color: #1b5e20;
+    display: flex; align-items: center;
+  }
+  .ph-name.warn { color: #c62828; }
+  .ph-desc {
+    font-size: 12px; color: #495057; line-height: 1.5;
+    display: flex; align-items: center;
+  }
+  .ph-balance {
+    font-size: 20px; font-weight: 200;
+    display: flex; align-items: center; justify-content: center;
+    color: #2e7d32;
+  }
+  .ph-balance.warn { color: #e53935; }
+  .ph-transp {
+    font-size: 11px; display: flex; align-items: center; justify-content: center;
+    text-align: center;
+  }
+  .badge {
+    display: inline-block; padding: 3px 9px; border-radius: 999px;
+    font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;
+  }
+  .badge-high { background: #e8f5e9; color: #1b5e20; }
+  .badge-medium { background: #fffde7; color: #5d4037; }
+  .badge-low { background: #fff3e0; color: #bf360c; }
+  .badge-bottleneck { background: #ffebee; color: #b71c1c; }
+
+  /* Chain stats */
+  .stats-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 22px;
+  }
+  .stat-panel {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1); padding: 24px;
+  }
+
+  /* Sub-pages */
+  .subpages-grid {
+    display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 22px;
+  }
+  .subpage-card {
+    background: #fff; border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 20px; text-align: center;
+    border-top: 4px solid #2e7d32;
+    text-decoration: none; color: inherit;
+    transition: transform 0.15s, box-shadow 0.15s;
+    display: block;
+  }
+  .subpage-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.16); }
+  .sp-icon { font-size: 32px; margin-bottom: 8px; }
+  .sp-title { font-size: 15px; font-weight: 600; color: #1b5e20; margin-bottom: 5px; }
+  .sp-desc { font-size: 12px; color: #6c757d; line-height: 1.5; }
+
+  .provisional-note {
+    font-size: 12px; color: #7b4100;
+    background: #fff3e0; border: 1px solid #ffb74d;
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 22px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Nav -->
+  <div class="topnav">
+    <a href="../../../index.html">TrueValue Home</a>
+    <span>/</span>
+    <a href="../index.html">Senegal Agroforestry</a>
+    <span>/</span>
+    <span style="color:#1b5e20">Supply Chain</span>
+  </div>
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="kicker">Supply Chain · 8 Phases · Synthetic Baseline</div>
+    <h1>Senegal Agroforestry Supply Chain</h1>
+    <p class="subtitle">
+      From in-situ natural forests and planted agroforestry (origin) through certification and market delivery.
+      Chain average balance: 78.0% · Bottleneck: Phase 4 Transformation (65%) · Includes Acorn carbon credit pathway.
+    </p>
+  </div>
+
+  <div class="provisional-note">
+    <strong>PROVISIONAL:</strong> N-D-C values derived from PDI Module 1, Mirova feasibility data, and public sources.
+    Phases marked OPAQUE have data gaps from unextracted Excel files (EP Carbon, Serious Shea Financial Model).
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-label">Chain Average Balance</div>
+      <div class="kpi-value">78.0%</div>
+      <div class="kpi-unit">8 phases</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Bottleneck Phase</div>
+      <div class="kpi-value warn">65%</div>
+      <div class="kpi-unit">Phase 4: Transformation</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">High Transparency</div>
+      <div class="kpi-value">2</div>
+      <div class="kpi-unit">Phases 6 and 7</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Carbon at Steady State</div>
+      <div class="kpi-value">3,330</div>
+      <div class="kpi-unit">tCO₂/yr mid scenario</div>
+    </div>
+  </div>
+
+  <!-- Phase flow -->
+  <div class="phase-flow-section">
+    <div class="section-title">Phase Map and Flow</div>
+    <div style="display:grid;grid-template-columns:60px 200px 1fr 100px 120px;gap:14px;padding:0 0 10px;border-bottom:2px solid #e9ecef;margin-bottom:8px;">
+      <div style="font-size:11px;font-weight:700;color:#78909c;">Phase</div>
+      <div style="font-size:11px;font-weight:700;color:#78909c;">Name</div>
+      <div style="font-size:11px;font-weight:700;color:#78909c;">Physical state / Key outputs</div>
+      <div style="font-size:11px;font-weight:700;color:#78909c;text-align:center;">Balance</div>
+      <div style="font-size:11px;font-weight:700;color:#78909c;text-align:center;">Transparency</div>
+    </div>
+    <div class="phase-flow">
+      <div class="phase-row">
+        <div class="ph-num">P0</div>
+        <div class="ph-name">In-Situ Origin</div>
+        <div class="ph-desc">Natural forests, GGW/PAPSEN plantations, shea and mango trees, groundnut fields in Groundnut Basin. Baseline: 41.92% open forest across all sites (Mirova). Pre-commercial state.</div>
+        <div class="ph-balance">83%</div>
+        <div class="ph-transp"><span class="badge badge-medium">Medium</span></div>
+      </div>
+      <div class="phase-row bottleneck">
+        <div class="ph-num">P1</div>
+        <div class="ph-name warn">Harvest + Nursery</div>
+        <div class="ph-desc">Seasonal collection of shea fruits, moringa leaves/seeds, mangoes, groundnuts. Concurrent seedling propagation in native forest nurseries for GGW and PAPSEN sites. Custody: GGW/PAPSEN state to Serious Shea cooperatives.</div>
+        <div class="ph-balance warn">70%</div>
+        <div class="ph-transp"><span class="badge badge-low">Low</span></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-num">P2</div>
+        <div class="ph-name">Primary Processing</div>
+        <div class="ph-desc">Shelling, hulling, and sorting at 18 Clean Energy Processing Centres. Waste streams (shells, husks) separated for biogas input. Seedlings transplanted to plantation sites.</div>
+        <div class="ph-balance">78%</div>
+        <div class="ph-transp"><span class="badge badge-medium">Medium</span></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-num">P3</div>
+        <div class="ph-name">Drying + QC</div>
+        <div class="ph-desc">Sun/mechanical drying to specification. Quality control grading. Plantation crews tend transplanted saplings: watering, weeding, protection from grazing. Unit: kg dried/graded per ha plantation.</div>
+        <div class="ph-balance">78%</div>
+        <div class="ph-transp"><span class="badge badge-medium">Medium</span></div>
+      </div>
+      <div class="phase-row bottleneck">
+        <div class="ph-num">P4</div>
+        <div class="ph-name warn">Transformation</div>
+        <div class="ph-desc">BOTTLENECK. Moringa leaves ground to powder; shea kernels roasted/churned to paste; groundnuts pressed for oil. Waste to biogas/syngas, biochars, organic fertilizer. Co-production of energy and commodities at 18 centres; no centralised throughput data.</div>
+        <div class="ph-balance warn">65%</div>
+        <div class="ph-transp"><span class="badge badge-low">Low</span></div>
+      </div>
+      <div class="phase-row bottleneck">
+        <div class="ph-num">P5</div>
+        <div class="ph-name warn">Refining + Export Prep</div>
+        <div class="ph-desc">Shea paste steamed and fat-extracted to raw butter; fractionated to shea sterin (confectionery) and shea olein (personal care). Groundnut and moringa oils bulk-packaged. Export documentation. 2 Shea Butter Processing Clusters.</div>
+        <div class="ph-balance warn">70%</div>
+        <div class="ph-transp"><span class="badge badge-low">Low</span></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-num">P6</div>
+        <div class="ph-name">Certification + Registry</div>
+        <div class="ph-desc">Products certified deforestation-free, zero-carbon, beyond fairtrade. Carbon credits verified and registered via Acorn / EP Carbon / Mirova pathway. Steady-state sequestration: 2,692–4,015 tCO₂/yr (low–high, Mirova v1.1).</div>
+        <div class="ph-balance">88%</div>
+        <div class="ph-transp"><span class="badge badge-medium">Medium</span></div>
+      </div>
+      <div class="phase-row">
+        <div class="ph-num">P7</div>
+        <div class="ph-name">Market Delivery</div>
+        <div class="ph-desc">Shea to cosmetics/confectionery buyers; moringa to nutraceutical markets; groundnut to SONACOS and export food industry; carbon credits traded on VCM. Annual credit revenue at steady state: $313K–$468K (Mirova).</div>
+        <div class="ph-balance">92%</div>
+        <div class="ph-transp"><span class="badge badge-high">High</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sub-page links -->
+  <div class="subpages-grid">
+    <a class="subpage-card" href="dashboard.html">
+      <div class="sp-icon">📊</div>
+      <div class="sp-title">N-D-C Dashboard</div>
+      <div class="sp-desc">Phase D-C-N bar charts, coherence pentagon, bottleneck analysis</div>
+    </a>
+    <a class="subpage-card" href="project_context.html">
+      <div class="sp-icon">🗂️</div>
+      <div class="sp-title">Project Context</div>
+      <div class="sp-desc">PDI data, land cover, carbon projections, actor map, sovereign risk</div>
+    </a>
+    <a class="subpage-card" href="recycling_analysis.html" style="border-top-color:#795548">
+      <div class="sp-icon">♻️</div>
+      <div class="sp-title">Recycling Analysis</div>
+      <div class="sp-desc">TVPCI-R scores, B_chain, waste streams, circular economy interventions</div>
+    </a>
+  </div>
+
+  <!-- Bottom nav -->
+  <div style="display:flex;gap:20px;flex-wrap:wrap;padding:14px;background:#e8f5e9;border-radius:10px;margin-bottom:12px;">
+    <a href="../index.html" style="color:#1b5e20;text-decoration:none;font-size:13px;font-weight:600;">← Hub</a>
+    <a href="dashboard.html" style="color:#1b5e20;text-decoration:none;font-size:13px;font-weight:600;">Dashboard</a>
+    <a href="project_context.html" style="color:#1b5e20;text-decoration:none;font-size:13px;font-weight:600;">Project Context</a>
+    <a href="recycling_analysis.html" style="color:#1b5e20;text-decoration:none;font-size:13px;font-weight:600;">Recycling Analysis</a>
+    <a href="../value_chain/index.html" style="color:#1b5e20;text-decoration:none;font-size:13px;font-weight:600;">Value Chain</a>
+    <a href="../../../index.html" style="color:#1b5e20;text-decoration:none;font-size:13px;font-weight:600;">TrueValue Home</a>
+  </div>
+
+</div>
+</body>
+</html>

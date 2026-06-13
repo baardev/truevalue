@@ -50,7 +50,7 @@ GOLD_PHASES_CSV    = REPO / "schema" / "supply_chain_phases.csv"
 GOLD_SOURCES_CSV   = REPO / "schema" / "data_sources.csv"
 PHASE_SUMMARIES    = [REPO / "src" / "data" / "processed" / f"phase{i}_summary.json" for i in range(9)]
 
-SHEA_DIR           = REPO / "frontend" / "project" / "shea" / "data"
+SHEA_DIR           = REPO / "frontend" / "project" / "west_african_shea" / "data"
 SHEA_METRICS_CSV   = SHEA_DIR / "shea_phase_metrics.csv"
 SHEA_PHASES_CSV    = SHEA_DIR / "shea_supply_chain_phases.csv"
 SHEA_SOURCES_CSV   = SHEA_DIR / "shea_data_sources.csv"

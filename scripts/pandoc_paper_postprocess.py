@@ -11,6 +11,80 @@ import sys
 from pathlib import Path
 
 
+# ---------------------------------------------------------------------------
+# Markdown header parser
+# ---------------------------------------------------------------------------
+
+def _parse_md_header(md_path: Path) -> dict:
+    """
+    Parse the canonical paper header fields from a Markdown source file.
+
+    Expected header format (fields may appear in any order after the title):
+        # Full Title: Optional Subtitle
+
+        **Author:** J. W. Milton, Affiliation Name
+        **Version:** 1.0
+        **Date:** D Month YYYY
+        **Proposed arXiv subjects:** math.CA; math.NT (secondary: ...)
+        **Keywords:** ...   (optional)
+    """
+    text = md_path.read_text(encoding="utf-8")
+    result: dict = {}
+
+    # Title: first non-empty line starting with "# "
+    for line in text.splitlines():
+        line = line.strip()
+        if line.startswith("# "):
+            result["title_raw"] = line[2:].strip()
+            break
+
+    # Bold-field lines: **Label:** value  (colon is inside the bold markers)
+    for m in re.finditer(r"^\*\*([^*]+):\*\*\s*(.+)$", text, re.MULTILINE):
+        label = m.group(1).strip().rstrip(":")
+        value = m.group(2).strip()
+        key = label.lower()
+        if "author" in key:
+            result["author_raw"] = value
+        elif "version" in key:
+            result["version"] = value
+        elif "date" in key:
+            result["date"] = value
+        elif "arxiv" in key or "arXiv" in key:
+            result["arxiv_label"] = label
+            result["arxiv_subjects"] = value
+        elif "keyword" in key:
+            result["keywords"] = value
+
+    return result
+
+
+def _md_title_to_latex(title_raw: str) -> str:
+    """
+    Convert a plain-text paper title to a LaTeX \\title{} argument.
+    If the title contains ': ', the first part becomes the main title
+    and the rest becomes a \\large subtitle on the next line.
+    """
+    if ": " in title_raw:
+        main, sub = title_raw.split(": ", 1)
+        return main + ":\\\\\n\\large " + sub
+    return title_raw
+
+
+def _md_author_to_latex(author_raw: str) -> str:
+    """
+    Convert "Name, Affiliation" to "Name\\[4pt]{\\small Affiliation}".
+    If there is no comma, use the full string as-is.
+    """
+    if ", " in author_raw:
+        name, affil = author_raw.split(", ", 1)
+        return name + "\\\\[4pt]{\\small " + affil + "}"
+    return author_raw
+
+
+# ---------------------------------------------------------------------------
+# LaTeX extraction helpers
+# ---------------------------------------------------------------------------
+
 def extract_abstract_and_body(tex: str) -> tuple[str, str]:
     """Return (abstract text, body from first numbered \\subsection{1. ...} onward)."""
     m_intro = re.search(
@@ -69,6 +143,10 @@ def promote_subsection_headings(body: str) -> str:
     return body
 
 
+# ---------------------------------------------------------------------------
+# Preamble builder
+# ---------------------------------------------------------------------------
+
 PACKAGES = r"""\pdfoutput=1
 \documentclass[12pt]{article}
 
@@ -88,12 +166,44 @@ PACKAGES = r"""\pdfoutput=1
 \usepackage{geometry}
 \geometry{margin=1in}
 
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi
+}
+\makeatother
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 """
 
-# Defaults kept for paper 6 backward compatibility.
+
+def build_preamble(title: str, author: str, date: str,
+                   arxiv_subjects: str, arxiv_label: str = "Provisional arXiv subjects",
+                   version: str = "") -> str:
+    date_version = f"\\small {date}" + (f" \\\\ v{version}" if version else "")
+    return (
+        PACKAGES
+        + f"\\title{{{title}}}\n"
+        + f"\\author{{{author}}}\n"
+        + f"\\date{{{date_version}}}\n\n"
+        + "\\begin{document}\n"
+        + "\\maketitle\n\n"
+        + f"\\noindent\\textbf{{{arxiv_label}:}} {arxiv_subjects}\n\n"
+        + "\\begin{abstract}\n"
+    )
+
+
+# ---------------------------------------------------------------------------
+# Defaults (paper-6 backward compatibility)
+# ---------------------------------------------------------------------------
+
 _DEFAULT_TITLE = (
     r"The Qualitative Nature of One, Two, and Three:\\"
     "\n"
@@ -101,40 +211,66 @@ _DEFAULT_TITLE = (
 )
 _DEFAULT_AUTHOR = r"Jeffrey W. Milton\\[4pt]{\small Independent Researcher}"
 _DEFAULT_DATE = "2026"
+_DEFAULT_ARXIV_LABEL = "Provisional arXiv subjects"
 _DEFAULT_ARXIV = r"math.HO; math.LO (secondary: cs.LO; q-bio.NC)"
 
 
-def build_preamble(title: str, author: str, date: str, arxiv: str) -> str:
-    return (
-        PACKAGES
-        + f"\\title{{{title}}}\n"
-        + f"\\author{{{author}}}\n"
-        + f"\\date{{{date}}}\n\n"
-        + "\\begin{document}\n"
-        + "\\maketitle\n\n"
-        + f"\\noindent\\textbf{{Provisional arXiv subjects:}} {arxiv}\n\n"
-        + "\\begin{abstract}\n"
-    )
-
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
 
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("input", type=Path, help="Pandoc standalone .tex")
     ap.add_argument("output", type=Path, help="Output .tex")
-    ap.add_argument("--title", default=_DEFAULT_TITLE,
-                    help="LaTeX title string (use \\\\ for line break)")
-    ap.add_argument("--author", default=_DEFAULT_AUTHOR,
-                    help="LaTeX author string")
-    ap.add_argument("--date", default=_DEFAULT_DATE)
-    ap.add_argument("--arxiv", default=_DEFAULT_ARXIV,
-                    help="Provisional arXiv subject string")
+    ap.add_argument("--md", type=Path, default=None,
+                    help="Source Markdown file; header fields are read from it automatically")
+    ap.add_argument("--title", default=None,
+                    help="LaTeX title string (overrides --md)")
+    ap.add_argument("--author", default=None,
+                    help="LaTeX author string (overrides --md)")
+    ap.add_argument("--date", default=None,
+                    help="Date string (overrides --md)")
+    ap.add_argument("--arxiv-label", default=None,
+                    help="arXiv label prefix, e.g. 'Proposed arXiv subjects' (overrides --md)")
+    ap.add_argument("--arxiv", default=None,
+                    help="arXiv subject string (overrides --md)")
     args = ap.parse_args()
-    tex = args.input.read_text(encoding="utf-8")
 
+    # Read Markdown header if provided
+    md_fields: dict = {}
+    if args.md:
+        md_fields = _parse_md_header(args.md)
+
+    # Resolve each field: explicit arg > markdown > default
+    def resolve(arg_val, md_key, default):
+        if arg_val is not None:
+            return arg_val
+        if md_key in md_fields:
+            return md_fields[md_key]
+        return default
+
+    title_raw = resolve(args.title, "title_raw", None)
+    title = _md_title_to_latex(title_raw) if title_raw else _DEFAULT_TITLE
+
+    author_raw = resolve(args.author, "author_raw", None)
+    author = _md_author_to_latex(author_raw) if author_raw else _DEFAULT_AUTHOR
+
+    date = resolve(args.date, "date", _DEFAULT_DATE)
+    version = resolve(None, "version", "")
+    arxiv_label = resolve(args.arxiv_label, "arxiv_label", _DEFAULT_ARXIV_LABEL)
+    arxiv_subjects = resolve(args.arxiv, "arxiv_subjects", _DEFAULT_ARXIV)
+
+    tex = args.input.read_text(encoding="utf-8")
     abstract, body = extract_abstract_and_body(tex)
     body = promote_subsection_headings(body)
+    body = re.sub(
+        r"\\includegraphics\[keepaspectratio\]",
+        r"\\includegraphics[width=\\linewidth,keepaspectratio]",
+        body,
+    )
 
-    preamble = build_preamble(args.title, args.author, args.date, args.arxiv)
+    preamble = build_preamble(title, author, date, arxiv_subjects, arxiv_label, version)
     out = preamble + abstract + "\n\\end{abstract}\n\n" + body
     if "\\end{document}" not in out:
         out += "\n\\end{document}\n"

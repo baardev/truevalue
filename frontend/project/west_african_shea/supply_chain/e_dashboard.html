@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>West African Shea Supply Chain – e Abstract Coherence Model</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a0030 0%, #4a148c 50%, #6a1b9a 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .dashboard {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #1a0030 0%, #4a148c 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .header h1 { font-size: 22px; font-weight: 300; }
+        .header-nav a { color: #ce93d8; text-decoration: none; margin-left: 18px; font-size: 13px; }
+        .header-nav a:hover { color: white; }
+
+        .model-strip {
+            display: flex; align-items: center; gap: 0;
+            background: #1a1a1a; overflow-x: auto;
+        }
+        .model-tab {
+            padding: 9px 20px; font-size: 12px; font-weight: 600;
+            letter-spacing: 0.5px; white-space: nowrap; cursor: pointer;
+            border-right: 1px solid #333; color: #888;
+            text-decoration: none; display: block;
+        }
+        .model-tab:hover { background: #2a2a2a; color: #ccc; }
+        .model-tab.active { background: #4a148c; color: white; cursor: default; }
+
+        .scenario-bar {
+            display: flex; align-items: center; gap: 12px;
+            padding: 10px 20px; background: #120020;
+            border-bottom: 2px solid #6a1b9a; flex-wrap: wrap;
+        }
+        .scenario-label {
+            font-size: 11px; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 1px; color: #ce93d8; white-space: nowrap; flex-shrink: 0;
+        }
+        .scenario-btns { display: flex; gap: 6px; flex-wrap: wrap; }
+        .scen-btn {
+            padding: 5px 14px; border-radius: 14px; font-size: 12px; font-weight: 600;
+            border: 1px solid #3a1060; background: #200040; color: #ce93d8;
+            cursor: pointer; transition: all 0.15s; white-space: nowrap;
+        }
+        .scen-btn:hover { border-color: #6a1b9a; color: #e1bee7; }
+        .scen-btn.active { background: #6a1b9a; border-color: #6a1b9a; color: white; }
+        .scen-btn.shock  { border-color: #c62828; }
+        .scen-btn.shock:hover, .scen-btn.shock.active { background: #c62828; border-color: #c62828; color: white; }
+        .scen-btn.expand { border-color: #1565c0; }
+        .scen-btn.expand:hover, .scen-btn.expand.active { background: #1565c0; border-color: #1565c0; color: white; }
+        .scen-btn.regul  { border-color: #546e7a; }
+        .scen-btn.regul:hover, .scen-btn.regul.active  { background: #546e7a; border-color: #546e7a; color: white; }
+        .scen-btn.sshea  { border-color: #2e7d32; }
+        .scen-btn.sshea:hover, .scen-btn.sshea.active { background: #2e7d32; border-color: #2e7d32; color: white; }
+        .scenario-desc { font-size: 11px; color: #7a4a8a; font-style: italic; flex: 1; min-width: 180px; }
+
+        .score-cards {
+            display: grid; grid-template-columns: repeat(4, 1fr);
+            gap: 20px; padding: 28px 30px; background: #f3e5f5;
+        }
+        .card {
+            background: white; padding: 20px; border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            border-top: 4px solid #e0e0e0;
+        }
+        .card.purple-border { border-top-color: #4a148c; }
+        .card.red-border    { border-top-color: #b71c1c; }
+        .card.warn-border   { border-top-color: #f57f17; }
+        .card.green-border  { border-top-color: #2e7d32; }
+        .card-label { font-size: 11px; text-transform: uppercase; color: #6c757d; letter-spacing: 1px; margin-bottom: 8px; }
+        .card-value { font-size: 34px; font-weight: bold; color: #2c3e50; margin-bottom: 6px; }
+        .card-value.red    { color: #b71c1c; }
+        .card-value.warn   { color: #f57f17; }
+        .card-value.green  { color: #2e7d32; }
+        .card-value.purple { color: #4a148c; }
+        .card-sub { font-size: 12px; color: #6c757d; }
+
+        .main { padding: 28px 30px; }
+        .section-title { font-size: 17px; font-weight: 600; color: #2c3e50; margin-bottom: 6px; }
+        .section-sub { font-size: 13px; color: #6c757d; margin-bottom: 20px; }
+
+        .chain-flow {
+            background: #f3e5f5; border-radius: 10px;
+            padding: 30px 20px; margin-bottom: 28px; overflow-x: auto;
+        }
+        .phases-row { display: flex; align-items: center; min-width: 700px; }
+        .phase-node { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+        .phase-box {
+            width: 95px; height: 95px; border-radius: 10px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+            border: 2px solid transparent; transition: transform 0.2s;
+        }
+        .phase-box:hover { transform: scale(1.07); }
+        .phase-box .pid    { font-size: 10px; font-weight: 700; opacity: 0.85; }
+        .phase-box .pname  { font-size: 11px; font-weight: 700; text-align: center; margin-top: 2px; }
+        .phase-box .pscore { font-size: 20px; font-weight: 900; margin-top: 2px; }
+        .phase-box .pclaims{ font-size: 9px; opacity: 0.75; margin-top: 1px; }
+        .phase-label { font-size: 10px; color: #555; margin-top: 7px; text-align: center; max-width: 100px; }
+
+        .phase-box.perfect   { background: linear-gradient(135deg,#1b5e20,#2e7d32); color:white; border-color:#1b5e20; }
+        .phase-box.excellent { background: linear-gradient(135deg,#2e7d32,#43a047); color:white; border-color:#2e7d32; }
+        .phase-box.good      { background: linear-gradient(135deg,#558b2f,#7cb342); color:white; border-color:#558b2f; }
+        .phase-box.fair      { background: linear-gradient(135deg,#e65100,#f57f17); color:white; border-color:#e65100; }
+        .phase-box.poor      { background: linear-gradient(135deg,#7f0000,#b71c1c); color:white; border-color:#7f0000; }
+        .phase-box.noclaims  { background: linear-gradient(135deg,#1b5e20,#2e7d32); color:white; border-color:#1b5e20; }
+
+        .phase-connector { display: flex; flex-direction: column; align-items: center; padding: 0 4px; flex-shrink: 0; }
+        .conn-arrow { font-size: 20px; color: #aaa; }
+
+        .coupling-scale {
+            background: #ede7f6; border-radius: 8px; padding: 18px;
+            margin-bottom: 28px; border: 1px solid #ce93d8;
+        }
+        .coupling-scale h4 { font-size: 13px; color: #2c3e50; margin-bottom: 14px; }
+        .coup-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .coup-label { font-size: 11px; width: 200px; flex-shrink: 0; color: #444; }
+        .coup-phase { font-size: 10px; width: 80px; flex-shrink: 0; color: #888; }
+        .coup-bar-outer { flex: 1; height: 22px; background: #e0d0f0; border-radius: 6px; overflow: hidden; min-width: 100px; }
+        .coup-bar-fill  { height: 100%; border-radius: 6px; transition: width 0.4s ease; }
+        .coup-bar-fill.cr-excellent { background: linear-gradient(90deg,#2e7d32,#43a047); }
+        .coup-bar-fill.cr-good      { background: linear-gradient(90deg,#558b2f,#8bc34a); }
+        .coup-bar-fill.cr-fair      { background: linear-gradient(90deg,#e65100,#ff9800); }
+        .coup-bar-fill.cr-poor      { background: linear-gradient(90deg,#7f0000,#c62828); }
+        .coup-val   { width: 50px; text-align: right; font-size: 12px; font-weight: 700; flex-shrink: 0; color: #333; }
+        .coup-score { width: 42px; text-align: right; font-size: 11px; flex-shrink: 0; }
+        .coup-badge { font-size: 9px; padding: 2px 6px; border-radius: 8px; font-weight: 700; flex-shrink: 0; }
+        .badge-measured  { background: #e8f5e9; color: #2e7d32; }
+        .badge-estimated { background: #fff8e1; color: #f57f17; }
+
+        .pva-section { background: #fafafa; border-radius: 8px; padding: 20px; margin-bottom: 28px; border: 1px solid #e0d0f0; }
+        .pva-section h4 { font-size: 13px; color: #2c3e50; margin-bottom: 14px; }
+        .pva-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+        .pva-label { font-size: 11px; width: 180px; flex-shrink: 0; color: #444; }
+        .pva-bars { flex: 1; display: flex; flex-direction: column; gap: 2px; min-width: 200px; }
+        .pva-bar-row { display: flex; align-items: center; gap: 4px; height: 14px; }
+        .pva-bar-phys { height: 14px; border-radius: 3px; background: #4a148c; min-width: 2px; transition: width 0.4s; }
+        .pva-bar-abs  { height: 14px; border-radius: 3px; background: #c62828; min-width: 2px; transition: width 0.4s; }
+        .pva-val { font-size: 10px; color: #888; white-space: nowrap; }
+        .pva-legend { display: flex; gap: 18px; font-size: 11px; color: #888; margin-top: 10px; padding-top: 10px; border-top: 1px solid #eee; }
+        .pva-legend-dot { width: 12px; height: 12px; border-radius: 2px; display: inline-block; margin-right: 5px; vertical-align: middle; }
+
+        .claims-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 16px; margin-bottom: 28px;
+        }
+        .claim-card {
+            background: white; border-radius: 8px;
+            border: 1px solid #e0d0f0; border-top: 4px solid #4a148c;
+            padding: 16px;
+        }
+        .claim-card.cr-excellent { border-top-color: #2e7d32; }
+        .claim-card.cr-good      { border-top-color: #7cb342; }
+        .claim-card.cr-fair      { border-top-color: #f57f17; }
+        .claim-card.cr-poor      { border-top-color: #c62828; }
+
+        .cc-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+        .cc-title  { font-size: 13px; font-weight: 700; color: #2c3e50; }
+        .cc-phase  { font-size: 10px; color: #888; margin-top: 2px; }
+        .cc-score  { font-size: 26px; font-weight: 900; }
+        .cc-score.green { color: #2e7d32; }
+        .cc-score.amber { color: #f57f17; }
+        .cc-score.red   { color: #c62828; }
+        .cc-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 10px 0; }
+        .cc-stat { background: #f9f9f9; border-radius: 6px; padding: 8px; }
+        .cc-stat-label { font-size: 10px; color: #999; text-transform: uppercase; }
+        .cc-stat-val   { font-size: 14px; font-weight: 700; color: #2c3e50; }
+        .cc-coupling-bar { width: 100%; height: 8px; background: #e0d0f0; border-radius: 4px; overflow: hidden; margin: 8px 0; }
+        .cc-coupling-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+        .cc-badges { display: flex; gap: 4px; flex-wrap: wrap; margin: 6px 0; }
+        .cc-note { font-size: 11px; color: #777; line-height: 1.5; margin-top: 8px; padding-top: 8px; border-top: 1px solid #f0f0f0; }
+        .cc-counterparty { font-size: 10px; color: #888; margin-top: 6px; }
+
+        .simulator { background: #f3e5f5; border-radius: 10px; padding: 24px; margin-bottom: 28px; border: 1px solid #ce93d8; }
+        .sim-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px; }
+        .sim-card { background: white; border-radius: 8px; padding: 16px; border: 1px solid #e0d0f0; }
+        .sim-card h4 { font-size: 13px; font-weight: 700; color: #2c3e50; margin-bottom: 4px; }
+        .sim-phase-score { font-size: 24px; font-weight: 900; margin-bottom: 10px; }
+        .sim-slider-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; }
+        .sim-slider-row label { font-size: 11px; color: #555; width: 140px; flex-shrink: 0; }
+        .sim-slider-row input[type=range] { flex: 1; accent-color: #6a1b9a; }
+        .sim-slider-row .sim-val { font-size: 12px; font-weight: 700; width: 36px; text-align: right; color: #4a148c; }
+        .sim-result { margin-top: 10px; padding: 8px 10px; background: #ede7f6; border-radius: 6px; font-size: 12px; }
+        .sim-score { font-size: 20px; font-weight: 900; color: #4a148c; }
+
+        .interp-box { background: #f3e5f5; border-radius: 10px; padding: 22px; margin-bottom: 28px; border-left: 5px solid #4a148c; }
+        .interp-box h4 { font-size: 15px; font-weight: 700; color: #1a0030; margin-bottom: 10px; }
+        .interp-box p  { font-size: 13px; color: #555; line-height: 1.7; margin-bottom: 10px; }
+        .interp-box p:last-child { margin-bottom: 0; }
+
+        .data-note { background: #ede7f6; border-radius: 8px; padding: 18px; margin-bottom: 28px; border-left: 4px solid #78909c; }
+        .data-note h4 { font-size: 13px; color: #37474f; margin-bottom: 8px; }
+        .data-note p  { font-size: 12px; color: #555; line-height: 1.6; }
+        .data-note code { background: #ddd; padding: 1px 5px; border-radius: 3px; font-size: 11px; }
+
+        .footer { background: #1a0030; color: #888; font-size: 11px; padding: 14px 30px; display: flex; justify-content: space-between; }
+        .footer a { color: #ce93d8; text-decoration: none; }
+
+        @media (max-width: 700px) { .score-cards { grid-template-columns: 1fr 1fr; } }
+    </style>
+</head>
+<body>
+<div class="dashboard">
+<div class="header">
+<h1>🫒 West African Shea Supply Chain — e Abstract Coherence Model</h1>
+<div class="header-nav">
+<a href="dashboard.html">π Dashboard</a>
+<a href="phi_dashboard.html">φ Proportional</a>
+<a href="sqrt2_dashboard.html">√2 Structural</a>
+<a href="ln2_dashboard.html">ln(2) Growth</a>
+<a href="/frontend/project/five_model_coherence.html">🕸️ Five-Model</a>
+<a href="/index.html">🏠 Home</a>
+</div>
+</div>
+<div class="model-strip">
+<a class="model-tab" href="dashboard.html">π Operational</a>
+<a class="model-tab" href="phi_dashboard.html">φ Proportional</a>
+<a class="model-tab" href="sqrt2_dashboard.html">√2 Structural</a>
+<a class="model-tab" href="ln2_dashboard.html">ln(2) Growth</a>
+<span class="model-tab active">e Abstract ← current</span>
+</div>
+<div class="scenario-bar">
+<span class="scenario-label">Scenario:</span>
+<div class="scenario-btns" id="scenario-btns-container"></div>
+<span class="scenario-desc" id="scenario-desc"></span>
+</div>
+<div class="score-cards">
+<div class="card red-border">
+<div class="card-label">System e-Coherence Score</div>
+<div class="card-value warn" id="sc-coherence-val">54</div>
+<div class="card-sub" id="sc-coherence-sub">Moderate decoupling — certification gap dominates</div>
+</div>
+<div class="card red-border">
+<div class="card-label">Most Decoupled</div>
+<div class="card-value red" id="sc-worst-val">18</div>
+<div class="card-sub" id="sc-worst-sub">P1 Fair Trade Certification — only 10–30% of certified volume receives farmgate premium</div>
+</div>
+<div class="card warn-border">
+<div class="card-label">Total Quantified Claims</div>
+<div class="card-value warn" id="sc-claims-val">$5.48B</div>
+<div class="card-sub" id="sc-claims-sub">Across carbon credits, certifications, trade finance, and brand/consumer claims</div>
+</div>
+<div class="card green-border">
+<div class="card-label">Rehypothecation Points</div>
+<div class="card-value green" id="sc-rehyp-val">0</div>
+<div class="card-sub" id="sc-rehyp-sub">No financial rehypothecation — shea decoupling is certification gap, not paper leverage</div>
+</div>
+</div>
+<div class="main">
+<div class="section-title">e-Coherence by Phase — Physical–Abstract Coupling</div>
+<div class="section-sub">
+            Each box shows the worst-case coupling score across all claim types at that phase. Shea's e-layer consists of certification claims (carbon credits, Fair Trade, organic), trade finance instruments, and sustainability brand/consumer label claims — not financial leverage.
+        </div>
+<div class="chain-flow">
+<div class="phases-row" id="phases-row"></div>
+<div style="font-size:11px; color:#888; margin-top:16px; padding:0 8px;">
+                ↑ Score = coupling ratio × 100. 100 = abstract claim perfectly backed by verified physical practice. Phases with no abstract claims default to 100. Decoupling here = certification gap, not financial leverage.
+            </div>
+</div>
+<div class="section-title">Coupling Ratio Reference Scale</div>
+<div class="section-sub">
+            Each claim type plotted against its coupling ratio. For shea, "coupling" measures whether the abstract claim (certification, credit, label) reflects verified physical reality on the ground.
+        </div>
+<div class="coupling-scale">
+<h4>Physical–Abstract Coupling by Claim Type (scale 0 → 1.0, target = 1.0)</h4>
+<div id="coupling-scale-rows"></div>
+<div style="display:flex; justify-content:space-between; font-size:10px; color:#aaa; padding:0 4px; margin-top:8px;">
+<span>0.0</span><span>0.1</span><span>0.2</span><span>0.3</span><span>0.4</span><span>0.5</span><span>0.6</span><span>0.7</span><span>0.8</span><span>0.9</span><span>1.0</span>
+</div>
+<div style="margin-top:10px;font-size:11px;color:#888;">
+<strong style="color:#c62828;">Below 0.30:</strong> critical gap — abstract claim largely unverified against physical practice.  | 
+                <strong style="color:#f57f17;">0.30–0.70:</strong> significant gap — partial verification, enforcement varies.  | 
+                <strong style="color:#2e7d32;">Above 0.90:</strong> near-perfect coupling — claim reliably backed by physical audit.
+            </div>
+</div>
+<div class="section-title">Physical Value vs Abstract Claims — Scale Comparison</div>
+<div class="section-sub">
+            Purple bars show physically verified value ($B). Red bars show abstract claim value ($B). The excess of red over purple represents uncertified, unverified, or undelivered abstract claims.
+        </div>
+<div class="pva-section">
+<h4>Physical vs Abstract Value ($B) — Active Claim Types Only</h4>
+<div id="pva-rows"></div>
+<div class="pva-legend">
+<span><span class="pva-legend-dot" style="background:#4a148c;"></span>Physically verified value</span>
+<span><span class="pva-legend-dot" style="background:#c62828;"></span>Abstract / claimed value</span>
+</div>
+</div>
+<div class="section-title">Claim-Level e-Coherence Detail</div>
+<div class="section-sub">
+            Each abstract claim type operating on the shea supply chain. Shea's decoupling mechanism is the certification gap: the abstract certification or brand claim exceeds what is verifiable at the physical level.
+        </div>
+<div class="claims-grid" id="claim-cards"></div>
+<div class="section-title">Coupling What-If Simulator</div>
+<div class="section-sub">
+            Adjust coupling ratios to model scenarios. Key question: <em>What would the system e-coherence score be if blockchain traceability made Fair Trade verification reliable? Or if the EU Green Claims Directive forces brand claim substantiation?</em>
+</div>
+<div class="simulator">
+<div class="sim-grid" id="sim-grid"></div>
+</div>
+<div class="data-note">
+<h4>⚠️ Data Note — Certification Gap vs Financial Decoupling</h4>
+<p>
+                The shea e-model measures certification-based abstraction: claims of sustainability, fairness, and environmental benefit that exceed what is verifiable on the ground. All values marked <code>ESTIMATED</code> are derived from RONGEAD (2019), KPMG sector reviews, Fairtrade International annual reports, Acorn/EP Carbon project documentation, and EU market data. See <code>schema/shea_e_model_claims.csv</code> for full sourcing and notes.
+            </p>
+</div>
+<div class="interp-box">
+<h4>What the e Score Reveals About Shea</h4>
+<p>
+                The shea e-model system score of <strong>54</strong> reflects certification gaps: abstract claims about social and environmental practice that are not fully verified at the farmgate. The worst failure point is Fair Trade certification at Phase 1 (score 18): research consistently shows only 10–30% of Fair Trade certified shea volume actually delivers the farmgate premium to collectors. The brand buyer counts 100% certified volume in their sustainability reports while the collector receives the standard market price.
+            </p>
+<p>
+                The second major decoupling is sustainability brand claims at Phase 5 (score 42) and consumer labels at Phase 6 (score 45). Companies marketing "sustainable shea" cosmetics rarely have traceability beyond their tier-1 aggregator. The $1.9B in "sustainable shea" branded products is only ~$0.8B verifiable back to farm level. The abstract brand claim floats above a smaller physical foundation of verified practice.
+            </p>
+<p>
+<strong>The e model makes the invisible visible:</strong> the EU Green Claims Directive (2024) is directly targeting this gap. When the Directive takes effect, brands making unsubstantiated sustainability claims face legal liability. The "expansion" scenario models this: if blockchain traceability and mandatory claim substantiation bring the sustainability and consumer label coupling to 0.70+, the system e-score rises from 54 to ~77. This represents the single largest improvement lever in the shea chain's abstract layer.
+            </p>
+</div>
+</div>
+<div class="footer">
+<span>e Abstract Coherence Model — Layer 5 of 5 | D=1, C=1 | Continuous compounding limit: e = lim(n→∞)(1+1/n)ⁿ | Shea chain: certification gap ≠ financial leverage</span>
+<a href="/frontend/project/five_model_coherence.html">Five-Model Coherence →</a>
+</div>
+</div>
+<script>
+const CLAIMS_BASE = [
+    { key:"carbon_credits", phase_id:0, phase_name:"Collection",    claim_type:"Carbon Credit (REDD+/VCM)",       phys_val:0.054, abs_val:0.084, base_coupling:0.65, status:"ESTIMATED", rehyp:false, maturity:"Annual vintage",               counterparty:"EP Carbon/Acorn; Gold Standard; Verra VCS; Henkel; L'Oréal; IKEA",                      note:"Credits issued (4.2M tCO2e by Acorn alone) against verified sequestration. Coupling risk: additionality, permanence, leakage. Same credit may be counted in multiple corporate Scope 3 registries." },
+    { key:"fair_trade",     phase_id:1, phase_name:"First Sale",     claim_type:"Fair Trade Certification",         phys_val:0.001, abs_val:0.006, base_coupling:0.18, status:"ESTIMATED", rehyp:false, maturity:"Annual certification",          counterparty:"Fairtrade International; WAGRIB; Savannah Fruits Ghana; AON Ghana; cosmetic/food buyers", note:"PRIMARY DECOUPLING. Only 10–30% of FT-certified shea receives the farmgate premium (RONGEAD 2019, KPMG 2018). Brand buyers report 100% certified volume in CSR disclosures; collectors receive standard price for the remainder." },
+    { key:"organic",        phase_id:3, phase_name:"Processing",     claim_type:"Organic Certification",            phys_val:0.200, abs_val:0.256, base_coupling:0.78, status:"ESTIMATED", rehyp:false, maturity:"Annual certification",          counterparty:"ECOCERT; Soil Association; USDA NOP; Savannah Fruits; KARITE PLUS; Olvea",               note:"Requires physical field inspection. Coupling relatively high but varies across certification bodies. Some double-counting with Fair Trade certification complicates attribution." },
+    { key:"trade_finance",  phase_id:4, phase_name:"Export",         claim_type:"Letters of Credit (Trade Finance)", phys_val:0.400, abs_val:0.400, base_coupling:0.95, status:"ESTIMATED", rehyp:false, maturity:"Per-shipment (30–90 days)",     counterparty:"Standard Chartered; Ecobank; Stanbic IBTC; IFC commodity finance programs",             note:"Backed by bills of lading. High coupling — instrument cancelled by physical delivery. Standard documentary trade finance. Minor slippage from renegotiated terms and partial shipments." },
+    { key:"otc_forward",    phase_id:4, phase_name:"Export",         claim_type:"OTC Forward Contract",             phys_val:0.100, abs_val:0.130, base_coupling:0.75, status:"ESTIMATED", rehyp:false, maturity:"3–12 months",                  counterparty:"AAK; IOI Loders Croklaan; Fuji Oil; Cargill; Wilmar International",                     note:"Bilateral OTC forwards. No central clearing. Coupling below 1.0 due to contract renegotiation when market moves, partial delivery acceptance, and some speculative positions." },
+    { key:"sustainability", phase_id:5, phase_name:"Manufacturing",  claim_type:"Sustainability Brand Claim",        phys_val:0.800, abs_val:1.900, base_coupling:0.42, status:"ESTIMATED", rehyp:false, maturity:"Ongoing marketing claim",       counterparty:"L'Oréal; Unilever; BASF; Evonik; AAK; Johnson & Johnson; Clarins; The Body Shop",       note:"SECOND MAJOR DECOUPLING. ~$1.9B in 'sustainable shea' products marketed; only ~$0.8B verifiable back to farm level. Traceability rarely extends beyond tier-1 aggregator. The claim remains structurally above the verified physical foundation." },
+    { key:"consumer_label", phase_id:6, phase_name:"Retail",         claim_type:"Consumer Label Claim",             phys_val:1.200, abs_val:2.700, base_coupling:0.45, status:"ESTIMATED", rehyp:false, maturity:"Product lifecycle",            counterparty:"LVMH; Estée Lauder; H&M Beauty; Boots; Sephora; Target; Walmart",                      note:"'Natural', 'organic', '100% shea', 'fair trade' labels on retail products. EU Green Claims Directive (2024) expected to force substantiation — significant compliance exposure for brands." },
+];
+
+const PHASES_DEF = [
+    { id:0, name:"Collection",    hasClaims:true  },
+    { id:1, name:"First Sale",    hasClaims:true  },
+    { id:2, name:"Trading",       hasClaims:false },
+    { id:3, name:"Processing",    hasClaims:true  },
+    { id:4, name:"Export",        hasClaims:true  },
+    { id:5, name:"Manufactur.",   hasClaims:true  },
+    { id:6, name:"Retail",        hasClaims:true  },
+];
+
+let E_SCENARIOS = {};
+let currentCoupling = {};
+
+function buildClaims(coupling) {
+    return CLAIMS_BASE.map(c => {
+        const cr = coupling[c.key] !== undefined ? coupling[c.key] : c.base_coupling;
+        return { ...c, coupling: cr, e_score: Math.round(cr * 100) };
+    });
+}
+
+function getPhaseScores(claims) {
+    return PHASES_DEF.map(p => {
+        if (!p.hasClaims) return { ...p, score: 100, claimCount: 0, label: 'No claims' };
+        const pc = claims.filter(c => c.phase_id === p.id);
+        const minScore = Math.min(...pc.map(c => c.e_score));
+        return { ...p, score: minScore, claimCount: pc.length, label: pc.map(c => c.claim_type).join(', ') };
+    });
+}
+
+function getSystemScore(claims) {
+    const phases = [...new Set(claims.map(c => c.phase_id))];
+    const phaseScores = phases.map(pid => Math.min(...claims.filter(c => c.phase_id === pid).map(c => c.e_score)));
+    return Math.round(phaseScores.reduce((a, b) => a + b, 0) / phaseScores.length);
+}
+
+function crClass(cr) {
+    if (cr >= 0.90) return 'cr-excellent';
+    if (cr >= 0.70) return 'cr-good';
+    if (cr >= 0.30) return 'cr-fair';
+    return 'cr-poor';
+}
+
+function scoreColorClass(score) {
+    if (score >= 70) return 'green';
+    if (score >= 30) return 'amber';
+    return 'red';
+}
+
+function phaseBoxClass(score) {
+    if (score >= 95) return 'perfect';
+    if (score >= 80) return 'excellent';
+    if (score >= 60) return 'good';
+    if (score >= 30) return 'fair';
+    return 'poor';
+}
+
+function renderSummaryCards(claims) {
+    const sysScore = getSystemScore(claims);
+    const worstClaim = claims.reduce((w, c) => c.e_score < w.e_score ? c : w, { e_score: 999 });
+    const totalClaims = claims.reduce((s, c) => s + (c.abs_val || 0), 0);
+    const rehypCount = claims.filter(c => c.rehyp).length;
+
+    const el = id => document.getElementById(id);
+    if (!el('sc-coherence-val')) return;
+
+    el('sc-coherence-val').textContent = sysScore;
+    el('sc-coherence-val').className = 'card-value ' + (sysScore >= 70 ? 'green' : sysScore >= 40 ? 'warn' : 'red');
+    el('sc-coherence-sub').textContent = sysScore >= 70 ? 'Strong coupling — certifications reflect verified physical practices'
+                                       : sysScore >= 40 ? 'Moderate decoupling — certification gap present'
+                                       : 'Severe decoupling — abstract claims far exceed verified reality';
+
+    el('sc-worst-val').textContent = worstClaim.e_score < 999 ? worstClaim.e_score : '?';
+    el('sc-worst-sub').textContent = worstClaim.e_score < 999
+        ? `P${worstClaim.phase_id} ${worstClaim.claim_type} — coupling ${worstClaim.coupling.toFixed(3)}` : '';
+
+    el('sc-claims-val').textContent = '$' + totalClaims.toFixed(2) + 'B';
+    el('sc-rehyp-val').textContent = rehypCount;
+    el('sc-rehyp-val').className = 'card-value ' + (rehypCount === 0 ? 'green' : 'warn');
+}
+
+function renderChainFlow(claims) {
+    const phaseScores = getPhaseScores(claims);
+    const row = document.getElementById('phases-row');
+    if (!row) return;
+    row.innerHTML = phaseScores.map((p, i) => {
+        const cls = p.hasClaims ? phaseBoxClass(p.score) : 'noclaims';
+        const claimBadge = p.claimCount > 0 ? `<div class="pclaims">${p.claimCount} claim${p.claimCount > 1 ? 's' : ''}</div>` : '';
+        const connector = i < phaseScores.length - 1
+            ? `<div class="phase-connector"><div class="conn-arrow">→</div></div>` : '';
+        return `
+        <div class="phase-node">
+          <div class="phase-box ${cls}">
+            <div class="pid">P${p.id}</div>
+            <div class="pname">${p.name}</div>
+            <div class="pscore">${p.score}</div>
+            ${claimBadge}
+          </div>
+          <div class="phase-label">${p.hasClaims ? p.label.split(',')[0] : 'No claims'}</div>
+        </div>${connector}`;
+    }).join('');
+}
+
+function renderCouplingScale(claims) {
+    const container = document.getElementById('coupling-scale-rows');
+    if (!container) return;
+    container.innerHTML = claims.map(c => {
+        const crCls = crClass(c.coupling);
+        const fillPct = Math.round(c.coupling * 100);
+        return `
+        <div class="coup-row">
+          <div class="coup-label">${c.claim_type}</div>
+          <div class="coup-phase">P${c.phase_id} ${c.phase_name}</div>
+          <div class="coup-bar-outer"><div class="coup-bar-fill ${crCls}" style="width:${fillPct}%"></div></div>
+          <div class="coup-val">${c.coupling.toFixed(3)}</div>
+          <div class="coup-score" style="color:${c.e_score >= 70 ? '#2e7d32' : c.e_score >= 30 ? '#f57f17' : '#c62828'}">${c.e_score}</div>
+          <span class="coup-badge badge-estimated">ESTIMATED</span>
+        </div>`;
+    }).join('');
+}
+
+function renderPVAChart(claims) {
+    const container = document.getElementById('pva-rows');
+    if (!container) return;
+    const maxVal = Math.max(...claims.flatMap(c => [c.phys_val, c.abs_val]), 1);
+    const scale = 240;
+    container.innerHTML = claims.map(c => {
+        const physW = Math.max(2, Math.round((c.phys_val / maxVal) * scale));
+        const absW  = Math.max(2, Math.round((c.abs_val  / maxVal) * scale));
+        return `
+        <div class="pva-row">
+          <div class="pva-label">P${c.phase_id} ${c.claim_type}</div>
+          <div class="pva-bars">
+            <div class="pva-bar-row"><div class="pva-bar-phys" style="width:${physW}px"></div><div class="pva-val">Verified: $${c.phys_val}B</div></div>
+            <div class="pva-bar-row"><div class="pva-bar-abs"  style="width:${absW}px"></div><div class="pva-val">Claimed: $${c.abs_val}B ${c.abs_val > c.phys_val ? `<strong style="color:#c62828;">(+$${(c.abs_val - c.phys_val).toFixed(3)}B gap)</strong>` : ''}</div></div>
+          </div>
+        </div>`;
+    }).join('');
+}
+
+function renderClaimCards(claims) {
+    const container = document.getElementById('claim-cards');
+    if (!container) return;
+    container.innerHTML = claims.map(c => {
+        const crCls = crClass(c.coupling);
+        const scoreCls = scoreColorClass(c.e_score);
+        const fillColor = crCls === 'cr-excellent' ? '#2e7d32' : crCls === 'cr-good' ? '#7cb342' : crCls === 'cr-fair' ? '#f57f17' : '#c62828';
+        return `
+        <div class="claim-card ${crCls}">
+          <div class="cc-header">
+            <div><div class="cc-title">${c.claim_type}</div><div class="cc-phase">P${c.phase_id} — ${c.phase_name}</div></div>
+            <div class="cc-score ${scoreCls}">${c.e_score}</div>
+          </div>
+          <div class="cc-coupling-bar"><div class="cc-coupling-fill" style="width:${Math.round(c.coupling*100)}%; background:${fillColor}"></div></div>
+          <div class="cc-grid">
+            <div class="cc-stat"><div class="cc-stat-label">Verified Value</div><div class="cc-stat-val">$${c.phys_val}B</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Claimed Value</div><div class="cc-stat-val">$${c.abs_val}B</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Coupling Ratio</div><div class="cc-stat-val">${c.coupling.toFixed(3)}</div></div>
+            <div class="cc-stat"><div class="cc-stat-label">Maturity</div><div class="cc-stat-val" style="font-size:11px">${c.maturity}</div></div>
+          </div>
+          <div class="cc-badges"><span class="coup-badge badge-estimated">ESTIMATED</span></div>
+          <div class="cc-note">${c.note}</div>
+          <div class="cc-counterparty">Counterparties: ${c.counterparty}</div>
+        </div>`;
+    }).join('');
+}
+
+function renderSim(claims) {
+    const container = document.getElementById('sim-grid');
+    if (!container) return;
+    const simPhases = [
+        { label:"Phase 0-1 — Collection & First Sale", keys:['carbon_credits','fair_trade'],        pids:[0,1] },
+        { label:"Phase 3-4 — Processing & Export",     keys:['organic','trade_finance','otc_forward'], pids:[3,4] },
+        { label:"Phase 5-6 — Manufacturing & Retail",  keys:['sustainability','consumer_label'],   pids:[5,6] },
+    ];
+    container.innerHTML = simPhases.map(sp => {
+        const phaseClaims = claims.filter(c => sp.pids.includes(c.phase_id));
+        const phaseScore = Math.min(...phaseClaims.map(c => c.e_score));
+        const scoreColor = phaseScore >= 70 ? '#2e7d32' : phaseScore >= 30 ? '#f57f17' : '#c62828';
+        const sliders = sp.keys.map(key => {
+            const cl = claims.find(c => c.key === key);
+            if (!cl) return '';
+            return `
+            <div class="sim-slider-row">
+              <label>${cl.claim_type}</label>
+              <input type="range" min="0" max="1" step="0.01" value="${cl.coupling.toFixed(2)}"
+                     id="sim-${key}" oninput="onSimChange('${key}', parseFloat(this.value))">
+              <div class="sim-val" id="sim-val-${key}">${Math.round(cl.coupling * 100)}</div>
+            </div>`;
+        }).join('');
+        return `
+        <div class="sim-card">
+          <h4>${sp.label}</h4>
+          <div class="sim-phase-score" style="color:${scoreColor}" id="sim-phase-score-${sp.pids[0]}">${phaseScore}</div>
+          ${sliders}
+          <div class="sim-result">Phase e-Score: <span class="sim-score" id="sim-phase-result-${sp.pids[0]}">${phaseScore}</span></div>
+        </div>`;
+    }).join('');
+}
+
+function renderAll(claims) {
+    renderSummaryCards(claims);
+    renderChainFlow(claims);
+    renderCouplingScale(claims);
+    renderPVAChart(claims);
+    renderClaimCards(claims);
+    renderSim(claims);
+}
+
+let liveCoupling = {};
+
+function onSimChange(key, val) {
+    liveCoupling[key] = val;
+    document.getElementById('sim-val-' + key).textContent = Math.round(val * 100);
+    const updatedClaims = buildClaims(liveCoupling);
+    renderSummaryCards(updatedClaims);
+    renderChainFlow(updatedClaims);
+    renderCouplingScale(updatedClaims);
+    const claim = CLAIMS_BASE.find(c => c.key === key);
+    if (claim) {
+        const phaseClaims = updatedClaims.filter(c => c.phase_id === claim.phase_id);
+        const phaseScore = Math.min(...phaseClaims.map(c => c.e_score));
+        const scoreColor = phaseScore >= 70 ? '#2e7d32' : phaseScore >= 30 ? '#f57f17' : '#c62828';
+        const simPhaseKey = [0,1].includes(claim.phase_id) ? 0 : [3,4].includes(claim.phase_id) ? 3 : 5;
+        const el1 = document.getElementById('sim-phase-score-' + simPhaseKey);
+        const el2 = document.getElementById('sim-phase-result-' + simPhaseKey);
+        if (el1) { el1.textContent = phaseScore; el1.style.color = scoreColor; }
+        if (el2) { el2.textContent = phaseScore; el2.style.color = scoreColor; }
+    }
+}
+
+function buildScenarioButtons(scenarios) {
+    const btnCls = key => {
+        if (key === 'current' || key === 'optimum') return '';
+        if (key === 'expansion') return 'expand';
+        if (key === 'regulatory') return 'regul';
+        if (key === 'serious_shea') return 'sshea';
+        return 'shock';
+    };
+    const container = document.getElementById('scenario-btns-container');
+    container.innerHTML = Object.entries(scenarios).map(([key, scen]) =>
+        `<button class="scen-btn ${btnCls(key)}" data-key="${key}" onclick="setScenario('${key}')">${scen.label}</button>`
+    ).join('');
+}
+
+function setScenario(key) {
+    const scen = E_SCENARIOS[key];
+    if (!scen) return;
+    currentCoupling = { ...scen.coupling };
+    liveCoupling    = { ...scen.coupling };
+    document.querySelectorAll('.scen-btn').forEach(b => b.classList.toggle('active', b.dataset.key === key));
+    document.getElementById('scenario-desc').textContent = scen.description;
+    const claims = buildClaims(currentCoupling);
+    renderAll(claims);
+    Object.entries(currentCoupling).forEach(([k, v]) => {
+        const el = document.getElementById('sim-' + k);
+        const vEl = document.getElementById('sim-val-' + k);
+        if (el) el.value = v.toFixed(2);
+        if (vEl) vEl.textContent = Math.round(v * 100);
+    });
+}
+
+fetch('scenarios.json')
+    .then(r => r.json())
+    .then(data => {
+        E_SCENARIOS = data.e.scenarios;
+        buildScenarioButtons(E_SCENARIOS);
+        setScenario('current');
+    })
+    .catch(err => {
+        console.error('Failed to load scenarios.json:', err);
+        E_SCENARIOS = { current: { label:'Current State', description:'Base data', coupling:{
+            carbon_credits:0.65, fair_trade:0.18, organic:0.78,
+            trade_finance:0.95, otc_forward:0.75, sustainability:0.42, consumer_label:0.45
+        }}};
+        buildScenarioButtons(E_SCENARIOS);
+        setScenario('current');
+    });
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>

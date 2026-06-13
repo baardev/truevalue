@@ -3,8 +3,8 @@ set -euo pipefail
 
 cd /home/jw/src/tv
 
-# Bind to localhost so public traffic must pass through Nginx.
-nohup python3 -m http.server 8000 --bind 127.0.0.1 > /tmp/tv-http.log 2>&1 &
+# serve.py enforces HTTP Basic Auth on protected project paths (deploy/auth.env).
+./scripts/restart_server
 
 if [[ -x ./scripts/start_mkdocs_from_site.sh ]]; then
   nohup ./scripts/start_mkdocs_from_site.sh > /tmp/tv-mkdocs.log 2>&1 &

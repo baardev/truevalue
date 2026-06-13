@@ -100,7 +100,7 @@ need a conformance review to confirm or add the new fields.
 ## 5. Infrastructure and tooling
 
 - [ ] Verify `deploy/tv-web.service` is running and serving correctly in production
-- [ ] Confirm Nginx TLS + password gate (AUBEB) is configured and documented
+- [x] HTTP Basic Auth for protected projects (AUBEB, Senegal Agroforestry) via `scripts/serve.py` and `deploy/protected-paths.json`
 - [ ] Add `water_jackson_ms` to `src/api/generate_frontend_data.py` once schema exists
 - [ ] Health check: run `python3 scripts/health_check.py` and fix any reported issues
 

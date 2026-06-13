@@ -58,9 +58,21 @@ Runs **two pdflatex passes** on a paper directory laid out as `<paper-dir>/<base
 
 ## `serve.py`
 
-**Static file server** for the repo root with optional HTTP redirect to HTTPS, auto-generated self-signed cert under `.certs`, or HTTP-only / HTTPS-only modes.
+**Static file server** for the repo root with optional HTTP redirect to HTTPS, auto-generated self-signed cert under `.certs`, or HTTP-only / HTTPS-only modes. Enforces HTTP Basic Auth on URL prefixes listed in `deploy/protected-paths.json` when `TV_AUTH_USER` and `TV_AUTH_PASSWORD` are set in `deploy/auth.env` (or `.env`).
 
 **Depends on:** Python 3 (stdlib).
+
+## `restart_server`
+
+**Restart helper** for the static site. If the `tv-web` systemd unit is active, runs `systemctl restart tv-web`. Otherwise stops any running `serve.py` or legacy `http.server` on port 8000 and starts `serve.py --http-only`. Use after editing `deploy/auth.env` or `deploy/protected-paths.json`.
+
+**Depends on:** `bash`, `python3`, optional `systemctl` / `sudo`.
+
+## `START_SERVER`
+
+Thin wrapper that runs `restart_server` from the repo root (also starts MkDocs helper when present).
+
+**Depends on:** `bash`, `restart_server`.
 
 ## `tag_docnav_from_frontmatter.sh`
 

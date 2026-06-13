@@ -22,7 +22,7 @@ key_claims:
 
 **Template reference:** This instance follows the [Abstract Value Chain Phase Template](ABSTRACT_VALUE_CHAIN_PHASE_TEMPLATE.md). Shea value phases map to shea supply phases: 0 Collection, 1 First sale, 2 Trading, 3 Processing, 4 Export, 5 Manufacturing, 6 Retail. Certification (abstract 5) and Circular (8) have no dedicated shea value phase here.
 
-Data from: `frontend/project/shea/data/shea_phase_metrics.csv`, `frontend/project/shea/data/Clarity_Cleo_Shea_Value_Chain_Outline.md`, `frontend/project/shea/data/shea_fund_and_project_context.csv`. Value metrics (income, prices, export value, value to women) filled where present; **MISSING** where absent.
+Data from: `frontend/project/west_african_shea/data/shea_phase_metrics.csv`, `frontend/project/west_african_shea/data/Clarity_Cleo_Shea_Value_Chain_Outline.md`, `frontend/project/west_african_shea/data/shea_fund_and_project_context.csv`. Value metrics (income, prices, export value, value to women) filled where present; **MISSING** where absent.
 
 ---
 
@@ -150,4 +150,4 @@ Data from: `frontend/project/shea/data/shea_phase_metrics.csv`, `frontend/projec
 - **N (Negotiation):** Income and prices by phase (sellers 150, traders 250, exporters 250–800 US$/MT; export value 90–200M US$/annum; retail 30 US$/30g; value to women 4,000 and 47,500 US$/MT) **POPULATED**. Revenue_usd, margin_gross_pct, and transport/insurance costs **MISSING** or PARTIAL.
 
 *Supply chain instance (physical):* Shea supply chain instance (not yet in this repo).  
-*Data:* `frontend/project/shea/data/shea_phase_metrics.csv`, `shea_fund_and_project_context.csv`, `Clarity_Cleo_Shea_Value_Chain_Outline.md` (same directory).
+*Data:* `frontend/project/west_african_shea/data/shea_phase_metrics.csv`, `shea_fund_and_project_context.csv`, `Clarity_Cleo_Shea_Value_Chain_Outline.md` (same directory).

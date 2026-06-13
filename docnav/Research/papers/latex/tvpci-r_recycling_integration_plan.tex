@@ -1,0 +1,270 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  11pt,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{5}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\newenvironment{Shaded}{}{}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.50,0.00}{\textbf{#1}}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{#1}}}}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\section{TVPCI-R Recycling Chain Integration
+(Gold)}\label{tvpci-r-recycling-chain-integration-gold}
+
+\subsection{Architecture overview}\label{architecture-overview}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{flowchart TD}
+\NormalTok{    subgraph schemas [New CSV Schemas]}
+\NormalTok{        A[gold\_recycling\_phases.csv\textbackslash{}nwaste streams + omega\_p weights]}
+\NormalTok{        B[gold\_recycling\_indicators.csv\textbackslash{}nN/D/C indicators per phase]}
+\NormalTok{    end}
+\NormalTok{    subgraph generated [Generated JSON]}
+\NormalTok{        C[gold\_recycling\_ui.json\textbackslash{}nR\_p scores, TVPCI\_R, B\_chain]}
+\NormalTok{    end}
+\NormalTok{    subgraph pages [HTML Pages]}
+\NormalTok{        D[recycling\_analysis.html\textbackslash{}nnew page]}
+\NormalTok{        E[dashboard.html\textbackslash{}nupdate: add B\_chain cards]}
+\NormalTok{        F[supply\_chain/index.html\textbackslash{}nupdate: add nav card]}
+\NormalTok{    end}
+\NormalTok{    subgraph paper [Paper]}
+\NormalTok{        G[2\_supply{-}chain{-}transparency{-}tvpci.md\textbackslash{}nupdate: add B\_chain formula to sec 8.7]}
+\NormalTok{    end}
+\NormalTok{    A {-}{-}\textgreater{} C}
+\NormalTok{    B {-}{-}\textgreater{} C}
+\NormalTok{    C {-}{-}\textgreater{} D}
+\NormalTok{    C {-}{-}\textgreater{} E}
+\NormalTok{    D {-}{-}\textgreater{} F}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 1: New CSV schemas (provisional
+data)}\label{step-1-new-csv-schemas-provisional-data}
+
+\textbf{\href{frontend/project/gold/data/schema/gold_recycling_phases.csv}{\texttt{frontend/project/gold/data/schema/gold\_recycling\_phases.csv}}}
+(new file)
+
+Columns: \texttt{phase\_id}, \texttt{phase\_name},
+\texttt{primary\_waste\_streams}, \texttt{omega\_p},
+\texttt{omega\_source}, \texttt{data\_status}
+
+Eight rows (phases 0-7). Provisional \texttt{omega\_p} derived from: -
+Foran 2005: GHG split (electricity 44\%, direct ops 13\%, land prep 6\%,
+diesel 4\%) concentrates mass at phases 1-2 - Newmont 2024: cyanide
+spills at phase 2, land reclaimed at phase 1, water recycled at phase 2
+- Schematic distribution: phase 0=0.20, phase 1=0.25, phase 2=0.25,
+phase 3=0.10, phase 4=0.08, phase 5=0.05, phase 6=0.05, phase 7=0.02 -
+All rows \texttt{data\_status\ =\ PROVISIONAL}
+
+\textbf{\href{frontend/project/gold/data/schema/gold_recycling_indicators.csv}{\texttt{frontend/project/gold/data/schema/gold\_recycling\_indicators.csv}}}
+(new file)
+
+Columns: \texttt{phase\_id}, \texttt{indicator\_id},
+\texttt{indicator\_label}, \texttt{role}, \texttt{scoring\_rule},
+\texttt{max\_points}, \texttt{waste\_stream}, \texttt{source\_hint}
+
+Covers all eight phases; 4-7 indicators per phase organized by N/D/C
+role. Derived from Section 4.3 of the updated TVPCI paper.
+
+\subsection{Step 2: Generated JSON}\label{step-2-generated-json}
+
+\textbf{\href{frontend/project/gold/data/processed/gold_recycling_ui.json}{\texttt{frontend/project/gold/data/processed/gold\_recycling\_ui.json}}}
+(new file, hand-crafted initially)
+
+Structure:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{\{}
+  \DataTypeTok{"\_meta"}\FunctionTok{:} \FunctionTok{\{} \DataTypeTok{"provisional"}\FunctionTok{:} \KeywordTok{true}\FunctionTok{,} \DataTypeTok{"sources"}\FunctionTok{:} \OtherTok{[}\StringTok{"Foran 2005"}\OtherTok{,} \StringTok{"Newmont 2024 SR"}\OtherTok{,} \StringTok{"WGC"}\OtherTok{]} \FunctionTok{\},}
+  \DataTypeTok{"omega\_weights"}\FunctionTok{:} \FunctionTok{\{} \DataTypeTok{"0"}\FunctionTok{:} \DecValTok{0}\ErrorTok{.}\DecValTok{20}\FunctionTok{,} \DataTypeTok{"1"}\FunctionTok{:} \DecValTok{0}\ErrorTok{.}\DecValTok{25}\FunctionTok{,} \DataTypeTok{"2"}\FunctionTok{:} \DecValTok{0}\ErrorTok{.}\DecValTok{25}\FunctionTok{,} \ErrorTok{...} \FunctionTok{\},}
+  \DataTypeTok{"phases"}\FunctionTok{:} \FunctionTok{\{}
+    \DataTypeTok{"synthetic"}\FunctionTok{:} \FunctionTok{\{}
+      \DataTypeTok{"0"}\FunctionTok{:} \FunctionTok{\{} \DataTypeTok{"N\_r"}\FunctionTok{:} \DecValTok{22}\FunctionTok{,} \DataTypeTok{"D\_r"}\FunctionTok{:} \DecValTok{18}\FunctionTok{,} \DataTypeTok{"C\_r"}\FunctionTok{:} \DecValTok{12}\FunctionTok{,} \DataTypeTok{"B\_r"}\FunctionTok{:} \FloatTok{74.1}\FunctionTok{,} \DataTypeTok{"delta\_r"}\FunctionTok{:} \DecValTok{6} \FunctionTok{\},}
+      \ErrorTok{...}
+    \FunctionTok{\}}
+  \FunctionTok{\},}
+  \DataTypeTok{"chain"}\FunctionTok{:} \FunctionTok{\{}
+    \DataTypeTok{"tvpci"}\FunctionTok{:} \FloatTok{82.5}\FunctionTok{,}
+    \DataTypeTok{"tvpci\_r"}\FunctionTok{:} \FloatTok{41.2}\FunctionTok{,}
+    \DataTypeTok{"b\_chain"}\FunctionTok{:} \FloatTok{67.3}\FunctionTok{,}
+    \DataTypeTok{"delta\_chain"}\FunctionTok{:} \FloatTok{41.3}\FunctionTok{,}
+    \DataTypeTok{"note"}\FunctionTok{:} \StringTok{"Provisional — omega\_p from Foran 2005 + Newmont 2024"}
+  \FunctionTok{\}}
+\FunctionTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\subsection{Step 3: New page ---
+recycling\_analysis.html}\label{step-3-new-page-recycling_analysis.html}
+
+\textbf{\href{frontend/project/gold/supply_chain/recycling_analysis.html}{\texttt{frontend/project/gold/supply\_chain/recycling\_analysis.html}}}
+(new file)
+
+Sections in order:
+
+\textbf{A. Header + concept panel} - Explains TVPCI\_R as the return leg
+to the parent holon - Shows the role assignment: TVPCI=\(D\),
+TVPCI\_R=\(C\), B\_chain=emergent \(N\) - Provisional data banner
+
+\textbf{B. Chain-level summary panel (three KPI cards)} - TVPCI
+(primary, from existing \texttt{gold\_supply\_chain\_ui.json}) -
+TVPCI\_R (recycling aggregate, from \texttt{gold\_recycling\_ui.json}) -
+B\_chain (computed inline:
+\texttt{100\ *\ exp(-2\ *\ \textbar{}TVPCI\ -\ TVPCI\_R\textbar{}\ /\ max(TVPCI,\ TVPCI\_R))})
+- Δ\_chain signed bar (positive = over-defining, red; near-zero =
+balanced, green)
+
+\textbf{C. Chain-level spider chart (SVG, pure JS)} - 8-spoke radar, one
+spoke per phase, spoke length = R\_p score × ω\_p weight - Overlay:
+primary TVPCI phase scores in a different color for comparison - Legend:
+TVPCI (custody) vs TVPCI\_R (ecological)
+
+\textbf{D. Per-phase recycling panels (8 collapsible cards)} Each card
+shows: - Waste streams listed for that phase - Small 3-spoke SVG radar:
+N\^{}R, D\^{}R, C\^{}R - B\^{}R\_p score and Δ\^{}R\_p = D\^{}R\_p -
+C\^{}R\_p signed diagnostic - ω\_p weight displayed
+
+\textbf{E. Interactive questionnaire worksheet} - Collapsible accordion
+per phase - For each indicator: label, role badge (N/D/C), input (0 to
+max\_points), running subtotal - Live-updates R\_p scores and re-draws
+all charts as user adjusts inputs - ``Reset to provisional'' button
+restores schematic values - Export section: shows computed TVPCI\_R and
+B\_chain from worksheet entries
+
+SVG radar implementation: pure JS canvas-free, drawn as
+\texttt{\textless{}svg\textgreater{}} with
+\texttt{\textless{}polygon\textgreater{}} elements using trigonometric
+point calculation. No external library needed, consistent with rest of
+codebase.
+
+\subsection{Step 4: Update existing
+files}\label{step-4-update-existing-files}
+
+\textbf{\href{frontend/project/gold/supply_chain/dashboard.html}{\texttt{frontend/project/gold/supply\_chain/dashboard.html}}}
+- Add two new score cards to the existing 4-card grid: TVPCI\_R and
+B\_chain - Load \texttt{gold\_recycling\_ui.json} in the \texttt{init()}
+fetch alongside \texttt{DATA\_URL} and \texttt{scenarios.json} - Update
+the existing Phase 8 recycling box to show R\_p breakdown instead of
+just score/N
+
+\textbf{\href{frontend/project/gold/supply_chain/index.html}{\texttt{frontend/project/gold/supply\_chain/index.html}}}
+- Add a navigation card for \texttt{recycling\_analysis.html} alongside
+existing dashboard/analysis cards
+
+\textbf{\href{frontend/project/gold/supply_chain/scenarios.json}{\texttt{frontend/project/gold/supply\_chain/scenarios.json}}}
+- Add \texttt{tvpci\_r} and \texttt{b\_chain} fields to each scenario's
+\texttt{cards} block
+
+\subsection{Step 5: Paper update}\label{step-5-paper-update}
+
+\textbf{\href{docnav/Research/papers/2_supply-chain-transparency-tvpci.md}{\texttt{docnav/Research/papers/2\_supply-chain-transparency-tvpci.md}}}
+- Add B\_chain formula to Section 8.7 with confirmed role assignment
+(TVPCI=\(D\), TVPCI\_R=\(C\), B\_chain=\(N\)) - Add the parent-holon /
+entropy-return justification
+
+\subsection{Key constraints}\label{key-constraints}
+
+\begin{itemize}
+\tightlist
+\item
+  All recycling data marked \texttt{PROVISIONAL} with source citations
+  (Foran 2005, Newmont 2024)
+\item
+  No external chart libraries introduced; SVG drawn inline via JS
+  trigonometry
+\item
+  \texttt{omega\_p} weights sum to exactly 1.0
+\item
+  Δ\_chain and B\_chain computed client-side from loaded JSON, not
+  hardcoded
+\item
+  Phase numbering follows existing repo convention (0=Geological
+  Prospecting through 7=Exchange Registration)
+\end{itemize}
+
+\end{document}
