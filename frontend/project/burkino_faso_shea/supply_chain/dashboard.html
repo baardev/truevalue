@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard — Burkina Faso Shea Supply Chain</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --amber: #d97706; --amber-dark: #b45309; --amber-light: #fbbf24;
+    --ss-green: #16a34a; --bau-red: #dc2626;
+    --bg: #0f0a06; --card: #1c1209; --card2: #251a0d;
+    --border: #3d2a14; --text: #f0e0c4; --muted: #8a6a40;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  .topbar { background: #0a0704; border-bottom: 1px solid var(--border); padding: 0.7rem 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; }
+  .topbar a { color: var(--amber-light); text-decoration: none; }
+  .topbar .sep { opacity: 0.4; }
+  .topbar .title { color: var(--text); font-weight: 600; }
+
+  .header {
+    background: linear-gradient(90deg, var(--card) 0%, #2a1500 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 2rem;
+    display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
+  }
+  .header h1 { font-size: 1.3rem; color: var(--amber-light); }
+  .header p { font-size: 0.82rem; color: var(--muted); margin-top: 0.2rem; }
+  .header-badges { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+  .hbadge { border-radius: 4px; padding: 0.2rem 0.6rem; font-size: 0.72rem; font-weight: 700; }
+  .hbadge.bau { background: var(--bau-red); color: #fff; }
+  .hbadge.ss { background: var(--ss-green); color: #fff; }
+
+  .nav-pills { display: flex; gap: 0.4rem; flex-wrap: wrap; padding: 0.7rem 1.5rem; background: #12090300; border-bottom: 1px solid var(--border); }
+  .nav-pill { background: var(--card); border: 1px solid var(--border); border-radius: 20px; padding: 0.2rem 0.75rem; font-size: 0.75rem; text-decoration: none; color: var(--muted); font-weight: 600; }
+  .nav-pill:hover, .nav-pill.active { background: var(--amber-dark); color: #fff; border-color: var(--amber-dark); }
+
+  /* MAIN SCORECARD */
+  .scorecard-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; padding: 1.5rem 2rem; }
+  .sc { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+  .sc .label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.5rem; }
+  .sc .val { font-size: 1.5rem; font-weight: 700; }
+  .sc .val.bau { color: var(--bau-red); }
+  .sc .val.ss { color: var(--ss-green); }
+  .sc .sub { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* CHARTS GRID */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; padding: 0 2rem 1.5rem; }
+  .charts-grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; padding: 0 2rem 1.5rem; }
+  @media (max-width: 800px) { .charts-grid, .charts-grid-3 { grid-template-columns: 1fr; } }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; }
+  .chart-card h4 { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: 0.8rem; }
+  .chart-wrap { position: relative; height: 260px; }
+  .chart-wrap.tall { height: 320px; }
+  .chart-wrap.short { height: 200px; }
+
+  .bottleneck-alert {
+    margin: 0 2rem 1rem;
+    background: linear-gradient(90deg, #300a0a 0%, #1c1209 100%);
+    border: 1px solid var(--bau-red);
+    border-radius: 8px;
+    padding: 1rem 1.2rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .bottleneck-alert .icon { font-size: 1.4rem; }
+  .bottleneck-alert h4 { font-size: 0.82rem; font-weight: 700; color: #f87171; margin-bottom: 0.3rem; }
+  .bottleneck-alert p { font-size: 0.8rem; color: var(--muted); line-height: 1.5; }
+
+  .section-label { padding: 0.5rem 2rem 0; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--amber); }
+
+  footer { border-top: 1px solid var(--border); padding: 1rem 2rem; font-size: 0.75rem; color: var(--muted); display: flex; gap: 1.5rem; flex-wrap: wrap; }
+  footer a { color: var(--amber-light); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html">← BF Shea Hub</a>
+  <span class="sep">|</span>
+  <span class="title">Supply Chain Dashboard</span>
+</div>
+
+<div class="header">
+  <div>
+    <h1>Burkina Faso Shea — Supply Chain Dashboard</h1>
+    <p>N-D-C coherence analysis across 8 phases. BAU vs. Serious Shea scenario comparison.</p>
+  </div>
+  <div class="header-badges">
+    <span class="hbadge bau">BAU Traditional</span>
+    <span class="hbadge ss">Serious Shea</span>
+  </div>
+</div>
+
+<div class="nav-pills">
+  <a href="index.html" class="nav-pill">Phase Map</a>
+  <a href="dashboard.html" class="nav-pill active">Dashboard</a>
+  <a href="project_context.html" class="nav-pill">Project Context</a>
+  <a href="recycling_analysis.html" class="nav-pill">TVPCI-R Recycling</a>
+</div>
+
+<!-- SCORECARDS -->
+<div class="scorecard-row" id="scorecard-row">
+  <div class="sc">
+    <div class="label">System TVPCI (BAU)</div>
+    <div class="val bau" id="sc-bau-tvpci">–</div>
+    <div class="sub">Mean phase balance</div>
+  </div>
+  <div class="sc">
+    <div class="label">System TVPCI (SS)</div>
+    <div class="val ss" id="sc-ss-tvpci">–</div>
+    <div class="sub">Mean phase balance</div>
+  </div>
+  <div class="sc">
+    <div class="label">B_chain (BAU)</div>
+    <div class="val bau" id="sc-bau-bchain">–</div>
+    <div class="sub">Chain balance index</div>
+  </div>
+  <div class="sc">
+    <div class="label">B_chain (SS)</div>
+    <div class="val ss" id="sc-ss-bchain">–</div>
+    <div class="sub">Chain balance index</div>
+  </div>
+  <div class="sc">
+    <div class="label">GHG per kg Butter</div>
+    <div class="val bau">25 kgCO2e</div>
+    <div class="sub">BAU; SS ≈1.2 kgCO2e (-95%)</div>
+  </div>
+  <div class="sc">
+    <div class="label">Women's Income</div>
+    <div class="val ss">+2.6×</div>
+    <div class="sub">USD 175 → USD 450+/season</div>
+  </div>
+</div>
+
+<div class="bottleneck-alert">
+  <div class="icon">⚠️</div>
+  <div>
+    <h4>BAU Bottleneck Alert: Phases 5-6 (Packaging, Certification)</h4>
+    <p>Under BAU, shea butter never reaches international export channels. Phases 5-6 have near-zero N coherence (0.48 and 0.50) reflecting complete absence of export preparation and certification. This is the structural break point where almost all value leaks out of Burkina Faso. The Serious Shea model directly targets this gap with export infrastructure, international buyer contracts, and REDD+/organic certification pathways.</p>
+  </div>
+</div>
+
+<div class="section-label">N-D-C COHERENCE BY PHASE</div>
+<div class="charts-grid">
+  <div class="chart-card">
+    <h4>Balance Score by Phase — BAU vs. Serious Shea</h4>
+    <div class="chart-wrap"><canvas id="balance-bar"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h4>N Coherence by Phase</h4>
+    <div class="chart-wrap"><canvas id="n-line"></canvas></div>
+  </div>
+</div>
+
+<div class="section-label">D-C DIVERGENCE ANALYSIS</div>
+<div class="charts-grid">
+  <div class="chart-card">
+    <h4>D vs C — BAU (Traditional)</h4>
+    <div class="chart-wrap"><canvas id="dc-bau"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h4>D vs C — Serious Shea</h4>
+    <div class="chart-wrap"><canvas id="dc-ss"></canvas></div>
+  </div>
+</div>
+
+<div class="section-label">SYSTEM COHERENCE</div>
+<div class="charts-grid">
+  <div class="chart-card">
+    <h4>Five-Model Coherence Pentagon</h4>
+    <div class="chart-wrap"><canvas id="fmc"></canvas></div>
+  </div>
+  <div class="chart-card">
+    <h4>GHG Intensity vs. N Coherence (Phase Scatter)</h4>
+    <div class="chart-wrap"><canvas id="ghg-line"></canvas></div>
+  </div>
+</div>
+
+<footer>
+  <a href="../index.html">← Hub</a>
+  <a href="index.html">Phase Map</a>
+  <a href="project_context.html">Context</a>
+  <span>Data: TARA AfDB Tech Report 2020 · Serious Shea Business Plan 2022 · Women's Ecodata Survey 2019</span>
+</footer>
+
+<script>
+const DATA_URL = '../data/processed/burkino_faso_shea_supply_chain_ui.json';
+const PHASE_LABELS = ['P0\nParkland','P1\nCollection','P2\nQC/Store','P3\nRoasting','P4\nKneading','P5\nPackaging','P6\nCertif.','P7\nMarket'];
+const AMBER = '#d97706';
+const GREEN = '#16a34a';
+const RED = '#dc2626';
+
+fetch(DATA_URL).then(r => r.json()).then(data => {
+  const bau = data.ndc_data.bau;
+  const ss = data.ndc_data.serious_shea;
+  const bp = bau.phases;
+  const sp = ss.phases;
+
+  document.getElementById('sc-bau-tvpci').textContent = bau.system_tvpci.toFixed(2);
+  document.getElementById('sc-ss-tvpci').textContent = ss.system_tvpci.toFixed(2);
+  document.getElementById('sc-bau-bchain').textContent = bau.B_chain.toFixed(2);
+  document.getElementById('sc-ss-bchain').textContent = ss.B_chain.toFixed(2);
+
+  const shortLabels = bp.map((_, i) => `P${i}`);
+  const defOpts = { responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { font: { size: 11 }, color: '#c0a070' } } } };
+
+  // Balance bar
+  new Chart(document.getElementById('balance-bar'), {
+    type: 'bar',
+    data: {
+      labels: shortLabels,
+      datasets: [
+        { label: 'BAU Balance', data: bp.map(p => p.balance), backgroundColor: RED + 'cc' },
+        { label: 'SS Balance', data: sp.map(p => p.balance), backgroundColor: GREEN + 'cc' }
+      ]
+    },
+    options: { ...defOpts, scales: {
+      y: { min: 0, max: 1, ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } },
+      x: { ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } }
+    }}
+  });
+
+  // N line
+  new Chart(document.getElementById('n-line'), {
+    type: 'line',
+    data: {
+      labels: shortLabels,
+      datasets: [
+        { label: 'BAU N', data: bp.map(p => p.N), borderColor: RED, backgroundColor: RED + '22', fill: true, tension: 0.4 },
+        { label: 'SS N', data: sp.map(p => p.N), borderColor: GREEN, backgroundColor: GREEN + '22', fill: true, tension: 0.4 }
+      ]
+    },
+    options: { ...defOpts, scales: {
+      y: { min: 0, max: 10, ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } },
+      x: { ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } }
+    }}
+  });
+
+  // D-C BAU
+  new Chart(document.getElementById('dc-bau'), {
+    type: 'bar',
+    data: {
+      labels: shortLabels,
+      datasets: [
+        { label: 'D (Constraint)', data: bp.map(p => p.D), backgroundColor: RED + 'bb' },
+        { label: 'C (Output)', data: bp.map(p => p.C), backgroundColor: AMBER + 'bb' }
+      ]
+    },
+    options: { ...defOpts, scales: {
+      y: { min: 0, max: 10, ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } },
+      x: { ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } }
+    }}
+  });
+
+  // D-C SS
+  new Chart(document.getElementById('dc-ss'), {
+    type: 'bar',
+    data: {
+      labels: shortLabels,
+      datasets: [
+        { label: 'D (Constraint)', data: sp.map(p => p.D), backgroundColor: AMBER + 'bb' },
+        { label: 'C (Output)', data: sp.map(p => p.C), backgroundColor: GREEN + 'bb' }
+      ]
+    },
+    options: { ...defOpts, scales: {
+      y: { min: 0, max: 10, ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } },
+      x: { ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } }
+    }}
+  });
+
+  // FMC radar
+  const fmc = data.five_model_coherence;
+  new Chart(document.getElementById('fmc'), {
+    type: 'radar',
+    data: {
+      labels: ['Supply Chain', 'Value Chain', 'Environmental', 'Social', 'Financial'],
+      datasets: [
+        { label: 'BAU', data: Object.values(fmc.bau), borderColor: RED, backgroundColor: RED + '33', pointBackgroundColor: RED },
+        { label: 'Serious Shea', data: Object.values(fmc.serious_shea), borderColor: GREEN, backgroundColor: GREEN + '33', pointBackgroundColor: GREEN }
+      ]
+    },
+    options: { ...defOpts, scales: { r: {
+      min: 0, max: 1, ticks: { stepSize: 0.25, color: '#8a6a40', font: { size: 9 }, backdropColor: 'transparent' },
+      pointLabels: { color: '#c0a070', font: { size: 10 } },
+      grid: { color: '#3d2a14' }, angleLines: { color: '#3d2a14' }
+    }}}
+  });
+
+  // GHG vs N scatter (proxy line)
+  const ghg_bau = [5, 20, 18, 25, 23, 5, 1, 2];
+  const ghg_ss  = [0.5, 1.0, 0.8, 1.2, 1.5, 0.5, 0.3, 0.2];
+  new Chart(document.getElementById('ghg-line'), {
+    type: 'line',
+    data: {
+      labels: shortLabels,
+      datasets: [
+        { label: 'BAU kgCO2e/unit (proxy)', data: ghg_bau, borderColor: RED, backgroundColor: RED + '22', fill: true, tension: 0.4, yAxisID: 'y' },
+        { label: 'SS kgCO2e/unit (proxy)', data: ghg_ss, borderColor: GREEN, backgroundColor: GREEN + '22', fill: true, tension: 0.4, yAxisID: 'y' }
+      ]
+    },
+    options: {
+      ...defOpts,
+      scales: {
+        y: { ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' }, title: { display: true, text: 'kgCO2e/unit (proxy)', color: '#8a6a40', font: { size: 10 } } },
+        x: { ticks: { color: '#8a6a40', font: { size: 10 } }, grid: { color: '#2a1a08' } }
+      }
+    }
+  });
+});
+</script>
+</body>
+</html>

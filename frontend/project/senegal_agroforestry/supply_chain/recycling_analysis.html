@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Senegal Agroforestry – Recycling Analysis (TVPCI-R)</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #f5f0ec;
+    min-height: 100vh;
+    padding: 24px;
+    color: #212529;
+    color-scheme: light;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .topnav { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+  .topnav a { color: #5d4037; text-decoration: none; font-size: 13px; font-weight: 600; }
+  .topnav a:hover { text-decoration: underline; }
+  .topnav span { color: #adb5bd; }
+
+  .hero {
+    background: linear-gradient(135deg, #4e342e 0%, #6d4c41 100%);
+    color: #fff;
+    border-radius: 14px;
+    padding: 32px 40px;
+    margin-bottom: 22px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.2);
+  }
+  .kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; opacity: 0.8; margin-bottom: 10px; }
+  h1 { font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; opacity: 0.85; line-height: 1.6; max-width: 700px; }
+
+  /* Concept panel */
+  .concept-panel {
+    display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 22px;
+  }
+  .concept-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 20px;
+    border-top: 4px solid #ccc;
+  }
+  .cc-d { border-top-color: #2e7d32; }
+  .cc-c { border-top-color: #795548; }
+  .cc-n { border-top-color: #1565c0; }
+  .concept-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6c757d; margin-bottom: 4px; }
+  .concept-title { font-size: 16px; font-weight: 700; color: #212529; margin-bottom: 6px; }
+  .concept-score { font-size: 28px; font-weight: 200; margin-bottom: 6px; }
+  .cc-d .concept-score { color: #2e7d32; }
+  .cc-c .concept-score { color: #795548; }
+  .cc-n .concept-score { color: #1565c0; }
+  .concept-desc { font-size: 12px; color: #6c757d; line-height: 1.5; }
+
+  /* Delta bar */
+  .delta-panel {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.1);
+    padding: 22px;
+    margin-bottom: 22px;
+  }
+  .section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #5d4037; margin-bottom: 14px; }
+  .delta-bar-container { position: relative; height: 32px; background: #efebe9; border-radius: 6px; overflow: visible; }
+  .delta-bar-fill {
+    height: 100%; border-radius: 6px;
+    background: linear-gradient(90deg, #4caf50 0%, #ff9800 70%, #ef5350 100%);
+  }
+  .delta-marker {
+    position: absolute; top: -6px; height: 44px;
+    border-left: 3px solid #212529; transform: translateX(-50%);
+  }
+  .delta-label { font-size: 11px; color: #5d4037; margin-top: 8px; text-align: center; }
+  .delta-scores { display: flex; justify-content: space-between; margin-top: 8px; }
+  .delta-item { text-align: center; }
+  .delta-item .val { font-size: 22px; font-weight: 200; }
+  .delta-item .lbl { font-size: 10px; text-transform: uppercase; color: #8d6e63; margin-top: 2px; }
+
+  /* R_p cards */
+  .rp-grid {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 22px;
+  }
+  .rp-card {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 5px 14px rgba(0,0,0,0.1);
+    padding: 16px;
+    border-left: 4px solid #ccc;
+    text-align: center;
+  }
+  .rp-coherent { border-left-color: #2e7d32; }
+  .rp-stressed { border-left-color: #fdd835; }
+  .rp-failure { border-left-color: #ff9800; }
+  .rp-breakdown { border-left-color: #ef5350; }
+  .rp-phase { font-size: 10px; font-weight: 700; text-transform: uppercase; color: #78909c; margin-bottom: 3px; }
+  .rp-name { font-size: 12px; font-weight: 600; color: #3e2723; margin-bottom: 6px; line-height: 1.3; }
+  .rp-score { font-size: 26px; font-weight: 200; margin-bottom: 3px; }
+  .rp-coherent .rp-score { color: #2e7d32; }
+  .rp-stressed .rp-score { color: #8d6e00; }
+  .rp-failure .rp-score { color: #e65100; }
+  .rp-breakdown .rp-score { color: #c62828; }
+  .rp-zone { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 4px; }
+  .rp-omega { font-size: 10px; color: #8d6e63; }
+  .rp-waste { font-size: 11px; color: #5d4037; margin-top: 5px; line-height: 1.4; }
+
+  .section { background: #fff; border-radius: 12px; box-shadow: 0 5px 14px rgba(0,0,0,0.08); padding: 24px; margin-bottom: 20px; }
+  .section h2 { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #5d4037; margin-bottom: 16px; border-bottom: 1px solid #f3ece8; padding-bottom: 8px; }
+
+  table { width: 100%; border-collapse: collapse; }
+  th { font-size: 10px; text-transform: uppercase; letter-spacing: 0.04em; color: #8d6e63; padding: 7px 10px; text-align: left; border-bottom: 2px solid #efebe9; }
+  td { font-size: 12px; color: #343a40; padding: 9px 10px; border-bottom: 1px solid #f5ede9; vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+
+  .prov-banner {
+    background: #fff3e0; border: 1px solid #ffb74d; border-radius: 8px;
+    padding: 10px 16px; font-size: 12px; color: #7b4100; margin-bottom: 22px;
+  }
+
+  .intervention-badge {
+    display: inline-block; padding: 2px 8px; border-radius: 999px;
+    font-size: 10px; font-weight: 700; background: #efebe9; color: #3e2723;
+  }
+  .int-priority { background: #ffcdd2; color: #b71c1c; }
+
+  canvas { display: block; max-width: 100%; }
+  .chart-wrap { background: #fff; border-radius: 12px; box-shadow: 0 5px 14px rgba(0,0,0,0.08); padding: 22px; margin-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="topnav">
+    <a href="../../../../index.html">TrueValue Home</a>
+    <span>/</span>
+    <a href="../index.html">Senegal Agroforestry</a>
+    <span>/</span>
+    <a href="index.html">Supply Chain</a>
+    <span>/</span>
+    <span style="color:#5d4037">Recycling Analysis</span>
+  </div>
+
+  <div class="hero">
+    <div class="kicker">♻️ TVPCI-R · Ecological Return Chain · PROVISIONAL</div>
+    <h1>Recycling Analysis — Senegal Agroforestry</h1>
+    <p class="subtitle">
+      Processing waste (husks, shells, fruit waste, water) converted to biogas/syngas, biochars,
+      organic fertilizer, and jams. TVPCI-R score: 60.7 · B_chain: 64.2 · Delta_chain: +17.3.
+      All scores PROVISIONAL — no phase-resolved LCA data available.
+    </p>
+  </div>
+
+  <div class="prov-banner">
+    <strong>PROVISIONAL BASELINE:</strong> All R_p scores and omega weights are reasoned synthetic estimates.
+    No phase-resolved LCA or waste-stream measurement data is available from the source documents.
+    These scores should be updated once EP Carbon xlsx and Serious Shea Financial Model data are extracted.
+  </div>
+
+  <!-- Concept panel: TVPCI (D role), TVPCI-R (C role), B_chain (N role) -->
+  <div class="concept-panel">
+    <div class="concept-card cc-d">
+      <div class="concept-label">D Role — Primary Chain</div>
+      <div class="concept-title">TVPCI</div>
+      <div class="concept-score">78.0</div>
+      <div class="concept-desc">
+        The True Value Pricing Convergence Index for the primary forward chain. Defines what
+        the agroforestry system IS: constraints, custody, transformation standards, and certification
+        governing the 8-phase supply chain from origin to market. TVPCI is the definition vector.
+      </div>
+    </div>
+    <div class="concept-card cc-c">
+      <div class="concept-label">C Role — Return Chain</div>
+      <div class="concept-title">TVPCI-R</div>
+      <div class="concept-score">60.7</div>
+      <div class="concept-desc">
+        The TVPCI-R measures what the system DOES with its waste and return flows: biogas/syngas from
+        husks and shells, biochars and organic fertilizer closing the soil loop, water recycling, and
+        market return of composted outputs. TVPCI-R is the contribution/integration vector.
+      </div>
+    </div>
+    <div class="concept-card cc-n">
+      <div class="concept-label">N Role — Holon Balance</div>
+      <div class="concept-title">B_chain</div>
+      <div class="concept-score">64.2</div>
+      <div class="concept-desc">
+        B_chain = 100 × exp(−2 × |TVPCI − TVPCI-R| / max(TVPCI, TVPCI-R)). Measures the coherent
+        balance between the forward chain (definition) and the return chain (contribution).
+        A score of 64.2 signals the system is in the Failure zone: the return chain significantly
+        lags the primary chain, reducing overall holon stability.
+      </div>
+    </div>
+  </div>
+
+  <!-- Delta bar -->
+  <div class="delta-panel">
+    <div class="section-title">Delta Bar — Forward vs Return Chain Imbalance</div>
+    <div class="delta-scores" style="margin-bottom:10px;">
+      <div class="delta-item">
+        <div class="val" style="color:#2e7d32">78.0</div>
+        <div class="lbl">TVPCI (forward)</div>
+      </div>
+      <div class="delta-item">
+        <div class="val" style="color:#795548">60.7</div>
+        <div class="lbl">TVPCI-R (return)</div>
+      </div>
+      <div class="delta-item">
+        <div class="val" style="color:#ef5350">+17.3</div>
+        <div class="lbl">Delta_chain</div>
+      </div>
+      <div class="delta-item">
+        <div class="val" style="color:#1565c0">64.2</div>
+        <div class="lbl">B_chain (holon)</div>
+      </div>
+    </div>
+    <div class="delta-bar-container">
+      <div class="delta-bar-fill" style="width:78%"></div>
+      <div class="delta-marker" style="left:60.7%">
+        <div style="position:absolute;bottom:-18px;left:50%;transform:translateX(-50%);font-size:10px;color:#795548;white-space:nowrap">TVPCI-R 60.7</div>
+      </div>
+    </div>
+    <p class="delta-label">
+      Forward chain (TVPCI 78.0) significantly ahead of return chain (TVPCI-R 60.7).
+      Delta_chain = +17.3 confirms the agroforestry system is not yet closing its ecological loops at pace with commodity delivery.
+      The biogas/biochar infrastructure exists but throughput accountability and market linkage are weak.
+    </p>
+  </div>
+
+  <!-- Per-phase R_p cards -->
+  <div class="rp-grid">
+    <div class="rp-card rp-failure">
+      <div class="rp-phase">Phase 1</div>
+      <div class="rp-name">Harvest + Nursery</div>
+      <div class="rp-score">45</div>
+      <div class="rp-zone">Failure Zone</div>
+      <div class="rp-omega">ω = 0.15</div>
+      <div class="rp-waste">Agricultural residues (leaves, pods, stems) largely left in field. No formal composting or collection protocol published.</div>
+    </div>
+    <div class="rp-card rp-stressed">
+      <div class="rp-phase">Phase 2</div>
+      <div class="rp-name">Primary Processing</div>
+      <div class="rp-score">62</div>
+      <div class="rp-zone">Failure/Stressed</div>
+      <div class="rp-omega">ω = 0.25 (highest weight)</div>
+      <div class="rp-waste">Shea shells, moringa pods, groundnut hulls diverted to biogas inputs. Infrastructure exists; throughput measurement absent.</div>
+    </div>
+    <div class="rp-card rp-stressed">
+      <div class="rp-phase">Phase 3</div>
+      <div class="rp-name">Drying + QC</div>
+      <div class="rp-score">72</div>
+      <div class="rp-zone">Stressed</div>
+      <div class="rp-omega">ω = 0.20</div>
+      <div class="rp-waste">Drying reject waste routed to biogas. Water from washing reused. Plantation organic waste converted to compost inputs. Partially documented.</div>
+    </div>
+    <div class="rp-card rp-stressed">
+      <div class="rp-phase">Phase 4</div>
+      <div class="rp-name">Transformation</div>
+      <div class="rp-score">68</div>
+      <div class="rp-zone">Stressed</div>
+      <div class="rp-omega">ω = 0.20</div>
+      <div class="rp-waste">Biogas/syngas from waste; biochars to soil; jams from fruit discards. The 18 centres explicitly designed for circular co-production. Best-intended phase; monitoring absent.</div>
+    </div>
+    <div class="rp-card rp-failure">
+      <div class="rp-phase">Phase 5</div>
+      <div class="rp-name">Refining + Export</div>
+      <div class="rp-score">42</div>
+      <div class="rp-zone">Failure Zone</div>
+      <div class="rp-omega">ω = 0.10</div>
+      <div class="rp-waste">Shea processing wastewater; packaging materials; refining by-products (shea cake/stearins residues). No published recovery protocol for the 2 clusters.</div>
+    </div>
+    <div class="rp-card rp-coherent">
+      <div class="rp-phase">Phase 6</div>
+      <div class="rp-name">Certification + Registry</div>
+      <div class="rp-score">90</div>
+      <div class="rp-zone">Coherent</div>
+      <div class="rp-omega">ω = 0.05</div>
+      <div class="rp-waste">Carbon credits are themselves a formalised ecological return instrument. The Acorn/EP Carbon registry provides verifiable documentation. No material waste at this phase.</div>
+    </div>
+    <div class="rp-card rp-breakdown">
+      <div class="rp-phase">Phase 7</div>
+      <div class="rp-name">Market Delivery</div>
+      <div class="rp-score">35</div>
+      <div class="rp-zone">Breakdown</div>
+      <div class="rp-omega">ω = 0.05</div>
+      <div class="rp-waste">Consumer and industrial packaging returns absent. No end-of-life shea butter container recovery. Minimal reverse logistics from international buyers. Bond intervention candidate.</div>
+    </div>
+  </div>
+
+  <!-- R_p chart -->
+  <div class="chart-wrap">
+    <div class="section-title">R_p Scores by Phase (PROVISIONAL)</div>
+    <canvas id="rpChart" height="160"></canvas>
+  </div>
+
+  <!-- Waste stream table -->
+  <div class="section">
+    <h2>Waste Stream Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Primary Waste Stream</th>
+          <th>Volume / Intensity</th>
+          <th>Current Disposal</th>
+          <th>Recovery Potential</th>
+          <th>R_p</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P1 Harvest</td>
+          <td>Agricultural residues (stems, leaves, pods not harvested)</td>
+          <td>High — majority of biomass left in field</td>
+          <td>Left in situ or burned</td>
+          <td>Composting; biochar feedstock; mulch</td>
+          <td style="color:#e65100;font-weight:600">45</td>
+        </tr>
+        <tr>
+          <td>P2 Primary Processing</td>
+          <td>Shea shells, moringa seed pods, groundnut hulls</td>
+          <td>Very high — shells/hulls are 40–60% of input weight</td>
+          <td>Routed to biogas input at processing centres</td>
+          <td>Biogas/syngas, biochar, fertilizer pellets — infrastructure exists</td>
+          <td style="color:#e65100;font-weight:600">62</td>
+        </tr>
+        <tr>
+          <td>P3 Drying + QC</td>
+          <td>Off-grade and reject material; drying water</td>
+          <td>Medium — typically 5–15% of batch weight</td>
+          <td>Biogas feedstock; wastewater recycled on-site</td>
+          <td>Biogas; compost amendment; water reuse</td>
+          <td style="color:#8d6e00;font-weight:600">72</td>
+        </tr>
+        <tr>
+          <td>P4 Transformation</td>
+          <td>Press cake (groundnut, moringa), biogas co-production, biochars</td>
+          <td>High — press cake is protein-dense; biochar is soil amendment</td>
+          <td>Biogas/syngas generated; biochars applied to soil; press cake as livestock feed</td>
+          <td>Explicitly designed for circular co-production at 18 centres</td>
+          <td style="color:#8d6e00;font-weight:600">68</td>
+        </tr>
+        <tr>
+          <td>P5 Refining + Export</td>
+          <td>Shea processing wastewater; packaging materials; refining residues</td>
+          <td>Medium — refining wastewater is high-BOD</td>
+          <td>Discharged or partially recovered</td>
+          <td>Wastewater treatment; packaging return program; residue recovery</td>
+          <td style="color:#c62828;font-weight:600">42</td>
+        </tr>
+        <tr>
+          <td>P6 Certification</td>
+          <td>No material waste; documentation only</td>
+          <td>Negligible</td>
+          <td>Digital registry</td>
+          <td>Carbon credits are an ecological return instrument</td>
+          <td style="color:#2e7d32;font-weight:600">90</td>
+        </tr>
+        <tr>
+          <td>P7 Market Delivery</td>
+          <td>Consumer/industrial packaging; end-of-life product containers</td>
+          <td>Low volume, high opacity (internationally dispersed)</td>
+          <td>Buyer-managed disposal; no reverse logistics</td>
+          <td>Packaging take-back scheme; container return credits</td>
+          <td style="color:#c62828;font-weight:600">35</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Circular economy interventions -->
+  <div class="section">
+    <h2>Priority Circular Economy Interventions</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Priority</th>
+          <th>Phase</th>
+          <th>Intervention</th>
+          <th>Expected R_p Impact</th>
+          <th>Bond / Finance Link</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="intervention-badge int-priority">1 — Critical</span></td>
+          <td>P4 Transformation (18 centres)</td>
+          <td>
+            Standardised biogas/biochar throughput metering and monthly reporting across all 18
+            Multi-functional Clean Energy Processing Centres. Link biogas yield to carbon registry additionality claims.
+          </td>
+          <td>+15–20 R_p points (62→78). Closes the largest waste volume accountability gap and enables carbon co-benefit verification.</td>
+          <td>SLB KPI trigger: ≥70% of centres reporting verified biogas yield by Year 2. Directly supports Acorn/EP Carbon additionality.</td>
+        </tr>
+        <tr>
+          <td><span class="intervention-badge int-priority">2 — High</span></td>
+          <td>P1 Harvest + Nursery</td>
+          <td>
+            Community-level agricultural residue collection protocol: stems, leaves, and pods not
+            harvested routed to composting heaps co-located with nurseries. Compost feeds plantation soil improvement.
+          </td>
+          <td>+20–25 R_p points (45→65). Closes the highest-severity gap at lowest capital cost.</td>
+          <td>Nature bond covenant: hectares under composting protocol as a physical custody KPI. Links residue closure to plantation survival rate.</td>
+        </tr>
+        <tr>
+          <td><span class="intervention-badge">3 — Medium</span></td>
+          <td>P5 Refining + Export (2 clusters)</td>
+          <td>
+            Shea processing wastewater treatment installation at both clusters; shea cake residue
+            recovery for livestock feed and biogas. Packaging supplier contract requiring post-consumer return from top 5 buyers.
+          </td>
+          <td>+20–25 R_p points (42→62). Addresses the highest-volume refining waste stream; packaging return is bond-financeable.</td>
+          <td>Green bond or SLB tranche: capex for wastewater treatment. Packaging return rate as annual verification metric.</td>
+        </tr>
+        <tr>
+          <td><span class="intervention-badge">4 — Low (long-term)</span></td>
+          <td>P7 Market Delivery</td>
+          <td>
+            Reverse logistics pilot with 2–3 European cosmetics buyers: container return credits
+            and refill programme for bulk shea butter. Extend carbon registry to scope 3 packaging lifecycle.
+          </td>
+          <td>+30 R_p points (35→65). Highest per-point impact but requires buyer-side cooperation and multi-year investment.</td>
+          <td>Extended Producer Responsibility (EPR) linked instrument; pilot linked to TVPCI-R improvement bond covenant.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Nav -->
+  <div style="display:flex;gap:18px;flex-wrap:wrap;padding:14px;background:#efebe9;border-radius:10px;margin-bottom:12px;">
+    <a href="../index.html" style="color:#5d4037;text-decoration:none;font-size:13px;font-weight:600;">← Hub</a>
+    <a href="index.html" style="color:#5d4037;text-decoration:none;font-size:13px;font-weight:600;">Supply Chain Overview</a>
+    <a href="dashboard.html" style="color:#5d4037;text-decoration:none;font-size:13px;font-weight:600;">Dashboard</a>
+    <a href="project_context.html" style="color:#5d4037;text-decoration:none;font-size:13px;font-weight:600;">Project Context</a>
+    <a href="../value_chain/index.html" style="color:#5d4037;text-decoration:none;font-size:13px;font-weight:600;">Value Chain</a>
+    <a href="../../../../index.html" style="color:#5d4037;text-decoration:none;font-size:13px;font-weight:600;">TrueValue Home</a>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+const RPHASES = ['P1 Harvest','P2 Primary','P3 Drying/QC','P4 Transform','P5 Refining','P6 Certify','P7 Market'];
+const RP = [45, 62, 72, 68, 42, 90, 35];
+const ZONES = ['Failure','Failure/Stressed','Stressed','Stressed','Failure','Coherent','Breakdown'];
+const OMEGA = [0.15, 0.25, 0.20, 0.20, 0.10, 0.05, 0.05];
+
+const zoneColor = (r) => {
+  if (r >= 80) return 'rgba(46,125,50,0.75)';
+  if (r >= 61.8) return 'rgba(253,216,53,0.8)';
+  if (r >= 38.2) return 'rgba(255,152,0,0.75)';
+  return 'rgba(239,83,80,0.75)';
+};
+
+const rpCtx = document.getElementById('rpChart').getContext('2d');
+new Chart(rpCtx, {
+  type: 'bar',
+  data: {
+    labels: RPHASES,
+    datasets: [
+      {
+        label: 'R_p score',
+        data: RP,
+        backgroundColor: RP.map(zoneColor),
+        borderColor: RP.map(r => zoneColor(r).replace('0.75','1').replace('0.8','1')),
+        borderWidth: 1,
+        yAxisID: 'y'
+      },
+      {
+        label: 'Omega weight',
+        data: OMEGA.map(o => o * 100),
+        type: 'line',
+        borderColor: '#795548',
+        backgroundColor: 'rgba(121,85,72,0.1)',
+        borderWidth: 2,
+        pointRadius: 4,
+        yAxisID: 'y2',
+        tension: 0.3
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: {
+        min: 0, max: 100,
+        title: { display: true, text: 'R_p score (0–100)', font: { size: 11 } },
+        ticks: { font: { size: 10 } }
+      },
+      y2: {
+        min: 0, max: 30,
+        position: 'right',
+        title: { display: true, text: 'Omega × 100', font: { size: 11 } },
+        ticks: { font: { size: 10 } },
+        grid: { drawOnChartArea: false }
+      },
+      x: { ticks: { font: { size: 11 } } }
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 } } },
+      tooltip: {
+        callbacks: {
+          afterLabel: (ctx) => {
+            const i = ctx.dataIndex;
+            return `Zone: ${ZONES[i]}  |  ω: ${OMEGA[i]}`;
+          }
+        }
+      }
+    }
+  }
+});
+</script>
+</body>
+</html>

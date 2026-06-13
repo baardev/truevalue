@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Value Chain — Burkina Faso Shea</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+  :root {
+    --amber: #d97706; --amber-dark: #b45309; --amber-light: #fbbf24;
+    --amber-pale: #fef3c7; --amber-muted: #92400e;
+    --ss-green: #16a34a; --ss-green-light: #bbf7d0;
+    --bau-red: #dc2626; --bau-red-light: #fee2e2;
+    --gold: #ca8a04; --gold-light: #fef08a;
+    --neutral-900: #1a1614; --neutral-800: #292116;
+    --neutral-100: #faf5ef; --card-bg: #fffbf5; --border: #e8d5b4;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--neutral-100); color: var(--neutral-900); }
+  .topbar { background: var(--neutral-800); color: #fff; padding: 0.7rem 1.5rem; display: flex; align-items: center; gap: 1rem; font-size: 0.82rem; }
+  .topbar a { color: var(--amber-light); text-decoration: none; }
+  .deferred-banner {
+    background: linear-gradient(90deg, #fffbeb 0%, #fff7ed 100%);
+    border: 1px solid var(--amber-light);
+    border-left: 4px solid var(--amber);
+    padding: 0.8rem 1.5rem;
+    font-size: 0.82rem; color: var(--amber-muted);
+  }
+  .hero { background: linear-gradient(135deg, var(--gold) 0%, var(--amber) 60%, var(--amber-dark) 100%); color: #fff; padding: 2rem 1.5rem; }
+  .hero h1 { font-size: 1.5rem; font-weight: 700; }
+  .hero p { margin-top: 0.4rem; opacity: 0.85; font-size: 0.9rem; max-width: 700px; }
+  .container { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  h2 { font-size: 0.8rem; font-weight: 700; color: var(--amber-dark); margin-bottom: 0.8rem; padding-bottom: 0.35rem; border-bottom: 2px solid var(--amber-light); margin-top: 2rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  h2:first-child { margin-top: 0; }
+  p { font-size: 0.88rem; color: #444; margin-bottom: 0.8rem; line-height: 1.6; }
+
+  /* VALUE WATERFALL */
+  .waterfall { display: flex; gap: 0; overflow-x: auto; margin-bottom: 1.5rem; }
+  .wf-stage {
+    flex: 1; min-width: 120px;
+    background: var(--card-bg); border: 1px solid var(--border);
+    border-right: none; padding: 0.8rem;
+    position: relative;
+  }
+  .wf-stage:last-child { border-right: 1px solid var(--border); }
+  .wf-stage .actor { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--amber-muted); }
+  .wf-stage .step { font-size: 0.8rem; font-weight: 700; color: var(--neutral-900); margin: 0.2rem 0; }
+  .wf-stage .bau-price { font-size: 0.78rem; color: var(--bau-red); }
+  .wf-stage .ss-price { font-size: 0.78rem; color: var(--ss-green); font-weight: 700; }
+  .wf-stage .arrow {
+    position: absolute; right: -12px; top: 50%; transform: translateY(-50%);
+    width: 0; height: 0;
+    border-left: 10px solid var(--border);
+    border-top: 10px solid transparent;
+    border-bottom: 10px solid transparent;
+    z-index: 1;
+  }
+
+  /* PRICE COMPARISON TABLE */
+  table { width: 100%; border-collapse: collapse; font-size: 0.83rem; background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin-bottom: 1.5rem; }
+  thead tr { background: var(--neutral-800); color: #fff; }
+  th { padding: 0.6rem 0.8rem; text-align: left; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; }
+  tbody tr:nth-child(even) { background: var(--amber-pale); }
+  td { padding: 0.65rem 0.8rem; border-bottom: 1px solid var(--border); vertical-align: top; }
+  .price-bau { font-weight: 700; color: var(--bau-red); }
+  .price-ss { font-weight: 700; color: var(--ss-green); }
+  .delta-cell { font-weight: 700; color: var(--gold); }
+
+  /* KPI GRID */
+  .kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+  .kpi-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1rem; }
+  .kpi-card .label { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: #888; margin-bottom: 0.4rem; }
+  .kpi-card .val { font-size: 1.4rem; font-weight: 800; }
+  .kpi-card .val.green { color: var(--ss-green); }
+  .kpi-card .val.amber { color: var(--amber-dark); }
+  .kpi-card .sub { font-size: 0.72rem; color: #888; margin-top: 0.2rem; }
+
+  /* CHARTS */
+  .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 700px) { .charts-grid { grid-template-columns: 1fr; } }
+  .chart-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; }
+  .chart-card h4 { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #555; margin-bottom: 0.8rem; }
+  .chart-wrap { position: relative; height: 260px; }
+
+  /* INCOME LADDER */
+  .income-ladder { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+  @media (max-width: 600px) { .income-ladder { grid-template-columns: 1fr; } }
+  .ladder-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 8px; padding: 1.2rem; }
+  .ladder-card h3 { font-size: 0.82rem; font-weight: 700; text-transform: uppercase; color: #555; margin-bottom: 0.8rem; }
+  .ladder-row { display: flex; justify-content: space-between; align-items: baseline; padding: 0.45rem 0; border-bottom: 1px dashed var(--border); font-size: 0.83rem; }
+  .ladder-row:last-child { border-bottom: none; font-weight: 700; font-size: 0.9rem; }
+  .ladder-row.bau-total { color: var(--bau-red); }
+  .ladder-row.ss-total { color: var(--ss-green); }
+  .ladder-label { color: #555; }
+  .ladder-val { font-weight: 700; }
+
+  .note { font-size: 0.75rem; color: #888; font-style: italic; margin-top: 0.5rem; }
+  footer { background: var(--neutral-800); color: rgba(255,255,255,0.6); text-align: center; padding: 1.2rem; font-size: 0.78rem; margin-top: 3rem; }
+  footer a { color: var(--amber-light); text-decoration: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="../index.html">← BF Shea Hub</a>
+  <span style="opacity:0.4;">|</span>
+  <span>Value Chain</span>
+</div>
+
+<div class="deferred-banner">
+  Note: Full financial layer (DFC blended finance, investor returns, P&amp;L model) is deferred pending completed supply chain mapping per project rules. This page presents the price structure and women's income analysis derived from the 2022 DD archive.
+</div>
+
+<div class="hero">
+  <h1>Value Chain Analysis</h1>
+  <p>Shea butter pricing by grade, women's income breakdown by scenario, carbon revenue potential, and the structural value gap between BAU (traditional) and Serious Shea (eco-processing) models. Sourced from Serious Shea 2022 Final Business Plan and TARA AfDB Component 4 report.</p>
+</div>
+
+<div class="container">
+
+  <h2>Value Chain Scorecard</h2>
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="label">BAU Women's Income</div>
+      <div class="val amber">~USD 175</div>
+      <div class="sub">Per season; kernel + local butter</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Serious Shea Women's Income</div>
+      <div class="val green">USD 450+</div>
+      <div class="sub">Per season; min. guaranteed</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">BAU Butter Export Price Capture</div>
+      <div class="val" style="color:var(--bau-red)">0%</div>
+      <div class="sub">No export access; local price only</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">SS Butter Export Price (Food Grade)</div>
+      <div class="val green">USD 2.00/kg</div>
+      <div class="sub">Min. export price (food/confectionery)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">SS Butter Price (Cosmetic Organic)</div>
+      <div class="val green">USD 3.50/kg</div>
+      <div class="sub">Premium cosmetic organic grade</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">EBITDA (Phase 1)</div>
+      <div class="val green">EUR 3,953k</div>
+      <div class="sub">33% margin; from 2023 onward</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Net Income (2023)</div>
+      <div class="val green">EUR 2,754k</div>
+      <div class="sub">23% net margin</div>
+    </div>
+    <div class="kpi-card">
+      <div class="label">Community Fund</div>
+      <div class="val green">~USD 300k</div>
+      <div class="sub">Per year (10% profit share)</div>
+    </div>
+  </div>
+
+  <h2>Shea Butter Value Chain: Price by Stage (Serious Shea)</h2>
+  <div class="waterfall">
+    <div class="wf-stage">
+      <div class="arrow"></div>
+      <div class="actor">Women's Groups</div>
+      <div class="step">Kernel Collection</div>
+      <div class="bau-price">BAU: USD 0.30-0.46/kg</div>
+      <div class="ss-price">SS: USD 0.50-0.70/kg</div>
+    </div>
+    <div class="wf-stage">
+      <div class="arrow"></div>
+      <div class="actor">Collection Site</div>
+      <div class="step">Drying + QC</div>
+      <div class="bau-price">BAU: USD 0.38 avg</div>
+      <div class="ss-price">SS: USD 0.60 avg paid</div>
+    </div>
+    <div class="wf-stage">
+      <div class="arrow"></div>
+      <div class="actor">Processing Centre</div>
+      <div class="step">Butter Production</div>
+      <div class="bau-price">BAU: USD 0.76-1.52/kg local</div>
+      <div class="ss-price">SS: cost ~USD 1.20/kg incl.</div>
+    </div>
+    <div class="wf-stage">
+      <div class="arrow"></div>
+      <div class="actor">Serious Shea Export</div>
+      <div class="step">Export Drums</div>
+      <div class="bau-price">BAU: no export</div>
+      <div class="ss-price">SS: USD 2.00-3.50/kg</div>
+    </div>
+    <div class="wf-stage">
+      <div class="actor">International Buyers</div>
+      <div class="step">End Market</div>
+      <div class="bau-price">BAU: L'Occitane USD 10+/kg retail</div>
+      <div class="ss-price">SS: certified premium supply chain</div>
+    </div>
+  </div>
+
+  <h2>Butter Pricing by Grade and Market Segment</h2>
+  <table>
+    <thead><tr><th>Grade</th><th>Market Segment</th><th>BAU Price (Women)</th><th>Serious Shea Export Price</th><th>Value Uplift</th><th>Volume Mix Target</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Cosmetic / Organic</td>
+        <td>Premium cosmetics (L'Occitane, Body Shop tier)</td>
+        <td class="price-bau">No access</td>
+        <td class="price-ss">USD 3.50/kg</td>
+        <td class="delta-cell">+4.6x vs. BAU local avg</td>
+        <td>5% of volume</td>
+      </tr>
+      <tr>
+        <td>Cosmetic / Standard</td>
+        <td>Cosmetic ingredients companies (FourChem, Hallstar, SLI)</td>
+        <td class="price-bau">No access</td>
+        <td class="price-ss">USD 2.50/kg</td>
+        <td class="delta-cell">+3.3x vs. BAU local avg</td>
+        <td>15% of volume</td>
+      </tr>
+      <tr>
+        <td>Food / Confectionery</td>
+        <td>Cocoa butter equivalent (Bunge Loders Crocklaan, Berg &amp; Schmidt, LaBoulangere)</td>
+        <td class="price-bau">No access</td>
+        <td class="price-ss">USD 2.00/kg</td>
+        <td class="delta-cell">+2.6x vs. BAU local avg</td>
+        <td>80% of volume</td>
+      </tr>
+      <tr>
+        <td>Local / Informal (BAU)</td>
+        <td>Local traders, domestic soap, personal care</td>
+        <td class="price-bau">USD 0.76-1.52/kg</td>
+        <td class="price-ss">Domestic off-grade: USD 0.80-1.00/kg</td>
+        <td>Baseline</td>
+        <td>BAU: 100%; SS: residual off-grade only</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note">Blended average SS export price: (0.05 × 3.50) + (0.15 × 2.50) + (0.80 × 2.00) = USD 2.20/kg. Production cost estimated at USD 1.20/kg. Gross margin ~45% pre-overhead.</p>
+
+  <h2>Women's Income: Detailed Breakdown by Scenario</h2>
+  <div class="income-ladder">
+    <div class="ladder-card">
+      <h3>BAU: Traditional Household</h3>
+      <div class="ladder-row"><span class="ladder-label">Kernel sales (200 kg × USD 0.38)</span><span class="ladder-val">USD 76</span></div>
+      <div class="ladder-row"><span class="ladder-label">Butter from retained kernels (30 kg × USD 1.10)</span><span class="ladder-val">USD 33</span></div>
+      <div class="ladder-row"><span class="ladder-label">Other local sales (occasional)</span><span class="ladder-val">~USD 60</span></div>
+      <div class="ladder-row"><span class="ladder-label">Fuelwood cost (deduction)</span><span class="ladder-val">(USD 20)</span></div>
+      <div class="ladder-row bau-total"><span class="ladder-label">Estimated seasonal income</span><span class="ladder-val">~USD 149</span></div>
+    </div>
+    <div class="ladder-card">
+      <h3>Serious Shea: Partner Household</h3>
+      <div class="ladder-row"><span class="ladder-label">Kernel sale to SS (250 kg × USD 0.60)</span><span class="ladder-val">USD 150</span></div>
+      <div class="ladder-row"><span class="ladder-label">Butter from 50% retained kernels (65 kg × USD 2.00)</span><span class="ladder-val">USD 130</span></div>
+      <div class="ladder-row"><span class="ladder-label">Premium quality bonus</span><span class="ladder-val">~USD 20</span></div>
+      <div class="ladder-row"><span class="ladder-label">Fuelwood cost avoided (USD 0)</span><span class="ladder-val">USD 0</span></div>
+      <div class="ladder-row"><span class="ladder-label">Facility use fee (50% kernels donated)</span><span class="ladder-val">(in-kind)</span></div>
+      <div class="ladder-row ss-total"><span class="ladder-label">Estimated seasonal income</span><span class="ladder-val">USD 300-450+</span></div>
+    </div>
+  </div>
+  <p class="note">Business plan states minimum USD 450/season. This breakdown is modeled from individual household data in the 2022 plan (20 kg fruit/day × 90 day season = 1,800 kg fruit → 500 kg dried kernel). Figures approximate; actual income varies by harvest year and location.</p>
+
+  <h2>Financial Projections (Phase 1, from 2022 Business Plan)</h2>
+  <div class="charts-grid">
+    <div class="chart-card">
+      <h4>EBITDA and Net Income — Phase 1 (EUR k/yr)</h4>
+      <div class="chart-wrap"><canvas id="ebitda-chart"></canvas></div>
+    </div>
+    <div class="chart-card">
+      <h4>Butter Price by Grade vs. BAU Local Price (USD/kg)</h4>
+      <div class="chart-wrap"><canvas id="price-chart"></canvas></div>
+    </div>
+  </div>
+
+  <h2>Carbon Revenue Stream</h2>
+  <table>
+    <thead><tr><th>Carbon Source</th><th>Volume (Full Scale)</th><th>Price Scenario (USD/tCO2e)</th><th>Annual Revenue</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr>
+        <td>Fuelwood substitution (biogas + solar replaces traditional processing)</td>
+        <td>320,000 tCO2e/yr (10 centres × 32,000)</td>
+        <td>Low: USD 5; Base: USD 10; High: USD 15</td>
+        <td class="price-ss">USD 1.6M / 3.2M / 4.8M</td>
+        <td>World Bank REDD+ assessment complete 2022</td>
+      </tr>
+      <tr>
+        <td>Shea parkland protection (avoided deforestation)</td>
+        <td>Mapped parkland area; tCO2e/ha per site TBD</td>
+        <td>Base: USD 8/tCO2e</td>
+        <td class="price-ss">OPAQUE (data pending)</td>
+        <td>Sensonomic mapping in progress</td>
+      </tr>
+      <tr>
+        <td>Biochar and soil carbon (shea cake compost)</td>
+        <td>Estimated 5,000-10,000 tCO2e/yr (Phase 1)</td>
+        <td>Base: USD 10/tCO2e</td>
+        <td class="price-ss">USD 50k-100k/yr (Phase 1)</td>
+        <td>Methodology under development</td>
+      </tr>
+      <tr>
+        <td>Organic certification premium</td>
+        <td>5% of butter volume (cosmetic organic)</td>
+        <td>+USD 1.00/kg over standard</td>
+        <td class="price-ss">~USD 160k/yr (Phase 1 5% of 3,206t)</td>
+        <td>Ecocert/Soil Association pathway</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>BAU vs. Serious Shea: Value Gap Summary</h2>
+  <table>
+    <thead><tr><th>Value Dimension</th><th>BAU</th><th>Serious Shea</th><th>Gap</th></tr></thead>
+    <tbody>
+      <tr><td>Price per kg butter received by women</td><td class="price-bau">USD 0.76-1.52</td><td class="price-ss">USD 2.00-3.50 (export)</td><td class="delta-cell">+USD 1.24 to +USD 2.74/kg</td></tr>
+      <tr><td>Total system GHG cost (externalized)</td><td class="price-bau">~25 kgCO2e/kg butter × USD 10 social cost = USD 0.25/kg uncaptured</td><td class="price-ss">~1.2 kgCO2e/kg; carbon revenue generated</td><td class="delta-cell">USD 0.25/kg cost eliminated + revenue created</td></tr>
+      <tr><td>Women's seasonal income per household</td><td class="price-bau">~USD 149</td><td class="price-ss">USD 300-450+</td><td class="delta-cell">+USD 150-300/household/season</td></tr>
+      <tr><td>Community reinvestment</td><td class="price-bau">Zero</td><td class="price-ss">USD 300k/yr community fund</td><td class="delta-cell">USD 300k/yr new infrastructure</td></tr>
+      <tr><td>Jobs created</td><td class="price-bau">0 formal</td><td class="price-ss">195 FT (Phase 1); 700+ (full)</td><td class="delta-cell">195 new formal jobs</td></tr>
+      <tr><td>Carbon credits generated</td><td class="price-bau">None</td><td class="price-ss">USD 1.6M-4.8M/yr (full scale)</td><td class="delta-cell">Entire value newly created</td></tr>
+      <tr><td>Fuelwood cost</td><td class="price-bau">15 kg wood/kg butter; significant time and cash cost</td><td class="price-ss">Zero</td><td class="delta-cell">Full cost eliminated</td></tr>
+      <tr><td>International market access</td><td class="price-bau">None; local traders only</td><td class="price-ss">L'Occitane, Bunge, Lamotte, Berg &amp; Schmidt</td><td class="delta-cell">Full premium market opened</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<footer>
+  <a href="../index.html">← Hub</a> &nbsp;|&nbsp;
+  <a href="../supply_chain/index.html">Supply Chain</a> &nbsp;|&nbsp;
+  <a href="../supply_chain/recycling_analysis.html">TVPCI-R</a>
+</footer>
+
+<script>
+// EBITDA projection chart
+const years = ['2022','2023','2024','2025','2026','2027','2028','2029','2030','2031'];
+const ebitda = [0,3953,3953,3953,3953,3953,3953,3953,3953,3953];
+const netinc = [0,2754,2796,2839,2881,2923,2965,3007,3050,3092];
+
+new Chart(document.getElementById('ebitda-chart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: years,
+    datasets: [
+      { label: 'EBITDA (EUR k)', data: ebitda, backgroundColor: '#d97706bb', type: 'bar' },
+      { label: 'Net Income (EUR k)', data: netinc, borderColor: '#16a34a', backgroundColor: 'transparent', type: 'line', tension: 0.3 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { labels: { font: { size: 11 } } } },
+    scales: {
+      y: { ticks: { font: { size: 10 } } },
+      x: { ticks: { font: { size: 10 } } }
+    }
+  }
+});
+
+// Price comparison chart
+new Chart(document.getElementById('price-chart').getContext('2d'), {
+  type: 'bar',
+  data: {
+    labels: ['BAU Local\n(avg)', 'Food/\nConfectionery', 'Cosmetic\nStandard', 'Cosmetic\nOrganic'],
+    datasets: [{
+      label: 'USD/kg butter',
+      data: [1.10, 2.00, 2.50, 3.50],
+      backgroundColor: ['#dc2626cc', '#16a34acc', '#16a34acc', '#16a34acc'],
+      borderColor: ['#dc2626', '#16a34a', '#16a34a', '#16a34a'],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      y: { ticks: { font: { size: 10 } }, title: { display: true, text: 'USD/kg', font: { size: 10 } } },
+      x: { ticks: { font: { size: 10 } } }
+    }
+  }
+});
+</script>
+</body>
+</html>

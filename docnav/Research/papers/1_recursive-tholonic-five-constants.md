@@ -2,11 +2,15 @@
 
 **Author:** J. W. Milton, Clarity Coalition
 
-**Version:** 1.0
+**Version:** 1.2
 
-**Date:** 12 May 2026
+**Date:** 10 June 2026
 
 **Proposed arXiv subjects:** math.CA; math.NT (secondary: math.CO)
+
+**MSC 2020:** 40A05 (primary); 11B39, 65B10 (secondary)
+
+**Keywords:** classical constants; recursive sequences; triadic recurrence; Fibonacci ratio; alternating series; structural unification
 
 ---
 
@@ -14,7 +18,7 @@
 
 Five classical mathematical constants (the Leibniz limit $\pi/4$, the golden ratio $\varphi$, Euler's number $e$, $\sqrt{2}$, and $\ln 2$) emerge as limits of a single family of three-variable recurrences on a triple $(N, D, C)$ with functionally distinct roles: a *negotiation* state that is iteratively refined, a *definition/limitation* parameter that bounds, and a *contribution/integration* parameter that accumulates. These roles are irreducible to fewer than three even when two positions share the same numerical seed value.
 
-Each branch of the family is specified by an initial triple $(N_0, D_0, C_0)$ and a *traversal rule* governing the evolution of $(D_k, C_k)$. The five branches fall into three traversal classes: Advancing (Class A, external parameter injection), Self-redefined (Class B, internal transformation), and Fixed (Class C, constant parameters). The limits themselves are classical: each branch reduces to a known series, fixed point, or iterative method, so the contribution of this framework is not in computing these numbers anew, but in *structural unification*: a single three-role grammar from which all five mechanisms descend, combined with proved theorems (diagonal invariance, swap symmetry, perfect-square denominators, offset consistency) that distinguish the five branches from one another and from an arbitrary collection of known limits.
+Each branch of the family is specified by an initial triple $(N_0, D_0, C_0)$ and a *traversal rule* governing the evolution of $(D_k, C_k)$. The five branches fall into three traversal classes: Advancing (Class A, external parameter injection), Self-redefined (Class B, internal transformation), and Fixed (Class C, constant parameters). The limits themselves are classical: each branch reduces to a known series, fixed point, or iterative method, so the contribution of this framework is not in computing these numbers anew, but in *structural unification*: a single three-role grammar from which all five mechanisms descend, combined with proved theorems (diagonal invariance, swap symmetry, perfect-square denominators, offset consistency, parametric families) that distinguish the five branches from one another and from an arbitrary collection of known limits.
 
 The $\pi/4$ branch is structurally unique: it alone requires three numerically distinct seeds $\{1, 3, 5\}$ and advances its parameters externally via a fixed step $\Delta = 4$ rooted in a geometric axis structure. The remaining four branches operate on seeds drawn from $\{0, 1, 2\}$ with purely internal or fixed parameter evolution. This combinatorial partition is nontrivial and proved. Four open conjectures address the classification and necessity of the admitted seeds and traversal rules; resolving them would elevate the framework from organizational taxonomy to a finiteness theorem within a bounded rule class.
 
@@ -32,7 +36,7 @@ Five real numbers recur persistently across mathematics: $\pi$, the golden ratio
 
 This paper answers that question affirmatively for the *tholonic ladder*: a family of three-variable recurrences whose branches are distinguished by different initial triples and traversal rules, but whose variable roles (constraining versus integrating, driven externally versus self-contained) remain consistent across all five instances.
 
-**What this paper provides.** Minimal definitions; a complete branch-specification table; full proofs of convergence to each classical limit; structural theorems (diagonal invariance, swap symmetry, perfect-square denominators, offset consistency) with proofs; quantitative convergence data; and four open conjectures that identify the remaining mathematical gap between taxonomy and theorem.
+**What this paper provides.** Minimal definitions; a complete branch-specification table; full proofs of convergence to each classical limit; structural theorems (diagonal invariance, swap symmetry, perfect-square denominators, offset consistency, parametric families) with proofs; quantitative convergence data; and four open conjectures that identify the remaining mathematical gap between taxonomy and theorem.
 
 **What this paper does not provide.** New proofs of the underlying series identities: those are classical and referenced. The contribution is the shared grammar and the structural contrasts.
 
@@ -52,11 +56,11 @@ The triad is not merely a vector: the three positions have distinct semantic rol
 
 ### 2.1 Geometric origin of the axis labels
 
-The tholonic geometry assigns successive powers of two, $2^0, 2^1, \ldots, 2^5$, to six vertices of a triangular configuration: three outer vertices and three inner midpoint vertices. Summing along each of three directed axes yields numbers that factor as $7$ times a characteristic multiplier:
+The tholonic geometry [Mil24] assigns successive powers of two, $2^0, 2^1, \ldots, 2^5$, to six vertices of a triangular configuration: outer role vertices $N = 2^0$, $D = 2^1$, $C = 2^2$, and three inner midpoint vertices carrying $2^3, 2^4, 2^5$. Each directed axis runs from one outer role vertex through an inner midpoint to another outer role vertex; its three vertex values sum to $7$ times a characteristic multiplier:
 
-- Definition axis (outer $N \to$ inner $\mathrm{mid}_1$): $\;35 = 7 \times 5$
-- Contribution axis (outer $D \to$ inner $\mathrm{mid}_2$): $\;21 = 7 \times 3$
-- Instantiation axis (outer $C \to$ inner $\mathrm{mid}_3$): $\;14 = 7 \times 2$
+- Definition axis ($N \to D$, through $2^5$): $\;1 + 32 + 2 = 35 = 7 \times 5$
+- Contribution axis ($C \to N$, through $2^4$): $\;4 + 16 + 1 = 21 = 7 \times 3$
+- Instantiation axis ($D \to C$, through $2^3$): $\;2 + 8 + 4 = 14 = 7 \times 2$
 
 The axis multipliers $5$, $3$, and $2$ carry the interpretation of canonical role weights within the triad. The Instantiation axis multiplier, denoted $\mathrm{istep} = 2$, enters the $\pi/4$ branch through two derived quantities:
 
@@ -64,7 +68,7 @@ $$d_{\mathrm{step}} = \mathrm{istep}^2 = 4, \qquad c_{\mathrm{step}} = 2 \times 
 
 Both equal $4$, fixing a single step size $\Delta = 4$ without free parameters. This is not an arbitrary choice: the step arises from squaring and doubling the same geometric constant, and it is the smallest nontrivial step consistent with both operations yielding an integer.
 
-The seed triple $(N_0, D_0, C_0) = (1, 3, 5)$ of the $\pi/4$ branch then receives a geometric interpretation. $D_0 = 3$ and $C_0 = 5$ are the Contribution and Definition axis multipliers themselves, shifted to the first odd-integer positions on the $(4n-1, 4n+1)$ parity class. $N_0 = 1$ is the multiplicative identity, the generative unit from which accumulation begins. The assignment is not merely numerical convenience: the axis geometry supplies both the seeds and the step that drives them.
+The seed triple $(N_0, D_0, C_0) = (1, 3, 5)$ of the $\pi/4$ branch then receives a geometric interpretation. Each axis connects two of the three roles and excludes the third, and its multiplier supplies the seed (or step) of precisely the excluded role: the Definition axis ($N \to D$) excludes $C$ and carries $5 = C_0$; the Contribution axis ($C \to N$) excludes $D$ and carries $3 = D_0$; the Instantiation axis ($D \to C$) excludes $N$ and carries $\mathrm{istep} = 2$, which fixes the step $\Delta = 4$ above. The seeds $3$ and $5$ are simultaneously the first members of the $(4n-1, 4n+1)$ parity classes traversed by the recursion, and $N_0 = 1$ is the multiplicative identity, the generative unit from which accumulation begins. The assignment is not merely numerical convenience: each role draws its seed from the complementary axis, so the axis geometry supplies both the seeds and the step that drives them.
 
 More generally, any branch admits an interpretation in which the initial numbers align with geometric roles, but the $\pi/4$ branch is the only one where the step itself is directly derivable from the axis structure of the underlying geometry. The remaining four branches operate without external injection; their seeds are drawn from the minimal lattice $\{0, 1, 2\}$ and their dynamics are either fully self-contained (Class B) or parameter-constant (Class C). This geometric asymmetry is part of what separates the $\pi/4$ branch from the rest, and it motivates the seed-partition theorem of Proposition 6.1.
 
@@ -80,7 +84,7 @@ $$x^{(1)}_{k+1} = g\!\left(x^{(1)}_k;\, \alpha_k, \beta_k\right)$$
 
 *where $\alpha_k$ limits the correction magnitude and $\beta_k$ controls the additive or multiplicative integration of each step. Suppose that (i) $\alpha_k$ and $\beta_k$ are functionally independent in the sense that $g$ is not expressible as a function of a single combined argument $h(\alpha_k, \beta_k)$ for all admissible $(\alpha_k, \beta_k)$, and (ii) the named limit $L = \lim_{k\to\infty} x^{(1)}_k$ is not expressible as a trivial fixed point of a one- or two-variable recurrence. Then $\mathcal{R}$ requires $m \geq 3$: a state variable and two functionally independent auxiliary variables.*
 
-
+*Proof.* The distinguished variable $x^{(1)}$ must persist across iterations to record the refined state, so it cannot be eliminated. Suppose $m = 2$. Then both control arguments are determined by the single auxiliary variable $y_k$: $\alpha_k = a(y_k)$ and $\beta_k = b(y_k)$, and the admissible pairs $(\alpha_k, \beta_k)$ are confined to the one-parameter image of $y \mapsto (a(y), b(y))$. On that set, $g$ factors through the single argument $y$ itself: $g(x;\, \alpha_k, \beta_k) = \tilde{g}(x;\, y_k)$, exhibiting exactly the combined-argument factorization that hypothesis (i) excludes on the admissible set. Hypothesis (ii) rules out the degenerate alternative in which the controls are constant or absent and $L$ is reachable with fewer variables. Hence two functionally independent auxiliary variables are required, and with the state variable, $m \geq 3$. $\square$
 
 A critical structural property of the tholonic framework is that **every branch requires exactly three variables**, regardless of whether some share the same numerical value.
 
@@ -114,15 +118,23 @@ The five documented branches fall into three classes:
 
 **Class A: Advancing.** $(D_k, C_k)$ each receive a fixed external increment at every step. New information is injected per iteration; the recursion is not self-contained. Only the $\pi/4$ branch belongs to this class.
 
-**Class B: Self-redefined.** $(D_k, C_k)$ are transformed by a rule internal to the state (Fibonacci swap for $\varphi$, factorial scaling for $e$) but receive no external increment. The recursion feeds on its own previous state.
+**Class B: Self-redefined.** $(D_k, C_k)$ evolve by a transformation of their own current values (Fibonacci swap for $\varphi$, factorial scaling for $e$) but receive no external increment. The factorial rule consumes the iteration counter $k$ as a multiplier, but injects no new constant beyond it; the recursion otherwise feeds on its own previous state.
 
-**Class C: Fixed.** $(D_k, C_k)$ are held constant at their seed values for all $k$. Convergence is driven entirely by the iteration index $k$ entering $f$. The $\sqrt{2}$ and $\ln 2$ branches belong to this class.
+**Class C: Fixed.** $(D_k, C_k)$ are held constant at their seed values for all $k$. Convergence is driven by the update map $f$ alone: as a pure fixed-point iteration in the $\sqrt{2}$ branch (where $k$ never enters $f$), or with the iteration index entering $f$ directly in the $\ln 2$ branch.
 
-This trichotomy partitions the five branches cleanly: one Class A ($\pi/4$), two Class B ($\varphi$, $e$), two Class C ($\sqrt{2}$, $\ln 2$).
+This trichotomy partitions the five branches cleanly: one Class A ($\pi/4$), two Class B ($\varphi$, $e$), two Class C ($\sqrt{2}$, $\ln 2$). The classification can equivalently be stated on two independent axes: whether $(D_k, C_k)$ evolve at all, and whether the branch consumes the iteration counter $k$.
 
-![Figure 2: Traversal-class taxonomy of the five tholonic ladder branches.](figures/1_traversal-classes.png)
+| Branch | $(D, C)$ evolve? | Counter $k$ consumed? | Class |
+|--------|------------------|----------------------|-------|
+| $\pi/4$ | yes (external increment $\Delta$) | no | A |
+| $\varphi$ | yes (internal swap) | no | B |
+| $e$ | yes (scaling by $k$) | yes, in traversal | B |
+| $\sqrt{2}$ | no | no | C |
+| $\ln 2$ | no | yes, in $f$ | C |
 
-**Figure 2.** Classification of the five tholonic ladder branches by traversal type. Class A (red) injects new information each step via an external increment. Class B (blue) evolves parameters by an internal rule (Fibonacci swap or factorial growth). Class C (green) holds all parameters fixed; convergence is driven entirely by the iteration index.
+Class A is evolution by external constant; Class B is evolution by internal or counter-indexed transformation; Class C is no evolution.
+
+![Figure 2. Classification of the five tholonic ladder branches by traversal type. Class A (red) injects new information each step via an external increment. Class B (blue) evolves parameters by an internal rule (Fibonacci swap or factorial growth). Class C (green) holds all parameters fixed; convergence is driven by the update map alone, with the iteration index entering f directly in the ln 2 branch.](figures/1_traversal-classes.png)
 
 ---
 
@@ -133,7 +145,7 @@ This trichotomy partitions the five branches cleanly: one Class A ($\pi/4$), two
 | Limit | $N_0$ | $D_0$ | $C_0$ | $N_{k+1}$ | Traversal rule | Class |
 |-------|-------|-------|-------|-----------|----------------|-------|
 | $\pi/4$ | $1$ | $3$ | $5$ | $N - \dfrac{1}{D} + \dfrac{1}{C}$ | $D \leftarrow D+4,\quad C \leftarrow C+4$ | A |
-| $\varphi$ | $1$ | $1$ | $2$ | $D + \dfrac{D}{N}$ | $D \leftarrow C,\quad C \leftarrow C + D$ | B |
+| $\varphi$ | $1$ | $1$ | $2$ | $N_0 + \dfrac{D}{C}$ | $D \leftarrow C,\quad C \leftarrow C + D$ | B |
 | $e$ | $0$ | $1$ | $1$ | $N + \dfrac{D}{C}$ | $C \leftarrow C \cdot \max(k,1)$ | B |
 | $\sqrt{2}$ | $1$ | $2$ | $2$ | $\dfrac{N + D/N}{C}$ | $D, C$ fixed | C |
 | $\ln 2$ | $0$ | $1$ | $1$ | $N + (-1)^k \dfrac{D}{k + C}$ | $D, C$ fixed | C |
@@ -162,11 +174,11 @@ expressing $\pi$ in terms of perfect squares offset by unity. See also Propositi
 
 ### 5.2 The $\varphi$ branch
 
-**Proposition 5.3.** *With $(N_0, D_0, C_0) = (1, 1, 2)$ and Fibonacci update, $N_\infty = \varphi = (1+\sqrt{5})/2$.*
+**Proposition 5.3.** *With $(N_0, D_0, C_0) = (1, 1, 2)$, update $N_{k+1} = N_0 + D_k/C_k$, and the Fibonacci traversal $D \leftarrow C$, $C \leftarrow C + D$, the limit is $N_\infty = \varphi = (1+\sqrt{5})/2$.*
 
-*Proof.* The update rule is $N_{k+1} = 1 + 1/N_k$ (where the fixed value $1$ comes from $D_0$ before the Fibonacci swap begins). Suppose $N_k \to L$. Then at the fixed point $L = 1 + 1/L$, giving $L^2 - L - 1 = 0$, whose positive root is $\varphi$. To verify convergence: the map $g(x) = 1 + 1/x$ satisfies $|g'(x)| = 1/x^2 < 1$ for $x > 1$, so it is a contraction on $[1, 2]$; by the Banach fixed-point theorem $N_k \to \varphi$ [HW79, Kos01]. $\square$
+*Proof.* With seeds $(D_0, C_0) = (1, 2) = (F_2, F_3)$, the traversal maintains $(D_k, C_k) = (F_{k+2}, F_{k+3})$, consecutive Fibonacci numbers. Ratios of consecutive Fibonacci numbers converge: $F_{k+2}/F_{k+3} \to 1/\varphi$ [HW79, Kos01], with error contracting geometrically by the factor $\varphi^{-2} \approx 0.382$ per step (Binet's formula). Hence $N_{k+1} = 1 + F_{k+2}/F_{k+3} \to 1 + 1/\varphi = \varphi$, by the defining identity $\varphi = 1 + 1/\varphi$. $\square$
 
-**Functional roles.** $D$ is the smaller (prior) Fibonacci term; the boundary, the definition. $C$ is the larger accumulated term; the integration of the two most recent generations. Though both are reassigned each iteration, $D$ always carries the constraining role and $C$ the integrating role.
+**Functional roles.** $D$ is the smaller (prior) Fibonacci term; the boundary, the definition. $C$ is the larger accumulated term; the integration of the two most recent generations. Though both are reassigned each iteration, $D$ always carries the constraining role and $C$ the integrating role. The update consumes the ratio $D/C$ directly, so the Fibonacci traversal is the engine of convergence, not an accessory to it.
 
 ### 5.3 The $\sqrt{2}$ branch
 
@@ -184,7 +196,7 @@ expressing $\pi$ in terms of perfect squares offset by unity. See also Propositi
 
 **Functional roles.** $D = 1$ is the fixed numerator; the unchanging boundary, the definition that never varies. $C$ starts at $1$ but grows as a factorial: the expanding denominator that absorbs more structure each iteration, increasingly limiting how much of the unit contributes. They start at the same value but diverge immediately in behavior: one constrains, the other integrates.
 
-**Remark** (Offset variant). When initialized with $N_0 = 2$ (the Instantiation axis value in the tholonic geometry), the branch converges to $e + 2$. The offset $+2$ equals $N_0$ exactly, confirming that the raw output encodes both the target constant and a baseline contribution from the initial triad state. In the canonical form with $N_0 = 0$, no offset appears.
+**Remark** (Offset variant). When initialized with $N_0 = 2$ (the Instantiation axis value in the tholonic geometry), the branch converges to $e + 2$. The offset $+2$ equals $N_0$ exactly (Proposition 6.5), confirming that the raw output encodes both the target constant and a baseline contribution from the initial triad state. In the canonical form with $N_0 = 0$, no offset appears.
 
 ### 5.5 The $\ln 2$ branch
 
@@ -194,7 +206,7 @@ expressing $\pi$ in terms of perfect squares offset by unity. See also Propositi
 
 **Functional roles.** $D = 1$ is the fixed numerator; the defining boundary. $C = 1$ is the offset in the denominator; the integration base that steps through the harmonic denominators. They are numerically identical but structurally distinct: one limits, one integrates.
 
-**Remark** (Offset variant). When $N_0 = 1/2$, the branch converges to $\ln 2 + 1/2$. The offset $+1/2 = 1/C_0$ for an earlier formulation using $C_0 = 2$, consistent with the offset law for the $e$ branch: both offsets are simple rational functions of the initial triad, not arbitrary corrections.
+**Remark** (Offset variant). When $N_0 = 1/2$, the branch converges to $\ln 2 + 1/2$. The offset equals $N_0$ exactly, as it must: the update is pure accumulation, so the seed enters the limit additively (Proposition 6.5).
 
 ---
 
@@ -244,14 +256,30 @@ $$D_n \cdot C_n = (4n-1)(4n+1) = 16n^2 - 1.$$
 
 ![Figure 5. The denominator products D_n * C_n = (4n-1)(4n+1) = 16n^2 - 1 of the pi/4 branch at scales K = 10, 100, 1000 (left to right). Each scale reproduces the same parabolic shape, reflecting the self-similar structure of the recursion. The dotted red curve shows the reference parabola 16n^2; the products are uniformly offset by -1 (perfect squares minus unity).](figures/1_perfect-squares.png)
 
-**Proposition 6.5** (Offset consistency). *For branches initialized with $N_0 \neq 0$ in variant formulations, the affine offset of $N_\infty$ from the target constant is a rational function of the initial triad parameters, not an arbitrary correction.*
+**Proposition 6.5** (Offset consistency, translation equivariance). *Let a branch have a pure-accumulation update $N_{k+1} = N_k + t_k$, where the term $t_k$ depends only on $(D_k, C_k, k)$ and not on $N_k$ (the $e$ and $\ln 2$ branches). Then the limit is translation-equivariant in the seed:*
 
-| Branch | Variant $N_0$ | $N_\infty$ | Offset | Expression |
-|--------|---------------|-----------|--------|------------|
-| $e$ | $2$ | $e + 2$ | $+2$ | $= N_0$ |
-| $\ln 2$ | $1/2$ | $\ln 2 + 1/2$ | $+1/2$ | $= 1/C_0$ (with $C_0 = 2$) |
+$$N_\infty(N_0) = N_0 + N_\infty(0),$$
+
+*so the affine offset of $N_\infty$ from the target constant equals $N_0$ exactly.*
+
+*Proof.* By induction, $N_K = N_0 + \sum_{k=0}^{K-1} t_k$, and the sum is independent of $N_0$. Letting $K \to \infty$ gives the identity. $\square$
+
+| Branch | Variant $N_0$ | $N_\infty$ | Offset |
+|--------|---------------|-----------|--------|
+| $e$ | $2$ | $e + 2$ | $+2 = N_0$ |
+| $\ln 2$ | $1/2$ | $\ln 2 + 1/2$ | $+1/2 = N_0$ |
 
 In both cases the offset is the initial baseline of the accumulation, not a failure of the framework. In the canonical forms of Table 1 with $N_0 = 0$, both converge directly to their targets.
+
+**Proposition 6.6** (Parametric families). *Two branches embed in one-parameter families with the same traversal class and role structure:*
+
+*(i) Replacing $D = 2$ by $D = a > 0$ in the $\sqrt{2}$ branch yields $N_\infty = \sqrt{a}$, with quadratic convergence, for every $a$.*
+
+*(ii) Replacing the additive base $N_0 = 1$ by $m \in \mathbb{N}$ in the $\varphi$ branch, with the generalized traversal $D \leftarrow C$, $C \leftarrow mC + D$, yields the metallic means $N_\infty = \sigma_m = (m + \sqrt{m^2 + 4})/2$; the case $m = 1$ recovers $\varphi$.*
+
+*Proof.* (i) The update $N_{k+1} = (N_k + a/N_k)/C$ with $C = 2$ is Newton's method for $x^2 = a$ [BF15]; the argument of Proposition 5.4 applies verbatim, with $g'(\sqrt{a}) = 0$ giving quadratic convergence. (ii) The traversal maintains consecutive terms of the generalized Fibonacci recurrence $G_{k+1} = m G_k + G_{k-1}$, whose consecutive ratios converge (for any positive seeds, since $\sigma_m$ is the dominant root) to the positive root of $x^2 = mx + 1$: thus $D_k / C_k \to 1/\sigma_m$, and $N_{k+1} = m + D_k/C_k \to m + 1/\sigma_m = \sigma_m$ by the defining identity $\sigma_m = m + 1/\sigma_m$. $\square$
+
+These deformations show that the documented branches are distinguished points inside parametric families rather than isolated curiosities, and they make precise why the local-isolation reformulation of Conjecture 8.3 is the natural one: within a family, varying the parameter moves the limit continuously through other algebraic targets, so uniqueness claims must be made relative to fixed parameters.
 
 ---
 
@@ -262,16 +290,18 @@ In both cases the offset is the initial baseline of the accumulation, not a fail
 | Branch | $N_K$ (computed) | Target | Residual | Rate |
 |--------|------------------|--------|----------|------|
 | $\pi/4$ | $0.785\,399\,4\ldots$ | $0.785\,398\,2\ldots$ | $1.2 \times 10^{-6}$ | $O(1/K)$ |
-| $\varphi$ | $1.618\,033\,9\ldots$ | $1.618\,033\,9\ldots$ | $< 10^{-15}$ | super-linear |
+| $\varphi$ | $1.618\,033\,9\ldots$ | $1.618\,033\,9\ldots$ | $< 10^{-15}$ | linear, rate $\varphi^{-2}$ |
 | $e$ | $2.718\,281\,8\ldots$ | $2.718\,281\,8\ldots$ | $< 10^{-15}$ | $O(1/K!)$ |
 | $\sqrt{2}$ | $1.414\,213\,6\ldots$ | $1.414\,213\,6\ldots$ | $< 10^{-15}$ | quadratic |
 | $\ln 2$ | $0.693\,142\,2\ldots$ | $0.693\,147\,2\ldots$ | $5.0 \times 10^{-6}$ | $O(1/K)$ |
 
 The slow convergence of $\pi/4$ and $\ln 2$ ($O(1/k)$ term decay) is intrinsic to their alternating-series structure. The three remaining branches converge to machine precision well within $10^5$ iterations. Series-acceleration methods (Euler, van Wijngaarden, Levin) would reduce residuals for the two slow branches but are not required by the framework.
 
+**Explicit error bounds.** For the two alternating branches the alternating series theorem supplies a priori envelopes: after $k$ iterations, $|N_k - \pi/4| \leq 1/(4k+3)$ (the first omitted Leibniz term) and $|N_k - \ln 2| \leq 1/(k+1)$. At $K = 10^5$ these give $2.5 \times 10^{-6}$ and $10^{-5}$, consistent with the observed residuals $1.2 \times 10^{-6}$ and $5.0 \times 10^{-6}$ (roughly half the envelope, as expected for an alternating tail). For $\sqrt{2}$, Newton's method gives the exact one-step relation $|N_{k+1} - \sqrt{2}| = |N_k - \sqrt{2}|^2 / (2N_k)$; for $\varphi$, the error contracts geometrically by the factor $\varphi^{-2} \approx 0.382$ per step.
+
 ![Figure 6. Convergence of all five branches: log10|N_k - N_inf| vs k at K=10^5 iterations. Class B branches (e, phi) reach machine precision within tens of steps; Class C Newton-Babylonian (sqrt2) converges quadratically and hits the floor by k~6. Class A (pi/4) and the Class C alternating branch (ln 2) decay as O(1/k), tracking the dotted slope-(-1) reference line throughout.](figures/1_convergence-comparison.png)
 
-**Convergence and traversal class.** The two slowest branches are the Class A branch ($\pi/4$) and one Class C branch ($\ln 2$). The fastest branches are Class B ($e$, super-exponential; $\varphi$, super-linear) and the other Class C branch ($\sqrt{2}$, quadratic). Whether traversal class systematically predicts convergence order is a regularity worth formalizing as future work.
+**Convergence and traversal class.** The two slowest branches are the Class A branch ($\pi/4$) and one Class C branch ($\ln 2$). The fastest branches are Class B ($e$, super-exponential; $\varphi$, linear with geometric ratio $\varphi^{-2} \approx 0.382$) and the other Class C branch ($\sqrt{2}$, quadratic). Whether traversal class systematically predicts convergence order is a regularity worth formalizing as future work.
 
 ---
 
@@ -303,7 +333,7 @@ Conjecture 8.4 is the key independence question. Establishing it would show that
 
 **Classical series identities.** Standard analysis establishes $\sum_{k=0}^\infty 1/k! = e$ [Rud76] and $\sum_{k=1}^\infty (-1)^{k+1}/k = \ln 2$ [Kno56]. The ladder presents these as Class B and C branches in a unified format; no claim is made beyond this repackaging.
 
-**Structural unification frameworks.** Several authors have organized multiple classical constants under a single formalism; the study of *metallic means* extends $\varphi$ to a parametric family of continued fractions. We are unaware of a framework that identifies all five of $\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$ as branches of a common three-variable recurrence with consistent role assignments. The closest conceptual territory is the general study of fixed-point iterations and series convergence, but neither addresses the triadic role separation or the seed-partition theorem.
+**Structural unification frameworks.** Several authors have organized multiple classical constants under a single formalism; the study of *metallic means* extends $\varphi$ to a parametric family of continued fractions, a family the ladder realizes internally (Proposition 6.6(ii)). We are unaware of a framework that identifies all five of $\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$ as branches of a common three-variable recurrence with consistent role assignments. The closest conceptual territory is the general study of fixed-point iterations and series convergence, but neither addresses the triadic role separation or the seed-partition theorem.
 
 **Leibniz and binary structure.** Leibniz, discoverer of the $\pi/4$ series, developed binary arithmetic simultaneously and drew explicit connections to the I Ching [Lei03, Swe03]. The tholonic framework formalizes a version of this intuition: binary state space generates the minimum non-trivial simplex, the simplex induces the triad, and the triad produces the five classical limits. The interpretive layer is separable from the proofs.
 
@@ -317,15 +347,15 @@ Conjecture 8.4 is the key independence question. Establishing it would show that
 
 The remaining vulnerability is Conjecture 8.4. Until non-circularity is established for the $\pi/4$ grouping, one cannot rule out that it is simply one among infinitely many valid Leibniz rearrangements that happen to fit the Class A format.
 
-**Convergence rates as a structural signal.** The two $O(1/k)$ branches are the Class A branch ($\pi/4$) and a Class C branch ($\ln 2$); the two fastest branches are Class B ($e$, $\varphi$). Class C $\sqrt{2}$ is quadratic; faster than alternating series but slower than factorial. Whether traversal class systematically predicts convergence order (slow/A, fast/B, intermediate/C) is an observable regularity; making it a theorem would add quantitative predictive content to the classification of §4.1.
+**Convergence rates as a structural signal.** The two $O(1/k)$ branches are the Class A branch ($\pi/4$) and a Class C branch ($\ln 2$); the other three reach machine precision within tens of iterations ($e$ super-exponentially, $\sqrt{2}$ quadratically, $\varphi$ linearly at geometric ratio $\varphi^{-2}$). Note that the per-step ordering places Class C $\sqrt{2}$ (quadratic) above Class B $\varphi$ (linear), so the correlation between traversal class and convergence order is imperfect; characterizing exactly when class predicts rate is an open regularity whose resolution would add quantitative predictive content to the classification of §4.1.
 
-**The infinite landscape.** The five branches documented here are recognizable loci in an infinite space of admissible seed–traversal combinations. Every distinct pair of seeds and traversal dynamics defines a new path; every convergent path defines a new limit. The scientific question is not whether other constants exist in this landscape (they obviously do) but which of the infinite admissible paths yield limits of independent mathematical significance, and whether that set is finite and well-characterized. The Conjectures of §8 make this question precise.
+**The infinite landscape.** The five branches documented here are recognizable loci in an infinite space of admissible seed–traversal combinations. Proposition 6.6 exhibits two parametric families explicitly: the square roots $\sqrt{a}$ and the metallic means $\sigma_m$. Every distinct pair of seeds and traversal dynamics defines a new path; every convergent path defines a new limit. The scientific question is not whether other constants exist in this landscape (they obviously do) but which of the infinite admissible paths yield limits of independent mathematical significance, and whether that set is finite and well-characterized. The Conjectures of §8 make this question precise.
 
 ---
 
 ## 11. Conclusion
 
-We have presented a three-variable recurrence family $(N, D, C)$, the tholonic ladder, with five documented branches converging to $\pi/4$, $\varphi$, $e$, $\sqrt{2}$, and $\ln 2$. The limits are classical; the contribution lies in the structural theorems: a seed partition cleanly separating the $\pi/4$ branch, diagonal invariance and swap symmetry for the Class A template, a perfect-square denominator identity linking $\pi$ to the step structure, and an offset-consistency law for shifted initializations. Together these distinguish the five branches from an arbitrary selection of known limits.
+We have presented a three-variable recurrence family $(N, D, C)$, the tholonic ladder, with five documented branches converging to $\pi/4$, $\varphi$, $e$, $\sqrt{2}$, and $\ln 2$. The limits are classical; the contribution lies in the structural theorems: a seed partition cleanly separating the $\pi/4$ branch, diagonal invariance and swap symmetry for the Class A template, a perfect-square denominator identity linking $\pi$ to the step structure, an offset-consistency law for shifted initializations, and two parametric families (square roots and metallic means) embedding the $\sqrt{2}$ and $\varphi$ branches. Together these distinguish the five branches from an arbitrary selection of known limits.
 
 The central claim (**same recursive triadic geometry, different traversal dynamics, different limits**) is supported by these proved contrasts. The open work, stated as four numbered conjectures, concerns the necessity of the seed assignments and traversal rules: whether they are forced by a small set of axioms (predictive framework) or represent a human-chosen sample from a larger admissible space (organizational taxonomy). The structural evidence points toward the former; the proofs are not yet in hand.
 
@@ -353,11 +383,11 @@ def _compute_pi_over_4(max_iter: int, istep: int = 2) -> float:
 
 def _compute_phi(max_iter: int) -> float:
     N = 1.0
-    D = 1.0
-    C = 2.0
-    one = D
+    D = 1   # exact integer Fibonacci terms (floats overflow near k = 1476)
+    C = 2
+    base = N
     for _ in range(max_iter):
-        N = one + (one / N)
+        N = base + (D / C)
         D, C = C, (C + D)
     return N
 
@@ -427,7 +457,7 @@ ln2    = 0.6931421805849816
 | Target | $(N_0,D_0,C_0)$ | Seed set | Class | Classical mechanism | Rate |
 |--------|-----------------|----------|-------|---------------------|------|
 | $\pi/4$ | $(1,3,5)$ | $\{1,3,5\}$ | A | Leibniz paired grouping | $O(1/K)$ |
-| $\varphi$ | $(1,1,2)$ | $\{1,2\}$ | B | Fibonacci fixed point | super-linear |
+| $\varphi$ | $(1,1,2)$ | $\{1,2\}$ | B | Fibonacci ratio convergence | linear, rate $\varphi^{-2}$ |
 | $e$ | $(0,1,1)$ | $\{0,1\}$ | B | $\sum_{k=0}^\infty 1/k!$ | $O(1/K!)$ |
 | $\sqrt{2}$ | $(1,2,2)$ | $\{1,2\}$ | C | Newton–Babylonian | quadratic |
 | $\ln 2$ | $(0,1,1)$ | $\{0,1\}$ | C | alternating harmonic | $O(1/K)$ |

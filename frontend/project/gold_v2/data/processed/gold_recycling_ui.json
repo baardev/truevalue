@@ -1,0 +1,191 @@
+{
+  "_meta": {
+    "provisional": true,
+    "note": "PROVISIONAL — All R_p scores are synthetic baselines derived from published aggregate data. omega_p weights derived from Foran 2005 (GHG split), Newmont 2024 SR (cyanide spills, water recycled, land reclaimed), and WGC 2019. Phase-resolved LCA calibration required before operational use.",
+    "sources": ["Foran et al. 2005 Balancing Act Vol 2", "Newmont 2024 Sustainability Report", "World Gold Council 2019 Climate Report", "ICMM Tailings Standard 2020", "ICMC Cyanide Code"],
+    "formula_b_r": "B_r = 100 * exp(-2 * |D_r - C_r| / max(D_r, C_r))",
+    "formula_tvpci_r": "TVPCI_R = sum(omega_p * B_r_p) for p in 0..7",
+    "formula_b_chain": "B_chain = 100 * exp(-2 * |TVPCI - TVPCI_R| / max(TVPCI, TVPCI_R))",
+    "role_assignment": "TVPCI plays D (bounding, defining forward structure); TVPCI_R plays C (integrating, returning ecological flow); B_chain is emergent N (negotiated child-holon state with parent)",
+    "generated": "2026-05-09"
+  },
+  "omega_weights": {
+    "0": 0.05,
+    "1": 0.28,
+    "2": 0.30,
+    "3": 0.18,
+    "4": 0.10,
+    "5": 0.05,
+    "6": 0.03,
+    "7": 0.01
+  },
+  "omega_sum_check": 1.00,
+  "phases": {
+    "synthetic": {
+      "0": {
+        "phase_name": "Geological Prospecting",
+        "N_r": 20,
+        "D_r": 15,
+        "C_r": 8,
+        "B_r": 39.3,
+        "delta_r": 7,
+        "omega_p": 0.05,
+        "weighted_B_r": 1.97,
+        "dominant_waste": "Drill cuttings; land disturbance from access roads",
+        "score_note": "Minimal public reporting on exploration-phase ecological impacts. Policy exists at corporate level but site-specific monitoring is sparse."
+      },
+      "1": {
+        "phase_name": "Mine Extraction",
+        "N_r": 35,
+        "D_r": 42,
+        "C_r": 28,
+        "B_r": 51.3,
+        "delta_r": 14,
+        "omega_p": 0.28,
+        "weighted_B_r": 14.36,
+        "dominant_waste": "Tailings slurry; acid mine drainage; waste rock overburden",
+        "score_note": "Best-reported extraction phase. Newmont TSF data and reclamation records inform D_r; independent TSF inspection compliance is partial. D_r elevated due to ICMM Tailings Standard adoption; C_r constrained by limited third-party community audits."
+      },
+      "2": {
+        "phase_name": "Ore Processing & Concentration",
+        "N_r": 45,
+        "D_r": 52,
+        "C_r": 38,
+        "B_r": 58.4,
+        "delta_r": 14,
+        "omega_p": 0.30,
+        "weighted_B_r": 17.52,
+        "dominant_waste": "Cyanide solution; process water; SO2 from roasting",
+        "score_note": "Highest-scoring recycling phase despite highest omega_p. Cyanide Code and stack permitting provide D_r structure. Third-party stack tests and cyanide spill audits (Newmont Path to Zero) raise C_r. Highest weighted contribution to TVPCI_R."
+      },
+      "3": {
+        "phase_name": "Doré Production",
+        "N_r": 32,
+        "D_r": 40,
+        "C_r": 22,
+        "B_r": 40.7,
+        "delta_r": 18,
+        "omega_p": 0.18,
+        "weighted_B_r": 7.33,
+        "dominant_waste": "Smelter slag; SO2/NOx; mercury capture waste",
+        "score_note": "Smelter reporting is less standardised than leach-phase reporting. Slag characterisation is inconsistent across operators. C_r low due to limited independent furnace emissions testing at this phase specifically."
+      },
+      "4": {
+        "phase_name": "Refining",
+        "N_r": 38,
+        "D_r": 48,
+        "C_r": 30,
+        "B_r": 47.2,
+        "delta_r": 18,
+        "omega_p": 0.10,
+        "weighted_B_r": 4.72,
+        "dominant_waste": "Acid pickling liquors; chlorine gas; anode slime",
+        "score_note": "LBMA refiner listing provides D_r structure. Acid discharge permitting is jurisdiction-specific and not uniformly verified. Third-party acid effluent testing is uncommon at this phase; C_r reflects that gap."
+      },
+      "5": {
+        "phase_name": "Bar Casting & Assay",
+        "N_r": 25,
+        "D_r": 30,
+        "C_r": 18,
+        "B_r": 44.9,
+        "delta_r": 12,
+        "omega_p": 0.05,
+        "weighted_B_r": 2.25,
+        "dominant_waste": "Metal filings; assay cupel waste (lead/silver); lubricants",
+        "score_note": "Filings recovery is standard industry practice but rarely independently verified. Cupel waste hazardous classification is inconsistently documented. Overall low scores reflect low visibility of this phase's ecological reporting."
+      },
+      "6": {
+        "phase_name": "Logistics & Vaulting",
+        "N_r": 20,
+        "D_r": 22,
+        "C_r": 12,
+        "B_r": 40.3,
+        "delta_r": 10,
+        "omega_p": 0.03,
+        "weighted_B_r": 1.21,
+        "dominant_waste": "Transport diesel exhaust; vault HVAC energy",
+        "score_note": "Low waste intensity but also low ecological reporting. HVAC energy reporting is minimal. Transport emissions are rarely attributed to individual custody legs. Low omega_p limits impact on aggregate."
+      },
+      "7": {
+        "phase_name": "Exchange Registration",
+        "N_r": 30,
+        "D_r": 35,
+        "C_r": 25,
+        "B_r": 56.5,
+        "delta_r": 10,
+        "omega_p": 0.01,
+        "weighted_B_r": 0.57,
+        "dominant_waste": "Data centre energy; minimal paper",
+        "score_note": "Highest B_r despite moderate N/D/C because D_r and C_r are relatively close. Exchange sustainability reports (CME Group, LME/HKEX) provide some public disclosure. Near-zero physical waste. Negligible impact on aggregate due to low omega_p."
+      }
+    }
+  },
+  "chain": {
+    "synthetic": {
+      "tvpci": 82.5,
+      "tvpci_r": 49.9,
+      "b_chain": 45.4,
+      "delta_chain": 32.6,
+      "tvpci_role": "D — the bounding forward custody structure",
+      "tvpci_r_role": "C — the integrating ecological return flow",
+      "b_chain_role": "N — emergent negotiated state of the child holon with its parent",
+      "interpretation": "The chain scores 82.5 on forward custody transparency but only 49.9 on ecological return transparency. The resulting B_chain of 45.4 falls in the Failure zone (below phi-complement threshold of 38.2 is breakdown; 45.4 is in Failure zone). The positive delta_chain of +32.6 indicates the chain is substantially over-defining (extracting and claiming) relative to its ecological return contribution. This is the expected condition for the current gold industry benchmark."
+    }
+  },
+  "scenarios": {
+    "current": {
+      "tvpci": 82.5,
+      "tvpci_r": 49.9,
+      "b_chain": 45.4,
+      "delta_chain": 32.6,
+      "label": "Current State",
+      "description": "Industry synthetic baseline. Forward custody strong; ecological return accountability at Failure zone."
+    },
+    "optimum": {
+      "tvpci": 100.0,
+      "tvpci_r": 78.0,
+      "b_chain": 60.7,
+      "delta_chain": 22.0,
+      "label": "All Optimum",
+      "description": "Best-case scenario. Even at maximum custody transparency, ecological return lags — reflecting the structural gap between what is commercially auditable and what is ecologically accounted for. B_chain improves to Stressed zone."
+    },
+    "shock_1": {
+      "tvpci": 61.0,
+      "tvpci_r": 35.0,
+      "b_chain": 42.7,
+      "delta_chain": 26.0,
+      "label": "Vaulting Shock",
+      "description": "Custody crisis. Ecological transparency collapses proportionally — crisis conditions reduce reporting discipline. B_chain worsens but delta_chain narrows slightly."
+    },
+    "shock_2": {
+      "tvpci": 57.5,
+      "tvpci_r": 28.0,
+      "b_chain": 35.9,
+      "delta_chain": 29.5,
+      "label": "Mining Strike",
+      "description": "Major upstream supply shock. Mine closures suspend both custody reporting and ecological monitoring. B_chain falls to Breakdown zone. Worst b_chain of all scenarios."
+    },
+    "expansion": {
+      "tvpci": 89.5,
+      "tvpci_r": 55.0,
+      "b_chain": 46.2,
+      "delta_chain": 34.5,
+      "label": "Expansion",
+      "description": "Scale-up scenario. More throughput means more waste generation; ecological reporting does not scale proportionally with volume. B_chain improves only marginally vs current despite higher TVPCI."
+    },
+    "regulatory": {
+      "tvpci": 74.0,
+      "tvpci_r": 58.0,
+      "b_chain": 55.7,
+      "delta_chain": 16.0,
+      "label": "Regulatory",
+      "description": "Enhanced regulatory scenario. Mandatory ecological reporting requirements close the gap between TVPCI and TVPCI_R more than any other scenario. Best B_chain of all non-optimum scenarios. Delta_chain narrows to 16.0 — closest to balance achieved under realistic conditions."
+    }
+  },
+  "zone_thresholds": {
+    "coherent_min": 80.0,
+    "stressed_min": 61.8,
+    "failure_min": 38.2,
+    "note": "Same phi-derived thresholds as primary TVPCI scoring: coherent >= 80, stressed >= 61.8, failure >= 38.2, breakdown < 38.2"
+  }
+}

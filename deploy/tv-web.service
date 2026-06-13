@@ -10,6 +10,9 @@ User=jw
 Group=jw
 WorkingDirectory=/home/jw/src/tv
 
+# HTTP Basic Auth for paths listed in deploy/protected-paths.json.
+EnvironmentFile=-/home/jw/src/tv/deploy/auth.env
+
 # Serve HTTPS on 8443 and redirect HTTP 8000 -> 8443.
 # Adjust --http / --https / --bind as needed.
 ExecStart=/usr/bin/python3 /home/jw/src/tv/scripts/serve.py \

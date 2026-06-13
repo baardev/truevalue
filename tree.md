@@ -36,13 +36,13 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   └── value_chain/index.html      Gold Value Chain hub
 │       ├── dashboard.html
 │       └── what_if_simulator.html
-├── frontend/project/shea/index.html        Shea commodity hub
-│   ├── supply_chain/index.html     Shea Supply Chain hub
+├── frontend/project/west_african_shea/index.html        **West African Shea** commodity hub
+│   ├── supply_chain/index.html     **West African Shea** Supply Chain hub
 │   │   ├── project_context.html
 │   │   ├── system_lifecycle.html
 │   │   ├── dashboard.html
 │   │   └── what_if_simulator.html
-│   └── value_chain/index.html      Shea Value Chain hub
+│   └── value_chain/index.html      **West African Shea** Value Chain hub
 │       ├── dashboard.html
 │       └── what_if_simulator.html
 ├── frontend/project/marina_alta/index.html  Marina Alta Mountain Ecosystem — Multi-commodity climate adaptation hub
@@ -57,7 +57,7 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │       └── processed/marina_alta_supply_chain_ui.json
 ├── frontend/docs/PDI/PDI_marina_alta_20260606.yaml   Marina Alta Physical Disclosure Index YAML (8 phases)
 ├── frontend/docs/PDI/PDI_andalucia_olive_20260606.yaml  Andalucia olive ecosystem PDI (8 phases, paired with Marina Alta)
-├── frontend/project/olive_oil/index.html   Olive Oil — Spanish supply and value chain hub
+├── frontend/project/spain_olive_oil/index.html   Spain Olive Oil — Spanish supply and value chain hub
 │   ├── project.yaml                Olive oil project metadata, key metrics, bond relevance
 │   ├── supply_chain/index.html     Supply Chain hub — 8-phase analysis
 │   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and coherence scores
@@ -65,9 +65,9 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   │   └── project_context.html    Context, key actors, bond opportunity analysis, 16 sources
 │   ├── value_chain/index.html      Value Chain — price structure, EUR 1.20/kg premium gap
 │   └── data/
-│       ├── schema/olive_oil_supply_chain_phases.csv
-│       ├── schema/olive_oil_supply_chain_metrics.csv
-│       └── processed/olive_oil_supply_chain_ui.json
+│       ├── schema/spain_olive_oil_supply_chain_phases.csv
+│       ├── schema/spain_olive_oil_supply_chain_metrics.csv
+│       └── processed/spain_olive_oil_supply_chain_ui.json
 ├── frontend/project/cocoa_international/index.html  Cocoa International — Global Supply and Value Chain hub
 │   ├── project.yaml                Cocoa project metadata, 7-phase structure, bond relevance, key metrics
 │   ├── supply_chain/index.html     Supply Chain hub — 7-phase analysis, Phase 1 bottleneck
@@ -101,6 +101,20 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │       ├── schema/gran_chaco_supply_chain_phases.csv
 │       ├── schema/gran_chaco_supply_chain_metrics.csv
 │       └── processed/gran_chaco_supply_chain_ui.json
+├── frontend/project/burkino_faso_shea/index.html  Burkina Faso Shea — BAU vs. Serious Shea Dual-Scenario Supply Chain Hub
+│   ├── supply_chain/index.html     Supply Chain — 8-phase dual-scenario phase flow table (BAU vs. Serious Shea)
+│   │   ├── dashboard.html          Dark amber N-D-C dashboard with grouped BAU/SS bar charts and coherence pentagon
+│   │   ├── project_context.html    Women's economics, buyer landscape, carbon data, DD 2022 inventory, actor map
+│   │   └── recycling_analysis.html TVPCI-R, B_chain, per-phase R_p cards, waste stream table (biogas/syngas/compost), interventions
+│   ├── value_chain/index.html      Value Chain — kernel pricing, butter grades, EBITDA projections, carbon revenue, BAU vs SS gap
+│   └── data/processed/burkino_faso_shea_supply_chain_ui.json
+├── frontend/project/senegal_agroforestry/index.html  Senegal Agroforestry — Ecosystem Carbon and Agroforestry Hub
+│   ├── supply_chain/index.html     Supply Chain — 8-phase agroforestry chain overview
+│   │   ├── dashboard.html          Dark-theme N-D-C dashboard with phase bars and coherence pentagon
+│   │   ├── project_context.html    PDI data, land cover, carbon projections, actor map, sovereign risk
+│   │   └── recycling_analysis.html TVPCI-R, B_chain, per-phase R_p cards, waste stream table, interventions
+│   ├── value_chain/index.html      Value Chain (deferred — carbon revenue context from Mirova shown)
+│   └── data/processed/senegal_agroforestry_supply_chain_ui.json
 ├── frontend/project/aubeb/index.html       AUBEB commodity hub
 │   ├── supply_chain/index.html     AUBEB Supply Chain hub
 │   │   ├── project_context.html
@@ -156,13 +170,13 @@ Every page follows a uniform depth: **Root → Commodity hub → Layer hub → V
 index.html  ·  TV Project Home — True Value Analytics
 ├── → frontend/project/gold/supply_chain/index.html
 ├── → frontend/project/gold/value_chain/index.html
-├── → frontend/project/shea/supply_chain/index.html
-├── → frontend/project/shea/value_chain/index.html
+├── → frontend/project/west_african_shea/supply_chain/index.html
+├── → frontend/project/west_african_shea/value_chain/index.html
 ├── → frontend/project/aubeb/index.html
 ├── → frontend/project/water_jackson_ms/index.html
 ├── → frontend/project/grid_ercot_uri/index.html
 ├── → frontend/project/gold/index.html     (Gold Hub shortcut)
-├── → frontend/project/shea/index.html     (Shea Hub shortcut)
+├── → frontend/project/west_african_shea/index.html     (**West African Shea** Hub shortcut)
 └── → frontend/csv/index.html
 ```
 
@@ -182,7 +196,7 @@ index.html  ·  Gold – Supply & Value Chain Hub
 ├── → value_chain/index.html
 ├── → value_chain/dashboard.html
 ├── → value_chain/what_if_simulator.html
-├── → ../shea/index.html
+├── → ../west_african_shea/index.html
 └── → /index.html
 ```
 
@@ -195,7 +209,7 @@ index.html  ·  Gold Supply Chain – Intelligence Platform
 ├── → dashboard.html
 ├── → what_if_simulator.html
 ├── → ../index.html            (Gold Hub)
-├── → ../../shea/supply_chain/index.html
+├── → ../../west_african_shea/supply_chain/index.html
 └── → /index.html
 
 project_context.html  ·  Gold – Project Context & Supply Chain
@@ -212,12 +226,12 @@ system_lifecycle.html  ·  Gold System Lifecycle N-D-C
 └── → /index.html
 
 dashboard.html  ·  Gold Supply Chain Intelligence – Main Dashboard
-├── → ../../shea/index.html
+├── → ../../west_african_shea/index.html
 └── → /index.html
 
 what_if_simulator.html  ·  What-If Simulator – Gold Supply Chain
 ├── → dashboard.html
-├── → ../../shea/index.html
+├── → ../../west_african_shea/index.html
 └── → /index.html
 ```
 
@@ -228,12 +242,12 @@ index.html  ·  Gold Value Chain – Intelligence Platform
 ├── → dashboard.html
 ├── → what_if_simulator.html
 ├── → ../index.html            (Gold Hub)
-├── → ../../shea/value_chain/index.html
+├── → ../../west_african_shea/value_chain/index.html
 └── → /index.html
 
 dashboard.html  ·  Value Chain Dashboard
 ├── → what_if_simulator.html
-├── → ../../shea/value_chain/dashboard.html
+├── → ../../west_african_shea/value_chain/dashboard.html
 └── → /index.html
 
 what_if_simulator.html  ·  Value Chain What-If Simulator
@@ -243,12 +257,12 @@ what_if_simulator.html  ·  Value Chain What-If Simulator
 
 ---
 
-## frontend/shea/
+## frontend/project/west_african_shea/
 
-Shea commodity hub and its supply, lifecycle, and value layers.
+**West African Shea** commodity hub and its supply, lifecycle, and value layers.
 
 ```
-index.html  ·  Shea – Supply & Value Chain Hub
+index.html  ·  **West African Shea** – Supply & Value Chain Hub
 ├── → supply_chain/index.html
 ├── → supply_chain/project_context.html
 ├── → supply_chain/system_lifecycle.html
@@ -261,19 +275,19 @@ index.html  ·  Shea – Supply & Value Chain Hub
 └── → /index.html
 ```
 
-### frontend/project/shea/supply_chain/
+### frontend/project/west_african_shea/supply_chain/
 
 ```
-index.html  ·  Shea Supply Chain – True Value (Real-World Example)
+index.html  ·  **West African Shea** Supply Chain – True Value (Real-World Example)
 ├── → project_context.html
 ├── → system_lifecycle.html
 ├── → dashboard.html
 ├── → what_if_simulator.html
-├── → ../index.html            (Shea Hub)
+├── → ../index.html            (**West African Shea** Hub)
 ├── → ../../gold/supply_chain/index.html
 └── → /index.html
 
-project_context.html  ·  Shea – Project Context & Impact
+project_context.html  ·  **West African Shea** – Project Context & Impact
 ├── → index.html
 ├── → system_lifecycle.html
 ├── → dashboard.html
@@ -281,20 +295,20 @@ project_context.html  ·  Shea – Project Context & Impact
 ├── → ../../gold/supply_chain/index.html
 └── → /index.html
 
-system_lifecycle.html  ·  Shea System Lifecycle N-D-C
+system_lifecycle.html  ·  **West African Shea** System Lifecycle N-D-C
 ├── → index.html
 ├── → project_context.html
-├── → ../index.html            (Shea Hub)
+├── → ../index.html            (**West African Shea** Hub)
 └── → /index.html
 
-dashboard.html  ·  Shea Supply Chain – Dashboard
+dashboard.html  ·  **West African Shea** Supply Chain – Dashboard
 ├── → index.html
 ├── → project_context.html
 ├── → what_if_simulator.html
 ├── → ../../gold/supply_chain/index.html
 └── → /index.html
 
-what_if_simulator.html  ·  What-If Simulator – Shea Supply Chain
+what_if_simulator.html  ·  What-If Simulator – **West African Shea** Supply Chain
 ├── → dashboard.html
 ├── → index.html
 ├── → project_context.html
@@ -302,20 +316,20 @@ what_if_simulator.html  ·  What-If Simulator – Shea Supply Chain
 └── → /index.html
 ```
 
-### frontend/project/shea/value_chain/
+### frontend/project/west_african_shea/value_chain/
 
 ```
-index.html  ·  Shea Value Chain – Intelligence Platform
+index.html  ·  **West African Shea** Value Chain – Intelligence Platform
 ├── → dashboard.html
 ├── → what_if_simulator.html
-├── → ../index.html            (Shea Hub)
+├── → ../index.html            (**West African Shea** Hub)
 └── → /index.html
 
-dashboard.html  ·  Shea Value Chain Dashboard
+dashboard.html  ·  **West African Shea** Value Chain Dashboard
 ├── → what_if_simulator.html
 └── → /index.html
 
-what_if_simulator.html  ·  Shea Value What-If Simulator
+what_if_simulator.html  ·  **West African Shea** Value What-If Simulator
 ├── → dashboard.html
 └── → /index.html
 ```
@@ -520,12 +534,12 @@ All old paths now auto-redirect. Existing bookmarks and links continue to work.
 | `frontend/value_chain/index.html` | `frontend/project/gold/value_chain/index.html` |
 | `frontend/value_chain/dashboard.html` | `frontend/project/gold/value_chain/dashboard.html` |
 | `frontend/value_chain/what_if_simulator.html` | `frontend/project/gold/value_chain/what_if_simulator.html` |
-| `frontend/shea/dashboard.html` | `frontend/project/shea/supply_chain/dashboard.html` |
-| `frontend/shea/what_if_simulator.html` | `frontend/project/shea/supply_chain/what_if_simulator.html` |
-| `frontend/shea/project_context.html` | `frontend/project/shea/supply_chain/project_context.html` |
-| `frontend/shea_value_chain/index.html` | `frontend/project/shea/value_chain/index.html` |
-| `frontend/shea_value_chain/dashboard.html` | `frontend/project/shea/value_chain/dashboard.html` |
-| `frontend/shea_value_chain/what_if_simulator.html` | `frontend/project/shea/value_chain/what_if_simulator.html` |
+| `frontend/project/west_african_shea/supply_chain/dashboard.html` | `frontend/project/west_african_shea/supply_chain/dashboard.html` |
+| `frontend/project/west_african_shea/supply_chain/what_if_simulator.html` | `frontend/project/west_african_shea/supply_chain/what_if_simulator.html` |
+| `frontend/project/west_african_shea/supply_chain/project_context.html` | `frontend/project/west_african_shea/supply_chain/project_context.html` |
+| `frontend/shea_value_chain/index.html` | `frontend/project/west_african_shea/value_chain/index.html` |
+| `frontend/shea_value_chain/dashboard.html` | `frontend/project/west_african_shea/value_chain/dashboard.html` |
+| `frontend/shea_value_chain/what_if_simulator.html` | `frontend/project/west_african_shea/value_chain/what_if_simulator.html` |
 
 ---
 
@@ -546,7 +560,7 @@ Every commodity has the same page set at the same depth:
 | | Supply Chain | Value Chain |
 |---|---|---|
 | **Gold** | `gold/supply_chain/` (index, dashboard, what_if) | `gold/value_chain/` (index, dashboard, what_if) |
-| **Shea** | `shea/supply_chain/` (index, project_context, dashboard, what_if) | `shea/value_chain/` (index, dashboard, what_if) |
+| **West African Shea** | `west_african_shea/supply_chain/` (index, project_context, dashboard, what_if) | `west_african_shea/value_chain/` (index, dashboard, what_if) |
 
 Cross-commodity navigation is always available in every page header.
 Each commodity hub (`gold/index.html`, `shea/index.html`) links to both its layers.

@@ -39,8 +39,8 @@ Do not mix layers prematurely.
 ## Quick start
 
 ```bash
-# Dev server (repo root = site root)
-python3 -m http.server 8000 --bind 127.0.0.1
+# Dev server (repo root = site root; enforces auth on protected projects)
+python3 scripts/serve.py --http-only --bind 127.0.0.1 --http 8000
 ```
 
 | URL | Page |
@@ -48,7 +48,7 @@ python3 -m http.server 8000 --bind 127.0.0.1
 | `http://localhost:8000/` | Homepage |
 | `http://localhost:8000/frontend/project/gold/index.html` | Gold hub |
 | `http://localhost:8000/frontend/project/gold/supply_chain/index.html` | Gold supply chain |
-| `http://localhost:8000/frontend/project/shea/index.html` | Shea hub |
+| `http://localhost:8000/frontend/project/west_african_shea/index.html` | Shea hub |
 
 ```bash
 # Regenerate frontend JSON after schema or code changes
@@ -237,11 +237,24 @@ requires syncing all three files in the same session:
 ### Development (local)
 
 ```bash
-python3 -m http.server 8000 --bind 127.0.0.1
+python3 scripts/serve.py --http-only --bind 127.0.0.1 --http 8000
 ```
 
-Bind to `127.0.0.1` so that browsers cannot bypass any Nginx gate that may
-sit in front.
+Bind to `127.0.0.1` when exposing the host through a reverse proxy or tunnel.
+
+### Protected project paths
+
+`scripts/serve.py` enforces HTTP Basic Auth on URL prefixes listed in
+`deploy/protected-paths.json` (currently AUBEB and Senegal Agroforestry).
+
+```bash
+cp deploy/auth.env.example deploy/auth.env
+# edit deploy/auth.env with TV_AUTH_USER and TV_AUTH_PASSWORD
+```
+
+Protected paths return `503` until credentials are configured. Add or remove
+prefixes in `deploy/protected-paths.json` as needed. After changing credentials,
+run `bash scripts/restart_server` (or `sudo systemctl restart tv-web` in production).
 
 ### Production (systemd)
 
@@ -261,12 +274,6 @@ journalctl -u tv-web -f
 systemctl restart tv-web
 systemctl stop    tv-web
 ```
-
-### AUBEB password gate
-
-Put Nginx on `tvf.tholonia.com:80` in front of the Python server. Config
-template is in `deploy/nginx-tv-aubeb.conf.template`; install notes in
-`deploy/README-aubeb-nginx.md`.
 
 ---
 

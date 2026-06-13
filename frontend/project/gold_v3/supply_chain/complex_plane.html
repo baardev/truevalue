@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gold V3 – D-C Complex Plane</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0d1117; color: #e6edf3;
+      font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .topbar {
+      background: #1c2128; border-bottom: 1px solid #30363d;
+      padding: 10px 24px; font-size: 13px; color: #8b949e;
+      display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+    }
+    .topbar-badge {
+      font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+      font-size: 11px; color: #fde047;
+    }
+    .container { max-width: 1140px; margin: 0 auto; padding: 32px 24px 48px; }
+    .breadcrumb { font-size: 13px; color: #6e7681; margin-bottom: 28px; }
+    .breadcrumb a { color: #58a6ff; }
+    .badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.08em;
+      padding: 3px 10px; border-radius: 999px;
+      background: rgba(99,102,241,0.2); color: #a5b4fc; margin-bottom: 12px;
+    }
+    h1 { font-size: 26px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+    .subtitle {
+      font-size: 14px; color: #8b949e; line-height: 1.75;
+      max-width: 740px; margin-bottom: 36px;
+    }
+    code {
+      font-family: ui-monospace, monospace; font-size: 13px;
+      color: #79c0ff; background: rgba(121,192,255,0.1);
+      padding: 1px 6px; border-radius: 4px;
+    }
+    /* KPI strip */
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+      gap: 14px; margin-bottom: 36px;
+    }
+    .kpi-card {
+      background: #161b22; border: 1px solid #21262d; border-radius: 12px;
+      padding: 16px 18px;
+    }
+    .kpi-label {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.08em; color: #6e7681; margin-bottom: 6px;
+    }
+    .kpi-value { font-size: 22px; font-weight: 300; color: #e6edf3; line-height: 1; }
+    .kpi-unit  { font-size: 12px; color: #8b949e; margin-left: 3px; }
+    .kpi-note  { font-size: 11px; color: #6e7681; margin-top: 5px; }
+    /* Layout */
+    .layout {
+      display: grid; grid-template-columns: 1fr 340px; gap: 28px; align-items: start;
+    }
+    @media (max-width: 920px) { .layout { grid-template-columns: 1fr; } }
+    /* Chart panel */
+    .panel {
+      background: #161b22; border: 1px solid #21262d; border-radius: 14px;
+      padding: 24px;
+    }
+    .panel-title {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.09em; color: #6e7681; margin-bottom: 16px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .panel-title::after { content: ''; flex: 1; height: 1px; background: #21262d; }
+    /* Table */
+    .data-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .data-table th {
+      text-align: left; padding: 7px 10px; font-size: 10px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.07em; color: #6e7681;
+      border-bottom: 1px solid #21262d;
+    }
+    .data-table td { padding: 8px 10px; border-bottom: 1px solid #1c2128; color: #c9d1d9; }
+    .data-table tr:last-child td { border-bottom: none; }
+    .data-table tr:hover td { background: rgba(255,255,255,0.03); }
+    .zone-badge {
+      display: inline-block; font-size: 10px; font-weight: 700;
+      padding: 2px 7px; border-radius: 999px; text-transform: uppercase;
+    }
+    .zone-coherent { background: rgba(34,197,94,0.15); color: #86efac; }
+    .zone-stressed  { background: rgba(234,179,8,0.15); color: #fde047; }
+    .zone-failure   { background: rgba(239,68,68,0.15); color: #fca5a5; }
+    /* Interpretation block */
+    .interpret {
+      background: #161b22; border: 1px solid #21262d; border-radius: 14px;
+      padding: 24px; margin-top: 28px;
+    }
+    .interpret h3 {
+      font-size: 13px; font-weight: 700; color: #c9d1d9; margin-bottom: 14px;
+      text-transform: uppercase; letter-spacing: 0.07em;
+    }
+    .interpret-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .interpret-item h4 { font-size: 13px; font-weight: 700; color: #e6edf3; margin-bottom: 6px; }
+    .interpret-item p  { font-size: 13px; color: #8b949e; line-height: 1.65; }
+    /* Math callout */
+    .math-callout {
+      background: rgba(99,102,241,0.08); border: 1px solid rgba(99,102,241,0.25);
+      border-radius: 10px; padding: 16px 20px; margin-bottom: 28px;
+      font-size: 13px; color: #c9d1d9; line-height: 1.7;
+    }
+    .math-callout strong { color: #a5b4fc; }
+  </style>
+</head>
+<body>
+<div class="topbar">
+  <span class="topbar-badge">Beta / gold_v3 / Section 11</span>
+  <span>Complex number extension of the N-D-C framework. Built on threshold-ratio normalized D/C values from gold_v2 (Section 8.1).</span>
+  <a href="../../gold_v2/supply_chain/index.html" style="margin-left:auto;white-space:nowrap;">← gold_v2</a>
+  <a href="../../gold/supply_chain/index.html" style="white-space:nowrap;">← Original gold</a>
+</div>
+<div class="container">
+  <div class="breadcrumb">
+    <a href="../../../index.html">Home</a> /
+    <a href="../index.html">Gold V3</a> /
+    <a href="index.html">Supply Chain</a> /
+    <span>Complex Plane</span>
+  </div>
+  <div class="badge">Section 11 · Complex Number Extension · docs/ndc_measurement_framework.md</div>
+  <h1>D-C Complex Plane</h1>
+  <p class="subtitle">
+    Each supply chain phase is represented as a complex number <code>z = D + iC</code>.
+    The <strong style="color:#e6edf3;">argument</strong> θ = arctan(C/D) encodes the same ratio information as the balance score.
+    The <strong style="color:#e6edf3;">modulus</strong> |z| = √(D² + C²) adds what the balance score cannot see: total operational load.
+    Two phases with identical balance scores but different moduli have the same D/C health but different physical scale.
+    This visualization is only meaningful because D and C are threshold-ratio normalized (gold_v2): scale reflects real operational intensity, not flag-count artifacts.
+  </p>
+
+  <div class="math-callout">
+    <strong>Key thresholds in the complex plane:</strong>
+    The 45° diagonal is perfect balance (D = C, balance = 100%).
+    The <strong>Coherent zone</strong> spans 37.3° to 52.7° (balance ≥ 61.8%, phi⁻¹ threshold).
+    The <strong>Stressed zone</strong> spans 27.4°–37.3° and 52.7°–62.6° (balance 38.2%–61.8%).
+    Below 27.4° or above 62.6° is the <strong>Failure zone</strong>.
+    A perfectly balanced phase at the viability threshold (D = C = 1) has modulus = √2 = 1.414, the structural constant of the cTVF.
+  </div>
+
+  <div class="kpi-strip" id="kpi-strip">
+    <div class="kpi-card"><div class="kpi-label">Loading</div><div class="kpi-value">…</div></div>
+  </div>
+
+  <div class="layout">
+    <div class="panel">
+      <div class="panel-title">D-C Operational Space · Normalized Entity · Gold Supply Chain</div>
+      <canvas id="complex-canvas" width="560" height="540" style="display:block;max-width:100%;height:auto;"></canvas>
+    </div>
+    <div>
+      <div class="panel">
+        <div class="panel-title">Phase Values</div>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th>D</th>
+              <th>C</th>
+              <th>|z|</th>
+              <th>θ</th>
+              <th>Zone</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <tr><td colspan="6" style="color:#6e7681;">Loading…</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="panel" style="margin-top:20px;">
+        <div class="panel-title">Zone Boundaries</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Angle</th><th>Balance</th><th>Zone boundary</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>45.0°</td><td>100%</td><td>Perfect balance (D=C)</td></tr>
+            <tr><td>52.7°</td><td>61.8%</td><td>Coherent / Stressed (C&gt;D)</td></tr>
+            <tr><td>37.3°</td><td>61.8%</td><td>Coherent / Stressed (D&gt;C)</td></tr>
+            <tr><td>62.6°</td><td>38.2%</td><td>Stressed / Failure (C&gt;D)</td></tr>
+            <tr><td>27.4°</td><td>38.2%</td><td>Stressed / Failure (D&gt;C)</td></tr>
+            <tr><td>√2 = 1.414</td><td>—</td><td>Unit modulus at (1,1)</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="interpret">
+    <h3>Interpretation</h3>
+    <div class="interpret-grid">
+      <div class="interpret-item">
+        <h4>Modulus as operational load</h4>
+        <p>Phase 6 (Vaulting) has the highest modulus (2.789) — it carries the heaviest combined constraint-plus-contribution load in the chain. Phase 7 (Exchange) has the lowest (1.544) — it is the lightest, closest to its viability minimum on both sides. Modulus and balance zone are independent: a phase can be coherent but heavy (Phase 5, Bar Casting: |z| = 2.391) or stressed but not extremely heavy (Phase 6: |z| = 2.789).</p>
+      </div>
+      <div class="interpret-item">
+        <h4>Argument as health indicator</h4>
+        <p>All phases except Phase 6 fall between 42° and 47°, tightly clustered near the ideal 45° line. Phase 6 is at 37.66°, just inside the Stressed zone boundary (37.32°). This shows the gold supply chain is structurally well-balanced in ratio terms: the flag-count model's Coherent results are confirmed by the physically grounded threshold-ratio model.</p>
+      </div>
+      <div class="interpret-item">
+        <h4>The √2 reference point</h4>
+        <p>A perfectly balanced phase at the exact minimum viable threshold (D = C = 1) sits at the point (1, 1) with modulus = √2 = 1.414. This is the cTVF structural constant emerging geometrically from the complex plane. Phases closer to this point are simpler, lighter transitions; phases farther out are heavier but not necessarily less healthy.</p>
+      </div>
+      <div class="interpret-item">
+        <h4>What the balance score alone misses</h4>
+        <p>Phases 1 (Mining) and 7 (Exchange) have similar balance scores (91.6% and 93.2%). Their moduli are very different: 1.852 vs 1.544. Mining carries 20% more combined operational load than Exchange. The balance score treats them as nearly equivalent; the complex plane reveals that Mining is substantially heavier. This distinction matters for resource allocation and intervention design.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var DATA_URL = '/frontend/project/gold_v3/data/processed/gold_supply_chain_ui.json';
+
+  var PHASE_NAMES = {
+    '0': 'Geological', '1': 'Mining', '2': 'Processing', '3': 'Doré',
+    '4': 'Refining', '5': 'Bar Casting', '6': 'Vaulting', '7': 'Exchange', '8': 'Recycling'
+  };
+
+  /* Zone angle boundaries in radians derived from phi thresholds */
+  /* B=61.8% (phi^-1): |D-C|/max = ln(phi)/2 ≈ 0.2406 */
+  var T_COH_LO = Math.atan(0.7594);   /* 37.32° — stressed/coherent (D>C side) */
+  var T_COH_HI = Math.atan(1/0.7594); /* 52.68° — coherent/stressed (C>D side) */
+  var T_FAI_LO = Math.atan(0.5188);   /* 27.42° — failure/stressed  (D>C side) */
+  var T_FAI_HI = Math.atan(1/0.5188); /* 62.58° — stressed/failure  (C>D side) */
+  var PI2 = Math.PI / 2;
+
+  function drawChart(phases) {
+    var canvas = document.getElementById('complex-canvas');
+    if (!canvas || !canvas.getContext) return;
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var ML = 60, MR = 28, MT = 28, MB = 58;
+    var PW = W - ML - MR, PH = H - MT - MB;
+    var MAX_D = 3.3, MAX_C = 3.3;
+    var scaleX = PW / MAX_D, scaleY = PH / MAX_C;
+
+    /* Canvas coordinate transforms */
+    var OX = ML, OY = MT + PH; /* origin in canvas pixels */
+    function cx(d) { return OX + d * scaleX; }
+    function cy(c) { return OY - c * scaleY; }
+
+    /* Background */
+    ctx.fillStyle = '#161b22';
+    ctx.fillRect(0, 0, W, H);
+
+    /* Zone wedges — filled polygons from origin to far edge */
+    var FAR = Math.max(PW, PH) * 2.2;
+
+    function wedgePoints(th1, th2) {
+      /* Returns array of [x,y] canvas points for a wedge between th1 and th2 (radians) */
+      var pts = [[OX, OY]];
+      var steps = 40;
+      for (var i = 0; i <= steps; i++) {
+        var t = th1 + (th2 - th1) * i / steps;
+        pts.push([OX + FAR * Math.cos(t), OY - FAR * Math.sin(t)]);
+      }
+      return pts;
+    }
+
+    function fillWedge(th1, th2, color) {
+      var pts = wedgePoints(th1, th2);
+      ctx.beginPath();
+      ctx.moveTo(pts[0][0], pts[0][1]);
+      for (var i = 1; i < pts.length; i++) ctx.lineTo(pts[i][0], pts[i][1]);
+      ctx.closePath();
+      ctx.fillStyle = color;
+      ctx.fill();
+    }
+
+    /* Draw zones — order matters (back to front) */
+    fillWedge(0,         T_FAI_LO,  'rgba(239,68,68,0.10)');     /* failure D>C */
+    fillWedge(T_FAI_HI,  PI2,       'rgba(239,68,68,0.10)');     /* failure C>D */
+    fillWedge(T_FAI_LO,  T_COH_LO,  'rgba(234,179,8,0.11)');    /* stressed D>C */
+    fillWedge(T_COH_HI,  T_FAI_HI,  'rgba(234,179,8,0.11)');    /* stressed C>D */
+    fillWedge(T_COH_LO,  T_COH_HI,  'rgba(34,197,94,0.09)');    /* coherent */
+
+    /* Grid lines */
+    ctx.strokeStyle = '#21262d';
+    ctx.lineWidth = 1;
+    for (var v = 0.5; v < MAX_D; v += 0.5) {
+      ctx.beginPath(); ctx.moveTo(cx(v), cy(0)); ctx.lineTo(cx(v), cy(MAX_C)); ctx.stroke();
+      ctx.beginPath(); ctx.moveTo(cx(0), cy(v)); ctx.lineTo(cx(MAX_D), cy(v)); ctx.stroke();
+    }
+
+    /* Modulus reference circles */
+    ctx.setLineDash([3, 5]);
+    ctx.lineWidth = 0.8;
+    [Math.SQRT2, 2.0, 2.5, 3.0].forEach(function (r) {
+      /* Draw only the arc from 0 to PI/2 */
+      ctx.beginPath();
+      ctx.arc(OX, OY, r * scaleX, -PI2, 0);
+      ctx.strokeStyle = 'rgba(99,102,241,0.30)';
+      ctx.stroke();
+      /* Label along the 30° line */
+      var lx = OX + r * scaleX * Math.cos(Math.PI / 6);
+      var ly = OY - r * scaleY * Math.sin(Math.PI / 6);
+      ctx.fillStyle = 'rgba(99,102,241,0.55)';
+      ctx.font = '10px ui-sans-serif, system-ui, sans-serif';
+      ctx.textAlign = 'left';
+      ctx.fillText('|z|=' + r.toFixed(3), lx + 4, ly - 3);
+    });
+    ctx.setLineDash([]);
+
+    /* Zone boundary rays */
+    function drawRay(theta, color) {
+      ctx.beginPath();
+      ctx.moveTo(OX, OY);
+      ctx.lineTo(OX + MAX_D * scaleX * Math.cos(theta),
+                 OY - MAX_C * scaleY * Math.sin(theta));
+      ctx.strokeStyle = color; ctx.lineWidth = 1.2; ctx.stroke();
+    }
+    drawRay(T_FAI_LO, 'rgba(239,68,68,0.55)');
+    drawRay(T_FAI_HI, 'rgba(239,68,68,0.55)');
+    drawRay(T_COH_LO, 'rgba(234,179,8,0.65)');
+    drawRay(T_COH_HI, 'rgba(234,179,8,0.65)');
+
+    /* 45° ideal balance line */
+    ctx.beginPath();
+    ctx.moveTo(OX, OY);
+    ctx.lineTo(OX + Math.min(PW, PH), OY - Math.min(PW, PH));
+    ctx.strokeStyle = 'rgba(255,255,255,0.30)';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([7, 5]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    /* Axes */
+    ctx.strokeStyle = '#484f58'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(cx(MAX_D), OY); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(OX, cy(MAX_C)); ctx.stroke();
+
+    /* Axis tick labels */
+    ctx.fillStyle = '#6e7681';
+    ctx.font = '11px ui-sans-serif, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    [0.5, 1.0, 1.5, 2.0, 2.5, 3.0].forEach(function (v) {
+      ctx.fillText(v.toFixed(1), cx(v), OY + 16);
+      ctx.textAlign = 'right';
+      ctx.fillText(v.toFixed(1), OX - 6, cy(v) + 4);
+      ctx.textAlign = 'center';
+    });
+
+    /* Axis labels */
+    ctx.fillStyle = '#8b949e'; ctx.font = '12px ui-sans-serif, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('D  (Definition / Constraint)', cx(MAX_D / 2), H - 12);
+    ctx.save();
+    ctx.translate(14, cy(MAX_C / 2));
+    ctx.rotate(-Math.PI / 2);
+    ctx.fillText('C  (Contribution)', 0, 0);
+    ctx.restore();
+
+    /* √2 reference point (1,1) */
+    ctx.beginPath(); ctx.arc(cx(1), cy(1), 4, 0, 2 * Math.PI);
+    ctx.fillStyle = 'rgba(99,102,241,0.6)'; ctx.fill();
+    ctx.fillStyle = '#a5b4fc'; ctx.font = '10px ui-sans-serif, system-ui, sans-serif';
+    ctx.textAlign = 'left';
+    ctx.fillText('(1,1) = √2', cx(1) + 7, cy(1) - 3);
+
+    /* Zone labels */
+    ctx.font = 'bold 10px ui-sans-serif, system-ui, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = 'rgba(34,197,94,0.65)';
+    ctx.fillText('COHERENT', cx(1.85), cy(2.10));
+    ctx.fillStyle = 'rgba(234,179,8,0.70)';
+    ctx.fillText('STRESSED', cx(2.55), cy(1.55));
+
+    /* Phase points */
+    var ZONE_COLOR = { coherent: '#22c55e', stressed: '#eab308', failure: '#ef4444' };
+    /* Adjust label positions manually to avoid overlap */
+    var LABEL_OFFSET = {
+      '0': [10, -4], '1': [-12, -13], '2': [10, 14], '3': [-14, 14],
+      '4': [10, -4], '5': [10, -4],   '6': [10, 8],  '7': [-8, -12], '8': [-14, -4]
+    };
+
+    phases.forEach(function (p) {
+      var px = cx(p.D), py = cy(p.C);
+      var col = ZONE_COLOR[p.balance_zone] || '#e6edf3';
+
+      /* Modulus line from origin */
+      ctx.beginPath(); ctx.moveTo(OX, OY); ctx.lineTo(px, py);
+      ctx.strokeStyle = col + '38'; ctx.lineWidth = 1; ctx.stroke();
+
+      /* Filled circle */
+      ctx.beginPath(); ctx.arc(px, py, 8, 0, 2 * Math.PI);
+      ctx.fillStyle = col + '25'; ctx.fill();
+      ctx.beginPath(); ctx.arc(px, py, 8, 0, 2 * Math.PI);
+      ctx.strokeStyle = col; ctx.lineWidth = 2; ctx.stroke();
+
+      /* Phase ID inside circle */
+      ctx.fillStyle = col; ctx.font = 'bold 10px ui-sans-serif, system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText(p.id, px, py + 3.5);
+
+      /* Label outside circle */
+      var off = LABEL_OFFSET[p.id] || [10, -4];
+      ctx.fillStyle = col; ctx.font = '11px ui-sans-serif, system-ui, sans-serif';
+      ctx.textAlign = off[0] < 0 ? 'right' : 'left';
+      ctx.fillText(p.name, px + off[0], py + off[1]);
+    });
+  }
+
+  function zoneBadgeHTML(zone) {
+    var cls = 'zone-badge zone-' + (zone || 'coherent');
+    return '<span class="' + cls + '">' + (zone || 'coherent') + '</span>';
+  }
+
+  function esc(s) {
+    return String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  fetch(DATA_URL)
+    .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(function (data) {
+      var raw = (data.phases && data.phases.normalized) || {};
+      var phases = [];
+
+      Object.keys(raw)
+        .filter(function (k) { return !k.startsWith('_') && typeof raw[k] === 'object'; })
+        .sort(function (a, b) { return parseInt(a) - parseInt(b); })
+        .forEach(function (k) {
+          var p = raw[k];
+          var D = p.D, C = p.C;
+          phases.push({
+            id: k,
+            name: PHASE_NAMES[k] || ('Ph ' + k),
+            D: D, C: C,
+            balance: p.balance,
+            balance_zone: p.balance_zone || 'coherent',
+            modulus: p.modulus || Math.round(Math.sqrt(D*D + C*C) * 1000) / 1000,
+            argument_deg: p.argument_deg || Math.round(Math.atan2(C, D) * 180 / Math.PI * 100) / 100
+          });
+        });
+
+      drawChart(phases);
+
+      /* KPI strip */
+      var maxP = phases.reduce(function (a, b) { return a.modulus > b.modulus ? a : b; });
+      var minP = phases.reduce(function (a, b) { return a.modulus < b.modulus ? a : b; });
+      var avgMod = phases.reduce(function (s, p) { return s + p.modulus; }, 0) / phases.length;
+      var closestTo45 = phases.reduce(function (a, b) {
+        return Math.abs(a.argument_deg - 45) < Math.abs(b.argument_deg - 45) ? a : b;
+      });
+      var modSpread = maxP.modulus - minP.modulus;
+
+      document.getElementById('kpi-strip').innerHTML = [
+        '<div class="kpi-card"><div class="kpi-label">Max Modulus (heaviest)</div>'
+          + '<div class="kpi-value">' + maxP.modulus.toFixed(3) + '<span class="kpi-unit">|z|</span></div>'
+          + '<div class="kpi-note">Phase ' + maxP.id + ' · ' + maxP.name + '</div></div>',
+        '<div class="kpi-card"><div class="kpi-label">Min Modulus (lightest)</div>'
+          + '<div class="kpi-value">' + minP.modulus.toFixed(3) + '<span class="kpi-unit">|z|</span></div>'
+          + '<div class="kpi-note">Phase ' + minP.id + ' · ' + minP.name + '</div></div>',
+        '<div class="kpi-card"><div class="kpi-label">Chain Avg Modulus</div>'
+          + '<div class="kpi-value">' + avgMod.toFixed(3) + '<span class="kpi-unit">|z|</span></div>'
+          + '<div class="kpi-note">vs √2=1.414 at unit threshold</div></div>',
+        '<div class="kpi-card"><div class="kpi-label">Closest to 45°</div>'
+          + '<div class="kpi-value">' + closestTo45.argument_deg.toFixed(2) + '<span class="kpi-unit">°</span></div>'
+          + '<div class="kpi-note">Phase ' + closestTo45.id + ' · ' + closestTo45.name + '</div></div>',
+        '<div class="kpi-card"><div class="kpi-label">Modulus Spread</div>'
+          + '<div class="kpi-value">' + modSpread.toFixed(3) + '<span class="kpi-unit">|z|</span></div>'
+          + '<div class="kpi-note">max − min across chain</div></div>',
+      ].join('');
+
+      /* Data table */
+      var rows = phases.map(function (p) {
+        var argDelta = (p.argument_deg - 45).toFixed(2);
+        var deltaStr = (parseFloat(argDelta) >= 0 ? '+' : '') + argDelta + '°';
+        return '<tr>'
+          + '<td><strong style="color:#e6edf3;">' + p.id + '</strong> ' + esc(p.name) + '</td>'
+          + '<td>' + p.D.toFixed(3) + '</td>'
+          + '<td>' + p.C.toFixed(3) + '</td>'
+          + '<td><strong>' + p.modulus.toFixed(3) + '</strong></td>'
+          + '<td>' + p.argument_deg.toFixed(2) + '° <small style="color:#6e7681;">(' + deltaStr + ')</small></td>'
+          + '<td>' + zoneBadgeHTML(p.balance_zone) + '</td>'
+          + '</tr>';
+      });
+      document.getElementById('table-body').innerHTML = rows.join('');
+    })
+    .catch(function (err) {
+      document.getElementById('kpi-strip').innerHTML =
+        '<div class="kpi-card"><div class="kpi-label">Error</div>'
+        + '<div class="kpi-value" style="color:#f87171;font-size:14px;">'
+        + esc(err.message) + '</div></div>';
+      document.getElementById('table-body').innerHTML =
+        '<tr><td colspan="6" style="color:#f87171;">' + esc(err.message) + '</td></tr>';
+    });
+})();
+</script>
+</body>
+</html>

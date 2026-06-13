@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Senegal Agroforestry – N-D-C Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1f0e;
+    min-height: 100vh;
+    padding: 24px;
+    color: #e8f5e9;
+  }
+  .container { max-width: 1200px; margin: 0 auto; }
+  a { color: #81c784; text-decoration: none; }
+  a:hover { color: #a5d6a7; text-decoration: underline; }
+
+  .topnav {
+    display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px;
+    font-size: 13px; opacity: 0.75;
+  }
+  .topnav span { color: #546e57; }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #1a3a1b 0%, #0d1f0e 100%);
+    border: 1px solid #2d5a2e;
+    border-radius: 14px;
+    padding: 28px 32px;
+    margin-bottom: 22px;
+  }
+  .header h1 { font-size: 26px; font-weight: 300; color: #a5d6a7; margin-bottom: 6px; }
+  .header p { font-size: 13px; color: #81c784; opacity: 0.8; }
+
+  /* KPI strip */
+  .kpi-strip {
+    display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 22px;
+  }
+  .kpi-card {
+    background: #162617;
+    border: 1px solid #2d5a2e;
+    border-radius: 10px;
+    padding: 18px;
+    text-align: center;
+  }
+  .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #81c784; margin-bottom: 5px; }
+  .kpi-value { font-size: 28px; font-weight: 200; color: #a5d6a7; }
+  .kpi-value.warn { color: #ef9a9a; }
+  .kpi-unit { font-size: 10px; color: #4a7c4b; margin-top: 3px; }
+
+  /* Bottleneck alert */
+  .bottleneck-alert {
+    background: #1a0505;
+    border: 1px solid #b71c1c;
+    border-left: 5px solid #ef5350;
+    border-radius: 10px;
+    padding: 18px 22px;
+    margin-bottom: 22px;
+  }
+  .ba-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #ef5350; margin-bottom: 6px; }
+  .ba-text { font-size: 13px; color: #ef9a9a; line-height: 1.7; }
+
+  /* Charts section */
+  .charts-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-bottom: 22px;
+  }
+  .chart-panel {
+    background: #162617;
+    border: 1px solid #2d5a2e;
+    border-radius: 12px;
+    padding: 22px;
+  }
+  .chart-title {
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.06em; color: #81c784; margin-bottom: 16px;
+  }
+  canvas { display: block; }
+
+  /* Full-width chart */
+  .full-chart-panel {
+    background: #162617;
+    border: 1px solid #2d5a2e;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 22px;
+  }
+
+  /* Phase table */
+  .phase-table-panel {
+    background: #162617;
+    border: 1px solid #2d5a2e;
+    border-radius: 12px;
+    padding: 22px;
+    margin-bottom: 22px;
+  }
+  table { width: 100%; border-collapse: collapse; }
+  th {
+    font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em;
+    color: #4a7c4b; padding: 8px 12px; text-align: left;
+    border-bottom: 1px solid #2d5a2e;
+  }
+  td {
+    font-size: 12px; color: #a5d6a7; padding: 10px 12px;
+    border-bottom: 1px solid #1a3a1b;
+  }
+  tr:last-child td { border-bottom: none; }
+  tr.bottleneck-row td { color: #ef9a9a; }
+  .balance-bar {
+    height: 6px; border-radius: 3px;
+    display: inline-block; vertical-align: middle; margin-left: 6px;
+  }
+
+  /* Provisional */
+  .prov-note {
+    font-size: 11px; color: #8d6e63;
+    background: #1a1208; border: 1px solid #5d4037;
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 22px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="topnav">
+    <a href="../../../../index.html">TrueValue Home</a>
+    <span>/</span>
+    <a href="../index.html">Senegal Agroforestry</a>
+    <span>/</span>
+    <a href="index.html">Supply Chain</a>
+    <span>/</span>
+    <span style="color:#a5d6a7">Dashboard</span>
+  </div>
+
+  <div class="header">
+    <h1>🌳 Senegal Agroforestry — N-D-C Dashboard</h1>
+    <p>Phase-resolved constraint/output/coherence analysis · Chain average balance 78.0% · 8 phases · PROVISIONAL synthetic baseline</p>
+  </div>
+
+  <div class="prov-note">
+    PROVISIONAL: All N-D-C values are synthetic baselines derived from PDI Module 1, Mirova land-cover data, and public sources.
+    Phase 4 (Transformation) and Phase 5 (Refining) are structurally opaque pending EP Carbon xlsx and Financial Model xlsx extraction.
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-strip">
+    <div class="kpi-card">
+      <div class="kpi-label">Chain Avg Balance</div>
+      <div class="kpi-value">78.0%</div>
+      <div class="kpi-unit">N-D-C, 8 phases</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Primary Bottleneck</div>
+      <div class="kpi-value warn">65%</div>
+      <div class="kpi-unit">Phase 4: Transformation</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Average N</div>
+      <div class="kpi-value">183</div>
+      <div class="kpi-unit">coherence index (0–290)</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Strongest Phase</div>
+      <div class="kpi-value">92%</div>
+      <div class="kpi-unit">Phase 7: Market Delivery</div>
+    </div>
+  </div>
+
+  <!-- Bottleneck alert -->
+  <div class="bottleneck-alert">
+    <div class="ba-title">Bottleneck Alert: Phase 4 — Transformation (balance 65%)</div>
+    <div class="ba-text">
+      Phase 4 is the primary bottleneck: the 18 distributed Multi-functional Clean Energy Processing Centres
+      co-produce commodities and energy (biogas/syngas, biochars) with no centralised throughput reporting.
+      This structural opacity propagates upstream uncertainty to Phases 5 and 6. Secondary bottlenecks:
+      Phase 1 (Harvest, 70%) has informal cooperative-level records; Phase 5 (Refining, 70%) lacks published
+      data from the 2 Shea Butter Processing Clusters. Resolving Phase 4 opacity is prerequisite for activating
+      bond-linked ecosystem finance.
+    </div>
+  </div>
+
+  <!-- Charts -->
+  <div class="charts-grid">
+    <div class="chart-panel">
+      <div class="chart-title">D vs C by Phase</div>
+      <canvas id="dcChart" height="240"></canvas>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-title">N Coherence Index by Phase</div>
+      <canvas id="nChart" height="240"></canvas>
+    </div>
+  </div>
+
+  <!-- Balance line chart -->
+  <div class="full-chart-panel">
+    <div class="chart-title">Balance Score Across Chain (target: &gt;80%)</div>
+    <canvas id="balanceChart" height="160"></canvas>
+  </div>
+
+  <!-- Pentagon coherence -->
+  <div class="charts-grid">
+    <div class="chart-panel">
+      <div class="chart-title">Five-Model Coherence Pentagon</div>
+      <canvas id="pentagonChart" height="260"></canvas>
+    </div>
+    <div class="chart-panel">
+      <div class="chart-title">N-D-C Phase Radar</div>
+      <canvas id="radarChart" height="260"></canvas>
+    </div>
+  </div>
+
+  <!-- Phase table -->
+  <div class="phase-table-panel">
+    <div class="chart-title">Phase Data Table</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Name</th>
+          <th>D</th>
+          <th>C</th>
+          <th>N</th>
+          <th>Balance</th>
+          <th>Sustainability</th>
+          <th>Transparency</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td><td>In-Situ Origin</td>
+          <td>220</td><td>185</td><td>168</td>
+          <td>83% <span class="balance-bar" style="width:50px;background:#4caf50"></span></td>
+          <td>9.1</td><td>Medium</td>
+        </tr>
+        <tr class="bottleneck-row">
+          <td>1</td><td>Harvest + Nursery</td>
+          <td>260</td><td>228</td><td>171</td>
+          <td>70% <span class="balance-bar" style="width:42px;background:#ef5350"></span></td>
+          <td>5.3</td><td>Low</td>
+        </tr>
+        <tr>
+          <td>2</td><td>Primary Processing</td>
+          <td>260</td><td>236</td><td>193</td>
+          <td>78% <span class="balance-bar" style="width:47px;background:#fdd835"></span></td>
+          <td>7.5</td><td>Medium</td>
+        </tr>
+        <tr>
+          <td>3</td><td>Drying + QC</td>
+          <td>240</td><td>228</td><td>183</td>
+          <td>78% <span class="balance-bar" style="width:47px;background:#fdd835"></span></td>
+          <td>7.5</td><td>Medium</td>
+        </tr>
+        <tr class="bottleneck-row">
+          <td>4</td><td>Transformation</td>
+          <td>260</td><td>244</td><td>164</td>
+          <td>65% <span class="balance-bar" style="width:39px;background:#ef5350"></span></td>
+          <td>3.7</td><td>Low</td>
+        </tr>
+        <tr class="bottleneck-row">
+          <td>5</td><td>Refining + Export Prep</td>
+          <td>280</td><td>256</td><td>188</td>
+          <td>70% <span class="balance-bar" style="width:42px;background:#ef5350"></span></td>
+          <td>5.3</td><td>Low</td>
+        </tr>
+        <tr>
+          <td>6</td><td>Certification + Registry</td>
+          <td>240</td><td>220</td><td>202</td>
+          <td>88% <span class="balance-bar" style="width:53px;background:#4caf50"></span></td>
+          <td>17.9</td><td>Medium-High</td>
+        </tr>
+        <tr>
+          <td>7</td><td>Market Delivery</td>
+          <td>220</td><td>208</td><td>197</td>
+          <td>92% <span class="balance-bar" style="width:55px;background:#4caf50"></span></td>
+          <td>33.3</td><td>High</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bottom nav -->
+  <div style="display:flex;gap:18px;flex-wrap:wrap;padding:14px;background:#162617;border-radius:10px;border:1px solid #2d5a2e;">
+    <a href="../index.html">← Hub</a>
+    <a href="index.html">Supply Chain Overview</a>
+    <a href="project_context.html">Project Context</a>
+    <a href="recycling_analysis.html">Recycling Analysis</a>
+    <a href="../value_chain/index.html">Value Chain</a>
+    <a href="../../../../index.html">TrueValue Home</a>
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script>
+Chart.defaults.color = '#81c784';
+Chart.defaults.borderColor = 'rgba(45,90,46,0.5)';
+
+const PHASES = ['P0','P1','P2','P3','P4','P5','P6','P7'];
+const PHASE_NAMES = ['In-Situ Origin','Harvest + Nursery','Primary Processing','Drying + QC','Transformation','Refining + Export','Certification','Market Delivery'];
+const D = [220,260,260,240,260,280,240,220];
+const C = [185,228,236,228,244,256,220,208];
+const N = [168,171,193,183,164,188,202,197];
+const BAL = [83,70,78,78,65,70,88,92];
+
+const bottleneckColor = (b) => b < 72 ? 'rgba(239,83,80,0.7)' : b < 86 ? 'rgba(253,216,53,0.7)' : 'rgba(76,175,80,0.7)';
+
+// D vs C grouped bar
+const dcCtx = document.getElementById('dcChart').getContext('2d');
+new Chart(dcCtx, {
+  type: 'bar',
+  data: {
+    labels: PHASES,
+    datasets: [
+      { label: 'D (Constraints)', data: D, backgroundColor: 'rgba(46,125,50,0.7)', borderColor: '#2e7d32', borderWidth: 1 },
+      { label: 'C (Outputs)', data: C, backgroundColor: 'rgba(129,199,132,0.7)', borderColor: '#81c784', borderWidth: 1 }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { min: 0, max: 320, ticks: { font: { size: 10 } } },
+      x: { ticks: { font: { size: 10 } } }
+    },
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+  }
+});
+
+// N bar
+const nCtx = document.getElementById('nChart').getContext('2d');
+new Chart(nCtx, {
+  type: 'bar',
+  data: {
+    labels: PHASES,
+    datasets: [{
+      label: 'N (Coherence)',
+      data: N,
+      backgroundColor: BAL.map(bottleneckColor),
+      borderColor: BAL.map(b => b < 72 ? '#ef5350' : b < 86 ? '#fdd835' : '#4caf50'),
+      borderWidth: 1
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { min: 0, max: 280, ticks: { font: { size: 10 } } },
+      x: { ticks: { font: { size: 10 } } }
+    },
+    plugins: {
+      legend: { position: 'bottom', labels: { font: { size: 11 } } },
+      tooltip: { callbacks: { afterLabel: (ctx) => `Balance: ${BAL[ctx.dataIndex]}%` } }
+    }
+  }
+});
+
+// Balance line
+const balCtx = document.getElementById('balanceChart').getContext('2d');
+new Chart(balCtx, {
+  type: 'line',
+  data: {
+    labels: PHASE_NAMES,
+    datasets: [
+      {
+        label: 'Balance %',
+        data: BAL,
+        backgroundColor: 'rgba(46,125,50,0.15)',
+        borderColor: '#4caf50',
+        borderWidth: 2,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: BAL.map(b => b < 72 ? '#ef5350' : '#4caf50'),
+        pointRadius: 5
+      },
+      {
+        label: 'Target (80%)',
+        data: BAL.map(() => 80),
+        borderColor: 'rgba(253,216,53,0.5)',
+        borderWidth: 1,
+        borderDash: [5,4],
+        pointRadius: 0,
+        fill: false
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      y: { min: 0, max: 100, ticks: { font: { size: 10 } } },
+      x: { ticks: { font: { size: 10 } } }
+    },
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+  }
+});
+
+// Pentagon coherence
+const pentCtx = document.getElementById('pentagonChart').getContext('2d');
+new Chart(pentCtx, {
+  type: 'radar',
+  data: {
+    labels: ['π Convergence', 'φ Balance', '√2 Symmetry', 'ln2 Entropy', 'e Growth'],
+    datasets: [{
+      label: 'Baseline',
+      data: [74.2, 76.4, 71.8, 82.1, 80.3],
+      backgroundColor: 'rgba(46,125,50,0.2)',
+      borderColor: '#4caf50',
+      borderWidth: 2,
+      pointRadius: 4
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: { r: { min: 0, max: 100, ticks: { stepSize: 25, font: { size: 9 } } } },
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+  }
+});
+
+// Radar
+const radarCtx = document.getElementById('radarChart').getContext('2d');
+new Chart(radarCtx, {
+  type: 'radar',
+  data: {
+    labels: PHASES,
+    datasets: [
+      { label: 'D', data: D, backgroundColor: 'rgba(46,125,50,0.1)', borderColor: '#2e7d32', borderWidth: 2, pointRadius: 3 },
+      { label: 'C', data: C, backgroundColor: 'rgba(129,199,132,0.1)', borderColor: '#81c784', borderWidth: 2, pointRadius: 3 },
+      { label: 'N', data: N, backgroundColor: 'rgba(165,214,167,0.05)', borderColor: '#a5d6a7', borderWidth: 2, borderDash: [4,3], pointRadius: 3 }
+    ]
+  },
+  options: {
+    responsive: true,
+    scales: { r: { min: 0, max: 300, ticks: { stepSize: 50, font: { size: 9 } } } },
+    plugins: { legend: { position: 'bottom', labels: { font: { size: 11 } } } }
+  }
+});
+</script>
+</body>
+</html>

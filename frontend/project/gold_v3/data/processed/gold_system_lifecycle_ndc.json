@@ -1,0 +1,222 @@
+{
+  "_meta": {
+    "material": "gold",
+    "layer": "system_lifecycle_ndc",
+    "generated": "2026-04-24",
+    "sources": [
+      "frontend/project/gold/data/gold_system_lifecycle_phases.csv",
+      "frontend/project/gold/data/gold_system_lifecycle_metrics.csv",
+      "frontend/project/gold/data/schema/gold_supply_chain_metrics.csv",
+      "frontend/project/gold/data/processed/gold_supply_chain_ui.json"
+    ],
+    "note": "Lifecycle N-D-C layer for the physical operating system that keeps the gold supply chain producing, maintaining, closing, and re-entering material through recycling."
+  },
+  "lifecycle_definition": {
+    "purpose": "Evaluate whether the gold supply chain remains physically productive, compliant, maintained, and recoverable over time.",
+    "relationship_to_supply_chain": "This layer does not replace the 0-8 physical supply-chain phase map. It evaluates the lifecycle system that plans, builds, operates, sustains, and closes or renews those phases.",
+    "phase_sequence": [
+      "Resource definition and mine design",
+      "Develop and commission productive base",
+      "Operate physical chain",
+      "Sustain and assure operating system",
+      "Close, reclaim, and re-enter material"
+    ]
+  },
+  "phases": [
+    {
+      "lifecycle_phase_id": 0,
+      "phase_name": "Resource definition and mine design",
+      "category": "Pre-operation",
+      "linked_supply_phases": [0, 1],
+      "parent_N": "Defined mineable gold resource",
+      "D_total": 285,
+      "C_total": 230,
+      "balance_score": 82.0,
+      "N": 211,
+      "sustainability_index": 0.58,
+      "transparency_level": "medium",
+      "D_parameters": [
+        "Geological confidence",
+        "Reserve classification",
+        "Permitting boundary",
+        "Mine plan",
+        "Environmental baseline"
+      ],
+      "C_parameters": [
+        "Exploration data",
+        "Reserve reporting",
+        "Mine design",
+        "Stakeholder and regulator interfaces"
+      ],
+      "measurable_output": "Defined resource and approved physical extraction plan",
+      "output_unit": "tonnes reserves; years; plan",
+      "data_status": "POPULATED",
+      "notes": "Strong D from geology and permitting. C is lower because exploration results and project boundaries remain partially opaque before development.",
+      "metrics": [
+        {"metric_name": "economic_demonstrated_reserves_tonnes", "value": 5165, "unit": "t", "source": "Foran et al. 2005 Balancing Act Vol 2"},
+        {"metric_name": "economic_life_years", "value": 19, "unit": "years", "source": "Foran et al. 2005 Balancing Act Vol 2"},
+        {"metric_name": "production_forecast_tonnes_year", "value": 500, "unit": "t/year", "source": "Foran et al. 2005 Balancing Act Vol 2"}
+      ]
+    },
+    {
+      "lifecycle_phase_id": 1,
+      "phase_name": "Develop and commission productive base",
+      "category": "Development",
+      "linked_supply_phases": [1, 2, 3],
+      "parent_N": "Operational mine and processing system",
+      "D_total": 275,
+      "C_total": 255,
+      "balance_score": 88.0,
+      "N": 233,
+      "sustainability_index": 0.94,
+      "transparency_level": "medium",
+      "D_parameters": [
+        "Mine construction",
+        "Processing plant specification",
+        "Tailings design",
+        "Water system",
+        "Cyanide controls"
+      ],
+      "C_parameters": [
+        "Commissioned pits or underground workings",
+        "Trained workforce",
+        "Processing circuits",
+        "Supplier network"
+      ],
+      "measurable_output": "Operational extraction and processing capacity",
+      "output_unit": "t/year; sites; processing capacity",
+      "data_status": "PARTIAL",
+      "notes": "Development is physically measurable, but site-level construction progress and commissioning data are not yet tabulated in this project.",
+      "metrics": [
+        {"metric_name": "production_tonnes_year", "value": 260, "unit": "t/year", "source": "Foran et al. 2005 Balancing Act Vol 2"},
+        {"metric_name": "employment_total_years", "value": 27000, "unit": "employment-years", "source": "Foran et al. 2005 Balancing Act Vol 2"},
+        {"metric_name": "supplier_human_rights_flagged_pct", "value": 24, "unit": "percent", "source": "Newmont 2024 Sustainability Report"}
+      ]
+    },
+    {
+      "lifecycle_phase_id": 2,
+      "phase_name": "Operate physical chain",
+      "category": "Operations",
+      "linked_supply_phases": [1, 2, 3, 4, 5, 6, 7],
+      "parent_N": "Running physical gold supply chain",
+      "D_total": 260,
+      "C_total": 275,
+      "balance_score": 91.0,
+      "N": 244,
+      "sustainability_index": 1.35,
+      "transparency_level": "high",
+      "D_parameters": [
+        "Ore grade",
+        "Production controls",
+        "Processing chemistry",
+        "Assay specification",
+        "Custody requirements"
+      ],
+      "C_parameters": [
+        "Mine output",
+        "Concentrate and dore production",
+        "Refining throughput",
+        "Bar casting",
+        "Logistics",
+        "Exchange registration"
+      ],
+      "measurable_output": "Gold moved through physical phases into registered or held bullion",
+      "output_unit": "t/year; bars; deliveries",
+      "data_status": "POPULATED",
+      "notes": "The operating layer is the existing supply-chain phase map. It is relatively strong because several physical outputs and standards are observable.",
+      "metrics": [
+        {"metric_name": "annual_mine_production_global", "value": 3300, "unit": "t/year", "source": "World Gold Council / USGS"},
+        {"metric_name": "water_recycled_rate_pct", "value": 71, "unit": "percent", "source": "Newmont 2024 Sustainability Report"},
+        {"metric_name": "lbma_rgg_audit_compliance", "value": 1, "unit": "binary", "source": "Newmont 2024 Sustainability Report"},
+        {"metric_name": "comex_registered_inventory_reporting", "value": 1, "unit": "binary", "source": "COMEX Daily Reports"}
+      ]
+    },
+    {
+      "lifecycle_phase_id": 3,
+      "phase_name": "Sustain and assure operating system",
+      "category": "Sustaining stewardship",
+      "linked_supply_phases": [1, 2, 4, 5, 6, 7],
+      "parent_N": "Maintained compliant gold production and custody system",
+      "D_total": 295,
+      "C_total": 240,
+      "balance_score": 80.0,
+      "N": 214,
+      "sustainability_index": 0.5,
+      "transparency_level": "medium",
+      "D_parameters": [
+        "Progressive reclamation",
+        "Water recycling targets",
+        "Spill controls",
+        "Responsible sourcing audits",
+        "Vault controls",
+        "Custody procedures"
+      ],
+      "C_parameters": [
+        "Land rehabilitation",
+        "Recycled process water",
+        "Incident reduction",
+        "Supplier due diligence",
+        "Audit evidence",
+        "Custody reporting"
+      ],
+      "measurable_output": "Maintained production system with active compliance and stewardship controls",
+      "output_unit": "ha/year; percent; count/year; binary audit status",
+      "data_status": "PARTIAL",
+      "notes": "Some sustaining metrics are strong, including reclamation, water recycling, cyanide spills, and audit compliance. Custody and vault maintenance remain structurally opaque at Phase 6.",
+      "metrics": [
+        {"metric_name": "land_reclaimed_ha", "value": 192, "unit": "ha/year", "source": "Newmont 2024 Sustainability Report"},
+        {"metric_name": "cyanide_spills_count", "value": 30, "unit": "count/year", "source": "Newmont 2024 Sustainability Report"},
+        {"metric_name": "water_recycled_rate_baseline_pct", "value": 65, "unit": "percent", "source": "Newmont 2024 Sustainability Report"},
+        {"metric_name": "vault_custody_control_audit_frequency", "value": null, "unit": "", "source": "", "status": "OPAQUE"},
+        {"metric_name": "long_term_tailings_monitoring_frequency", "value": null, "unit": "", "source": "", "status": "OPAQUE"}
+      ]
+    },
+    {
+      "lifecycle_phase_id": 4,
+      "phase_name": "Close, reclaim, and re-enter material",
+      "category": "Closure and circularity",
+      "linked_supply_phases": [1, 2, 6, 8],
+      "parent_N": "Closed or renewed gold system with recovered material re-entering refining",
+      "D_total": 265,
+      "C_total": 215,
+      "balance_score": 75.0,
+      "N": 180,
+      "sustainability_index": 0.34,
+      "transparency_level": "medium",
+      "D_parameters": [
+        "Closure obligations",
+        "Tailings stability",
+        "Reclamation targets",
+        "Recycled feed quality",
+        "Re-entry specification"
+      ],
+      "C_parameters": [
+        "Land reclaimed",
+        "Waste stabilization",
+        "Secondary recovery",
+        "Recycled material returned to refining"
+      ],
+      "measurable_output": "Reclaimed land and recovered gold feedstock",
+      "output_unit": "ha/year; percent recycled; t/year recovered",
+      "data_status": "PARTIAL",
+      "notes": "Closure and recycling are present in the model, but closure liabilities, long-term tailings monitoring, and phase 8 feedstock traceability are not yet fully tabulated.",
+      "metrics": [
+        {"metric_name": "recycling_share_pct", "value": 28, "unit": "percent", "source": "World Gold Council"},
+        {"metric_name": "above_ground_stock_tonnes", "value": 205000, "unit": "t", "source": "World Gold Council"},
+        {"metric_name": "closure_reclamation_target_ha", "value": 162, "unit": "ha/year", "source": "Newmont 2024 Sustainability Report"},
+        {"metric_name": "closure_liability_register", "value": null, "unit": "", "source": "", "status": "OPAQUE"},
+        {"metric_name": "recycled_feedstock_traceability", "value": null, "unit": "", "source": "", "status": "OPAQUE"}
+      ]
+    }
+  ],
+  "system": {
+    "balance_score": 83.2,
+    "average_N": 216,
+    "bottleneck_phase_ids": [3, 4],
+    "bottleneck_names": [
+      "Sustain and assure operating system",
+      "Close, reclaim, and re-enter material"
+    ],
+    "interpretation": "The gold lifecycle is strongest during physical operation, where production, refining standards, and exchange registration provide measurable anchors. The lifecycle risk sits in sustaining assurance and closure: vault custody maintenance, tailings monitoring, closure liabilities, and recycled feedstock traceability are still partly opaque."
+  }
+}

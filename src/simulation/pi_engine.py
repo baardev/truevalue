@@ -19,7 +19,7 @@ from src.simulation.tholonic_engine import balance_exponential, classify_ndc_bal
 
 REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 GOLD_UI_JSON = REPO_ROOT / "frontend" / "project" / "gold" / "data" / "processed" / "gold_supply_chain_ui.json"
-SHEA_UI_JSON = REPO_ROOT / "frontend" / "project" / "shea" / "data" / "processed" / "shea_supply_chain_ui.json"
+SHEA_UI_JSON = REPO_ROOT / "frontend" / "project" / "west_african_shea" / "data" / "processed" / "shea_supply_chain_ui.json"
 
 PI = math.pi
 

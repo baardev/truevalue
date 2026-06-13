@@ -26,6 +26,7 @@
     #hub-twistors,
     #hub-gametheory,
     #hub-papers,
+    #hub-betatests,
     #hub-additional,
     .footer { width: 100%; max-width: none; }
 
@@ -148,6 +149,7 @@
     #hub-twistors,
     #hub-gametheory,
     #hub-papers,
+    #hub-betatests,
     #hub-additional { margin-bottom: 8px; }
 
     /* ── footer ── */
@@ -200,6 +202,11 @@
 <div id="hub-gametheory">
 <p style="color:#6b7280;padding:8px 0;">Loading…</p>
 </div>
+<!-- ── Beta Tests ───────────────────────────────────────────────── -->
+<div class="row-label" style="margin-top:48px;">Beta Tests</div>
+<div id="hub-betatests">
+<p style="color:#6b7280;padding:8px 0;">Loading…</p>
+</div>
 <!-- ── Other materials (research, reports, modeling) ───────────── -->
 <div class="row-label" style="margin-top:48px;">Other materials</div>
 <div id="hub-additional">
@@ -211,8 +218,8 @@
 <script>
 /* ── Projects (categorized) + Additional Information ─────────── */
 (function () {
-  var SITE_INDEX   = '/frontend/site-index.json?v=20260523';
-  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260523';
+  var SITE_INDEX   = '/frontend/site-index.json?v=20260608';
+  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260608';
 
   function esc(s) {
     return String(s || '')
@@ -380,6 +387,17 @@
       }
     }
 
+    /* Render Beta Tests */
+    var hubBetatests = document.getElementById('hub-betatests');
+    if (hubBetatests) {
+      var betatestItems = collectAdditionalItems(siteData, ['betatests']);
+      if (!betatestItems.length) {
+        hubBetatests.innerHTML = '<p style="color:#6b7280;padding:8px 0;">No beta test entries. Edit frontend/site-index.json (betatests).</p>';
+      } else {
+        hubBetatests.innerHTML = '<div class="grid">' + betatestItems.map(renderHubItem).join('') + '</div>';
+      }
+    }
+
     /* Render additional information */
     var hub = document.getElementById('hub-additional');
     if (!hub) return;
@@ -404,6 +422,8 @@
     if (hubGametheory) hubGametheory.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
     var hubPapers = document.getElementById('hub-papers');
     if (hubPapers) hubPapers.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
+    var hubBetatests = document.getElementById('hub-betatests');
+    if (hubBetatests) hubBetatests.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
     var hub = document.getElementById('hub-additional');
     if (hub) hub.innerHTML = '<p style="color:#f87171;padding:8px 0;">Could not load site index: ' + msg + '</p>';
   });
@@ -417,7 +437,7 @@
   // Detect project slug
   var project = null;
   if (/\/aubeb\//i.test(path))  project = 'aubeb';
-  else if (/\/shea\//i.test(path))   project = 'shea';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
   else if (/\/gold\//i.test(path))   project = 'gold';
 
   // Detect section
@@ -436,8 +456,8 @@
     if (project === 'gold') {
       projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
     }
-    if (project === 'shea') {
-      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
     }
   }
 

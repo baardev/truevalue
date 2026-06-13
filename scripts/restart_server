@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+# Restart the TrueValue static web server (serve.py or tv-web systemd unit).
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
+
+HTTP_PORT="${TV_HTTP_PORT:-8000}"
+HTTPS_PORT="${TV_HTTPS_PORT:-8443}"
+BIND="${TV_BIND:-127.0.0.1}"
+LOG_FILE="${TV_HTTP_LOG:-/tmp/tv-http.log}"
+
+stop_local_servers() {
+  pkill -f "scripts/serve.py" 2>/dev/null || true
+  pkill -f "http.server ${HTTP_PORT}" 2>/dev/null || true
+  sleep 0.5
+}
+
+start_local_server() {
+  local mode="$1"
+  stop_local_servers
+  if [[ "$mode" == "http-only" ]]; then
+    echo "Starting serve.py (HTTP only) on ${BIND}:${HTTP_PORT} ..."
+    nohup python3 scripts/serve.py --http-only --bind "$BIND" --http "$HTTP_PORT" \
+      >"$LOG_FILE" 2>&1 &
+  else
+    echo "Starting serve.py (HTTP ${HTTP_PORT} -> HTTPS ${HTTPS_PORT}) on ${BIND} ..."
+    nohup python3 scripts/serve.py --bind "$BIND" --http "$HTTP_PORT" --https "$HTTPS_PORT" \
+      >"$LOG_FILE" 2>&1 &
+  fi
+  echo "Started pid $!; log: ${LOG_FILE}"
+  echo "Protected paths use credentials from deploy/auth.env"
+}
+
+if systemctl is-active --quiet tv-web 2>/dev/null; then
+  echo "Restarting tv-web (systemd) ..."
+  if [[ "$(id -u)" -eq 0 ]]; then
+    systemctl restart tv-web
+  else
+    sudo systemctl restart tv-web
+  fi
+  systemctl status tv-web --no-pager || true
+  exit 0
+fi
+
+if systemctl is-enabled --quiet tv-web 2>/dev/null; then
+  echo "tv-web is installed but not running; starting via systemd ..."
+  if [[ "$(id -u)" -eq 0 ]]; then
+    systemctl start tv-web
+  else
+    sudo systemctl start tv-web
+  fi
+  systemctl status tv-web --no-pager || true
+  exit 0
+fi
+
+start_local_server "http-only"

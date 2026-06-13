@@ -309,6 +309,7 @@ Every new page must link back to its hub and to the main homepage. Every hub pag
 - [ ] `tree.md` updated
 - [ ] Bottleneck alert text explains structural cause, not just phase name
 - [ ] Five-model coherence panel present on hub page
+- [ ] `supply_chain/project_context.html` contains a **Phase Intervention Worksheet** section per `intervention-worksheet.mdc`: provisional disclaimer, five-axis failure diagnosis table with chain scores, one worksheet block per bottleneck phase (balance below 61.8%), per-intervention D/C effect estimates, and combined effect estimate. This is mandatory — the page is incomplete without it.
 - [ ] All pages have nav links back to hub and to main homepage
 - [ ] No em-dashes anywhere in any file (use commas, colons, or separate sentences)
 - [ ] `color-scheme: light` declared in all light-themed pages to prevent browser dark-mode override

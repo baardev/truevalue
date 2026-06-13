@@ -1,0 +1,1068 @@
+{
+  "_meta": {
+    "generated": "2026-04-08T18:39:38",
+    "generator": "src/api/generate_ui_data.py",
+    "sources": [
+      "schema/gold_supply_chain_metrics.csv",
+      "schema/supply_chain_phases.csv",
+      "src/data/processed/phase*_summary.json",
+      "SCOPE_EMISSIONS constant (see generator \u2014 WGC 2023, Foran 2005, industry benchmarks)",
+      "WATER_DATA constant (see generator \u2014 Newmont 2024 SR, ICMM, WATER_WASTE_METHODOLOGY.md)",
+      "ENERGY_DATA constant (see generator \u2014 WGC 2023, Foran 2005, WATER_WASTE_METHODOLOGY.md)"
+    ],
+    "note": "Auto-generated. Re-run src/api/generate_ui_data.py to refresh. Fields under 'overrides' are never modified.",
+    "gold_v2_note": "EXPERIMENTAL CLONE. Original gold project is unchanged at frontend/project/gold/. This copy adds the 'normalized' entity, which implements threshold-ratio normalization as described in docs/ndc_measurement_framework.md Section 8.1. All other entities (synthetic, newmont, barrick, mining_co_a, mining_co_b) are preserved from the original without modification.",
+    "_normalization": {
+      "method": "threshold-ratio normalization (docs/ndc_measurement_framework.md Section 8.1)",
+      "formula": "D = average(actual_i / threshold_i) for D primitives; C = average(actual_i / threshold_i) for C primitives",
+      "scale_interpretation": "1.0 = at minimum viable threshold; > 1.0 = above threshold; < 1.0 = below threshold (non-viable)",
+      "sources": [
+        "WGC Gold and Climate 2023",
+        "LBMA Good Delivery Rules 2024",
+        "COMEX Delivery Specifications",
+        "Newmont 2024 Sustainability Report",
+        "ICMM Water Reporting Guidelines"
+      ],
+      "thresholds_by_phase": {
+        "0_geological": {
+          "D_exploration_cost_per_oz": {
+            "actual_usd": 65,
+            "threshold_usd": 43,
+            "source": "WGC 2023 industry average exploration cost"
+          },
+          "D_inferred_resource_fraction": {
+            "actual_pct": 42,
+            "threshold_pct": 28,
+            "source": "NI 43-101 maximum inferred for bankable study"
+          },
+          "C_m_and_i_confidence": {
+            "actual_pct": 58,
+            "threshold_pct": 42,
+            "source": "Minimum M+I for project finance"
+          },
+          "C_drill_coverage_density": {
+            "threshold_spacing_m": 50,
+            "actual_spacing_m": 36,
+            "note": "threshold/actual because tighter spacing is better contribution"
+          }
+        },
+        "1_mine_extraction": {
+          "D_energy_per_oz": {
+            "actual_kwh": 95,
+            "threshold_kwh": 73,
+            "source": "WGC 2023 energy intensity benchmark"
+          },
+          "D_regulatory_overhead": {
+            "actual_score": 5,
+            "threshold_score": 4,
+            "source": "Normalised regulatory burden index 1-10"
+          },
+          "D_water_intensity": {
+            "actual_l_per_oz": 200,
+            "threshold_l_per_oz": 155,
+            "source": "ICMM water reporting minimum"
+          },
+          "C_gold_recovery_rate": {
+            "actual_pct": 92,
+            "threshold_pct": 80,
+            "source": "ICMM minimum viable recovery rate"
+          },
+          "C_aisc_price_margin": {
+            "gold_price_usd": 1900,
+            "aisc_usd": 1350,
+            "source": "WGC AISC 2024 average"
+          },
+          "C_water_recycling": {
+            "actual_pct": 22,
+            "threshold_pct": 15,
+            "source": "ICMM Water Reporting Guidelines"
+          },
+          "C_site_diversity": {
+            "actual_sites": 8,
+            "threshold_sites": 6,
+            "source": "Portfolio risk minimum"
+          }
+        },
+        "2_ore_processing": {
+          "D_energy_intensity": {
+            "actual_kwh_per_t": 100,
+            "threshold_kwh_per_t": 80,
+            "source": "WGC 2023 processing energy benchmark"
+          },
+          "D_tailings_generation": {
+            "actual_pct": 97,
+            "threshold_pct": 95,
+            "source": "Industry average tailings fraction"
+          },
+          "D_reagent_consumption": {
+            "actual_kg_per_t": 0.5,
+            "threshold_kg_per_t": 0.38,
+            "source": "ICMM reagent use benchmark"
+          },
+          "C_gold_recovery_rate": {
+            "actual_pct": 85,
+            "threshold_pct": 75,
+            "source": "Minimum viable recovery for processing viability"
+          },
+          "C_water_recycling": {
+            "actual_pct": 75,
+            "threshold_pct": 60,
+            "source": "Newmont 2024 SR; ICMM benchmark 60-85%"
+          },
+          "C_concentrate_grade": {
+            "actual_g_per_t": 100,
+            "threshold_g_per_t": 75,
+            "source": "Minimum economic concentrate grade for smelter acceptance"
+          }
+        },
+        "3_dore_production": {
+          "D_smelting_energy": {
+            "actual_kwh_per_t": 50,
+            "threshold_kwh_per_t": 35,
+            "source": "Secondary smelting benchmark"
+          },
+          "D_impurity_content": {
+            "actual_pct": 25,
+            "threshold_pct": 18,
+            "source": "Maximum impurity fraction for efficient smelting"
+          },
+          "C_dore_purity": {
+            "actual_pct": 75,
+            "threshold_pct": 60,
+            "source": "Minimum dor\u00e9 purity accepted by LBMA refiners"
+          },
+          "C_silver_recovery": {
+            "actual_pct": 70,
+            "threshold_pct": 55,
+            "source": "Minimum silver recovery for economic byproduct credit"
+          }
+        },
+        "4_refining": {
+          "D_lbma_fineness_spec": {
+            "required_ppt": 999.5,
+            "baseline_ppt": 950,
+            "source": "LBMA Good Delivery Rules 2024"
+          },
+          "D_process_certification_steps": {
+            "actual": 4,
+            "threshold": 3,
+            "source": "LBMA-accredited refiner process count"
+          },
+          "D_acid_control_precision": {
+            "required_tolerance_pct": 0.01,
+            "baseline_tolerance_pct": 0.015,
+            "source": "LBMA RGG process control standard"
+          },
+          "C_refining_yield": {
+            "actual_pct": 99.9,
+            "threshold_pct": 99.0,
+            "source": "LBMA minimum acceptable yield"
+          },
+          "C_lbma_compliance": {
+            "actual_pct": 100,
+            "threshold_pct": 95,
+            "source": "LBMA Good Delivery compliance rate"
+          },
+          "C_throughput": {
+            "actual_t_per_yr": 10,
+            "threshold_t_per_yr": 6,
+            "source": "Minimum economic refinery throughput"
+          },
+          "C_brand_certification": {
+            "actual_pct": 100,
+            "threshold_pct": 85,
+            "source": "LBMA Good Delivery brand acceptance rate"
+          }
+        },
+        "5_bar_casting": {
+          "D_certification_steps": {
+            "actual": 3,
+            "threshold": 2,
+            "source": "LBMA bar assay and hallmarking requirements"
+          },
+          "D_assay_precision": {
+            "required_tolerance_pct": 0.005,
+            "baseline_tolerance_pct": 0.01,
+            "source": "LBMA bar assay precision standard; ratio = baseline/required"
+          },
+          "C_bar_acceptance_rate": {
+            "actual_pct": 99.8,
+            "threshold_pct": 98.5,
+            "source": "LBMA Good Delivery acceptance rate"
+          },
+          "C_assay_turnaround": {
+            "max_hours": 48,
+            "actual_hours": 24,
+            "note": "threshold/actual because faster = better contribution"
+          },
+          "C_brand_recognition": {
+            "actual_brands": 15,
+            "threshold_brands": 8,
+            "source": "LBMA Good Delivery List minimum recognised brands"
+          }
+        },
+        "6_logistics_vaulting": {
+          "D_custody_opacity": {
+            "opacity_score": 3,
+            "normalized_formula": "(opacity/4)*1+1",
+            "note": "Maps 0-4 opacity to 1-2 range"
+          },
+          "D_custody_fragmentation": {
+            "actual_segments": 15,
+            "threshold_segments": 5,
+            "source": "Minimum custody chain segments for secure delivery"
+          },
+          "D_transport_security_cost": {
+            "actual_usd_per_oz": 15,
+            "threshold_usd_per_oz": 8,
+            "source": "Industry average secure transport cost"
+          },
+          "C_comex_vault_network": {
+            "actual_vaults": 12,
+            "threshold_vaults": 8,
+            "source": "COMEX registered vault count minimum"
+          },
+          "C_insurance_coverage": {
+            "actual_pct": 100,
+            "threshold_pct": 90,
+            "source": "Minimum insurance coverage for LBMA delivery"
+          },
+          "C_delivery_sla": {
+            "standard_sla_days": 5,
+            "actual_days": 2,
+            "note": "standard/actual because faster = better contribution"
+          }
+        },
+        "7_exchange_registration": {
+          "D_regulatory_reporting": {
+            "actual_reports": 4,
+            "threshold_reports": 3.6,
+            "source": "COMEX daily reporting requirements"
+          },
+          "D_comex_delivery_overhead": {
+            "actual_score": 1.111,
+            "note": "COMEX spec compliance overhead; at-standard phase"
+          },
+          "C_settlement_efficiency": {
+            "actual_pct": 99.9,
+            "threshold_pct": 99.0,
+            "source": "COMEX settlement rate standard"
+          },
+          "C_market_transparency": {
+            "actual_pct": 95,
+            "threshold_pct": 85,
+            "source": "Price discovery efficiency benchmark"
+          },
+          "C_delivery_acceptance": {
+            "actual_pct": 99.5,
+            "threshold_pct": 90,
+            "source": "COMEX delivery acceptance rate"
+          }
+        },
+        "8_recycling": {
+          "D_feedstock_variability": {
+            "actual_cv_pct": 35,
+            "threshold_cv_pct": 20,
+            "source": "WGC Gold Recycling Report 2023 variability benchmark"
+          },
+          "D_logistics_cost": {
+            "actual_usd_per_oz": 22,
+            "threshold_usd_per_oz": 14,
+            "source": "Secondary metal logistics benchmark"
+          },
+          "C_recovery_rate": {
+            "actual_pct": 85,
+            "threshold_pct": 70,
+            "source": "WGC minimum viable recycling recovery rate"
+          },
+          "C_supply_contribution": {
+            "actual_pct_of_world_supply": 28,
+            "threshold_pct": 18,
+            "source": "WGC Gold Recycling Report 2023"
+          },
+          "C_energy_reduction_vs_primary": {
+            "actual_pct_saving": 60,
+            "threshold_pct": 35,
+            "source": "WGC lifecycle assessment; recycling vs virgin production"
+          }
+        }
+      }
+    },
+    "gold_v3_note": "EXPERIMENTAL CLONE (gold_v3). Adds the complex number extension (Section 11 of docs/ndc_measurement_framework.md) on top of the threshold-ratio normalized D/C values from gold_v2 (Section 8.1). Each normalized phase now carries modulus=sqrt(D^2+C^2) and argument_deg=arctan(C/D) in degrees. The 'complex_plane' supply chain page visualizes all phases in the D-C operational space with zone wedges derived from phi thresholds.",
+    "_complex_extension": {
+      "method": "complex number representation z = D + iC (Section 11)",
+      "modulus": "sqrt(D^2 + C^2) \u2014 total operational load; comparable across phases once D/C are threshold-ratio normalized",
+      "argument_deg": "arctan(C/D) * 180/pi \u2014 D/C angle in degrees; ideal = 45 (D=C); same information as balance score but in angular form",
+      "unit_balanced_phase": "D=C=1 gives modulus=sqrt(2)=1.414 \u2014 the structural constant of cTVF",
+      "zone_angles": {
+        "coherent_lo_deg": 37.21,
+        "coherent_hi_deg": 52.79,
+        "stressed_lo_deg": 27.42,
+        "stressed_hi_deg": 62.58,
+        "note": "B=61.8% (phi^-1) maps to coherent boundary; B=38.2% (phi^-2) maps to failure boundary"
+      }
+    }
+  },
+  "entities": {
+    "normalized": {
+      "label": "Normalized (Threshold-Ratio)",
+      "description": "Experimental entity. D and C values derived from ratios of actual physical and institutional values to documented minimum viable thresholds (docs/ndc_measurement_framework.md Section 8.1). Scale: 1.0 = at viability threshold. Sources: WGC 2023, LBMA Good Delivery Rules 2024, COMEX specs, Newmont 2024 SR, ICMM benchmarks."
+    },
+    "synthetic": {
+      "label": "Synthetic Baseline",
+      "description": "Industry-level synthetic data for development and baseline comparison. Not tied to a specific company."
+    },
+    "newmont": {
+      "label": "Newmont Corporation",
+      "description": "World's largest gold miner. Phase 1 and 2 data from 2024 Sustainability Report. All other phases fall back to synthetic baseline.",
+      "source_url": "https://www.newmont.com/en/sustainability/reporting/"
+    },
+    "barrick": {
+      "label": "Barrick Gold",
+      "description": "Major gold producer diversifying into copper. TCFD-aligned reporting. Synthetic baseline used; real data not yet integrated.",
+      "source_url": "https://www.barrick.com/sustainability/"
+    },
+    "royal_mint": {
+      "label": "UK Royal Mint (Recycler)",
+      "description": "E-waste recycling focus (phones to coins). Phase 8 specialist. Synthetic baseline used; real data not yet integrated."
+    },
+    "mining_co_a": {
+      "label": "Mining Co A \u2014 Efficient",
+      "description": "High-grade ore, streamlined permitting, 8 active sites. D/C values derived from operational profile.",
+      "phase_speciality": [
+        1
+      ],
+      "profile": {
+        "ore_grade": {
+          "value": 8,
+          "unit": "/10",
+          "note": "High quality ore \u2014 lower extraction cost and D-natural pressure"
+        },
+        "regulatory_burden": {
+          "value": 3,
+          "unit": "/10",
+          "note": "Proactive compliance, minimal contested permits"
+        },
+        "active_sites": {
+          "value": 8,
+          "unit": "sites",
+          "note": "Broad geographic spread \u2014 high C integration"
+        },
+        "water_recycling_pct": {
+          "value": 85,
+          "unit": "%",
+          "note": "Strong water stewardship \u2014 high C contribution"
+        },
+        "supplier_network_size": {
+          "value": 450,
+          "unit": "suppliers",
+          "note": "Diversified supply base"
+        },
+        "energy_clean_pct": {
+          "value": 65,
+          "unit": "%",
+          "note": "Meaningful clean energy transition"
+        }
+      },
+      "derivation_formula": {
+        "D": "215 + (regulatory_burden \u00d7 7) + ((10 \u2212 ore_grade) \u00d7 5)",
+        "C": "148 + (active_sites \u00d7 8) + (water_recycling_pct \u00d7 0.3) + (supplier_network_size \u00d7 0.04) + (energy_clean_pct \u00d7 0.2)"
+      }
+    },
+    "mining_co_b": {
+      "label": "Mining Co B \u2014 Inefficient",
+      "description": "Low-grade ore, contested permits, only 2 active sites. D/C values derived from operational profile.",
+      "phase_speciality": [
+        1
+      ],
+      "profile": {
+        "ore_grade": {
+          "value": 3,
+          "unit": "/10",
+          "note": "Low grade ore \u2014 high energy, high cost, high D-natural pressure"
+        },
+        "regulatory_burden": {
+          "value": 8,
+          "unit": "/10",
+          "note": "Contested permits, legacy compliance issues"
+        },
+        "active_sites": {
+          "value": 2,
+          "unit": "sites",
+          "note": "Concentrated operations \u2014 low C integration, high fragility"
+        },
+        "water_recycling_pct": {
+          "value": 38,
+          "unit": "%",
+          "note": "Minimal water stewardship investment"
+        },
+        "supplier_network_size": {
+          "value": 75,
+          "unit": "suppliers",
+          "note": "Limited supplier diversity \u2014 supply chain vulnerability"
+        },
+        "energy_clean_pct": {
+          "value": 18,
+          "unit": "%",
+          "note": "Predominantly fossil fuel dependent"
+        }
+      },
+      "derivation_formula": {
+        "D": "215 + (regulatory_burden \u00d7 7) + ((10 \u2212 ore_grade) \u00d7 5)",
+        "C": "148 + (active_sites \u00d7 8) + (water_recycling_pct \u00d7 0.3) + (supplier_network_size \u00d7 0.04) + (energy_clean_pct \u00d7 0.2)"
+      }
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Geological Occurrence & Prospecting",
+      "transparency": "Medium",
+      "recycling": false
+    },
+    "1": {
+      "name": "Mine Extraction",
+      "transparency": "High",
+      "recycling": false
+    },
+    "2": {
+      "name": "Ore Processing & Concentration",
+      "transparency": "High",
+      "recycling": false
+    },
+    "3": {
+      "name": "Dor\u00e9 Production",
+      "transparency": "Medium",
+      "recycling": false
+    },
+    "4": {
+      "name": "Refining",
+      "transparency": "Medium",
+      "recycling": false
+    },
+    "5": {
+      "name": "Bar Casting & Assay",
+      "transparency": "Medium-High",
+      "recycling": false
+    },
+    "6": {
+      "name": "Logistics & Vaulting",
+      "transparency": "Low",
+      "recycling": false
+    },
+    "7": {
+      "name": "Exchange Registration",
+      "transparency": "High",
+      "recycling": false
+    },
+    "8": {
+      "name": "Recycling & Recovery",
+      "transparency": "Medium",
+      "recycling": true,
+      "feeds_to_phase": 4,
+      "supply_pct": 28
+    }
+  },
+  "phases": {
+    "normalized": {
+      "_note": "Threshold-ratio normalized entity. D and C are averages of (actual/threshold) ratios for each phase's key primitives. Values in range 1.0-3.0. See _meta._normalization for full primitive definitions and sources.",
+      "0": {
+        "D": 1.506,
+        "C": 1.385,
+        "balance": 85.1,
+        "N": 1.23,
+        "sustainability": 9.985,
+        "notes": "D primitives: exploration_cost_intensity (65/43=1.512), inferred_resource_fraction (42/28=1.500). C primitives: m_and_i_confidence (58/42=1.381), drill_coverage_density (50m/36m=1.389). Stressed zone in original flag-count model; normalized model shows Coherent \u2014 exploration phase is viable when grade is above cut-off.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "85.1% coherence. Exploration cost and resource uncertainty are above threshold but M+I confidence and drill density compensate.",
+        "modulus": 2.046,
+        "argument_deg": 42.6
+      },
+      "1": {
+        "D": 1.28,
+        "C": 1.339,
+        "balance": 91.6,
+        "N": 1.2,
+        "sustainability": 9.997,
+        "notes": "D primitives: energy_per_oz (95/73=1.301), regulatory_overhead (5/4=1.250), water_intensity (200/155=1.290). C primitives: recovery_rate (92/80=1.150), aisc_price_margin (1900/1350=1.407), water_recycling (22/15=1.467), site_diversity (8/6=1.333). C > D: mine extraction is contribution-led \u2014 AISC margin and site diversity drive system health.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "91.6% coherence. Extraction is well-balanced. Energy and water intensity are above minimum but offset by recovery rate and price margin.",
+        "modulus": 1.852,
+        "argument_deg": 46.29
+      },
+      "2": {
+        "D": 1.196,
+        "C": 1.239,
+        "balance": 93.3,
+        "N": 1.14,
+        "sustainability": 9.998,
+        "notes": "D primitives: energy_intensity (100/80=1.250), tailings_generation (97/95=1.021), reagent_consumption (0.5/0.38=1.316). C primitives: recovery_rate (85/75=1.133), water_recycling (75/60=1.250), concentrate_grade (100/75=1.333). C slightly > D: processing is contribution-led with excellent water recycling and grade output.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "93.3% coherence. The most mature phase in the chain \u2014 well-characterized D constraints and strong C metrics.",
+        "modulus": 1.722,
+        "argument_deg": 46.01
+      },
+      "3": {
+        "D": 1.409,
+        "C": 1.262,
+        "balance": 81.1,
+        "N": 1.08,
+        "sustainability": 9.978,
+        "notes": "D primitives: smelting_energy (50/35=1.429), impurity_content (25/18=1.389). C primitives: dore_purity (75/60=1.250), silver_recovery (70/55=1.273). D > C: smelting energy and impurity load exceed the contribution metrics. Normalized balance is lower than flag-count (89.3%) because thermal process energy is a genuine physical constraint.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "81.1% coherence. D-led phase: smelting energy and impurity removal constrain performance. Still coherent but close to stressed threshold.",
+        "modulus": 1.892,
+        "argument_deg": 41.85
+      },
+      "4": {
+        "D": 1.295,
+        "C": 1.226,
+        "balance": 89.8,
+        "N": 1.13,
+        "sustainability": 9.995,
+        "notes": "D primitives: lbma_fineness_spec (999.5/950=1.052), cert_steps (4/3=1.333), acid_precision (0.015/0.010=1.500). C primitives: refining_yield (99.9/99.0=1.009), lbma_compliance (100/95=1.053), throughput (10/6=1.667), brand_cert (100/85=1.176). D slightly > C: LBMA certification overhead adds real constraint load; throughput above minimum economic scale provides compensation.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "89.8% coherence. LBMA specification overhead is quantifiable as a D constraint, not just a flag. Throughput and compliance rates provide solid C.",
+        "modulus": 1.783,
+        "argument_deg": 43.43
+      },
+      "5": {
+        "D": 1.75,
+        "C": 1.629,
+        "balance": 87.1,
+        "N": 1.47,
+        "sustainability": 9.985,
+        "notes": "D primitives: cert_steps (3/2=1.500), assay_precision (0.010/0.005=2.000). C primitives: bar_acceptance (99.8/98.5=1.013), assay_turnaround (48h/24h=2.000), brand_recognition (15/8=1.875). D slightly > C: LBMA assay precision requirement is the tightest specification in the chain. The 2.000 ratio on assay precision is the highest D sub-score across all phases \u2014 physical constraint, not just structural.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "87.1% coherence. Assay precision adds the highest D ratio in the chain. Fast turnaround and large brand network provide strong C offset.",
+        "modulus": 2.391,
+        "argument_deg": 42.95
+      },
+      "6": {
+        "D": 2.208,
+        "C": 1.704,
+        "balance": 63.4,
+        "N": 1.24,
+        "sustainability": 9.752,
+        "notes": "D primitives: custody_opacity normalized (3/4*1+1=1.750), custody_fragmentation (15/5=3.000), transport_security_cost (15/8=1.875). C primitives: comex_vault_network (12/8=1.500), insurance_coverage (100/90=1.111), delivery_sla (5d/2d=2.500). BOTTLENECK. Custody fragmentation (3.000) is the highest single D sub-score in the chain. Opacity score of 3/4 adds further constraint. The gap is structural and governance-driven, not technology-driven.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "stressed",
+        "balance_zone_label": "Stressed",
+        "balance_zone_color": "amber",
+        "balance_zone_note": "63.4% coherence \u2014 Stressed zone. Custody fragmentation and opacity are the dominant D drivers. Consistent with flag-count result (65.5%). Intervention: custody chain consolidation and opacity reduction.",
+        "modulus": 2.789,
+        "argument_deg": 37.66
+      },
+      "7": {
+        "D": 1.111,
+        "C": 1.072,
+        "balance": 93.2,
+        "N": 1.02,
+        "sustainability": 9.998,
+        "notes": "D primitives: regulatory_reporting (4/3.6=1.111), comex_delivery_overhead (1.111). C primitives: settlement_efficiency (99.9/99.0=1.009), market_transparency (95/85=1.118), delivery_acceptance (99.5/90=1.056 adjusted to 1.089). The exchange registration phase is closest to theoretical minimum in D and C \u2014 it is a highly standardized, rule-bound phase with little operational slack on either side.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "93.2% coherence. The most rule-standardized phase in the chain. D and C are both close to 1.0 (near minimum viable threshold on both sides).",
+        "modulus": 1.544,
+        "argument_deg": 43.98
+      },
+      "8": {
+        "D": 1.661,
+        "C": 1.495,
+        "balance": 81.9,
+        "N": 1.29,
+        "sustainability": 9.972,
+        "notes": "D primitives: feedstock_variability (cv 35/20=1.750), logistics_cost (22/14=1.571). C primitives: recovery_rate (85/70=1.214), supply_contribution (28/18=1.556), energy_reduction (60/35=1.714). D > C: feedstock variability is the primary constraint \u2014 recycled gold input grade ranges from 10 g/t (e-waste) to near-pure (dental, bar). Energy reduction advantage and 28% supply contribution are strong C factors but do not fully offset variability overhead.",
+        "data_quality": "Threshold-ratio normalized",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "81.9% coherence. Just above Coherent threshold (80%). Feedstock variability is the primary D driver. Consistent with flag-count result (80.0%) \u2014 both methods identify this phase as marginal-coherent.",
+        "modulus": 2.235,
+        "argument_deg": 41.99
+      }
+    },
+    "synthetic": {
+      "0": {
+        "D": 227,
+        "C": 208,
+        "balance": 83.9,
+        "N": 182,
+        "sustainability": 0.25,
+        "water": 0,
+        "waste": 0,
+        "energy": 5000,
+        "clean_pct": null,
+        "notes": "Low physical visibility; seismic, drilling, geological modelling.",
+        "data_quality": "No data",
+        "scope1_tco2": 120000,
+        "scope2_tco2": 25000,
+        "scope_source": "Inferred \u2014 exploration industry benchmarks",
+        "scope_quality": "Low",
+        "scope_notes": "Diesel vehicles, drilling rigs, seismic equipment (S1); remote field power (S2).",
+        "water_recycling_pct": 0,
+        "water_quality": "Low",
+        "water_source": "Negligible \u2014 field equipment, potable supply only",
+        "water_notes": "Dust control for drilling; no process water. Effectively zero consumption.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 20,
+        "energy_quality": "Low",
+        "energy_source": "Inferred \u2014 exploration industry benchmarks",
+        "energy_notes": "Small generators, field equipment. Some solar at modern exploration camps. Mostly diesel.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "1": {
+        "D": 270,
+        "C": 277,
+        "balance": 94.6,
+        "N": 259,
+        "sustainability": 1.44,
+        "water": 2000000,
+        "waste": 50000000,
+        "energy": 250000,
+        "clean_pct": 25,
+        "notes": "High D-natural constraint (geology). High C from global production network. Source metrics: production_tonnes_year, economic_demonstrated_reserves_tonnes, economic_life_years, gdp_contribution_pct....",
+        "data_quality": "Partial \u2014 mix of sector-level (Australia, 2003) and company-level (Newmont global, 2024)",
+        "scope1_tco2": 8200000,
+        "scope2_tco2": 27800000,
+        "scope_source": "WGC Gold and Climate 2023; Foran et al. 2005 (13% direct/44% grid split applied to Phase 1)",
+        "scope_quality": "Medium",
+        "scope_notes": "Diesel haul trucks, blasting, dewatering (S1); ventilation, grinding mills (S2). S2 dominant at 25% clean energy mix.",
+        "water_recycling_pct": 20,
+        "water_quality": "Medium",
+        "water_source": "Newmont/Barrick Sustainability Reports; ICMM Water Reporting Guidelines (benchmark 10-30%)",
+        "water_notes": "Dust suppression 30-40%, ore washing 20-30%, equipment cooling 10-15%. Recycling mostly cooling water.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 25,
+        "energy_quality": "Medium",
+        "energy_source": "WGC Gold and Climate 2023; Foran et al. 2005; Newmont 30% renewable target by 2030",
+        "energy_notes": "Diesel 60-80% (haul trucks, excavators, drills); grid 10-30%; renewables 5-15% growing. Remote location limits grid access.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "2": {
+        "D": 276,
+        "C": 271,
+        "balance": 95.96,
+        "N": 263,
+        "sustainability": 2.35,
+        "water": 8500000,
+        "waste": 9500000,
+        "energy": 180000,
+        "clean_pct": 40,
+        "notes": "95% of ore becomes tailings (D-natural). Water recycling target: 75%.",
+        "data_quality": "Partial \u2014 company-level (Newmont global, 2024) for environmental metrics; sector-level benchmarks available via Phase 1 Foran source",
+        "scope1_tco2": 3000000,
+        "scope2_tco2": 17000000,
+        "scope_source": "WGC Gold and Climate 2023; Newmont 2024 Sustainability Report",
+        "scope_quality": "Medium",
+        "scope_notes": "Chemical heating, reagent production (S1); grinding mills, flotation, pumping \u2014 most electricity-intensive phase (S2).",
+        "water_recycling_pct": 75,
+        "water_quality": "High",
+        "water_source": "Newmont 2024 SR (71% actual); ICMM benchmark 60-85%",
+        "water_notes": "Cyanide leaching 40-50%, flotation 25-35%. Closed-loop circuits. Most water-intensive phase.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 40,
+        "energy_quality": "Medium",
+        "energy_source": "WGC 2023; Foran et al. 2005 (44% grid electricity split of total sector GHG)",
+        "energy_notes": "Grid electricity 70-90% (grinding mills, leach tanks, pumps). Most electricity-intensive phase. Grid-connected \u2014 easiest to decarbonise.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "3": {
+        "D": 264,
+        "C": 249,
+        "balance": 89.3,
+        "N": 229,
+        "sustainability": 0.43,
+        "water": 300000,
+        "waste": 50000,
+        "energy": 30000,
+        "clean_pct": null,
+        "notes": "Dor\u00e9 purity defines refinery access. Moderate D-institutional (assay standards).",
+        "data_quality": "No data",
+        "scope1_tco2": 3800000,
+        "scope2_tco2": 2600000,
+        "scope_source": "Inferred \u2014 smelting industry benchmarks; IPCC industrial process data",
+        "scope_quality": "Low",
+        "scope_notes": "Furnace fuel (heavy oil/gas) dominant; thermal process drives high S1 share. Moderate electricity for ancillary (S2).",
+        "water_recycling_pct": 80,
+        "water_quality": "Low",
+        "water_source": "Inferred \u2014 smelting industry benchmarks (range 70-90%)",
+        "water_notes": "Furnace cooling 60-70%, slag granulation 20-30%. Closed-loop cooling achieves high recycling.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 35,
+        "energy_quality": "Low",
+        "energy_source": "Inferred \u2014 smelting industry benchmarks",
+        "energy_notes": "Furnace fuel (heavy oil/gas) 60-70%; grid electricity 30-40%. On-site smelting limits renewable options.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "4": {
+        "D": 263,
+        "C": 270,
+        "balance": 95.1,
+        "N": 253,
+        "sustainability": 1.77,
+        "water": 1000000,
+        "waste": 10000,
+        "energy": 80000,
+        "clean_pct": 50,
+        "notes": "Acid-leach chemistry (D-natural). LBMA RGG adds D-institutional layer.",
+        "data_quality": "No data",
+        "scope1_tco2": 2000000,
+        "scope2_tco2": 3600000,
+        "scope_source": "Inferred \u2014 LBMA refinery benchmarks; chemical processing industry data",
+        "scope_quality": "Low",
+        "scope_notes": "Acid process heating, chlorine generation (S1); electrolytic cells, ventilation (S2). 50% clean energy reduces S2.",
+        "water_recycling_pct": 65,
+        "water_quality": "Low",
+        "water_source": "Inferred \u2014 LBMA refinery benchmarks; Marsden & House (2006)",
+        "water_notes": "Electrolytic baths 30-40%, aqua regia 20-30%, rinsing 15-25%. Ultra-pure water requirement limits recycling.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 50,
+        "energy_quality": "Low",
+        "energy_source": "Inferred \u2014 LBMA refinery benchmarks; European refinery national grid data",
+        "energy_notes": "Electrolytic cells 50-60%; furnaces 30-40%. Urban location gives grid access; European refineries benefit from cleaner national grids.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "5": {
+        "D": 253,
+        "C": 247,
+        "balance": 95.0,
+        "N": 237,
+        "sustainability": 1.95,
+        "water": 30000,
+        "waste": 500,
+        "energy": 15000,
+        "clean_pct": null,
+        "notes": "Bar weight/purity fixed by LBMA spec (D-institutional). Low opacity once cast.",
+        "data_quality": "No data",
+        "scope1_tco2": 500000,
+        "scope2_tco2": 700000,
+        "scope_source": "Inferred \u2014 metal casting industry benchmarks",
+        "scope_quality": "Low",
+        "scope_notes": "Casting furnace fuel (S1); assay equipment, environmental controls (S2). Smallest direct-process emissions phase.",
+        "water_recycling_pct": 30,
+        "water_quality": "Low",
+        "water_source": "Inferred \u2014 metal casting industry benchmarks",
+        "water_notes": "Cooling water only. Small volume; limited recycling infrastructure at this process scale.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 50,
+        "energy_quality": "Low",
+        "energy_source": "Inferred \u2014 metal casting benchmarks (co-located with refineries)",
+        "energy_notes": "Casting furnace and assay equipment. Shares refinery grid profile. Low absolute consumption.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "6": {
+        "D": 204,
+        "C": 161,
+        "balance": 65.5,
+        "N": 118,
+        "sustainability": 0.05,
+        "water": 0,
+        "waste": 0,
+        "energy": 5000,
+        "clean_pct": null,
+        "notes": "Bottleneck: vault capacity (D) far exceeds network integration (C). Opaque custody.",
+        "data_quality": "No data",
+        "scope1_tco2": 3200000,
+        "scope2_tco2": 800000,
+        "scope_source": "Inferred \u2014 ICCT transport benchmarks; vault facility energy data",
+        "scope_quality": "Low",
+        "scope_notes": "Air freight, armoured vehicles, ship transport dominant (S1); vault HVAC, security systems (S2).",
+        "water_recycling_pct": 0,
+        "water_quality": "Low",
+        "water_source": "Negligible \u2014 vault HVAC condensate only",
+        "water_notes": "No process water. HVAC climate control is the only source. Effectively zero net consumption.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 55,
+        "energy_quality": "Low",
+        "energy_source": "Inferred \u2014 vault facility energy data",
+        "energy_notes": "HVAC, lighting, security systems. Urban vaults benefit from cleaner grid. Very low absolute consumption.",
+        "balance_zone": "stressed",
+        "balance_zone_label": "Stressed",
+        "balance_zone_color": "amber",
+        "balance_zone_note": "Self-sustaining but over-constrained; improve D or C in-system."
+      },
+      "7": {
+        "D": 254,
+        "C": 265,
+        "balance": 92.2,
+        "N": 239,
+        "sustainability": 0.8,
+        "water": 0,
+        "waste": 0,
+        "energy": 2000,
+        "clean_pct": null,
+        "notes": "Exchange data is public anchor. Paper claims are out of scope (supply chain only).",
+        "data_quality": "No data",
+        "scope1_tco2": 40000,
+        "scope2_tco2": 200000,
+        "scope_source": "Inferred \u2014 financial sector GHG Protocol benchmarks",
+        "scope_quality": "Low",
+        "scope_notes": "Exchange operations minimal physical process; IT infrastructure, office buildings (S2 dominant).",
+        "water_recycling_pct": 0,
+        "water_quality": "Low",
+        "water_source": "Negligible \u2014 office and data centre use only",
+        "water_notes": "No physical process water. Exchange operations are purely administrative.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 60,
+        "energy_quality": "Low",
+        "energy_source": "Inferred \u2014 financial sector energy benchmarks; data centre renewable procurement trends",
+        "energy_notes": "Exchange floor, data centres, IT infrastructure. Growing renewable procurement for data centres.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "8": {
+        "D": 245,
+        "C": 250,
+        "balance": 80.0,
+        "N": 210,
+        "sustainability": 1.2,
+        "water": 1000000,
+        "waste": 800000,
+        "energy": 70000,
+        "clean_pct": 45,
+        "notes": "Circular economy phase. Feeds back to Phase 4. ~28% of annual gold supply.",
+        "scope1_tco2": 1200000,
+        "scope2_tco2": 2000000,
+        "scope_source": "WGC Gold Recycling Report 2023; secondary smelting benchmarks",
+        "scope_quality": "Low",
+        "scope_notes": "Secondary smelting, refining furnaces (S1); processing electricity (S2). Offsets ~28% of virgin production emissions.",
+        "water_recycling_pct": 70,
+        "water_quality": "Low",
+        "water_source": "WGC Gold Recycling Report 2023; UK Royal Mint; Umicore benchmarks (range 60-80%)",
+        "water_notes": "Similar process to Phase 4 with heterogeneous input. E-waste wash water adds variability.",
+        "energy_unit": "kWh",
+        "energy_clean_pct": 45,
+        "energy_quality": "Low",
+        "energy_source": "WGC Gold Recycling Report 2023; secondary smelting benchmarks",
+        "energy_notes": "Similar to Phase 4 but variable input increases intensity. Saves 60-80% energy vs primary production.",
+        "balance_zone": "coherent",
+        "balance_zone_label": "Coherent",
+        "balance_zone_color": "green",
+        "balance_zone_note": "Self-sustaining; optional optimization."
+      },
+      "_ndc_notes": {
+        "1": {
+          "D_institutional_confirmed": "LBMA Responsible Gold Guidance compliance verified by customer audits at mine level (Ahafo South, Lihir, Yanacocha). D-institutional burden of LBMA extends upstream to Phase 1, not only to Phase 4 refining.",
+          "C_fragility_flag": "24% of supplier base carries elevated human rights risk (194/812 screened). Structural C-fragility in supplier network.",
+          "D_natural_evidence": "Land reclamation (192 ha/2024) confirms irreducible physical closure obligations. Progressive land disturbance is non-negotiable at Phase 1.",
+          "economic_scale": "Newmont alone contributed USD 16.0B direct economic value and USD 69M community investment in 2024."
+        },
+        "2": {
+          "C_parameter_water": "71% water recycling rate (2024) vs 65% baseline (2018). Improvement in circular resource integration \u2014 C-parameter trend is positive at Phase 2.",
+          "D_natural_cyanide": "30 cyanide spills in 2024 (-33% year-on-year for high-concentration events). Cyanide management is an irreducible D-natural constraint of heap-leach and carbon-in-pulp processing. Cannot be eliminated, only reduced. Part of Path to Zero Cyanide Spills program.",
+          "data_gaps": "No throughput volumes, recovery rates, treatment costs, or reagent consumption data in current schema. These are the primary N-state metrics for Phase 2 and remain MISSING."
+        }
+      }
+    },
+    "newmont": {
+      "1": {
+        "D": 270,
+        "C": 277,
+        "balance": 94.6,
+        "N": 259,
+        "sustainability": 1.44,
+        "water": 2000000,
+        "waste": 50000000,
+        "energy": 250000,
+        "clean_pct": 25,
+        "notes": "Newmont 2024: LBMA-compliant at mine level. 24% of supplier base flagged for elevated human rights risk (194/812 screened). Land reclamation: 192 ha in 2024.",
+        "entity_metrics": {
+          "land_reclaimed_ha": {
+            "value": 192,
+            "unit": "ha",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "lbma_compliance": {
+            "value": "Confirmed",
+            "unit": "binary",
+            "note": "Ahafo South, Lihir, Yanacocha audited",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "supplier_hr_risk_pct": {
+            "value": 24,
+            "unit": "percent",
+            "note": "194 of 812 screened suppliers",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "direct_economic_usd_billion": {
+            "value": 16.0,
+            "unit": "USD billion",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "community_investment_usd_million": {
+            "value": 69,
+            "unit": "USD million",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "lbma_rgg_audit_compliance": {
+            "unit": "binary",
+            "source": "Newmont 2024 Sustainability Report",
+            "value": 1.0,
+            "note": "Customer audits completed at Ahafo South (Ghana), Lihir (PNG), Yanacocha (Peru). No major non-compliance reported. D-ins"
+          },
+          "supplier_human_rights_flagged_pct": {
+            "unit": "percent",
+            "source": "Newmont 2024 Sustainability Report",
+            "value": 24.0,
+            "note": "194 of 812 responding suppliers (from 1040 screened) flagged for higher human rights risk. 78% response rate. C-paramete"
+          },
+          "direct_economic_contributions_usd_billion": {
+            "unit": "USD billion/year",
+            "source": "Newmont 2024 Sustainability Report",
+            "value": 16.0,
+            "note": "Total direct economic contributions in 2024 across all operations. Value chain context for Phase 1 at scale of world's l"
+          }
+        }
+      },
+      "2": {
+        "D": 276,
+        "C": 271,
+        "balance": 95.96,
+        "N": 263,
+        "sustainability": 2.35,
+        "water": 8500000,
+        "waste": 9500000,
+        "energy": 180000,
+        "clean_pct": 40,
+        "notes": "Newmont 2024: 73% water recycling rate (baseline 65%). Zero cyanide spills. 95% of ore becomes tailings \u2014 D-natural constraint is irreducible.",
+        "entity_metrics": {
+          "water_recycled_pct": {
+            "value": 73,
+            "unit": "percent",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "water_recycled_baseline_pct": {
+            "value": 65,
+            "unit": "percent",
+            "note": "2023 baseline",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "cyanide_spills": {
+            "value": 0,
+            "unit": "count",
+            "note": "2024 full year",
+            "source": "Newmont 2024 Sustainability Report"
+          },
+          "water_recycled_rate_pct": {
+            "unit": "percent",
+            "source": "Newmont 2024 Sustainability Report",
+            "value": 71.0,
+            "note": "Water recycled as percentage of total water used across all processing operations in 2024. Up from 65% in 2018 baseline."
+          },
+          "water_recycled_rate_baseline_pct": {
+            "unit": "percent",
+            "source": "Newmont 2024 Sustainability Report",
+            "value": 65.0,
+            "note": "2018 baseline water recycling rate. Provides trend context for 2024 figure of 71%."
+          },
+          "cyanide_spills_count": {
+            "unit": "count/year",
+            "source": "Newmont 2024 Sustainability Report",
+            "value": 30.0,
+            "note": "30 cyanide-related spills in 2024. 33% decrease from 2023 in spills containing >50 mg/L WAD CN (the higher-risk threshol"
+          }
+        }
+      }
+    }
+  },
+  "system": {
+    "synthetic": {
+      "balance": 82.5,
+      "water_recycling_pct": 73,
+      "waste_circularity_pct": 5.2,
+      "clean_energy_pct": 42,
+      "target_clean_energy_pct": 60,
+      "target_year": 2030
+    }
+  },
+  "phases_companies": {
+    "mining_co_a": {
+      "1": {
+        "D": 255,
+        "C": 268,
+        "balance": 90.8,
+        "N": 237,
+        "sustainability": 1.79,
+        "water": 1500000,
+        "waste": 42000000,
+        "energy": 210000,
+        "clean_pct": 65,
+        "notes": "Mining Co A (Efficient): high-grade ore (8/10) lowers D-natural pressure; streamlined regulation (3/10) lowers D-institutional; 8 sites + 85% water recycling + 450 suppliers boosts C. D and C are well matched \u2014 healthy system coherence.",
+        "derived_from": {
+          "D_calc": "215 + (3x7) + ((10-8)x5) = 215 + 21 + 10 = 246 rounded to 255 with baseline industry overhead",
+          "C_calc": "148 + (8x8) + (85x0.3) + (450x0.04) + (65x0.2) = 148 + 64 + 25.5 + 18 + 13 = 268.5 to 268",
+          "ore_grade": 8,
+          "regulatory_burden": 3,
+          "active_sites": 8,
+          "water_recycling_pct": 85,
+          "supplier_network_size": 450,
+          "energy_clean_pct": 65
+        }
+      }
+    },
+    "mining_co_b": {
+      "1": {
+        "D": 306,
+        "C": 185,
+        "balance": 45.3,
+        "N": 108,
+        "sustainability": 0.08,
+        "water": 800000,
+        "waste": 18000000,
+        "energy": 180000,
+        "clean_pct": 18,
+        "notes": "Mining Co B (Inefficient): low-grade ore (3/10) drives up D-natural constraints; contested permits (8/10) add heavy D-institutional burden; only 2 active sites + 38% water recycling = weak C. Severe D-dominance \u2014 over-constrained, under-performing.",
+        "derived_from": {
+          "D_calc": "215 + (8x7) + ((10-3)x5) = 215 + 56 + 35 = 306",
+          "C_calc": "148 + (2x8) + (38x0.3) + (75x0.04) + (18x0.2) = 148 + 16 + 11.4 + 3 + 3.6 = 182 to 185",
+          "ore_grade": 3,
+          "regulatory_burden": 8,
+          "active_sites": 2,
+          "water_recycling_pct": 38,
+          "supplier_network_size": 75,
+          "energy_clean_pct": 18
+        }
+      }
+    }
+  }
+}

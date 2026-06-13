@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Emissions Analysis — Gold Supply Chain</title>
+<style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .page {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: #f4f6f9;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+
+        /* ── Header ── */
+        .header {
+            background: linear-gradient(135deg, #1a1a2e 0%, #2c3e50 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header-left h1 { font-size: 22px; font-weight: 300; letter-spacing: 0.03em; }
+        .header-left p  { font-size: 12px; color: #adb5bd; margin-top: 4px; }
+        .nav-link {
+            color: #adb5bd; text-decoration: none; margin-left: 20px;
+            font-size: 13px; transition: color 0.2s;
+        }
+        .nav-link:hover { color: white; }
+
+        /* ── Source banner ── */
+        #sourceBanner {
+            background: #e7f3ff; border-left: 4px solid #17a2b8;
+            padding: 10px 30px; font-size: 12px; color: #0c5460;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* ── KPI Cards ── */
+        .kpi-strip {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 1px;
+            background: #dee2e6;
+        }
+        .kpi-card {
+            background: white;
+            padding: 20px;
+            text-align: center;
+        }
+        .kpi-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; margin-bottom: 6px; }
+        .kpi-value { font-size: 26px; font-weight: 700; }
+        .kpi-sub   { font-size: 11px; color: #6c757d; margin-top: 4px; }
+
+        .grade-badge {
+            display: inline-block;
+            padding: 6px 20px;
+            border-radius: 20px;
+            font-size: 28px;
+            font-weight: 900;
+            letter-spacing: 0.02em;
+        }
+
+        /* ── Main grid ── */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            padding: 20px;
+        }
+        .full-width { grid-column: 1 / -1; }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        .card-title {
+            font-size: 13px;
+            font-weight: 700;
+            color: #2c3e50;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* ── Chart containers ── */
+        .chart-wrap { width: 100%; overflow-x: auto; }
+        svg.chart { width: 100%; display: block; }
+
+        /* ── Phase table ── */
+        .phase-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+        .phase-table th {
+            background: #2c3e50; color: white;
+            padding: 9px 10px; text-align: left;
+            font-weight: 600; font-size: 11px;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .phase-table td { padding: 9px 10px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+        .phase-table tr:hover td { background: #f8f9fa; }
+
+        .pill {
+            display: inline-block;
+            padding: 2px 8px; border-radius: 10px;
+            font-size: 11px; font-weight: 600;
+        }
+        .pill-s1 { background: #fff3cd; color: #856404; }
+        .pill-s2 { background: #cce5ff; color: #004085; }
+        .pill-s3 { background: #d4edda; color: #155724; }
+
+        .rating-badge {
+            display: inline-block;
+            padding: 3px 10px; border-radius: 12px;
+            font-size: 11px; font-weight: 700;
+            text-transform: uppercase; letter-spacing: 0.04em;
+        }
+        .r-excellent  { background: #d4edda; color: #155724; }
+        .r-good       { background: #d1ecf1; color: #0c5460; }
+        .r-moderate   { background: #fff3cd; color: #856404; }
+        .r-poor       { background: #f8d7da; color: #721c24; }
+        .r-critical   { background: #343a40; color: white; }
+
+        .opp-bar-wrap { display: flex; align-items: center; gap: 8px; }
+        .opp-bar-bg   { flex: 1; height: 8px; background: #e9ecef; border-radius: 4px; overflow: hidden; }
+        .opp-bar-fill { height: 100%; border-radius: 4px; transition: width 0.4s; }
+
+        /* ── Findings section ── */
+        .findings-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+        }
+        .finding-card {
+            padding: 16px;
+            border-radius: 8px;
+            border-left: 4px solid;
+        }
+        .finding-card.positive { background: #d4edda; border-color: #28a745; }
+        .finding-card.warning  { background: #fff3cd; border-color: #ffc107; }
+        .finding-card.negative { background: #f8d7da; border-color: #dc3545; }
+        .finding-card .finding-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+        .finding-card .finding-body  { font-size: 11px; line-height: 1.5; color: #495057; }
+
+        /* ── Footnote ── */
+        .footnote {
+            padding: 16px 30px;
+            background: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+            font-size: 10px;
+            color: #adb5bd;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+<div class="page">
+<!-- Header -->
+<div class="header">
+<div class="header-left">
+<h1>🌡️ Carbon Emissions Analysis — Gold Supply Chain</h1>
+<p>Scope 1, 2, and 3 cascade · Phase-resolved · What-If aware</p>
+</div>
+<div>
+<a class="nav-link" href="what_if_simulator.html">← Back to Simulator</a>
+<a class="nav-link" href="dashboard.html">Dashboard</a>
+<a class="nav-link" href="/index.html">🏠 Home</a>
+</div>
+</div>
+<!-- Source banner -->
+<div id="sourceBanner">
+<span>ℹ️</span>
+<span id="sourceText">Loading emissions data…</span>
+</div>
+<!-- KPI strip -->
+<div class="kpi-strip">
+<div class="kpi-card">
+<div class="kpi-label">Scope 1 — Direct</div>
+<div class="kpi-value" id="kpiS1" style="color:#856404;">—</div>
+<div class="kpi-sub">combustion tCO₂e</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Scope 2 — Electricity</div>
+<div class="kpi-value" id="kpiS2" style="color:#004085;">—</div>
+<div class="kpi-sub">purchased power tCO₂e</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Chain Total (S1+S2)</div>
+<div class="kpi-value" id="kpiTotal" style="color:#2c3e50;">—</div>
+<div class="kpi-sub">annual global estimate</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Intensity</div>
+<div class="kpi-value" id="kpiPerOz" style="color:#6f42c1;">—</div>
+<div class="kpi-sub">tCO₂e per troy oz</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-label">Chain Rating</div>
+<div class="kpi-value" id="kpiGrade">—</div>
+<div class="kpi-sub" id="kpiGradeSub">vs WGC benchmarks</div>
+</div>
+</div>
+<!-- Charts row -->
+<div class="main-grid">
+<!-- Stacked bar chart -->
+<div class="card">
+<div class="card-title">📊 S1 &amp; S2 by Phase</div>
+<div class="chart-wrap">
+<svg class="chart" id="barChart" viewbox="0 0 600 320"></svg>
+</div>
+</div>
+<!-- Scope 3 cascade chart -->
+<div class="card">
+<div class="card-title">📈 Scope 3 Cascade — Cumulative Burden</div>
+<div class="chart-wrap">
+<svg class="chart" id="cascadeChart" viewbox="0 0 600 320"></svg>
+</div>
+</div>
+<!-- Phase detail table -->
+<div class="card full-width">
+<div class="card-title">🔍 Phase-by-Phase Breakdown</div>
+<table class="phase-table" id="phaseTable">
+<thead>
+<tr>
+<th>Phase</th>
+<th>Scope 1</th>
+<th>Scope 2</th>
+<th>Phase Total</th>
+<th>% of Chain</th>
+<th>Scope 3↑ Inherited</th>
+<th>S2 Ratio</th>
+<th>Decarb Opportunity</th>
+<th>N-D-C Balance</th>
+<th>Rating</th>
+</tr>
+</thead>
+<tbody id="phaseTableBody"></tbody>
+</table>
+</div>
+<!-- Key findings -->
+<div class="card full-width">
+<div class="card-title">💡 Key Findings &amp; Analysis</div>
+<div class="findings-grid" id="findingsGrid"></div>
+</div>
+<!-- Decarbonization ranking -->
+<div class="card full-width">
+<div class="card-title">⚡ Decarbonization Opportunity Ranking</div>
+<p style="font-size:12px;color:#6c757d;margin-bottom:14px;">
+                Phases ranked by near-term decarbonization potential. High S2 ratio = can switch to clean energy.
+                High S1 = requires electrification or operational change.
+            </p>
+<div id="decarbRanking"></div>
+</div>
+</div>
+<!-- Footnote -->
+<div class="footnote">
+<strong>Data sources &amp; quality flags:</strong>
+        Phase 1–2 values: WGC Gold and Climate 2023; Foran et al. 2005 <em>Balancing Act</em> Vol.2 (quality: Medium) ·
+        Phases 0, 3–8: Inferred from smelting, ICCT transport, LBMA refinery, and GHG Protocol financial sector benchmarks (quality: Low) ·
+        Annual production basis: ~3,300 t Au / 106M troy oz (WGC 2023) ·
+        Global grid emission factor: 0.45 tCO₂e/MWh (IEA 2023) ·
+        All figures are annual global estimates in tCO₂e. Imbalance penalty: +15% S1 / +25% S2 per unit of N-D-C imbalance factor.
+        This page reads live state from the What-If Simulator if opened via the "Emissions Analysis" button; otherwise uses JSON baseline.
+    </div>
+</div>
+<script>
+// ── Constants ─────────────────────────────────────────────────────────────────
+
+const GLOBAL_OZ   = 106_000_000;  // annual gold production troy oz (WGC 2023)
+const DATA_URL    = '/frontend/project/gold_v2/data/processed/gold_supply_chain_ui.json';
+
+// Per-oz intensity benchmarks (tCO₂e / troy oz) — WGC 2023 / industry data
+const BENCHMARKS = {
+    excellent: 0.50,   // WGC leading-practice companies
+    good:      0.80,   // WGC member average
+    moderate:  1.10,   // Industry average (incl. non-members)
+    poor:      1.60,   // Below-average operations
+    // > 1.60 = Critical
+};
+
+// Expected phase-share of chain total (% — from industry literature)
+const PHASE_EXPECTED_PCT = {
+    0: 0.2, 1: 47.0, 2: 26.0, 3: 8.4,
+    4: 7.3, 5: 1.6,  6: 5.2,  7: 0.3, 8: 4.2,
+};
+
+// Hardcoded fallback (matches JSON baseline)
+const FALLBACK_PHASES = [
+    { id: 0, name: 'Prospecting',   D: 227, C: 208, scope1_tco2:    120000, scope2_tco2:    25000, scope_quality: 'Low',    scope_source: 'Inferred — exploration benchmarks',         scope_notes: 'Diesel vehicles, drilling (S1); remote field power (S2).' },
+    { id: 1, name: 'Mining',        D: 270, C: 277, scope1_tco2:   8200000, scope2_tco2: 27800000, scope_quality: 'Medium', scope_source: 'WGC 2023; Foran et al. 2005',               scope_notes: 'Diesel haul trucks, blasting (S1); ventilation, mills (S2).' },
+    { id: 2, name: 'Ore Processing',D: 276, C: 271, scope1_tco2:   3000000, scope2_tco2: 17000000, scope_quality: 'Medium', scope_source: 'WGC 2023; Newmont 2024 SR',                 scope_notes: 'Chemical heating (S1); grinding mills, flotation (S2).' },
+    { id: 3, name: 'Doré',          D: 264, C: 249, scope1_tco2:   3800000, scope2_tco2:  2600000, scope_quality: 'Low',    scope_source: 'Inferred — smelting benchmarks',            scope_notes: 'Furnace fuel dominant (S1); ancillary electricity (S2).' },
+    { id: 4, name: 'Refining',      D: 263, C: 270, scope1_tco2:   2000000, scope2_tco2:  3600000, scope_quality: 'Low',    scope_source: 'Inferred — LBMA refinery benchmarks',       scope_notes: 'Acid process heating (S1); electrolytic cells, ventilation (S2).' },
+    { id: 5, name: 'Bar Casting',   D: 253, C: 247, scope1_tco2:    500000, scope2_tco2:   700000, scope_quality: 'Low',    scope_source: 'Inferred — metal casting benchmarks',       scope_notes: 'Casting furnace fuel (S1); assay equipment (S2).' },
+    { id: 6, name: 'Logistics',     D: 204, C: 161, scope1_tco2:   3200000, scope2_tco2:   800000, scope_quality: 'Low',    scope_source: 'Inferred — ICCT transport benchmarks',      scope_notes: 'Air freight, armoured vehicles (S1); vault HVAC (S2).' },
+    { id: 7, name: 'Exchange',      D: 254, C: 265, scope1_tco2:     40000, scope2_tco2:   200000, scope_quality: 'Low',    scope_source: 'Inferred — GHG Protocol financial sector',  scope_notes: 'Exchange operations minimal; IT, offices (S2 dominant).' },
+    { id: 8, name: 'Recycling ♻️',  D: 245, C: 250, scope1_tco2:   1200000, scope2_tco2:  2000000, scope_quality: 'Low',    scope_source: 'WGC Recycling Report 2023',                 scope_notes: 'Secondary smelting (S1); processing electricity (S2).' },
+];
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function fmtCO2(v) {
+    if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(2)} Mt`;
+    if (v >= 1_000)     return `${(v / 1_000).toFixed(0)} kt`;
+    return `${v.toFixed(0)} t`;
+}
+
+function fmtCO2Short(v) {
+    if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}`;
+    if (v >= 1_000)     return `${(v / 1_000).toFixed(0)}k`;
+    return `${v}`;
+}
+
+function calcBalance(D, C) {
+    const imbalance = Math.abs(D - C);
+    const maxVal = Math.max(D, C, 1);
+    return 100 * Math.exp(-2 * imbalance / maxVal);
+}
+
+function applyImbalance(phase) {
+    const iF = Math.abs(phase.D - phase.C) / Math.max(phase.D, phase.C, 1);
+    return {
+        s1: Math.round(phase.scope1_tco2 * (1 + iF * 0.15)),
+        s2: Math.round(phase.scope2_tco2 * (1 + iF * 0.25)),
+        balance: calcBalance(phase.D, phase.C),
+        iF,
+    };
+}
+
+function getGrade(perOz) {
+    if (perOz < BENCHMARKS.excellent) return { grade: 'A+', label: 'Excellent',  cls: 'r-excellent', color: '#28a745', bg: '#d4edda' };
+    if (perOz < BENCHMARKS.good)      return { grade: 'A',  label: 'Good',       cls: 'r-good',      color: '#17a2b8', bg: '#d1ecf1' };
+    if (perOz < BENCHMARKS.moderate)  return { grade: 'B',  label: 'Moderate',   cls: 'r-moderate',  color: '#ffc107', bg: '#fff3cd' };
+    if (perOz < BENCHMARKS.poor)      return { grade: 'C',  label: 'Poor',       cls: 'r-poor',      color: '#dc3545', bg: '#f8d7da' };
+    return { grade: 'D',  label: 'Critical',   cls: 'r-critical',  color: '#343a40', bg: '#dee2e6' };
+}
+
+function getPhaseRating(phasePct, expectedPct, balance) {
+    const ratio = expectedPct > 0 ? phasePct / expectedPct : 1;
+    if (balance < 60) return { label: 'Bottlenecked', cls: 'r-critical' };
+    if (ratio > 2.0)  return { label: 'Critical', cls: 'r-critical' };
+    if (ratio > 1.5)  return { label: 'Elevated',  cls: 'r-poor' };
+    if (ratio > 1.2)  return { label: 'Moderate',  cls: 'r-moderate' };
+    if (ratio > 0.8)  return { label: 'Normal',    cls: 'r-good' };
+    return               { label: 'Low',       cls: 'r-excellent' };
+}
+
+function getDecarbOpportunity(s1, s2) {
+    const total = s1 + s2;
+    if (total === 0) return { label: 'Negligible', pct: 0, color: '#dee2e6' };
+    const s2ratio = s2 / total;
+    if (s2ratio > 0.70) return { label: 'Very High',  pct: Math.round(s2ratio * 100), color: '#28a745' };
+    if (s2ratio > 0.55) return { label: 'High',       pct: Math.round(s2ratio * 100), color: '#17a2b8' };
+    if (s2ratio > 0.40) return { label: 'Medium',     pct: Math.round(s2ratio * 100), color: '#ffc107' };
+    if (s2ratio > 0.25) return { label: 'Low-Med',    pct: Math.round(s2ratio * 100), color: '#fd7e14' };
+    return                     { label: 'Low (S1-heavy)', pct: Math.round(s2ratio * 100), color: '#dc3545' };
+}
+
+// ── Main render ───────────────────────────────────────────────────────────────
+
+function render(rawPhases, sourceLabel) {
+    document.getElementById('sourceText').textContent = sourceLabel;
+
+    // Compute effective emissions with imbalance penalty
+    const data = rawPhases.map(p => {
+        const { s1, s2, balance, iF } = applyImbalance(p);
+        return { ...p, s1, s2, balance, iF, total: s1 + s2 };
+    });
+
+    const totalS1    = data.reduce((s, p) => s + p.s1, 0);
+    const totalS2    = data.reduce((s, p) => s + p.s2, 0);
+    const chainTotal = totalS1 + totalS2;
+    const perOz      = chainTotal / GLOBAL_OZ;
+    const grade      = getGrade(perOz);
+
+    // KPI strip
+    document.getElementById('kpiS1').textContent    = fmtCO2(totalS1);
+    document.getElementById('kpiS2').textContent    = fmtCO2(totalS2);
+    document.getElementById('kpiTotal').textContent = fmtCO2(chainTotal);
+    document.getElementById('kpiPerOz').textContent = perOz.toFixed(3);
+    document.getElementById('kpiGrade').innerHTML   =
+        `<span class="grade-badge" style="background:${grade.bg};color:${grade.color};">${grade.grade}</span>`;
+    document.getElementById('kpiGradeSub').textContent = grade.label;
+
+    drawBarChart(data, chainTotal);
+    drawCascadeChart(data);
+    buildTable(data, chainTotal);
+    buildFindings(data, chainTotal, perOz, grade);
+    buildDecarbRanking(data, chainTotal);
+}
+
+// ── Bar chart ─────────────────────────────────────────────────────────────────
+
+function drawBarChart(data, chainTotal) {
+    const W = 600, H = 320;
+    const marginL = 100, marginR = 80, marginT = 20, marginB = 40;
+    const plotW = W - marginL - marginR;
+    const plotH = H - marginT - marginB;
+
+    const maxPhaseTotal = Math.max(...data.map(d => d.total));
+    const rowH = plotH / data.length;
+
+    let svg = ``;
+
+    // Grid lines
+    [0, 0.25, 0.5, 0.75, 1].forEach(frac => {
+        const x = marginL + frac * plotW;
+        const label = fmtCO2Short(frac * maxPhaseTotal) + (maxPhaseTotal >= 1_000_000 ? ' Mt' : ' kt');
+        svg += `<line x1="${x}" y1="${marginT}" x2="${x}" y2="${marginT + plotH}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg += `<text x="${x}" y="${marginT + plotH + 14}" text-anchor="middle" font-size="9" fill="#adb5bd">${label}</text>`;
+    });
+
+    data.forEach((p, i) => {
+        const y    = marginT + i * rowH;
+        const barH = rowH * 0.6;
+        const barY = y + (rowH - barH) / 2;
+        const s1W  = (p.s1 / maxPhaseTotal) * plotW;
+        const s2W  = (p.s2 / maxPhaseTotal) * plotW;
+
+        // Phase label
+        svg += `<text x="${marginL - 6}" y="${barY + barH/2 + 4}" text-anchor="end" font-size="10" fill="#495057" font-weight="600">P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</text>`;
+
+        // S1 bar (amber)
+        svg += `<rect x="${marginL}" y="${barY}" width="${s1W}" height="${barH}" fill="#ffc107" rx="2"/>`;
+        // S2 bar (blue) — stacked after S1
+        if (s2W > 0)
+            svg += `<rect x="${marginL + s1W}" y="${barY}" width="${s2W}" height="${barH}" fill="#4dabf7" rx="2"/>`;
+
+        // Value label
+        const totalX = marginL + s1W + s2W + 5;
+        if (p.total > 0)
+            svg += `<text x="${totalX}" y="${barY + barH/2 + 4}" font-size="9" fill="#6c757d">${fmtCO2(p.total)}</text>`;
+    });
+
+    // Legend
+    svg += `<rect x="${marginL}" y="${H - 16}" width="10" height="10" fill="#ffc107" rx="2"/>`;
+    svg += `<text x="${marginL + 13}" y="${H - 7}" font-size="10" fill="#6c757d">Scope 1 (direct)</text>`;
+    svg += `<rect x="${marginL + 110}" y="${H - 16}" width="10" height="10" fill="#4dabf7" rx="2"/>`;
+    svg += `<text x="${marginL + 123}" y="${H - 7}" font-size="10" fill="#6c757d">Scope 2 (electricity)</text>`;
+
+    document.getElementById('barChart').innerHTML = svg;
+}
+
+// ── Cascade chart ─────────────────────────────────────────────────────────────
+
+function drawCascadeChart(data) {
+    const W = 600, H = 320;
+    const marginL = 60, marginR = 20, marginT = 20, marginB = 50;
+    const plotW = W - marginL - marginR;
+    const plotH = H - marginT - marginB;
+
+    const points = [];
+    let cumulative = 0;
+    data.forEach((p, i) => {
+        const x = marginL + (i / (data.length - 1)) * plotW;
+        points.push({ x, cumBefore: cumulative, phaseTotal: p.total, phase: p });
+        cumulative += p.total;
+    });
+    const maxY = cumulative;
+
+    let svg = '';
+
+    // Horizontal grid lines
+    [0, 0.25, 0.5, 0.75, 1].forEach(frac => {
+        const y = marginT + plotH - frac * plotH;
+        const label = fmtCO2(frac * maxY);
+        svg += `<line x1="${marginL}" y1="${y}" x2="${marginL + plotW}" y2="${y}" stroke="#e9ecef" stroke-width="1"/>`;
+        svg += `<text x="${marginL - 6}" y="${y + 4}" text-anchor="end" font-size="9" fill="#adb5bd">${label}</text>`;
+    });
+
+    // Build stepped area path
+    let areaPath = `M ${marginL} ${marginT + plotH}`;
+    let linePath = '';
+    let prev = { x: marginL, y: marginT + plotH };
+
+    points.forEach((pt, i) => {
+        const afterY = marginT + plotH - ((pt.cumBefore + pt.phaseTotal) / maxY) * plotH;
+        const beforeY = marginT + plotH - (pt.cumBefore / maxY) * plotH;
+
+        if (i === 0) {
+            areaPath += ` L ${pt.x} ${beforeY} L ${pt.x} ${afterY}`;
+            linePath += `M ${pt.x} ${beforeY} L ${pt.x} ${afterY}`;
+        } else {
+            areaPath += ` L ${pt.x} ${beforeY} L ${pt.x} ${afterY}`;
+            linePath += ` L ${pt.x} ${beforeY} L ${pt.x} ${afterY}`;
+        }
+        if (i < points.length - 1) {
+            const nextX = marginL + ((i + 1) / (data.length - 1)) * plotW;
+            areaPath += ` L ${nextX} ${afterY}`;
+            linePath += ` L ${nextX} ${afterY}`;
+        }
+    });
+    const lastPt = points[points.length - 1];
+    const lastY = marginT + plotH - ((lastPt.cumBefore + lastPt.phaseTotal) / maxY) * plotH;
+    areaPath += ` L ${marginL + plotW} ${lastY} L ${marginL + plotW} ${marginT + plotH} Z`;
+
+    svg += `<defs><linearGradient id="cascadeGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#28a745" stop-opacity="0.3"/>
+        <stop offset="100%" stop-color="#28a745" stop-opacity="0.05"/>
+    </linearGradient></defs>`;
+    svg += `<path d="${areaPath}" fill="url(#cascadeGrad)" stroke="none"/>`;
+    svg += `<path d="${linePath}" fill="none" stroke="#28a745" stroke-width="2.5"/>`;
+
+    // Phase markers and labels
+    points.forEach((pt, i) => {
+        const dotY = marginT + plotH - ((pt.cumBefore + pt.phaseTotal) / maxY) * plotH;
+        svg += `<circle cx="${pt.x}" cy="${dotY}" r="4" fill="#28a745" stroke="white" stroke-width="1.5"/>`;
+
+        const labelAngle = -45;
+        svg += `<text x="${pt.x}" y="${marginT + plotH + 18}" 
+                    text-anchor="end" font-size="9" fill="#495057"
+                    transform="rotate(${labelAngle}, ${pt.x}, ${marginT + plotH + 18})">P${pt.phase.id} ${pt.phase.name.split(' ')[0].replace('♻️', '')}</text>`;
+
+        // Tooltip-style value
+        if (i > 0) {
+            const val = fmtCO2(pt.cumBefore + pt.phaseTotal);
+            svg += `<text x="${pt.x + 5}" y="${dotY - 6}" font-size="8" fill="#155724" font-weight="600">${val}</text>`;
+        }
+    });
+
+    // Axis
+    svg += `<line x1="${marginL}" y1="${marginT}" x2="${marginL}" y2="${marginT + plotH}" stroke="#dee2e6" stroke-width="1"/>`;
+    svg += `<line x1="${marginL}" y1="${marginT + plotH}" x2="${marginL + plotW}" y2="${marginT + plotH}" stroke="#dee2e6" stroke-width="1"/>`;
+    svg += `<text x="${marginL + plotW / 2}" y="${H - 4}" text-anchor="middle" font-size="10" fill="#6c757d">← Accumulated Scope 3 burden passed to next phase →</text>`;
+
+    document.getElementById('cascadeChart').innerHTML = svg;
+}
+
+// ── Phase table ───────────────────────────────────────────────────────────────
+
+function buildTable(data, chainTotal) {
+    let cumulative = 0;
+    const rows = data.map(p => {
+        const phasePct = chainTotal > 0 ? (p.total / chainTotal) * 100 : 0;
+        const expectedPct = PHASE_EXPECTED_PCT[p.id] || 1;
+        const s2Ratio = p.total > 0 ? (p.s2 / p.total) * 100 : 0;
+        const rating = getPhaseRating(phasePct, expectedPct, p.balance);
+        const decarb = getDecarbOpportunity(p.s1, p.s2);
+        const s3Inherited = cumulative;
+        cumulative += p.total;
+
+        return `<tr>
+            <td><strong>P${p.id}</strong> ${p.name}</td>
+            <td><span class="pill pill-s1">${fmtCO2(p.s1)}</span></td>
+            <td><span class="pill pill-s2">${fmtCO2(p.s2)}</span></td>
+            <td style="font-weight:700;">${fmtCO2(p.total)}</td>
+            <td>
+                <div style="display:flex;align-items:center;gap:6px;">
+                    <div style="width:50px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${Math.min(100, phasePct * 2)}%;height:100%;background:#4dabf7;"></div>
+                    </div>
+                    ${phasePct.toFixed(1)}%
+                    <span style="font-size:10px;color:#adb5bd;">(exp ${expectedPct}%)</span>
+                </div>
+            </td>
+            <td><span class="pill pill-s3">${s3Inherited > 0 ? fmtCO2(s3Inherited) : '—'}</span></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:5px;">
+                    <div style="width:36px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${s2Ratio.toFixed(0)}%;height:100%;background:#4dabf7;"></div>
+                    </div>
+                    ${s2Ratio.toFixed(0)}%
+                </div>
+            </td>
+            <td><span class="rating-badge" style="background:${decarb.color}22;color:${decarb.color};border:1px solid ${decarb.color}44;">${decarb.label}</span></td>
+            <td>
+                <div style="display:flex;align-items:center;gap:5px;">
+                    <div style="width:36px;height:6px;background:#e9ecef;border-radius:3px;overflow:hidden;">
+                        <div style="width:${p.balance.toFixed(0)}%;height:100%;background:${p.balance>=80?'#28a745':p.balance>=60?'#ffc107':'#dc3545'};"></div>
+                    </div>
+                    ${p.balance.toFixed(0)}
+                </div>
+            </td>
+            <td><span class="rating-badge ${rating.cls}">${rating.label}</span></td>
+        </tr>`;
+    });
+
+    document.getElementById('phaseTableBody').innerHTML = rows.join('');
+}
+
+// ── Findings ──────────────────────────────────────────────────────────────────
+
+function buildFindings(data, chainTotal, perOz, grade) {
+    const findings = [];
+
+    // Finding 1: overall grade
+    const gradeDesc = {
+        'A+': 'WGC leading-practice level. Chain emissions intensity is below 0.5 t/oz — best-in-class.',
+        'A':  'Above WGC member average (0.8 t/oz). Chain is operating within Paris-aligned trajectory.',
+        'B':  'At industry average range. Meaningful reduction is achievable with targeted interventions.',
+        'C':  'Below WGC average. Significant improvement needed to meet industry norms.',
+        'D':  'Critical — chain intensity exceeds 1.6 t/oz. Structural inefficiencies must be addressed.',
+    };
+    findings.push({
+        type: perOz < 1.0 ? 'positive' : perOz < 1.4 ? 'warning' : 'negative',
+        title: `Overall Rating: ${grade.grade} — ${grade.label}`,
+        body: gradeDesc[grade.grade] || `Chain intensity: ${perOz.toFixed(3)} t/oz vs WGC benchmark 0.8 t/oz.`,
+    });
+
+    // Finding 2: dominant phase
+    const dominant = data.reduce((a, b) => b.total > a.total ? b : a);
+    const domPct = ((dominant.total / chainTotal) * 100).toFixed(0);
+    findings.push({
+        type: domPct > 55 ? 'warning' : 'positive',
+        title: `Dominant Phase: P${dominant.id} ${dominant.name}`,
+        body: `Phase ${dominant.id} accounts for ${domPct}% of total chain emissions (${fmtCO2(dominant.total)}). Interventions here yield the greatest system-wide impact.`,
+    });
+
+    // Finding 3: best decarbonization leverage
+    const highS2 = [...data].filter(p => p.total > 0).sort((a, b) => (b.s2/b.total) - (a.s2/a.total));
+    const topS2 = highS2[0];
+    const topS2ratio = topS2 ? ((topS2.s2 / topS2.total) * 100).toFixed(0) : 0;
+    findings.push({
+        type: 'positive',
+        title: `Highest Clean-Energy Opportunity: P${topS2.id} ${topS2.name}`,
+        body: `${topS2ratio}% of Phase ${topS2.id}'s emissions are Scope 2 (electricity). Switching to renewable energy in this phase alone could eliminate up to ${fmtCO2(topS2.s2)} of annual emissions.`,
+    });
+
+    // Finding 4: S1 vs S2 split
+    const s2pct = ((data.reduce((s,p) => s+p.s2, 0) / chainTotal) * 100).toFixed(0);
+    findings.push({
+        type: Number(s2pct) > 55 ? 'positive' : 'warning',
+        title: `Chain S2 Share: ${s2pct}% of total`,
+        body: `${s2pct}% of chain emissions come from purchased electricity (Scope 2). ${
+            Number(s2pct) > 55
+                ? 'This is the more addressable component — a clean energy transition in key phases could have transformative impact.'
+                : 'The relatively high Scope 1 (direct combustion) share means clean energy alone is insufficient; operational electrification is also needed.'
+        }`,
+    });
+
+    // Finding 5: bottlenecks
+    const bottlenecks = data.filter(p => p.balance < 65);
+    if (bottlenecks.length > 0) {
+        findings.push({
+            type: 'negative',
+            title: `N-D-C Bottleneck Penalty: ${bottlenecks.length} phase(s)`,
+            body: `Phases ${bottlenecks.map(p => `P${p.id}`).join(', ')} have balance below 65, triggering an imbalance emissions penalty. Restoring N-D-C balance in these phases would reduce their emissions by up to 25%.`,
+        });
+    } else {
+        findings.push({
+            type: 'positive',
+            title: 'N-D-C Balance: All phases stable',
+            body: 'No phase has a balance below 65. The N-D-C imbalance emissions penalty is minimal across the chain. Maintaining this balance is key to emissions efficiency.',
+        });
+    }
+
+    // Finding 6: Scope 3 concentration
+    const midChain = data.filter(p => p.id >= 3 && p.id <= 5).reduce((s,p) => s + p.total, 0);
+    const midPct = ((midChain / chainTotal) * 100).toFixed(0);
+    const phase8 = data.find(p => p.id === 8);
+    const phase8s3 = data.filter(p => p.id < 8).reduce((s,p) => s + p.total, 0);
+    findings.push({
+        type: 'warning',
+        title: `Phase 8 Scope 3 Burden: ${fmtCO2(phase8s3)}`,
+        body: `By the time gold reaches recycling (Phase 8), it carries ${fmtCO2(phase8s3)} of accumulated Scope 3 emissions from all upstream phases. This represents the full life-cycle carbon footprint of primary production that recycling replaces.`,
+    });
+
+    document.getElementById('findingsGrid').innerHTML = findings.map(f => `
+        <div class="finding-card ${f.type}">
+            <div class="finding-title">${f.title}</div>
+            <div class="finding-body">${f.body}</div>
+        </div>`).join('');
+}
+
+// ── Decarb ranking ────────────────────────────────────────────────────────────
+
+function buildDecarbRanking(data, chainTotal) {
+    const ranked = [...data]
+        .filter(p => p.total > 0)
+        .map(p => {
+            const s2ratio = p.s2 / p.total;
+            // Opportunity score: weighted by total emissions × S2 ratio
+            // High score = large emissions AND high S2 ratio = most addressable with clean energy
+            const cleanEnergyOpportunity = p.s2;
+            const operationalOpportunity  = p.s1;
+            return { ...p, s2ratio, cleanEnergyOpportunity, operationalOpportunity };
+        })
+        .sort((a, b) => b.cleanEnergyOpportunity - a.cleanEnergyOpportunity);
+
+    const maxOpp = ranked[0].cleanEnergyOpportunity;
+
+    const html = ranked.map((p, i) => {
+        const decarb = getDecarbOpportunity(p.s1, p.s2);
+        return `<div style="display:grid;grid-template-columns:30px 140px 1fr 100px 80px 90px;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:12px;">
+            <div style="font-weight:700;color:#6c757d;">#${i+1}</div>
+            <div><strong>P${p.id} ${p.name.split(' ')[0].replace('♻️','')}</strong></div>
+            <div>
+                <div style="display:flex;gap:3px;align-items:center;">
+                    <div style="flex:${p.s2 / Math.max(p.s1 + p.s2, 1)};height:12px;background:#4dabf7;border-radius:3px 0 0 3px;" title="Scope 2: ${fmtCO2(p.s2)}"></div>
+                    <div style="flex:${p.s1 / Math.max(p.s1 + p.s2, 1)};height:12px;background:#ffc107;border-radius:0 3px 3px 0;" title="Scope 1: ${fmtCO2(p.s1)}"></div>
+                </div>
+            </div>
+            <div>
+                <span class="pill pill-s2">S2 ${fmtCO2(p.s2)}</span>
+            </div>
+            <div style="color:#6c757d;font-size:11px;">${(p.s2ratio * 100).toFixed(0)}% electricity</div>
+            <div><span class="rating-badge" style="background:${decarb.color}22;color:${decarb.color};border:1px solid ${decarb.color}44;">${decarb.label}</span></div>
+        </div>`;
+    }).join('');
+
+    document.getElementById('decarbRanking').innerHTML = `
+        <div style="display:grid;grid-template-columns:30px 140px 1fr 100px 80px 90px;gap:10px;padding:0 0 8px;border-bottom:2px solid #dee2e6;font-size:10px;font-weight:600;color:#6c757d;text-transform:uppercase;letter-spacing:0.05em;">
+            <div>#</div><div>Phase</div><div>S2 / S1 split</div><div>Clean-energy S2</div><div>S2 share</div><div>Opportunity</div>
+        </div>
+        ${html}
+        <div style="margin-top:12px;font-size:11px;color:#6c757d;background:#f8f9fa;padding:10px;border-radius:6px;">
+            <strong>How to read this:</strong> The bar shows the S2 (blue) / S1 (amber) split per phase.
+            Phases ranked by absolute Scope 2 — the amount that could be eliminated by switching to clean energy.
+            S1 requires electrification or process change; S2 can be addressed with a clean energy sister subsystem.
+        </div>`;
+}
+
+// ── Data loading ──────────────────────────────────────────────────────────────
+
+async function init() {
+    // 1. Try localStorage (from simulator what-if state)
+    try {
+        const stored = localStorage.getItem('gold_emissions_analysis');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            if (parsed && parsed.data && Array.isArray(parsed.data)) {
+                const age = parsed.timestamp
+                    ? Math.round((Date.now() - new Date(parsed.timestamp)) / 1000)
+                    : null;
+                const ageStr = age !== null ? ` (captured ${age}s ago)` : '';
+                render(
+                    parsed.data,
+                    `📡 Live what-if state from simulator${ageStr} — adjust sliders in the simulator and click "Emissions Analysis" to refresh.`
+                );
+                return;
+            }
+        }
+    } catch(e) { /* ignore */ }
+
+    // 2. Try JSON baseline
+    try {
+        const res = await fetch(DATA_URL, { cache: 'no-store' });
+        if (res.ok) {
+            const json = await res.json();
+            const syn = (json.phases && json.phases.synthetic) || {};
+            const phases = [];
+            for (let i = 0; i <= 8; i++) {
+                const p = syn[String(i)] || {};
+                const meta = (json.phase_meta && json.phase_meta[String(i)]) || {};
+                phases.push({
+                    id: i,
+                    name: p.name || meta.name || `Phase ${i}`,
+                    D: Number(p.D) || 200,
+                    C: Number(p.C) || 200,
+                    scope1_tco2:   Number(p.scope1_tco2)  || 0,
+                    scope2_tco2:   Number(p.scope2_tco2)  || 0,
+                    scope_quality: p.scope_quality || 'Unknown',
+                    scope_source:  p.scope_source  || '',
+                });
+            }
+            render(phases, `📁 Baseline data from gold_supply_chain_ui.json (generated: ${json._meta && json._meta.generated || 'unknown'}). Open via simulator for live what-if state.`);
+            return;
+        }
+    } catch(e) { /* ignore */ }
+
+    // 3. Hardcoded fallback
+    render(FALLBACK_PHASES, '⚠️ Using hardcoded fallback data (JSON fetch failed — open via a web server for live data).');
+}
+
+init();
+</script>
+<script>
+/* ── Auto-breadcrumb ─────────────────────────────────────── */
+(function(){
+  var LABELS = {
+    'gold':'Gold','west_african_shea':'West African Shea',
+    'supply_chain':'Supply Chain','value_chain':'Value Chain',
+    'dashboard.html':'Dashboard',
+    'what_if_simulator.html':'What-If Simulator',
+    'emissions_analysis.html':'Carbon Analysis',
+    'water_analysis.html':'Water Analysis',
+    'energy_analysis.html':'Energy Analysis',
+    'financial_report.html':'Financial Report',
+    'project_context.html':'Project Context',
+    'index.html':null,'frontend':null
+  };
+  var HUBS = {
+    'gold':'/frontend/project/gold/index.html',
+    'west_african_shea':'/frontend/project/west_african_shea/index.html',
+    'supply_chain':'index.html',
+    'value_chain':'index.html'
+  };
+  var css = '#tv-bc{background:rgba(0,0,0,0.22);padding:6px 22px;font-size:11.5px;' +
+    'color:rgba(255,255,255,0.72);display:flex;align-items:center;gap:5px;flex-wrap:wrap;' +
+    'font-family:ui-sans-serif,system-ui,sans-serif;letter-spacing:.01em;}' +
+    '#tv-bc a{color:rgba(255,255,255,0.88);text-decoration:none;font-weight:700;}' +
+    '#tv-bc a:hover{color:#fff;text-decoration:underline;}' +
+    '#tv-bc .bc-sep{opacity:.45;font-size:10px;}' +
+    '#tv-bc .bc-cur{color:#fff;font-weight:900;}';
+  var s = document.createElement('style'); s.textContent = css; document.head.appendChild(s);
+
+  var parts = window.location.pathname.replace(/\/$/,'').split('/').filter(Boolean);
+  var crumbs = [{label:'Home',href:'/index.html'}];
+  var built = '';
+  for(var i=0;i<parts.length;i++){
+    var p = parts[i], lbl = LABELS[p];
+    if(lbl===null) continue;
+    if(lbl===undefined) continue;
+    built += '/'+p;
+    var isFile = p.endsWith('.html');
+    var isLast = (i===parts.length-1);
+    var href = isLast ? null : (HUBS[p] ? HUBS[p] : built+'/index.html');
+    if(isFile && !isLast){
+      // intermediate file — shouldn't happen in normal structure, skip
+    } else {
+      crumbs.push({label:lbl, href:isLast?null:href});
+    }
+  }
+
+  var html = crumbs.map(function(c,i){
+    var sep = i>0?'<span class="bc-sep">›</span>':'';
+    var node = c.href ? '<a href="'+c.href+'">'+c.label+'</a>'
+                      : '<span class="bc-cur">'+c.label+'</span>';
+    return sep+node;
+  }).join('');
+
+  var nav = document.createElement('div');
+  nav.id = 'tv-bc';
+  nav.innerHTML = html;
+
+  function inject(){
+    if(document.getElementById('tv-bc')) return;
+    var hdr = document.querySelector('.header');
+    if(hdr && hdr.parentNode){
+      hdr.parentNode.insertBefore(nav, hdr.nextSibling);
+    } else {
+      var hero = document.querySelector('.hero, .container, .app');
+      if(hero) hero.parentNode.insertBefore(nav, hero);
+      else document.body.insertAdjacentElement('afterbegin', nav);
+    }
+  }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',inject);
+  else inject();
+})();
+</script>
+<script>
+/* ── Contextual Resource Footer ─────────────────────────────────── */
+(function(){
+  var path = window.location.pathname;
+
+  // Detect project slug
+  var project = null;
+  if (/\/aubeb\//i.test(path))  project = 'aubeb';
+  else if (/\/west_african_shea\//i.test(path))   project = 'west_african_shea';
+  else if (/\/gold\//i.test(path))   project = 'gold';
+
+  // Detect section
+  var inSupply = /supply_chain/.test(path);
+  var inValue  = /value_chain/.test(path);
+
+  // ── Project-specific data links ──────────────────────────────────
+  var projectLinks = [];
+  if (project) {
+    var cap = project.charAt(0).toUpperCase() + project.slice(1);
+    projectLinks = [
+];
+    if (project === 'aubeb') {
+      projectLinks.push({ label: 'AUBEB PDI Status Report', href: '/frontend/project/aubeb/data/PDI_AUBEB_STATUS.html', icon: '📋' });
+    }
+    if (project === 'gold') {
+      projectLinks.push({ label: 'Gold E-Model Claims CSV', href: '/frontend/project/gold/data/schema/gold_e_model_claims.html', icon: '📊' });
+    }
+    if (project === 'west_african_shea') {
+      projectLinks.push({ label: 'Shea E-Model Claims CSV', href: '/frontend/project/west_african_shea/data/schema/shea_e_model_claims.html', icon: '📊' });
+    }
+  }
+
+  // ── Section-scoped schema links ──────────────────────────────────
+  var schemaLinks = [];
+  if (inSupply || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Supply Chain Phases',     href: '/frontend/project/gold/data/schema/supply_chain_phases.html',     icon: '🔗' },
+      { label: 'Phase NDC Definitions',   href: '/frontend/project/gold/data/schema/supply_chain_phases_ndc.html', icon: '⚖️' },
+      { label: 'Entity Registry',         href: '/frontend/project/gold/data/schema/entity_registry.html',         icon: '🗂️' },
+    ]);
+  }
+  if (inValue || (!inSupply && !inValue)) {
+    schemaLinks = schemaLinks.concat([
+      { label: 'Value Metric Definitions', href: '/frontend/project/gold/data/schema/value_chain_metric_definitions.html', icon: '📏' },
+      { label: 'Value Chain NDC Schema',   href: '/frontend/project/gold/data/schema/value_chain_phases_ndc.html',         icon: '⚖️' },
+      { label: 'Value Data Sources',       href: '/frontend/project/gold/data/schema/value_chain_data_sources.html',       icon: '🗂️' },
+    ]);
+  }
+
+  // ── Global Tier-1 links (always shown) ──────────────────────────
+  var globalLinks = [
+{ label: 'Five-Model Coherence',     href: '/frontend/project/five_model_coherence.html', icon: '⭕' },
+];
+
+  // ── Build HTML ───────────────────────────────────────────────────
+  var PALETTE = {
+    red:   { bg:'rgba(239,68,68,0.10)',  border:'rgba(239,68,68,0.28)',  hover:'rgba(239,68,68,0.20)',  text:'rgba(255,200,200,0.9)' },
+    green: { bg:'rgba(34,197,94,0.10)',  border:'rgba(34,197,94,0.28)',  hover:'rgba(34,197,94,0.20)',  text:'rgba(187,247,208,0.9)' },
+    blue:  { bg:'rgba(96,165,250,0.10)', border:'rgba(96,165,250,0.28)', hover:'rgba(96,165,250,0.20)', text:'rgba(191,219,254,0.9)' },
+  };
+  function renderGroup(title, links, color) {
+    if (!links.length) return '';
+    var items = links.map(function(l){
+      var p = PALETTE[l.color || color] || PALETTE.blue;
+      return '<a href="' + l.href + '" style="display:flex;align-items:center;gap:5px;color:' + p.text + ';'
+           + 'text-decoration:none;font-size:11px;padding:4px 11px;'
+           + 'background:' + p.bg + ';border:1px solid ' + p.border + ';'
+           + 'border-radius:6px;white-space:nowrap;transition:background .15s;"'
+           + ' onmouseover="this.style.background=\'' + p.hover + '\'"'
+           + ' onmouseout="this.style.background=\'' + p.bg + '\'">'
+           + '<span>' + l.icon + '</span><span>' + l.label + '</span></a>';
+    }).join('');
+    return '<div style="display:flex;flex-direction:column;gap:4px;">'
+         + '<div style="font-size:9px;font-weight:900;text-transform:uppercase;letter-spacing:.1em;'
+         + 'color:rgba(255,255,255,0.35);margin-bottom:2px;">' + title + '</div>'
+         + '<div style="display:flex;flex-wrap:wrap;gap:6px;">' + items + '</div></div>';
+  }
+
+  var html = '<div id="tv-resource-footer" style="'
+    + 'background:#0a0f1a;border-top:1px solid rgba(255,255,255,0.08);'
+    + 'padding:18px 24px;display:flex;flex-direction:column;gap:14px;'
+    + 'font-family:ui-sans-serif,system-ui,sans-serif;">';
+
+  html += '<div style="font-size:10px;font-weight:900;text-transform:uppercase;'
+        + 'letter-spacing:.1em;color:rgba(255,255,255,0.3);">Resources</div>';
+
+  if (projectLinks.length) html += renderGroup((project || '').toUpperCase() + ' Project Data', projectLinks, 'green');
+  if (schemaLinks.length)  html += renderGroup('Schema & Reference', schemaLinks, 'red');
+  html += renderGroup('Site-wide', globalLinks, 'blue');
+
+  html += '</div>';
+
+  function inject(){
+    if (document.getElementById('tv-resource-footer')) return;
+    var footer = document.querySelector('.footer, footer');
+    if (footer) {
+      footer.insertAdjacentHTML('afterend', html);
+    } else {
+      document.body.insertAdjacentHTML('beforeend', html);
+    }
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', inject);
+  else inject();
+})();
+</script>
+</body>
+</html>
