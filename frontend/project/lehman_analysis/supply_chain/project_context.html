@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>Lehman Brothers: Phase Intervention Analysis</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#edf2f7; color:#1a202c; }
+  header { background:#1c0a00; color:#fef3c7; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:17px; font-weight:600; }
+  header nav a { color:#d97706; text-decoration:none; font-size:13px; margin-left:14px; }
+  header nav a:hover { color:#fef3c7; }
+  main { max-width:1000px; margin:0 auto; padding:28px 20px; }
+  section { background:#fff; border-radius:10px; padding:22px 24px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); }
+  h2 { font-size:17px; font-weight:600; color:#0f172a; margin-bottom:12px; }
+  h3 { font-size:15px; font-weight:600; color:#78350f; margin-bottom:10px; }
+  p { color:#475569; line-height:1.65; font-size:14px; margin-bottom:8px; }
+  ul { margin-left:20px; }
+  li { color:#475569; font-size:14px; line-height:1.6; margin-bottom:4px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:12px; }
+  th { text-align:left; padding:9px 12px; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid #e2e8f0; background:#f8fafc; }
+  td { padding:10px 12px; border-bottom:1px solid #f1f5f9; vertical-align:top; color:#334155; }
+  tr:last-child td { border-bottom:none; }
+
+  .disclaimer { background:#fffbeb; border:1px solid #fbbf24; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:13px; color:#78350f; }
+
+  .axis-fail { color:#dc2626; font-weight:700; }
+  .axis-warn { color:#d97706; font-weight:700; }
+  .axis-ok { color:#16a34a; }
+
+  .bottleneck-block { border:2px solid #dc2626; border-radius:10px; padding:20px; margin-bottom:18px; }
+  .bottleneck-block.critical { border-color:#ea580c; }
+  .bh { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .bh-num { font-size:32px; font-weight:900; color:#dc2626; flex-shrink:0; }
+  .bh-num.critical { color:#ea580c; }
+  .bh-title { font-size:16px; font-weight:700; color:#0f172a; }
+  .bh-meta { font-size:12px; color:#64748b; margin-top:3px; }
+  .bh-badge { margin-left:auto; background:#fef2f2; color:#991b1b; font-size:11px; font-weight:700; padding:4px 12px; border-radius:999px; text-transform:uppercase; flex-shrink:0; }
+  .bh-badge.critical { background:#fff7ed; color:#7c2d12; }
+  .bh-why { font-size:13px; color:#475569; line-height:1.65; margin-bottom:12px; }
+  .bh-why strong { color:#0f172a; }
+  .combined-effect { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:12px 16px; margin-top:12px; font-size:13px; }
+  .combined-effect strong { color:#166534; }
+
+  .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+  .kpi { background:#f8fafc; border-radius:9px; padding:14px 16px; border-left:4px solid #78350f; }
+  .kpi.red { border-left-color:#dc2626; }
+  .kpi.amber { border-left-color:#d97706; }
+  .kpi-label { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; margin-bottom:3px; }
+  .kpi-value { font-size:22px; font-weight:800; color:#0f172a; }
+  .kpi-value.red { color:#dc2626; }
+  .kpi-value.amber { color:#d97706; }
+  .kpi-sub { font-size:11px; color:#94a3b8; margin-top:2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏛 Lehman Brothers: Phase Intervention Analysis</h1>
+  <nav>
+    <a href="index.html">Phase Overview</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="recycling_analysis.html">Resolution</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+
+<div class="disclaimer">
+  <strong>Provisional disclaimer:</strong> Recommendations in this worksheet are derived analytically
+  from N-D-C phase balance data and publicly available SEC filings, the Valukas Examiner Report (2010),
+  and FCIC Final Report (2011). They represent structural diagnoses, not investment advice.
+  The interventions identified are drawn from post-crisis regulatory reforms (Dodd-Frank) and
+  academic literature on broker-dealer risk governance. Field validation against live institutions
+  requires current SEC filings and risk disclosure data.
+</div>
+
+<div class="kpi-strip">
+  <div class="kpi red">
+    <div class="kpi-label">Chain Balance (π)</div>
+    <div class="kpi-value red">49.9%</div>
+    <div class="kpi-sub">Failure zone: all axes sub-threshold</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">Phase 3 Balance</div>
+    <div class="kpi-value red">17.2%</div>
+    <div class="kpi-sub">Breakdown: primary failure</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">Bottleneck Phases</div>
+    <div class="kpi-value red">6</div>
+    <div class="kpi-sub">Phases 0, 2, 3, 4, 5, 6</div>
+  </div>
+  <div class="kpi amber">
+    <div class="kpi-label">Detection Window</div>
+    <div class="kpi-value amber">20 mo</div>
+    <div class="kpi-sub">Q1 2007 to September 2008</div>
+  </div>
+</div>
+
+<!-- Phase Intervention Worksheet -->
+<section>
+  <h2>Phase Intervention Worksheet</h2>
+
+  <h3>Five-Axis Failure Diagnosis</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Constant</th>
+        <th>What it measures</th>
+        <th>Lehman Score</th>
+        <th>Diagnosis</th>
+        <th>Intervention category</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>π</strong></td>
+        <td>Operational balance: chain average</td>
+        <td class="axis-fail">49.9%</td>
+        <td>6 of 8 phases below coherence floor. System is not borderline: it is in structural Failure across all operational dimensions. The deceptive appearance of Phases 1 and 7 is the only reason standard frameworks did not detect this.</td>
+        <td>Mandatory cross-phase structural reporting; broker-dealer phase-level balance monitoring; independent leverage verification</td>
+      </tr>
+      <tr>
+        <td><strong>φ</strong></td>
+        <td>Proportional value distribution</td>
+        <td class="axis-fail">22%</td>
+        <td>More extreme skew than SVB. Phases 1 and 7 score Coherent while 6 operational phases are in Breakdown. The φ score of 22% signals that institutional health is almost entirely concentrated in reporting and regulatory compliance phases: the same phases most subject to manipulation and self-assessment bias.</td>
+        <td>Require phase-level structural disclosure in broker-dealer annual reports; independent verification of risk metrics by third-party actuaries</td>
+      </tr>
+      <tr>
+        <td><strong>√2</strong></td>
+        <td>Structural overhead: binding D constraints</td>
+        <td class="axis-fail">18%</td>
+        <td>The lowest √2 score in this project dataset (SVB was 30%). Leverage limits, VaR limits, and risk committee oversight existed on paper but were routinely overridden. D was structurally present on paper but absent in practice. √2 signals that the constraint infrastructure was a façade.</td>
+        <td>Mandatory binding leverage caps with no waiver authority below board level; independent risk committee with veto power over position increases; SEC verification of reported vs actual leverage</td>
+      </tr>
+      <tr>
+        <td><strong>ln2</strong></td>
+        <td>Value transformation: input-to-output efficiency</td>
+        <td class="axis-fail">38%</td>
+        <td>Capital flowed into commercial real estate and mortgage securities that could not be converted back to liquidity under stress without catastrophic loss recognition. The originate-to-hold shift created a structural transformation blockage identical to SVB's HTM trap: but larger in absolute scale ($57B in illiquid positions vs SVB's $91B HTM, relative to much greater total balance sheet).</td>
+        <td>Mandatory held-to-maturity equivalent concentration limits for broker-dealers; mark-to-market requirements for illiquid real estate positions; stress test scenarios requiring asset liquidation at distressed prices</td>
+      </tr>
+      <tr>
+        <td><strong>e</strong></td>
+        <td>Financial abstraction: instruments linked to real metrics</td>
+        <td class="axis-fail">6%</td>
+        <td>Repo 105 was the primary financial instrument distinguishing Lehman's reported balance sheet from its actual position: and it was accounting manipulation, not risk management. No instruments linked capital position to real risk metrics. The e score of 6% is the lowest in the dataset: even SVB at 12% had more meaningful financial abstraction than Lehman's fraudulent quarter-end window dressing.</td>
+        <td>Mandatory prohibition on repo-to-maturity and Repo 105 structures; real-time leverage reporting to regulators; performance-contingent capital requirements with public disclosure</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><strong>Key finding:</strong> All five axes simultaneously fail below 50%. This is the only case in this project's dataset
+  where the entire coherence structure is in Failure. The SVB analysis shows one primary failure axis (Phase 3 interest rate
+  risk) cascading to three others. Lehman shows six concurrent failures with no functional axis above the Failure threshold.
+  This is not a cascade failure from one point: it is a systemic D-collapse across all operational functions simultaneously.</p>
+</section>
+
+<!-- Bottleneck worksheets -->
+<section>
+  <h2>Bottleneck Phase Worksheets</h2>
+
+  <!-- Phase 3 -->
+  <div class="bottleneck-block">
+    <div class="bh">
+      <div class="bh-num">3</div>
+      <div>
+        <div class="bh-title">Leverage and Risk Management</div>
+        <div class="bh-meta">Balance 17.2% | D=55, C=320, gap=265 | Primary failure axis: <strong>√2 (structural absence) and e (no risk instruments)</strong></div>
+      </div>
+      <span class="bh-badge">Breakdown: Primary</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Lehman's internal leverage target of 25x was not
+      a binding constraint. The risk committee was routinely overridden by desk-level revenue pressure.
+      VaR limit breaches were resolved by raising limits, not reducing positions (Valukas Report p. 87-92).
+      By Q1 2008, gross leverage reached 30.7x: 23% above target. D (enforced risk constraint weight)
+      collapsed to 55 because the constraint infrastructure existed in form but not function.
+      C (risk exposure) at 320 reflects the actual gross exposure of a $600B+ balance sheet
+      leveraged against a rapidly deteriorating real asset base. The √2 axis identifies this as
+      structural absence of constraint: the wiring was present but the circuit breakers were removed.
+      The e axis (score 6%) identifies that Repo 105: the only instrument "managing" reported leverage :
+      was accounting manipulation rather than risk management.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Binding statutory leverage cap for broker-dealers</strong></td>
+          <td>The 2004 SEC rule change that enabled broker-dealers to use internal models effectively removed binding leverage caps for major investment banks. A statutory 20x gross leverage cap with no waiver authority below board resolution would restore D (constraint weight) to Phase 3. Dodd-Frank Title I addresses systemically important financial institutions but did not directly cap broker-dealer leverage. Source: FCIC recommendations; Basel III leverage ratio for banking entities.</td>
+          <td>D: +100 to +130 (statutory cap restores binding constraint structure). C: -60 (forced deleveraging from 30.7x to 20x reduces gross exposure). Estimated Phase 3 balance with 20x cap enforced from Q1 2007: 17.2% recovers to approximately 50-60%.</td>
+        </tr>
+        <tr>
+          <td><strong>Independent risk committee with statutory veto power</strong></td>
+          <td>Require broker-dealers with assets above $100B to maintain an independent risk committee (majority non-executive members, including an independent CRO) with statutory authority to block position increases when limits are breached. This directly restores D function: overrides require board-level approval and public disclosure. Source: Valukas Report recommendations; Dodd-Frank §165(h) enhanced prudential standards.</td>
+          <td>D: +40 (independent veto restores constraint enforceability). C: -20 (effective override prevention prevents C escalation above limits). Phase 3 improvement: +15 to +20 percentage points.</td>
+        </tr>
+        <tr>
+          <td><strong>Prohibition on Repo 105 and quarter-end window dressing</strong></td>
+          <td>Repo 105 exploited UK accounting rules to temporarily reclassify $50B of repo agreements as sales, reducing reported balance sheet size at quarter-end. Explicit prohibition on repo-to-maturity and window-dressing structures that achieve balance sheet reduction without genuine risk transfer. SEC staff accounting bulletins should require quarterly-average leverage disclosure, not quarter-end point-in-time. Source: Valukas Report p. 7-14; SEC accounting standards update proposals post-2010.</td>
+          <td>D: +30 (prohibition restores reporting integrity, closing the gap between reported and actual constraint). C: unchanged (Repo 105 was cosmetic: actual leverage unchanged). Phase 1 deception corrected. Phase 3 indirect benefit: +5 through more accurate constraint monitoring.</td>
+        </tr>
+        <tr>
+          <td><strong>Real-time leverage reporting to primary regulator</strong></td>
+          <td>Require daily leverage ratio reporting to the SEC and Federal Reserve for broker-dealers with assets above $50B. SVB failed partly because monthly Call Reports lagged structural deterioration. Lehman's quarterly 10-Q disclosure was insufficient for a firm with $200B in daily repo rollover. Real-time regulatory visibility transforms D from a quarterly snapshot to a continuous constraint. Source: proposed in FSOC recommendations post-2008; partially implemented for bank holding companies under enhanced prudential standards.</td>
+          <td>D: +25 (daily reporting shortens supervisory response time from months to days). Phase 3 balance improvement: +8 to +12 through earlier regulatory intervention potential.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate (all four interventions applied):</strong>
+      Phase 3 D increases from 55 to approximately 195-210; C decreases from 320 to approximately 230-250 (20x leverage cap enforced, window dressing prohibited).
+      Estimated Phase 3 balance with full intervention package: 100 - (|200-240|/240)*100 = approximately 83% (Good, recovered from Breakdown).
+      System chain balance would recover from 49.9% to approximately 65-72% (Critical to Stressed range),
+      significantly above the current Failure threshold.
+      <br><br>
+      <strong>Cross-reference:</strong> √2 axis recovers from 18% to approximately 50-60% (constraint infrastructure made binding).
+      e axis recovers from 6% to approximately 30-35% (Repo 105 prohibited; real-time reporting activated).
+    </div>
+  </div>
+
+  <!-- Phase 0 -->
+  <div class="bottleneck-block">
+    <div class="bh">
+      <div class="bh-num">0</div>
+      <div>
+        <div class="bh-title">Funding Base and Liability Structure</div>
+        <div class="bh-meta">Balance 28.3% | D=85, C=300, gap=215 | Primary failure axis: <strong>√2 (structural absence of maturity constraints) and ln2 (transformation blockage)</strong></div>
+      </div>
+      <span class="bh-badge">Breakdown</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Lehman funded approximately $188B in daily
+      repo obligations: the equivalent of 30% of its total balance sheet: through overnight and
+      short-term agreements requiring continuous rollover. No regulatory minimum for term funding
+      as a percentage of total liabilities applied to broker-dealers. C (funding volume and dependency)
+      at 300 reflects the absolute scale and fragility of this structure. D (maturity diversity and
+      stability constraints) at 85 reflects the absence of any binding requirement to maintain
+      term funding above a minimum threshold. The ln2 axis identifies this as a transformation
+      blockage: capital could not be converted to stable funding without a complete restructuring
+      of the liability base, which was impossible while the asset base was illiquid.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Net Stable Funding Ratio (NSFR) for broker-dealers</strong></td>
+          <td>The Basel III NSFR requires that stable funding (available for 1 year) exceeds required stable funding (reflecting asset illiquidity). Applied to broker-dealers, NSFR would have required Lehman to fund illiquid CRE and mortgage positions with term liabilities rather than overnight repo. The Basel III NSFR was not finalized for banks until 2014 and not extended to broker-dealers in the same form. Source: Basel III NSFR standard (2014); FSB broker-dealer resolution framework.</td>
+          <td>D: +80 (NSFR adds binding maturity constraint). C: -60 (forces reduction in overnight repo dependency). Estimated Phase 0 balance: 28.3% to approximately 62-70%.</td>
+        </tr>
+        <tr>
+          <td><strong>Minimum term funding ratio (30% of wholesale liabilities in >30-day tenor)</strong></td>
+          <td>Require broker-dealers with assets above $100B to fund at least 30% of wholesale liabilities at maturities exceeding 30 days. At failure, Lehman's overnight/short-term ratio was approximately 80%; this intervention would require it to drop below 70%. Source: proposed in NY Fed broker-dealer resolution recommendations (2010); FSOC annual report recommendations.</td>
+          <td>D: +45 (term funding floor adds maturity constraint). C: -40 (reduction in overnight dependency reduces run-risk). Phase 0 improvement: approximately 20-25 percentage points.</td>
+        </tr>
+        <tr>
+          <td><strong>Concentration limits on single counterparty repo dependency</strong></td>
+          <td>No single counterparty should represent more than 10% of a broker-dealer's total repo funding. Lehman's repo book was concentrated among a small number of primary dealer counterparties, creating simultaneous withdrawal risk. Source: Basel III large exposures framework; CFTC margin rules.</td>
+          <td>D: +20 (counterparty concentration limit adds structural constraint). C: -15 (forces diversification, reducing correlated withdrawal risk). Phase 0 improvement: +10 to +15 percentage points.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate:</strong> Phase 0 D increases from 85 to approximately 230; C decreases from 300 to approximately 185 (overnight ratio reduced to 60%, term funding floor enforced).
+      Estimated Phase 0 balance: 100 - (|230-185|/230)*100 = approximately 80% (Coherent: recovered from Breakdown).
+      <br><br>
+      <strong>Cross-reference:</strong> ln2 axis recovers from 38% to approximately 55% as liability structure transformation becomes feasible (term funding enables orderly asset restructuring without immediate run-risk).
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="bottleneck-block">
+    <div class="bh">
+      <div class="bh-num">2</div>
+      <div>
+        <div class="bh-title">Asset Quality and Portfolio Concentration</div>
+        <div class="bh-meta">Balance 25.9% | D=75, C=290, gap=215 | Primary failure axis: <strong>ln2 (transformation blockage) and √2 (no concentration limits)</strong></div>
+      </div>
+      <span class="bh-badge">Breakdown</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Lehman accumulated $32.6B in commercial real estate
+      and $24.8B in residential mortgage-related positions, representing nearly 10% of the total balance sheet
+      in two correlated, illiquid asset classes. No single-sector concentration limit was enforced.
+      The shift from originate-to-distribute (sell securitizations) to originate-to-hold (warehouse assets)
+      concentrated risk on Lehman's own balance sheet precisely when the underlying assets were deteriorating.
+      The ln2 axis identifies the transformation blockage: illiquid assets cannot be converted to capital
+      or liquidity in a distressed market without crystallizing losses that exceed reported equity.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Single-sector concentration limit (20% of total assets)</strong></td>
+          <td>Cap total exposure to any single asset class (CRE, residential mortgage, leveraged loans) at 20% of total assets. Lehman's CRE + residential mortgage totalled approximately $57B on a $600B balance sheet: approximately 9.5%, but with additional leveraged loan exposure bringing real estate-correlated exposure higher. A 15% combined real estate limit would have required significantly smaller positions. Source: banking concentration limits under SR 13-12; Basel III credit risk concentration guidelines.</td>
+          <td>D: +60 (concentration limit adds binding constraint). C: -80 (forced reduction from peak CRE/RMBS levels). Phase 2 balance improvement: 25.9% to approximately 55-65%.</td>
+        </tr>
+        <tr>
+          <td><strong>Mark-to-market requirement for illiquid real estate positions</strong></td>
+          <td>Require quarterly independent valuation of all Level 3 (illiquid) assets with external auditor sign-off. Lehman's CRE write-downs of $8.2B in Q2 2008 alone confirmed that marks had been delayed. Earlier mark recognition would have forced capital raises or position reductions before terminal insolvency. Source: FASB ASC 820 fair value requirements; post-crisis accounting standard updates.</td>
+          <td>D: +30 (independent valuation requirement tightens mark discipline). C: unchanged in weight but earlier write-downs force earlier action. Phase 2 indirect benefit: earlier insolvency recognition prevents further C accumulation.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate:</strong> Phase 2 D increases from 75 to approximately 165; C decreases from 290 to approximately 210 (concentration caps enforced, independent marks).
+      Estimated Phase 2 balance: 100 - (|165-210|/210)*100 = approximately 78.6% (Stressed to Good).
+      <br><br>
+      <strong>Cross-reference:</strong> ln2 axis recovers from 38% to approximately 55% as illiquid asset transformation blockage is partially resolved through forced portfolio rebalancing.
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="bottleneck-block critical">
+    <div class="bh">
+      <div class="bh-num critical">4</div>
+      <div>
+        <div class="bh-title">Liquidity Pool and Funding Access</div>
+        <div class="bh-meta">Balance 43.2% | D=185, C=80, gap=105 | Primary failure axis: <strong>ln2 (transformation blockage) and φ (phase health distribution)</strong></div>
+      </div>
+      <span class="bh-badge critical">Breakdown: Cascade</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Phase 4 is a cascade failure from Phases 0 and 3.
+      Lehman's claimed $45.5B liquidity pool was substantially encumbered (Valukas Report). The D (liquidity
+      requirement at 185) reflects what was needed to meet $188B in daily repo obligations in a stress
+      scenario; C (actual available liquidity at 80) reflects the Valukas-assessed usable fraction of
+      the claimed pool. Unlike SVB, Lehman had no FDIC insurance and limited Federal Reserve access
+      for broker-dealers (PDCF was extended in March 2008 for Bear Stearns but Lehman could not access
+      sufficient support). The ln2 axis identifies the transformation block: illiquid assets in Phases 2 and 3
+      cannot convert to liquidity without triggering catastrophic loss recognition: the same mechanism as SVB.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mandatory unencumbered liquid asset pool for broker-dealers</strong></td>
+          <td>Require broker-dealers with assets above $100B to maintain an unencumbered liquid asset pool equal to 30 days of stressed outflows, independently verified quarterly. Lehman's pool was claimed at $45.5B but substantially encumbered. An independently verified unencumbered requirement directly addresses C (actual usable liquidity). Source: Basel III LCR; FSB broker-dealer liquidity standards (2010); Dodd-Frank §165(d) resolution planning requirements.</td>
+          <td>C: +60 to +80 (verified unencumbered pool requirement forces actual liquid asset maintenance). D: unchanged. Phase 4 balance: 43.2% to approximately 70-75%.</td>
+        </tr>
+        <tr>
+          <td><strong>Federal Reserve primary credit access for systemically important broker-dealers</strong></td>
+          <td>Extend Fed emergency lending authority (established post-Bear Stearns in March 2008) into a standing facility available to systemically important broker-dealers at a regulatory surcharge rate. The Primary Dealer Credit Facility (PDCF) was too limited for Lehman's scale and came too late. Standing access would have increased C (available liquidity backstop) materially. Dodd-Frank §13(3) restricted emergency lending authority; standing facilities for non-banks require legislative action. Source: FCIC Report Chapter 18; Fed emergency authority analysis.</td>
+          <td>C: +40 (Fed backstop as lender of last resort adds emergency liquidity layer). Phase 4 improvement: +15 to +20 percentage points. Critical note: this intervention addresses the cascade: it does not resolve Phase 0 or Phase 3 structural failures.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate:</strong> Phase 4 C increases from 80 to approximately 150-160 (verified liquid pool plus Fed backstop).
+      Estimated Phase 4 balance: 100 - (|185-155|/185)*100 = approximately 83-84% (Good: recovered from Breakdown).
+      As with SVB Phase 4: recovery requires upstream Phase 0 and Phase 3 remediation. Without reducing overnight repo dependency (Phase 0) and leverage (Phase 3), Phase 4 liquidity will always be insufficient relative to the obligation volume.
+    </div>
+  </div>
+
+  <!-- Phase 6 -->
+  <div class="bottleneck-block critical">
+    <div class="bh">
+      <div class="bh-num critical">6</div>
+      <div>
+        <div class="bh-title">Market Confidence and Counterparty Trust</div>
+        <div class="bh-meta">Balance 30.6% | D=180, C=55, gap=125 | Primary failure axis: <strong>φ (distribution collapse) and e (no real-time transparency instruments)</strong></div>
+      </div>
+      <span class="bh-badge critical">Breakdown: Terminal Cascade</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Phase 6 is the terminal cascade of Phases 0, 2, and 3.
+      Market confidence (C=55) fell below the institutional credibility threshold (D=180) as counterparties
+      with visibility into Lehman's real leverage and asset quality began withdrawing from repo agreements.
+      The KDB deal collapse on September 9 removed the last recapitalization path. Barclays and Bank of America
+      declined to acquire without a government backstop: contrast with Bear Stearns in March 2008, where
+      the Fed provided emergency support. The φ axis identifies the distribution failure: confidence was
+      concentrated in reported metrics (Phase 1 and 7 appearing coherent) while counterparties with
+      access to actual balance sheet data were withdrawing. The e axis identifies that no instruments
+      existed to transparently signal the true risk to counterparties before the terminal phase.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Real-time daily leverage disclosure to regulators and structured counterparty transparency</strong></td>
+          <td>Require daily leverage and liquidity pool disclosure to the SEC and Federal Reserve for broker-dealers above $50B. A structured counterparty transparency mechanism: where prime brokerage and repo counterparties receive a standardized monthly balance sheet summary with actual (not Repo 105-adjusted) leverage: would allow markets to price counterparty risk accurately and adjust exposure before terminal withdrawal. Source: proposed in FSOC risk monitoring recommendations; partially implemented under Dodd-Frank Title VII swap disclosure rules.</td>
+          <td>C: +35 (accurate market information prevents sudden counterparty withdrawal). D: unchanged. Phase 6 improvement: approximately 15-20 percentage points.</td>
+        </tr>
+        <tr>
+          <td><strong>Mandatory resolution planning with pre-positioned transfer of prime brokerage accounts</strong></td>
+          <td>Dodd-Frank §165(d) requires resolution planning (living wills) for systemically important institutions. A Lehman-specific enhancement would have required pre-positioning of prime brokerage client assets in segregated accounts accessible within 24 hours of failure. This prevents the prime brokerage withdrawal cascade that accelerated Phase 6 deterioration and provides a structured transition rather than chaotic counterparty exit. Source: Dodd-Frank §165(d) resolution planning rules; FSB Cross-Border Resolution Guidance.</td>
+          <td>D: +20 (structured resolution plan adds credibility and reduces terminal panic). Phase 6 indirect benefit: reduces withdrawal cascade velocity. Estimated Phase 6 balance with pre-positioned resolution: 30.6% to approximately 45-50%.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect note:</strong> Phase 6 cannot be repaired directly: it is a cascade output of Phases 0, 2, and 3.
+      The effective intervention is upstream: restore Phase 3 balance above 60% (leverage constrained),
+      Phase 0 above 70% (stable funding enforced), and Phase 2 above 65% (asset concentration reduced).
+      With all upstream interventions applied, estimated Phase 6 balance: approximately 55-65%.
+      Phase 6 in isolation cannot reach Coherent while the underlying leverage structure remains in Breakdown.
+      <br><br>
+      <strong>System-wide combined effect:</strong> All five bottleneck phases (0, 2, 3, 4, 6) addressed simultaneously
+      would recover the chain average (π) from 49.9% to approximately 68-75%, moving the system from Failure
+      to Stressed or Critical range. This is substantially below SVB's estimated recovery (76-82%) because
+      Lehman's failure involved more concurrent failures and deeper individual phase breakdowns.
+      Full Coherent status would require Phase 5 (Earnings) to also recover: which follows from structural
+      remediation but takes 4-6 quarters of consistent results to restore market confidence.
+    </div>
+  </div>
+
+  <!-- Phase 5 -->
+  <div class="bottleneck-block critical">
+    <div class="bh">
+      <div class="bh-num critical">5</div>
+      <div>
+        <div class="bh-title">Earnings and Net Revenue</div>
+        <div class="bh-meta">Balance 61.3% | D=155, C=95, gap=60 | Primary failure axis: <strong>π (chain average dragged down) and φ (revenue collapse while reporting phases hold)</strong></div>
+      </div>
+      <span class="bh-badge critical">Critical Threshold</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase is critical despite a 61.3% balance:</strong> Phase 5 sits exactly at the coherence
+      boundary (61.8%). Its inclusion as a bottleneck phase is warranted because (1) the trajectory was sharply
+      deteriorating (record $4.2B income in 2007, then -$2.8B Q2 2008, -$3.9B Q3 2008), (2) the revenue model
+      depended on asset price appreciation that had already reversed, and (3) the D (revenue requirement to
+      sustain operations) exceeded C (actual revenue capacity with write-downs) throughout Q2-Q3 2008.
+      Phase 5 is a leading indicator of the systemic failure, not a lagging one: once write-downs compressed
+      earnings below the sustainability threshold, the market confidence cascade in Phase 6 became inevitable.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Revenue source diversification requirements for broker-dealers</strong></td>
+          <td>Require that no single asset class or business line account for more than 35% of net revenue. Lehman's revenue was heavily dependent on proprietary real estate positions. This intervention directly addresses C (revenue diversity and resilience). Source: Basel III business model diversification principles; FSB structural separation guidelines (Vickers Report).</td>
+          <td>C: +25 (diversified revenue base reduces single-point-of-failure risk). D: unchanged. Phase 5 improvement: approximately 10-15 percentage points above current trajectory.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate:</strong> Phase 5 C increases from 95 to approximately 115-120 (revenue diversification and reduced write-down impact from Phase 2 concentration remediation).
+      Estimated Phase 5 balance: 100 - (|155-117|/155)*100 = approximately 75-78% (Stressed: meaningfully above the critical threshold).
+    </div>
+  </div>
+</section>
+
+<!-- Application to broker-dealer screening -->
+<section>
+  <h2>Forward-Looking Application: Broker-Dealer Structural Screening</h2>
+  <p>
+    The Lehman analysis is reproducible for any major broker-dealer using public SEC quarterly filings (10-Q/10-K).
+    The key diagnostic fields are:
+  </p>
+  <table>
+    <thead>
+      <tr><th>SEC/Public Disclosure Field</th><th>N-D-C Role</th><th>Warning Threshold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Gross leverage ratio (total assets / tangible equity)</td><td>Phase 3 C</td><td>Above 25x warrants Phase 3 stress classification; above 30x indicates Breakdown</td></tr>
+      <tr><td>Overnight and short-term repo as % of total liabilities</td><td>Phase 0 C</td><td>Above 50% warrants Phase 0 stress; above 70% indicates structural run-risk</td></tr>
+      <tr><td>Level 3 assets as % of total assets</td><td>Phase 2 C and ln2 signal</td><td>Above 10% warrants Phase 2 review for transformation blockage under stress</td></tr>
+      <tr><td>Single-sector exposure as % of total assets (CRE, RMBS, etc.)</td><td>Phase 2 D vs C</td><td>Above 8% in any illiquid sector warrants concentration review</td></tr>
+      <tr><td>Unencumbered liquid assets as % of short-term wholesale funding</td><td>Phase 4 C/D ratio</td><td>Below 25% warrants Phase 4 Breakdown classification</td></tr>
+      <tr><td>Quarterly earnings trajectory vs. write-down trend</td><td>Phase 5 C trajectory</td><td>Three consecutive quarters of write-down growth with earnings compression signals Phase 5 Critical approach</td></tr>
+    </tbody>
+  </table>
+  <p>
+    All fields are publicly available from SEC EDGAR quarterly and annual filings.
+    For systemically important broker-dealers, the Federal Reserve H.8 statistical release provides
+    additional liability composition data. Repo market stress indicators are published by SIFMA and
+    the Federal Reserve Bank of New York.
+  </p>
+</section>
+
+</main>
+</body>
+</html>

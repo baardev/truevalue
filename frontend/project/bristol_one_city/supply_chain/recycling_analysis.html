@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bristol One City: Just Transition Return Chain</title>
+<style color-scheme="light">
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #f0f6fa; color: #1a2535; padding: 24px;
+}
+.container { max-width: 1100px; margin: 0 auto; }
+.hero {
+  background: linear-gradient(135deg, #0d2235 0%, #1a4a6b 100%);
+  border-radius: 14px; color: #fff; padding: 36px; margin-bottom: 24px;
+}
+.kicker {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: #0d2235; background: #7ec8e3;
+  padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+}
+h1 { font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+.subtitle { font-size: 14px; opacity: 0.85; line-height: 1.6; max-width: 720px; color: #c8e6f4; }
+.kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 20px; }
+.kpi { background: rgba(255,255,255,0.12); border-radius: 10px; padding: 14px 12px; }
+.kpi-val { font-size: 22px; font-weight: 800; }
+.kpi-lbl { font-size: 11px; opacity: 0.8; margin-top: 3px; }
+.section { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.05); }
+h2 { font-size: 18px; font-weight: 700; color: #1a4a6b; margin-bottom: 18px; border-bottom: 2px solid #dbeafe; padding-bottom: 10px; }
+h3 { font-size: 15px; font-weight: 700; color: #1a4a6b; margin-bottom: 10px; margin-top: 18px; }
+p { font-size: 14px; color: #374151; line-height: 1.7; margin-bottom: 12px; }
+table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+th { background: #dbeafe; color: #1e3a5f; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; }
+td { padding: 10px 12px; border-bottom: 1px solid #e8f4fb; color: #374151; vertical-align: top; }
+tr:nth-child(even) td { background: #f5fafd; }
+.badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; }
+.badge.coherent { background: #d4edda; color: #155724; }
+.badge.stressed { background: #d1ecf1; color: #0c5460; }
+.badge.failure { background: #fff3cd; color: #856404; }
+.badge.breakdown { background: #f8d7da; color: #842029; }
+.concept-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 20px; }
+.concept-card { border-radius: 10px; padding: 18px; }
+.concept-card.tvpci { background: #dbeafe; border-left: 4px solid #1d4ed8; }
+.concept-card.tvpci-r { background: #fee2e2; border-left: 4px solid #b91c1c; }
+.concept-card.b-chain { background: #dcfce7; border-left: 4px solid #15803d; }
+.concept-title { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+.concept-role { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.concept-desc { font-size: 12px; color: #374151; line-height: 1.5; }
+.concept-val { font-size: 24px; font-weight: 800; margin-top: 8px; }
+.delta-bar-wrap { background: #f5f5f5; border-radius: 8px; padding: 18px; margin: 16px 0; }
+.delta-bar-track { background: #e5e7eb; border-radius: 6px; height: 32px; position: relative; margin-top: 10px; }
+.delta-fill-primary { position: absolute; left: 0; top: 0; height: 32px; background: #1d4ed8; border-radius: 6px 0 0 6px; display: flex; align-items: center; padding-left: 10px; color: #fff; font-size: 12px; font-weight: 700; }
+.delta-fill-return { position: absolute; left: 0; top: 0; height: 32px; background: #b91c1c; border-radius: 6px 0 0 6px; display: flex; align-items: center; padding-left: 10px; color: #fff; font-size: 12px; font-weight: 700; }
+.delta-label { font-size: 12px; color: #374151; margin-bottom: 6px; }
+.r-card-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.r-card { background: #f9fafb; border-radius: 10px; padding: 14px; border: 1px solid #e5e7eb; }
+.r-card-phase { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #6b7280; margin-bottom: 6px; }
+.r-card-score { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.r-card-score.coherent { color: #15803d; }
+.r-card-score.stressed { color: #0e7490; }
+.r-card-score.failure { color: #b45309; }
+.r-card-score.breakdown { color: #991b1b; }
+.r-card-zone { font-size: 10px; font-weight: 700; text-transform: uppercase; margin-bottom: 6px; }
+.r-card-omega { font-size: 11px; color: #6b7280; margin-bottom: 4px; }
+.r-card-stream { font-size: 11px; color: #374151; }
+.disc { font-size: 12px; color: #6b7280; font-style: italic; margin-bottom: 14px; line-height: 1.5; background: #f9fafb; border-radius: 6px; padding: 10px 14px; }
+.nav { text-align: center; margin-top: 20px; }
+.nav a { color: #1a4a6b; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 12px; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 700px) { .kpi-strip { grid-template-columns: 1fr 1fr; } .concept-grid { grid-template-columns: 1fr; } .r-card-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <span class="kicker">TVPCI-R: Just Transition Return Chain</span>
+    <h1>Bristol One City: Community Wealth Return Analysis</h1>
+    <p class="subtitle">
+      The TVPCI-R measures how much of the One City investment and benefit recirculates to Bristol's
+      most deprived communities. TVPCI-R = 50.7 (Failure zone). B_chain = 47.0 (severe imbalance).
+      The gap between the primary delivery chain (TVPCI 81.3%) and the community return chain
+      (50.7%) is the defining structural failure of the Bristol system. All values PROVISIONAL.
+    </p>
+    <div class="kpi-strip">
+      <div class="kpi"><div class="kpi-val">81.3</div><div class="kpi-lbl">TVPCI (primary chain balance)</div></div>
+      <div class="kpi"><div class="kpi-val">50.7</div><div class="kpi-lbl">TVPCI-R (community return score)</div></div>
+      <div class="kpi"><div class="kpi-val">47.0</div><div class="kpi-lbl">B_chain (holon balance)</div></div>
+      <div class="kpi"><div class="kpi-val">+30.6</div><div class="kpi-lbl">Delta_chain (value flowing out, not circulating back)</div></div>
+    </div>
+  </div>
+
+  <!-- Concept panel -->
+  <div class="section">
+    <h2>Framework: TVPCI, TVPCI-R, and B_chain</h2>
+    <p>
+      In the Tholonic framework, the primary delivery chain (TVPCI) measures D-C balance: how well
+      the institutional architecture (D) is matched by actual delivery (C). The return chain (TVPCI-R)
+      measures a different question: of the value generated by the delivery chain, how much circulates
+      back to the communities that most need it? For Bristol, this is the "just transition" dimension:
+      the degree to which the decarbonisation transition also reduces inequality and improves outcomes
+      for the 53,100 residents in the most deprived 10% nationally.
+    </p>
+    <div class="concept-grid">
+      <div class="concept-card tvpci">
+        <div class="concept-role" style="color:#1d4ed8;">D role: Definition</div>
+        <div class="concept-title">TVPCI (Primary Chain)</div>
+        <div class="concept-desc">How well does the institutional delivery chain balance its requirements (D) against its outputs (C)? Measures the coherence of the city's delivery system as a whole.</div>
+        <div class="concept-val" style="color:#1d4ed8;">81.3 (Good)</div>
+      </div>
+      <div class="concept-card tvpci-r">
+        <div class="concept-role" style="color:#b91c1c;">C role: Contribution</div>
+        <div class="concept-title">TVPCI-R (Return Chain)</div>
+        <div class="concept-desc">How much of the investment and benefit generated by the delivery chain recirculates to deprived communities? Measures the just transition dimension: the "ecological return" of social equity.</div>
+        <div class="concept-val" style="color:#b91c1c;">50.7 (Failure)</div>
+      </div>
+      <div class="concept-card b-chain">
+        <div class="concept-role" style="color:#15803d;">N role: Negotiation</div>
+        <div class="concept-title">B_chain (Holon Balance)</div>
+        <div class="concept-desc">The emergent coherence of the whole system: how well the primary chain and the return chain are in balance. A high B_chain means the city is both delivering and returning value proportionally. B_chain = 100 × exp(-2 × |TVPCI - TVPCI-R| / max(TVPCI, TVPCI-R)).</div>
+        <div class="concept-val" style="color:#15803d;">47.0 (Severe imbalance)</div>
+      </div>
+    </div>
+
+    <div class="delta-bar-wrap">
+      <div class="delta-label"><strong>Delta_chain = TVPCI - TVPCI-R = +30.6</strong> (positive: value is flowing forward through the institutional chain but not circulating back to deprived communities)</div>
+      <div style="display:flex;gap:12px;align-items:center;margin-top:10px;">
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">TVPCI (primary chain)</div>
+          <div class="delta-bar-track">
+            <div style="position:absolute;left:0;top:0;height:32px;width:81.3%;background:#1d4ed8;border-radius:6px;display:flex;align-items:center;padding-left:10px;color:#fff;font-size:12px;font-weight:700;">81.3%</div>
+          </div>
+        </div>
+        <div style="flex:1;">
+          <div style="font-size:11px;color:#6b7280;margin-bottom:4px;">TVPCI-R (return chain)</div>
+          <div class="delta-bar-track">
+            <div style="position:absolute;left:0;top:0;height:32px;width:50.7%;background:#b91c1c;border-radius:6px;display:flex;align-items:center;padding-left:10px;color:#fff;font-size:12px;font-weight:700;">50.7%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Per-phase R_p cards -->
+  <div class="section">
+    <h2>Per-Phase Return Scores (R_p) and Omega Weights</h2>
+    <p class="disc">
+      All R_p scores and omega weights are PROVISIONAL. R_p measures how observable and accountable
+      each phase's community return is. Omega weights are proportional to community impact potential
+      at each phase and must sum to 1.0. Zone thresholds: Coherent R_p ≥ 80; Stressed 61.8-79;
+      Failure 38.2-61.8; Breakdown &lt; 38.2.
+    </p>
+    <div class="r-card-grid">
+      <div class="r-card">
+        <div class="r-card-phase">P0: Vision</div>
+        <div class="r-card-score stressed">R_p = 62</div>
+        <div class="r-card-zone" style="color:#0e7490;">Stressed</div>
+        <div class="r-card-omega">ω = 0.08</div>
+        <div class="r-card-stream">Plan names equity explicitly. QoL disaggregated by deprivation. But no enforcement of equity requirements in mandate text.</div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-phase">P1: Governance</div>
+        <div class="r-card-score failure">R_p = 55</div>
+        <div class="r-card-zone" style="color:#b45309;">Failure</div>
+        <div class="r-card-omega">ω = 0.08</div>
+        <div class="r-card-stream">VOSCUR (voluntary sector) and TUC represented on Governance Board. Community voice is present but outweighed by institutional anchors. Co-design of missions limited.</div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-phase">P2: Strategy</div>
+        <div class="r-card-score failure">R_p = 60</div>
+        <div class="r-card-zone" style="color:#b45309;">Failure</div>
+        <div class="r-card-omega">ω = 0.10</div>
+        <div class="r-card-stream">City Leap has £61.5m social value target incl. local supply chain. BCAI accessible from £5. But strategies are technically-authored, not co-designed with deprived communities.</div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-phase">P3: Capital</div>
+        <div class="r-card-score failure">R_p = 48</div>
+        <div class="r-card-zone" style="color:#b45309;">Failure</div>
+        <div class="r-card-omega">ω = 0.18</div>
+        <div class="r-card-stream">~£30m of £61.5m social value delivered. Lawrence Weston community energy. BCAI at £2m. Most capital flows to institutional partners, not deprived communities directly.</div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-phase">P4: Infrastructure</div>
+        <div class="r-card-score stressed">R_p = 65</div>
+        <div class="r-card-zone" style="color:#0e7490;">Stressed</div>
+        <div class="r-card-omega">ω = 0.22</div>
+        <div class="r-card-stream">Solar at schools, housing retrofit focused on social housing, LED lighting in public buildings. Direct benefit to deprived communities is real but geographically narrow.</div>
+      </div>
+      <div class="r-card" style="border-color:#f5c2c7;background:#fff5f5;">
+        <div class="r-card-phase">P5: Community Uptake &#9888;</div>
+        <div class="r-card-score breakdown">R_p = 35</div>
+        <div class="r-card-zone" style="color:#991b1b;">Breakdown</div>
+        <div class="r-card-omega">ω = 0.25</div>
+        <div class="r-card-stream">750 BCAI investors from 470k population. Hartcliffe, Filwood, Lawrence Hill not visibly benefiting. Scope 3 unaddressed. The primary community interface is essentially absent.</div>
+      </div>
+      <div class="r-card">
+        <div class="r-card-phase">P6: Outcomes</div>
+        <div class="r-card-score failure">R_p = 40</div>
+        <div class="r-card-zone" style="color:#b45309;">Failure</div>
+        <div class="r-card-omega">ω = 0.09</div>
+        <div class="r-card-stream">QoL survey disaggregated by deprivation. But life expectancy gap 10.7yr not improving. Mental wellbeing gap persistent. Outcomes do not yet reflect community wealth return.</div>
+      </div>
+    </div>
+
+    <h3>TVPCI-R Calculation</h3>
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>R_p</th><th>ω (omega)</th><th>ω × R_p</th><th>Zone</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>P0: Vision and Mandate</td><td>62</td><td>0.08</td><td>4.96</td><td><span class="badge stressed">Stressed</span></td></tr>
+        <tr><td>P1: Governance</td><td>55</td><td>0.08</td><td>4.40</td><td><span class="badge failure">Failure</span></td></tr>
+        <tr><td>P2: Strategy Design</td><td>60</td><td>0.10</td><td>6.00</td><td><span class="badge failure">Failure</span></td></tr>
+        <tr><td>P3: Capital Deployment</td><td>48</td><td>0.18</td><td>8.64</td><td><span class="badge failure">Failure</span></td></tr>
+        <tr><td>P4: Infrastructure Delivery</td><td>65</td><td>0.22</td><td>14.30</td><td><span class="badge stressed">Stressed</span></td></tr>
+        <tr style="background:#fff5f5;"><td><strong>P5: Community Uptake &#9888;</strong></td><td><strong>35</strong></td><td><strong>0.25</strong></td><td><strong>8.75</strong></td><td><span class="badge breakdown">Breakdown</span></td></tr>
+        <tr><td>P6: Outcome Measurement</td><td>40</td><td>0.09</td><td>3.60</td><td><span class="badge failure">Failure</span></td></tr>
+        <tr style="background:#f0f9ff;font-weight:700;"><td>TOTAL</td><td></td><td>1.00</td><td><strong>50.65</strong></td><td><span class="badge failure">Failure</span></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:12px;color:#6b7280;margin-top:10px;">
+      TVPCI-R = Σ(ω × R_p) = 50.7 | B_chain = 100 × exp(-2 × |81.3 - 50.7| / 81.3) = 100 × exp(-0.754) = 47.0
+    </p>
+  </div>
+
+  <!-- Community impact assessment -->
+  <div class="section">
+    <h2>Community Impact Assessment: Who Receives the Return?</h2>
+    <p>
+      The omega weights above reflect community impact potential: Phase 5 carries the highest weight
+      (0.25) because it is the direct community interface, and Phase 4 (0.22) because infrastructure
+      physically enters deprived communities. The collapse of R_p at Phase 5 (35, Breakdown) combined
+      with its high omega weight is the primary driver of the low TVPCI-R.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Community dimension</th><th>Current status</th><th>Return chain signal</th><th>Phase(s)</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Financial participation</td>
+          <td>750 BCAI investors from 470,000 population (0.16%)</td>
+          <td>Breakdown: financial return is not reaching deprived communities</td>
+          <td>P3, P5</td>
+        </tr>
+        <tr>
+          <td>Health inequality</td>
+          <td>10.7yr male life expectancy gap (most vs least deprived, 2021-23)</td>
+          <td>Failure: health returns not reflected in outcome data despite significant investment</td>
+          <td>P5, P6</td>
+        </tr>
+        <tr>
+          <td>Mental wellbeing</td>
+          <td>24.4% poor mental wellbeing (most deprived) vs 11.5% (least deprived)</td>
+          <td>Failure: wellbeing gap persistent, not narrowing</td>
+          <td>P5, P6</td>
+        </tr>
+        <tr>
+          <td>Physical infrastructure access</td>
+          <td>Solar at schools, housing retrofit in social housing, LED lighting in public buildings</td>
+          <td>Stressed: tangible but geographically narrow; 30 deprived wards not fully covered</td>
+          <td>P4</td>
+        </tr>
+        <tr>
+          <td>Energy cost benefit</td>
+          <td>Pay-as-you-save model designed but not yet deployed at scale</td>
+          <td>Failure: the financial benefit of the energy transition has not yet reached households in fuel poverty</td>
+          <td>P3, P5</td>
+        </tr>
+        <tr>
+          <td>Employment (local supply chain)</td>
+          <td>£30m of £61.5m social value target delivered; £50m local supply chain target</td>
+          <td>Failure: approximately 49% of 5yr social value target delivered at midpoint; local SME pipeline still developing</td>
+          <td>P3, P4</td>
+        </tr>
+        <tr>
+          <td>Scope 3 / consumption equity</td>
+          <td>No structured city-wide scope 3 reduction programme at household level</td>
+          <td>Breakdown: the consumption emissions of deprived communities (often lower per capita) are not being tracked or supported</td>
+          <td>P5, P6</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Priority circular economy interventions -->
+  <div class="section">
+    <h2>Priority Just Transition Interventions (Bond-Linked)</h2>
+    <p>
+      The following interventions are the highest-priority actions to close the TVPCI-TVPCI-R gap.
+      Each is structured to be measurable, phase-specific, and bondable (i.e. capable of serving as
+      a KPI or SPT in a Sustainability-Linked Bond or Local Climate Bond tranche).
+    </p>
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>Intervention</th><th>Description</th><th>Expected R_p impact</th><th>Bond/finance link</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>P5 (primary)</td>
+          <td>Net-Zero Neighbourhood demonstrators in 3 deprived wards</td>
+          <td>
+            Co-design and fund net-zero retrofit of c.1,000 properties each in Hartcliffe/Withywood,
+            Filwood, and Lawrence Hill (Bristol's three most deprived wards). Blended finance: SLB
+            (senior) + City Funds (mezzanine) + pay-as-you-save (junior). Living Places Earth model.
+          </td>
+          <td>R_p P5: 35 → approximately 55-60 (+20-25 pts). Omega = 0.25. TVPCI-R impact: +5-6 pts overall.</td>
+          <td>SLB SPT: number of properties retrofitted in IMD top-10% wards. Observation date: 2027 (1,000 props), 2030 (3,000 props).</td>
+        </tr>
+        <tr>
+          <td>P3 (capital)</td>
+          <td>Deprived-ward BCAI tranche with council co-contribution</td>
+          <td>
+            Third BCAI tranche at £1 minimum entry, ISA-eligible, with a council match-contribution
+            for Universal Credit recipients. Target: 10,000 investors from the 53,100 in the most
+            deprived decile. Raise BCAI total to £5-7m.
+          </td>
+          <td>R_p P3: 48 → approximately 58-62 (+10-14 pts). Omega = 0.18. TVPCI-R impact: +2-3 pts.</td>
+          <td>SLB SPT: number of BCAI investors from IMD top-10% postcode areas. Verification: Abundance Investment investor postcode data.</td>
+        </tr>
+        <tr>
+          <td>P5 and P6</td>
+          <td>Scope 3 ward-level consumption tracking</td>
+          <td>
+            Partner with Cabot Institute to add a consumption-based emissions supplement to the
+            annual QoL Survey. Create ward-level scope 3 tracking for 34 wards, disaggregated by
+            deprivation decile. Establishes the data layer needed for scope 3 SPTs in a future SLB.
+          </td>
+          <td>R_p P5: +8-10 pts (new measurable output). R_p P6: +10-12 pts (data quality improvement). Combined TVPCI-R impact: +3-4 pts.</td>
+          <td>Pre-condition for scope 3 SLB KPI. Bond-linkable once methodology established and first data published.</td>
+        </tr>
+        <tr>
+          <td>P3 and P5</td>
+          <td>SLB issuance with life expectancy gap SPT</td>
+          <td>
+            Issue a £50-100m Sustainability-Linked Bond with the male life expectancy gap (most vs
+            least deprived wards) as a Social SPT alongside the environmental KPIs. 25 bps step-up
+            if gap exceeds 10.0 years at 2030 observation. TrueValue N-D-C scoring provides annual
+            independent verification of all SPTs.
+          </td>
+          <td>R_p P3: +15 pts (institutional capital with equity accountability). TVPCI-R systemic impact: +4-6 pts when all KPIs are linked to community return. B_chain: 47.0 → approximately 58-62.</td>
+          <td>Direct SLB SPT: male life expectancy gap at 2027 and 2030 observation dates. Coupon step-up of 25 bps if missed. Verification: PHOF (A02a), ONS data.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Formula reference -->
+  <div class="section">
+    <h2>Calculation Reference</h2>
+    <p class="disc">
+      R_p = community return score for phase p (0-100): how observable and accountable the phase's
+      community return is. Omega_p = phase weight (proportional to community impact potential; sums to 1.0).
+      TVPCI_R = Σ(omega_p × R_p). B_chain = 100 × exp(-2 × |TVPCI - TVPCI-R| / max(TVPCI, TVPCI-R)).
+      Zone thresholds (phi-derived): Coherent R_p ≥ 80 | Stressed 61.8-79 | Failure 38.2-61.8 | Breakdown &lt; 38.2.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Metric</th><th>Value</th><th>Zone</th><th>Interpretation</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>TVPCI (primary chain)</td><td>81.3</td><td><span class="badge stressed">Good</span></td><td>The institutional delivery chain is functioning well in aggregate, with Phase 5 as the exception.</td></tr>
+        <tr><td>TVPCI-R (return chain)</td><td>50.7</td><td><span class="badge failure">Failure</span></td><td>Community wealth return is in the Failure zone. No phase achieves Coherent status.</td></tr>
+        <tr><td>B_chain (holon balance)</td><td>47.0</td><td><span class="badge breakdown">Breakdown</span></td><td>Severe imbalance between primary delivery and community return. The system is not in sustainable equilibrium.</td></tr>
+        <tr><td>Delta_chain (TVPCI - TVPCI-R)</td><td>+30.6</td><td>Imbalanced</td><td>Positive delta: value is flowing forward through the institutional chain but not recirculating back. This is the structural definition of an unjust transition.</td></tr>
+        <tr><td>Weakest return phase</td><td>P5: R_p = 35 (Breakdown)</td><td><span class="badge breakdown">Breakdown</span></td><td>Community and household uptake is the primary bond intervention candidate for the return chain.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="nav">
+  <a href="../index.html">&#8592; Hub Overview</a>
+  <a href="index.html">Supply Chain Overview</a>
+  <a href="dashboard.html">N-D-C Dashboard</a>
+  <a href="project_context.html">Project Context</a>
+  <a href="../../index.html">TrueValue Home</a>
+</div>
+
+</body>
+</html>

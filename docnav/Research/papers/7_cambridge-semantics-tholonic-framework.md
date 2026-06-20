@@ -6,7 +6,7 @@
 
 **Date:** 16 April 2026
 
-**Provisional arXiv subjects:** cs.AI; cs.DB (secondary: cs.LO; math.HO)
+**Keywords:** Cambridge Semantics; N-D-C framework; empirical validation; knowledge graphs; consilience; engineering toward N
 
 ---
 

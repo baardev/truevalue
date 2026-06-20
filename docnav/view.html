@@ -245,10 +245,8 @@
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16/dist/katex.min.js"></script>
 <script>
 (function () {
-  /* DocNav root is the directory containing view.html (e.g. /docnav/) */
-  const path = location.pathname;
-  const idx = path.lastIndexOf("/");
-  const BASE = location.origin + path.slice(0, idx + 1);
+  /* BASE is always the repo root so that ?file= values are repo-relative paths. */
+  const BASE = location.origin + "/";
 
   const params = new URLSearchParams(location.search);
   const filePath = params.get("file") || "";
@@ -418,7 +416,12 @@
       span.textContent = label;
       a.appendChild(span);
       a.appendChild(document.createTextNode(" "));
-      const plainTitle = (el.textContent || "").replace(/\s+/g, " ").trim();
+      // Clone the heading and strip .katex-mathml spans so that textContent
+      // does not include the duplicated MathML annotation + rendered text.
+      // Then re-append the visual (.katex-html) children to preserve rendered math.
+      const hClone = el.cloneNode(true);
+      hClone.querySelectorAll(".katex-mathml").forEach(n => n.remove());
+      const plainTitle = (hClone.textContent || "").replace(/\s+/g, " ").trim();
       a.appendChild(document.createTextNode(plainTitle));
       li.appendChild(a);
       parentUl.appendChild(li);
@@ -460,7 +463,8 @@
 
     // Display math: $$...$$ (possibly multiline)
     src = src.replace(/\$\$([\s\S]*?)\$\$/g, (_, m) => stashMath(m, true));
-    // Inline math: $...$ (single line, non-empty)
+    // Inline math: $...$ (single line, non-empty).
+    // Markdown authors must escape literal dollar signs as \$ (currency, percentages, etc.).
     src = src.replace(/\$([^\$\n][^\$\n]*?)\$/g, (_, m) => stashMath(m, false));
 
     let html = marked.parse(src);

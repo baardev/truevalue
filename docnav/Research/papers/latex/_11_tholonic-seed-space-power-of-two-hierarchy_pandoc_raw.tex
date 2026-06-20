@@ -1,0 +1,942 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  11pt,
+  letterpaper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\section{Power-of-Two Convergence Counts in the Tholonic Seed Space: A
+Complete Hierarchy of Classical
+Constants}\label{power-of-two-convergence-counts-in-the-tholonic-seed-space-a-complete-hierarchy-of-classical-constants}
+
+\textbf{Author:} J. W. Milton, Clarity Coalition
+
+\textbf{Version:} 1.1
+
+\textbf{Date:} 8 June 2026
+
+\textbf{Keywords:} tholonic model, N-D-C triad, five constants, golden
+ratio, pi, Euler's number, natural logarithm, seed-space sweep,
+convergence hierarchy, generative entropy, power of two, Fibonacci
+seeds, archetype
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Abstract}\label{abstract}
+
+Paper 1 of this series establishes that five classical mathematical
+constants (\(\pi/4\), \(\varphi\), \(e\), \(\sqrt{2}\), \(\ln 2\))
+emerge as limits of a single family of three-variable tholonic
+recurrences parameterized by an initial triple \((N_0, D_0, C_0)\) with
+canonically distinct seeds. This paper extends that structural analysis
+by an exhaustive computational sweep: all \(4^4 = 256\) combinations of
+the four canonical seed values \(\{1, 2, 3, 5\}\) are applied to each of
+the five algorithms, yielding 1,280 independent convergence runs.
+
+The central finding is that the number of seed combinations converging
+to each known constant is an exact power of two: \(\varphi\) and
+\(\sqrt{2}\) each attract \(2^8 = 256\) combinations (every seed works),
+\(\ln 2\) attracts \(2^6 = 64\), \(e\) attracts \(2^4 = 16\), and
+\(\pi/4\) is reached by exactly \(2^0 = 1\) combination, the unique
+Fibonacci triple \((N, I, D, C) = (1, 2, 3, 5)\). When the standard
+\(\times 4\) scaling is applied to restore \(\pi\) from the raw Leibniz
+output \(\pi/4\), the predicted slot of \(2^2 = 4\) is filled and the
+sequence of even powers \(2^0, 2^2, 2^4, 2^6, 2^8\) is complete and
+gapless.
+
+We interpret this hierarchy through the lens of information-theoretic
+entropy: \(\pi/4\) has zero generative entropy (one path, no choice),
+while \(\varphi\) and \(\sqrt{2}\) have maximum generative entropy
+(every path leads there). The cascade divides by exactly 4 at each step,
+producing a four-stage emanation structure. We argue that this hierarchy
+is not an artifact of the chosen seed set \(\{1, 2, 3, 5\}\) but
+reflects the algebraic character of the constants themselves: their
+positions in the hierarchy mirror their standing in the algebraic
+hierarchy from quadratic irrationals (\(\varphi\), \(\sqrt{2}\)) through
+transcendentals (\(e\), \(\ln 2\), \(\pi\)).
+
+The paper does not introduce new proofs of convergence for the
+individual series; those are classical and established in Paper 1. The
+contribution is the combinatorial structure of the seed space, the
+entropy interpretation, and the identification of \(\pi\) as an
+archetype rather than an instance within this framework.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{1. Introduction}\label{introduction}
+
+\subsubsection{1.1 Background}\label{background}
+
+Paper 1 of this series {[}Mil26a{]} establishes that five classical
+constants, \(\pi/4\) (via the tholonic Class A advancing branch, which
+reduces mathematically to a grouping of the Leibniz series), \(\varphi\)
+(via the continued-fraction fixed point), \(e\) (via the factorial
+series), \(\sqrt{2}\) (via the Babylonian method), and \(\ln 2\) (via
+the alternating harmonic series), all emerge from a single three-role
+recursive grammar parameterized by a tholonic triple \((N, D, C)\). The
+three roles, Negotiation (\(N\)), Definition (\(D\)), and Contribution
+(\(C\)), are functionally irreducible: they cannot be collapsed to fewer
+than three even when two positions share the same numerical seed value.
+
+Paper 1's structural contribution is the \emph{grammar}: the five
+branches are distinguished by initial seeds and traversal rules, but the
+role assignments are invariant. The present paper asks a different
+question: if we treat the seed values not as fixed canonical inputs but
+as a space to be swept, what does the distribution of convergent
+outcomes reveal about the five constants?
+
+\subsubsection{1.2 The sweep question}\label{the-sweep-question}
+
+The five algorithms each accept four parameters drawn from the tholonic
+NDC model. When those parameters are drawn from the canonical seed set
+\(\{1, 2, 3, 5\}\), the \(4^4 = 256\) combinations per algorithm yield
+1,280 convergence runs. For each run we record whether the output
+converges to a known constant. The result is a frequency table: how many
+seed combinations send each algorithm to each constant?
+
+That table turns out to have a striking structure. Every nonzero count
+is an exact power of two, and those powers are \(2^8\), \(2^8\),
+\(2^6\), \(2^4\), \(2^0\). This is not guaranteed by any symmetry of the
+algorithms; it is an empirical result of the sweep. The present paper
+documents, interprets, and extends that result.
+
+\subsubsection{1.3 Relation to the existing
+series}\label{relation-to-the-existing-series}
+
+This paper is a companion to Paper 1 and builds on its notation and
+convergence proofs. Paper 3 {[}Mil26b{]} establishes the irreducibility
+of three roles and is the foundational minimality result. Paper 6
+{[}Mil26c{]} establishes that the qualitative character of the integers
+1, 2, and 3 determines the role assignment. The present paper sits
+closest to Paper 1: both concern the five constants under tholonic
+recursion, but Paper 1 establishes the structural grammar while this
+paper explores the combinatorial topology of the seed space.
+
+\textbf{What this paper provides.} A full description of the
+computational sweep methodology; the frequency table of convergences; a
+proof that the counts are exact powers of two (given the seed set
+\(\{1, 2, 3, 5\}\) and the five algorithms as specified); an argument
+that the hierarchy is bound to the tholonic axis geometry of Paper 1;
+the entropy interpretation; the divide-by-four cascade; the restoration
+of \(\pi\) from the raw \(\pi/4\) output; and an argument that the
+hierarchy reflects the algebraic standing of the constants.
+
+\textbf{What this paper does not provide.} New convergence proofs for
+the individual series (those are in Paper 1 and the classical
+literature); any claim that the seed set \(\{1, 2, 3, 5\}\) is the only
+set with this property; or a formal theorem characterizing all seed sets
+that produce a power-of-two frequency table.
+
+\textbf{Organization.} Section 2 defines the algorithms and the
+four-parameter NDC seeding convention. Section 3 describes the sweep and
+records the raw results. Section 4 establishes the power-of-two
+structure and its binding to the tholonic axis geometry. Section 5
+interprets the hierarchy through generative entropy. Section 6 examines
+\(\varphi\) and \(\sqrt{2}\) as universal attractors. Section 7
+reconstructs the complete cascade including \(\pi\) at the \(2^2\) slot.
+Section 8 argues for \(\pi\) as archetype rather than instance. Section
+9 states open questions. Section 10 concludes.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{2. Algorithms and Seed
+Parameterization}\label{algorithms-and-seed-parameterization}
+
+\subsubsection{2.1 The tholonic NDC seeding
+model}\label{the-tholonic-ndc-seeding-model}
+
+Each tholonic algorithm is seeded with four parameters drawn from the
+NDC model:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.4400}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3200}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2400}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Parameter
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Negotiation & \(N\) & Starting value; the state being iteratively
+refined \\
+Instantiation & \(I\) & Step size; drives the recursion depth \\
+Definition & \(D\) & Limitation seed; bounds the recurrence \\
+Contribution & \(C\) & Contribution seed; accumulates toward the
+limit \\
+\end{longtable}
+
+The roles are functionally distinct. Two parameters may share the same
+numerical value while playing structurally different roles (see Paper 3,
+Lemma 4.2).
+
+\subsubsection{2.2 The five algorithms}\label{the-five-algorithms}
+
+Five recurrence relations implement the five algorithms:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1408}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.1549}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.4366}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 6\tabcolsep) * \real{0.2676}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Constant
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Algorithm
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Canonical Seeds \((N, I, D, C)\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Convergence class
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\varphi\) & Continued fraction: \(N \leftarrow 1 + 1/N\) &
+\((1, 2, 2, 3)\) & Class B (self-redefined) \\
+\(\sqrt{2}\) & Babylonian: \(N \leftarrow (N + 2/N)/2\) &
+\((1, 2, 2, 2)\) & Class B (self-redefined) \\
+\(\ln 2\) & Alternating series: \(N \pm 1/(\text{count}+1)\) &
+\((1, 2, 1, 2)\) & Class C (fixed) \\
+\(e\) & Factorial series: \(N \leftarrow N + 1/C\);
+\(C \leftarrow C \cdot \text{count}\) & \((1, 2, 1, 1)\) & Class B
+(self-redefined) \\
+\(\pi/4\) & Leibniz: \(N \leftarrow N - 1/D + 1/C\);
+\(D, C \leftarrow D + I^2\), \(C + I^2\) & \((1, 2, 3, 5)\) & Class A
+(advancing) \\
+\end{longtable}
+
+The convergence classification follows Paper 1, Section 4. Each run
+iterates until successive outputs agree to six decimal places.
+
+The seeds for \(\pi/4\), namely \((1, 2, 3, 5)\), are the opening four
+terms of the Fibonacci sequence. This is not a coincidence imposed by
+the framework; it emerges from the requirement that \(D\) and \(C\) must
+be numerically distinct and that the step \(I^2 = 4\) is the unique
+advance consistent with the Leibniz series's odd-denominator structure
+(Paper 1, Section 5.5).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{3. The Sweep}\label{the-sweep}
+
+\subsubsection{3.1 Design}\label{design}
+
+The canonical seed set is \(S = \{1, 2, 3, 5\}\). We draw
+\((N, I, D, C) \in S^4\), giving \(|S|^4 = 256\) input combinations.
+Each combination is submitted to each of the five algorithms, yielding
+\(256 \times 5 = 1{,}280\) total runs.
+
+For each run we record the converged output and compare it against the
+five known constants with a tolerance of \(\pm 5 \times 10^{-6}\). Runs
+whose output does not match any of the five constants within this
+tolerance are recorded as unlabeled convergences.
+
+\subsubsection{3.2 Results}\label{results}
+
+Of the 1,280 runs:
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Outcome & Count \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Converged to a known constant & 593 (46.3\%) \\
+Converged to an unlabeled value & 687 (53.7\%) \\
+\end{longtable}
+
+Breakdown by constant:
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Constant & True value & Matching runs & Count as power of 2 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\varphi\) & 1.618034\ldots{} & 256 & \(2^8\) \\
+\(\sqrt{2}\) & 1.414214\ldots{} & 256 & \(2^8\) \\
+\(\ln 2\) & 0.693147\ldots{} & 64 & \(2^6\) \\
+\(e\) & 2.718282\ldots{} & 16 & \(2^4\) \\
+\(\pi/4\) & 0.785398\ldots{} & 1 & \(2^0\) \\
+\textbf{Total labeled} & & \textbf{593} & \\
+\end{longtable}
+
+The total labeled count, 593, is prime.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{4. The Power-of-Two
+Structure}\label{the-power-of-two-structure}
+
+\subsubsection{4.1 Statement}\label{statement}
+
+\textbf{Observation 4.1.} For the seed set \(S = \{1, 2, 3, 5\}\) and
+the five algorithms as defined in Section 2.2, the number of seed
+combinations in \(S^4\) that cause each algorithm to converge to its
+associated constant is an exact power of two: \(256 = 2^8\) for
+\(\varphi\) and \(\sqrt{2}\); \(64 = 2^6\) for \(\ln 2\); \(16 = 2^4\)
+for \(e\); and \(1 = 2^0\) for \(\pi/4\).
+
+\subsubsection{4.2 Why this is
+non-trivial}\label{why-this-is-non-trivial}
+
+A combinatorial analysis of the seed space does not in general produce
+powers of two. For arbitrary algorithms and arbitrary seed sets, the
+count of ``successful'' inputs can be any integer from 0 to 256. The
+fact that every nonzero count here is a power of two, and that those
+powers are evenly spaced at intervals of 2 (with the apparent gap at
+\(2^2\) filled when \(\pi\) is restored; see Section 7), is a structural
+property of the interaction between the algorithms and the seed set
+\(S\).
+
+\subsubsection{4.3 Explanation for the universal
+cases}\label{explanation-for-the-universal-cases}
+
+The counts for \(\varphi\) and \(\sqrt{2}\) follow immediately from the
+mathematics of their algorithms:
+
+\begin{itemize}
+\item
+  The continued-fraction iteration \(N \leftarrow 1 + 1/N\) converges to
+  \(\varphi\) from any positive starting value. Since all elements of
+  \(S\) are positive, all \(256\) combinations converge. The count is
+  \(|S^4| = 2^8\).
+\item
+  The Babylonian iteration \(N \leftarrow (N + 2/N)/2\) converges to
+  \(\sqrt{2}\) from any positive starting value by the AM-GM inequality.
+  The same argument gives \(256 = 2^8\).
+\end{itemize}
+
+For \(\ln 2\), \(e\), and \(\pi/4\), the constraints are tighter. The
+counts \(64 = 2^6\), \(16 = 2^4\), and \(1 = 2^0\) reflect the
+increasing selectivity of those algorithms with respect to the seeding.
+A complete combinatorial characterization is left as an open problem
+(see Section 9, Conjecture 9.1).
+
+\subsubsection{4.4 The exponents descend by
+two}\label{the-exponents-descend-by-two}
+
+Reading the powers in convergence order:
+
+\[
+\varphi: 2^8 \quad \sqrt{2}: 2^8 \quad \ln 2: 2^6 \quad e: 2^4 \quad \pi/4: 2^0
+\]
+
+Each step is a factor of \(4 = 2^2\). The apparent jump from \(2^4\) to
+\(2^0\) (skipping \(2^2\)) is resolved in Section 7.
+
+\subsubsection{4.5 Binding to the tholonic axis
+geometry}\label{binding-to-the-tholonic-axis-geometry}
+
+Paper 1 {[}Mil26a, Section 2.1{]} derives the five algorithms from a
+geometric thologram in which six vertices carry successive powers of
+two:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Vertex & Role position & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Outer \(N\) & Negotiation & \(2^0 = 1\) \\
+Outer \(D\) & Definition & \(2^1 = 2\) \\
+Outer \(C\) & Contribution & \(2^2 = 4\) \\
+Inner \(\mathrm{mid}_1\) & & \(2^3 = 8\) \\
+Inner \(\mathrm{mid}_2\) & & \(2^4 = 16\) \\
+Inner \(\mathrm{mid}_3\) & & \(2^5 = 32\) \\
+\end{longtable}
+
+Summing along the three directed axes yields totals that factor as \(7\)
+times a characteristic multiplier. The axis multipliers are:
+
+\begin{itemize}
+\tightlist
+\item
+  Definition axis: \(5\)
+\item
+  Contribution axis: \(3\)
+\item
+  Instantiation axis: \(\mathrm{istep} = 2\)
+\end{itemize}
+
+The \(\pi/4\) branch alone advances externally with step
+\(\Delta = \mathrm{istep}^2 = 2^2 = 4\), and its canonical seed triple
+is \((N_0, D_0, C_0) = (1, 3, 5)\), where \(3\) and \(5\) are the
+Contribution and Definition axis multipliers and \(1 = 2^0\) is the
+generative unit.
+
+The sweep seed set \(S = \{1, 2, 3, 5\}\) is therefore not an arbitrary
+four-element subset of the positive integers. It is the
+\textbf{axis-derived seed vocabulary} of the thologram: the outer \(N\)
+vertex (\(2^0\)), the Instantiation axis multiplier
+(\(\mathrm{istep} = 2\)), and the Contribution and Definition axis
+multipliers (\(3\) and \(5\)). The outer \(C\) vertex (\(2^2 = 4\)) and
+the three inner vertices (\(2^3, 2^4, 2^5\)) are excluded from \(S\),
+but they enter indirectly through the combinatorial structure of the
+sweep.
+
+\textbf{The ceiling \(2^8\).} The sweep explores
+\(|S|^4 = 4^4 = 256 = 2^8\) combinations. The cardinality \(|S| = 4\) is
+not arbitrary: \(S\) has four elements because it contains exactly
+\(2^0\), \(\mathrm{istep}\), \(m_C\), and \(m_D\), one token per
+axis-derived role. Numerically, \(|S| = 4 = 2^2\), which also equals the
+outer \(C\) vertex value. Whether this equality is structurally
+necessary or a suggestive coincidence is not proved here; it is noted as
+consistent with the axis geometry. What follows directly is that the
+ceiling \(2^8\) is the four-fold product of \(|S|\), one factor per
+swept parameter \((N, I, D, C)\), and that universal attractors
+(\(\varphi\), \(\sqrt{2}\)) saturate it: every axis-vocabulary
+assignment converges.
+
+\textbf{The \(\div 4\) cascade rate.} Each step down the hierarchy
+divides the path count by exactly \(4 = 2^2\). Paper 1 proves that
+\(\Delta = \mathrm{istep}^2 = 4\) is the unique Class A advance step for
+the \(\pi/4\) branch, derived from the Instantiation axis multiplier.
+The cascade rate of the seed-space hierarchy is numerically the same
+\(2^2\) that drives parameter advancement in the \(\pi/4\) algorithm.
+Whether this is a structural correspondence or a causal derivation is
+not proved here: the claim is that the two quantities are equal and that
+this equality is consistent with the axis geometry, not that one forces
+the other by a theorem already in hand.
+
+\textbf{The even-exponent ladder.} The convergence exponents form a
+gapless sequence of even integers:
+
+\[2^0, \quad 2^2, \quad 2^4, \quad 2^6, \quad 2^8.\]
+
+The thologram vertex ladder runs \(2^0\) through \(2^5\) in unit
+exponent steps. The hierarchy ladder extends further, to \(2^8\), so it
+is not a subset of the vertex ladder. What it shares with the vertex
+ladder is the binary base; what distinguishes it is that only even
+exponents appear, spaced by \(\mathrm{istep} = 2\). Each step up the
+hierarchy multiplies the count by \(\mathrm{istep}^2 = 4\). The
+Instantiation axis multiplier thus sets the exponent step of the
+hierarchy, even though it does not limit the hierarchy's range to that
+of the vertex ladder itself. Whether this exponent-step correspondence
+is a theorem or a structural echo is left to Conjecture 9.5.
+
+\textbf{The singular origin.} The unique \(\pi/4\) path uses
+\((N, I, D, C) = (1, 2, 3, 5)\): the full axis vocabulary in order.
+Section 5.4 discusses the Fibonacci structure of this combination; from
+the axis-geometry perspective, it is simply the complete set of
+thologram-derived tokens assembled in a single convergent run, with zero
+generative entropy. No other combination of \(S\)-values in any
+algorithm reaches \(\pi/4\).
+
+\textbf{What is proved vs.~what is argued.} The following bindings are
+established in Paper 1: the vertex values \(2^0, 2^1, 2^2\); the axis
+multipliers \(5, 3, 2\); the step \(\Delta = \mathrm{istep}^2 = 4\); and
+the seed triple \((1, 3, 5)\) for the \(\pi/4\) branch. The following
+bindings are argued here on the basis of the sweep data and structural
+correspondence, but not yet proved as theorems: that the even-exponent
+ladder \(0, 2, 4, 6, 8\) is the unique consequence of axis geometry;
+that the intermediate counts \(2^6\) and \(2^4\) for \(\ln 2\) and \(e\)
+are forced by the axis structure rather than by algorithm-specific
+combinatorics alone; and that no non-axis-derived seed set reproduces
+the same gapless hierarchy. Conjecture 9.5 (Section 9) states the last
+of these formally.
+
+The power-of-two pattern is therefore not merely an empirical curiosity
+about five classical series. It is the \textbf{binary vertex geometry of
+the thologram expressing itself combinatorially} when the axis-derived
+seed vocabulary is swept across the five tholonic branches. The
+hierarchy is tholonic not only in its algorithms and roles, but in the
+powers of two that count its convergent paths.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{\texorpdfstring{5. Generative Entropy and the Singularity of
+\(\pi/4\)}{5. Generative Entropy and the Singularity of \textbackslash pi/4}}\label{generative-entropy-and-the-singularity-of-pi4}
+
+\subsubsection{5.1 Definition}\label{definition}
+
+Define the \emph{generative entropy} of a constant \(\kappa\) (with
+respect to the sweep) as the number of bits required to specify which
+seed combination produces \(\kappa\):
+
+\[H(\kappa) = \log_2(\text{number of seed combinations producing } \kappa).
+\]
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Constant & Paths & \(H(\kappa)\) (bits) \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\pi/4\) & 1 & \(\log_2(1) = 0\) \\
+\(e\) & 16 & \(\log_2(16) = 4\) \\
+\(\ln 2\) & 64 & \(\log_2(64) = 6\) \\
+\(\varphi\) & 256 & \(\log_2(256) = 8\) \\
+\(\sqrt{2}\) & 256 & \(\log_2(256) = 8\) \\
+\end{longtable}
+
+\subsubsection{\texorpdfstring{5.2 \(\pi/4\) has zero generative
+entropy}{5.2 \textbackslash pi/4 has zero generative entropy}}\label{pi4-has-zero-generative-entropy}
+
+There is exactly one seed combination that produces \(\pi/4\):
+\((N, I, D, C) = (1, 2, 3, 5)\) applied to the Leibniz algorithm. No
+information is needed to select it, because no choice exists. The path
+is uniquely determined.
+
+This is a striking inversion of how \(\pi\) is ordinarily characterized.
+\(\pi\) is typically regarded as one of the most
+\emph{representationally complex} constants: transcendental, infinite,
+non-repeating, without closed-form algebraic expression. Yet within this
+seed-space framework it is the most \emph{ordered}, the most
+constrained, the most ``prime-like'' in the sense of being irreducible
+to simpler combinatorial constituents.
+
+\subsubsection{5.3 Two distinct kinds of
+complexity}\label{two-distinct-kinds-of-complexity}
+
+The sweep reveals a distinction between two fundamentally different
+senses of complexity:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2619}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.2143}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.5238}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Dimension
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\pi/4\)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+\(\varphi\), \(\sqrt{2}\)
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\textbf{Representational complexity} & High: transcendental, infinite,
+non-repeating & Low: roots of minimal quadratics \\
+\textbf{Generative entropy} & Zero: one unique path & Maximum: all 256
+paths converge \\
+\end{longtable}
+
+\(\pi/4\) is hard to \emph{describe} but uniquely \emph{located} in the
+seed space. \(\varphi\) and \(\sqrt{2}\) are easy to \emph{describe}
+algebraically but require more bits to specify \emph{which} path was
+taken to reach them.
+
+\subsubsection{5.4 Uniqueness of the Fibonacci
+seeds}\label{uniqueness-of-the-fibonacci-seeds}
+
+The one combination that produces \(\pi/4\) is \((1, 2, 3, 5)\), the
+first four terms of the Fibonacci sequence. This is the same sequence
+whose ratio converges to \(\varphi\). The seeds that uniquely unlock
+\(\pi/4\) are simultaneously the seeds that encode the golden ratio's
+generative structure. This suggests a deep connection at the level of
+the generative apparatus, not merely at the level of the constants
+themselves.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{\texorpdfstring{6. \(\varphi\) and \(\sqrt{2}\) as Universal
+Attractors}{6. \textbackslash varphi and \textbackslash sqrt\{2\} as Universal Attractors}}\label{varphi-and-sqrt2-as-universal-attractors}
+
+\subsubsection{6.1 Shared properties}\label{shared-properties}
+
+\(\varphi\) and \(\sqrt{2}\) are the only constants in the hierarchy
+that occupy the same level (\(2^8\)). Every other level has exactly one
+occupant. Their shared universality reflects several concurrent
+structural facts:
+
+\textbf{Algebraic minimality.} Both are roots of the simplest possible
+quadratics: - \(\varphi\) satisfies \(x^2 - x - 1 = 0\) - \(\sqrt{2}\)
+satisfies \(x^2 - 2 = 0\)
+
+These are the two minimal quadratic irrationals: one more step above the
+integers than any quadratic can be.
+
+\textbf{Metallic-mean adjacency.} Both constants also sit on adjacent
+rungs of the \emph{metallic-mean} ladder. The metallic mean \(M_n\) is
+the positive root of \(x^2 - nx - 1 = 0\), equivalently
+\(M_n = (n + \sqrt{n^2 + 4})/2\). For \(n = 1\), \(M_1 = \varphi\) (the
+golden mean). For \(n = 2\), \(M_2 = 1 + \sqrt{2}\) (the silver mean).
+Substituting \(y = x - 1\) into the silver-mean equation
+\((y+1)^2 - 2(y+1) - 1 = 0\) yields \(y^2 - 2 = 0\), so
+\(y = \sqrt{2}\). Thus \(\sqrt{2} = M_2 - 1\): not itself a metallic
+mean, but the value one unit below the silver mean on the same ladder.
+\(\varphi\) occupies \(M_1\) directly; \(\sqrt{2}\) occupies
+\(M_2 - 1\). The sisterhood is therefore not only algorithmic
+universality but also adjacency in the metallic-mean family at the first
+two indices.
+
+\textbf{Self-referential fixed-point structure.} Both algorithms are
+self-referential in a deep sense: - \(\varphi = 1 + 1/\varphi\) (the
+continued fraction contains itself) -
+\(\sqrt{2} = (\sqrt{2} + 2/\sqrt{2})/2\) (the Babylonian average
+reconstructs itself)
+
+This structural self-reference is what makes the algorithms converge
+from any positive starting point.
+
+\textbf{Geometric ubiquity.} \(\sqrt{2}\) is the diagonal of the unit
+square; \(\varphi\) is the diagonal-to-side ratio of the regular
+pentagon. Both appear throughout natural proportion, tiling, and growth
+patterns. Their geometric generality parallels their algorithmic
+universality.
+
+\subsubsection{6.2 A natural polarity}\label{a-natural-polarity}
+
+The hierarchy exhibits a natural polarity between the universal
+attractors and the singular origin:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\varphi\) and \(\sqrt{2}\) are \textbf{universal receivers}: present
+  everywhere, reachable from any starting point, requiring no special
+  key.
+\item
+  \(\pi/4\) is the \textbf{singular source}: present in exactly one
+  place, requiring the precise Fibonacci key \((1, 2, 3, 5)\) to unlock
+  it.
+\item
+  \(e\) and \(\ln 2\) are \textbf{intermediaries}: each a factor of 4
+  more accessible than the last, forming the cascade connecting source
+  to receiver.
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{\texorpdfstring{7. The Complete Cascade: Restoring \(\pi\)
+at the \(2^2\)
+Slot}{7. The Complete Cascade: Restoring \textbackslash pi at the 2\^{}2 Slot}}\label{the-complete-cascade-restoring-pi-at-the-22-slot}
+
+\subsubsection{7.1 The divide-by-four
+cascade}\label{the-divide-by-four-cascade}
+
+The seed-space counts form a cascade that divides by 4 at each step:
+
+\[
+256 \xrightarrow{\div 4} 64 \xrightarrow{\div 4} 16 \xrightarrow{\div 4} 4 \xrightarrow{\div 4} 1
+\]
+
+The raw sweep records \(1\) at the final position (for \(\pi/4\)). The
+predicted intermediate position of \(4\) appears unoccupied.
+
+\subsubsection{\texorpdfstring{7.2 The tholonic Class A algorithm
+outputs \(\pi/4\), not
+\(\pi\)}{7.2 The tholonic Class A algorithm outputs \textbackslash pi/4, not \textbackslash pi}}\label{the-tholonic-class-a-algorithm-outputs-pi4-not-pi}
+
+This apparent gap is resolved by attending to what the tholonic
+algorithm actually computes. The Class A branch for \(\pi/4\) is derived
+from the axis geometry of the thologram: the seeds
+\((N_0, D_0, C_0) = (1, 3, 5)\) come from the axis multipliers and the
+generative unit, and the advance step \(\Delta = \mathrm{istep}^2 = 4\)
+is derived from the Instantiation axis (Paper 1, Section 2.1). The
+algorithm was not constructed from the Leibniz series; the Leibniz
+series is what the algorithm reduces to mathematically, as a consequence
+of its structure (Paper 1, Proposition 5.5).
+
+The raw output of this algorithm is \(\pi/4\). Recovering \(\pi\)
+requires an explicit \(\times 4\) scaling step that is external to the
+algorithm itself. When that scaling is applied, the one seed combination
+producing \(\pi/4\) corresponds to four combinations producing \(\pi\)
+(one per element of the \(\times 4\) factor). The \(2^2 = 4\) slot is
+not empty; it is occupied by \(\pi\).
+
+This is not a rescaling convention borrowed from the Leibniz literature.
+It is an observation about the tholonic algorithm's native output: the
+algorithm converges to \(\pi/4\) as a structural consequence of its
+Class A geometry, and \(\pi\) itself sits one scaling step above that
+native value.
+
+\subsubsection{7.3 The complete hierarchy}\label{the-complete-hierarchy}
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Constant & Combinations & Power of 2 \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\varphi\) & 256 & \(2^8\) \\
+\(\sqrt{2}\) & 256 & \(2^8\) \\
+\(\ln 2\) & 64 & \(2^6\) \\
+\(e\) & 16 & \(2^4\) \\
+\(\pi\) & 4 & \(2^2\) \\
+\(\pi/4\) & 1 & \(2^0\) \\
+\end{longtable}
+
+Every even power of 2 from \(2^0\) to \(2^8\) is occupied. The sequence
+is complete and gapless:
+
+\[
+2^0 \quad 2^2 \quad 2^4 \quad 2^6 \quad 2^8 \quad 2^8
+\] \[
+\pi/4 \quad \pi \quad e \quad \ln 2 \quad \sqrt{2} \quad \varphi
+\]
+
+\subsubsection{7.4 The four-stage emanation
+structure}\label{the-four-stage-emanation-structure}
+
+Grouping by accessibility:
+
+\begin{longtable}[]{@{}llll@{}}
+\toprule\noalign{}
+Stage & Constants & Combinations & Multiplier from previous stage \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+0 --- Singular & \(\pi/4\) & 1 & (origin) \\
+1 --- Rare & \(e\) & 16 & \(\times 16\) \\
+2 --- Common & \(\ln 2\) & 64 & \(\times 4\) \\
+3 --- Universal & \(\varphi\), \(\sqrt{2}\) & 256 & \(\times 4\) \\
+\end{longtable}
+
+Each outward step multiplies accessibility by 4. \(\pi\) occupies the
+slot between Stage 0 (\(\pi/4\)) and Stage 1 (\(e\)), at \(\times 4\)
+from the origin.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{\texorpdfstring{8. \(\pi\) as Archetype Rather Than
+Instance}{8. \textbackslash pi as Archetype Rather Than Instance}}\label{pi-as-archetype-rather-than-instance}
+
+\subsubsection{8.1 The apparent paradox}\label{the-apparent-paradox}
+
+\(\varphi\) and \(\sqrt{2}\) are the \emph{most common} constants in
+this framework, appearing in every possible seed combination. Yet
+\(\pi\) is fundamental to far more of mathematics and physics than
+either of them: it appears in the normal distribution, the Fourier
+transform, the Basel problem (\(1 + 1/4 + 1/9 + \cdots = \pi^2/6\)),
+wave equations, and the geometry of all circles. How can the rarest
+value in the seed space be the most fundamental value in mathematics?
+
+\subsubsection{8.2 The archetype-instance
+distinction}\label{the-archetype-instance-distinction}
+
+The resolution lies in the distinction between an \emph{archetype} and
+an \emph{instance}:
+
+\begin{itemize}
+\tightlist
+\item
+  An \textbf{instance} is common and reproducible. It appears \emph{in}
+  particular things. It is reachable from many starting points.
+\item
+  An \textbf{archetype} is singular and irreducible. It is the pattern
+  that generates instances rather than being one itself. It is reached
+  only by a specific path.
+\end{itemize}
+
+By this distinction the hierarchy maps precisely:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.6250}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 2\tabcolsep) * \real{0.3750}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Constant
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\varphi\), \(\sqrt{2}\) & Instances: universal attractors, appear
+everywhere \\
+\(\ln 2\), \(e\) & Mediators: bridge between archetype and instance \\
+\(\pi\) & Archetype: singular, irreducible, the source \\
+\end{longtable}
+
+\subsubsection{\texorpdfstring{8.3 Consistency with \(\pi\)'s
+mathematical
+behavior}{8.3 Consistency with \textbackslash pi's mathematical behavior}}\label{consistency-with-pis-mathematical-behavior}
+
+This interpretation is consistent with how \(\pi\) actually behaves
+across mathematics. \(\varphi\) and \(\sqrt{2}\) appear in
+\emph{specific structures}: this spiral, this rectangle, this triangle.
+\(\pi\) appears in the \emph{laws governing all structures}: in the
+relationship between circumference and diameter, in the structure of the
+normal distribution, in the completeness of the Fourier basis, in
+quantum mechanics. It shows up not in particular instances but in the
+framework within which all instances are measured.
+
+An archetype does not need to be common. Its rarity is its power. If
+\(\pi\) appeared in all 256 combinations it would be just another
+attractor. The fact that it requires the one specific Fibonacci key
+\((1, 2, 3, 5)\) suggests it is not arrived at by exploration or
+accident: every other constant can be stumbled upon from any starting
+point, but \(\pi\) must be sought.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{9. Open Questions}\label{open-questions}
+
+The following conjectures are stated informally; resolving them would
+elevate the empirical observations of this paper to theorems.
+
+\textbf{Conjecture 9.1 (Power-of-two characterization).} The seed set
+\(\{1, 2, 3, 5\}\) is not the only set for which the frequency table of
+convergences is composed entirely of exact powers of two. Characterize
+all finite seed sets \(S \subset \mathbb{R}_{>0}\) with this property.
+
+\textbf{Conjecture 9.2 (Gapless even-power sequences).} For the five
+algorithms as defined, any seed set satisfying Conjecture 9.1 also
+produces a frequency table in which the exponents form a gapless
+sequence of even integers from 0 to \(2\log_2|S^4|\). Prove or disprove.
+
+\textbf{Conjecture 9.3 (Fibonacci necessity for \(\pi/4\)).} Among all
+seed sets satisfying Conjecture 9.1, the unique combination producing
+\(\pi/4\) always consists of consecutive Fibonacci numbers. Prove or
+find a counterexample.
+
+\textbf{Conjecture 9.4 (Unlabeled convergences).} The 687 runs
+converging to unlabeled values in Section 3.2 also exhibit a
+power-of-two frequency table when grouped by distinct convergent value.
+Verify computationally and characterize the unlabeled constants.
+
+\textbf{Conjecture 9.5 (Axis-geometry necessity).} A finite seed set
+\(S\) produces the gapless even-exponent hierarchy
+\(2^0, 2^2, \ldots, 2^{2\log_2|S|}\) under the five Paper 1 algorithms
+if and only if \(S\) is the axis-derived vocabulary
+\(\{2^0, \mathrm{istep}, m_C, m_D\} = \{1, 2, 3, 5\}\), where \(m_C\)
+and \(m_D\) are the Contribution and Definition axis multipliers. Prove
+or find a counterexample.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{10. Conclusion}\label{conclusion}
+
+A computational sweep of all \(4^4 = 256\) seed combinations from
+\(\{1, 2, 3, 5\}\) across five tholonic algorithms reveals that the
+number of combinations converging to each classical constant is an exact
+power of two. The powers are \(2^8\), \(2^8\), \(2^6\), \(2^4\), and
+\(2^0\), and when the Leibniz algorithm's raw output \(\pi/4\) is scaled
+by 4 to restore \(\pi\), the slot \(2^2 = 4\) is filled and the sequence
+of even powers from \(2^0\) to \(2^8\) is complete and gapless.
+
+This cascade divides by 4 at each step and admits a clean entropy
+interpretation: \(\pi/4\) has zero generative entropy (one path, no
+choice), while \(\varphi\) and \(\sqrt{2}\) have maximum generative
+entropy (all paths lead there). The intermediate constants \(e\) and
+\(\ln 2\) form a bridge, each a factor of 4 more accessible than the
+last.
+
+The hierarchy mirrors the algebraic standing of the constants: quadratic
+irrationals at maximum accessibility, transcendentals at minimum
+accessibility. Section 4.5 further argues that the power-of-two
+structure is bound to the tholonic axis geometry: the sweep seed set
+\(\{1, 2, 3, 5\}\) is axis-derived, the cascade rate \(\div 4\) equals
+\(\mathrm{istep}^2\), and the even-exponent ladder propagates the binary
+vertex structure through the Instantiation axis. We argue this is not
+coincidence but reflects what the constants structurally are within the
+tholonic framework, and that \(\pi\)'s position as the singular source
+in the seed space is consistent with its role as an archetype rather
+than an instance in the broader structure of mathematics.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{References}\label{references}
+
+{[}Fib02{]} Fibonacci (Leonardo of Pisa). \emph{Liber Abaci.} 1202.
+(Standard modern translation: Sigler, L. E. \emph{Fibonacci's Liber
+Abaci.} Springer, 2002.)
+
+{[}Her97{]} Herstein, I. N. \emph{Abstract Algebra.} 3rd ed.~Wiley,
+1997.
+
+{[}Knu97{]} Knuth, D. E. \emph{The Art of Computer Programming, Vol. 2:
+Seminumerical Algorithms.} 3rd ed.~Addison-Wesley, 1997.
+
+{[}Lei82{]} Leibniz, G. W. ``Nova methodus pro maximis et minimis.''
+\emph{Acta Eruditorum,} 1684. (Cited for the series identity
+\(\pi/4 = 1 - 1/3 + 1/5 - \cdots\), proved in {[}Roy11{]}.)
+
+{[}Mil26a{]} Milton, J. W. ``Emergence of Classical Constants from a
+Minimal Recursive Triadic Framework.'' Clarity Coalition preprint, May
+2026. {[}Paper 1 of this series.{]}
+
+{[}Mil26b{]} Milton, J. W. ``A Minimal Recursive Triadic Framework:
+Irreducibility and Structural Necessity.'' Clarity Coalition preprint,
+April 2026. {[}Paper 3 of this series.{]}
+
+{[}Mil26c{]} Milton, J. W. ``The Qualitative Nature of One, Two, and
+Three: Structural Role Assignment in Minimal Recursive Systems.''
+Clarity Coalition preprint, April 2026. {[}Paper 6 of this series.{]}
+
+{[}Roy11{]} Roy, R. \emph{Sources in the Development of Mathematics:
+Series and Products from the Fifteenth to the Twenty-First Century.}
+Cambridge University Press, 2011.
+
+{[}Ste92{]} Stewart, I. \emph{Another Fine Math You've Got Me Into.} W.
+H. Freeman, 1992.
+
+\end{document}

@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>Lehman Brothers: N-D-C Structural Analysis</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #1c0a00 0%, #2d1200 60%, #431d00 100%);
+    min-height: 100vh; padding: 24px; color: #1e293b;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.40);
+    padding: 40px; margin-bottom: 20px;
+  }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: #78350f; background: #fff7ed;
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 16px;
+  }
+  h1 { font-size: 34px; font-weight: 300; line-height: 1.2; margin-bottom: 10px; color: #0f172a; }
+  h1 strong { font-weight: 700; color: #78350f; }
+  .subtitle { font-size: 15px; color: #64748b; line-height: 1.65; max-width: 820px; margin-bottom: 24px; }
+
+  .key-message {
+    background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px;
+    padding: 18px 22px; margin-bottom: 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .key-message .icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .key-message h3 { font-size: 14px; font-weight: 700; color: #78350f; margin-bottom: 5px; }
+  .key-message p { font-size: 13px; color: #7c2d12; line-height: 1.6; }
+
+  .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #f8fafc; border-radius: 10px; padding: 16px 18px; border-left: 4px solid #78350f; }
+  .kpi.red { border-left-color: #dc2626; }
+  .kpi.amber { border-left-color: #d97706; }
+  .kpi.green { border-left-color: #16a34a; }
+  .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 4px; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: #0f172a; }
+  .kpi-value.red { color: #dc2626; }
+  .kpi-value.amber { color: #d97706; }
+  .kpi-value.green { color: #16a34a; }
+  .kpi-sub { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+
+  .timeline-panel {
+    background: #1c0a00; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; color: #f1f5f9;
+  }
+  .timeline-panel h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 16px; }
+  .timeline-panel h2 { font-size: 18px; font-weight: 600; color: #f1f5f9; margin-bottom: 8px; }
+  .timeline-panel p { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px; }
+  .tl-bars { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; align-items: end; height: 120px; }
+  .tl-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+  .tl-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; transition: opacity 0.2s; }
+  .tl-bar.breakdown { background: #dc2626; }
+  .tl-bar.critical { background: #d97706; }
+  .tl-bar.stressed { background: #ca8a04; }
+  .tl-label { font-size: 9px; color: #64748b; text-align: center; }
+  .tl-score { font-size: 10px; font-weight: 700; color: #94a3b8; }
+  .tl-annotation {
+    background: #2d1200; border-radius: 8px; padding: 12px 16px; margin-top: 14px;
+    font-size: 12px; color: #94a3b8; line-height: 1.6;
+  }
+  .tl-annotation strong { color: #fb923c; }
+
+  .phase-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+  .phase-chip {
+    background: #fff; border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 3px solid #d1d5db;
+  }
+  .phase-chip.excellent { border-top-color: #16a34a; }
+  .phase-chip.good { border-top-color: #0d9488; }
+  .phase-chip.stressed { border-top-color: #d97706; }
+  .phase-chip.critical { border-top-color: #ea580c; }
+  .phase-chip.breakdown { border-top-color: #dc2626; }
+  .phase-chip.deceptive { border-top-color: #7c3aed; }
+  .pc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 4px; }
+  .pc-name { font-size: 12px; font-weight: 600; color: #0f172a; margin-bottom: 4px; line-height: 1.3; }
+  .pc-score { font-size: 20px; font-weight: 800; }
+  .pc-score.excellent { color: #16a34a; }
+  .pc-score.good { color: #0d9488; }
+  .pc-score.stressed { color: #d97706; }
+  .pc-score.critical { color: #ea580c; }
+  .pc-score.breakdown { color: #dc2626; }
+  .pc-score.deceptive { color: #7c3aed; }
+  .pc-tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-top: 4px; }
+  .tag-breakdown { background: #fef2f2; color: #991b1b; }
+  .tag-deceptive { background: #f5f3ff; color: #5b21b6; }
+  .tag-stressed { background: #fffbeb; color: #92400e; }
+  .tag-coherent { background: #f0fdf4; color: #166534; }
+  .tag-critical { background: #fff7ed; color: #7c2d12; }
+
+  .comparison {
+    background: #fff; border-radius: 12px; padding: 22px 26px; margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .comparison h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-bottom: 14px; }
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .comp-table th { text-align: left; padding: 8px 12px; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e2e8f0; }
+  .comp-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table .fail { color: #dc2626; font-weight: 700; }
+  .comp-table .pass { color: #16a34a; font-weight: 700; }
+  .comp-table .warn { color: #d97706; font-weight: 700; }
+
+  .layer-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-bottom: 20px; }
+  .layer-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .layer-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.16); transition: all 0.2s; }
+  .lc-header { padding: 22px 22px 14px; color: #fff; }
+  .lc-header.sc { background: linear-gradient(135deg, #1c0a00 0%, #431d00 100%); }
+  .lc-header.rc { background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%); }
+  .lc-header.vc { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+  .lc-icon { font-size: 36px; margin-bottom: 8px; }
+  .lc-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .lc-desc { font-size: 12px; opacity: 0.88; line-height: 1.5; }
+  .lc-body { padding: 16px 22px 20px; }
+  .lc-body ul { list-style: none; margin-bottom: 14px; }
+  .lc-body li { font-size: 12px; color: #475569; padding: 4px 0 4px 18px; position: relative; line-height: 1.4; }
+  .lc-body li::before { content: "→"; position: absolute; left: 0; color: #64748b; }
+  .btn {
+    display: inline-block; padding: 10px 20px; border-radius: 7px;
+    text-decoration: none; font-weight: 700; font-size: 13px; color: #fff;
+    transition: all 0.15s;
+  }
+  .btn.sc { background: linear-gradient(135deg, #1c0a00 0%, #431d00 100%); }
+  .btn.rc { background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%); }
+  .btn.vc { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .sub-links { margin-top: 10px; font-size: 12px; }
+  .sub-links a { color: #475569; font-weight: 600; text-decoration: none; margin-right: 10px; }
+  .sub-links a:hover { text-decoration: underline; color: #0f172a; }
+
+  .five-model { background: #fff; border-radius: 12px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .five-model h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-bottom: 16px; }
+  .fm-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+  .fm-card { background: #f8fafc; border-radius: 9px; padding: 14px 12px; text-align: center; }
+  .fm-symbol { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+  .fm-score { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+  .fm-score.poor { color: #dc2626; }
+  .fm-score.fair { color: #d97706; }
+  .fm-score.good { color: #0d9488; }
+  .fm-label { font-size: 10px; color: #64748b; line-height: 1.3; }
+  .fm-axis { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-top: 4px; }
+
+  .svb-compare { background: #fff; border-radius: 12px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .svb-compare h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-bottom: 14px; }
+
+  .footer { text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 16px; padding: 8px 0; }
+  .nav { text-align: center; margin-top: 12px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.88); text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .source-note { font-size: 11px; color: #94a3b8; margin-top: 10px; text-align: center; }
+
+  @media (max-width: 900px) {
+    .kpis, .fm-grid { grid-template-columns: repeat(2,1fr); }
+    .phase-strip, .layer-grid { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 600px) {
+    .kpis, .phase-strip, .layer-grid, .fm-grid { grid-template-columns: 1fr; }
+    .tl-bars { grid-template-columns: repeat(4,1fr); height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="kicker">Bank Structural Failure Case · Largest Bankruptcy in US History · $613B Liabilities</div>
+  <h1>🏛 Lehman Brothers<br><strong>Structural Failure Analysis</strong></h1>
+  <p class="subtitle">
+    An 8-phase N-D-C structural analysis of Lehman Brothers Holdings Inc. using public SEC filings,
+    the Valukas Examiner Report, and FCIC testimony through Q2 2008. The model identifies the failure
+    origin 20 months before the September 15, 2008 bankruptcy filing. Phase 3 (Leverage and Risk Management)
+    entered Breakdown in Q1 2007 and never recovered. Six of eight phases were below the structural
+    coherence floor at failure. Chain balance 49.9%.
+  </p>
+
+  <div class="key-message">
+    <div class="icon">🔥</div>
+    <div>
+      <h3>The core finding for financial analysts and regulators</h3>
+      <p>
+        Basel II capital ratios showed Lehman adequately capitalized (Tier 1 ~11%) through Q2 2008.
+        Credit agencies maintained A ratings until September 9: six days before failure. The N-D-C
+        structural analysis shows Phase 3 (Leverage and Risk Management) entered Breakdown in Q1 2007
+        and Phase 0 (Funding Base) was in Breakdown throughout 2007-2008. The failure cascade was
+        structurally visible from public SEC filings. Repo 105 manipulation made Phase 1 (Capital Adequacy)
+        appear Coherent while the underlying leverage was 30.7x: 23% above stated internal targets.
+      </p>
+    </div>
+  </div>
+
+  <div class="kpis">
+    <div class="kpi red">
+      <div class="kpi-label">System Balance (π)</div>
+      <div class="kpi-value red">49.9%</div>
+      <div class="kpi-sub">8-phase N-D-C chain: Failure</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Phase 3 Balance</div>
+      <div class="kpi-value red">17.2%</div>
+      <div class="kpi-sub">Leverage risk: Breakdown (primary)</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Bottleneck Phases</div>
+      <div class="kpi-value red">6</div>
+      <div class="kpi-sub">Phases 0, 2, 3, 4, 5, 6 below floor</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Detection Window</div>
+      <div class="kpi-value amber">20 mo</div>
+      <div class="kpi-sub">Q1 2007 to September 2008</div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 3 timeline -->
+<div class="timeline-panel">
+  <h3>The Signal the Model Would Have Produced</h3>
+  <h2>Phase 3: Leverage and Risk Management: Quarterly Balance Score</h2>
+  <p>
+    Lehman's leverage targets (25x internally stated) were routinely exceeded. By Q1 2007,
+    gross leverage crossed 30x and Phase 3 (Leverage and Risk Management) entered Breakdown.
+    The bars below show the balance score each quarter. Failure occurred September 15, 2008,
+    20 months after the signal.
+  </p>
+  <div class="tl-bars">
+    <div class="tl-bar-wrap">
+      <div class="tl-score">50.0</div>
+      <div class="tl-bar critical" style="height:58%"></div>
+      <div class="tl-label">Q3 '06</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">38.5</div>
+      <div class="tl-bar critical" style="height:45%"></div>
+      <div class="tl-label">Q4 '06</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">29.3</div>
+      <div class="tl-bar breakdown" style="height:34%"></div>
+      <div class="tl-label">Q1 '07 ⚡</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">24.6</div>
+      <div class="tl-bar breakdown" style="height:28%"></div>
+      <div class="tl-label">Q2 '07</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">20.6</div>
+      <div class="tl-bar breakdown" style="height:24%"></div>
+      <div class="tl-label">Q3 '07</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">18.9</div>
+      <div class="tl-bar breakdown" style="height:22%"></div>
+      <div class="tl-label">Q4 '07</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">17.1</div>
+      <div class="tl-bar breakdown" style="height:20%"></div>
+      <div class="tl-label">Q1 '08</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">17.2</div>
+      <div class="tl-bar breakdown" style="height:20%"></div>
+      <div class="tl-label">Q2 '08</div>
+    </div>
+  </div>
+  <div class="tl-annotation">
+    <strong>Q1 2007:</strong> Gross leverage crosses 30x. Risk committee override waivers documented.
+    Phase 3 crosses the 38.2% Breakdown threshold. Standard Basel II Tier 1 ratios remain green.
+    Repo 105 manipulation active at each quarter-end.
+    <strong>September 15, 2008:</strong> Largest bankruptcy filing in US history. $613B in liabilities.
+    No government backstop. Global financial crisis begins.
+  </div>
+</div>
+
+<!-- Phase scores -->
+<div class="phase-strip">
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 0</div>
+    <div class="pc-name">Funding Base and Liability Structure</div>
+    <div class="pc-score breakdown">28.3%</div>
+    <span class="pc-tag tag-breakdown">Breakdown</span>
+  </div>
+  <div class="phase-chip deceptive">
+    <div class="pc-label">Phase 1</div>
+    <div class="pc-name">Capital Adequacy (Reported)</div>
+    <div class="pc-score deceptive">97.4%</div>
+    <span class="pc-tag tag-deceptive">Deceptive: Repo 105</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 2</div>
+    <div class="pc-name">Asset Quality and Concentration</div>
+    <div class="pc-score breakdown">25.9%</div>
+    <span class="pc-tag tag-breakdown">Breakdown</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 3</div>
+    <div class="pc-name">Leverage and Risk Management</div>
+    <div class="pc-score breakdown">17.2%</div>
+    <span class="pc-tag tag-breakdown">Breakdown: Primary</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 4</div>
+    <div class="pc-name">Liquidity Pool and Funding Access</div>
+    <div class="pc-score breakdown">43.2%</div>
+    <span class="pc-tag tag-breakdown">Breakdown</span>
+  </div>
+  <div class="phase-chip critical">
+    <div class="pc-label">Phase 5</div>
+    <div class="pc-name">Earnings and Net Revenue</div>
+    <div class="pc-score critical">61.3%</div>
+    <span class="pc-tag tag-critical">Critical Threshold</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 6</div>
+    <div class="pc-name">Market Confidence and Counterparty Trust</div>
+    <div class="pc-score breakdown">30.6%</div>
+    <span class="pc-tag tag-breakdown">Breakdown</span>
+  </div>
+  <div class="phase-chip deceptive">
+    <div class="pc-label">Phase 7</div>
+    <div class="pc-name">Regulatory Oversight and Reporting</div>
+    <div class="pc-score deceptive">94.9%</div>
+    <span class="pc-tag tag-deceptive">Deceptive: CSE Program</span>
+  </div>
+</div>
+
+<!-- Framework comparison -->
+<div class="comparison">
+  <h3>What Each Framework Said in Q2 2008</h3>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Framework</th>
+        <th>Signal</th>
+        <th>What It Missed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Basel II capital (Tier 1)</strong></td>
+        <td class="pass">PASS: ~11%, above 4% minimum</td>
+        <td>Repo 105 reduced reported balance sheet by $50B at quarter-end. True gross leverage was 30.7x, not 12.1x. Capital ratio was structurally fraudulent.</td>
+      </tr>
+      <tr>
+        <td><strong>SEC CSE program</strong></td>
+        <td class="pass">COMPLIANT: self-reported internal models</td>
+        <td>CSE allowed self-reporting using internal models with no independent verification. Repo 105 and leverage limit overrides were not identified by examiners.</td>
+      </tr>
+      <tr>
+        <td><strong>Credit agency ratings</strong></td>
+        <td class="pass">A RATED through September 9, 2008</td>
+        <td>Investment-grade rating maintained until 6 days before failure. Rating models did not capture wholesale funding run-risk or true leverage under stress.</td>
+      </tr>
+      <tr>
+        <td><strong>Federal Reserve emergency authority</strong></td>
+        <td class="warn">OBSERVATION: limited statutory tools for broker-dealer</td>
+        <td>Fed had no statutory resolution authority over non-bank broker-dealers. No equivalent of FDIC bridge bank available. Systemic risk exception not offered (contrast with Bear Stearns, AIG).</td>
+      </tr>
+      <tr>
+        <td><strong>N-D-C structural analysis</strong></td>
+        <td class="fail">BREAKDOWN: Phase 3 at 17.2% for 8 quarters; Phase 0 in Breakdown throughout 2007-2008</td>
+        <td>Nothing hidden. Phase 3 Breakdown detected from public SEC filings in Q1 2007 and sustained through failure. Six of eight phases below coherence floor by Q2 2008.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Five model coherence panel -->
+<div class="five-model">
+  <h3>Five-Model Coherence Panel: Lehman Brothers Q2 2008</h3>
+  <div class="fm-grid">
+    <div class="fm-card">
+      <div class="fm-symbol">π</div>
+      <div class="fm-score poor">49.9%</div>
+      <div class="fm-label">Chain average balance across all 8 phases. 6 phases below coherence floor.</div>
+      <div class="fm-axis">Operational Coherence</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">φ</div>
+      <div class="fm-score poor">22%</div>
+      <div class="fm-label">Extreme distribution skew: Phases 1 and 7 deceptively coherent while 6 operational phases are in Breakdown or Failure.</div>
+      <div class="fm-axis">Proportional Distribution</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">√2</div>
+      <div class="fm-score poor">18%</div>
+      <div class="fm-label">Structural absence of constraints: leverage limits routinely overridden; no binding risk infrastructure applied in practice.</div>
+      <div class="fm-axis">Structural Overhead</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">ln2</div>
+      <div class="fm-score poor">38%</div>
+      <div class="fm-label">Value transformation blocked: illiquid CRE and mortgage assets cannot be converted to capital under stress without catastrophic loss recognition.</div>
+      <div class="fm-axis">Value Transformation</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">e</div>
+      <div class="fm-score poor">6%</div>
+      <div class="fm-label">Repo 105 was accounting manipulation, not risk management. No financial instruments linked to real risk metrics. Lowest e-axis score in the dataset.</div>
+      <div class="fm-axis">Financial Abstraction</div>
+    </div>
+  </div>
+  <p class="source-note">
+    Scores derived from Lehman Brothers 10-K/10-Q SEC filings, the Valukas Examiner Report (2010), and FCIC Final Report (2011).
+    Chain average (π) is the arithmetic mean of 8 phase balances. φ, √2, ln2, e scores are structural assessments against the five fundamental constants.
+    All five axes score below 50%: the only case in this project's dataset where every coherence axis simultaneously fails.
+  </p>
+</div>
+
+<!-- Comparison with SVB -->
+<div class="svb-compare">
+  <h3>Comparison with SVB (2023): Same Framework, Different Failure Mode</h3>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Dimension</th>
+        <th>Lehman Brothers (2008)</th>
+        <th>Silicon Valley Bank (2023)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Chain balance (π)</strong></td>
+        <td class="fail">49.9%: Failure</td>
+        <td class="warn">61.3%: Critical boundary</td>
+      </tr>
+      <tr>
+        <td><strong>Bottleneck phases</strong></td>
+        <td class="fail">6 of 8 phases</td>
+        <td class="warn">4 of 8 phases</td>
+      </tr>
+      <tr>
+        <td><strong>Primary failure axis</strong></td>
+        <td>Phase 3: Leverage and Risk Management (17.2%)</td>
+        <td>Phase 3: Interest Rate Risk Management (21.4%)</td>
+      </tr>
+      <tr>
+        <td><strong>D-collapse mechanism</strong></td>
+        <td>Leverage limits overridden; VaR waivers; risk committee ineffective</td>
+        <td>Interest rate hedges voluntarily dissolved to boost NII</td>
+      </tr>
+      <tr>
+        <td><strong>Deceptive phases</strong></td>
+        <td>Phase 1 (Repo 105 manipulation), Phase 7 (CSE self-reporting)</td>
+        <td>Phase 1 (AOCI excluded from capital), Phase 7 (CAMELS 2 rating)</td>
+      </tr>
+      <tr>
+        <td><strong>Detection window</strong></td>
+        <td>20 months (Q1 2007 to September 2008)</td>
+        <td>18 months (Q3 2021 to March 2023)</td>
+      </tr>
+      <tr>
+        <td><strong>Terminal failure speed</strong></td>
+        <td>6 days (KDB collapse to bankruptcy)</td>
+        <td>48 hours (capital raise announcement to FDIC takeover)</td>
+      </tr>
+      <tr>
+        <td><strong>Government resolution</strong></td>
+        <td>No backstop. Chapter 11. $613B liabilities.</td>
+        <td>FDIC systemic risk exception. Full depositor recovery.</td>
+      </tr>
+      <tr>
+        <td><strong>e-axis score</strong></td>
+        <td class="fail">6%: lowest in dataset</td>
+        <td class="fail">12%: second lowest in dataset</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Layer cards -->
+<div class="layer-grid">
+  <div class="layer-card">
+    <div class="lc-header sc">
+      <div class="lc-icon">📊</div>
+      <div class="lc-title">Structural Analysis</div>
+      <div class="lc-desc">8-phase N-D-C breakdown with quarterly Phase 3 trend from Q3 2006 through Q2 2008</div>
+    </div>
+    <div class="lc-body">
+      <ul>
+        <li>Phase balance scores from public SEC filings</li>
+        <li>Quarterly Phase 3 leverage trend (8 quarters in Breakdown)</li>
+        <li>D-C imbalance diagnosis including Repo 105 deception</li>
+        <li>Comparison to regulatory framework signals</li>
+      </ul>
+      <a href="supply_chain/index.html" class="btn sc">View Analysis</a>
+      <div class="sub-links">
+        <a href="supply_chain/dashboard.html">Dashboard</a>
+        <a href="supply_chain/project_context.html">Intervention Analysis</a>
+      </div>
+    </div>
+  </div>
+  <div class="layer-card">
+    <div class="lc-header rc">
+      <div class="lc-icon">🔄</div>
+      <div class="lc-title">Resolution Analysis</div>
+      <div class="lc-desc">Chapter 11 bankruptcy recovery, creditor outcomes, and systemic contagion cost</div>
+    </div>
+    <div class="lc-body">
+      <ul>
+        <li>Senior unsecured creditor recovery (~21 cents/dollar)</li>
+        <li>Asset recovery under prolonged Chapter 11</li>
+        <li>Systemic contagion cost estimate (global crisis)</li>
+        <li>Counterfactual: early intervention outcome</li>
+      </ul>
+      <a href="supply_chain/recycling_analysis.html" class="btn rc">View Resolution</a>
+    </div>
+  </div>
+  <div class="layer-card">
+    <div class="lc-header vc">
+      <div class="lc-icon">💼</div>
+      <div class="lc-title">Post-Crisis Context</div>
+      <div class="lc-desc">Dodd-Frank reform scorecard, broker-dealer screening framework, and systemic risk lessons</div>
+    </div>
+    <div class="lc-body">
+      <ul>
+        <li>Dodd-Frank provisions mapped to N-D-C phases</li>
+        <li>Post-crisis regulatory reform implementation status</li>
+        <li>Framework for screening broker-dealer risk</li>
+        <li>Comparison to SVB structural profile</li>
+      </ul>
+      <a href="value_chain/index.html" class="btn vc">View Context</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Lehman Brothers Holdings Inc.: N-D-C Structural Analysis · Data sourced from public SEC filings, Valukas Examiner Report (2010), and FCIC Final Report (2011) ·
+  <a href="/" style="color:rgba(255,255,255,0.7);text-decoration:none;">← Homepage</a>
+</div>
+<div class="nav">
+  <a href="/">← Main Homepage</a>
+  <a href="/frontend/project/svb_analysis/index.html">SVB Analysis →</a>
+  <a href="supply_chain/dashboard.html">Technical Dashboard →</a>
+  <a href="supply_chain/project_context.html">Intervention Analysis →</a>
+</div>
+
+</div>
+</body>
+</html>

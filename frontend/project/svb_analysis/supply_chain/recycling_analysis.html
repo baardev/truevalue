@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>SVB — Resolution and Capital Recovery Analysis (TVPCI-R)</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#edf2f7; color:#1a202c; }
+  header { background:#7c2d12; color:#fff7ed; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:17px; font-weight:600; }
+  header nav a { color:#fed7aa; text-decoration:none; font-size:13px; margin-left:14px; }
+  header nav a:hover { color:#fff7ed; }
+  main { max-width:980px; margin:0 auto; padding:28px 20px; }
+  section { background:#fff; border-radius:10px; padding:22px 24px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); }
+  h2 { font-size:17px; font-weight:600; color:#0f172a; margin-bottom:12px; }
+  h3 { font-size:14px; font-weight:600; color:#7c2d12; margin-bottom:10px; }
+  p { color:#475569; font-size:14px; line-height:1.65; margin-bottom:8px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:12px; }
+  th { text-align:left; padding:9px 12px; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid #e2e8f0; background:#f8fafc; }
+  td { padding:10px 12px; border-bottom:1px solid #f1f5f9; vertical-align:top; color:#334155; }
+  tr:last-child td { border-bottom:none; }
+
+  .provisional { background:#fffbeb; border:1px solid #fbbf24; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:13px; color:#78350f; }
+
+  .kpi-strip { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:18px; }
+  .kpi { background:#f8fafc; border-radius:9px; padding:14px 16px; border-left:4px solid #c2410c; }
+  .kpi-label { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; margin-bottom:3px; }
+  .kpi-value { font-size:24px; font-weight:800; color:#c2410c; }
+  .kpi-sub { font-size:11px; color:#94a3b8; margin-top:2px; }
+
+  .rp-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:18px; }
+  .rp-card { background:#f8fafc; border-radius:9px; padding:12px 14px; border-top:3px solid #d1d5db; }
+  .rp-card.coherent { border-top-color:#16a34a; }
+  .rp-card.stressed { border-top-color:#d97706; }
+  .rp-card.failure { border-top-color:#ea580c; }
+  .rp-card.breakdown { border-top-color:#dc2626; }
+  .rp-phase { font-size:10px; font-weight:700; text-transform:uppercase; color:#94a3b8; margin-bottom:3px; }
+  .rp-name { font-size:11px; font-weight:600; color:#0f172a; margin-bottom:5px; line-height:1.3; }
+  .rp-score { font-size:22px; font-weight:800; margin-bottom:3px; }
+  .rp-score.coherent { color:#16a34a; }
+  .rp-score.stressed { color:#d97706; }
+  .rp-score.failure { color:#ea580c; }
+  .rp-score.breakdown { color:#dc2626; }
+  .rp-omega { font-size:11px; color:#94a3b8; }
+  .rp-waste { font-size:11px; color:#64748b; line-height:1.3; margin-top:4px; }
+
+  .delta-bar-wrap { background:#f8fafc; border-radius:9px; padding:14px 18px; margin-bottom:18px; }
+  .delta-label { font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:#64748b; margin-bottom:8px; }
+  .delta-track { height:32px; background:#e2e8f0; border-radius:6px; position:relative; overflow:hidden; display:flex; }
+  .delta-tvpci { background:#1e3a5f; height:100%; display:flex; align-items:center; justify-content:flex-end; padding-right:8px; font-size:11px; font-weight:700; color:#fff; }
+  .delta-tvpcir { background:#c2410c; height:100%; display:flex; align-items:center; padding-left:8px; font-size:11px; font-weight:700; color:#fff; }
+  .delta-note { font-size:12px; color:#64748b; margin-top:8px; }
+
+  .counterfactual { background:#f0fdf4; border:1px solid #86efac; border-radius:9px; padding:16px 18px; margin-top:14px; }
+  .counterfactual h3 { color:#166534; }
+  .counterfactual p { font-size:13px; }
+
+  .good { color:#16a34a; font-weight:700; }
+  .warn { color:#d97706; font-weight:700; }
+  .fail { color:#dc2626; font-weight:700; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔄 SVB — Resolution and Capital Recovery Analysis</h1>
+  <nav>
+    <a href="index.html">Phase Overview</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="project_context.html">Interventions</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+
+<div class="provisional">
+  <strong>PROVISIONAL:</strong> Recovery scores (R_p) are derived from public FDIC resolution records,
+  the Federal Reserve SVB review (April 2023), and FDIC supervisory insights reports.
+  Scores represent the degree to which each phase's financial value was recovered or preserved
+  through the FDIC receivership process. Omega weights reflect estimated economic significance
+  of each phase to total stakeholder value at time of failure.
+</div>
+
+<!-- KPI strip -->
+<div class="kpi-strip">
+  <div class="kpi">
+    <div class="kpi-label">TVPCI (Primary Chain)</div>
+    <div class="kpi-value">61.3%</div>
+    <div class="kpi-sub">8-phase structural balance at failure</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">TVPCI-R (Resolution Recovery)</div>
+    <div class="kpi-value">56.5%</div>
+    <div class="kpi-sub">Weighted recovery score across phases</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">B_chain (Holon Balance)</div>
+    <div class="kpi-value">85.5%</div>
+    <div class="kpi-sub">exp(-2 × |TVPCI - TVPCI-R| / max)</div>
+  </div>
+</div>
+
+<!-- Delta bar -->
+<div class="delta-bar-wrap">
+  <div class="delta-label">TVPCI vs TVPCI-R — Primary chain vs recovery chain balance</div>
+  <div class="delta-track">
+    <div class="delta-tvpci" style="width:61.3%">TVPCI 61.3%</div>
+    <div class="delta-tvpcir" style="width:18.7%"></div>
+  </div>
+  <div class="delta-note">
+    Delta_chain = 61.3% - 56.5% = +4.8 percentage points. Primary chain slightly exceeds recovery chain,
+    indicating that the resolution process recovered slightly less value than the structural health of the
+    institution at failure would predict. The FDIC systemic risk exception was required to achieve even
+    the 56.5% recovery score.
+  </div>
+</div>
+
+<!-- Per-phase R_p cards -->
+<div class="rp-grid">
+  <div class="rp-card coherent">
+    <div class="rp-phase">Phase 0</div>
+    <div class="rp-name">Deposit Recovery</div>
+    <div class="rp-score coherent">90%</div>
+    <div class="rp-omega">ω = 0.25</div>
+    <div class="rp-waste">All deposits (insured and uninsured) made whole via systemic risk exception. Full depositor recovery achieved — the exceptional outcome in this resolution.</div>
+  </div>
+  <div class="rp-card breakdown">
+    <div class="rp-phase">Phase 1</div>
+    <div class="rp-name">Capital / Equity Recovery</div>
+    <div class="rp-score breakdown">0%</div>
+    <div class="rp-omega">ω = 0.10</div>
+    <div class="rp-waste">Equity completely wiped out. SVB Financial Group shareholders received nothing. Bond-holders lost principal. Standard capital wipeout in FDIC resolution.</div>
+  </div>
+  <div class="rp-card stressed">
+    <div class="rp-phase">Phase 2</div>
+    <div class="rp-name">Asset Recovery</div>
+    <div class="rp-score stressed">75%</div>
+    <div class="rp-omega">ω = 0.20</div>
+    <div class="rp-waste">HTM bond portfolio sold progressively by FDIC. First Citizens BancShares acquired SVB assets at a discount. Estimated 75% recovery on bond portfolio after discounts and resolution costs.</div>
+  </div>
+  <div class="rp-card failure">
+    <div class="rp-phase">Phase 3</div>
+    <div class="rp-name">Rate Risk Resolution</div>
+    <div class="rp-score failure">30%</div>
+    <div class="rp-omega">ω = 0.20</div>
+    <div class="rp-waste">Unrealized rate losses partially crystallized at sale. Some losses absorbed by FDIC fund rather than depositors. Rate environment improved modestly from peak — partial natural recovery of HTM value.</div>
+  </div>
+  <div class="rp-card stressed">
+    <div class="rp-phase">Phase 4</div>
+    <div class="rp-name">Liquidity Recovery</div>
+    <div class="rp-score stressed">85%</div>
+    <div class="rp-omega">ω = 0.10</div>
+    <div class="rp-waste">FDIC Bridge Bank provided immediate liquidity backstop. All depositors could access funds within 48 hours of receivership. Liquidity function fully restored in resolution.</div>
+  </div>
+  <div class="rp-card breakdown">
+    <div class="rp-phase">Phase 5</div>
+    <div class="rp-name">Franchise / Earnings</div>
+    <div class="rp-score breakdown">20%</div>
+    <div class="rp-omega">ω = 0.05</div>
+    <div class="rp-waste">SVB franchise value (brand, client relationships, technology banking expertise) largely destroyed. First Citizens acquired a discount shadow of the original. Ongoing earnings capacity minimal.</div>
+  </div>
+  <div class="rp-card breakdown">
+    <div class="rp-phase">Phase 6</div>
+    <div class="rp-name">Market Confidence</div>
+    <div class="rp-score breakdown">10%</div>
+    <div class="rp-omega">ω = 0.05</div>
+    <div class="rp-waste">Institutional confidence in SVB-style mid-tier specialty bank model severely damaged. Contagion effects to Signature Bank and broader regional banking sector. Confidence phase unrecoverable.</div>
+  </div>
+  <div class="rp-card stressed">
+    <div class="rp-phase">Phase 7</div>
+    <div class="rp-name">Regulatory Learning</div>
+    <div class="rp-score stressed">60%</div>
+    <div class="rp-omega">ω = 0.05</div>
+    <div class="rp-waste">Supervisory reforms proposed and partially implemented: enhanced examination standards, AOCI inclusion discussions, LCR extension proposals. Full regulatory reform incomplete as of mid-2026.</div>
+  </div>
+</div>
+
+<!-- Waste stream table -->
+<section>
+  <h2>Value Loss Table — Phase-by-Phase Economic Impact</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Phase</th>
+        <th>Primary value lost</th>
+        <th>Estimated scale</th>
+        <th>Current disposition</th>
+        <th>Recovery potential</th>
+        <th>R_p</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Ph 0: Deposits</strong></td>
+        <td>Depositor access risk (uninsured balances)</td>
+        <td>~$175B at risk momentarily</td>
+        <td>Fully recovered via systemic risk exception</td>
+        <td>Achieved — systemic exception required</td>
+        <td class="good">90%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 1: Equity</strong></td>
+        <td>Shareholder and bondholder capital</td>
+        <td>~$16B equity wiped out</td>
+        <td>Zero recovery for equity holders</td>
+        <td>None — resolution law requires wipeout</td>
+        <td class="fail">0%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 2: Assets</strong></td>
+        <td>HTM portfolio discount at forced sale</td>
+        <td>$17.7B unrealized losses at peak</td>
+        <td>First Citizens acquired at ~$55B discount on $72B assets</td>
+        <td>Partial — rate environment improvement aided recovery</td>
+        <td class="warn">75%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 3: Rate Risk</strong></td>
+        <td>Unhedged interest rate losses crystallized</td>
+        <td>~$8-12B absorbed by FDIC fund</td>
+        <td>FDIC insurance fund absorbed losses; repaid via special assessment on large banks</td>
+        <td>Partial — time-limited rate recovery</td>
+        <td class="fail">30%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 4: Liquidity</strong></td>
+        <td>Depositor access disruption</td>
+        <td>48-72 hour access gap</td>
+        <td>Bridge bank restored access; minimal lasting harm</td>
+        <td>Effectively full — bridge bank mechanism worked</td>
+        <td class="good">85%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 5: Franchise</strong></td>
+        <td>SVB brand, technology banking expertise, client base</td>
+        <td>Substantial intangible value destroyed</td>
+        <td>Partially acquired by First Citizens; client relationships migrated</td>
+        <td>Low — franchise value is not recoverable once confidence is lost</td>
+        <td class="fail">20%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 6: Confidence</strong></td>
+        <td>Market stability; contagion to Signature Bank, broader regional sector</td>
+        <td>Systemic — estimated $100B+ in sector-wide deposit outflows</td>
+        <td>Fed emergency lending (BTFP) backstopped sector; contagion contained</td>
+        <td>None for SVB specifically; sector confidence partially rebuilt</td>
+        <td class="fail">10%</td>
+      </tr>
+      <tr>
+        <td><strong>Ph 7: Regulation</strong></td>
+        <td>Lost opportunity for pre-failure supervisory reform</td>
+        <td>Ongoing systemic exposure during 18-month detection window</td>
+        <td>Post-failure reforms partially implemented; LCR extension, stress testing scope under review</td>
+        <td>Partial — reforms introduced but not fully enacted</td>
+        <td class="warn">60%</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Counterfactual -->
+<section>
+  <div class="counterfactual">
+    <h3>Counterfactual: What Early Intervention Would Have Recovered</h3>
+    <p>
+      If the N-D-C structural signal had been acted upon in Q3 2021 (the quarter Phase 3
+      crossed into Breakdown), the following resolution path was available:
+    </p>
+    <ul style="margin:10px 0 10px 20px;">
+      <li style="font-size:13px;color:#166534;margin-bottom:6px;">Supervisory requirement to restore hedging coverage: Phase 3 balance recovery to 55-65%. No mark-to-market insolvency.</li>
+      <li style="font-size:13px;color:#166534;margin-bottom:6px;">Required asset rebalancing: HTM reduced from 55% to 30% of assets over 4-6 quarters. Losses recognized gradually under AFS classification rather than catastrophically at failure.</li>
+      <li style="font-size:13px;color:#166534;margin-bottom:6px;">Private capital raise at 2021 valuations: SVB market cap in 2021 was $25-35B. Capital raise under controlled conditions would have been successful. Failure capital raise in March 2023 failed because the structural collapse was already terminal.</li>
+    </ul>
+    <p>
+      <strong>Estimated counterfactual outcome:</strong> No FDIC receivership. FDIC fund not depleted (~$20B saved).
+      Shareholders retain substantial value. Tech sector banking stability maintained.
+      Systemic risk exception not required. Total economic value preserved: estimated $35-50B
+      compared to actual loss of approximately $30-40B in aggregate (equity, franchise, fund, contagion costs).
+    </p>
+  </div>
+
+  <!-- Priority interventions -->
+  <h3 style="margin-top:18px;">Priority Circular Capital Interventions</h3>
+  <table>
+    <thead>
+      <tr><th>Intervention</th><th>Phase</th><th>Description</th><th>Expected R_p impact</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Mandatory hedge coverage floor for HTM concentration</strong></td>
+        <td>Phase 3</td>
+        <td>Require 50% hedge coverage of HTM duration risk. Prevents Phase 3 entering Breakdown. Primary prevention intervention.</td>
+        <td>Phase 3 R_p: 30% to 70%+ (structural failure prevented, not remediated)</td>
+      </tr>
+      <tr>
+        <td><strong>AOCI inclusion in regulatory capital</strong></td>
+        <td>Phase 1</td>
+        <td>Remove the mid-tier bank AOCI exclusion. Forces capital raise or asset sale before mark-to-market insolvency reaches systemic threshold.</td>
+        <td>Phase 1 deceptive signal resolved: R_p for equity holders improves to 40-60% under orderly wind-down vs. 0% at failure</td>
+      </tr>
+      <tr>
+        <td><strong>Structural supervisory review trigger at Breakdown detection</strong></td>
+        <td>System-wide</td>
+        <td>Any phase below 38.2% balance for two consecutive quarters triggers mandatory examination and public disclosure. Closes the 18-month gap between model detection and supervisory action.</td>
+        <td>System TVPCI-R improves from 56.5% to estimated 72-78% (orderly restructuring vs. emergency receivership)</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+</body>
+</html>

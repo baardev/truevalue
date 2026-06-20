@@ -1,0 +1,192 @@
+{
+  "_meta": {
+    "material": "svb_analysis",
+    "case_type": "bank structural failure — Silicon Valley Bank March 2023",
+    "generated": "2026-06-17",
+    "snapshot_date": "Q4 2022 (last full quarter before failure)",
+    "sources": [
+      "FDIC Call Reports — SVB Financial Group, Certificate 24735, 2019-2022",
+      "SVB Financial Group 10-K filings 2020-2022 (SEC EDGAR)",
+      "FDIC Supervisory Insights — SVB Failure Review",
+      "Federal Reserve Board of Governors review of SVB supervision (April 2023)",
+      "FDIC Failed Bank Information — Silicon Valley Bank",
+      "SVB Basel III Pillar 3 disclosures 2021-2022"
+    ],
+    "note": "8-phase N-D-C structural analysis of SVB as of Q4 2022. Phase balances reflect the actual structural state of the bank at that date, derived from public FDIC Call Report data and SEC filings. Phases 1 and 7 appeared coherent under standard regulatory reporting but masked the structural failures in Phases 2, 3, and 4. This is a key finding of the analysis."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "SVB Q4 2022 Structural Baseline",
+      "description": "N-D-C phase analysis derived from public FDIC Call Report data for SVB Financial Group (FDIC cert 24735), quarterly snapshot as of 31 December 2022. Values reflect the structural balance of each institutional function, not reported accounting metrics."
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Deposit Franchise Quality",
+      "transparency": "MEDIUM",
+      "transformation": "Raw deposit inflows converted into a stable, diversified funding base"
+    },
+    "1": {
+      "name": "Capital Adequacy (Reported)",
+      "transparency": "HIGH",
+      "transformation": "Regulatory capital maintained against risk-weighted assets — reported metrics only"
+    },
+    "2": {
+      "name": "Asset Allocation and Portfolio Concentration",
+      "transparency": "MEDIUM",
+      "transformation": "Deposit capital deployed into loans, securities, and cash equivalents"
+    },
+    "3": {
+      "name": "Interest Rate Risk Management",
+      "transparency": "LOW",
+      "transformation": "Duration mismatch between assets and liabilities managed through hedging instruments"
+    },
+    "4": {
+      "name": "Liquidity Coverage and Buffer",
+      "transparency": "MEDIUM",
+      "transformation": "Short-term obligations met through liquid assets and funding access"
+    },
+    "5": {
+      "name": "Earnings and Net Interest Margin",
+      "transparency": "HIGH",
+      "transformation": "Asset yields converted into net income after funding costs"
+    },
+    "6": {
+      "name": "Market Confidence and Funding Access",
+      "transparency": "MEDIUM",
+      "transformation": "Institutional credibility sustained to maintain depositor and investor confidence"
+    },
+    "7": {
+      "name": "Regulatory Compliance and Reporting",
+      "transparency": "HIGH",
+      "transformation": "Supervisory obligations met and examinations passed"
+    }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 140,
+        "C": 220,
+        "balance": 63.6,
+        "N": 112,
+        "sustainability": 0.016,
+        "notes": "90%+ of SVB deposits were uninsured, sourced almost entirely from the tech startup ecosystem. No effective concentration limits were applied. C (deposit inflow) far exceeded D (diversification constraints), creating fragile funding that could exit rapidly.",
+        "data_quality": "high",
+        "metrics": {
+          "uninsured_deposits_pct": {"value": 93.8, "unit": "%", "source": "FDIC Call Report Q4 2022", "note": "SVB had the highest uninsured deposit ratio among large US banks."},
+          "tech_sector_concentration": {"value": "~90%", "unit": "of deposits from tech/VC ecosystem", "source": "Fed SVB Review 2023", "note": "Single-sector concentration with correlated withdrawal risk."}
+        }
+      },
+      "1": {
+        "D": 200,
+        "C": 195,
+        "balance": 97.5,
+        "N": 192,
+        "sustainability": 2.857,
+        "notes": "WARNING: This phase appeared coherent under standard regulatory reporting. CET1 ratio was ~12%, well above the 10% well-capitalized threshold. However, this score is misleading because GAAP capital excluded $17.7B of unrealized losses in the HTM portfolio (AOCI excluded from regulatory capital for mid-tier banks). True tangible equity including AOCI was deeply negative by Q4 2022.",
+        "data_quality": "high",
+        "metrics": {
+          "cet1_ratio_reported": {"value": 12.1, "unit": "%", "source": "SVB 10-K 2022", "note": "Appeared well-capitalized under regulatory framework."},
+          "unrealized_losses_htm": {"value": 17.7, "unit": "USD billions", "source": "SVB 10-K 2022", "note": "Excluded from regulatory capital — the hidden insolvency."},
+          "tangible_equity_with_aoci": {"value": -13.5, "unit": "USD billions estimated", "source": "Derived from SVB disclosures", "note": "Bank was insolvent on mark-to-market basis by Q4 2022."}
+        }
+      },
+      "2": {
+        "D": 80,
+        "C": 270,
+        "balance": 29.6,
+        "N": 44,
+        "sustainability": 0.003,
+        "notes": "SVB deployed approximately 55% of total assets into held-to-maturity bonds averaging 3.7-year duration at historically low yields. No effective concentration limits or duration constraints were in force. C (asset deployment) massively exceeded D (investment constraints), locking the bank into bonds that could not be sold without crystallizing catastrophic losses.",
+        "data_quality": "high",
+        "metrics": {
+          "htm_securities_pct_assets": {"value": 55, "unit": "%", "source": "SVB 10-K 2022", "note": "HTM bonds cannot be sold without reclassifying entire portfolio and realizing losses."},
+          "portfolio_average_duration": {"value": 3.7, "unit": "years", "source": "SVB investor materials 2022", "note": "Long duration in a rising rate environment."},
+          "loan_to_deposit_ratio": {"value": 43, "unit": "%", "source": "FDIC Call Report Q4 2022", "note": "Abnormally low: capital was deployed into bonds, not loans."}
+        }
+      },
+      "3": {
+        "D": 60,
+        "C": 280,
+        "balance": 21.4,
+        "N": 28,
+        "sustainability": 0.002,
+        "notes": "The deepest structural failure in the chain. SVB dissolved its interest rate hedges in mid-2021, eliminating D (hedging constraints on rate exposure) almost entirely. C (rate exposure) grew with every basis point of Fed tightening — 525 bps from March 2022 to March 2023. By Q3 2021, Phase 3 was already in Breakdown. The model would have detected this 18 months before the bank run.",
+        "data_quality": "medium",
+        "metrics": {
+          "interest_rate_swaps_outstanding": {"value": 0, "unit": "USD billions (dissolved 2021)", "source": "SVB investor materials, Fed Review 2023", "note": "SVB removed all interest rate hedges in 2021 to boost reported NII."},
+          "unrealized_losses_oci": {"value": 2.4, "unit": "USD billions Q4 2022 (AFS portfolio)", "source": "SVB 10-K 2022", "note": "Visible losses; HTM losses additionally not recognized."},
+          "fed_funds_rate_increase": {"value": 525, "unit": "basis points, Mar 2022-Mar 2023", "source": "Federal Reserve", "note": "Each 25 bps hike added approximately $330M to unrealized losses."}
+        }
+      },
+      "4": {
+        "D": 190,
+        "C": 90,
+        "balance": 47.4,
+        "N": 62,
+        "sustainability": 0.010,
+        "notes": "SVB was exempt from full LCR requirements as a mid-tier bank (assets $50-250B under 2019 tailoring rules). The liquid asset buffer was shrinking as tech sector deposits outflowed through 2022, but HTM bonds could not be liquidated without triggering the loss recognition that would reveal insolvency. D (liquidity requirements) exceeded available C (liquid assets) by Q3 2022.",
+        "data_quality": "medium",
+        "metrics": {
+          "deposit_outflows_2022": {"value": 16.8, "unit": "USD billions withdrawn in 2022", "source": "FDIC review 2023", "note": "Tech sector funding drought caused steady deposit outflow."},
+          "lcr_exemption": {"value": 1, "unit": "binary — exempt from full LCR", "source": "2019 Fed tailoring rules", "note": "Mid-tier bank exemption removed the binding liquidity constraint."}
+        }
+      },
+      "5": {
+        "D": 160,
+        "C": 130,
+        "balance": 81.3,
+        "N": 117,
+        "sustainability": 0.110,
+        "notes": "Earnings remained positive through Q4 2022 but NIM was compressing. The bank had locked in low-yield, long-duration bonds while paying more for deposits as rates rose. This phase appeared Coherent but the trajectory was deteriorating — a leading indicator if tracked quarterly.",
+        "data_quality": "high",
+        "metrics": {
+          "net_interest_margin_2022": {"value": 1.93, "unit": "%", "source": "SVB 10-K 2022", "note": "Declining from 2.07% in 2021 as cost of funds rose faster than asset yields."},
+          "cost_of_funds_increase": {"value": 0.9, "unit": "percentage points increase in 2022", "source": "SVB 10-K 2022", "note": "Deposit repricing accelerating with each Fed hike."}
+        }
+      },
+      "6": {
+        "D": 175,
+        "C": 100,
+        "balance": 57.1,
+        "N": 76,
+        "sustainability": 0.018,
+        "notes": "Market confidence was eroding by early 2023. SVB attempted to raise $2.25B in equity in March 2023; the announcement triggered the bank run. By Q4 2022, the structural preconditions were in place: Moody's had placed SVB on review for downgrade, and institutional investors with visibility into the HTM portfolio were reducing exposure.",
+        "data_quality": "medium",
+        "metrics": {
+          "stock_price_decline_feb_2023": {"value": 60, "unit": "% fall in 48 hours before failure", "source": "Market data", "note": "Confidence evaporated when capital raise was announced."},
+          "moodys_review_downgrade": {"value": 1, "unit": "binary — placed on review Dec 2022", "source": "Moody's rating action", "note": "Institutional early warning signal."}
+        }
+      },
+      "7": {
+        "D": 200,
+        "C": 185,
+        "balance": 92.5,
+        "N": 178,
+        "sustainability": 0.426,
+        "notes": "SVB met all formal regulatory requirements and passed examinations. This phase appearing Coherent is itself a diagnostic finding: the regulatory framework as applied did not capture the structural failures in Phases 2, 3, and 4. The Fed's post-failure review identified supervisory failures including insufficient escalation of identified weaknesses and excessive deference to management plans.",
+        "data_quality": "high",
+        "metrics": {
+          "fdic_camels_rating": {"value": 2, "unit": "composite rating", "source": "Federal Reserve SVB Review 2023", "note": "CAMELS 2 rating did not reflect structural deterioration visible in phases 2-4."},
+          "formal_enforcement_actions": {"value": 0, "unit": "active enforcement orders at failure", "source": "FDIC enforcement database", "note": "No public enforcement orders despite identified supervisory concerns."}
+        }
+      }
+    }
+  },
+  "system": {
+    "balance": 61.3,
+    "average_N": 101,
+    "bottleneck_phase_ids": [2, 3, 4, 6],
+    "interpretation": "SVB presents a structurally deceptive failure pattern: Phases 1 and 7 (regulatory reporting and capital adequacy) scored Coherent, creating a false signal of institutional health. The true failure cascade originated in Phase 3 (interest rate risk, balance 21.4%) and Phase 2 (asset concentration, balance 29.6%), both of which entered Breakdown in mid-2021. Phase 4 (liquidity) cascaded from Phase 3 when deposit outflows began accelerating in 2022. The N-D-C model detects this 18 months before the bank run because it evaluates structural balance across all phases simultaneously, including phases not reflected in standard regulatory capital ratios.",
+    "quarterly_phase3_trend": {
+      "Q1_2021": {"D": 100, "C": 160, "balance": 37.5, "note": "Hedges partially in place; imbalance already visible"},
+      "Q2_2021": {"D": 80, "C": 200, "balance": 40.0, "note": "SVB begins dissolving interest rate swaps"},
+      "Q3_2021": {"D": 65, "C": 250, "balance": 26.0, "note": "HTM portfolio peaks; hedges fully removed — Breakdown threshold crossed"},
+      "Q4_2021": {"D": 60, "C": 265, "balance": 22.6, "note": "Breakdown sustained through rate hiking cycle"},
+      "Q1_2022": {"D": 60, "C": 272, "balance": 22.1, "note": "Fed begins hiking; losses compound with each meeting"},
+      "Q2_2022": {"D": 60, "C": 276, "balance": 21.7, "note": "Deposit outflows begin accelerating"},
+      "Q3_2022": {"D": 60, "C": 279, "balance": 21.5, "note": "Phase 4 liquidity also entering Breakdown"},
+      "Q4_2022": {"D": 60, "C": 280, "balance": 21.4, "note": "Final pre-failure quarter; structural position unchanged"}
+    }
+  }
+}

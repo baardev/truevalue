@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Cellular Aging: Project Context</title>
+<style>
+:root { color-scheme: light; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #f8f9fa; color: #212529; min-height: 100vh; padding: 24px;
+}
+.container { max-width: 1060px; margin: 0 auto; }
+.hero {
+  background: linear-gradient(135deg, #1a0050 0%, #4527a0 100%);
+  color: #fff; border-radius: 14px; padding: 32px 40px; margin-bottom: 24px;
+}
+.kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #ce93d8; margin-bottom: 8px; }
+h1 { font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,0.82); line-height: 1.6; max-width: 700px; }
+.kpi-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+.kpi { background: rgba(255,255,255,0.12); border-radius: 8px; padding: 10px 18px; text-align: center; }
+.kpi-val { font-size: 22px; font-weight: 800; line-height: 1; }
+.kpi-label { font-size: 10px; color: rgba(255,255,255,0.72); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+.section { background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 28px 32px; margin-bottom: 20px; }
+.section-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #4527a0; margin-bottom: 6px; }
+h2 { font-size: 20px; font-weight: 400; color: #1a0050; margin-bottom: 8px; }
+h3 { font-size: 16px; font-weight: 600; color: #212529; margin-bottom: 10px; }
+.section-sub { font-size: 13px; color: #6c757d; line-height: 1.6; margin-bottom: 18px; max-width: 760px; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 8px 10px; background: #f1f3f5; color: #495057; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #dee2e6; }
+td { padding: 9px 10px; border-bottom: 1px solid #e9ecef; vertical-align: top; line-height: 1.5; }
+tr:last-child td { border-bottom: none; }
+.phase-num { font-weight: 800; color: #4527a0; }
+.phase-num.bn { color: #e65100; }
+.bal-ok   { color: #2e7d32; font-weight: 700; }
+.bal-warn { color: #e65100; font-weight: 700; }
+.trans-high   { display:inline-block;background:#e8f5e9;color:#2e7d32;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px; }
+.trans-med    { display:inline-block;background:#fff8e1;color:#f57f17;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px; }
+.trans-low    { display:inline-block;background:#fbe9e7;color:#bf360c;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px; }
+.tier-badge   { display:inline-block;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;margin-right:4px; }
+.t1 { background:#c8e6c9;color:#1b5e20; }
+.t2 { background:#bbdefb;color:#0d47a1; }
+.t3 { background:#ede7f6;color:#4527a0; }
+.t4 { background:#fff8e1;color:#e65100; }
+.t5 { background:#fce4ec;color:#880e4f; }
+
+.bottleneck-block {
+  border: 2px solid #ff7043; border-radius: 10px; padding: 20px 24px; margin-bottom: 20px;
+  background: #fff9f6;
+}
+.bn-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+.bn-badge { background: #e65100; color: #fff; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; padding: 4px 10px; border-radius: 6px; flex-shrink: 0; }
+.bn-title { font-size: 16px; font-weight: 700; color: #bf360c; }
+.bn-score { font-size: 22px; font-weight: 800; color: #e65100; margin-left: auto; }
+.bn-cause { font-size: 13px; color: #5d4037; line-height: 1.6; margin-bottom: 14px; background: #fff3e0; border-left: 4px solid #ff9800; padding: 10px 14px; border-radius: 0 8px 8px 0; }
+.bn-combined { background: #e8f5e9; border-radius: 8px; padding: 10px 14px; font-size: 13px; color: #2e7d32; margin-top: 12px; }
+.axis-ref { font-size: 12px; color: #6c757d; margin-top: 8px; font-style: italic; }
+
+.disc { background: #fff8e1; border-left: 4px solid #f9a825; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 13px; color: #5d4037; line-height: 1.6; margin-bottom: 16px; }
+
+.nav { text-align: center; margin-top: 20px; padding-bottom: 8px; }
+.nav a { color: #4527a0; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+.nav a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+  <div class="kicker">Cellular Aging · Project Context</div>
+  <h1>🔬 Phase Analysis, Degradation Mechanisms, and Intervention Worksheet</h1>
+  <p class="hero-sub">
+    Mammalian somatic cell canonical aging reference. 8 phases from nutrient signaling to intercellular communication.
+    Countermeasures tiered T1 (human RCT) through T5 (traditional and cultural practice).
+    All recommendations are derived analytically; field validation is required before clinical application.
+  </p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">84.7%</div><div class="kpi-label">Chain Balance (π)</div></div>
+    <div class="kpi"><div class="kpi-val">4</div><div class="kpi-label">Bottleneck Phases</div></div>
+    <div class="kpi"><div class="kpi-val">71.6%</div><div class="kpi-label">Lowest Balance (Ph 6)</div></div>
+    <div class="kpi"><div class="kpi-val">65.2</div><div class="kpi-label">ln(2) Growth Score</div></div>
+    <div class="kpi"><div class="kpi-val">65.0</div><div class="kpi-label">e (NAD+ Coupling)</div></div>
+  </div>
+</div>
+
+<!-- Phase Table -->
+<div class="section">
+  <div class="section-kicker">Supply Chain Phases</div>
+  <h2>All 8 Phases: Custodian, Balance, and Transparency</h2>
+  <p class="section-sub">
+    Each phase maps to a physical cellular compartment (custodian), a measurable input transformation, and a quantifiable output.
+    Phases below chain average (84.7%) are flagged as bottlenecks.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th><th>Phase Name</th><th>Custodian</th><th>D</th><th>C</th><th>Balance</th><th>Transparency</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="phase-num">0</td>
+        <td><strong>Nutrient Intake &amp; Signaling</strong></td>
+        <td>mTORC1-AMPK network, cell membrane receptors</td>
+        <td>235</td><td>245</td>
+        <td class="bal-ok">95.9%</td>
+        <td><span class="trans-high">High</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num">1</td>
+        <td><strong>Mitochondrial Energy Production</strong></td>
+        <td>Inner mitochondrial membrane, ETC Complexes I-V, mtDNA</td>
+        <td>250</td><td>228</td>
+        <td class="bal-ok">91.2%</td>
+        <td><span class="trans-high">High</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num">2</td>
+        <td><strong>Protein Synthesis</strong></td>
+        <td>Rough ER / cytosolic ribosomes / eIF2 complex</td>
+        <td>238</td><td>220</td>
+        <td class="bal-ok">92.4%</td>
+        <td><span class="trans-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num bn">3 ⚠</td>
+        <td><strong>Protein Quality Control</strong></td>
+        <td>26S proteasome / autophagosome / lysosome / UPS</td>
+        <td>272</td><td>215</td>
+        <td class="bal-warn">79.0%</td>
+        <td><span class="trans-med">Medium</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num">4</td>
+        <td><strong>DNA Replication Fidelity</strong></td>
+        <td>DNA polymerase delta-epsilon / MMR / NHEJ / telomere complex</td>
+        <td>255</td><td>237</td>
+        <td class="bal-ok">92.9%</td>
+        <td><span class="trans-high">High</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num bn">5 ⚠</td>
+        <td><strong>Epigenetic Regulation</strong></td>
+        <td>DNMT enzymes / histone modifiers (EZH2/SIRT1) / PRC2</td>
+        <td>260</td><td>198</td>
+        <td class="bal-warn">76.2%</td>
+        <td><span class="trans-low">Low</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num bn">6 ⚠</td>
+        <td><strong>Cell Division &amp; Output</strong></td>
+        <td>CDK-cyclin checkpoints / centrosome / spindle / p53-p21 axis</td>
+        <td>268</td><td>192</td>
+        <td class="bal-warn">71.6%</td>
+        <td><span class="trans-high">High</span></td>
+      </tr>
+      <tr>
+        <td class="phase-num bn">7 ⚠</td>
+        <td><strong>Intercellular Signaling</strong></td>
+        <td>NF-kB pathway / cytokine receptors / SASP secretome</td>
+        <td>252</td><td>198</td>
+        <td class="bal-warn">78.6%</td>
+        <td><span class="trans-low">Low</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Degradation Mechanisms -->
+<div class="section">
+  <div class="section-kicker">Degradation Mechanisms</div>
+  <h2>Phase-Level Degradation with Measurable Biomarkers</h2>
+  <p class="section-sub">
+    Each degradation mode is traceable to a specific D (constraint increase) or C (output decrease) shift.
+    Biomarkers are measurable in standard clinical or research contexts.
+  </p>
+  <table>
+    <thead>
+      <tr><th>#</th><th>Primary Degradation Mode</th><th>D/C Effect</th><th>Key Biomarker</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="phase-num">0</td><td>Chronic mTOR overactivation suppresses autophagy; insulin receptor desensitization reduces nutrient signal fidelity</td><td>D rises (stricter downstream thresholds); C falls (fewer catabolic signals passed forward)</td><td>Fasting insulin, S6K1 phosphorylation, HOMA-IR</td></tr>
+      <tr><td class="phase-num">1</td><td>mtDNA somatic mutation accumulation; Complex I activity decline; ROS overproduction creating oxidative feedback</td><td>D stable; C falls (ATP output declines ~35% by age 70); ROS rise represents waste-C</td><td>mtDNA heteroplasmy, Complex I activity, 8-OHdG urinary, serum lactate</td></tr>
+      <tr><td class="phase-num">2</td><td>Ribosomal error rate increases ~3x from young to old; eIF2-alpha phosphorylation suppresses translation initiation</td><td>D stable; C falls (more defective proteins per ribosome cycle)</td><td>Ribosome biogenesis rate, polysome profiling, eIF2-alpha phospho levels</td></tr>
+      <tr><td class="phase-num bn">3</td><td>Proteasome 26S disassembly and chymotrypsin-like activity decline 30-50%; autophagy suppressed by mTOR; protein aggregates block proteasome access</td><td>D rises (backlog creates stricter substrate competition); C falls sharply (throughput halved)</td><td>Proteasome ChTL activity assay, LC3-II/I ratio (autophagy flux), p62/SQSTM1 accumulation</td></tr>
+      <tr><td class="phase-num">4</td><td>Telomere attrition (50-100 bp/division); oxidative base damage (8-OHdG) accumulation; OGG1 and PARP1 decline</td><td>D rises (checkpoint constraints trigger cell cycle arrest); C falls (fewer viable genome copies)</td><td>Telomere length (qPCR or flow-FISH), 8-OHdG, comet assay (DSB), gamma-H2AX foci</td></tr>
+      <tr><td class="phase-num bn">5</td><td>CpG methylation drift from target sites; H3K27me3 redistribution derepressing transposons; SIRT1 decline losing chromatin compaction</td><td>D stable; C falls significantly (gene expression pattern fidelity declining)</td><td>Horvath epigenetic clock (DNAm age), RRBS methylome, H3K27me3 ChIP-seq, SIRT1 activity</td></tr>
+      <tr><td class="phase-num bn">6</td><td>Senescent cell accumulation beyond NK-cell clearance capacity; SASP paracrine propagation (IL-6, IL-8, MMP3); Bcl-2/Bcl-xL apoptosis resistance</td><td>D rises sharply (p16/p21 permanent block); C collapses (viable daughter cells replaced by SASP emitters)</td><td>p16INK4a mRNA/protein, IL-6 plasma, SASP factor panel, senescence-associated beta-galactosidase</td></tr>
+      <tr><td class="phase-num bn">7</td><td>SASP-driven chronic IL-6/TNF-alpha; cGAS-STING activation from cytoplasmic mtDNA; gut microbiome dysbiosis increasing LPS translocation</td><td>D rises (inflammatory signals increase receptor specificity requirements); C falls (signal noise degrades coordination quality)</td><td>IL-6, TNF-alpha, CRP, cGAS-STING activation markers, LPS-binding protein, gut microbiome diversity index</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Phase Intervention Worksheet -->
+<div class="section">
+  <div class="section-kicker">Phase Intervention Worksheet</div>
+  <h2>Bottleneck Resolution: N-D-C Grounded Interventions</h2>
+
+  <div class="disc">
+    <strong>Provisional disclaimer:</strong> All recommendations below are derived analytically from N-D-C phase data and published biological literature.
+    Evidence tiers (T1–T5) indicate strength of human evidence. Field validation and individual clinical assessment are required before application.
+    This worksheet does not constitute medical advice.
+  </div>
+
+  <!-- Five-axis failure table -->
+  <h3 style="margin-bottom:10px;">Five-Axis Failure Diagnosis</h3>
+  <table style="margin-bottom:24px;">
+    <thead>
+      <tr><th>Constant</th><th>Score</th><th>What It Measures</th><th>Signal in This System</th><th>Intervention Category</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>π (Operational)</strong></td>
+        <td class="bal-ok">84.7</td>
+        <td>Chain average balance</td>
+        <td>Phases 5, 6, and 7 pulling aggregate below 85. Core operations (Phases 0–4) still functional.</td>
+        <td>Process optimization at downstream maintenance phases</td>
+      </tr>
+      <tr>
+        <td><strong>φ (Proportional)</strong></td>
+        <td class="bal-warn">73.8</td>
+        <td>Proportional N-value distribution across phases</td>
+        <td>Sharp N drop from Phase 4 (N=229) to Phase 6 (N=162) represents disproportionate value loss at senescence transition. Below 80 threshold.</td>
+        <td>Phase 5/6 targeted interventions: partial reprogramming, senolytics</td>
+      </tr>
+      <tr>
+        <td><strong>√2 (Structural)</strong></td>
+        <td class="bal-warn">77.5</td>
+        <td>Structural overhead: friction raising D without adding C</td>
+        <td>Phase 3 (D=272) and Phase 6 (D=268) show structural D elevation without corresponding C. CDK inhibitor locks and proteasome backlog are physical binding constraints.</td>
+        <td>Infrastructure-level: senolytic clearance; proteasome enhancers; caloric restriction restoring autophagy</td>
+      </tr>
+      <tr>
+        <td><strong>ln(2) (Growth)</strong></td>
+        <td class="bal-warn" style="color:#c62828;">65.2</td>
+        <td>Value transformation efficiency across phases</td>
+        <td>Senescence cascade means energy invested in cell maintenance increasingly yields non-productive SASP emitters rather than viable daughter cells. Lowest measured axis: primary growth efficiency signal.</td>
+        <td>Patient capital analog: long-horizon interventions (senolytics, reprogramming); phase-transition bridging</td>
+      </tr>
+      <tr>
+        <td><strong>e (Abstract)</strong></td>
+        <td class="bal-warn">65.0</td>
+        <td>Systemic coupling constant: degree to which a single molecule or signal coordinates all phases simultaneously</td>
+        <td>NAD+ is the biological abstraction layer: links Phase 0 (AMPK/mTOR via NAD+/NADH), Phase 1 (Complex I), Phase 3 (SIRT1-autophagy), Phase 4 (PARP1 repair), and Phase 5 (SIRT1/SIRT6 chromatin). Score 65.0 reflects ~50% NAD+ decline from age 20 to 60 (Clement et al. 2019 Nature Aging). Stressed zone: cross-phase coordination is degraded even when individual phase machinery is intact. Structurally equivalent to financial leverage: NAD+ decline simultaneously weakens five phases without any single phase fully failing.</td>
+        <td>NAD+ precursor supplementation (NMN/NR): multi-phase restoration via single intervention. Caloric restriction and exercise also raise NAD+ via AMPK/NAMPT upregulation.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Bottleneck Phase 3 -->
+  <div class="bottleneck-block">
+    <div class="bn-header">
+      <span class="bn-badge">Bottleneck</span>
+      <span class="bn-title">Phase 3: Protein Quality Control</span>
+      <span class="bn-score">79.0%</span>
+    </div>
+    <div class="bn-cause">
+      <strong>D/C imbalance cause:</strong> Proteasome 26S chymotrypsin-like activity declines 30–50% between young and old cells (Petropoulos et al. 2000; Vilchez et al. 2014).
+      Concurrently, mTOR chronic overactivation suppresses autophagy flux by phosphorylating ULK1, reducing the cell's second clearance mechanism.
+      The combined effect raises the effective D (substrate recognition backlog, ubiquitin tagging competition, lysosomal membrane instability) while C (cleared proteins, recycled amino acids delivered to Phase 2) falls sharply.
+      Protein aggregates (tau, alpha-synuclein, TDP-43) that accumulate in this backlog physically block proteasome access, worsening the D-C gap nonlinearly with age.
+      This phase is the primary leverage point: restoring Phase 3 throughput relieves downstream epigenetic (Phase 5) and senescence (Phase 6) stress.
+    </div>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Intervention</th><th>Mechanism</th><th>Estimated D/C Effect</th><th>Evidence Tier</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Rapamycin / mTOR inhibition</strong></td>
+          <td>Inhibits mTORC1, releasing ULK1 suppression, restoring autophagy flux by ~40–60% in aged cells (Harrison et al. 2009; Mannick et al. 2018)</td>
+          <td>D: -8 to -12 (reduced backlog pressure); C: +15 to +20 (autophagy throughput restored). Net balance: +6 to +8 points, projected 85–87%</td>
+          <td><span class="tier-badge t1">T1-animal</span><span class="tier-badge t2">T2-human</span></td>
+        </tr>
+        <tr>
+          <td><strong>Caloric restriction / intermittent fasting</strong></td>
+          <td>AMPK activation and mTOR suppression via nutrient sensing; autophagy flux increase measurable by LC3-II accumulation (Rubinsztein et al. 2011)</td>
+          <td>D: -5 to -8 (mTOR-related D constraint reduced); C: +10 to +15 (autophagic clearance increased). Net balance: +4 to +6 points</td>
+          <td><span class="tier-badge t1">T1-human</span></td>
+        </tr>
+        <tr>
+          <td><strong>Spermidine supplementation</strong></td>
+          <td>Polyamine-mediated autophagy induction independent of mTOR; shown to increase autophagy flux and extend lifespan in model organisms (Eisenberg et al. 2016); human observational: dietary spermidine inversely correlated with all-cause mortality</td>
+          <td>D: -3 to -5 (reduced aggregate load); C: +8 to +12. Net balance: +3 to +5 points</td>
+          <td><span class="tier-badge t2">T2-human observational</span></td>
+        </tr>
+        <tr>
+          <td><strong>Urolithin A</strong></td>
+          <td>Gut metabolite that induces mitophagy specifically; Phase 2 human trial (Andreux et al. 2019) showed improved muscle function in elderly; selective for damaged mitochondria clearance within Phase 3 autophagy pathway</td>
+          <td>D: -4 (mitochondrial aggregate clearance reduces proteasome competition); C: +6 to +10. Net balance: +3 to +4 points</td>
+          <td><span class="tier-badge t2">T2-human phase 2</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="bn-combined">
+      <strong>Combined effect estimate:</strong> If all four interventions were applied simultaneously (not additive: shared mTOR pathway), projected Phase 3 balance improvement: +10 to +15 points, yielding estimated balance of 89–94%.
+      The largest individual gain comes from rapamycin or caloric restriction. Combining spermidine or urolithin A adds incremental benefit through mTOR-independent pathways.
+    </div>
+    <div class="axis-ref">Axis cross-reference: √2 (structural: proteasome hardware constraint), ln(2) (growth: transformation blocked by backlog), π (operational: pulling chain average below 85%), e (NAD+ coupling: SIRT1-mediated autophagy regulation at Phase 3 is NAD+-dependent; NAD+ restoration is a Phase 3 countermeasure via this e-axis pathway).</div>
+  </div>
+
+  <!-- Bottleneck Phase 5 -->
+  <div class="bottleneck-block">
+    <div class="bn-header">
+      <span class="bn-badge">Bottleneck</span>
+      <span class="bn-title">Phase 5: Epigenetic Regulation</span>
+      <span class="bn-score">76.2%</span>
+    </div>
+    <div class="bn-cause">
+      <strong>D/C imbalance cause:</strong> Epigenetic clocks (Horvath 2013; GrimAge 2019; DunedinPACE 2022) show that CpG methylation patterns drift systematically with age, independent of sequence mutations.
+      The DNMT enzyme constraints (D = 260) remain strict while the output fidelity (C = 198) declines because NAD+-dependent SIRT1 deacetylase activity falls as NAD+ levels decline with age (losing chromatin compaction), and H3K27me3 histone marks redistribute from their designated repressive sites, derepressing normally silenced transposable elements.
+      This phase is partially opaque (low transparency): while bulk methylation drift is measurable via commercial DNA methylation arrays, the phase-level causal chain between SIRT1 decline, H3K27me3 redistribution, and transcriptional noise is difficult to quantify at tissue resolution.
+      Evidence for countermeasures at this phase is systematically weaker than for Phases 3 and 6.
+    </div>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Intervention</th><th>Mechanism</th><th>Estimated D/C Effect</th><th>Evidence Tier</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Partial Yamanaka reprogramming</strong></td>
+          <td>Cyclic expression of OCT4/SOX2/KLF4 (OSK or OKSM) resets epigenetic age without erasing cell identity (Sinclair lab / Altos Biosciences 2020-2024); eye regeneration and muscle rejuvenation shown in mice</td>
+          <td>D: -10 to -15 (methylation pattern restored to younger target); C: +15 to +25 (gene expression fidelity restored toward younger state). Net balance: +8 to +12 points. Highly speculative at this evidence tier.</td>
+          <td><span class="tier-badge t3">T3-animal</span></td>
+        </tr>
+        <tr>
+          <td><strong>NAD+ precursors (NMN/NR)</strong></td>
+          <td>Restoring NAD+ levels reactivates SIRT1 deacetylase, improving chromatin compaction and reducing H3K27me3 redistribution; also benefits Phase 1 (mitochondria) and Phase 4 (PARP1 DNA repair)</td>
+          <td>D: -5 (SIRT1-mediated chromatin constraint improvement); C: +8 to +12 (improved transcriptional fidelity). Net balance: +4 to +6 points</td>
+          <td><span class="tier-badge t2">T2-human</span><span class="tier-badge t3">T3 for epigenetic endpoint</span></td>
+        </tr>
+        <tr>
+          <td><strong>Methyl donor diet (B12, folate, SAMe)</strong></td>
+          <td>Provides substrate for DNMT methyltransferases; SAMe is the universal methyl donor for DNA and histone methylation. Blue Zone and Mediterranean diet patterns high in methyl donors (dark leafy greens, legumes) correlate with slower epigenetic aging (T4 traditional, T2 observational).</td>
+          <td>D: -3 to -4 (better substrate availability for DNMT); C: +4 to +7 (slower methylation drift rate). Net balance: +2 to +4 points</td>
+          <td><span class="tier-badge t3">T3</span><span class="tier-badge t4">T4-traditional</span></td>
+        </tr>
+        <tr>
+          <td><strong>Mindfulness / meditation (stress reduction)</strong></td>
+          <td>Chronic psychological stress accelerates epigenetic aging via glucocorticoid-driven methylation shifts (Epel et al. 2004 PNAS: telomere length in caregivers; Blackburn 2009: meditation and telomerase). More recent studies using GrimAge clock show MBSR reduces epigenetic age acceleration in caregivers (T5 to T2 trajectory). Cultural practice: contemplative traditions across Blue Zones (Okinawa, Sardinia, Seventh-day Adventist) involve daily stress reduction practices.</td>
+          <td>D: -3 to -5 (reduced glucocorticoid-mediated methylation constraint); C: +3 to +6 (slower epigenetic drift rate). Net balance: +2 to +4 points</td>
+          <td><span class="tier-badge t2">T2-emerging</span><span class="tier-badge t4">T4-cultural</span><span class="tier-badge t5">T5-traditional</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="bn-combined">
+      <strong>Combined effect estimate:</strong> Methyl donor nutrition plus NAD+ restoration plus stress reduction represents a practical near-term intervention stack: projected Phase 5 balance improvement of +8 to +12 points, yielding estimated balance of 84–88%: bringing Phase 5 above the chain average.
+      Yamanaka reprogramming represents the theoretical ceiling but requires human safety evidence before clinical application.
+    </div>
+    <div class="axis-ref">Axis cross-reference: φ (proportional: the largest N drop in the chain occurs at this phase); ln(2) (growth: transformation blocked by methylation drift); e (NAD+ coupling: SIRT1 and SIRT6 at Phase 5 are directly NAD+-dependent deacetylases; the e-axis score of 65.0 means Phase 5 chromatin regulation is operating at reduced coupling efficiency independent of the methylation drift captured by the primary D/C balance).</div>
+  </div>
+
+  <!-- Bottleneck Phase 6 -->
+  <div class="bottleneck-block" style="border-color:#c62828;">
+    <div class="bn-header">
+      <span class="bn-badge" style="background:#c62828;">Primary Bottleneck</span>
+      <span class="bn-title">Phase 6: Cell Division and Output</span>
+      <span class="bn-score" style="color:#c62828;">71.6%</span>
+    </div>
+    <div class="bn-cause">
+      <strong>D/C imbalance cause:</strong> Phase 6 is the lowest-balance phase in the chain and the primary systemic bottleneck for two compounding reasons.
+      First, senescent cells accumulate because both NK-cell immune clearance (declining ~40% efficiency by age 70) and intrinsic apoptosis pathways (blocked by Bcl-2/Bcl-xL overexpression in senescent cells) fail to remove them.
+      Second, and structurally more damaging, senescent cells actively secrete SASP (IL-6, IL-8, MMP3, VEGF, GDF-15), which does not merely reduce Phase 6 C output: it actively introduces negative-C signals into the Phase 7 environment of neighboring cells.
+      This makes Phase 6 a contaminated output phase rather than a simple low-output phase.
+      At 5–15% senescent cell burden in aged tissue (van Deursen 2014 Nature), a small fraction of cells degrades the D-C balance of the entire tissue microenvironment.
+      D = 268 reflects the permanently elevated p16/p21 CDK inhibitor checkpoints; C = 192 reflects the collapsed viable daughter cell output combined with the SASP contamination effect.
+    </div>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Intervention</th><th>Mechanism</th><th>Estimated D/C Effect</th><th>Evidence Tier</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Senolytics: dasatinib plus quercetin (D+Q)</strong></td>
+          <td>Dasatinib (tyrosine kinase inhibitor) and quercetin (flavonoid) together selectively induce apoptosis in senescent cells by inhibiting their pro-survival Bcl-2 and PI3K pathways. Mayo Clinic trials: reduced senescent cell burden, improved physical function in idiopathic pulmonary fibrosis (Justice et al. 2019 EBioMedicine); ongoing trials in aging, diabetes, Alzheimer's, frailty.</td>
+          <td>D: -15 to -20 (p16/p21 burden reduced as senescent cells cleared); C: +20 to +30 (viable cell division restored; SASP reduced). Net balance: +10 to +15 points, projected 81–87%</td>
+          <td><span class="tier-badge t2">T2-human phase 2</span></td>
+        </tr>
+        <tr>
+          <td><strong>Fisetin (natural senolytic)</strong></td>
+          <td>Flavonoid with senolytic activity in multiple mouse models; small human pilot (Kirkland/Tchkonia 2021) showed tissue senescent cell reduction; well-tolerated at dietary concentrations; found in strawberries, apples, persimmons</td>
+          <td>D: -8 to -12 (partial senescent cell clearance); C: +10 to +15. Net balance: +5 to +8 points</td>
+          <td><span class="tier-badge t3">T3-animal strong</span><span class="tier-badge t2">T2-human emerging</span></td>
+        </tr>
+        <tr>
+          <td><strong>Exercise (NK cell stimulation)</strong></td>
+          <td>Exercise stimulates NK cell proliferation, trafficking, and cytotoxic activity, improving immune clearance of senescent cells. HIIT specifically shown to increase NK cell senescent-cell killing efficiency in older adults (Spielmann et al. 2011 Brain Behav Immun; Simpson et al. 2020). Also upregulates autophagy (Phase 3 benefit) and reduces SASP via anti-inflammatory myokines (IL-6 exercise form is anti-inflammatory unlike resting IL-6).</td>
+          <td>D: -5 to -8 (immune clearance improves p16+ cell removal); C: +8 to +12 (SASP reduced; myokine anti-inflammatory signals offset Phase 7 degradation). Net balance: +4 to +7 points</td>
+          <td><span class="tier-badge t2">T2-human</span></td>
+        </tr>
+        <tr>
+          <td><strong>CAR-T senolytic therapy</strong></td>
+          <td>CAR-T cells engineered to target urokinase plasminogen activator receptor (uPAR), a SASP surface marker upregulated on senescent cells. Bhatt lab (Nature 2024): single injection cleared senescent cells in young and aged mice, improved physical function, extended median lifespan. Highly specific; no off-target senolytic toxicity. Currently pre-clinical.</td>
+          <td>D: -18 to -25 (high-specificity clearance of p16+/uPAR+ cells); C: +25 to +35 (full restoration of division-competent cells). Net balance: +12 to +18 points if translated to human. Speculative at T3 stage.</td>
+          <td><span class="tier-badge t3">T3-animal (2024)</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="bn-combined">
+      <strong>Combined effect estimate:</strong> D+Q senolytics plus exercise represents the most evidence-supported combination for immediate application: projected Phase 6 balance improvement of +12 to +18 points, yielding estimated balance of 83–90%.
+      Adding fisetin as a continuous low-dose maintenance strategy between periodic D+Q cycles adds incremental C-side improvement.
+      CAR-T senolytic therapy represents a theoretical ceiling of near-complete Phase 6 restoration if translated to human therapy.
+      Note: Phase 6 improvement has second-order benefits to Phase 7 because SASP reduction directly reduces the inflammatory load that defines Phase 7's D-C imbalance.
+    </div>
+    <div class="axis-ref">Axis cross-reference: π (operational: primary driver of chain average depression); φ (proportional: steepest N drop in chain); √2 (structural: Bcl-2 antiapoptotic lock is a structural hardware constraint); ln(2) (growth: most severe transformation efficiency failure: SASP emitters instead of viable daughters).</div>
+  </div>
+
+  <!-- Bottleneck Phase 7 -->
+  <div class="bottleneck-block">
+    <div class="bn-header">
+      <span class="bn-badge">Bottleneck</span>
+      <span class="bn-title">Phase 7: Intercellular Signaling</span>
+      <span class="bn-score">78.6%</span>
+    </div>
+    <div class="bn-cause">
+      <strong>D/C imbalance cause:</strong> Phase 7 is partially a downstream consequence of Phase 6 SASP rather than an independent failure.
+      SASP factors (IL-6, IL-8, MMP3) elevate baseline inflammatory signaling in the tissue microenvironment, reducing the signal-to-noise ratio of legitimate intercellular coordination signals.
+      Independent drivers include cGAS-STING pathway activation from cytoplasmic mtDNA (released from Phase 1 damaged mitochondria) and transposable elements (derepressed at Phase 5), and gut microbiome dysbiosis increasing lipopolysaccharide (LPS) translocation into systemic circulation.
+      D = 252 reflects tighter cytokine receptor specificity requirements under chronic background noise; C = 198 reflects the reduced quality of tissue-level coordinated responses.
+      Cultural and lifestyle factors (social connection, purpose, psychological safety) have documented NF-kB pathway effects and are tractable even at evidence tiers T4–T5.
+    </div>
+    <table style="margin-bottom:12px;">
+      <thead>
+        <tr><th>Intervention</th><th>Mechanism</th><th>Estimated D/C Effect</th><th>Evidence Tier</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mediterranean / anti-inflammatory diet</strong></td>
+          <td>High polyphenol, omega-3, fiber intake reduces NF-kB activation (Esposito et al. 2004 JAMA). Blue Zone dietary patterns (Okinawa, Sardinia, Nicoya): low processed food, high plant diversity, caloric moderation, cultural shared meals. Documented to reduce IL-6 and CRP in RCTs (PREDIMED 2013).</td>
+          <td>D: -4 to -6 (NF-kB baseline reduced); C: +6 to +10 (coordinated immune signaling improved). Net balance: +3 to +5 points</td>
+          <td><span class="tier-badge t1">T1-RCT (PREDIMED)</span><span class="tier-badge t4">T4-Blue Zones</span></td>
+        </tr>
+        <tr>
+          <td><strong>Omega-3 EPA/DHA supplementation</strong></td>
+          <td>Competitive substrate for arachidonic acid in COX/LOX pathway; shifts prostaglandin synthesis toward less pro-inflammatory E3/D3 series. Multiple RCTs show IL-6 and CRP reduction at 2-4g/day dose (Calder 2020 review).</td>
+          <td>D: -3 to -5 (reduced prostaglandin-E2 driven receptor sensitization); C: +4 to +8. Net balance: +2 to +4 points</td>
+          <td><span class="tier-badge t1">T1-RCT</span></td>
+        </tr>
+        <tr>
+          <td><strong>Social connection and purpose</strong></td>
+          <td>Documented in Blue Zone populations (Okinawa moai support networks, Sardinian family structure, Seventh-day Adventist faith community): social isolation activates NF-kB and reduces NK cell activity (Cole et al. 2007 Genome Biol). Sense of purpose (Japanese ikigai) correlates with reduced inflammatory biomarkers independently of diet and exercise in Okinawan cohorts (Tanno et al. 2009).</td>
+          <td>D: -3 to -5 (HPA axis cortisol reduction reduces NF-kB); C: +4 to +8 (coordinated psychoneuroimmune signaling improved). Net balance: +2 to +4 points</td>
+          <td><span class="tier-badge t2">T2-observational</span><span class="tier-badge t4">T4-Blue Zones</span></td>
+        </tr>
+        <tr>
+          <td><strong>Upstream senolysis (Phase 6 resolution)</strong></td>
+          <td>Because SASP is the primary driver of Phase 7 D-C imbalance in aged tissue, resolving Phase 6 (via D+Q senolytics or exercise) is the most structurally sound Phase 7 intervention. SASP reduction of 50-70% following D+Q treatment shown to normalize IL-6 and MMP3 in treated mice (Xu et al. 2018 Nature Medicine).</td>
+          <td>D: -8 to -12 (SASP background noise reduced dramatically); C: +10 to +15 (signal fidelity restored as noise floor drops). Net balance: +6 to +10 points</td>
+          <td><span class="tier-badge t2">T2-human via Phase 6</span></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="bn-combined">
+      <strong>Combined effect estimate:</strong> Mediterranean diet plus omega-3 plus social connection addresses the modifiable lifestyle drivers; upstream Phase 6 senolysis addresses the structural driver.
+      Combined projected Phase 7 balance improvement: +10 to +15 points, yielding estimated balance of 88–94%.
+      The largest gain is from Phase 6 upstream resolution: this is the tholonic principle at work: fixing the upstream supplier improves downstream output more than direct downstream intervention.
+    </div>
+    <div class="axis-ref">Axis cross-reference: π (operational: Phase 7 pulls chain average; resolving it directly improves π score); φ (proportional: Phase 7 is a downstream amplifier of Phase 6's proportional deviation); e (abstract: social determinants of health represent the highest-T4/T5 evidence zone in this system).</div>
+  </div>
+
+</div>
+
+<!-- Data Sources -->
+<div class="section">
+  <div class="section-kicker">Primary Data Sources</div>
+  <h2>Evidence Base</h2>
+  <table>
+    <thead><tr><th>Source</th><th>Relevance</th><th>Evidence Type</th></tr></thead>
+    <tbody>
+      <tr><td>Lopez-Otin et al. 2023 <em>Cell</em>: The Hallmarks of Aging (v2)</td><td>Framework for 12 aging hallmarks; primary phase taxonomy basis</td><td>Review / Framework</td></tr>
+      <tr><td>Petropoulos et al. 2000 <em>FASEB J</em>: Proteasome activity decline</td><td>Phase 3 D-C quantification; 30-50% ChTL activity decline with age</td><td>Primary research</td></tr>
+      <tr><td>Harrison et al. 2009 <em>Nature</em>: Rapamycin extends mouse lifespan</td><td>Phase 3 intervention: mTOR inhibition and autophagy restoration</td><td>T1-animal RCT</td></tr>
+      <tr><td>Mannick et al. 2018 <em>Sci Transl Med</em>: mTOR inhibitor in elderly immunity</td><td>Phase 3 intervention: human rapamycin analog (RAD001) safety and efficacy</td><td>T2-human phase 2</td></tr>
+      <tr><td>Horvath 2013 <em>Genome Biology</em>: DNA methylation age</td><td>Phase 5 transparency classification; biological clock methodology</td><td>Methods / Primary</td></tr>
+      <tr><td>van Deursen 2014 <em>Nature</em>: Senescent cells and aging</td><td>Phase 6 C quantification; 5-15% senescent cell burden in aged tissue</td><td>Review / Primary</td></tr>
+      <tr><td>Justice et al. 2019 <em>EBioMedicine</em>: D+Q in IPF</td><td>Phase 6 senolytic intervention; first human senolytic trial</td><td>T2-human phase 2</td></tr>
+      <tr><td>Bhatt et al. 2024 <em>Nature</em>: CAR-T senolytic therapy</td><td>Phase 6 intervention: uPAR-targeted CAR-T cells</td><td>T3-animal</td></tr>
+      <tr><td>PREDIMED 2013 <em>NEJM</em>: Mediterranean diet and cardiovascular outcomes</td><td>Phase 7 dietary intervention; IL-6 and CRP reduction</td><td>T1-RCT</td></tr>
+      <tr><td>Buettner 2008: The Blue Zones</td><td>Phases 5, 7: cultural and lifestyle T4 evidence base</td><td>T4-observational/cultural</td></tr>
+      <tr><td>Epel et al. 2004 <em>PNAS</em>: Stress and telomere length</td><td>Phase 5 stress-epigenetic connection; meditation and telomerase</td><td>T2-observational</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="nav">
+  <a href="index.html">← Supply Chain</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="recycling_analysis.html">Recycling (TVPCI-R)</a>
+  <a href="../index.html">Hub</a>
+  <a href="/index.html">Home</a>
+</div>
+</div>
+</body>
+</html>

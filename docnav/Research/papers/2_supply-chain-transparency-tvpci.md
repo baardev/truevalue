@@ -6,7 +6,7 @@
 
 **Date:** 9 April 2026
 
-**Provisional arXiv subjects:** econ.GN; q-fin.EC (secondary: cs.SY)
+**Keywords:** supply chain transparency; TVPCI; phase-resolved classification; N-D-C framework; commodity chains; opacity; structural scoring
 
 ---
 

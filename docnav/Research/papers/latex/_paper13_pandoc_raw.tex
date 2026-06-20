@@ -1,0 +1,733 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\documentclass[
+  11pt,
+  letterpaper,
+]{article}
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{amsmath,amssymb}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{% scales image to fit in text height/width
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi% select the smaller of both
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi%
+}
+% Set default figure placement to htbp
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\usepackage{bookmark}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\author{}
+\date{}
+
+\begin{document}
+
+\section{Dual Entropy Gradients and the Tholonic Void-Plenum
+Equivalence}\label{dual-entropy-gradients-and-the-tholonic-void-plenum-equivalence}
+
+\textbf{Author:} J. W. Milton, Clarity Coalition
+
+\textbf{Version:} 1.0
+
+\textbf{Date:} 13 June 2026
+
+\textbf{Keywords:} entropy; dual entropy; tholonic model; N-D-C
+framework; conceptual entropy; material entropy; void-plenum
+equivalence; animate matter; active principles; information theory;
+cosmology; self-organization
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{Abstract}\label{abstract}
+
+The Tholonic N-D-C framework, when applied at the cosmological scale,
+predicts two opposing entropy gradients operating simultaneously and
+structurally. The material domain, identified with the C
+(Contribution/Integration) role at the cosmic scale, undergoes entropy
+increase: it disperses, differentiates, and moves from minimum entropy
+(the material singularity) toward maximum entropy (maximum diffusion,
+heat death). The conceptual domain, identified with the D
+(Definition/Limitation) role at the cosmic scale, undergoes entropy
+decrease: it organizes, becomes more specific, more coherent, and more
+structured over time, moving from maximum entropy (the conceptual void:
+one concept, zero differentiation, zero organization) toward minimum
+entropy (maximum structure, maximum connection, maximum coherence).
+
+This duality is not an additional postulate of the tholonic model. It is
+a structural consequence of the N-D-C role assignment: C is the
+dispersive, expansive, accumulating pole, and D is the constraining,
+organizing, specifying pole. At the cosmic scale, these roles map
+directly onto the material and conceptual domains respectively. The N
+state of the universe at any moment is the balance between these two
+opposing gradients.
+
+The paper further argues that the starting point of the conceptual
+expansion (the void: a zero-dimensional point of zero differentiation)
+and its endpoint (infinite concepts organized into infinite mutual
+connections) are topologically and informationally equivalent. Both are
+states of zero Shannon entropy in different senses: the void is
+maximally underdetermined (all possibilities equally probable), while
+the plenum is maximally determined (all possibilities fully realized).
+This equivalence is supported by Kuiper's theorem for
+infinite-dimensional Hilbert spaces, the self-duality of projective
+geometry in the limit, and the behavior of Shannon entropy at its two
+extremes.
+
+The paper is explicitly exploratory. The structural argument (dual
+entropy gradients as a consequence of N-D-C role assignment) is derived
+from the established tholonic framework. The cosmological claims
+(void-plenum equivalence, the material/conceptual mapping) are argued
+structurally and by mathematical analogy, not by formal proof. Open
+questions identify what would be required to elevate the central claims
+from structural argument to theorem.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{1. Introduction}\label{introduction}
+
+The second law of thermodynamics states that entropy in an isolated
+system does not decrease. This is among the best-confirmed principles in
+physics. It is also, on inspection, a statement about a specific domain:
+the material domain, specifically the domain of energy distribution in
+physical systems.
+
+The question this paper addresses is whether the same principle, or its
+converse, applies to a different domain: the domain of concepts, ideas,
+and information. If the material domain is characterized by entropy
+increase, is the conceptual domain characterized by entropy decrease?
+And if so, is this duality a consequence of some deeper structural
+principle, or is it an independent empirical observation?
+
+The Tholonic N-D-C framework {[}Mil24c{]} provides a structural answer.
+The framework assigns three irreducible functional roles to any
+self-organizing recursive system: N (Negotiation: the emergent stable
+state), D (Definition/Limitation: the constraining, organizing,
+specifying role), and C (Contribution/Integration: the expansive,
+accumulating, dispersive role). At the cosmic scale, the material domain
+exhibits the properties of the C role: it disperses, expands, and
+differentiates away from an initial concentration. The conceptual domain
+exhibits the properties of the D role: it constrains, organizes, and
+becomes more specifically structured over time. The dual entropy
+gradients are therefore not an independent observation but a consequence
+of role assignment.
+
+This paper also argues that the two endpoints of the conceptual entropy
+trajectory are equivalent to each other and to the single starting point
+of the material trajectory. The material universe begins as a point
+singularity (minimum volume, minimum material entropy) and expands
+toward maximum material entropy. The conceptual universe begins as the
+void (zero concepts, maximum conceptual entropy) and organizes toward
+minimum conceptual entropy. The endpoint of full conceptual organization
+(infinite concepts connected to infinite concepts) is, by several
+mathematical arguments, equivalent to the starting void. The tholonic
+recursive structure both predicts and explains this equivalence: at the
+largest scale, the child N of the entire hierarchy must be equivalent to
+the parent N that generated it.
+
+The connections to Newton's ``active principles'' {[}New17{]} and to
+Sidis's animate/inanimate distinction {[}Sid25{]} are treated in Paper
+12 {[}Mil26a{]}. The present paper takes the structural argument further
+and examines its cosmological implications independently.
+
+\textbf{What this paper provides.} A structural derivation of dual
+entropy gradients from the N-D-C role assignment. A mathematical
+argument for the void-plenum equivalence via Kuiper's theorem, Shannon
+entropy, and projective duality. A set of tholonic predictions about the
+relationship between material and conceptual domains. Explicit open
+questions separating what is argued from what remains to be proved.
+
+\textbf{What this paper does not provide.} A formal proof of void-plenum
+equivalence. A physical model of how the conceptual domain interacts
+with the material domain. A cosmological model making specific
+quantitative predictions about entropy values or timescales. The paper
+is structural and exploratory.
+
+\textbf{Organization.} Section 2 reviews the N-D-C role assignment and
+the cosmic-scale mapping. Section 3 argues the case for material entropy
+increase as C expansion. Section 4 argues the case for conceptual
+entropy decrease as D organization. Section 5 examines Newton's active
+principles and Sidis's animate matter as the interface between the two
+domains. Section 6 develops the void-plenum equivalence argument.
+Section 7 provides the mathematical grounding. Section 8 states tholonic
+predictions and their status. Section 9 poses open questions. Section 10
+concludes.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{2. The N-D-C Role Assignment at the Cosmic
+Scale}\label{the-n-d-c-role-assignment-at-the-cosmic-scale}
+
+The tholonic triad assigns three functional roles to any recursive
+self-organizing system:
+
+\begin{itemize}
+\tightlist
+\item
+  \(N\) (Negotiation): the emergent stable state. It is not directly
+  measured; it arises from the interaction of D and C. It is
+  simultaneously the product of one level and the source of the next.
+\item
+  \(D\) (Definition/Limitation): the constraining, bounding, specifying
+  role. D governs what a system IS: its boundaries, identity, and
+  organization. D reduces possibility to actuality by specification.
+\item
+  \(C\) (Contribution/Integration): the accumulating, expansive,
+  dispersive role. C governs what a system DOES: its outputs,
+  relationships, and extensions. C increases the scope of actualized
+  states.
+\end{itemize}
+
+The fundamental stability principle is \(D \approx C\): systems are most
+stable when their constraining and expansive poles are balanced.
+Imbalance in either direction increases energy cost and degrades the N
+state.
+
+At the cosmic scale, the assignment is:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Role
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Cosmic domain
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Entropy behavior
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(C\) & Material domain: energy, matter, spacetime & Increases
+(disperses from singularity) \\
+\(D\) & Conceptual domain: information, structure, relations & Decreases
+(organizes from void) \\
+\(N\) & The universe as self-organizing system & The balance between the
+two gradients \\
+\end{longtable}
+
+This assignment is not arbitrary. The C role is characterized by
+accumulation and extension: it grows the scope of what exists. Material
+entropy increase is precisely this: the universe accumulates more and
+more realized microstates, extending its physical configuration space.
+The D role is characterized by specification and constraint: it reduces
+the space of possibilities to a more precisely organized subset.
+Conceptual entropy decrease is precisely this: the space of concepts
+becomes more organized, more internally constrained, and more
+specifically structured over time.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{figures/13_tholonic-triad-cosmic.png}}
+\caption{Figure 1: The Tholonic Triad at Cosmic Scale. N (Universe, top
+vertex) is the emergent balance of D (Conceptual Domain, bottom-left)
+and C (Material Domain, bottom-right). The bottom edge marks the animate
+matter interface where the two entropy gradients meet.}
+\end{figure}
+
+\emph{Figure 1: The tholonic triad at the cosmic scale. The D and C
+roles map directly to the conceptual and material domains. The bottom
+edge, where D and C meet, corresponds to animate matter: the interface
+at which D-domain entropy decrease achieves material instantiation.}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{3. Material Entropy Increase as C
+Expansion}\label{material-entropy-increase-as-c-expansion}
+
+The material universe began, in the standard cosmological model, as a
+state of extreme concentration: high energy density, minimum spatial
+extension, minimum material entropy (in the sense of Boltzmann: few
+accessible microstates). Since the initial singularity, the universe has
+expanded. Energy has dispersed. Structures have formed and dissolved.
+The number of accessible microstates has grown. Material entropy has
+increased and continues to increase.
+
+In tholonic terms, this is the C role operating at the cosmic scale. The
+C pole of the tholonic triad is the accumulating, extending,
+contributing pole. It disperses from a concentrated source, increases
+the scope of what exists, and adds to the running state. The material
+Big Bang is the initial condition of the C expansion: a maximally
+concentrated C source beginning its accumulation outward.
+
+The trajectory is:
+
+\[\text{Material singularity (C}_\text{min}\text{)} \longrightarrow \text{Expansion} \longrightarrow \text{Heat death (C}_\text{max}\text{)}\]
+
+At heat death, material entropy is maximized: all energy is uniformly
+distributed, no free energy remains, no further differentiation is
+possible. The C expansion is complete. Every possible material
+microstate has been realized and dispersed.
+
+This trajectory is monotonic and irreversible in the C direction. There
+is no material return to the singularity. The tholonic balance principle
+predicts this: once C has expanded beyond the \(D \approx C\) balance
+point, the system cannot recover the N state without a D input of equal
+magnitude. In a universe where D is the conceptual domain
+(non-material), that input cannot act on the material domain directly
+except through the interface of animate/vegetative systems.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{4. Conceptual Entropy Decrease as D
+Organization}\label{conceptual-entropy-decrease-as-d-organization}
+
+The conceptual domain begins from a different starting point. The
+simplest possible concept is the void: not the physical vacuum (which
+has structure, energy, and quantum fluctuations) but the pure conceptual
+void: zero differentiation, zero relationship, zero organization. Every
+concept is equally probable; no concept is distinguished from any other.
+This is maximum conceptual entropy in the Shannon sense: maximum
+uncertainty, minimum information, a uniform distribution over all
+conceptual possibilities.
+
+From this starting point, the conceptual trajectory is the inverse of
+the material one:
+
+\[\text{Conceptual void (D}_\text{max entropy}\text{)} \longrightarrow \text{Organization} \longrightarrow \text{Plenum (D}_\text{min entropy}\text{)}\]
+
+Each act of conceptual organization reduces conceptual entropy: it
+distinguishes one concept from another, establishes a relationship,
+specifies a constraint. Mathematics, physics, logic, and language are
+all instruments of this process. They do not discover pre-existing
+structure passively; they participate in the D-domain process of
+progressive specification.
+
+The trajectory is driven by the D role's defining property:
+specification. D reduces the space of possibilities to a more precisely
+organized subset. Every theorem proved, every relationship identified,
+every distinction drawn is a decrease in conceptual entropy. The D
+expansion is toward minimum conceptual entropy: a state in which every
+concept is fully specified by its relationships to every other concept.
+
+This trajectory is also monotonic: conceptual entropy decreases over
+time, in the sense that the organized body of concepts only grows more
+organized. Individual concepts can be discarded or revised, but the
+overall degree of organization of the conceptual space increases. What
+is lost in one branch of inquiry is typically recovered and exceeded in
+another.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{figures/13_dual-entropy-trajectories.png}}
+\caption{Figure 2: Dual Entropy Trajectories. The material (C) domain
+begins at minimum entropy and rises toward heat death (orange). The
+conceptual (D) domain begins at maximum entropy and falls toward the
+plenum (blue). They cross at the N state, the region where animate
+matter and active principles operate.}
+\end{figure}
+
+\emph{Figure 2: The two opposing entropy trajectories. Material entropy
+(orange, C domain) increases monotonically from the singularity toward
+heat death. Conceptual entropy (blue, D domain) decreases monotonically
+from the void toward the plenum. The crossing point is the N state: the
+region of local entropy reversal occupied by animate matter and Newton's
+active principles.}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{5. Newton's Active Principles and Sidis's Animate
+Matter}\label{newtons-active-principles-and-sidiss-animate-matter}
+
+Newton's unresolved question, posed in Query 31 of the Opticks
+{[}New17{]}, was the mechanism of ``active principles'': non-mechanical
+organizing forces that produce coherence, structure, and persistence
+that mechanical operations cannot generate. In the tholonic reading,
+active principles are N states. They are the local instantiations of
+D-domain organization acting within the C-domain material world. A
+living organism, a crystal, a stable molecular structure: each is a site
+where the D-domain entropy decrease has achieved material instantiation,
+temporarily reversing local material entropy against the global C-domain
+trend.
+
+Sidis {[}Sid25{]}, approaching the same boundary from statistical
+mechanics, proposed that animate matter is matter that locally reverses
+entropy. His argument was that this reversal is statistically necessary
+given time-symmetric microscopic laws. In the tholonic reading, the
+statistical necessity argument corresponds to the structural necessity
+of N emergence: given D and C interacting under the minimality
+conditions of Paper 3 {[}Mil24c{]}, N must emerge at some balance point.
+Animate matter is the material trace of that emergence: the N state made
+locally visible in the C domain.
+
+The dual entropy framework extends both Newton's and Sidis's
+observations: they were each identifying the interface between the two
+domains. Animate matter (Newton's vegetable spirit, Sidis's
+entropy-reversing systems) is not simply a local exception to the second
+law. It is the point at which the D-domain entropy decrease gradient
+achieves material expression, temporarily overriding the C-domain
+entropy increase gradient at the local scale. The interface is the N
+state.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{6. The Void-Plenum
+Equivalence}\label{the-void-plenum-equivalence}
+
+The most striking structural claim of this paper is that the starting
+point of the conceptual trajectory and its endpoint are equivalent. This
+requires argument.
+
+\textbf{The conceptual void} is the state of maximum conceptual entropy:
+zero differentiation, zero organization, zero structure. Every possible
+concept is equally likely. No concept has priority. In Shannon's terms,
+this is the uniform distribution over all possibilities: maximum entropy
+\(H = \log_2 N\) where \(N\) is the total number of possible concepts
+(or, in the limit, \(H \to \infty\) as \(N \to \infty\)). Geometrically,
+this is a zero-dimensional point: no distinctions have been drawn, so no
+dimensions of conceptual space exist.
+
+\textbf{The conceptual plenum} is the state of minimum conceptual
+entropy: all concepts fully specified by their relationships to all
+other concepts. Every distinction has been drawn. Every relationship has
+been established. Every concept is fully determined by its position in
+the network of all concepts. In Shannon's terms, this is a degenerate
+distribution where every concept's state is fully predictable from the
+others: entropy \(H = 0\). Geometrically, this is an
+infinite-dimensional space: every possible distinction defines a
+dimension.
+
+The paradox is that both endpoints have entropy \(H = 0\) (or its
+limiting analogue). The void has zero entropy because there is only one
+state (undifferentiated nothingness: all possible concepts are the same
+state, namely ``no concept''). The plenum has zero entropy because every
+concept is fully determined by its connections: zero residual
+uncertainty. Both are maximally determined, from opposite directions.
+
+This is the tholonic prediction: the parent N at the top of the
+hierarchy (the void, undifferentiated source) and the child N at the
+bottom (the plenum, fully realized actuality) are the same entity viewed
+from opposite ends of the recursive descent. The full tholonic cycle:
+void (parent N) differentiates into D (conceptual domain) and C
+(material domain), which interact to produce organized reality (child
+N), which, when the hierarchy is fully realized, contains all possible N
+states, and is therefore equivalent to the void that contained all
+possible N states in potential form.
+
+The distinction between the void and the plenum is the distinction
+between potential and actual: both are complete, but one is complete in
+latency and the other in realization. A universe that has realized all
+possible N states through D-C negotiation is, from the outside,
+indistinguishable from the void that contained all of them as
+undifferentiated potential.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{7. Mathematical Grounding}\label{mathematical-grounding}
+
+Three mathematical results support the void-plenum equivalence. None
+constitutes a proof of the full claim, but each provides structural
+evidence that the equivalence is not merely philosophical.
+
+\subsubsection{7.1 Kuiper's Theorem}\label{kuipers-theorem}
+
+Kuiper's theorem (1965) states that the unitary group \(U(H)\) of an
+infinite-dimensional separable Hilbert space \(H\) is contractible in
+the norm topology. This means \(U(H)\) has the homotopy type of a point:
+all of its homotopy groups vanish. An infinite-dimensional Hilbert
+space, under its natural unitary symmetry group, has the same
+topological complexity as a single point.
+
+More precisely: in finite dimensions, \(U(n)\) has rich homotopy
+(\(\pi_1(U(n)) = \mathbb{Z}\), etc.). As \(n \to \infty\), the homotopy
+groups stabilize and then vanish. The topological structure of
+infinite-dimensional unitary symmetry collapses to the trivial structure
+of a point. The infinite-dimensional conceptual space, under its natural
+symmetry operations, is topologically a point.
+
+This is not the same as saying an infinite-dimensional space is a point.
+It says that under the natural operations defined on it, its invariant
+structure is point-like. The void (a zero-dimensional point) and the
+plenum (an infinite-dimensional space with collapsed homotopy) share
+this invariant.
+
+\subsubsection{7.2 Shannon Entropy at
+Extremes}\label{shannon-entropy-at-extremes}
+
+Shannon entropy is:
+
+\[H(p) = -\sum_{i} p_i \log_2 p_i\]
+
+It achieves its maximum for a uniform distribution over \(n\) states:
+\(H = \log_2 n\). As \(n \to \infty\), \(H \to \infty\). This is the
+void in one sense: infinite uncertainty, no structure.
+
+It achieves its minimum (\(H = 0\)) for a degenerate distribution: all
+probability on one state. This is both the void in another sense (only
+one possible state: undifferentiated nothingness) and the plenum (only
+one possible state: fully determined by all relationships).
+
+The symmetry is: the void is \(H = 0\) because there are no distinctions
+(\(n = 1\)). The plenum is \(H = 0\) because all distinctions are fully
+determined. Between them, \(H\) rises through the conceptual expansion
+(as distinctions are drawn and possibilities proliferate) and then falls
+back to zero as the system becomes fully organized.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[keepaspectratio]{figures/13_shannon-void-plenum.png}}
+\caption{Figure 3: Shannon Entropy Along the Conceptual Expansion. Both
+the void (left) and the plenum (right) are states of H=0, approached
+from opposite directions. The peak marks maximum uncertainty:
+distinctions proliferating but not yet organized. The double-headed
+arrow marks the structural equivalence of the two endpoints.}
+\end{figure}
+
+\emph{Figure 3: Shannon entropy along the conceptual expansion axis.
+Both the void (\(H = 0\): one undifferentiated state) and the plenum
+(\(H = 0\): every state fully determined) are states of zero entropy,
+approached from opposite directions. The U-shaped curve is the
+trajectory of the D domain from Section 4. The void and plenum are the
+two fixed points of the projective duality discussed in Section 7.3.}
+
+\subsubsection{7.3 Projective
+Self-Duality}\label{projective-self-duality}
+
+In projective geometry, points and hyperplanes are dual: every theorem
+about points corresponds to a theorem about hyperplanes under the
+duality transform. A projective point is ``a line through the origin''
+and a projective hyperplane is ``a codimension-1 subspace.'' In \(n\)
+dimensions, this duality is exact.
+
+In the infinite-dimensional limit, projective duality becomes
+self-referential in specific senses. The dual of an infinite-dimensional
+projective space under certain function-space topologies is homeomorphic
+to the original space (by the Fréchet-Riesz representation theorem for
+Hilbert spaces: \(H \cong H^*\)). The space is its own dual. A fully
+connected infinite-dimensional conceptual space, where every concept
+determines a hyperplane of related concepts, is self-dual under the same
+duality that maps a point to its polar hyperplane.
+
+The void (a single undifferentiated point, no polar hyperplane defined)
+and the plenum (every point has a polar hyperplane, the space is
+self-dual) are the two fixed points of this duality operation. They are
+the points at which the duality map is trivially satisfied: the void
+because there is nothing to map, the plenum because the map is the
+identity.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{8. Tholonic Predictions}\label{tholonic-predictions}
+
+The structural argument produces several predictions about the
+relationship between the material and conceptual domains. These are
+stated here with their current status.
+
+\textbf{Prediction 1: Animate matter marks D-C interface locations.}
+Sites of local material entropy reversal (animate matter, living
+systems, self-organizing structures) are sites where D-domain
+organization achieves material instantiation. They should be analyzable
+as local N states with measurable D-C balance. \emph{Status: testable
+via the tholonic balance functional \(B(D,C)\) applied to biological and
+self-organizing systems. Supported qualitatively by the vegetation
+manuscript analysis (Paper 12 {[}Mil26a{]}, Appendix B).}
+
+\textbf{Prediction 2: The conceptual entropy of a domain decreases as a
+function of the number of established relationships per concept.} As a
+field of inquiry matures, the ratio of established relationships to
+total concepts should increase monotonically. The conceptual entropy of
+mature fields should be measurably lower than that of emerging fields.
+\emph{Status: testable via bibliometric or knowledge graph analysis. Not
+yet tested.}
+
+\textbf{Prediction 3: The phi-optimal balance point (\(D \approx C\))
+marks the transition between material-entropy-dominated and
+conceptual-entropy-dominated dynamics.} Below the balance point,
+material entropy increase dominates (C-dominant, dispersive behavior).
+Above it, conceptual entropy decrease can temporarily dominate
+(D-dominant, organizing behavior). The 61.8\% threshold of the tholonic
+balance functional marks this transition. \emph{Status: structurally
+derived from the N-D-C framework. Quantitative test requires identifying
+measurable proxies for D and C in physical and biological systems.}
+
+\textbf{Prediction 4: The two endpoints of the full tholonic hierarchy
+are informationally indistinguishable.} A universe that has realized all
+possible N states through D-C negotiation should be informationally
+equivalent to the undifferentiated void. \emph{Status: argued via
+Kuiper's theorem and Shannon entropy (Section 7). Not formally proved.
+This is the most speculative prediction in the paper.}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{9. Open Questions}\label{open-questions}
+
+\textbf{9.1 The formal equivalence of statistical and structural
+necessity.} Sidis argues that animate matter is statistically necessary
+given time-symmetric microscopic laws. The tholonic model argues that N
+emergence is structurally necessary given D-C interaction under the
+minimality conditions of Paper 3 {[}Mil24c{]}. Are these equivalent
+claims? If yes, the tholonic framework provides a structural proof of
+what Sidis could only argue statistically, and the dual entropy
+gradients follow as a corollary.
+
+\textbf{9.2 The Landauer bridge.} Landauer's principle states that
+erasing one bit of information dissipates at least \(kT \ln 2\) of
+energy into the material domain. This is a quantitative connection
+between conceptual operations and material entropy. Does it provide a
+measurable exchange rate between D-domain entropy decrease and C-domain
+entropy increase? If the dual gradients are balanced at the N state, the
+Landauer rate may set the equilibrium condition.
+
+\textbf{9.3 The starting-point identification.} The material singularity
+and the conceptual void are described as the starting points of the two
+trajectories. Are they the same starting point? Is the material Big Bang
+and the conceptual void the same N state viewed through the D and C
+lenses respectively? If yes, the universe has a single parent N and two
+diverging trajectories, exactly the tholonic structure.
+
+\textbf{9.4 Kuiper's theorem as a tholonic statement.} Kuiper's theorem
+says the infinite-dimensional unitary group is contractible. Is this a
+tholonic statement: that the fully realized N state (the plenum of all
+unitary transformations) has the same invariant structure as the parent
+N (the point from which they all derived)? Translating Kuiper's theorem
+into tholonic grammar may provide the formal bridge between the
+mathematical result and the structural claim.
+
+\textbf{9.5 Entropy and the tholonic constants.} The five constants
+produced by the tholonic ladder recurrence (\(\pi/4\), \(\varphi\),
+\(e\), \(\sqrt{2}\), \(\ln 2\)) all appear in entropy-related
+expressions: \(\ln 2\) in Landauer's principle and binary Shannon
+entropy, \(e\) in Boltzmann's entropy formula, \(\pi\) in the entropy of
+the Gaussian distribution. Is the appearance of the tholonic constants
+in entropy formulas a structural consequence of the D-C role assignment,
+or coincidental?
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{10. Conclusion}\label{conclusion}
+
+The Tholonic N-D-C framework, applied at the cosmic scale, assigns the
+material domain to the C role (expansive, accumulating, dispersive) and
+the conceptual domain to the D role (constraining, organizing,
+specifying). This assignment predicts dual entropy gradients: material
+entropy increases while conceptual entropy decreases. The two
+trajectories begin from equivalent starting points (the material
+singularity and the conceptual void are both states of zero
+differentiation) and converge toward an equivalent endpoint (the plenum
+of all realized N states is informationally equivalent to the void of
+all potential N states).
+
+This duality was anticipated by Newton's distinction between passive
+mechanical principles and active organizing principles, and by Sidis's
+distinction between inanimate (entropy-increasing) and animate
+(entropy-reversing) matter. Both investigators were identifying the
+interface between the C and D domains, the N state where material and
+conceptual entropy gradients meet and locally balance. Neither had the
+structural framework to explain why the interface exists or why the two
+gradients are opposed.
+
+The tholonic model provides that framework. The dual entropy gradients
+are not empirically independent observations. They are the C and D roles
+operating at the largest observable scale, with the universe itself as
+the N state of their ongoing negotiation.
+
+The void and the plenum are the same entity. They are the parent N and
+the fully realized child N of the same recursive tholonic hierarchy,
+indistinguishable from outside the recursion because both are states of
+complete determination: one in potential, one in actuality. The universe
+is the process by which one becomes the other.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection{References}\label{references}
+
+{[}Bol77{]} Boltzmann, L. ``Über die Beziehung zwischen dem zweiten
+Hauptsatze der mechanischen Wärmetheorie und der
+Wahrscheinlichkeitsrechnung.'' \emph{Wiener Berichte}, 76:373-435, 1877.
+
+{[}Kth65{]} Kuiper, N. H. ``The homotopy type of the unitary group of
+Hilbert space.'' \emph{Topology}, 3(1-2):19-30, 1965.
+
+{[}Lan61{]} Landauer, R. ``Irreversibility and heat generation in the
+computing process.'' \emph{IBM Journal of Research and Development},
+5(3):183-191, 1961.
+
+{[}Mil24a{]} Milton, J. W. ``Emergence of Classical Constants from a
+Minimal Recursive Triadic Framework.'' Clarity Coalition Working Paper,
+2024.
+
+{[}Mil24b{]} Milton, J. W. ``Phase-Resolved Transparency Classification
+(TVPCI).'' Clarity Coalition Working Paper, 2024.
+
+{[}Mil24c{]} Milton, J. W. ``A Minimal Recursive Triadic Framework for
+Self-Similar Hierarchical Systems.'' Clarity Coalition Working Paper,
+2024.
+
+{[}Mil26a{]} Milton, J. W. ``Newton's Framework Through the Tholonic
+Lens: Alchemy, Physics, and the Triadic Structure of Nature.'' Clarity
+Coalition Working Paper, 2026. (Paper 12 in this series.)
+
+{[}New17{]} Newton, I. \emph{Opticks: Or, A Treatise of the Reflections,
+Refractions, Inflections and Colours of Light}. Second edition. London,
+1717. (Query 31.)
+
+{[}Sha48{]} Shannon, C. E. ``A Mathematical Theory of Communication.''
+\emph{Bell System Technical Journal}, 27:379-423, 623-656, 1948.
+
+{[}Sid25{]} Sidis, W. J. \emph{The Animate and the Inanimate}. Badger,
+1925.
+
+{[}Whe90{]} Wheeler, J. A. ``Information, physics, quantum: the search
+for links.'' In \emph{Complexity, Entropy, and the Physics of
+Information}, ed.~W. H. Zurek. Addison-Wesley, 1990.
+
+\end{document}

@@ -6,11 +6,7 @@
 
 **Date:** 10 June 2026
 
-**Proposed arXiv subjects:** math.CA; math.NT (secondary: math.CO)
-
-**MSC 2020:** 40A05 (primary); 11B39, 65B10 (secondary)
-
-**Keywords:** classical constants; recursive sequences; triadic recurrence; Fibonacci ratio; alternating series; structural unification
+**Keywords:** classical constants; mathematical constants; recursive sequences; triadic recurrence; discrete dynamical systems; Fibonacci ratio; alternating series; structural unification; unification; convergence
 
 ---
 

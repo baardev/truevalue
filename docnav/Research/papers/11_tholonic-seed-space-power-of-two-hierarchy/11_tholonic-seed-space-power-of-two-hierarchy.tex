@@ -17,6 +17,18 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi
+}
+\makeatother
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
@@ -28,7 +40,7 @@
 \begin{document}
 \maketitle
 
-\noindent\textbf{Proposed arXiv subjects:} math.CA; math.NT (secondary: math.CO; cs.DM)
+\noindent\textbf{Keywords:} tholonic model, N-D-C triad, five constants, golden ratio, pi, Euler's number, natural logarithm, seed-space sweep, convergence hierarchy, generative entropy, power of two, Fibonacci seeds, archetype
 
 \begin{abstract}
 Paper 1 of this series establishes that five classical mathematical

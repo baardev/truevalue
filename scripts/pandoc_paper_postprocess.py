@@ -25,8 +25,7 @@ def _parse_md_header(md_path: Path) -> dict:
         **Author:** J. W. Milton, Affiliation Name
         **Version:** 1.0
         **Date:** D Month YYYY
-        **Proposed arXiv subjects:** math.CA; math.NT (secondary: ...)
-        **Keywords:** ...   (optional)
+        **Keywords:** term1; term2; term3
     """
     text = md_path.read_text(encoding="utf-8")
     result: dict = {}
@@ -49,9 +48,6 @@ def _parse_md_header(md_path: Path) -> dict:
             result["version"] = value
         elif "date" in key:
             result["date"] = value
-        elif "arxiv" in key or "arXiv" in key:
-            result["arxiv_label"] = label
-            result["arxiv_subjects"] = value
         elif "keyword" in key:
             result["keywords"] = value
 
@@ -144,6 +140,28 @@ def promote_subsection_headings(body: str) -> str:
 
 
 # ---------------------------------------------------------------------------
+# Pandoc code-block preamble (stripped when we replace the document preamble)
+# ---------------------------------------------------------------------------
+
+def extract_pandoc_code_preamble(tex: str) -> str:
+    """
+    Pull Pandoc's fancyvrb + syntax-highlighting definitions from standalone .tex.
+
+    Postprocess replaces Pandoc's preamble; without these lines, \\begin{Shaded} and
+    \\begin{Highlighting} blocks render as a single garbled line in the PDF.
+    """
+    m = re.search(
+        r"(\\usepackage\{color\}\s*\n"
+        r"\\usepackage\{fancyvrb\}.*?"
+        r"\\newcommand\{\\WarningTok\}.*?\n)"
+        r"(?=\\usepackage\{longtable)",
+        tex,
+        re.DOTALL,
+    )
+    return (m.group(1) + "\n") if m else ""
+
+
+# ---------------------------------------------------------------------------
 # Preamble builder
 # ---------------------------------------------------------------------------
 
@@ -185,17 +203,20 @@ PACKAGES = r"""\pdfoutput=1
 
 
 def build_preamble(title: str, author: str, date: str,
-                   arxiv_subjects: str, arxiv_label: str = "Provisional arXiv subjects",
-                   version: str = "") -> str:
+                   keywords: str = "", version: str = "",
+                   packages: str = PACKAGES) -> str:
     date_version = f"\\small {date}" + (f" \\\\ v{version}" if version else "")
+    keywords_block = ""
+    if keywords.strip():
+        keywords_block = f"\\noindent\\textbf{{Keywords:}} {keywords}\n\n"
     return (
-        PACKAGES
+        packages
         + f"\\title{{{title}}}\n"
         + f"\\author{{{author}}}\n"
         + f"\\date{{{date_version}}}\n\n"
         + "\\begin{document}\n"
         + "\\maketitle\n\n"
-        + f"\\noindent\\textbf{{{arxiv_label}:}} {arxiv_subjects}\n\n"
+        + keywords_block
         + "\\begin{abstract}\n"
     )
 
@@ -211,8 +232,7 @@ _DEFAULT_TITLE = (
 )
 _DEFAULT_AUTHOR = r"Jeffrey W. Milton\\[4pt]{\small Independent Researcher}"
 _DEFAULT_DATE = "2026"
-_DEFAULT_ARXIV_LABEL = "Provisional arXiv subjects"
-_DEFAULT_ARXIV = r"math.HO; math.LO (secondary: cs.LO; q-bio.NC)"
+_DEFAULT_KEYWORDS = ""
 
 
 # ---------------------------------------------------------------------------
@@ -231,10 +251,8 @@ def main() -> None:
                     help="LaTeX author string (overrides --md)")
     ap.add_argument("--date", default=None,
                     help="Date string (overrides --md)")
-    ap.add_argument("--arxiv-label", default=None,
-                    help="arXiv label prefix, e.g. 'Proposed arXiv subjects' (overrides --md)")
-    ap.add_argument("--arxiv", default=None,
-                    help="arXiv subject string (overrides --md)")
+    ap.add_argument("--keywords", default=None,
+                    help="Keywords line for title page (overrides --md)")
     args = ap.parse_args()
 
     # Read Markdown header if provided
@@ -258,8 +276,7 @@ def main() -> None:
 
     date = resolve(args.date, "date", _DEFAULT_DATE)
     version = resolve(None, "version", "")
-    arxiv_label = resolve(args.arxiv_label, "arxiv_label", _DEFAULT_ARXIV_LABEL)
-    arxiv_subjects = resolve(args.arxiv, "arxiv_subjects", _DEFAULT_ARXIV)
+    keywords = resolve(args.keywords, "keywords", _DEFAULT_KEYWORDS)
 
     tex = args.input.read_text(encoding="utf-8")
     abstract, body = extract_abstract_and_body(tex)
@@ -270,7 +287,12 @@ def main() -> None:
         body,
     )
 
-    preamble = build_preamble(title, author, date, arxiv_subjects, arxiv_label, version)
+    packages = PACKAGES
+    code_preamble = extract_pandoc_code_preamble(tex)
+    if code_preamble:
+        packages = PACKAGES + "\n" + code_preamble
+
+    preamble = build_preamble(title, author, date, keywords, version, packages=packages)
     out = preamble + abstract + "\n\\end{abstract}\n\n" + body
     if "\\end{document}" not in out:
         out += "\n\\end{document}\n"

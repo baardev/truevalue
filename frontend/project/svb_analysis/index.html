@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>Silicon Valley Bank — N-D-C Structural Analysis</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #334155 100%);
+    min-height: 100vh; padding: 24px; color: #1e293b;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* Hero */
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.32);
+    padding: 40px; margin-bottom: 20px;
+  }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.09em; text-transform: uppercase;
+    color: #991b1b; background: #fef2f2;
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 16px;
+  }
+  h1 { font-size: 34px; font-weight: 300; line-height: 1.2; margin-bottom: 10px; color: #0f172a; }
+  h1 strong { font-weight: 700; color: #991b1b; }
+  .subtitle { font-size: 15px; color: #64748b; line-height: 1.65; max-width: 820px; margin-bottom: 24px; }
+
+  /* The key message panel */
+  .key-message {
+    background: #fef2f2; border: 1px solid #fca5a5; border-radius: 10px;
+    padding: 18px 22px; margin-bottom: 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .key-message .icon { font-size: 28px; flex-shrink: 0; margin-top: 2px; }
+  .key-message h3 { font-size: 14px; font-weight: 700; color: #991b1b; margin-bottom: 5px; }
+  .key-message p { font-size: 13px; color: #7f1d1d; line-height: 1.6; }
+
+  /* KPI strip */
+  .kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #f8fafc; border-radius: 10px; padding: 16px 18px; border-left: 4px solid #1e3a5f; }
+  .kpi.red { border-left-color: #dc2626; }
+  .kpi.amber { border-left-color: #d97706; }
+  .kpi.green { border-left-color: #16a34a; }
+  .kpi-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 4px; }
+  .kpi-value { font-size: 26px; font-weight: 800; color: #0f172a; }
+  .kpi-value.red { color: #dc2626; }
+  .kpi-value.amber { color: #d97706; }
+  .kpi-value.green { color: #16a34a; }
+  .kpi-sub { font-size: 11px; color: #94a3b8; margin-top: 3px; }
+
+  /* Timeline — the smoking gun */
+  .timeline-panel {
+    background: #0f172a; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; color: #f1f5f9;
+  }
+  .timeline-panel h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; margin-bottom: 16px; }
+  .timeline-panel h2 { font-size: 18px; font-weight: 600; color: #f1f5f9; margin-bottom: 8px; }
+  .timeline-panel p { font-size: 13px; color: #94a3b8; line-height: 1.6; margin-bottom: 16px; }
+  .tl-bars { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; align-items: end; height: 120px; }
+  .tl-bar-wrap { display: flex; flex-direction: column; align-items: center; gap: 4px; height: 100%; justify-content: flex-end; }
+  .tl-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 4px; transition: opacity 0.2s; }
+  .tl-bar.breakdown { background: #dc2626; }
+  .tl-bar.critical { background: #d97706; }
+  .tl-bar.stressed { background: #ca8a04; }
+  .tl-label { font-size: 9px; color: #64748b; text-align: center; }
+  .tl-score { font-size: 10px; font-weight: 700; color: #94a3b8; }
+  .tl-annotation {
+    background: #1e293b; border-radius: 8px; padding: 12px 16px; margin-top: 14px;
+    font-size: 12px; color: #94a3b8; line-height: 1.6;
+  }
+  .tl-annotation strong { color: #f87171; }
+
+  /* Phase summary strip */
+  .phase-strip { display: grid; grid-template-columns: repeat(4,1fr); gap: 10px; margin-bottom: 20px; }
+  .phase-chip {
+    background: #fff; border-radius: 10px; padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07); border-top: 3px solid #d1d5db;
+  }
+  .phase-chip.excellent { border-top-color: #16a34a; }
+  .phase-chip.good { border-top-color: #0d9488; }
+  .phase-chip.stressed { border-top-color: #d97706; }
+  .phase-chip.critical { border-top-color: #ea580c; }
+  .phase-chip.breakdown { border-top-color: #dc2626; }
+  .phase-chip.deceptive { border-top-color: #7c3aed; }
+  .pc-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: #94a3b8; margin-bottom: 4px; }
+  .pc-name { font-size: 12px; font-weight: 600; color: #0f172a; margin-bottom: 4px; line-height: 1.3; }
+  .pc-score { font-size: 20px; font-weight: 800; }
+  .pc-score.excellent { color: #16a34a; }
+  .pc-score.good { color: #0d9488; }
+  .pc-score.stressed { color: #d97706; }
+  .pc-score.critical { color: #ea580c; }
+  .pc-score.breakdown { color: #dc2626; }
+  .pc-score.deceptive { color: #7c3aed; }
+  .pc-tag { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; padding: 2px 8px; border-radius: 999px; margin-top: 4px; }
+  .tag-breakdown { background: #fef2f2; color: #991b1b; }
+  .tag-deceptive { background: #f5f3ff; color: #5b21b6; }
+  .tag-stressed { background: #fffbeb; color: #92400e; }
+  .tag-coherent { background: #f0fdf4; color: #166534; }
+
+  /* Comparison panel */
+  .comparison {
+    background: #fff; border-radius: 12px; padding: 22px 26px; margin-bottom: 20px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+  .comparison h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-bottom: 14px; }
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .comp-table th { text-align: left; padding: 8px 12px; color: #64748b; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #e2e8f0; }
+  .comp-table td { padding: 10px 12px; border-bottom: 1px solid #f1f5f9; color: #334155; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table .fail { color: #dc2626; font-weight: 700; }
+  .comp-table .pass { color: #16a34a; font-weight: 700; }
+  .comp-table .warn { color: #d97706; font-weight: 700; }
+
+  /* Layer cards */
+  .layer-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 18px; margin-bottom: 20px; }
+  .layer-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+  .layer-card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,0.16); transition: all 0.2s; }
+  .lc-header { padding: 22px 22px 14px; color: #fff; }
+  .lc-header.sc { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); }
+  .lc-header.rc { background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%); }
+  .lc-header.vc { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+  .lc-icon { font-size: 36px; margin-bottom: 8px; }
+  .lc-title { font-size: 18px; font-weight: 600; margin-bottom: 4px; }
+  .lc-desc { font-size: 12px; opacity: 0.88; line-height: 1.5; }
+  .lc-body { padding: 16px 22px 20px; }
+  .lc-body ul { list-style: none; margin-bottom: 14px; }
+  .lc-body li { font-size: 12px; color: #475569; padding: 4px 0 4px 18px; position: relative; line-height: 1.4; }
+  .lc-body li::before { content: "→"; position: absolute; left: 0; color: #64748b; }
+  .btn {
+    display: inline-block; padding: 10px 20px; border-radius: 7px;
+    text-decoration: none; font-weight: 700; font-size: 13px; color: #fff;
+    transition: all 0.15s;
+  }
+  .btn.sc { background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 100%); }
+  .btn.rc { background: linear-gradient(135deg, #7c2d12 0%, #c2410c 100%); }
+  .btn.vc { background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); }
+  .btn:hover { opacity: 0.88; transform: translateY(-1px); }
+  .sub-links { margin-top: 10px; font-size: 12px; }
+  .sub-links a { color: #475569; font-weight: 600; text-decoration: none; margin-right: 10px; }
+  .sub-links a:hover { text-decoration: underline; color: #0f172a; }
+
+  /* Five model panel */
+  .five-model { background: #fff; border-radius: 12px; padding: 22px 26px; margin-bottom: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.07); }
+  .five-model h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.07em; color: #64748b; margin-bottom: 16px; }
+  .fm-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 12px; }
+  .fm-card { background: #f8fafc; border-radius: 9px; padding: 14px 12px; text-align: center; }
+  .fm-symbol { font-size: 22px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+  .fm-score { font-size: 26px; font-weight: 800; margin-bottom: 4px; }
+  .fm-score.poor { color: #dc2626; }
+  .fm-score.fair { color: #d97706; }
+  .fm-score.good { color: #0d9488; }
+  .fm-label { font-size: 10px; color: #64748b; line-height: 1.3; }
+  .fm-axis { font-size: 9px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-top: 4px; }
+
+  .footer { text-align: center; color: rgba(255,255,255,0.7); font-size: 12px; margin-top: 16px; padding: 8px 0; }
+  .nav { text-align: center; margin-top: 12px; }
+  .nav a { display: inline-block; color: rgba(255,255,255,0.88); text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 10px; }
+  .nav a:hover { text-decoration: underline; }
+  .source-note { font-size: 11px; color: #94a3b8; margin-top: 10px; text-align: center; }
+
+  @media (max-width: 900px) {
+    .kpis, .fm-grid { grid-template-columns: repeat(2,1fr); }
+    .phase-strip, .layer-grid { grid-template-columns: repeat(2,1fr); }
+  }
+  @media (max-width: 600px) {
+    .kpis, .phase-strip, .layer-grid, .fm-grid { grid-template-columns: 1fr; }
+    .tl-bars { grid-template-columns: repeat(4,1fr); height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- Hero -->
+<div class="hero">
+  <div class="kicker">Bank Structural Failure Case · FDIC Certificate 24735</div>
+  <h1>🏦 Silicon Valley Bank<br><strong>Structural Failure Analysis</strong></h1>
+  <p class="subtitle">
+    An 8-phase N-D-C structural analysis of Silicon Valley Bank using public FDIC Call Report
+    data and SEC filings through Q4 2022. The model identifies the failure 18 months before
+    the March 2023 bank run, from data that was publicly available throughout.
+  </p>
+
+  <!-- The key message -->
+  <div class="key-message">
+    <div class="icon">⚠️</div>
+    <div>
+      <h3>The core finding for financial managers</h3>
+      <p>
+        Standard regulatory metrics (CET1 12%, CAMELS 2, no enforcement actions) showed SVB as
+        a healthy, well-capitalized institution through Q4 2022. The N-D-C structural analysis
+        shows Phase 3 (Interest Rate Risk) entered Breakdown in Q3 2021 and remained there for
+        six consecutive quarters. The failure was structurally visible. It was not detected
+        because standard frameworks do not evaluate cross-phase structural balance.
+      </p>
+    </div>
+  </div>
+
+  <!-- KPI strip -->
+  <div class="kpis">
+    <div class="kpi red">
+      <div class="kpi-label">System Balance (π)</div>
+      <div class="kpi-value red">61.3%</div>
+      <div class="kpi-sub">8-phase N-D-C chain</div>
+    </div>
+    <div class="kpi red">
+      <div class="kpi-label">Phase 3 Balance</div>
+      <div class="kpi-value red">21.4%</div>
+      <div class="kpi-sub">Interest rate risk — Breakdown</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Bottleneck Phases</div>
+      <div class="kpi-value amber">4</div>
+      <div class="kpi-sub">Phases 2, 3, 4, 6 below threshold</div>
+    </div>
+    <div class="kpi amber">
+      <div class="kpi-label">Quarters in Breakdown</div>
+      <div class="kpi-value amber">6</div>
+      <div class="kpi-sub">Phase 3, Q3 2021 through Q4 2022</div>
+    </div>
+  </div>
+</div>
+
+<!-- Phase 3 timeline — the smoking gun -->
+<div class="timeline-panel">
+  <h3>The Signal the Model Would Have Produced</h3>
+  <h2>Phase 3: Interest Rate Risk — Quarterly Balance Score</h2>
+  <p>
+    SVB dissolved its interest rate hedges in Q2 2021 to boost reported net interest income.
+    From that point, Phase 3 (Interest Rate Risk Management) entered Breakdown and
+    never recovered. The bars below show the balance score each quarter.
+    The failure occurred in Q1 2023, 18 months after the signal.
+  </p>
+  <div class="tl-bars">
+    <div class="tl-bar-wrap">
+      <div class="tl-score">37.5</div>
+      <div class="tl-bar critical" style="height:44%"></div>
+      <div class="tl-label">Q1 '21</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">40.0</div>
+      <div class="tl-bar critical" style="height:47%"></div>
+      <div class="tl-label">Q2 '21</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">26.0</div>
+      <div class="tl-bar breakdown" style="height:30%"></div>
+      <div class="tl-label">Q3 '21 ⚡</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">22.6</div>
+      <div class="tl-bar breakdown" style="height:26%"></div>
+      <div class="tl-label">Q4 '21</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">22.1</div>
+      <div class="tl-bar breakdown" style="height:26%"></div>
+      <div class="tl-label">Q1 '22</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">21.7</div>
+      <div class="tl-bar breakdown" style="height:25%"></div>
+      <div class="tl-label">Q2 '22</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">21.5</div>
+      <div class="tl-bar breakdown" style="height:25%"></div>
+      <div class="tl-label">Q3 '22</div>
+    </div>
+    <div class="tl-bar-wrap">
+      <div class="tl-score">21.4</div>
+      <div class="tl-bar breakdown" style="height:25%"></div>
+      <div class="tl-label">Q4 '22</div>
+    </div>
+  </div>
+  <div class="tl-annotation">
+    <strong>Q3 2021:</strong> SVB removes all interest rate swaps. HTM bond portfolio reaches 55% of assets.
+    Phase 3 crosses the 38.2% Breakdown threshold and does not recover.
+    Standard regulatory capital ratios remain green throughout this entire period.
+    The Fed examination did not escalate concerns with sufficient urgency.
+    <strong>March 10, 2023:</strong> Bank run. FDIC takes receivership.
+  </div>
+</div>
+
+<!-- Phase scores -->
+<div class="phase-strip">
+  <div class="phase-chip deceptive">
+    <div class="pc-label">Phase 0</div>
+    <div class="pc-name">Deposit Franchise Quality</div>
+    <div class="pc-score stressed">63.6%</div>
+    <span class="pc-tag tag-stressed">Stressed</span>
+  </div>
+  <div class="phase-chip deceptive">
+    <div class="pc-label">Phase 1</div>
+    <div class="pc-name">Capital Adequacy (Reported)</div>
+    <div class="pc-score deceptive">97.5%</div>
+    <span class="pc-tag tag-deceptive">Deceptive Signal</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 2</div>
+    <div class="pc-name">Asset Allocation</div>
+    <div class="pc-score breakdown">29.6%</div>
+    <span class="pc-tag tag-breakdown">Breakdown</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 3</div>
+    <div class="pc-name">Interest Rate Risk</div>
+    <div class="pc-score breakdown">21.4%</div>
+    <span class="pc-tag tag-breakdown">Breakdown — Primary</span>
+  </div>
+  <div class="phase-chip breakdown">
+    <div class="pc-label">Phase 4</div>
+    <div class="pc-name">Liquidity Coverage</div>
+    <div class="pc-score breakdown">47.4%</div>
+    <span class="pc-tag tag-breakdown">Breakdown</span>
+  </div>
+  <div class="phase-chip">
+    <div class="pc-label">Phase 5</div>
+    <div class="pc-name">Earnings and NIM</div>
+    <div class="pc-score good">81.3%</div>
+    <span class="pc-tag tag-coherent">Good</span>
+  </div>
+  <div class="phase-chip critical">
+    <div class="pc-label">Phase 6</div>
+    <div class="pc-name">Market Confidence</div>
+    <div class="pc-score critical">57.1%</div>
+    <span class="pc-tag tag-breakdown">Critical</span>
+  </div>
+  <div class="phase-chip deceptive">
+    <div class="pc-label">Phase 7</div>
+    <div class="pc-name">Regulatory Compliance</div>
+    <div class="pc-score deceptive">92.5%</div>
+    <span class="pc-tag tag-deceptive">Deceptive Signal</span>
+  </div>
+</div>
+
+<!-- Comparison: what other frameworks showed -->
+<div class="comparison">
+  <h3>What Each Framework Said in Q4 2022</h3>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Framework</th>
+        <th>Signal</th>
+        <th>What It Missed</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Regulatory capital (CET1)</strong></td>
+        <td class="pass">PASS — 12.1%, well above 10% threshold</td>
+        <td>AOCI exclusion for mid-tier banks hid $17.7B unrealized HTM losses; true equity was negative</td>
+      </tr>
+      <tr>
+        <td><strong>FDIC CAMELS examination</strong></td>
+        <td class="pass">COMPOSITE 2 — satisfactory</td>
+        <td>Supervisory concerns identified but not escalated; deference to management recovery plans</td>
+      </tr>
+      <tr>
+        <td><strong>Credit agency ratings</strong></td>
+        <td class="warn">REVIEW — Moody's placed on review Dec 2022</td>
+        <td>Review initiated 90 days before failure; too late for most counterparties to act</td>
+      </tr>
+      <tr>
+        <td><strong>LCR / liquidity coverage</strong></td>
+        <td class="pass">EXEMPT — mid-tier bank regulatory carve-out</td>
+        <td>2019 tailoring rules eliminated binding liquidity constraint for banks $50-250B; no LCR requirement</td>
+      </tr>
+      <tr>
+        <td><strong>N-D-C structural analysis</strong></td>
+        <td class="fail">BREAKDOWN — Phase 3 at 21.4% for 6 quarters</td>
+        <td>Nothing hidden. Phase 3 Breakdown detected from public data in Q3 2021 and sustained through failure</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Five model coherence panel -->
+<div class="five-model">
+  <h3>Five-Model Coherence Panel — SVB Q4 2022</h3>
+  <div class="fm-grid">
+    <div class="fm-card">
+      <div class="fm-symbol">π</div>
+      <div class="fm-score fair">61.3%</div>
+      <div class="fm-label">Chain average balance across all 8 phases</div>
+      <div class="fm-axis">Operational Coherence</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">φ</div>
+      <div class="fm-score poor">38%</div>
+      <div class="fm-label">Value distribution skewed: Phases 1 and 7 appear coherent while 2–4 are in Breakdown</div>
+      <div class="fm-axis">Proportional Distribution</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">√2</div>
+      <div class="fm-score poor">30%</div>
+      <div class="fm-label">Absence of constraint: no hedges, no duration limits, no concentration limits applied</div>
+      <div class="fm-axis">Structural Overhead</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">ln2</div>
+      <div class="fm-score fair">45%</div>
+      <div class="fm-label">Capital transformation inefficiency: locked yields falling behind rising cost of funds</div>
+      <div class="fm-axis">Value Transformation</div>
+    </div>
+    <div class="fm-card">
+      <div class="fm-symbol">e</div>
+      <div class="fm-score poor">12%</div>
+      <div class="fm-label">Financial instruments not linked to real risk metrics: hedges dissolved, no performance-linked instruments</div>
+      <div class="fm-axis">Financial Abstraction</div>
+    </div>
+  </div>
+  <p class="source-note">
+    Scores derived from public FDIC Call Report data (cert 24735), SVB 10-K filings, and Federal Reserve SVB supervision review (April 2023).
+    Chain average (π) is the arithmetic mean of 8 phase balances. φ, √2, ln2, e scores are structural assessments benchmarked against the five fundamental constants.
+  </p>
+</div>
+
+<!-- Layer cards -->
+<div class="layer-grid">
+  <div class="layer-card">
+    <div class="lc-header sc">
+      <div class="lc-icon">📊</div>
+      <div class="lc-title">Structural Analysis</div>
+      <div class="lc-desc">8-phase N-D-C breakdown with quarterly trend data for Phase 3</div>
+    </div>
+    <div class="lc-body">
+      <ul>
+        <li>Phase balance scores from public FDIC data</li>
+        <li>Quarterly Phase 3 decline from Q1 2021</li>
+        <li>D-C imbalance diagnosis per phase</li>
+        <li>Comparison to regulatory framework signals</li>
+      </ul>
+      <a href="supply_chain/index.html" class="btn sc">View Analysis</a>
+      <div class="sub-links">
+        <a href="supply_chain/dashboard.html">Dashboard</a>
+        <a href="supply_chain/project_context.html">Intervention Analysis</a>
+      </div>
+    </div>
+  </div>
+  <div class="layer-card">
+    <div class="lc-header rc">
+      <div class="lc-icon">🔄</div>
+      <div class="lc-title">Resolution Analysis</div>
+      <div class="lc-desc">FDIC receivership, capital recovery rates, and what could have been recovered with earlier intervention</div>
+    </div>
+    <div class="lc-body">
+      <ul>
+        <li>Deposit recovery rates by class</li>
+        <li>Asset recovery under FDIC resolution</li>
+        <li>FDIC insurance fund impact</li>
+        <li>Counterfactual: early intervention outcome</li>
+      </ul>
+      <a href="supply_chain/recycling_analysis.html" class="btn rc">View Resolution</a>
+    </div>
+  </div>
+  <div class="layer-card">
+    <div class="lc-header vc">
+      <div class="lc-icon">💼</div>
+      <div class="lc-title">Financial Context</div>
+      <div class="lc-desc">Regulatory reform implications, peer bank screening framework, and forward-looking application</div>
+    </div>
+    <div class="lc-body">
+      <ul>
+        <li>How to screen peer banks using public data</li>
+        <li>Post-SVB regulatory reform scorecard</li>
+        <li>Banks with similar structural profiles</li>
+        <li>Framework for portfolio-level monitoring</li>
+      </ul>
+      <a href="value_chain/index.html" class="btn vc">View Context</a>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Silicon Valley Bank — N-D-C Structural Analysis · Data sourced from public FDIC Call Reports and SEC filings ·
+  <a href="/" style="color:rgba(255,255,255,0.7);text-decoration:none;">← Homepage</a>
+</div>
+<div class="nav">
+  <a href="/">← Main Homepage</a>
+  <a href="supply_chain/dashboard.html">Technical Dashboard →</a>
+  <a href="supply_chain/project_context.html">Intervention Analysis →</a>
+</div>
+
+</div>
+</body>
+</html>

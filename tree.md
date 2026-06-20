@@ -45,6 +45,13 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   └── value_chain/index.html      **West African Shea** Value Chain hub
 │       ├── dashboard.html
 │       └── what_if_simulator.html
+├── frontend/project/bristol_one_city/index.html   Bristol One City — Urban delivery chain and municipal SLB hub
+│   ├── supply_chain/index.html                    Supply chain overview (7-phase delivery chain)
+│   ├── supply_chain/dashboard.html                N-D-C dashboard (dark theme)
+│   ├── supply_chain/project_context.html          Project context, bond framework, intervention worksheet
+│   ├── supply_chain/recycling_analysis.html       TVPCI-R just transition return chain (community wealth)
+│   ├── value_chain/index.html                     Value chain (deferred: SLB KPI framework)
+│   └── data/processed/bristol_one_city_supply_chain_ui.json   N-D-C phase data (7 phases, PROVISIONAL)
 ├── frontend/project/marina_alta/index.html  Marina Alta Mountain Ecosystem — Multi-commodity climate adaptation hub
 │   ├── project.yaml                Marina Alta project metadata, key metrics, EU Horizon funding context
 │   ├── research_notes.md           Comprehensive data: email, PPTX 19-slide plan, YouTube transcripts, web research
@@ -149,6 +156,19 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   │   ├── system_lifecycle.html
 │   │   └── dashboard.html
 │   └── value_chain/index.html      Jackson Water deferred value layer
+├── frontend/project/svb_analysis/index.html     Silicon Valley Bank structural failure hub
+│   ├── supply_chain/index.html     SVB 8-phase N-D-C overview
+│   │   ├── dashboard.html          Technical dashboard with quarterly Phase 3 trend
+│   │   ├── project_context.html    Phase Intervention Worksheet (4 bottleneck phases)
+│   │   └── recycling_analysis.html FDIC resolution and capital recovery (TVPCI-R)
+│   └── value_chain/index.html      Financial context, peer screening, reform scorecard
+├── frontend/project/lehman_analysis/index.html   Lehman Brothers structural failure hub
+│   ├── data/processed/lehman_analysis_supply_chain_ui.json  N-D-C phase data (Q2 2008)
+│   ├── supply_chain/index.html     Lehman 8-phase N-D-C overview
+│   │   ├── dashboard.html          Technical dashboard with quarterly Phase 3 trend
+│   │   ├── project_context.html    Phase Intervention Worksheet (6 bottleneck phases)
+│   │   └── recycling_analysis.html Chapter 11 resolution and capital recovery (TVPCI-R)
+│   └── value_chain/index.html      Dodd-Frank reform scorecard and broker-dealer screening
 ├── frontend/project/grid_ercot_uri/index.html     ERCOT Uri broken-grid hub
 │   ├── supply_chain/index.html     ERCOT Uri Supply Chain hub
 │   │   ├── project_context.html
@@ -553,6 +573,24 @@ frontend/docs/next_weeks_poly.html            ·  Next Week's News (alternate)
 
 ---
 
+## Cellular Aging (added 2026-06-13)
+
+```
+frontend/project/cellular_aging/
+├── index.html                              Hub — 8-phase overview, phase strip, five-model coherence pentagon
+├── supply_chain/
+│   ├── index.html                          Supply chain summary — links to all sub-pages
+│   ├── dashboard.html                      Dark-theme D-C-N bars, coherence pentagon, phase table
+│   ├── project_context.html                Phase table, degradation mechanisms, Phase Intervention Worksheet
+│   └── recycling_analysis.html            TVPCI-R cellular return chain (autophagy, mitophagy, senolysis)
+├── value_chain/
+│   └── index.html                          Deferred — value layer scope note
+└── data/processed/
+    └── cellular_aging_supply_chain_ui.json  Phase N-D-C data (8 phases, synthetic baseline)
+```
+
+---
+
 ## Navigation symmetry summary
 
 Every commodity has the same page set at the same depth:
@@ -561,6 +599,7 @@ Every commodity has the same page set at the same depth:
 |---|---|---|
 | **Gold** | `gold/supply_chain/` (index, dashboard, what_if) | `gold/value_chain/` (index, dashboard, what_if) |
 | **West African Shea** | `west_african_shea/supply_chain/` (index, project_context, dashboard, what_if) | `west_african_shea/value_chain/` (index, dashboard, what_if) |
+| **Cellular Aging** | `cellular_aging/supply_chain/` (index, dashboard, project_context, recycling_analysis) | `cellular_aging/value_chain/` (index, deferred) |
 
 Cross-commodity navigation is always available in every page header.
 Each commodity hub (`gold/index.html`, `shea/index.html`) links to both its layers.

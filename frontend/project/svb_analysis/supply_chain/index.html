@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>SVB Structural Analysis — Supply Chain Overview</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#edf2f7; color:#1a202c; }
+  header { background:#0f172a; color:#f1f5f9; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:17px; font-weight:600; }
+  header nav a { color:#94a3b8; text-decoration:none; font-size:13px; margin-left:16px; }
+  header nav a:hover { color:#f1f5f9; }
+  main { max-width:980px; margin:0 auto; padding:28px 20px; }
+  .intro { background:#fff; border-radius:10px; padding:24px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); }
+  .intro h2 { font-size:20px; font-weight:300; color:#0f172a; margin-bottom:8px; }
+  .intro p { color:#475569; font-size:14px; line-height:1.65; margin-bottom:8px; }
+  .chain-avg { display:inline-flex; align-items:center; gap:10px; background:#fef2f2; border:1px solid #fca5a5; border-radius:8px; padding:10px 16px; margin-top:8px; }
+  .chain-avg .score { font-size:28px; font-weight:800; color:#dc2626; }
+  .chain-avg .label { font-size:12px; color:#7f1d1d; line-height:1.4; }
+  .phases-table { background:#fff; border-radius:10px; padding:22px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); overflow-x:auto; }
+  .phases-table h2 { font-size:16px; font-weight:600; margin-bottom:14px; color:#0f172a; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; padding:9px 12px; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid #e2e8f0; }
+  td { padding:11px 12px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#fafafa; }
+  .bal { font-size:16px; font-weight:800; }
+  .bal.excellent { color:#16a34a; }
+  .bal.good { color:#0d9488; }
+  .bal.stressed { color:#d97706; }
+  .bal.critical { color:#ea580c; }
+  .bal.breakdown { color:#dc2626; }
+  .bal.deceptive { color:#7c3aed; }
+  .tag { display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; padding:3px 9px; border-radius:999px; }
+  .tag.excellent { background:#f0fdf4; color:#166534; }
+  .tag.good { background:#f0fdfa; color:#134e4a; }
+  .tag.stressed { background:#fffbeb; color:#92400e; }
+  .tag.critical { background:#fff7ed; color:#7c2d12; }
+  .tag.breakdown { background:#fef2f2; color:#991b1b; }
+  .tag.deceptive { background:#f5f3ff; color:#5b21b6; }
+  .d-c { font-size:11px; color:#64748b; white-space:nowrap; }
+  .phase-name { font-weight:600; color:#0f172a; margin-bottom:3px; }
+  .phase-note { font-size:12px; color:#64748b; line-height:1.45; }
+  .sub-nav { display:flex; gap:12px; margin-top:6px; }
+  .sub-nav a { font-size:12px; color:#1e3a5f; font-weight:600; text-decoration:none; padding:6px 14px; border:1px solid #1e3a5f; border-radius:6px; }
+  .sub-nav a:hover { background:#1e3a5f; color:#fff; }
+  .alert { background:#fef2f2; border:1px solid #fca5a5; border-radius:9px; padding:14px 18px; margin-bottom:18px; font-size:13px; color:#7f1d1d; }
+  .alert strong { color:#991b1b; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏦 SVB Structural Analysis — Supply Chain Overview</h1>
+  <nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="project_context.html">Intervention Analysis</a>
+    <a href="recycling_analysis.html">Resolution</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+
+<div class="intro">
+  <h2>8-Phase N-D-C Structural Analysis — Silicon Valley Bank (Q4 2022)</h2>
+  <p>
+    This analysis maps SVB's institutional functions onto 8 structural phases using the N-D-C framework.
+    Each phase is evaluated by its balance between Definition (D: constraints, limits, risk controls in force)
+    and Contribution (C: outputs, deployments, risk exposures produced). The chain average balance is the
+    system-level diagnostic.
+  </p>
+  <p>
+    The critical finding: Phases 1 and 7 (capital adequacy and regulatory compliance) appear Coherent,
+    matching the regulatory picture. Phases 2, 3, and 4 are in Breakdown, invisible to standard metrics.
+    Phase 3 entered Breakdown in Q3 2021 and remained there for six consecutive quarters before the failure.
+  </p>
+  <div class="chain-avg">
+    <div class="score">61.3%</div>
+    <div class="label">Chain average balance (π axis)<br>4 phases below 61.8% threshold</div>
+  </div>
+</div>
+
+<div class="alert">
+  <strong>Primary bottleneck: Phase 3 — Interest Rate Risk Management (21.4%)</strong>.
+  SVB dissolved its interest rate hedges in mid-2021, leaving D (hedging constraint) near zero
+  while C (rate exposure from $91B HTM bond portfolio) grew with every Fed rate hike.
+  This is the structural origin of the failure cascade.
+</div>
+
+<div class="phases-table">
+  <h2>Phase Balance Scores — Q4 2022 Snapshot</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Phase</th>
+        <th>Balance</th>
+        <th>Status</th>
+        <th>D / C</th>
+        <th>Key structural signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>0</td>
+        <td>
+          <div class="phase-name">Deposit Franchise Quality</div>
+          <div class="phase-note">Concentration and stability of the funding base</div>
+        </td>
+        <td><span class="bal stressed">63.6%</span></td>
+        <td><span class="tag stressed">Stressed</span></td>
+        <td class="d-c">D 140 / C 220</td>
+        <td class="phase-note">93.8% uninsured deposits, single-sector (tech). C >> D: inflows far exceeded concentration controls.</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>
+          <div class="phase-name">Capital Adequacy (Reported) ⚠</div>
+          <div class="phase-note">Regulatory capital against risk-weighted assets</div>
+        </td>
+        <td><span class="bal deceptive">97.5%</span></td>
+        <td><span class="tag deceptive">Deceptive Signal</span></td>
+        <td class="d-c">D 200 / C 195</td>
+        <td class="phase-note">CET1 12.1% — appeared well-capitalized. Hidden: $17.7B HTM losses excluded from regulatory capital. True equity was negative.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>
+          <div class="phase-name">Asset Allocation and Concentration</div>
+          <div class="phase-note">Deployment of deposits into loans, bonds, and cash</div>
+        </td>
+        <td><span class="bal breakdown">29.6%</span></td>
+        <td><span class="tag breakdown">Breakdown</span></td>
+        <td class="d-c">D 80 / C 270</td>
+        <td class="phase-note">55% of assets in HTM bonds at low yields, average duration 3.7 years. No effective concentration or duration limits applied.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>
+          <div class="phase-name">Interest Rate Risk Management</div>
+          <div class="phase-note">Duration mismatch managed through hedging</div>
+        </td>
+        <td><span class="bal breakdown">21.4%</span></td>
+        <td><span class="tag breakdown">Breakdown — Primary</span></td>
+        <td class="d-c">D 60 / C 280</td>
+        <td class="phase-note">All interest rate swaps dissolved in 2021. D (hedging) near zero. C (rate exposure) grew 525 bps in 18 months. Model detected Breakdown in Q3 2021.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>
+          <div class="phase-name">Liquidity Coverage and Buffer</div>
+          <div class="phase-note">Short-term obligations met through liquid assets</div>
+        </td>
+        <td><span class="bal breakdown">47.4%</span></td>
+        <td><span class="tag breakdown">Breakdown</span></td>
+        <td class="d-c">D 190 / C 90</td>
+        <td class="phase-note">Mid-tier bank LCR exemption removed binding constraint. $16.8B deposit outflows in 2022. HTM bonds illiquid — sale would trigger loss recognition.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>
+          <div class="phase-name">Earnings and Net Interest Margin</div>
+          <div class="phase-note">Asset yields net of funding costs</div>
+        </td>
+        <td><span class="bal good">81.3%</span></td>
+        <td><span class="tag good">Good</span></td>
+        <td class="d-c">D 160 / C 130</td>
+        <td class="phase-note">Earnings remained positive but NIM compressed from 2.07% to 1.93% as cost of funds rose faster than locked-in bond yields.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>
+          <div class="phase-name">Market Confidence and Funding Access</div>
+          <div class="phase-note">Institutional credibility and depositor confidence</div>
+        </td>
+        <td><span class="bal critical">57.1%</span></td>
+        <td><span class="tag critical">Critical</span></td>
+        <td class="d-c">D 175 / C 100</td>
+        <td class="phase-note">Moody's placed on review December 2022. Institutional investors reducing exposure. Equity raise attempt in March 2023 triggered the run.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>
+          <div class="phase-name">Regulatory Compliance and Reporting ⚠</div>
+          <div class="phase-note">Supervisory obligations and examination results</div>
+        </td>
+        <td><span class="bal deceptive">92.5%</span></td>
+        <td><span class="tag deceptive">Deceptive Signal</span></td>
+        <td class="d-c">D 200 / C 185</td>
+        <td class="phase-note">CAMELS 2 rating, no enforcement actions. Regulatory framework did not require LCR, excluded AOCI from capital. Supervisors identified concerns but did not escalate.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="sub-nav">
+  <a href="dashboard.html">Technical Dashboard</a>
+  <a href="project_context.html">Intervention Analysis</a>
+  <a href="recycling_analysis.html">Resolution Analysis</a>
+  <a href="../index.html">← Hub</a>
+</div>
+
+</main>
+</body>
+</html>

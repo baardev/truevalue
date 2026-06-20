@@ -6,7 +6,7 @@
 
 **Date:** 3 April 2026
 
-**Proposed arXiv subjects:** nlin.AO; math.DS (secondary: cs.SY)
+**Keywords:** recursive triadic framework; N-D-C; self-similar hierarchy; irreducibility; minimality; dynamical systems
 
 ---
 

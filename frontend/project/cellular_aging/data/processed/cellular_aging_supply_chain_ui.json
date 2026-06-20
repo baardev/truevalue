@@ -1,0 +1,274 @@
+{
+  "_meta": {
+    "generated": "2026-06-13",
+    "material": "cellular_aging",
+    "system": "Mammalian somatic cell: canonical aging reference (human, late passage)",
+    "pathway": "8-phase cellular maintenance and replication chain",
+    "sources": [
+      "Lopez-Otin et al. 2023 Cell: The Hallmarks of Aging (updated 12 hallmarks)",
+      "Blackburn, Epel & Lin 2015 Science: Telomere length and aging",
+      "Rubinsztein, Marino & Kroemer 2011 Cell: Autophagy and Aging",
+      "Sen et al. 2016 Cell: Epigenetic Mechanisms of Longevity and Aging",
+      "Hayflick 1965 Exp Cell Res: Serial cultivation of human diploid cells",
+      "Tchkonia et al. 2013 J Clin Invest: Cellular senescence and the senescent secretome",
+      "Franceschi & Campisi 2014 J Gerontol: Chronic Inflammation and Inflammaging"
+    ],
+    "note": "N-D-C values derived from published rate constants, enzyme activity measurements, and aging biology literature. Balance scores reflect transparency tier midpoints adjusted for known degradation constraints. Evidence for degradation rates draws primarily from human data; countermeasure evidence tiers (T1-T5) are noted in phase annotations.",
+    "coherence_scores": {
+      "pi": 84.7,
+      "phi": 73.8,
+      "sqrt2": 77.5,
+      "ln2": 65.2,
+      "e": 65.0,
+      "e_basis": "NAD+ systemic connectivity. Whole-blood NAD+ level as fraction of published optimal for mid-adult baseline. NAD+ is the universal coupling constant linking Phase 0 (AMPK/mTOR sensing), Phase 1 (Complex I), Phase 3 (SIRT1-autophagy), Phase 4 (PARP1 DNA repair), and Phase 5 (SIRT1/SIRT6 chromatin). Score 65.0 reflects ~50% NAD+ decline from age 20-60 (Clement et al. 2019 Nature Aging). Reference: whole-blood NAD+ optimal ~40-60 uM; mid-adult observed ~20-30 uM."
+    }
+  },
+  "entities": {
+    "synthetic": {
+      "label": "Canonical Aging Baseline",
+      "description": "Human somatic cell, mid-adult reference (age 40-50). All phases reflect non-stressed, healthy baseline with known age-progressive degradation rates. Degradation trajectories modeled from longitudinal human cohort data where available."
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Nutrient Intake and Signaling",
+      "transparency": "high",
+      "transformation": "Extracellular nutrient sensing and intracellular metabolic signal routing",
+      "compartment": "Cell membrane / endosome / mTORC1-AMPK network"
+    },
+    "1": {
+      "name": "Mitochondrial Energy Production",
+      "transparency": "high",
+      "transformation": "Substrate oxidation to ATP via electron transport chain",
+      "compartment": "Inner mitochondrial membrane / mtDNA / ETC complexes I-V"
+    },
+    "2": {
+      "name": "Protein Synthesis",
+      "transparency": "medium",
+      "transformation": "mRNA template translation to functional polypeptides by ribosomes",
+      "compartment": "Rough ER / cytosolic ribosomes / eIF2 initiation complex"
+    },
+    "3": {
+      "name": "Protein Quality Control",
+      "transparency": "medium",
+      "transformation": "Detection, tagging, degradation, and recycling of misfolded proteins",
+      "compartment": "26S proteasome / autophagosome / lysosome / ubiquitin-proteasome system"
+    },
+    "4": {
+      "name": "DNA Replication Fidelity",
+      "transparency": "high",
+      "transformation": "Genome duplication with repair and checkpoint verification",
+      "compartment": "Nucleus / DNA polymerase delta-epsilon / mismatch repair / telomere complex"
+    },
+    "5": {
+      "name": "Epigenetic Regulation",
+      "transparency": "low",
+      "transformation": "Chromatin state maintenance and gene expression pattern enforcement",
+      "compartment": "Nucleus / DNMT enzymes / histone modifiers / PRC2 complex"
+    },
+    "6": {
+      "name": "Cell Division and Output",
+      "transparency": "high",
+      "transformation": "Mitotic division producing viable daughter cells or entry into senescence",
+      "compartment": "Nucleus / centrosome / spindle apparatus / CDK-cyclin checkpoints"
+    },
+    "7": {
+      "name": "Intercellular Signaling",
+      "transparency": "low",
+      "transformation": "Cytokine and paracrine signal emission and reception with neighboring cells",
+      "compartment": "Cell membrane / secretome / NF-kB pathway / cytokine receptors"
+    }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 235,
+        "C": 245,
+        "balance": 95.9,
+        "N": 230,
+        "sustainability": 0.91,
+        "balance_zone": "coherent",
+        "notes": "Extracellular nutrients are sensed by mTORC1 and AMPK, which route anabolic and catabolic signals respectively. High D from strict receptor specificity and kinase cascade stoichiometry; high C from broad downstream regulatory reach. Primary age-related degradation: chronic mTOR overactivation in high-nutrient environments suppresses autophagy and accelerates senescence. Insulin resistance reduces signaling fidelity.",
+        "data_quality": "high",
+        "key_metric": "mTOR S6K1 phosphorylation half-life ~8 min; AMPK activation threshold: AMP:ATP ratio > 0.1",
+        "degradation_mode": "mTOR chronic overactivation (poor diet, obesity, IGF-1 excess); insulin receptor desensitization",
+        "primary_countermeasures": "Caloric restriction (T1-human RCT); metformin AMPK activation (T1-human); time-restricted feeding (T2-observational); intermittent fasting (T2)",
+        "evidence_tiers": "T1, T1, T2, T2",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable (biological system)",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "1": {
+        "D": 250,
+        "C": 228,
+        "balance": 91.2,
+        "N": 218,
+        "sustainability": 0.20,
+        "balance_zone": "coherent",
+        "notes": "Mitochondria convert pyruvate, fatty acids, and amino acids to ATP via the TCA cycle and oxidative phosphorylation. High D reflects strict ETC stoichiometry, membrane potential requirements, and mtDNA fidelity constraints. Age-related mtDNA mutation accumulation (estimated 0.5-1% per year) reduces Complex I activity and increases ROS byproduct. mtDNA has no protective histones and limited repair mechanisms, making it the most vulnerable genomic element.",
+        "data_quality": "high",
+        "key_metric": "Resting ATP production rate ~40 kg ATP/day; mtDNA copy number declines ~25% from age 40-80; Complex I activity declines ~35% by age 70",
+        "degradation_mode": "mtDNA somatic mutation accumulation; Complex I and IV failure; ROS overproduction creating feedback oxidative damage; mitophagy decline (PINK1/Parkin pathway impairment)",
+        "primary_countermeasures": "NAD+ precursors NMN/NR (T2-human, T1-animal); exercise (T1-human); CoQ10 (T3-T4); mitochondria-targeted antioxidants MitoQ (T3)",
+        "evidence_tiers": "T2, T1, T3-T4, T3",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "2": {
+        "D": 238,
+        "C": 220,
+        "balance": 92.4,
+        "N": 211,
+        "sustainability": 0.30,
+        "balance_zone": "coherent",
+        "notes": "Ribosomes translate mRNA templates into polypeptide chains at approximately 5-6 amino acids per second in mammalian cells. D reflects strict codon-anticodon matching requirements, eIF2 initiation regulation, and chaperone availability. Age-related ribosomal errors increase approximately 3-fold from young to old cells, introducing misfolded proteins that load downstream quality control phases. mRNA instability from oxidative damage also reduces C.",
+        "data_quality": "medium",
+        "key_metric": "Translation error rate: ~1 per 10,000 codons (young) to ~1 per 3,000 codons (old); ribosome biogenesis declines ~20% with age",
+        "degradation_mode": "Ribosomal error rate increase; mRNA oxidative damage; eIF2-alpha chronic phosphorylation (integrated stress response); mTOR dysregulation reducing ribosome biogenesis",
+        "primary_countermeasures": "mTOR modulation restoring ribosome quality (T2); exercise upregulating ISR resolution (T2); antioxidant protection of mRNA pool (T3)",
+        "evidence_tiers": "T2, T2, T3",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "3": {
+        "D": 272,
+        "C": 215,
+        "balance": 79.0,
+        "N": 191,
+        "sustainability": 0.031,
+        "balance_zone": "stressed",
+        "notes": "The 26S proteasome and autophagy-lysosome pathway together constitute the cell's quality control and recycling apparatus. This is the most critical bottleneck phase. Proteasome activity declines 30-50% between young and old cells (measured by peptidase activity assays). Autophagy is chronically suppressed by the same mTOR overactivation that degrades Phase 0. Protein aggregate accumulation (tau, alpha-synuclein, TDP-43) is a direct consequence of Phase 3 failure and propagates pathology throughout all downstream phases. High D reflects the complex substrate recognition, ATP requirement, and ubiquitin tagging cascade; reduced C reflects declining throughput and aggregate backlog.",
+        "data_quality": "high",
+        "key_metric": "26S proteasome ChTL activity: ~50% decline from age 20-80 (Petropoulos et al. 2000); autophagy flux declines >40% in senescent cells; protein aggregate accumulation rate: exponential after age 60",
+        "degradation_mode": "Proteasome 26S disassembly and reduced chymotrypsin-like activity; mTOR-mediated autophagy suppression; lysosome membrane permeabilization; accumulated protein aggregates inhibiting proteasome access",
+        "primary_countermeasures": "Rapamycin/mTOR inhibition (T1-animal lifespan extension; T2-human immunological data); caloric restriction restoring autophagy flux (T1); spermidine supplementation (T2-human observational); fasting-induced autophagy (T2); urolithin A (T2-human phase 2)",
+        "evidence_tiers": "T1-animal/T2-human, T1, T2, T2, T2",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "4": {
+        "D": 255,
+        "C": 237,
+        "balance": 92.9,
+        "N": 229,
+        "sustainability": 0.30,
+        "balance_zone": "coherent",
+        "notes": "DNA polymerase delta and epsilon replicate the genome with proofreading error rates of ~1 per 10^9 base pairs. Mismatch repair, base excision repair, and double-strand break repair systems correct remaining errors. Two age-related constraints: telomere shortening (50-100 bp per division in somatic cells) eventually triggers p53-mediated cell cycle arrest; and oxidative DNA damage accumulates faster in aged cells because both repair enzyme activity and antioxidant defenses decline. D reflects strict base-pairing fidelity requirements and checkpoint signaling constraints; C reflects viable genome copies delivered to daughter cells.",
+        "data_quality": "high",
+        "key_metric": "Telomere shortening: ~50-100 bp per division; replicative capacity ~50-70 divisions (Hayflick limit); 8-OHdG oxidative DNA lesion rate increases ~8-fold from age 20 to 80",
+        "degradation_mode": "Telomere attrition reaching critical length; oxidative base damage (8-OHdG) accumulation; DNA repair enzyme decline (OGG1, PARP1 activity decline with age); double-strand break accumulation",
+        "primary_countermeasures": "Senolytics clearing cells with critically short telomeres (T2-human phase 2); NAD+ precursors restoring PARP1 activity (T2); antioxidants reducing oxidative lesion rate (T2-T3); lifestyle factors maintaining telomerase in stem cells (T2)",
+        "evidence_tiers": "T2, T2, T2-T3, T2",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "5": {
+        "D": 260,
+        "C": 198,
+        "balance": 76.2,
+        "N": 173,
+        "sustainability": 0.026,
+        "balance_zone": "stressed",
+        "notes": "DNA methylation patterns, histone modifications, and chromatin accessibility collectively constitute the epigenetic layer that determines which genes are expressed in which cells. Methylation drift with age is measurable with biological clocks (Horvath 2013, GrimAge 2019, DunedinPACE 2022) that predict mortality independently of chronological age. Epigenetic age can run ahead of or behind chronological age by up to 10 years in the same individual. Histone H3K27me3 redistribution leads to derepression of normally silenced repetitive elements (transposons). D reflects strict DNMT enzyme requirements and histone code combinatorial rules; C reflects gene expression fidelity across all downstream processes.",
+        "data_quality": "medium",
+        "key_metric": "Horvath epigenetic clock drift: ~1-2 years of biological age per chronological year; H3K27me3 redistribution measurable in lymphocytes by age 50; DNAm-predicted age correlates with mortality at HR 1.56 per 5 years (GrimAge)",
+        "degradation_mode": "CpG methylation drift from target sites; H3K27me3 histone mark redistribution derepressing transposons; SIRT1 NAD+-dependent deacetylase decline reducing chromatin compaction; loss of heterochromatin integrity",
+        "primary_countermeasures": "Partial Yamanaka factor reprogramming (OCT4/SOX2/KLF4/c-MYC subset) (T3-animal; Sinclair lab, Altos Biosciences); methyl donor supplementation SAMe/B12/folate (T3-T4); meditation and stress reduction reducing epigenetic age acceleration (T5-emerging T2); dietary polyphenols resveratrol/NMN acting on sirtuins (T3-T4)",
+        "evidence_tiers": "T3-animal, T3-T4, T5-emerging T2, T3-T4",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "6": {
+        "D": 268,
+        "C": 192,
+        "balance": 71.6,
+        "N": 162,
+        "sustainability": 0.017,
+        "balance_zone": "stressed",
+        "notes": "Cell division produces two viable daughter cells when all upstream phases are functioning within tolerance. Senescence is the alternative output: a growth-arrested but metabolically active state where the cell remains alive but secretes the SASP (senescence-associated secretory phenotype), a cocktail of pro-inflammatory cytokines (IL-6, IL-8, MMP3), growth factors, and proteases that damage surrounding tissue. This is the lowest-balance phase and the primary systemic bottleneck. Senescent cells accumulate because both immune clearance (via NK cells and macrophages) and apoptosis pathways become less efficient with age. Estimated 5-15% of cells in old tissue are senescent. Each senescent cell degrades the D-C balance of Phase 7 in neighboring cells through paracrine SASP signaling.",
+        "data_quality": "high",
+        "key_metric": "Senescent cell burden: ~5% at age 50, ~10-15% at age 70+ (van Deursen 2014 Nature); SASP IL-6 plasma levels increase ~2-fold from age 30-80; NK cell senescent-cell clearance efficiency declines ~40% by age 70",
+        "degradation_mode": "Senescent cell accumulation beyond immune clearance capacity; SASP paracrine propagation creating bystander senescence in healthy neighbors; CDK inhibitor p21/p16 permanent upregulation blocking mitotic re-entry; apoptosis resistance via Bcl-2/Bcl-xL overexpression",
+        "primary_countermeasures": "Senolytics: dasatinib plus quercetin (T2-human phase 2, Mayo Clinic trials); fisetin (T3-human emerging); navitoclax ABT-263 (T3-animal, T2-human phase 1 safety); exercise stimulating NK cell clearance (T2); CAR-T senolytics (T3-animal, Bhatt lab 2024)",
+        "evidence_tiers": "T2, T3, T3, T2, T3-animal",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      },
+      "7": {
+        "D": 252,
+        "C": 198,
+        "balance": 78.6,
+        "N": 176,
+        "sustainability": 0.034,
+        "balance_zone": "stressed",
+        "notes": "Healthy intercellular signaling coordinates tissue repair, immune surveillance, and metabolic homeostasis through tight cytokine, chemokine, and paracrine factor networks. Inflammaging describes the chronic low-grade pro-inflammatory state that emerges with age, characterized by elevated IL-6, TNF-alpha, CRP, and IL-1beta even in the absence of acute infection. This background inflammation is driven by SASP from senescent cells (Phase 6 output), gut microbiome dysbiosis, circulating cell-free DNA activating innate immune sensors (cGAS-STING), and telomere damage. D reflects strict receptor binding specificity and signal transduction stoichiometry; C reflects coordinated tissue response quality. Opacity is medium-low: while individual cytokine levels are measurable, the network interactions at the tissue level are difficult to quantify. Cultural and lifestyle factors (social connection, purpose, meditation) have documented anti-inflammatory effects via HPA axis modulation.",
+        "data_quality": "medium",
+        "key_metric": "IL-6 plasma levels: 0.5-1.0 pg/mL (young) vs 3-8 pg/mL (old); CRP: 1.5x elevation with age; inflammaging correlates with 2.7x mortality risk increase in >75 years (Ferrucci & Fabbri 2018)",
+        "degradation_mode": "SASP-driven chronic IL-6/TNF-alpha elevation (Phase 6 upstream propagation); cGAS-STING activation from cytoplasmic mtDNA and transposons; gut microbiome dysbiosis increasing LPS translocation; NF-kB pathway constitutive activation",
+        "primary_countermeasures": "Anti-inflammatory diet Mediterranean pattern (T2-T4 observational, Blue Zones); omega-3 EPA/DHA (T2-human RCT); social connection reducing cortisol-NF-kB axis (T4-Blue Zones, T2-emerging); mindfulness-based stress reduction reducing NF-kB (T2-T5); targeting upstream senolysis (see Phase 6)",
+        "evidence_tiers": "T2-T4, T2, T4/T2-emerging, T2-T5, T2",
+        "scope1_tco2": null,
+        "scope2_tco2": null,
+        "scope_source": "Not applicable",
+        "scope_quality": "N/A",
+        "water": null,
+        "energy": null,
+        "water_recycling_pct": null,
+        "energy_clean_pct": null
+      }
+    }
+  },
+  "system": {
+    "synthetic": {
+      "balance": 84.7,
+      "average_N": 199,
+      "bottleneck_phase_ids": [3, 5, 6, 7],
+      "primary_bottleneck_id": 6,
+      "interpretation": "The cellular aging supply chain shows a two-tier structure: phases 0-4 operate in the Coherent zone (71-96% balance), while phases 5-7 shift into Stressed territory (72-79%). The defining structural feature is the cascading D-C imbalance from quality control failure at Phase 3 propagating through epigenetic drift (Phase 5), senescent cell accumulation (Phase 6), and inflammaging (Phase 7). Phase 6 (Cell Division) is the system's lowest-balance phase (71.6%) and primary bottleneck because senescent cells do not merely fail to contribute: they actively degrade the C-side of neighboring cells through SASP paracrine signaling. This makes Phase 6 a negative-C contributor rather than a neutral one, worsening the downstream Phase 7 imbalance beyond what the scores alone indicate.",
+      "water_recycling_pct": null,
+      "waste_circularity_pct": null,
+      "clean_energy_pct": null
+    }
+  }
+}

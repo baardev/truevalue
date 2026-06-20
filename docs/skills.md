@@ -68,12 +68,13 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 
 **File:** `.cursor/skills/create-research-paper/SKILL.md`
 
-**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, arXiv subjects, optional Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
+**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Includes a figure generation step (Step 9) covering when figures are required, naming conventions, style rules (white background, canonical N/D/C colors, correct triangle orientation), and figure types by section. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
 
 **When to use it:** Whenever the user asks to "create a paper", "write a paper", "make this a paper", or turn a notes or discovery file into a formal research paper in the series.
 
 **Files it touches:**
 - `docnav/Research/papers/<N>_<slug>.md` (the new paper)
+- `docnav/Research/papers/<N>_<slug>/figures/<N>_<descriptor>.png` (generated figures)
 
 ---
 
@@ -81,7 +82,7 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 
 **File:** `.cursor/skills/research-paper-latex/SKILL.md`
 
-**What it does:** Converts a companion research paper from Markdown (`docnav/Research/papers/<n>_<slug>.md`) to the **same artifact pattern as papers 1 to 5**: canonical LaTeX under `<n>_<slug>/` plus a **built PDF** and usual LaTeX sidecars. Flow is **Pandoc** to raw standalone `.tex`, **`scripts/pandoc_paper_postprocess.py`** for arXiv-style layout and headings, then **`scripts/research_paper_pdflatex.sh`** (two-pass **`pdflatex`**). Without **`pdflatex`** on PATH, only **`.tex`** exists until the user installs TeX and runs the script.
+**What it does:** Converts a companion research paper from Markdown (`docnav/Research/papers/<n>_<slug>.md`) to the **same artifact pattern as papers 1 to 5**: canonical LaTeX under `<n>_<slug>/` plus a **built PDF** and usual LaTeX sidecars. Flow is **Pandoc** to raw standalone `.tex`, **`scripts/pandoc_paper_postprocess.py`** for preprint-style layout (title page Keywords line) and headings, then **`scripts/research_paper_pdflatex.sh`** (two-pass **`pdflatex`**). Without **`pdflatex`** on PATH, only **`.tex`** exists until the user installs TeX and runs the script.
 
 **When to use it:** Whenever you ask to turn paper 6 (or a similar numbered paper) from `.md` into **`.tex` and `.pdf`**, rebuild paper 6 end to end, or match the repo’s existing paper folder layout.
 
@@ -91,6 +92,20 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 - `docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf` (after `research_paper_pdflatex.sh`)
 - `scripts/pandoc_paper_postprocess.py` (shared postprocessor; extend only with care)
 - `scripts/research_paper_pdflatex.sh` (two-pass compile helper)
+
+---
+
+### `faq-md-to-html`
+
+**File:** `.cursor/skills/faq-md-to-html/SKILL.md`
+
+**What it does:** Converts `docnav/FAQ/tholonic-faq.md` into `docnav/FAQ/tholonic-faq.html`. Produces a self-contained, single-file HTML page with: a sticky two-column layout (280px TOC sidebar + content area), all questions grouped by section with anchor links, N-D-C role colours applied inline (N = blue `#1d4ed8`, D = green `#15803d`, C = red `#b91c1c`), colour-coded callout boxes for N/D/C definitions and examples, MathJax 3 for LaTeX rendering, the six-domain N-D-C context table with colour-coded column headers, and an IntersectionObserver script that highlights the active TOC entry as the user scrolls.
+
+**When to use it:** Whenever the user says "convert the FAQ", "rebuild the HTML FAQ", "regenerate tholonic-faq.html", "sync the FAQ HTML", or asks to update the HTML version of the FAQ after changes to the markdown source.
+
+**Files it touches:**
+- `docnav/FAQ/tholonic-faq.html` (always regenerated from scratch)
+- `docnav/FAQ/tholonic-faq.md` (read-only source)
 
 ---
 

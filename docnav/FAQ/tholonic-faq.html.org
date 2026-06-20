@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Tholonic Model FAQ</title>
+<script>MathJax = { tex: { inlineMath: [['$','$']], displayMath: [['$$','$$']] } };</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Georgia',serif;background:#f8f9fa;color:#1a1a2e;display:flex;min-height:100vh}
+
+/* ── TOC sidebar ── */
+#toc-sidebar{
+  width:280px;flex-shrink:0;position:sticky;top:0;height:100vh;
+  overflow-y:auto;background:#ffffff;border-right:1px solid #e2e8f0;
+  padding:24px 0 40px;
+}
+#toc-sidebar h2{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  color:#64748b;padding:0 20px 12px;border-bottom:1px solid #e2e8f0;margin-bottom:12px;
+}
+.toc-section{margin-bottom:16px;padding:0 20px}
+.toc-section-label{
+  display:block;font-size:0.68rem;font-weight:700;letter-spacing:0.09em;
+  text-transform:uppercase;color:#94a3b8;margin-bottom:6px;padding-bottom:4px;
+  border-bottom:1px solid #f1f5f9;
+}
+.toc-questions{list-style:none}
+.toc-questions li{margin:0}
+.toc-questions a{
+  display:block;padding:4px 8px 4px 0;font-size:0.78rem;color:#475569;
+  text-decoration:none;line-height:1.4;border-left:2px solid transparent;
+  transition:all 0.15s;
+}
+.toc-questions a:hover{color:#1d4ed8;background:#f1f5f9;padding-left:6px}
+.toc-questions a.active{
+  color:#1d4ed8;font-weight:600;border-left:2px solid #1d4ed8;
+  background:#dbeafe;padding-left:6px;
+}
+
+/* ── main content ── */
+main{flex:1;max-width:860px;padding:48px 52px 80px}
+
+.page-header{margin-bottom:32px;padding-bottom:24px;border-bottom:2px solid #e2e8f0}
+.page-header h1{font-size:1.6rem;color:#0f172a;margin-bottom:8px}
+.page-header p{font-size:0.92rem;color:#64748b;line-height:1.6}
+
+.ask-banner{
+  background:#fef9c3;border:1px solid #fde047;border-radius:8px;
+  padding:12px 18px;margin-bottom:32px;font-size:0.88rem;color:#713f12;
+}
+.ask-banner a{color:#92400e;font-weight:600}
+
+.section-heading{
+  font-size:0.72rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;
+  color:#94a3b8;margin:48px 0 16px;padding-bottom:8px;
+  border-bottom:1px solid #e2e8f0;
+}
+.section-heading:first-of-type{margin-top:0}
+
+/* ── Q&A cards ── */
+.qa{
+  background:#ffffff;border:1px solid #e2e8f0;border-radius:10px;
+  padding:24px 28px;margin-bottom:20px;scroll-margin-top:24px;
+}
+.qa-question{
+  font-size:1.05rem;font-weight:700;color:#0f172a;margin-bottom:14px;
+  padding-bottom:12px;border-bottom:1px solid #f1f5f9;position:relative;
+  padding-left:28px;
+}
+.qa-question::before{
+  content:'Q';position:absolute;left:0;top:0;
+  width:20px;height:20px;background:#1d4ed8;color:#fff;
+  border-radius:4px;font-size:0.72rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;line-height:1;
+  padding-top:1px;
+}
+.qa-answer{font-size:0.92rem;line-height:1.75;color:#374151}
+.qa-answer p{margin-bottom:12px}
+.qa-answer p:last-child{margin-bottom:0}
+.qa-answer strong{color:#1e293b}
+.qa-answer ul{margin:10px 0 12px 20px}
+.qa-answer li{margin-bottom:6px}
+
+/* ── role colours ── */
+.role-n{color:#1d4ed8;font-weight:600}
+.role-d{color:#15803d;font-weight:600}
+.role-c{color:#b91c1c;font-weight:600}
+
+/* ── callouts ── */
+.callout{border-left:4px solid;border-radius:0 6px 6px 0;padding:12px 16px;margin:14px 0;font-size:0.88rem;line-height:1.6}
+.callout-n{border-color:#1d4ed8;background:#dbeafe;color:#1e3a8a}
+.callout-d{border-color:#15803d;background:#dcfce7;color:#14532d}
+.callout-c{border-color:#b91c1c;background:#fee2e2;color:#7f1d1d}
+.callout-neutral{border-color:#94a3b8;background:#f8fafc;color:#334155}
+
+/* ── math ── */
+.math-block{
+  border:1px solid #e2e8f0;background:#f8fafc;border-radius:6px;
+  padding:16px 24px;margin:14px 0;text-align:center;overflow-x:auto;
+  font-size:1.05rem;
+}
+
+/* ── tables ── */
+.qa-answer table{width:100%;border-collapse:collapse;font-size:0.87rem;margin:12px 0}
+.qa-answer th{background:#f1f5f9;font-weight:700;padding:8px 12px;text-align:left;border:1px solid #e2e8f0}
+.qa-answer td{padding:8px 12px;border:1px solid #e2e8f0;vertical-align:top}
+.qa-answer tr:nth-child(even) td{background:#f8fafc}
+.th-n{background:#dbeafe!important;color:#1d4ed8}
+.th-d{background:#dcfce7!important;color:#15803d}
+.th-c{background:#fee2e2!important;color:#b91c1c}
+.td-context{font-weight:700;color:#1e293b}
+.td-n{color:#1d4ed8}
+.td-d{color:#15803d}
+.td-c{color:#b91c1c}
+
+/* ── footnotes ── */
+.footnotes{
+  margin-top:32px;padding-top:16px;border-top:1px solid #e2e8f0;
+  font-size:0.8rem;color:#64748b;line-height:1.6;
+}
+.footnotes ol{padding-left:20px}
+.footnotes li{margin-bottom:6px}
+.fn-ref{
+  font-size:0.72rem;vertical-align:super;color:#1d4ed8;
+  text-decoration:none;font-weight:600;
+}
+.fn-ref:hover{text-decoration:underline}
+.fn-back{color:#1d4ed8;text-decoration:none;font-size:0.8rem}
+
+/* ── footer ── */
+footer{
+  margin-top:60px;padding-top:20px;border-top:1px solid #e2e8f0;
+  font-size:0.78rem;color:#94a3b8;
+}
+
+/* ── mobile ── */
+@media(max-width:900px){
+  body{flex-direction:column}
+  #toc-sidebar{width:100%;height:auto;position:static;border-right:none;border-bottom:1px solid #e2e8f0}
+  main{padding:28px 20px 60px}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════ TOC SIDEBAR -->
+<nav id="toc-sidebar">
+  <h2>Contents</h2>
+
+  <div class="toc-section">
+    <span class="toc-section-label">The Basic Idea</span>
+    <ul class="toc-questions">
+      <li><a href="#what-is-tholonic-model">What is the Tholonic model?</a></li>
+      <li><a href="#what-do-ndc-mean">What do N, D, and C mean?</a></li>
+      <li><a href="#what-does-structural-mean">What does "structural" mean?</a></li>
+      <li><a href="#what-is-a-tholon">What is a "tholon"?</a></li>
+      <li><a href="#significance-of-tholon">Significance of "Tholon"</a></li>
+      <li><a href="#what-is-a-holon">What is a "holon"?</a></li>
+      <li><a href="#what-is-n-child">What is an N-child?</a></li>
+      <li><a href="#similar-to-game-theory">Similar to Game Theory?</a></li>
+      <li><a href="#similar-to-twistor-theory">Similar to Twistor Theory?</a></li>
+      <li><a href="#another-form-of-kpi">Another form of KPI?</a></li>
+      <li><a href="#hard-science-or-philosophy">Hard science or philosophy?</a></li>
+      <li><a href="#other-similar-models">Other similar models?</a></li>
+      <li><a href="#similarity-to-historical-models">Historical models?</a></li>
+      <li><a href="#when-was-it-created">When was it created?</a></li>
+      <li><a href="#new-mathematical-observations">New mathematical observations?</a></li>
+      <li><a href="#inherent-qualities-of-numbers">Inherent qualities of numbers?</a></li>
+      <li><a href="#chaos-order-entropy">Chaos, order, and entropy?</a></li>
+    </ul>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-section-label">Key Measurements</span>
+    <ul class="toc-questions">
+      <li><a href="#what-is-b-score">What is a B-score?</a></li>
+      <li><a href="#what-is-b-chain">What is a B-chain?</a></li>
+      <li><a href="#what-is-tvpci">What is the TVPCI?</a></li>
+      <li><a href="#what-is-tvpci-r">What is TVPCI-R?</a></li>
+      <li><a href="#what-is-rp">What is $R_p$?</a></li>
+    </ul>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-section-label">The Five Dimensions</span>
+    <ul class="toc-questions">
+      <li><a href="#why-mathematical-constants">Why mathematical constants?</a></li>
+      <li><a href="#pi4-and-b-chain">π/4 and the B-chain</a></li>
+    </ul>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-section-label">Opacity and Data</span>
+    <ul class="toc-questions">
+      <li><a href="#what-is-opacity">What is "opacity"?</a></li>
+      <li><a href="#d-heavy-c-light">D-heavy / C-light</a></li>
+    </ul>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-section-label">Advanced Terms</span>
+    <ul class="toc-questions">
+      <li><a href="#what-is-dag">What is a DAG?</a></li>
+      <li><a href="#what-is-pdi">What is a PDI?</a></li>
+      <li><a href="#what-is-ctvf">What is cTVF?</a></li>
+      <li><a href="#phase-vs-chain-health">Phase vs chain health?</a></li>
+      <li><a href="#what-is-d-collapse">What is D-collapse?</a></li>
+      <li><a href="#d-primitives-c-primitives">D-primitives and C-primitives</a></li>
+    </ul>
+  </div>
+
+  <div class="toc-section">
+    <span class="toc-section-label">How It Applies</span>
+    <ul class="toc-questions">
+      <li><a href="#why-supply-chain-phases">Why supply chain phases?</a></li>
+      <li><a href="#how-to-read-phase-table">How to read a phase table</a></li>
+      <li><a href="#why-618-threshold">Why 61.8 threshold?</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════════ MAIN -->
+<main>
+
+  <div class="page-header">
+    <h1>Tholonic Model: FAQ</h1>
+    <p>For policy makers and general readers. Every answer traces back to the formal framework, but no prior background in mathematics or systems theory is required.</p>
+  </div>
+
+  <div class="ask-banner">
+    Have a question not answered here? Send it to <a href="mailto:jeffmilton@claritycoalition.net">jeffmilton@claritycoalition.net</a> and it may be added to a future edition.
+  </div>
+
+  <!-- ═══ THE BASIC IDEA ═══ -->
+  <div class="section-heading">The Basic Idea</div>
+
+  <div class="qa" id="what-is-tholonic-model">
+    <div class="qa-question">What is the Tholonic model?</div>
+    <div class="qa-answer">
+      <p>It is a way of describing how any functioning system holds itself together. The idea is that every stable, operational entity, whether a mine, a cooperative, a refinery, an immune system, or a city recycling programme, has three structural properties that must stay roughly in balance for the entity to function.</p>
+      <p>Those three properties are called <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span>. The model is called "tholonic" because the structural unit it describes is a <strong>tholon</strong>: a self-contained, recursively nested entity that can function as a whole system at one level while acting as a single component within a larger system at another.</p>
+      <p>The framework is not a metaphor. <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span> are measurable. The model generates predictions that can be tested against data.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-do-ndc-mean">
+    <div class="qa-question">What do N, D, and C actually mean?</div>
+    <div class="qa-answer">
+      <div class="callout callout-d"><strong><span class="role-d">D (Definition):</span></strong> Everything that defines what an entity must be and must comply with. Physical requirements, regulatory standards, technical specifications, minimum viable inputs, legal constraints. D is internally focused. It governs structure and identity. Think of D as all the rules, limits, and requirements the entity must satisfy just to exist.</div>
+      <div class="callout callout-c"><strong><span class="role-c">C (Contribution):</span></strong> Everything the entity produces and passes forward. Material outputs, custody transfers, market connections, the options available to it. C is externally focused. It governs flow and relationship. Think of C as everything the entity gives to the world around it.</div>
+      <div class="callout callout-n"><strong><span class="role-n">N (Negotiation):</span></strong> The stable, functioning entity itself. N is not directly measured. It is the operational state that emerges when D and C are roughly in balance. A mine that is operating is the N of that phase. A refinery running at capacity is N. A productive farm is N. When D and C fall out of balance, N degrades. When they are back in balance, N stabilises.</div>
+      <p>The naming is historical. The technical literature uses "Negotiation" for <span class="role-n">N</span> because N is the result of an ongoing structural negotiation between what the system must be (<span class="role-d">D</span>) and what it produces (<span class="role-c">C</span>). For a non-technical reader, it is simpler to think of N as the health or operational coherence of the entity.</p>
+
+      <p><strong>Examples across different contexts:</strong></p>
+      <table>
+        <thead>
+          <tr>
+            <th>Context</th>
+            <th class="th-n">N (Coherent state)</th>
+            <th class="th-d">D (Definition / constraint)</th>
+            <th class="th-c">C (Contribution / output)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="td-context">Plant</td>
+            <td class="td-n">A living, growing plant</td>
+            <td class="td-d">Cell walls, root architecture, stomatal regulation</td>
+            <td class="td-c">Oxygen, sugars, seeds, habitat for insects</td>
+          </tr>
+          <tr>
+            <td class="td-context">Society</td>
+            <td class="td-n">A functioning civic order</td>
+            <td class="td-d">Laws, institutions, cultural norms</td>
+            <td class="td-c">Public services, innovation, shared infrastructure</td>
+          </tr>
+          <tr>
+            <td class="td-context">Astronomy</td>
+            <td class="td-n">A stable star</td>
+            <td class="td-d">Gravitational compression, nuclear ignition thresholds</td>
+            <td class="td-c">Light, heat, heavy elements released at end of life</td>
+          </tr>
+          <tr>
+            <td class="td-context">History</td>
+            <td class="td-n">A sustained civilisation</td>
+            <td class="td-d">Geographic limits, resource constraints, governance rules</td>
+            <td class="td-c">Trade, knowledge transmission, cultural exports</td>
+          </tr>
+          <tr>
+            <td class="td-context">Science</td>
+            <td class="td-n">An accepted scientific theory</td>
+            <td class="td-d">Falsifiability criteria, methodological constraints</td>
+            <td class="td-c">Predictive models, experimental procedures, technology</td>
+          </tr>
+          <tr>
+            <td class="td-context">Mechanics</td>
+            <td class="td-n">An engine running at design load</td>
+            <td class="td-d">Tolerances, fuel specifications, operating pressure limits</td>
+            <td class="td-c">Torque, power output, mechanical work done</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="qa" id="what-does-structural-mean">
+    <div class="qa-question">What does the term "structural" mean when referring to the tholonic model?</div>
+    <div class="qa-answer">
+      <p>In ordinary usage, "structural" can mean load-bearing (engineering), deep-seated (sociology), or simply relating to organisation in general. In the tholonic model it has a specific and narrower meaning: it refers to properties that arise from the relationship between <span class="role-d">D</span> and <span class="role-c">C</span>, rather than from the content or quality of any individual component.</p>
+      <p>A structural problem is one where the D-C balance itself is wrong. The individual components may each be performing correctly, but the configuration between them generates imbalance that those components cannot resolve by working harder or being replaced with better versions. A structural intervention changes the D-C arrangement: it reduces constraints, activates new outputs, or creates new connections that shift the balance. An operational intervention, by contrast, improves a component within the current arrangement without changing the arrangement itself.</p>
+      <p>Two examples make the distinction concrete:</p>
+      <div class="callout callout-neutral">A city transit authority that has excellent planning documents, legally mandated service standards, and a full professional staff but no capital budget to build the infrastructure those plans require has a structural problem. Its <span class="role-d">D</span> side (standards, mandates, requirements) far outweighs its <span class="role-c">C</span> side (services actually delivered to passengers). Hiring better planners or producing better documents does not change the D-C ratio. The problem is structural.</div>
+      <div class="callout callout-neutral">A community-owned forest that is certified sustainable but whose certification requires annual audits costing 30% of annual revenue in consultant fees also has a structural problem. The overhead is not due to anyone performing badly. It is due to the configuration of requirements relative to outputs. Reducing the audit cost or streamlining the certification process is a structural intervention. Training the forest managers more is not.</div>
+      <p>The word "structural" appears throughout the tholonic framework in phrases like "structural failure," "structural friction," "structural constraint," and "structural health." In every case it means the same thing: the source of the condition lies in the <span class="role-d">D</span>-<span class="role-c">C</span> relationship, not in the performance of any specific component.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-a-tholon">
+    <div class="qa-question">What is a "tholon"?</div>
+    <div class="qa-answer">
+      <p>A tholon is the structural unit the model describes: a bounded entity that is simultaneously a whole (with its own <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span>) and a part in a larger system (where it contributes as <span class="role-c">C</span> to the next level). The word is a contraction of "tholonic unit."</p>
+      <p>A mine is a tholon. It has internal constraints (<span class="role-d">D</span>), outputs (<span class="role-c">C</span>), and an operational state (<span class="role-n">N</span>). It is also part of the gold supply chain as a whole, where it is one contributing element (<span class="role-c">C</span>) alongside other phases.</p>
+      <p>This recursive, nested quality is what "tholonic" means. Every tholon contains smaller tholons and is contained by a larger one.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="significance-of-tholon">
+    <div class="qa-question">What is the significance of the word "Tholon"?</div>
+    <div class="qa-answer">
+      <p>The word is a contraction of <strong>Tetrahedral Holon</strong>. Each component of the name carries meaning.</p>
+      <p>A <strong>holon</strong> (from the philosopher Arthur Koestler) is any entity that is simultaneously a whole in itself and a part within a larger whole. The holon concept captures the recursive, nested quality of the framework: every tholon is both complete at its own level and embedded within a higher-level tholon.</p>
+      <p><strong>Tetrahedral</strong> describes the geometric form that the <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> triadic structure naturally inhabits. A triangle has three vertices (<span class="role-n">N</span>, <span class="role-d">D</span>, <span class="role-c">C</span>) and three edges (the relationships between them). When that triangle is given depth, the simplest possible form it produces is a tetrahedron: four triangular faces, four vertices, six edges. The tetrahedron is the minimum closed three-dimensional structure. It is irreducible in the same way that the tholonic triad is irreducible: remove any vertex or any face and the structure collapses.</p>
+      <p>A tholon is therefore a holon whose internal structure is tetrahedral: the <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span> roles occupy three of the four vertices, and the fourth vertex represents the instantiated child N that emerges from their interaction. The six edges of the tetrahedron correspond to the six directed relationships between those four points. The whole geometry is encoded in the name.</p>
+      <p>There is also a fitting resonance with the Greek <em>θόλος</em> (tholos), a circular domed building in ancient Greek architecture. The Tholos in Athens was the rotunda where the executive committee of the civic assembly convened: a bounded, self-contained space for governance and deliberation. Architecturally, a tholos stands because every element of the dome is in the right relationship to every other element. Remove any part and the whole is compromised. That is precisely what a tholon is: a structural unit in which <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span> must all be present and roughly in balance for the whole to hold. The resemblance to the word tholos was not the origin, but it is not accidental in spirit.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-a-holon">
+    <div class="qa-question">What is a "holon"? Is it the same as a tholon?</div>
+    <div class="qa-answer">
+      <p>Nearly. A holon is a concept from the philosopher Arthur Koestler: any entity that is simultaneously a whole and a part. The tholon is a holon with the specific <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> structure applied to it. When the framework documents refer to "holon structure," they mean the nested, recursive quality: every unit is both self-contained and embedded. When they refer to a "tholon," they mean that unit with its measurable <span class="role-d">D</span> and <span class="role-c">C</span> properties.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-n-child">
+    <div class="qa-question">What is an N-child, and how does it differ from an N, or N-parent?</div>
+    <div class="qa-answer">
+      <p>Every <span class="role-n">N</span> is simultaneously a parent to the level below it and a child to the level above. The terms N-parent and N-child locate a particular N within the nested hierarchy.</p>
+      <p>An <strong>N-parent</strong> is the stable, emergent state of one level whose own internal <span class="role-d">D</span> and <span class="role-c">C</span> differentiate into a new set of <span class="role-d">D</span> and <span class="role-c">C</span> roles at the level below. The N-parent does not simply contain its children in the way a box contains objects. It actively differentiates: its <span class="role-d">D</span>-side generates the constraining context for the next level, and its <span class="role-c">C</span>-side generates the contributing context. The child level then negotiates its own local <span class="role-d">D</span>-<span class="role-c">C</span> balance within those parent-level frames.</p>
+      <p>An <strong>N-child</strong> is the stable state that emerges from that child-level negotiation. It is distinct from the parent but produced by it. Once established, the N-child can itself act as an N-parent for a still lower level, generating grandchild tholons by the same process.</p>
+      <p>The full recursive cycle is: N-parent differentiates into child-level <span class="role-d">D</span> and <span class="role-c">C</span>, those interact, a new N-child emerges, that N-child becomes the next N-parent for the level below.</p>
+      <p>Examples across different domains:</p>
+      <ul>
+        <li>In a gold supply chain, the supply chain as a whole is the N-parent. Each individual phase (mining, processing, refining, vaulting) is an N-child of that parent. Within the mining phase itself, each operational sub-unit (a single mine site or shift) is an N-child of the mining phase, making it an N-grandchild of the chain.</li>
+        <li>In biology, an organism is the N-parent. Each organ is an N-child of the organism. Each cell is an N-child of its organ, an N-grandchild of the organism.</li>
+        <li>In governance, a nation-state is the N-parent. Each municipality is an N-child. Each department within a municipality is an N-grandchild.</li>
+      </ul>
+      <p>The practical significance of this distinction matters for intervention design. When a problem appears at the N-child level, its root cause is often in the N-parent's <span class="role-d">D</span>-<span class="role-c">C</span> configuration. A supply chain phase with a chronically low B-score may not be fixable at its own level. The parent-level constraints and outputs that define the child's operating context may need to change first.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="similar-to-game-theory">
+    <div class="qa-question">Is the tholonic model similar to Game Theory?</div>
+    <div class="qa-answer">
+      <p>There are surface similarities, but the two frameworks are asking fundamentally different questions and the differences matter more than the resemblances.</p>
+      <p><strong>Game theory</strong> asks: given a defined structure of players, rules, and payoffs, what will rational agents choose to do? Its central concept is the Nash equilibrium: a state where no player can improve their own outcome by changing their strategy unilaterally. Game theory is about strategic behaviour within a structure that is taken as given.</p>
+      <p><strong>The tholonic model</strong> asks: what is the structural configuration of this system, and is it balanced? Its central concept is the <span class="role-n">N</span> state: a stable operational condition that emerges when <span class="role-d">D</span> and <span class="role-c">C</span> are roughly in proportion. The model is not about decisions, strategies, or payoffs. <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span> are not agents. They are structural roles.</p>
+      <p>The key differences:</p>
+      <ul>
+        <li><em>What is being modelled.</em> Game theory models agents making choices. The tholonic model models the structural balance of a system independent of whether anyone is making choices at all. A geological formation, a bacterial colony, and a star all have N-D-C structure. None of them has a strategy.</li>
+        <li><em>What "equilibrium" means.</em> A Nash equilibrium is a stable pattern of choices. An <span class="role-n">N</span> state is a structural balance. A supply chain can reach a Nash equilibrium while being structurally imbalanced. The game-theoretic equilibrium tells you the behaviour will persist; the tholonic analysis tells you the system is under structural stress regardless.</li>
+        <li><em>What an intervention targets.</em> In game theory, changing outcomes requires changing payoffs or rules. In the tholonic model, changing outcomes requires changing the <span class="role-d">D</span>-<span class="role-c">C</span> balance.</li>
+        <li><em>Where the two complement each other.</em> A structurally <span class="role-d">D</span>-heavy phase predicts conditions under which game-theoretic defection is likely. The B-score can therefore function as a structural precondition for predicting whether cooperation is stable before a full game-theoretic model is needed.</li>
+      </ul>
+      <p>In short: game theory and the tholonic model are complementary lenses. Game theory explains what agents will do given a structure. The tholonic model diagnoses whether that structure is healthy.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="similar-to-twistor-theory">
+    <div class="qa-question">Is the tholonic model similar to Penrose's Twistor Theory?</div>
+    <div class="qa-answer">
+      <p>They are very different in domain and mathematical apparatus, but they share a deep philosophical kinship that is worth understanding.</p>
+      <p><strong>Twistor theory</strong>, developed by Roger Penrose from the 1960s onward, is a reformulation of fundamental physics. Its central proposal is that the basic objects of nature are not points in spacetime but twistors: geometric objects that encode the direction and spin of a massless particle simultaneously. Penrose's motivation was to find a framework that would unify quantum mechanics and general relativity by starting from geometry rather than from field equations.</p>
+      <p>The philosophical kinship lies in three shared instincts:</p>
+      <ul>
+        <li><em>Relations before entities.</em> Twistor theory derives spacetime points from a more primitive relational geometry. The tholonic model treats <span class="role-n">N</span> as emergent: the entity is the outcome of the <span class="role-d">D</span>-<span class="role-c">C</span> relationship, not the starting point. Both frameworks say: do not begin with the obvious unit. Begin with the structure that produces it.</li>
+        <li><em>Self-similar geometry.</em> Twistor theory has a deep connection to conformal symmetry: the structure looks the same across scales. The tholonic model's recursive N-D-C pattern repeats identically at every level of nesting.</li>
+        <li><em>The tetrahedron and the spinor.</em> The tholonic unit is tetrahedral. Twistors are built from spinors, deeply connected to the geometry of rotations. Both frameworks find that the simplest closed geometric structure consistent with their internal rules is richer than a simple point or a simple vector.</li>
+      </ul>
+      <p>The most honest summary: twistor theory and the tholonic model are working in different registers, physics versus structural analysis, but they are asking the same foundational question from different directions. Penrose asks: what geometry underlies spacetime? The tholonic model asks: what geometry underlies any functioning system?</p>
+    </div>
+  </div>
+
+  <div class="qa" id="another-form-of-kpi">
+    <div class="qa-question">Is the tholonic model another form of KPI?</div>
+    <div class="qa-answer">
+      <p>No, though the two are easily confused because both produce numbers that describe how well a system is performing.</p>
+      <p>A <strong>KPI (Key Performance Indicator)</strong> is a metric that an organisation <em>selects</em> to track progress toward a specific goal. KPIs are chosen: a manager or analyst decides which measures matter, sets targets, and reports against them. This makes KPIs vulnerable to Goodhart's Law: once a measure becomes a target, people optimise for the measure rather than the underlying reality.</p>
+      <p>The tholonic model's scores are <em>derived</em>, not chosen. The <span class="role-d">D</span>-score for a phase is the sum of the actual structural constraints the phase operates under. The <span class="role-c">C</span>-score is the sum of its actual outputs and connections. The B-score is the mathematical consequence of those two values. If you want a higher B-score, you must genuinely reduce structural constraints or activate new outputs. There is no shortcut.</p>
+      <p>Four specific differences:</p>
+      <ul>
+        <li><em>Causal versus correlational.</em> KPIs measure outcomes. The tholonic model measures the structural conditions that produce outcomes.</li>
+        <li><em>Relational versus independent.</em> The tholonic model's scores are structurally connected throughout the whole chain. KPIs do not do this.</li>
+        <li><em>Scale-independent versus context-specific.</em> The same N-D-C framework applies at every level: a cell, a phase, a supply chain, a city, an ecosystem. KPIs are designed for a specific context.</li>
+        <li><em>Resistant to gaming.</em> Because <span class="role-d">D</span> and <span class="role-c">C</span> are structural properties rather than targets, gaming the B-score requires actually changing the structural configuration of the phase.</li>
+      </ul>
+      <p>Where the two complement each other: the tholonic model is useful for deciding which KPIs to set. If a phase has a <span class="role-d">D</span>-heavy imbalance, the most structurally relevant KPI tracks constraint removal or new market connections. The model identifies the structural dimension; the KPI then tracks the specific target within that dimension.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="hard-science-or-philosophy">
+    <div class="qa-question">Is the tholonic model based on hard science, a philosophy, a vision, or a goal?</div>
+    <div class="qa-answer">
+      <p>It is all four, in different layers, and it is important to be honest about which layer is doing what kind of work.</p>
+      <p><strong>The mathematical core is hard.</strong> The claim that five classical mathematical constants (π, φ, e, √2, and ln 2) emerge as natural limits of a single family of three-variable recurrences on the <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> triple is a mathematical result. The proofs exist, are formal, and are reproducible. The constants do not appear because someone chose them for rhetorical effect. They appear as the necessary convergence points of the recursive rules when applied to the triadic structure.</p>
+      <p><strong>The structural framework is applied mathematics and systems theory.</strong> The claim that any functioning system can be described in terms of a Definition register (<span class="role-d">D</span>), a Contribution register (<span class="role-c">C</span>), and an emergent state (<span class="role-n">N</span>) is a structural hypothesis. It is grounded in the mathematical core, but applying it to a gold mine, a city, or an organ requires analytical judgments about what counts as a <span class="role-d">D</span>-primitive and what counts as a <span class="role-c">C</span>-primitive for that system.</p>
+      <p><strong>The ontological claims are philosophical.</strong> The assertion that all systems at every scale of reality have the tholonic structure is a philosophical position. It is coherent, consistent with the mathematical core, and supported by the breadth of domains in which the framework has been applied. But it belongs in the category of structural philosophy or metaphysics, not experimentally validated natural science.</p>
+      <p><strong>The applied purpose is a goal.</strong> The tholonic model was designed to describe the structural nature of change, evolution, decay, and sustainability as such. Supply chain analysis, sustainability-linked bond design, ecosystem valuation, and urban delivery chain diagnostics are applications of that general framework to specific domains. The framework came first; the applications followed.</p>
+      <p>The honest summary: the mathematical core is sound, the analytical applications are producing useful diagnostics, and the broader ontological claims are being tested through those applications rather than asserted by fiat.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="other-similar-models">
+    <div class="qa-question">Are there other models similar to the tholonic model?</div>
+    <div class="qa-answer">
+      <p>Several established frameworks share partial structural territory with the tholonic model, but none covers the same ground in the same way.</p>
+      <ul>
+        <li><strong>Systems theory and cybernetics</strong> (Bertalanffy, Wiener, Beer) developed the idea that all systems have structural properties that govern their stability. The tholonic model is continuous with this tradition but goes further by deriving its core dimensions from a specific mathematical foundation.</li>
+        <li><strong>The Viable System Model (VSM)</strong> (Stafford Beer) describes organisations in terms of recursive nested systems with distinct operational and regulatory functions. The VSM is focused on organisational management; the tholonic model is more general and mathematically grounded.</li>
+        <li><strong>Holonic systems</strong> (Koestler, Wilber) introduced the concept of the holon. The tholonic model inherits this directly; the tholon is a tetrahedral form of the holon.</li>
+        <li><strong>General systems theory, complexity theory, and chaos theory</strong> all describe how order emerges from interacting components. The tholonic model operates at a different level: it is concerned with the structural balance of a single entity rather than the aggregate behaviour of many interacting agents.</li>
+        <li><strong>Triple bottom line and ESG frameworks</strong> also apply three-dimensional analysis to systems, but their dimensions are chosen for policy purposes, not derived from mathematical necessity.</li>
+      </ul>
+      <p>The short answer: the tholonic model has kin in systems theory, cybernetics, and holonic philosophy, but its combination of mathematical derivation, recursive self-similarity, and quantitative diagnostics is not replicated elsewhere in a single integrated framework.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="similarity-to-historical-models">
+    <div class="qa-question">Is there any similarity between the tholonic model and historical models?</div>
+    <div class="qa-answer">
+      <p>Yes, and the resemblances are not superficial. Several major intellectual traditions arrived at structurally similar ideas, though without the unified mathematical foundation the tholonic model provides.</p>
+      <p><strong>Isaac Newton</strong> is the most directly relevant historical figure. Newton's project, across the <em>Principia Mathematica</em>, the <em>Opticks</em>, and his unpublished theological and alchemical writings, was to find the universal mathematical laws that govern all change, at every scale, in every domain. The tholonic model shares this ambition exactly. More specifically:</p>
+      <div class="callout callout-neutral">Newton's three laws of motion map with striking precision onto the <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> structure. The first law (inertia: an object maintains its state unless acted upon) describes <span class="role-d">D</span>: the defining constraint that holds an entity in its current form. The second law (F = ma: applied force produces a proportional change in motion) describes <span class="role-c">C</span>: the transformative contribution that changes the state. The third law (every action has an equal and opposite reaction) describes <span class="role-n">N</span>: the negotiated equilibrium that emerges when <span class="role-d">D</span> and <span class="role-c">C</span> are brought into balance.</div>
+      <p>Newton's calculus introduced the concept of limits: values that a recursive process converges toward without necessarily reaching in finite steps. The five tholonic constants (π, φ, e, √2, ln 2) are precisely limits of this kind, emerging from the <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> recurrence.</p>
+      <p><strong>Aristotle's four causes</strong> map partially onto the tholonic structure. The formal cause (what makes a thing what it is) corresponds to <span class="role-d">D</span>. The efficient cause (the active process producing the thing) corresponds to <span class="role-c">C</span>. The final cause (the end toward which a thing tends) corresponds to <span class="role-n">N</span>.</p>
+      <p><strong>Hegel's dialectic</strong> (thesis, antithesis, synthesis) is structurally a triadic model of how stable states arise from the tension between opposing forces. <span class="role-n">N</span> is synthesis, <span class="role-d">D</span> and <span class="role-c">C</span> are the opposing poles.</p>
+      <p><strong>Leibniz's monads</strong> are recursive, self-contained entities that are simultaneously complete at their own level and part of a larger hierarchy. The tholon is the same concept formalised geometrically and mathematically.</p>
+      <p><strong>Pythagoras and the Pythagorean tradition</strong> held that mathematical ratios are the true substance of reality. The tholonic model's derivation of φ, π, e, √2, and ln 2 from the first three primes (2, 3, 5 assigned to <span class="role-n">N</span>, <span class="role-d">D</span>, <span class="role-c">C</span> respectively) is a modern, rigorous expression of the Pythagorean intuition that number and ratio are foundational.</p>
+      <p>The pattern across all of these is consistent: major intellectual traditions, arriving independently, converged on a triadic structure of constraint, contribution, and emergent coherence as the minimal description of any functioning system. The tholonic model's contribution is not the triadic insight itself but its formal derivation, its quantitative operationalisation, and its application to measurable, auditable supply chain and ecosystem analysis.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="when-was-it-created">
+    <div class="qa-question">When was the tholonic model created?</div>
+    <div class="qa-answer">
+      <p>Formal development began in 2012. The model was initially presented publicly in 2019.</p>
+      <p>The period between 2012 and 2019 was used to develop the mathematical foundations, test the recursive triadic structure across multiple domains, and establish that the five classical constants (π, φ, e, √2, ln 2) emerge as natural limits of the <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> recurrence. The applied work in supply chains, ecology, and finance followed from that mathematical base.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="new-mathematical-observations">
+    <div class="qa-question">Has the tholonic model contributed or discovered any new mathematical observations?</div>
+    <div class="qa-answer">
+      <p>Yes, though the nature of the contribution is important to state precisely. The model has not discovered new numbers or invented new computation methods. Its mathematical contribution is structural: showing that things previously known separately belong together, and proving theorems about the shared grammar that unifies them.</p>
+
+      <p><strong>The tholonic ladder: structural unification of five classical constants.</strong></p>
+      <p>The central mathematical result is that five classical constants (π/4, φ, e, √2, and ln 2) all emerge as limits of a single family of three-variable recurrences on a triple (<span class="role-n">N</span>, <span class="role-d">D</span>, <span class="role-c">C</span>). Each constant corresponds to a different branch of the same recursive grammar, distinguished only by initial conditions and a rule governing how the <span class="role-d">D</span> and <span class="role-c">C</span> parameters evolve. This family is called the tholonic ladder. The five branches fall into three distinct traversal classes (Advancing, Self-redefined, Fixed), and this classification is clean and exhaustive.</p>
+
+      <p><strong>Proved theorems within the framework.</strong></p>
+      <p><a href="../Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf" target="_blank">Paper 1</a><sup><a class="fn-ref" href="#fn-p1" id="fnref-p1">1</a></sup> establishes several novel proved theorems:</p>
+      <ul>
+        <li><strong>Triadic irreducibility:</strong> Three variables are the minimum structure required. Two variables cannot simultaneously provide a functionally independent bounding role and a functionally independent integrating role. This is proved, not assumed.</li>
+        <li><strong>Seed partition:</strong> The π/4 branch is the unique branch with three numerically distinct seeds {1, 3, 5}. All other branches draw seeds from the minimal set {0, 1, 2}. This combinatorial separation is a proved theorem.</li>
+        <li><strong>Perfect-square denominator identity:</strong> The recurrence structure of the π/4 branch yields $\pi = \sum_{n=1}^{\infty} 8/(16n^2 - 1)$, expressing π as a sum of terms involving perfect squares offset by unity.</li>
+        <li><strong>Offset-consistency law:</strong> When any branch is initialized with a shifted starting value, the limit shifts by exactly that amount. Proved.</li>
+        <li><strong>Parametric families:</strong> The √2 branch embeds into a family converging to any square root; the φ branch embeds into the full family of metallic means. Proved.</li>
+      </ul>
+
+      <p><strong>Four open conjectures.</strong></p>
+      <p>The paper closes with four stated open conjectures addressing whether the seed assignments and traversal rules are forced by a small set of axioms (which would make the framework a finiteness theorem) or are a chosen sample from a larger admissible space. The structural evidence points toward the former; the proofs are not yet available.</p>
+
+      <p><strong>The three-way partition of all integers.</strong></p>
+      <p>The tholonic geometric structure partitions all positive integers into exactly three equal sets: multiples of 3 (<span class="role-n">N</span>-type), numbers divisible by 2 but not 3 (<span class="role-c">C</span>-type), and primes and products of primes greater than 3 (<span class="role-d">D</span>-type). As primes thin out at large numbers, their products fill in proportionally to maintain the one-third balance, which the model treats as a structural consequence rather than an arithmetic coincidence.<sup><a class="fn-ref" href="#fn-tholonia-c2" id="fnref-tholonia-c2">2</a></sup></p>
+
+      <p>The paper series is honest about the boundary between what is proved and what remains open. The model's own summary: "The limits are classical; the contribution lies in the structural theorems."</p>
+
+      <div class="footnotes">
+        <ol>
+          <li id="fn-p1">Milton, J.W. "Emergence of Classical Constants from a Minimal Recursive Triadic Framework." Clarity Coalition, v1.2, June 2026. <a href="../Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf" target="_blank">Full text (PDF)</a>. <a class="fn-back" href="#fnref-p1">↩</a></li>
+          <li id="fn-tholonia-c2">Stroud, D. and Milton, J.W. <em>Tholonia: The Existential Mechanics of Awareness.</em> Welkin Wall Publishing, 2020. Appendix C2: "Tholonic Math: Squares, Roots, and Prime Numbers." <a class="fn-back" href="#fnref-tholonia-c2">↩</a></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" id="inherent-qualities-of-numbers">
+    <div class="qa-question">Does the tholonic model assign inherent qualities to numbers, or are the roles purely functional labels?</div>
+    <div class="qa-answer">
+      <p>This is one of the deepest questions the framework raises, and the answer it gives is substantive: the roles are not arbitrary labels. The model argues that the integers 1, 2, and 3 have inherent structural characters that are the same as what the <span class="role-n">N</span>, <span class="role-d">D</span>, and <span class="role-c">C</span> roles functionally require, and that this correspondence is recoverable from five independent mathematical domains and four independent philosophical traditions without any prior knowledge of the tholonic framework.</p>
+
+      <p><strong>What the π/4 recurrence shows directly.</strong></p>
+      <p>In the tholonic recurrence for π/4, the odd numbers are not assigned to roles based on their position in the sequence. They are assigned based on what they are. Numbers of the form 4n−1 (3, 7, 11, 15, ...) subtract from the running sum: they constrain, limit, reduce. Numbers of the form 4n+1 (5, 9, 13, 17, ...) add to the running sum: they contribute, integrate, grow. The traditional Leibniz series presents this as "alternate the sign based on position." The tholonic reading says the sign is not positional. A number's residue modulo 4 is its qualitative nature, and that nature determines its structural role.<sup><a class="fn-ref" href="#fn-p1-pi" id="fnref-p1-pi">1</a></sup></p>
+      <p>This is not a numerological assertion. The ≡1 mod 4 and ≡3 mod 4 classes of odd integers are independently recognized in number theory as structurally distinct: primes ≡ 1 mod 4 factor in the Gaussian integers, while primes ≡ 3 mod 4 do not.<sup><a class="fn-ref" href="#fn-fermat" id="fnref-fermat">2</a></sup> The recurrence is reading a distinction that number theory already knew was real.</p>
+
+      <p><strong>What the framework argues across five mathematical domains.</strong></p>
+      <p><a href="../Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf" target="_blank">Paper 6</a><sup><a class="fn-ref" href="#fn-p6" id="fnref-p6">3</a></sup> examines what the integers 1, 2, and 3 structurally are across five independent domains: Von Neumann ordinal theory,<sup><a class="fn-ref" href="#fn-vonneumann" id="fnref-vonneumann">4</a></sup> small category theory,<sup><a class="fn-ref" href="#fn-maclane" id="fnref-maclane">5</a></sup> graph theory,<sup><a class="fn-ref" href="#fn-graphtheory" id="fnref-graphtheory">6</a></sup> simplex topology,<sup><a class="fn-ref" href="#fn-hatcher" id="fnref-hatcher">7</a></sup> and the theory of symmetric groups.<sup><a class="fn-ref" href="#fn-armstrong" id="fnref-armstrong">8</a></sup> In every domain, the same three qualitative transitions appear at the same integers:</p>
+      <ul>
+        <li><strong>1</strong> is always self-contained, internally consistent, without external reference. It is the state in isolation: no edges, no arrows, no internal distinction, no non-trivial operations.</li>
+        <li><strong>2</strong> is always the first external relation: the first boundary, the first directed distinction, the first non-trivial operation. Something is now defined against something else.</li>
+        <li><strong>3</strong> is always the first composition, closure, or integration that generates something new: the first forced composite morphism, the first cycle in a graph, the first closed interior in a simplex, the first non-Abelian group.</li>
+      </ul>
+      <p>The conclusion: the <span class="role-n">N</span> role corresponds to 1 not by convention but because cardinality-1 structures are structurally what the <span class="role-n">N</span> role functionally requires. The <span class="role-d">D</span> role corresponds to 2 because cardinality-2 structures are structurally what the <span class="role-d">D</span> role requires. The <span class="role-c">C</span> role corresponds to 3 because cardinality-3 structures are the first to exhibit composition and closure, which is what the <span class="role-c">C</span> role does.</p>
+
+      <p><strong>Eleven independent sources, one mapping.</strong></p>
+      <p>The same correspondence is independently recovered, without any knowledge of the tholonic framework, by Peirce's phenomenological categories (Firstness, Secondness, Thirdness),<sup><a class="fn-ref" href="#fn-peirce" id="fnref-peirce">9</a></sup> Kant's categories of quantity (Unity, Plurality, Totality),<sup><a class="fn-ref" href="#fn-kant" id="fnref-kant">10</a></sup> Hegel's dialectical triad (thesis, antithesis, synthesis),<sup><a class="fn-ref" href="#fn-hegel" id="fnref-hegel">11</a></sup> Spencer-Brown's distinction calculus (mark, marked/unmarked duality, re-entry),<sup><a class="fn-ref" href="#fn-sb" id="fnref-sb">12</a></sup> and the Pythagorean tradition (monad, dyad, triad).<sup><a class="fn-ref" href="#fn-nicomachus" id="fnref-nicomachus">13</a></sup> Eleven independent sources, across formal mathematics and analytical philosophy, converge on the same mapping at the same integers.</p>
+
+      <p><strong>The practical consequence.</strong></p>
+      <p>If the role assignment is merely conventional, the tholonic framework is a powerful organizational schema. If it is necessary, the framework is something stronger: a consequence of the inherent structure of the first three positive integers, applicable without stipulation to any system that instantiates those integers in their natural order.</p>
+      <p><a href="../Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf" target="_blank">Paper 6</a> is careful about the strength of the claim. It does not assert a formal theorem derived from Peano axioms alone. What it asserts is more defensible: within the class of minimal recursive systems that require exactly three functional roles, the mapping from cardinality to role is the unique assignment consistent with the structural properties of 1, 2, and 3 as they appear across those five independent domains. Whether this elevates to a strict theorem is an open problem.</p>
+      <p>The distinction from numerology is precision and falsifiability. Numerology assigns meanings by assertion. The claim here is bounded and testable: if a formal argument demonstrated that a cardinality-1 structure can play the bounding role, or a cardinality-2 structure can play the integrating role, the thesis would be falsified. No such argument has been produced.</p>
+
+      <div class="footnotes">
+        <ol>
+          <li id="fn-p1-pi">Milton, J.W. <a href="../Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf" target="_blank">Paper 1</a>, §5.1 (the π/4 branch) and §2.1 (geometric axis structure and seed derivation). <a class="fn-back" href="#fnref-p1-pi">↩</a></li>
+          <li id="fn-fermat">Fermat first stated that every prime of the form 4n+1 is a sum of two squares (1640); Euler supplied the proof (1749). Primes ≡1 mod 4 split as p = (a+bi)(a−bi) in ℤ[i], while primes ≡3 mod 4 remain irreducible. See: Ireland, K. and Rosen, M. <em>A Classical Introduction to Modern Number Theory.</em> 2nd ed. Springer, 1990. Ch. 9. <a class="fn-back" href="#fnref-fermat">↩</a></li>
+          <li id="fn-p6">Milton, J.W. "The Qualitative Nature of One, Two, and Three: Structural Role Assignment in Minimal Recursive Systems." Clarity Coalition, v1.0, April 2026. <a href="../Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf" target="_blank">Full text (PDF)</a>. <a class="fn-back" href="#fnref-p6">↩</a></li>
+          <li id="fn-vonneumann">Von Neumann, J. "Zur Einführung der transfiniten Zahlen." <em>Acta Scientiarum Mathematicarum</em> 1 (1923): 199–208. Construction of ordinals: 0 = ∅, 1 = {0}, 2 = {0,1}, 3 = {0,1,2}. <a class="fn-back" href="#fnref-vonneumann">↩</a></li>
+          <li id="fn-maclane">Mac Lane, S. <em>Categories for the Working Mathematician.</em> 2nd ed. Springer, 1998. Ordinal categories <strong>1</strong>, <strong>2</strong>, <strong>3</strong> and the first forced composition in <strong>3</strong>. <a class="fn-back" href="#fnref-maclane">↩</a></li>
+          <li id="fn-graphtheory">Cyclomatic complexity μ(G) = E − V + 1. The first nonzero value (μ = 1) appears at K₃ (three vertices, three edges), the smallest complete graph containing a cycle. <a class="fn-back" href="#fnref-graphtheory">↩</a></li>
+          <li id="fn-hatcher">Hatcher, A. <em>Algebraic Topology.</em> Cambridge University Press, 2002. The 2-simplex (triangle) is the minimum simplex with a non-trivial closed boundary and a non-zero interior. <a class="fn-back" href="#fnref-hatcher">↩</a></li>
+          <li id="fn-armstrong">Armstrong, M.A. <em>Groups and Symmetry.</em> Springer, 1988. S₃ is the smallest non-Abelian group (order 6), the first symmetric group exhibiting non-trivial subgroup structure of more than one type. <a class="fn-back" href="#fnref-armstrong">↩</a></li>
+          <li id="fn-peirce">Peirce, C.S. <em>Collected Papers.</em> Vol. 1, §§300–353. Harvard University Press, 1931. Peirce's formal argument for the irreducibility of Thirdness is at §346. <a class="fn-back" href="#fnref-peirce">↩</a></li>
+          <li id="fn-kant">Kant, I. <em>Critique of Pure Reason.</em> A80/B106. Translated by N.K. Smith. Macmillan, 1929 [1781]. Kant explicitly describes Totality as "the synthesis of Unity and Plurality." <a class="fn-back" href="#fnref-kant">↩</a></li>
+          <li id="fn-hegel">Hegel, G.W.F. <em>Science of Logic.</em> Translated by A.V. Miller. Allen and Unwin, 1969 [1812]. The synthesis (<em>Aufhebung</em>) preserves both thesis and antithesis while enabling the process to continue at a new level. <a class="fn-back" href="#fnref-hegel">↩</a></li>
+          <li id="fn-sb">Spencer-Brown, G. <em>Laws of Form.</em> Allen and Unwin, 1969. The re-entry operator (§11) is the minimum augmentation that makes the calculus self-referential and dynamic. <a class="fn-back" href="#fnref-sb">↩</a></li>
+          <li id="fn-nicomachus">Nicomachus of Gerasa. <em>Introduction to Arithmetic.</em> Translated by M.L. D'Ooge. Macmillan, 1926 [c. 100 CE]. See also Aristotle, <em>Metaphysics</em> A, 985b–986a, on the Pythagorean treatment of number. <a class="fn-back" href="#fnref-nicomachus">↩</a></li>
+        </ol>
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" id="chaos-order-entropy">
+    <div class="qa-question">How does the tholonic model define chaos, order, and entropy?</div>
+    <div class="qa-answer">
+      <p>These three concepts are foundational to the tholonic model and carry precise definitions that differ meaningfully from casual usage.</p>
+
+      <p><strong>Chaos is not disorder. It is the absence of pattern at either extreme.</strong></p>
+      <p>The tholonic model defines chaos as a spectrum running from absolute nothingness (zero) to absolute somethingness (infinity). Both extremes are chaotic for the same reason: neither has any pattern, periodicity, or predictability. Order is not the opposite of chaos. It is chaos's middle: the narrow corridor of temporary, partial pattern that emerges between the two extreme states.</p>
+      <p>The model distinguishes two forms of chaos by direction:</p>
+      <ul>
+        <li><strong>Positive chaos</strong> (low-entropy chaos): chaos that is moving toward order. This is the state of a newly forming system, a seed germinating, the early universe after the Big Bang, or a supply chain phase being established. It has high potential energy and low current structure.</li>
+        <li><strong>Negative chaos</strong> (high-entropy chaos): chaos that is moving away from order. This is the state of a system dissolving: a dying ecosystem, a bankrupt organisation, the late-universe heat death. Energy is dispersed and no further work is available.</li>
+      </ul>
+
+      <p><strong>Order is temporary, recursive, and scale-dependent.</strong></p>
+      <p>Order describes how predictable a given arrangement is. In the tholonic model, two further properties are essential. First, order is always temporary: it is borrowed from the chaos on either side of it and will eventually be reclaimed. Second, order is recursive: what counts as chaos at one level of scale contains order at the level below it. A cell is ordered relative to the molecules that constitute it; it is chaotic relative to the tissue it is part of.</p>
+      <p>This yields two rules that initially appear to contradict each other but do not:</p>
+      <ul>
+        <li>Chaos precedes order: at any given level, order emerges from within a chaotic substrate.</li>
+        <li>Order precedes chaos: the order at one level provides the stable substrate from which the chaos and order of the next level can arise.</li>
+      </ul>
+
+      <p><strong>Entropy is a measure of balance, not simply of disorder.</strong></p>
+      <p>The tholonic model accepts the thermodynamic definition of entropy as a measure of how many ways a system's energy can be arranged, but generalises it: entropy is the degree to which a system has balanced its internal energy distribution. This reframing has a precise consequence: order does not decrease entropy; order is the mechanism by which entropy increases. Order creates the structured pathways through which imbalanced energy can flow and balance itself. A river channel, a supply chain, a living cell: each is an ordered structure whose function is to move energy from a concentrated state (low entropy) toward a dispersed state (higher entropy).</p>
+      <p>The cycle is therefore: low-entropy chaos → order → high-entropy chaos, at every scale, recursively. This is the fundamental cycle that the tholonic <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> structure describes. <span class="role-d">D</span> represents the constraints that define the ordered phase and hold its energy in concentrated form. <span class="role-c">C</span> represents the outputs and connections through which that energy flows outward. <span class="role-n">N</span> is the coherent, operating state in which <span class="role-d">D</span> and <span class="role-c">C</span> are balanced and the ordered phase is sustainable.</p>
+
+      <p><strong>One further distinction: the model distinguishes three realms of entropy.</strong></p>
+      <p>In the material realm, entropy is thermodynamic: energy disperses, and the process is irreversible. In the electromagnetic realm (the domain of light and photons), proper time does not pass from the photon's own reference frame, so thermodynamic entropy does not apply. In the tholonic realm (the domain of archetypes, coherence, and structural logic), something described as the reverse of thermodynamic entropy applies: patterns do not dissolve but crystallise, and coherence increases rather than decreases. The thermodynamic cost is paid only when a tholonic pattern is instantiated in material form, at which point normal entropic processes resume.</p>
+    </div>
+  </div>
+
+  <!-- ═══ KEY MEASUREMENTS ═══ -->
+  <div class="section-heading">The Key Measurements</div>
+
+  <div class="qa" id="what-is-b-score">
+    <div class="qa-question">What is a B-score?</div>
+    <div class="qa-answer">
+      <p>The B-score (also written $B$) is the balance score for a single phase or entity. It measures how well <span class="role-d">D</span> and <span class="role-c">C</span> are matched. The formula is:</p>
+      <div class="math-block">$$B = \frac{2 \cdot \min(D, C)}{D + C} \times 100$$</div>
+      <p>A B-score of 100 means <span class="role-d">D</span> and <span class="role-c">C</span> are perfectly equal. A B-score of 0 means one of them is zero and the other dominates completely. Most functioning systems score between 40 and 85.</p>
+      <p>The B-score is the most direct diagnostic tool in the framework. A phase with a low B-score is either over-constrained (too many <span class="role-d">D</span> requirements relative to <span class="role-c">C</span> outputs) or under-constrained (too many outputs relative to its structural foundations).</p>
+      <p>The threshold of 61.8 (which is $100 \times (1/\varphi)$, where $\varphi$ is the golden ratio) is used as the boundary between a "fair" and "poor" phase health rating. Phases scoring below 61.8 are identified as bottlenecks requiring intervention.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-b-chain">
+    <div class="qa-question">What is a B-chain?</div>
+    <div class="qa-answer">
+      <p>The B-chain (written $B_\text{chain}$) is the chain-level balance score. It measures whether the forward supply chain and the return (recycling/ecological) flow of the chain are in balance with each other.</p>
+      <p>Every supply chain moves goods forward. But a structurally healthy chain also returns value in the opposite direction. The framework captures this with two separate indices:</p>
+      <ul>
+        <li><strong>TVPCI:</strong> The score for the forward chain (how well the chain delivers its product).</li>
+        <li><strong>TVPCI-R:</strong> The score for the return chain (how well the chain manages its waste, ecological impact, and value return).</li>
+      </ul>
+      <p>The B-chain is then:</p>
+      <div class="math-block">$$B_\text{chain} = 100 \times \exp\!\left(-2 \times \frac{|\text{TVPCI} - \text{TVPCI-R}|}{\max(\text{TVPCI},\, \text{TVPCI-R})}\right)$$</div>
+      <p>When TVPCI and TVPCI-R are equal, the B-chain is 100. When they are far apart, the B-chain falls toward zero.</p>
+      <p>The tholonic role assignment: TVPCI is <span class="role-d">D</span> (the forward chain, defining the product), TVPCI-R is <span class="role-c">C</span> (the ecological return contribution), and B-chain is <span class="role-n">N</span> (the emergent balance of the whole system).</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-tvpci">
+    <div class="qa-question">What is the TVPCI?</div>
+    <div class="qa-answer">
+      <p>The True Value Pricing Convergence Index measures the gap between a commodity's market price and what the structural health of the supply chain would support. It runs from 0 to 100.</p>
+      <p>A score of 100 means the market price and the chain's structural value are fully aligned. A score near zero means they are effectively disconnected. Most real supply chains score between 35 and 75. The score is built from three components: how balanced individual phases are (the B-scores), how proportionately value passes from one phase to the next, and how efficiently each phase converts its inputs into outputs. An opacity correction reduces the score further for phases where data is unavailable.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-tvpci-r">
+    <div class="qa-question">What is TVPCI-R?</div>
+    <div class="qa-answer">
+      <p>TVPCI-R is the "return" dimension of the TVPCI. It measures how visible and managed the waste outputs and ecological return flows of each phase are. It is computed in parallel with the forward TVPCI but uses waste-intensity weights rather than phase-position weights.</p>
+      <p>TVPCI-R is not a Phase 8 added after the forward chain ends. It is a parallel structure. Every phase in the forward chain also has an $R_p$ score measuring how well that phase manages what it puts back into the environment and the community.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-rp">
+    <div class="qa-question">What is $R_p$?</div>
+    <div class="qa-answer">
+      <p>$R_p$ is the recycling observable for a single phase. It scores how visible and managed that phase's waste outputs and ecological return flows are, on a scale from 0 to 1. Phases that track their waste precisely, return ecological value, and connect their outputs to communities score close to 1. Phases with untracked waste, opaque environmental impacts, and no return flows score close to 0.</p>
+      <p>The subscript $p$ stands for "phase." Each of the phases in the forward supply chain has its own $R_p$.</p>
+    </div>
+  </div>
+
+  <!-- ═══ THE FIVE DIMENSIONS ═══ -->
+  <div class="section-heading">The Five Dimensions</div>
+
+  <div class="qa" id="why-mathematical-constants">
+    <div class="qa-question">Why does the model use mathematical constants like pi, phi, and e?</div>
+    <div class="qa-answer">
+      <p>Because they emerge from the model itself.</p>
+      <p>When the <span class="role-n">N</span>-<span class="role-d">D</span>-<span class="role-c">C</span> framework's own recursive rules are applied mathematically using the structural values of the model as seeds, five fundamental constants emerge as natural attractors for what a coherent system looks like. They were not chosen because they are mathematically famous. They appear in the same way that the golden ratio $\varphi$ appears in the Fibonacci sequence: not by design, but as a consequence of the rule.</p>
+      <p>The five constants each measure a different structural dimension of a supply chain:</p>
+      <table>
+        <thead>
+          <tr><th>Constant</th><th>What it measures</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>$\varphi$ (phi, 1.618)</td><td>Whether each phase amplifies value in natural proportion to the one before it</td></tr>
+          <tr><td>$e$ (2.718)</td><td>How quickly imbalance at one phase spreads to adjacent phases</td></tr>
+          <tr><td>$\ln(2)$ (0.693)</td><td>Which phases capture each step of value growth through the chain</td></tr>
+          <tr><td>$\sqrt{2}$ (1.414)</td><td>Whether the chain has crossed from a physically constrained regime to an institutionally constrained one</td></tr>
+          <tr><td>$\pi/4$ (0.785)</td><td>Whether the value cycle closes: does value return to those who created it?</td></tr>
+        </tbody>
+      </table>
+      <p>A chain that scores well on all five dimensions is structurally coherent. A chain that scores poorly on one reveals a specific structural problem, not just a vague sense that something is wrong.</p>
+      <div class="callout callout-neutral">
+        For worked examples of each constant applied to a real biological system, see <a href="/docnav/view.html?file=docnav/FAQ/five-dimensions-photo.md">Five Dimensions: Photosynthesis Examples</a>. For plain-language label alternatives suitable for presentations that avoid mathematical notation, see <a href="/docnav/view.html?file=docnav/FAQ/five-dimensions-plain-labels.md">Five Dimensions: Plain Labels</a>.
+      </div>
+    </div>
+  </div>
+
+  <div class="qa" id="pi4-and-b-chain">
+    <div class="qa-question">What does the π/4 dimension have to do with the B-chain?</div>
+    <div class="qa-answer">
+      <p>$\pi/4$ measures whether the value cycle closes. A supply chain is not only a forward flow from raw material to market. The value that reaches the terminal market must, in a structurally healthy chain, complete a circuit: investment returns to primary producers, ecological resources are renewed, communities that created the chain receive something back.</p>
+      <p>The B-chain is the quantitative expression of this question. When $B_\text{chain}$ is high, the forward and return flows are balanced, the cycle closes. When $B_\text{chain}$ is low, the cycle is broken. The $\pi/4$ dimension asks the same question at the level of the whole system; B-chain answers it with a specific number.</p>
+    </div>
+  </div>
+
+  <!-- ═══ OPACITY AND DATA ═══ -->
+  <div class="section-heading">Opacity and Data</div>
+
+  <div class="qa" id="what-is-opacity">
+    <div class="qa-question">What does "opacity" mean in this framework?</div>
+    <div class="qa-answer">
+      <p>Opacity is used as a structural description, not a moral judgment. A phase is opaque when its internal operations cannot be observed from outside with sufficient precision to compute a reliable <span class="role-d">D</span> or <span class="role-c">C</span> score. This happens for structural reasons: private contracts, legal confidentiality, jurisdictional limits, or the simple absence of public reporting requirements.</p>
+      <p>An opaque phase is not presumed to be badly run. The framework responds by applying an opacity correction: the overall TVPCI is reduced by up to 15% for each unobservable phase. This reflects the fact that a chain we cannot fully see cannot be given a high trust score, because the hidden phases may be the weakest ones.</p>
+      <p>The gold vaulting phase (Phase 6) is opaque for legal and security reasons. Vault contents are confidential by law. The framework records this as a constraint on confidence, not as evidence of misconduct.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="d-heavy-c-light">
+    <div class="qa-question">What does it mean when a phase is labeled "D-heavy" or "C-light"?</div>
+    <div class="qa-answer">
+      <p>"<span class="role-d">D</span>-heavy" means the phase carries far more constraints, requirements, and limitations than it has productive outputs or market connections. The entity at that phase is spending most of its structural energy just surviving within its constraints rather than contributing to the chain.</p>
+      <p>"<span class="role-c">C</span>-light" means the same condition described from the output side: the phase does not produce enough, does not have enough connections, or does not pass enough value forward, relative to what it demands from the system.</p>
+      <p>Both descriptions indicate imbalance. The B-score captures the severity numerically. Intervention analysis then identifies whether the fix is to reduce <span class="role-d">D</span> (remove constraints, streamline regulation) or to increase <span class="role-c">C</span> (add market connections, improve logistics, invest in output capacity).</p>
+    </div>
+  </div>
+
+  <!-- ═══ ADVANCED TERMS ═══ -->
+  <div class="section-heading">Advanced Terms</div>
+
+  <div class="qa" id="what-is-dag">
+    <div class="qa-question">What is a DAG and why does it matter for the supply chain?</div>
+    <div class="qa-answer">
+      <p>DAG stands for Directed Acyclic Graph. In plain terms: a chain of steps where you can only move forward, not backward, and where there are no loops that return to an earlier point.</p>
+      <p>The supply chain from raw material to final product is modeled as a DAG because physical custody of the material only moves forward through the phases. Gold does not go back from a vault to a refinery under normal conditions. The DAG structure ensures the phase analysis is logically consistent: each phase has defined inputs from the phase before it and defined outputs to the phase after it.</p>
+      <p>The recycling and return flows (captured in TVPCI-R) are modeled as a parallel structure, not as a loop added to the forward DAG. This keeps the primary chain analytically clean while still accounting for ecological return.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-pdi">
+    <div class="qa-question">What is a "PDI"?</div>
+    <div class="qa-answer">
+      <p>PDI stands for Phase Data Infrastructure. It is the organised collection of source evidence, extracted parameters, and data gaps for each phase of a supply chain. The PDI is what the model uses to compute <span class="role-d">D</span> and <span class="role-c">C</span> scores: for each phase, the PDI lists the specific constraints (<span class="role-d">D</span>-primitives) and outputs (<span class="role-c">C</span>-primitives) that have been identified, their data sources, and where data is missing.</p>
+      <p>For a reader of the dashboards or reports, the PDI is the evidence base behind the numbers. When a phase has a low <span class="role-c">C</span>-score, the PDI documents which <span class="role-c">C</span>-primitives are absent and why.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-ctvf">
+    <div class="qa-question">What is cTVF?</div>
+    <div class="qa-answer">
+      <p>cTVF stands for Clarity True Value Framework. It is a diagnostic approach applied before formal TVPCI scoring: an initial assessment of whether a project has enough ecological, social, governance, market, and finance evidence to support the full scoring analysis. It identifies what information exists, what is missing, and what structural gaps must be closed before investment analysis is meaningful.</p>
+      <p>For a policy reader, cTVF is the pre-screening step. It asks: "Do we have enough data and structural clarity to assess this chain at all?" The answer determines whether full TVPCI scoring is appropriate or whether data gaps are too large to produce reliable results.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="phase-vs-chain-health">
+    <div class="qa-question">What is the difference between "phase health" and "chain health"?</div>
+    <div class="qa-answer">
+      <p><strong>Phase health</strong> refers to the B-score and <span class="role-d">D</span>/<span class="role-c">C</span> balance of a single supply chain phase. A phase is healthy when its constraints and outputs are roughly proportionate. It is stressed when one side dominates. Phase health is local.</p>
+      <p><strong>Chain health</strong> refers to how well the phases connect to each other and whether value passes between them in natural proportion. A chain can consist of individually healthy phases that are nonetheless poorly connected, producing a low chain-level coherence score. Chain health is measured by the TVPCI and the $\varphi$-based coherence score at each phase boundary.</p>
+      <p><strong>System health</strong> is the broadest level: it includes both chain health and whether the cycle closes (B-chain). A chain can be internally coherent and still score poorly on system health if it does not return value to its ecological and social foundations.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="what-is-d-collapse">
+    <div class="qa-question">What does "D-collapse" mean?</div>
+    <div class="qa-answer">
+      <p><span class="role-d">D</span>-collapse refers to the progressive loss of the constraining, organizing structure (<span class="role-d">D</span>) in a system. When <span class="role-d">D</span> weakens, <span class="role-c">C</span> is no longer bounded by adequate structure. The entity loses its defining constraints and becomes unable to maintain coherent identity or operation.</p>
+      <p>The concept appears in cancer research (where oncogenic mutations progressively weaken the constraints that keep cells within tissue boundaries), in ecology (where industrial monoculture degrades soil structure), and in consciousness research (where psychedelic compounds temporarily reduce the brain's predictive prior structure). In each case, <span class="role-d">D</span>-collapse leads to a system that is uncontrolled rather than liberated.</p>
+      <p><span class="role-c">C</span>-collapse is the opposite: the erosive loss of productive outputs and connections while constraints remain. The entity becomes increasingly rigid and internally focused, consuming resources without contributing to the larger system.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="d-primitives-c-primitives">
+    <div class="qa-question">What are "D-primitives" and "C-primitives"?</div>
+    <div class="qa-answer">
+      <p>Primitives are the individual, irreducible items that make up the <span class="role-d">D</span> or <span class="role-c">C</span> score for a phase. A <span class="role-d">D</span>-primitive is a single specific constraint, requirement, or limitation (for example: "LBMA Good Delivery standard compliance" in the gold bar-casting phase). A <span class="role-c">C</span>-primitive is a single specific output, connection, or market option (for example: "access to three or more registered smelters" in the artisanal mining phase).</p>
+      <p>The <span class="role-d">D</span>-score for a phase is computed by summing all its <span class="role-d">D</span>-primitives, each weighted by importance. The <span class="role-c">C</span>-score is computed the same way. The B-score then reflects how well those two totals are matched.</p>
+      <p>Using primitives rather than aggregate estimates makes the scoring auditable: any analyst can check which primitives were included, which were excluded, and what data source supports each one.</p>
+    </div>
+  </div>
+
+  <!-- ═══ HOW IT APPLIES ═══ -->
+  <div class="section-heading">How the Framework Applies</div>
+
+  <div class="qa" id="why-supply-chain-phases">
+    <div class="qa-question">Why does the model use supply chain phases specifically?</div>
+    <div class="qa-answer">
+      <p>Because physical supply chains are among the few domains where custody of a material can be traced step by step, each step has measurable inputs and outputs, and the structural properties at each step genuinely affect who captures value, who bears environmental cost, and how resilient the system is to disruption.</p>
+      <p>The phase-based approach means every finding can be located: not "the gold chain has a structural problem" but "Phase 6 (vaulting and logistics) has a B-score of 32, driven by D = 420 (security law, insurance minimums, multi-jurisdictional custody requirements) and C = 180 (a handful of approved operators globally, restricted transport options)." That specificity is what makes intervention analysis possible.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="how-to-read-phase-table">
+    <div class="qa-question">How do I read a phase score table?</div>
+    <div class="qa-answer">
+      <p>A typical phase table includes:</p>
+      <ul>
+        <li><strong>Phase name and ID:</strong> the specific step in the chain.</li>
+        <li><strong><span class="role-d">D</span>-score:</strong> the total weight of constraints the phase operates under.</li>
+        <li><strong><span class="role-c">C</span>-score:</strong> the total weight of outputs and connections the phase produces.</li>
+        <li><strong>B-score:</strong> the balance between <span class="role-d">D</span> and <span class="role-c">C</span> (higher is healthier; 61.8 is the critical threshold).</li>
+        <li><strong><span class="role-n">N</span>-state label:</strong> a qualitative summary (Coherent, Fair, Poor, or Critical) based on the B-score.</li>
+        <li><strong>Transparency classification:</strong> High, Medium, or Low, reflecting how much of the phase can be observed from outside.</li>
+      </ul>
+      <p>When reading a table, start with the lowest B-scores. Those are the phases where the chain is most stressed and where intervention will have the most structural impact.</p>
+    </div>
+  </div>
+
+  <div class="qa" id="why-618-threshold">
+    <div class="qa-question">Why do some scores reference "61.8" as a threshold?</div>
+    <div class="qa-answer">
+      <p>61.8 is $100 \times (1/\varphi)$, where $\varphi$ is the golden ratio (approximately 1.618). In a system governed by $\varphi$-proportional growth, a phase below this threshold is operating below the natural recovery point: the imbalance is large enough that the phase cannot self-correct through ordinary operations. Phases above 61.8 are in a regime where normal operational adjustment can restore balance; phases below it require structural intervention.</p>
+      <p>The golden ratio appears throughout the framework because it is the natural amplification ratio that emerges from the model's own recursive rules. Using $1/\varphi$ as the health threshold is therefore not an arbitrary choice but a structural consequence.</p>
+    </div>
+  </div>
+
+  <footer>
+    <p>Source of truth: <code>docnav/FAQ/tholonic-faq.md</code>. For formal derivations, see the paper series in <code>docnav/Research/papers/</code>. For applied examples, see the project dashboards under <code>frontend/project/</code>.</p>
+  </footer>
+
+</main>
+
+<script>
+const qaItems = document.querySelectorAll('.qa[id]');
+const tocLinks = document.querySelectorAll('#toc-sidebar a');
+const tocMap = {};
+tocLinks.forEach(a => { tocMap[a.getAttribute('href').slice(1)] = a; });
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    const link = tocMap[entry.target.id];
+    if (!link) return;
+    if (entry.isIntersecting) {
+      tocLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      link.scrollIntoView({ block: 'nearest' });
+    }
+  });
+}, { rootMargin: '-10% 0px -80% 0px', threshold: 0 });
+qaItems.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
