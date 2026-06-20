@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bristol One City: Supply Chain Analysis</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #0d2235; color: #e8f4f9; min-height: 100vh;
+}
+.hero {
+  background: linear-gradient(135deg, #0d2235 0%, #1a4a6b 100%);
+  padding: 40px 32px 32px; border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.kicker {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #0d2235; background: #7ec8e3;
+  padding: 4px 14px; border-radius: 999px; margin-bottom: 14px;
+}
+h1 { font-size: 30px; font-weight: 300; color: #fff; margin-bottom: 8px; }
+.subtitle { font-size: 14px; opacity: 0.75; max-width: 800px; line-height: 1.6; color: #c8e6f4; margin-bottom: 28px; }
+.kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 900px; }
+.kpi { background: rgba(255,255,255,0.08); border-radius: 10px; padding: 16px 12px; border: 1px solid rgba(126,200,227,0.2); }
+.kpi-val { font-size: 22px; font-weight: 800; color: #7ec8e3; }
+.kpi-lbl { font-size: 11px; opacity: 0.7; margin-top: 3px; line-height: 1.4; }
+.container { max-width: 1100px; margin: 0 auto; padding: 28px 24px; }
+.section-title { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #7ec8e3; margin-bottom: 14px; }
+.card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+.card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(126,200,227,0.15);
+  border-radius: 12px; padding: 22px; text-decoration: none; color: inherit;
+  transition: background 0.2s; display: block;
+}
+.card:hover { background: rgba(126,200,227,0.1); }
+.card-icon { font-size: 24px; margin-bottom: 10px; }
+.card-title { font-size: 15px; font-weight: 700; color: #7ec8e3; margin-bottom: 6px; }
+.card-desc { font-size: 13px; opacity: 0.7; line-height: 1.5; }
+.phase-table { width: 100%; border-collapse: collapse; font-size: 13px; margin-bottom: 28px; }
+.phase-table th { background: rgba(126,200,227,0.15); color: #7ec8e3; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; }
+.phase-table td { padding: 12px; border-bottom: 1px solid rgba(255,255,255,0.06); color: #c8e6f4; vertical-align: top; }
+.phase-table tr:hover td { background: rgba(126,200,227,0.05); }
+.badge { display: inline-block; font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; }
+.badge.excellent { background: rgba(21,128,61,0.3); color: #86efac; }
+.badge.good { background: rgba(14,116,144,0.3); color: #67e8f9; }
+.badge.fair { background: rgba(194,120,3,0.3); color: #fbbf24; }
+.badge.poor { background: rgba(185,28,28,0.4); color: #fca5a5; }
+.badge.high { background: rgba(21,128,61,0.3); color: #86efac; }
+.badge.medium { background: rgba(194,120,3,0.3); color: #fbbf24; }
+.badge.low { background: rgba(185,28,28,0.4); color: #fca5a5; }
+.nav { text-align: center; padding: 24px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; }
+.nav a { color: #7ec8e3; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 12px; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 700px) { .kpi-row { grid-template-columns: 1fr 1fr; } .card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="kicker">Supply Chain Analysis</span>
+  <h1>Bristol One City: Urban Delivery Chain</h1>
+  <p class="subtitle">
+    7-phase delivery chain analysis. Chain balance 81.3% (Good). Primary bottleneck: Phase 5
+    Community and Household Uptake (58.3%, Poor). The city has exemplary institutional infrastructure
+    but a critical disconnect at the point of contact with deprived communities.
+  </p>
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">81.3%</div>
+      <div class="kpi-lbl">Chain average balance (Good)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">194</div>
+      <div class="kpi-lbl">Average N score (chain coherence)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">2</div>
+      <div class="kpi-lbl">Bottleneck phases (P5, P3)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">100 pts</div>
+      <div class="kpi-lbl">D-C gap at Phase 5 (largest in chain)</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="section-title">Analysis Pages</div>
+  <div class="card-grid">
+    <a href="dashboard.html" class="card">
+      <div class="card-icon">📊</div>
+      <div class="card-title">N-D-C Dashboard</div>
+      <div class="card-desc">Phase-level D, C, N bars; coherence pentagon; bottleneck alert; full phase data table.</div>
+    </a>
+    <a href="project_context.html" class="card">
+      <div class="card-icon">📋</div>
+      <div class="card-title">Project Context</div>
+      <div class="card-desc">Geographic and governance scope; bond opportunity analysis; Phase Intervention Worksheet; data sources.</div>
+    </a>
+    <a href="recycling_analysis.html" class="card">
+      <div class="card-icon">🔄</div>
+      <div class="card-title">Just Transition Return Chain</div>
+      <div class="card-desc">TVPCI-R community wealth recirculation analysis. TVPCI-R = 50.7 (Failure). B_chain = 47.0.</div>
+    </a>
+  </div>
+
+  <div class="section-title">Phase Map: 7-Phase Urban Delivery Chain</div>
+  <table class="phase-table">
+    <thead>
+      <tr>
+        <th>Phase</th>
+        <th>Name</th>
+        <th>D</th>
+        <th>C</th>
+        <th>Balance</th>
+        <th>N</th>
+        <th>Status</th>
+        <th>Transparency</th>
+        <th>Key constraint or output</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>P0</td>
+        <td>Vision and Mandate</td>
+        <td>270</td>
+        <td>240</td>
+        <td>88.9%</td>
+        <td>226</td>
+        <td><span class="badge good">Good</span></td>
+        <td><span class="badge high">High</span></td>
+        <td>5 plan iterations; 2030 net-zero; 4 missions; 17 SDGs; BACCC</td>
+      </tr>
+      <tr>
+        <td>P1</td>
+        <td>Governance and Coordination</td>
+        <td>250</td>
+        <td>210</td>
+        <td>84.0%</td>
+        <td>192</td>
+        <td><span class="badge good">Good</span></td>
+        <td><span class="badge medium">Medium</span></td>
+        <td>7 thematic boards; Governance Board (12 members); BACCC independent review</td>
+      </tr>
+      <tr>
+        <td>P2</td>
+        <td>Strategy and Program Design</td>
+        <td>265</td>
+        <td>240</td>
+        <td>90.6%</td>
+        <td>228</td>
+        <td><span class="badge excellent">Excellent</span></td>
+        <td><span class="badge high">High</span></td>
+        <td>City Leap binding KPIs; IBP £631m; BCAI Green Finance Framework; LNRS</td>
+      </tr>
+      <tr>
+        <td>P3</td>
+        <td>Capital Deployment</td>
+        <td>275</td>
+        <td>195</td>
+        <td>70.9%</td>
+        <td>164</td>
+        <td><span class="badge fair">Fair</span></td>
+        <td><span class="badge medium">Medium</span></td>
+        <td>£1.67bn capital budget; BCAI only £2m raised; scope 3 capital near-zero</td>
+      </tr>
+      <tr>
+        <td>P4</td>
+        <td>Infrastructure Delivery</td>
+        <td>260</td>
+        <td>220</td>
+        <td>84.6%</td>
+        <td>202</td>
+        <td><span class="badge good">Good</span></td>
+        <td><span class="badge high">High</span></td>
+        <td>City Leap KPIs on track; heat network; solar at schools; housing retrofit; 10% BNG</td>
+      </tr>
+      <tr style="background:rgba(185,28,28,0.1);">
+        <td>P5 &#9888;</td>
+        <td><strong>Community and Household Uptake</strong></td>
+        <td>240</td>
+        <td>140</td>
+        <td><strong>58.3%</strong></td>
+        <td><strong>107</strong></td>
+        <td><span class="badge poor">Poor</span></td>
+        <td><span class="badge low">Low</span></td>
+        <td>750 BCAI investors from 470k population; 10.7yr life expectancy gap; scope 3 untracked</td>
+      </tr>
+      <tr>
+        <td>P6</td>
+        <td>Outcome Measurement</td>
+        <td>270</td>
+        <td>248</td>
+        <td>91.9%</td>
+        <td>238</td>
+        <td><span class="badge excellent">Excellent</span></td>
+        <td><span class="badge high">High</span></td>
+        <td>256 QoL indicators; PHOF; City Leap KPI audit; VLR; quarterly Power BI dashboard</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:20px;border:1px solid rgba(126,200,227,0.1);margin-bottom:20px;">
+    <div class="section-title" style="margin-bottom:10px;">N-D-C Framework Applied to Urban Policy Delivery</div>
+    <p style="font-size:13px;opacity:0.75;line-height:1.7;margin-bottom:10px;">
+      In the Tholonic N-D-C framework, <strong style="color:#22c55e;">D (Definition)</strong> captures the constraints,
+      requirements, governance obligations, and binding commitments that define what each delivery phase must achieve.
+      <strong style="color:#ef4444;">C (Contribution)</strong> captures the actual outputs, measurable delivery, and
+      flows produced by each phase. <strong style="color:#3b82f6;">N (Negotiation)</strong> is the coherent emergent
+      state of the phase: the product of D and C in balance.
+    </p>
+    <p style="font-size:13px;opacity:0.75;line-height:1.7;">
+      For Bristol, D across Phases 0-2 is very high: the city has invested heavily in policy commitments,
+      governance structures, and binding strategies. The D-C gap widens at Phase 3 (capital) and collapses
+      into a structural failure at Phase 5 (community uptake). Phase 6 (measurement) recovers because
+      Bristol's monitoring infrastructure is genuinely world-class: the QoL survey (256 indicators),
+      BACCC independent scrutiny, and City Leap contractual audit form an unusually robust verification layer.
+      This measurement strength is the foundation on which a Sustainability-Linked Bond KPI framework can be built.
+    </p>
+  </div>
+
+</div>
+
+<div class="nav">
+  <a href="../index.html">&#8592; Hub Overview</a>
+  <a href="dashboard.html">N-D-C Dashboard</a>
+  <a href="project_context.html">Project Context</a>
+  <a href="recycling_analysis.html">Return Chain</a>
+  <a href="../../index.html">TrueValue Home</a>
+</div>
+
+</body>
+</html>

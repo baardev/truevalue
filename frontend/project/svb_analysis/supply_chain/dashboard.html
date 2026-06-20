@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>SVB — N-D-C Technical Dashboard</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#0d1117; color:#e6edf3; min-height:100vh; padding:24px; }
+  .container { max-width:1080px; margin:0 auto; }
+  header { display:flex; justify-content:space-between; align-items:center; margin-bottom:20px; }
+  header h1 { font-size:18px; font-weight:600; color:#f0f6fc; }
+  header nav a { color:#8b949e; text-decoration:none; font-size:13px; margin-left:14px; }
+  header nav a:hover { color:#e6edf3; }
+
+  .kpi-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:20px; }
+  .kpi { background:#161b22; border-radius:9px; padding:16px 18px; border:1px solid #21262d; }
+  .kpi-label { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#8b949e; margin-bottom:4px; }
+  .kpi-value { font-size:26px; font-weight:800; }
+  .kpi-value.red { color:#f85149; }
+  .kpi-value.amber { color:#e3b341; }
+  .kpi-value.green { color:#3fb950; }
+  .kpi-value.purple { color:#bc8cff; }
+  .kpi-sub { font-size:11px; color:#8b949e; margin-top:3px; }
+
+  .alert-bar { background:#3d1a1a; border:1px solid #f85149; border-radius:9px; padding:12px 18px; margin-bottom:20px; font-size:13px; color:#ffa198; display:flex; align-items:center; gap:10px; }
+  .alert-bar strong { color:#f85149; }
+
+  .panel { background:#161b22; border-radius:10px; border:1px solid #21262d; padding:20px; margin-bottom:18px; }
+  .panel h2 { font-size:14px; font-weight:600; color:#e6edf3; margin-bottom:16px; text-transform:uppercase; letter-spacing:.06em; }
+
+  /* Phase D-C-N bars */
+  .phase-bars { display:flex; flex-direction:column; gap:10px; }
+  .phase-row { display:grid; grid-template-columns:160px 1fr 60px; gap:12px; align-items:center; }
+  .phase-label { font-size:12px; color:#c9d1d9; line-height:1.3; }
+  .bar-track { height:28px; background:#21262d; border-radius:5px; position:relative; overflow:hidden; display:flex; }
+  .bar-d { height:100%; background:#1d4ed8; opacity:0.85; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; transition:width .4s; min-width:2px; }
+  .bar-c { height:100%; background:#b91c1c; opacity:0.85; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:#fff; transition:width .4s; min-width:2px; }
+  .phase-bal { font-size:15px; font-weight:800; text-align:right; }
+  .phase-bal.excellent { color:#3fb950; }
+  .phase-bal.good { color:#3fb950; }
+  .phase-bal.stressed { color:#e3b341; }
+  .phase-bal.critical { color:#f0883e; }
+  .phase-bal.breakdown { color:#f85149; }
+  .phase-bal.deceptive { color:#bc8cff; }
+
+  /* Quarterly trend */
+  .trend-grid { display:grid; grid-template-columns:repeat(8,1fr); gap:8px; }
+  .trend-col { display:flex; flex-direction:column; align-items:center; gap:4px; }
+  .trend-bar-wrap { width:100%; height:100px; background:#21262d; border-radius:4px; display:flex; align-items:flex-end; overflow:hidden; }
+  .trend-bar { width:100%; border-radius:2px 2px 0 0; transition:height .3s; }
+  .trend-bar.breakdown { background:#f85149; }
+  .trend-bar.critical { background:#f0883e; }
+  .trend-bar.stressed { background:#e3b341; }
+  .trend-q { font-size:9px; color:#8b949e; }
+  .trend-score { font-size:11px; font-weight:700; color:#e6edf3; }
+  .trend-annotation { font-size:10px; color:#8b949e; text-align:center; line-height:1.3; margin-top:2px; }
+
+  /* Coherence pentagon */
+  .coherence-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  .coh-card { background:#0d1117; border-radius:8px; padding:14px 10px; text-align:center; border:1px solid #30363d; }
+  .coh-symbol { font-size:20px; font-weight:700; color:#e6edf3; margin-bottom:4px; }
+  .coh-score { font-size:28px; font-weight:800; margin-bottom:4px; }
+  .coh-score.poor { color:#f85149; }
+  .coh-score.fair { color:#e3b341; }
+  .coh-score.good { color:#3fb950; }
+  .coh-label { font-size:10px; color:#8b949e; line-height:1.3; }
+
+  /* Data source panel */
+  .source-list { list-style:none; }
+  .source-list li { font-size:12px; color:#8b949e; padding:6px 0; border-bottom:1px solid #21262d; }
+  .source-list li:last-child { border-bottom:none; }
+  .source-list strong { color:#c9d1d9; }
+
+  /* Legend */
+  .legend { display:flex; gap:16px; flex-wrap:wrap; margin-top:10px; }
+  .leg-item { display:flex; align-items:center; gap:6px; font-size:11px; color:#8b949e; }
+  .leg-box { width:12px; height:12px; border-radius:2px; }
+  .leg-d { background:#1d4ed8; }
+  .leg-c { background:#b91c1c; }
+  .leg-note { font-size:11px; color:#8b949e; margin-top:8px; }
+  .note-purple { color:#bc8cff; font-size:11px; }
+
+  @media (max-width:700px) {
+    .kpi-row, .coherence-grid { grid-template-columns:repeat(2,1fr); }
+    .trend-grid { grid-template-columns:repeat(4,1fr); }
+    .phase-row { grid-template-columns:120px 1fr 50px; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header>
+  <h1>🏦 SVB — N-D-C Technical Dashboard</h1>
+  <nav>
+    <a href="index.html">Phase Overview</a>
+    <a href="project_context.html">Interventions</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+
+<!-- KPI row -->
+<div class="kpi-row">
+  <div class="kpi">
+    <div class="kpi-label">Chain Balance (π)</div>
+    <div class="kpi-value red">61.3%</div>
+    <div class="kpi-sub">8-phase average — Critical threshold</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Average N State</div>
+    <div class="kpi-value amber">101</div>
+    <div class="kpi-sub">Degraded institutional health</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Bottleneck Phases</div>
+    <div class="kpi-value red">4</div>
+    <div class="kpi-sub">Phases 2, 3, 4, 6 below 61.8%</div>
+  </div>
+  <div class="kpi">
+    <div class="kpi-label">Deceptive Coherent Phases</div>
+    <div class="kpi-value purple">2</div>
+    <div class="kpi-sub">Phases 1 and 7 — false safety signal</div>
+  </div>
+</div>
+
+<!-- Alert bar -->
+<div class="alert-bar">
+  <span>⚡</span>
+  <span>
+    <strong>Primary failure origin: Phase 3 (Interest Rate Risk) — 21.4% balance.</strong>
+    Interest rate hedges dissolved in mid-2021. $91B HTM bond portfolio accumulated with no offsetting constraint.
+    Phase 3 entered Breakdown in Q3 2021 and remained there for 6 consecutive quarters.
+    Standard regulatory metrics (CET1, CAMELS) showed green throughout this period.
+  </span>
+</div>
+
+<!-- Phase D-C-N bars -->
+<div class="panel">
+  <h2>Phase D–C Balance (Blue = D Constraint · Red = C Exposure/Output)</h2>
+  <div class="phase-bars">
+    <div class="phase-row">
+      <div class="phase-label">Ph 0: Deposit Quality</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:34%">D 140</div>
+        <div class="bar-c" style="width:53%">C 220</div>
+      </div>
+      <div class="phase-bal stressed">63.6%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 1: Capital (Reported) ⚠</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:49%">D 200</div>
+        <div class="bar-c" style="width:47%">C 195</div>
+      </div>
+      <div class="phase-bal deceptive">97.5%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 2: Asset Allocation</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:20%">80</div>
+        <div class="bar-c" style="width:66%">C 270</div>
+      </div>
+      <div class="phase-bal breakdown">29.6%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 3: Rate Risk ⚡</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:15%">60</div>
+        <div class="bar-c" style="width:68%">C 280</div>
+      </div>
+      <div class="phase-bal breakdown">21.4%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 4: Liquidity</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:46%">D 190</div>
+        <div class="bar-c" style="width:22%">C 90</div>
+      </div>
+      <div class="phase-bal breakdown">47.4%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 5: Earnings / NIM</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:39%">D 160</div>
+        <div class="bar-c" style="width:32%">C 130</div>
+      </div>
+      <div class="phase-bal good">81.3%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 6: Market Confidence</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:43%">D 175</div>
+        <div class="bar-c" style="width:24%">C 100</div>
+      </div>
+      <div class="phase-bal critical">57.1%</div>
+    </div>
+    <div class="phase-row">
+      <div class="phase-label">Ph 7: Regulatory ⚠</div>
+      <div class="bar-track">
+        <div class="bar-d" style="width:49%">D 200</div>
+        <div class="bar-c" style="width:45%">C 185</div>
+      </div>
+      <div class="phase-bal deceptive">92.5%</div>
+    </div>
+  </div>
+  <div class="legend">
+    <div class="leg-item"><div class="leg-box leg-d"></div> D (constraint weight)</div>
+    <div class="leg-item"><div class="leg-box leg-c"></div> C (exposure / output weight)</div>
+  </div>
+  <div class="leg-note">Bar widths scaled to maximum D or C in the chain (280). Imbalance in either direction reduces balance score.</div>
+  <div class="note-purple">⚠ Purple phases (1 and 7) score Coherent but are analytically deceptive: they reflect regulatory optics, not underlying structural health.</div>
+</div>
+
+<!-- Phase 3 quarterly trend -->
+<div class="panel">
+  <h2>Phase 3 — Interest Rate Risk — Quarterly Balance Score (Q1 2021 to Q4 2022)</h2>
+  <div class="trend-grid">
+    <div class="trend-col">
+      <div class="trend-score">37.5</div>
+      <div class="trend-bar-wrap"><div class="trend-bar critical" style="height:44%"></div></div>
+      <div class="trend-q">Q1 '21</div>
+      <div class="trend-annotation">Hedges partially in place</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">40.0</div>
+      <div class="trend-bar-wrap"><div class="trend-bar critical" style="height:47%"></div></div>
+      <div class="trend-q">Q2 '21</div>
+      <div class="trend-annotation">Hedges being removed</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">26.0</div>
+      <div class="trend-bar-wrap"><div class="trend-bar breakdown" style="height:30%"></div></div>
+      <div class="trend-q">Q3 '21 ⚡</div>
+      <div class="trend-annotation">Breakdown threshold crossed. Model alert.</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">22.6</div>
+      <div class="trend-bar-wrap"><div class="trend-bar breakdown" style="height:26%"></div></div>
+      <div class="trend-q">Q4 '21</div>
+      <div class="trend-annotation">Sustained Breakdown</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">22.1</div>
+      <div class="trend-bar-wrap"><div class="trend-bar breakdown" style="height:26%"></div></div>
+      <div class="trend-q">Q1 '22</div>
+      <div class="trend-annotation">Fed begins hiking</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">21.7</div>
+      <div class="trend-bar-wrap"><div class="trend-bar breakdown" style="height:25%"></div></div>
+      <div class="trend-q">Q2 '22</div>
+      <div class="trend-annotation">Deposits outflowing</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">21.5</div>
+      <div class="trend-bar-wrap"><div class="trend-bar breakdown" style="height:25%"></div></div>
+      <div class="trend-q">Q3 '22</div>
+      <div class="trend-annotation">Ph 4 also in Breakdown</div>
+    </div>
+    <div class="trend-col">
+      <div class="trend-score">21.4</div>
+      <div class="trend-bar-wrap"><div class="trend-bar breakdown" style="height:25%"></div></div>
+      <div class="trend-q">Q4 '22</div>
+      <div class="trend-annotation">Final pre-failure quarter</div>
+    </div>
+  </div>
+  <div class="leg-note" style="margin-top:12px;">
+    Breakdown threshold: 38.2% (1 − φ⁻¹). Phase 3 crossed this threshold in Q3 2021 and remained below it for all six subsequent quarters through Q4 2022.
+    The bank run occurred in March 2023 (Q1 2023). Detection window: 18 months.
+  </div>
+</div>
+
+<!-- Five model coherence -->
+<div class="panel">
+  <h2>Five-Model Coherence — SVB Q4 2022</h2>
+  <div class="coherence-grid">
+    <div class="coh-card">
+      <div class="coh-symbol">π</div>
+      <div class="coh-score fair">61.3%</div>
+      <div class="coh-label">Chain average balance. At the coherence boundary. 4 phases below threshold.</div>
+    </div>
+    <div class="coh-card">
+      <div class="coh-symbol">φ</div>
+      <div class="coh-score poor">38%</div>
+      <div class="coh-label">Value distribution severely skewed: reporting phases coherent, operational phases in Breakdown.</div>
+    </div>
+    <div class="coh-card">
+      <div class="coh-symbol">√2</div>
+      <div class="coh-score poor">30%</div>
+      <div class="coh-label">Structural absence: no hedging, no duration limits, no deposit concentration limits applied.</div>
+    </div>
+    <div class="coh-card">
+      <div class="coh-symbol">ln2</div>
+      <div class="coh-score fair">45%</div>
+      <div class="coh-label">Capital transformation blocked: locked in low-yield bonds while cost of funds rose.</div>
+    </div>
+    <div class="coh-card">
+      <div class="coh-symbol">e</div>
+      <div class="coh-score poor">12%</div>
+      <div class="coh-label">Financial instruments not linked to risk: hedges dissolved, no performance-linked instruments in place.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Data sources -->
+<div class="panel">
+  <h2>Data Sources</h2>
+  <ul class="source-list">
+    <li><strong>FDIC Call Reports</strong> — SVB Financial Group, Certificate 24735, quarterly 2019–2022. Public, no registration required. <code>banks.data.fdic.gov/api/financials?filters=CERT%3A24735</code></li>
+    <li><strong>SVB Financial Group 10-K (2020, 2021, 2022)</strong> — SEC EDGAR. Provides HTM/AFS portfolio composition, unrealized losses, hedge status, NIM, deposit composition.</li>
+    <li><strong>Federal Reserve Board Review of SVB Supervision</strong> (April 2023) — Public report on supervisory failures, CAMELS rating history, exam escalation gaps.</li>
+    <li><strong>FDIC Supervisory Insights: SVB Failure</strong> (2023) — Public post-mortem on resolution process and deposit recovery mechanics.</li>
+    <li><strong>SVB Investor Day Materials (2022)</strong> — HTM portfolio duration, yield disclosure, funding strategy.</li>
+    <li><strong>Moody's Rating Actions</strong> — December 2022 review for downgrade. Public rating action press release.</li>
+  </ul>
+</div>
+
+</div>
+</body>
+</html>

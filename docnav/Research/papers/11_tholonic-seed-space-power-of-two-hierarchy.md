@@ -6,8 +6,6 @@
 
 **Date:** 8 June 2026
 
-**Proposed arXiv subjects:** math.CA; math.NT (secondary: math.CO; cs.DM)
-
 **Keywords:** tholonic model, N-D-C triad, five constants, golden ratio, pi, Euler's number, natural logarithm, seed-space sweep, convergence hierarchy, generative entropy, power of two, Fibonacci seeds, archetype
 
 ---

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>Lehman Brothers: Structural Analysis Phase Overview</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#edf2f7; color:#1a202c; }
+  header { background:#1c0a00; color:#fef3c7; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:17px; font-weight:600; }
+  header nav a { color:#d97706; text-decoration:none; font-size:13px; margin-left:16px; }
+  header nav a:hover { color:#fef3c7; }
+  main { max-width:980px; margin:0 auto; padding:28px 20px; }
+  .intro { background:#fff; border-radius:10px; padding:24px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); }
+  .intro h2 { font-size:20px; font-weight:300; color:#0f172a; margin-bottom:8px; }
+  .intro p { color:#475569; font-size:14px; line-height:1.65; margin-bottom:8px; }
+  .chain-avg { display:inline-flex; align-items:center; gap:10px; background:#fff7ed; border:1px solid #fed7aa; border-radius:8px; padding:10px 16px; margin-top:8px; }
+  .chain-avg .score { font-size:28px; font-weight:800; color:#78350f; }
+  .chain-avg .label { font-size:12px; color:#7c2d12; line-height:1.4; }
+  .phases-table { background:#fff; border-radius:10px; padding:22px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); overflow-x:auto; }
+  .phases-table h2 { font-size:16px; font-weight:600; margin-bottom:14px; color:#0f172a; }
+  table { width:100%; border-collapse:collapse; font-size:13px; }
+  th { text-align:left; padding:9px 12px; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid #e2e8f0; }
+  td { padding:11px 12px; border-bottom:1px solid #f1f5f9; vertical-align:top; }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#fafafa; }
+  .bal { font-size:16px; font-weight:800; }
+  .bal.excellent { color:#16a34a; }
+  .bal.good { color:#0d9488; }
+  .bal.stressed { color:#d97706; }
+  .bal.critical { color:#ea580c; }
+  .bal.breakdown { color:#dc2626; }
+  .bal.deceptive { color:#7c3aed; }
+  .tag { display:inline-block; font-size:10px; font-weight:700; text-transform:uppercase; padding:3px 9px; border-radius:999px; }
+  .tag.excellent { background:#f0fdf4; color:#166534; }
+  .tag.good { background:#f0fdfa; color:#134e4a; }
+  .tag.stressed { background:#fffbeb; color:#92400e; }
+  .tag.critical { background:#fff7ed; color:#7c2d12; }
+  .tag.breakdown { background:#fef2f2; color:#991b1b; }
+  .tag.deceptive { background:#f5f3ff; color:#5b21b6; }
+  .d-c { font-size:11px; color:#64748b; white-space:nowrap; }
+  .phase-name { font-weight:600; color:#0f172a; margin-bottom:3px; }
+  .phase-note { font-size:12px; color:#64748b; line-height:1.45; }
+  .sub-nav { display:flex; gap:12px; margin-top:6px; }
+  .sub-nav a { font-size:12px; color:#78350f; font-weight:600; text-decoration:none; padding:6px 14px; border:1px solid #78350f; border-radius:6px; }
+  .sub-nav a:hover { background:#78350f; color:#fff; }
+  .alert { background:#fff7ed; border:1px solid #fed7aa; border-radius:9px; padding:14px 18px; margin-bottom:18px; font-size:13px; color:#7c2d12; }
+  .alert strong { color:#78350f; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏛 Lehman Brothers: Structural Analysis Phase Overview</h1>
+  <nav>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="project_context.html">Intervention Analysis</a>
+    <a href="recycling_analysis.html">Resolution</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+
+<div class="intro">
+  <h2>8-Phase N-D-C Structural Analysis: Lehman Brothers (Q2 2008)</h2>
+  <p>
+    This analysis maps Lehman Brothers' institutional functions onto 8 structural phases using the N-D-C framework.
+    Each phase is evaluated by its balance between Definition (D: constraints, limits, risk controls in force)
+    and Contribution (C: outputs, deployments, risk exposures produced). The chain average balance is the
+    system-level diagnostic.
+  </p>
+  <p>
+    The critical finding: Phases 1 and 7 (capital adequacy and regulatory compliance) appear Coherent,
+    matching the regulatory picture. Six operational phases are in Breakdown or at the critical threshold.
+    Phase 3 entered Breakdown in Q1 2007 and remained there for 8 consecutive quarters before failure.
+    Phase 0 (Funding Base) was structurally in Breakdown throughout 2007-2008.
+  </p>
+  <div class="chain-avg">
+    <div class="score">49.9%</div>
+    <div class="label">Chain average balance (π axis)<br>6 phases below 61.8% coherence floor</div>
+  </div>
+</div>
+
+<div class="alert">
+  <strong>Primary bottleneck: Phase 3: Leverage and Risk Management (17.2%)</strong>.
+  Lehman's stated leverage limit of 25x was routinely overridden. Gross leverage reached 30.7x in Q1 2008.
+  D (enforced risk constraints) was structurally absent despite formal limit frameworks existing on paper.
+  Risk committee waivers were granted routinely rather than positions reduced.
+</div>
+
+<div class="phases-table">
+  <h2>Phase Balance Scores: Q2 2008 Snapshot (Final Full Quarter Before Failure)</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Phase</th>
+        <th>Balance</th>
+        <th>Status</th>
+        <th>D / C</th>
+        <th>Key structural signal</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>0</td>
+        <td>
+          <div class="phase-name">Funding Base and Liability Structure</div>
+          <div class="phase-note">Diversity and maturity profile of the liability base</div>
+        </td>
+        <td><span class="bal breakdown">28.3%</span></td>
+        <td><span class="tag breakdown">Breakdown</span></td>
+        <td class="d-c">D 85 / C 300</td>
+        <td class="phase-note">~$188B in overnight repo requiring daily rollover. No effective maturity diversification. C (funding volume) vastly exceeded D (stability constraints). Any counterparty withdrawal was immediately terminal.</td>
+      </tr>
+      <tr>
+        <td>1</td>
+        <td>
+          <div class="phase-name">Capital Adequacy (Reported) ⚠</div>
+          <div class="phase-note">Regulatory capital against risk-weighted assets: Repo 105 manipulation active</div>
+        </td>
+        <td><span class="bal deceptive">97.4%</span></td>
+        <td><span class="tag deceptive">Deceptive Signal</span></td>
+        <td class="d-c">D 195 / C 190</td>
+        <td class="phase-note">Tier 1 ~11% appeared adequate. Hidden: Repo 105 removed $50.4B from balance sheet at quarter-end. True gross leverage 30.7x vs reported 12.1x. Valukas Report called this actionable balance sheet manipulation.</td>
+      </tr>
+      <tr>
+        <td>2</td>
+        <td>
+          <div class="phase-name">Asset Quality and Portfolio Concentration</div>
+          <div class="phase-note">Capital deployed into loans, CRE, mortgages, and leveraged positions</div>
+        </td>
+        <td><span class="bal breakdown">25.9%</span></td>
+        <td><span class="tag breakdown">Breakdown</span></td>
+        <td class="d-c">D 75 / C 290</td>
+        <td class="phase-note">$32.6B commercial real estate + $24.8B residential mortgage exposure. No effective concentration limits. Originate-to-hold replaced originate-to-distribute. $8.2B write-downs in Q2 2008 alone.</td>
+      </tr>
+      <tr>
+        <td>3</td>
+        <td>
+          <div class="phase-name">Leverage and Risk Management</div>
+          <div class="phase-note">Gross leverage and risk exposure managed through limits and stress testing</div>
+        </td>
+        <td><span class="bal breakdown">17.2%</span></td>
+        <td><span class="tag breakdown">Breakdown: Primary</span></td>
+        <td class="d-c">D 55 / C 320</td>
+        <td class="phase-note">Gross leverage 30.7x vs 25x stated target. Risk committee waivers granted routinely. VaR limits exceeded without position reduction. D (enforced constraints) structurally absent. Model detected Breakdown in Q1 2007.</td>
+      </tr>
+      <tr>
+        <td>4</td>
+        <td>
+          <div class="phase-name">Liquidity Pool and Funding Access</div>
+          <div class="phase-note">Short-term obligations met through liquid asset pool</div>
+        </td>
+        <td><span class="bal breakdown">43.2%</span></td>
+        <td><span class="tag breakdown">Breakdown</span></td>
+        <td class="d-c">D 185 / C 80</td>
+        <td class="phase-note">Claimed $45.5B liquidity pool. Valukas found substantial portion encumbered. No FDIC insurance; limited Fed emergency access for broker-dealers. Daily repo rollover of $188B dwarfed usable liquidity.</td>
+      </tr>
+      <tr>
+        <td>5</td>
+        <td>
+          <div class="phase-name">Earnings and Net Revenue</div>
+          <div class="phase-note">Asset portfolio and fee income converted into net revenue</div>
+        </td>
+        <td><span class="bal critical">61.3%</span></td>
+        <td><span class="tag critical">Critical Threshold</span></td>
+        <td class="d-c">D 155 / C 95</td>
+        <td class="phase-note">Record $4.2B earnings in 2007 masked structural deterioration. Q2 2008: first quarterly loss (-$2.8B). Q3 2008: -$3.9B loss announced 5 days before failure. Revenue model required continuous asset price appreciation.</td>
+      </tr>
+      <tr>
+        <td>6</td>
+        <td>
+          <div class="phase-name">Market Confidence and Counterparty Trust</div>
+          <div class="phase-note">Institutional credibility and repo counterparty relationships</div>
+        </td>
+        <td><span class="bal breakdown">30.6%</span></td>
+        <td><span class="tag breakdown">Breakdown</span></td>
+        <td class="d-c">D 180 / C 55</td>
+        <td class="phase-note">Korea Development Bank deal collapsed September 9. Barclays and BofA declined without government backstop. Repo counterparties refused to roll agreements. A rated until 6 days before failure.</td>
+      </tr>
+      <tr>
+        <td>7</td>
+        <td>
+          <div class="phase-name">Regulatory Oversight and Reporting ⚠</div>
+          <div class="phase-note">SEC CSE program compliance and supervisory obligations</div>
+        </td>
+        <td><span class="bal deceptive">94.9%</span></td>
+        <td><span class="tag deceptive">Deceptive Signal</span></td>
+        <td class="d-c">D 195 / C 185</td>
+        <td class="phase-note">SEC CSE program allowed self-monitoring with internal models. Repo 105 not identified by examiners. No statutory resolution authority for broker-dealers. FCIC concluded regulatory oversight fundamentally inadequate.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="sub-nav">
+  <a href="dashboard.html">Technical Dashboard</a>
+  <a href="project_context.html">Intervention Analysis</a>
+  <a href="recycling_analysis.html">Resolution Analysis</a>
+  <a href="../index.html">← Hub</a>
+</div>
+
+</main>
+</body>
+</html>

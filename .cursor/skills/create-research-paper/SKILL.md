@@ -1,6 +1,6 @@
 ---
 name: create-research-paper
-description: Create a new research paper in docnav/Research/papers/ with the correct canonical format: title, author, version, date, arXiv subjects, optional keywords, abstract, and numbered sections. Use when the user says "create a paper", "write a paper", "make this a paper", "add a new paper", or asks to turn a notes file or discovery into a formal research paper.
+description: Create a new research paper in docnav/Research/papers/ with the correct canonical format: title, author, version, date, keywords, abstract, and numbered sections. Use when the user says "create a paper", "write a paper", "make this a paper", "add a new paper", or asks to turn a notes file or discovery into a formal research paper.
 ---
 
 # Create Research Paper
@@ -13,7 +13,7 @@ All papers live as `docnav/Research/papers/<N>_<slug>.md` where `<N>` is the nex
 ls docnav/Research/papers/*.md | grep -oP '^\d+' | sort -n | tail -1
 ```
 
-Increment by 1 to get the new paper number. (Currently papers 1-6 and 8-10 exist; 7 is the next free slot as of June 2026.)
+Increment by 1 to get the new paper number.
 
 ## Step 2: Choose a slug
 
@@ -36,21 +36,10 @@ Every paper must open with exactly this block (fill in the bracketed fields):
 
 **Date:** [D Month YYYY — e.g., "8 June 2026"]
 
-**[arXiv label]:** [primary subject]; [secondary subject] (secondary: [tertiary])
+**Keywords:** term1; term2; term3
 ```
 
-**arXiv label** varies slightly across the series; match context:
-- `Proposed arXiv subjects:` (math-primary papers)
-- `Provisional arXiv subjects:` (applied/interdisciplinary)
-- `arXiv subject classifications:` (cs-primary papers)
-
-**Keywords** line is optional. Include it when the paper has strong domain-specific terms worth indexing:
-
-```markdown
-**Keywords:** term1, term2, term3
-```
-
-Add keywords for physics, AI, or applied papers. Omit for pure-math papers where the arXiv subject line is sufficient (see papers 1, 3, 4, 6).
+**Keywords** are required. Use semicolon-separated topical terms suitable for any preprint repository (SSRN, Zenodo, institutional archive, etc.). Do not name a specific repository or use repository-specific subject-classification codes.
 
 Close the header block with a `---` divider.
 
@@ -104,21 +93,48 @@ End with an unnumbered references section using inline citation keys in `[AuthYY
 
 ## Step 8: Cross-references to other papers in the series
 
-Cite other papers in the series as `paper N` or `[Mil26N]` in the text. The series now includes papers 1 through 10 (with 7 open). Common back-references:
+Cite other papers in the series as `paper N` or `[Mil26N]` in the text.
 
-| Shorthand | Content |
-|-----------|---------|
-| Paper 1 | Five constants from tholonic recursion |
-| Paper 2 | TVPCI supply-chain transparency scoring |
-| Paper 3 | Minimal recursive triadic framework (irreducibility lemma) |
-| Paper 4 | Game-theoretic triadic balance |
-| Paper 5 | Tholonic-twistor connection |
-| Paper 6 | Qualitative nature of integers in triadic roles |
-| Paper 8 | Atom as measurable tholon |
-| Paper 9 | Tholonic model vs Standard Model |
-| Paper 10 | Neural networks as tholonic systems |
+## Step 9: Generate figures when helpful or necessary
 
-## Step 9: Build LaTeX and PDF
+Figures are expected whenever the paper:
+
+- Maps N, D, or C roles onto a system (generate a triangle diagram with the canonical layout: N blue top, C red lower-left, D green lower-right)
+- Shows quantitative relationships, balance scores, or time series
+- Compares multiple phases, domains, or conditions side by side
+- Has an appendix with computed results (bar charts, scatter plots, heatmaps)
+
+**When to generate (required):** any paper that makes a quantitative claim without a supporting figure is incomplete. Generate the figure before writing the caption, not after.
+
+**Figure naming convention:** `<N>_<short-descriptor>.png`, stored in `docnav/Research/papers/<N>_<slug>/figures/`. For example: `14_ndc-cancer-triangle.png`, `14_d-collapse-grades.png`.
+
+**Embed in Markdown** immediately after the relevant paragraph:
+
+```markdown
+![Caption text.](figures/14_ndc-cancer-triangle.png)
+```
+
+**Style rules (non-negotiable):**
+- White background. Papers print on white; transparent or dark backgrounds render as black rectangles in PDF.
+- N role: blue (`#1d4ed8` dark, `#3b82f6` medium). D role: green (`#15803d` dark, `#22c55e` medium). C role: red (`#b91c1c` dark, `#ef4444` medium).
+- In all triangle diagrams: N at top, C lower-left, D lower-right. Do not rotate or mirror.
+- Labels match role colors (blue text for N labels, green for D, red for C).
+- Axis titles and tick labels in black or dark gray for readability.
+- Figures must be self-explanatory: title, axis labels, and legend (if needed) included in the image.
+
+**Figure types by paper section:**
+
+| Section content | Recommended figure type |
+|---|---|
+| N-D-C role mapping for a new domain | Triangle diagram with domain labels at each vertex |
+| Balance scores across phases or conditions | Horizontal bar chart, color-coded by role or health |
+| D-collapse or C-runaway trajectory | Line plot showing D, C, and N over time or progression |
+| Comparison across multiple domains or datasets | Grouped bar chart or heatmap |
+| Quantitative proxy data (e.g. soil carbon vs. microbial biomass) | Scatter plot with B-score contour overlay |
+
+**Before building the PDF:** ensure every `figures/` reference in the Markdown resolves. The build script creates `<paper-dir>/figures -> ../figures` automatically when figures are in the shared pool; place paper-specific figures in `<N>_<slug>/figures/` directly.
+
+## Step 10: Build LaTeX and PDF
 
 After the Markdown is complete, run the full build pipeline (Pandoc → postprocessor → pdflatex). Always pass `--md` to the postprocessor so it reads the header fields automatically:
 
@@ -141,9 +157,9 @@ python3 scripts/pandoc_paper_postprocess.py \
 - Author: `Name` on one line, affiliation in small type below (split on the first `, ` in the Author field)
 - Date: small font
 - Version: small font, on a separate line below the date (e.g. `8 June 2026` / `v1.1`)
-- arXiv label and subjects appear as a bold `\noindent` line immediately after `\maketitle`
+- Keywords appear as a bold `\noindent` line immediately after `\maketitle` when present in the Markdown header
 
-Do not manually edit `\date{}`, `\author{}`, or the arXiv line in the `.tex` — regenerate from `--md` instead.
+Do not manually edit `\date{}`, `\author{}`, or the Keywords line in the `.tex` — regenerate from `--md` instead.
 
 ## Canonical header example
 
@@ -156,7 +172,7 @@ Do not manually edit `\date{}`, `\author{}`, or the arXiv line in the `.tex` —
 
 **Date:** 8 June 2026
 
-**Proposed arXiv subjects:** math.CA; math.NT (secondary: math.CO)
+**Keywords:** tholonic model; classical constants; seed-space sweep; convergence hierarchy; golden ratio; power of two
 
 ---
 
@@ -172,10 +188,14 @@ Do not manually edit `\date{}`, `\author{}`, or the arXiv line in the `.tex` —
 ## Checklist before handing off to research-paper-latex
 
 - [ ] File saved as `docnav/Research/papers/<N>_<slug>.md`
-- [ ] Header has Author, Version, Date, arXiv line
+- [ ] Header has Author, Version, Date, Keywords
 - [ ] `---` divider after header block and after Abstract
 - [ ] All body sections numbered (`## 1.`, `## 2.`, ...)
 - [ ] Introduction contains "What this paper provides / does not provide / Organization"
 - [ ] References section present (even if minimal)
 - [ ] No em dashes anywhere (use colons, commas, or new sentences)
 - [ ] Inline math uses `$...$`, display math uses `$$...$$`
+- [ ] Every quantitative claim has a supporting figure
+- [ ] Every N-D-C role mapping has a triangle diagram
+- [ ] All figures use white background, canonical N/D/C colors, and correct triangle orientation
+- [ ] All figure paths resolve: `figures/<N>_<descriptor>.png` in `<N>_<slug>/figures/`

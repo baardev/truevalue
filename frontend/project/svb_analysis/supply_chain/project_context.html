@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>SVB — Phase Intervention Analysis</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#edf2f7; color:#1a202c; }
+  header { background:#0f172a; color:#f1f5f9; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:17px; font-weight:600; }
+  header nav a { color:#94a3b8; text-decoration:none; font-size:13px; margin-left:14px; }
+  header nav a:hover { color:#f1f5f9; }
+  main { max-width:1000px; margin:0 auto; padding:28px 20px; }
+  section { background:#fff; border-radius:10px; padding:22px 24px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); }
+  h2 { font-size:17px; font-weight:600; color:#0f172a; margin-bottom:12px; }
+  h3 { font-size:15px; font-weight:600; color:#1e3a5f; margin-bottom:10px; }
+  p { color:#475569; line-height:1.65; font-size:14px; margin-bottom:8px; }
+  ul { margin-left:20px; }
+  li { color:#475569; font-size:14px; line-height:1.6; margin-bottom:4px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:12px; }
+  th { text-align:left; padding:9px 12px; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid #e2e8f0; background:#f8fafc; }
+  td { padding:10px 12px; border-bottom:1px solid #f1f5f9; vertical-align:top; color:#334155; }
+  tr:last-child td { border-bottom:none; }
+
+  .disclaimer { background:#fffbeb; border:1px solid #fbbf24; border-radius:8px; padding:12px 16px; margin-bottom:18px; font-size:13px; color:#78350f; }
+
+  /* Five axis table */
+  .axis-fail { color:#dc2626; font-weight:700; }
+  .axis-warn { color:#d97706; font-weight:700; }
+  .axis-ok { color:#16a34a; }
+
+  /* Bottleneck block */
+  .bottleneck-block { border:2px solid #dc2626; border-radius:10px; padding:20px; margin-bottom:18px; }
+  .bottleneck-block.critical { border-color:#ea580c; }
+  .bh { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .bh-num { font-size:32px; font-weight:900; color:#dc2626; flex-shrink:0; }
+  .bh-num.critical { color:#ea580c; }
+  .bh-title { font-size:16px; font-weight:700; color:#0f172a; }
+  .bh-meta { font-size:12px; color:#64748b; margin-top:3px; }
+  .bh-badge { margin-left:auto; background:#fef2f2; color:#991b1b; font-size:11px; font-weight:700; padding:4px 12px; border-radius:999px; text-transform:uppercase; flex-shrink:0; }
+  .bh-badge.critical { background:#fff7ed; color:#7c2d12; }
+  .bh-why { font-size:13px; color:#475569; line-height:1.65; margin-bottom:12px; }
+  .bh-why strong { color:#0f172a; }
+  .combined-effect { background:#f0fdf4; border:1px solid #86efac; border-radius:8px; padding:12px 16px; margin-top:12px; font-size:13px; }
+  .combined-effect strong { color:#166534; }
+
+  .kpi-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:18px; }
+  .kpi { background:#f8fafc; border-radius:9px; padding:14px 16px; border-left:4px solid #1e3a5f; }
+  .kpi.red { border-left-color:#dc2626; }
+  .kpi.amber { border-left-color:#d97706; }
+  .kpi-label { font-size:10px; text-transform:uppercase; letter-spacing:.06em; color:#94a3b8; margin-bottom:3px; }
+  .kpi-value { font-size:22px; font-weight:800; color:#0f172a; }
+  .kpi-value.red { color:#dc2626; }
+  .kpi-value.amber { color:#d97706; }
+  .kpi-sub { font-size:11px; color:#94a3b8; margin-top:2px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🏦 SVB — Phase Intervention Analysis</h1>
+  <nav>
+    <a href="index.html">Phase Overview</a>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="recycling_analysis.html">Resolution</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+
+<!-- Disclaimer -->
+<div class="disclaimer">
+  <strong>Provisional disclaimer:</strong> Recommendations in this worksheet are derived analytically
+  from N-D-C phase balance data and publicly available FDIC, Federal Reserve, and SEC sources.
+  They represent structural diagnoses, not investment advice. The interventions identified are
+  drawn from post-failure regulatory findings and academic literature on bank risk management.
+  Field validation against live institutions requires current Call Report data.
+</div>
+
+<!-- KPI strip -->
+<div class="kpi-strip">
+  <div class="kpi red">
+    <div class="kpi-label">Chain Balance (π)</div>
+    <div class="kpi-value red">61.3%</div>
+    <div class="kpi-sub">Below 80% threshold</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">Phase 3 Balance</div>
+    <div class="kpi-value red">21.4%</div>
+    <div class="kpi-sub">Breakdown — primary failure</div>
+  </div>
+  <div class="kpi red">
+    <div class="kpi-label">Bottleneck Phases</div>
+    <div class="kpi-value red">4</div>
+    <div class="kpi-sub">Phases 2, 3, 4, 6</div>
+  </div>
+  <div class="kpi amber">
+    <div class="kpi-label">Detection Window</div>
+    <div class="kpi-value amber">18 mo</div>
+    <div class="kpi-sub">Q3 2021 to March 2023</div>
+  </div>
+</div>
+
+<!-- Phase Intervention Worksheet -->
+<section>
+  <h2>Phase Intervention Worksheet</h2>
+
+  <!-- Five-axis failure diagnosis table -->
+  <h3>Five-Axis Failure Diagnosis</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Constant</th>
+        <th>What it measures</th>
+        <th>SVB Score</th>
+        <th>Diagnosis</th>
+        <th>Intervention category</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>π</strong></td>
+        <td>Operational balance: chain average</td>
+        <td class="axis-warn">61.3%</td>
+        <td>At the coherence boundary. 4 phases pulling aggregate below the 80% threshold. System appears borderline on this axis alone — the other axes reveal the severity.</td>
+        <td>Cross-phase risk governance; mandatory phase-level review triggers</td>
+      </tr>
+      <tr>
+        <td><strong>φ</strong></td>
+        <td>Proportional value distribution</td>
+        <td class="axis-fail">38%</td>
+        <td>Value is trapped in reporting phases (1 and 7 score coherent) while operational phases (2, 3, 4) are in Breakdown. The distribution of health across the institution is severely skewed. This is the deception signature.</td>
+        <td>Internal reporting reform: require phase-level structural reporting alongside regulatory capital metrics</td>
+      </tr>
+      <tr>
+        <td><strong>√2</strong></td>
+        <td>Structural overhead: binding D constraints</td>
+        <td class="axis-fail">30%</td>
+        <td>SVB's failure was not over-constraint but under-constraint. No hedging, no duration limits, LCR exemption. D was structurally absent across the failure phases. √2 signals that D is not raising overhead — it is not present at all.</td>
+        <td>Mandatory interest rate risk hedging thresholds; reinstate LCR for mid-tier banks; deposit concentration limits</td>
+      </tr>
+      <tr>
+        <td><strong>ln2</strong></td>
+        <td>Value transformation: input-to-output efficiency</td>
+        <td class="axis-warn">45%</td>
+        <td>Capital is locked in low-yield, long-duration bonds that cannot be converted to liquidity without catastrophic loss recognition. The transformation pathway (deposit to productive asset) is blocked.</td>
+        <td>Portfolio duration management; HTM reclassification triggers; NIM stress testing under rate scenarios</td>
+      </tr>
+      <tr>
+        <td><strong>e</strong></td>
+        <td>Financial abstraction: instruments linked to real metrics</td>
+        <td class="axis-fail">12%</td>
+        <td>SVB dissolved its interest rate swaps to boost reported NII. There were no financial instruments operationally linked to rate risk metrics. The e axis score of 12% is the lowest in the dataset: the institution had zero meaningful financial abstraction layer connecting risk exposure to capital protection.</td>
+        <td>Mandatory hedging instruments; performance-linked capital instruments; AOCI inclusion in regulatory capital</td>
+      </tr>
+    </tbody>
+  </table>
+  <p><strong>Key finding:</strong> All three sub-threshold axes (φ, √2, e) point to the same root cause:
+  the institutional risk management framework did not enforce structural balance. The failure was not
+  an unpredictable shock. It was the consequence of removing constraints (D) that previously existed.</p>
+</section>
+
+<!-- Bottleneck worksheets -->
+<section>
+  <h2>Bottleneck Phase Worksheets</h2>
+
+  <!-- Phase 3 -->
+  <div class="bottleneck-block">
+    <div class="bh">
+      <div class="bh-num">3</div>
+      <div>
+        <div class="bh-title">Interest Rate Risk Management</div>
+        <div class="bh-meta">Balance 21.4% | D=60, C=280, gap=220 | Primary failure axis: <strong>√2 (structural absence) and e (financial instruments)</strong></div>
+      </div>
+      <span class="bh-badge">Breakdown — Primary</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> SVB removed all interest rate swap coverage
+      in mid-2021, eliminating D (hedging constraint) from near zero. Simultaneously, management
+      accumulated $91B in held-to-maturity bonds averaging 3.7-year duration during a period of
+      historically low interest rates. When the Fed tightened 525 basis points from March 2022 onward,
+      C (rate exposure) grew with every hike while D remained near zero. The √2 axis identifies this as
+      structural absence of constraint infrastructure, not excess overhead. The e axis identifies the absence
+      of financial instruments linking risk exposure to capital protection as the mechanism.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mandatory interest rate hedge coverage floor</strong></td>
+          <td>Require banks to hedge a minimum percentage (e.g. 50%) of HTM bond duration risk via interest rate swaps or similar instruments. Regulatory basis: OCC interest rate risk guidance, SR 11-7 model risk, IRRBB Basel standard.</td>
+          <td>D: +80 to +100 (hedges restore constraint weight). C: unchanged. Estimated Phase 3 balance recovery: 21% to 55-65%.</td>
+        </tr>
+        <tr>
+          <td><strong>AOCI inclusion in regulatory capital for mid-tier banks</strong></td>
+          <td>Remove the 2019 tailoring exemption that allowed mid-tier banks to exclude accumulated other comprehensive income from CET1 calculation. Basel III full standard requires AOCI inclusion. This forces D (capital constraint) to reflect actual mark-to-market position. Source: Federal Reserve SVB Review (April 2023) — primary regulatory recommendation.</td>
+          <td>D: +40 (capital constraint tightened by reflecting actual losses). C: unchanged. Would have forced capital raise or asset sale in 2022 before run. Phase 3 secondary benefit: +10 to balance through forced restructuring signal.</td>
+        </tr>
+        <tr>
+          <td><strong>HTM portfolio concentration limit</strong></td>
+          <td>Cap held-to-maturity securities at 30% of total assets (down from SVB's 55%). HTM classification prevents marking losses but also prevents liquidation — the combination of high concentration and no liquidation flexibility created the structural trap. Source: Basel IRRBB (2016), post-SVB OCC guidance.</td>
+          <td>D: +30 (concentration limit adds constraint weight to Phase 2 and Phase 3 jointly). C: -20 (reduces rate exposure by limiting HTM accumulation). Phase 3 balance improvement: 21% to ~35-40%.</td>
+        </tr>
+        <tr>
+          <td><strong>Reinstate full LCR for $50B+ banks</strong></td>
+          <td>Reverse the 2019 tailoring rules that exempted banks with $50-250B in assets from the full Liquidity Coverage Ratio. SVB's exemption meant no binding constraint on liquid asset buffer relative to stressed outflows. This intervention primarily addresses Phase 4 but adds D constraint to Phase 3 indirectly by requiring liquid assets that can absorb rate shock without crystallizing HTM losses. Source: Basel LCR standard (2013), Federal Reserve tailoring rollback proposals (post-2023).</td>
+          <td>D: +25 (LCR reintroduces binding liquidity constraint in Phase 4; Phase 3 indirect benefit through forced portfolio rebalancing). Phase 3 partial benefit: +5 to +8.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate (all four interventions applied):</strong>
+      Phase 3 D increases from 60 to approximately 175-185; C decreases from 280 to approximately 240-250 (portfolio concentration capped, some forced liquidation or restructuring).
+      Estimated Phase 3 balance with full intervention package: 100 - (|180-245|/245)*100 = approximately 73-78% (Stressed, but above the 61.8% coherence floor).
+      System chain balance would recover from 61.3% to approximately 74-78% (Stressed to Good range),
+      lifting the bank above the Critical threshold that the model flags as requiring immediate supervisory escalation.
+      <br><br>
+      <strong>Cross-reference:</strong> √2 axis recovers from 30% to approximately 55% (D constraints restored).
+      e axis recovers from 12% to approximately 55% (hedging instruments reinstated).
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="bottleneck-block">
+    <div class="bh">
+      <div class="bh-num">2</div>
+      <div>
+        <div class="bh-title">Asset Allocation and Portfolio Concentration</div>
+        <div class="bh-meta">Balance 29.6% | D=80, C=270, gap=190 | Primary failure axis: <strong>√2 (structural absence) and ln2 (transformation blockage)</strong></div>
+      </div>
+      <span class="bh-badge">Breakdown</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> SVB deployed approximately 55% of total assets
+      into held-to-maturity bonds during the 2020-2021 deposit surge, with no effective concentration limit,
+      duration ceiling, or diversification requirement in force (D=80). C (asset deployment) at 270
+      reflects the scale of this concentrated accumulation. The ln2 axis identifies this as a
+      transformation blockage: capital entered the system as deposits but cannot exit as liquidity without
+      triggering the HTM reclassification that would recognize $17.7B in unrealized losses, immediately
+      rendering the bank insolvent on a reported basis. The asset base was physically immobilized.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>HTM portfolio cap at 30% of total assets</strong></td>
+          <td>Regulatory limit on the proportion of assets that can be designated held-to-maturity. HTM designation prevents sale without loss recognition; high concentrations create structural illiquidity traps. 30% cap (vs SVB's 55%) based on peer bank averages and IRRBB guidance.</td>
+          <td>C: -60 to -80 (forced portfolio rebalancing into AFS or loans). D: +20 (concentration limit adds constraint infrastructure). Phase 2 balance: 29.6% to approximately 55-65%.</td>
+        </tr>
+        <tr>
+          <td><strong>Mandatory loan-to-deposit ratio floor (minimum 55%)</strong></td>
+          <td>SVB's loan-to-deposit ratio was approximately 43% (well below industry norms of 65-80%). A floor requirement would force more capital into loans (shorter duration, income-generating, diversified) rather than long-duration bonds. This directly raises C quality and diversity in Phase 2.</td>
+          <td>D: +30 (LDR floor adds diversification constraint). C: unchanged in weight but composition shifts to lower-duration assets. Phase 2 balance improvement: +15 to +20 percentage points.</td>
+        </tr>
+        <tr>
+          <td><strong>Single-sector deposit concentration reporting trigger</strong></td>
+          <td>Require automatic supervisory review when a bank's deposits exceed 50% concentration from a single industry sector. SVB's tech/VC concentration exceeded 90%, creating correlated withdrawal risk invisible to standard call report metrics.</td>
+          <td>D: +25 (concentration reporting converts opacity into constraint). Indirect Phase 0 and Phase 2 benefit. Phase 2 balance improvement: +10 to +15.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate:</strong> Phase 2 D increases from 80 to approximately 155; C decreases from 270 to approximately 200 (HTM capped, LDR floor enforced).
+      Estimated Phase 2 balance: 100 - (|155-200|/200)*100 = approximately 77.5% (Stressed, recovered from Breakdown).
+      <br><br>
+      <strong>Cross-reference:</strong> ln2 axis recovers from 45% to approximately 65-70% as capital transformation pathway reopens through shorter-duration, more liquid assets.
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="bottleneck-block critical">
+    <div class="bh">
+      <div class="bh-num critical">4</div>
+      <div>
+        <div class="bh-title">Liquidity Coverage and Buffer</div>
+        <div class="bh-meta">Balance 47.4% | D=190, C=90, gap=100 | Primary failure axis: <strong>ln2 (transformation blockage) and √2 (LCR exemption)</strong></div>
+      </div>
+      <span class="bh-badge critical">Breakdown — Cascade</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Phase 4 is a cascade failure driven by Phase 3.
+      The liquidity buffer (C=90) was inadequate relative to stressed outflow obligations (D=190)
+      because the only asset class large enough to meet outflows was the HTM bond portfolio, which
+      could not be liquidated without triggering the loss recognition that would immediately reveal
+      insolvency. The 2019 tailoring rules exempted SVB from the full LCR requirement, removing the
+      binding D constraint that would have forced maintenance of an adequate liquid asset buffer.
+      The ln2 axis identifies the transformation block: deposits cannot convert to available liquidity
+      without passing through a loss-crystallization event.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Full LCR reinstatement for $50B+ banks</strong></td>
+          <td>The 2019 Fed tailoring rules exempted banks in the $50-250B range from the full Basel LCR requirement. SVB at $212B was exempt. Full LCR would require 100% coverage of 30-day stressed outflows with high-quality liquid assets. This directly raises C (liquid buffer requirement) and restores D (binding constraint).</td>
+          <td>D: unchanged (D already at 190 reflecting theoretical requirement). C: +60 to +80 (LCR forces maintenance of sufficient liquid assets). Phase 4 balance: 47% to approximately 68-73%.</td>
+        </tr>
+        <tr>
+          <td><strong>Uninsured deposit concentration trigger for enhanced liquidity requirement</strong></td>
+          <td>Banks with uninsured deposit ratios above 50% should face enhanced liquidity buffers (e.g. 130% LCR instead of 100%), reflecting the higher run-risk of uninsured depositors. SVB at 93.8% uninsured was an extreme outlier. Source: Federal Reserve SVB Review (2023) — recommended enhanced liquidity standards for concentrated uninsured deposit bases.</td>
+          <td>D: +20 (enhanced LCR adds incremental constraint). C: +30 (forces higher liquid buffer). Phase 4 balance improvement: +10 to +15 percentage points on top of base LCR reinstatement.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect estimate:</strong> Phase 4 C increases from 90 to approximately 160-170 (liquid buffer built to LCR standard plus concentration surcharge).
+      Estimated Phase 4 balance: 100 - (|190-165|/190)*100 = approximately 86-87% (Good — recovered from Breakdown).
+      Note: Phase 4 recovery is largely dependent on Phase 3 recovery. Without Phase 3 intervention (hedging restored), Phase 4 improvement is limited because the asset base remains structurally illiquid.
+    </div>
+  </div>
+
+  <!-- Phase 6 -->
+  <div class="bottleneck-block critical">
+    <div class="bh">
+      <div class="bh-num critical">6</div>
+      <div>
+        <div class="bh-title">Market Confidence and Funding Access</div>
+        <div class="bh-meta">Balance 57.1% | D=175, C=100, gap=75 | Primary failure axis: <strong>φ (skewed distribution) and e (financial instrument linkage)</strong></div>
+      </div>
+      <span class="bh-badge critical">Critical — Cascade Terminal</span>
+    </div>
+    <p class="bh-why">
+      <strong>Why this phase failed structurally:</strong> Phase 6 is the terminal cascade point.
+      Market confidence (C=100) fell below the credibility threshold (D=175) as institutional
+      investors with visibility into the HTM portfolio began reducing exposure through 2022.
+      When SVB announced a $2.25B equity raise in early March 2023, the announcement itself
+      confirmed what structural analysis had indicated for 18 months: the bank was not adequately
+      capitalized. The φ axis identifies the distribution failure: health was concentrated in reporting
+      phases (1 and 7) while Phase 6 was already in Critical range. The e axis identifies the absence
+      of instruments that could have signaled the true risk to counterparties earlier.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Intervention</th><th>Description</th><th>Estimated D/C effect</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Mandatory AOCI disclosure in capital ratios for all bank reporting</strong></td>
+          <td>Require banks to report both the regulatory CET1 ratio (AOCI excluded) and a supplemental tangible common equity ratio including AOCI. This would have made SVB's negative true equity visible to all market participants throughout 2022, allowing earlier counterparty action and supervisory intervention before the terminal confidence collapse.</td>
+          <td>C: +30 (earlier market awareness enables orderly adjustment rather than sudden run). D: unchanged. Phase 6 improvement: +15 to +20 percentage points — reduces the gap between institutional knowledge and public knowledge.</td>
+        </tr>
+        <tr>
+          <td><strong>Supervisory early intervention framework at Phase 3 Breakdown detection</strong></td>
+          <td>Establish an automatic supervisory review and public disclosure trigger when any phase in the N-D-C structural analysis falls below 38.2% (Breakdown) for two consecutive quarters. This intervention is operational rather than structural: it shortens the gap between model detection (Q3 2021) and supervisory action from 18 months to 6 months. Source: proposed framework based on Fed SVB Review recommendations for enhanced supervisory escalation triggers.</td>
+          <td>C: +40 (early supervisory intervention forces Phase 3 remediation before Phase 6 cascade). Phase 6 benefit: indirect — prevents confidence collapse by addressing root cause earlier. Estimated Phase 6 balance with upstream intervention: 57% to 72-78%.</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="combined-effect">
+      <strong>Combined effect note:</strong> Phase 6 cannot be repaired directly — it is a cascade output of Phases 2, 3, and 4.
+      The effective intervention is upstream: restore Phase 3 to above 60%, Phase 4 to above 80%, and Phase 6
+      recovers organically as market confidence tracks structural health.
+      With all upstream interventions applied, estimated Phase 6 balance: approximately 70-78%.
+      <br><br>
+      <strong>System-wide combined effect:</strong> All four bottleneck phases addressed simultaneously
+      would recover the chain average (π) from 61.3% to approximately 76-82%, lifting the system
+      from Critical to the Good-to-Excellent band. The deceptive φ pattern (Phases 1 and 7 masking
+      Phases 2-4) would be resolved because the underlying structural gaps would be closed.
+    </div>
+  </div>
+</section>
+
+<!-- Application to peer screening -->
+<section>
+  <h2>Forward-Looking Application: Peer Bank Screening</h2>
+  <p>
+    The SVB analysis is reproducible for any US bank using public FDIC Call Report data.
+    The six fields that carry the most diagnostic signal for this failure pattern are:
+  </p>
+  <table>
+    <thead>
+      <tr><th>FDIC Call Report Field</th><th>N-D-C Role</th><th>Warning Threshold</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Uninsured deposits as % of total deposits (INSDEP/DEP)</td><td>Phase 0 D</td><td>Above 50% warrants Phase 0 stress classification</td></tr>
+      <tr><td>HTM securities as % of total assets (SC / ASSET)</td><td>Phase 2 C</td><td>Above 35% warrants Phase 2 concentration review</td></tr>
+      <tr><td>Reported CET1 ratio minus AOCI-adjusted equity (RBCRWAJ)</td><td>Phase 1 deception flag</td><td>Gap above 3 percentage points indicates deceptive Phase 1 score</td></tr>
+      <tr><td>Interest rate swap notional outstanding (INTBOR)</td><td>Phase 3 D</td><td>Below 10% of HTM duration exposure warrants Phase 3 Breakdown classification</td></tr>
+      <tr><td>Loan-to-deposit ratio (LNLSNET/DEP)</td><td>Phase 2 D</td><td>Below 50% indicates asset concentration in securities rather than loans</td></tr>
+      <tr><td>Net interest margin trend (NETINC / ASSET)</td><td>Phase 5 C trajectory</td><td>Declining NIM in rising rate environment confirms Phase 3 lock-in</td></tr>
+    </tbody>
+  </table>
+  <p>
+    The FDIC BankFind API provides all of these fields for all 4,700+ US commercial banks
+    at quarterly frequency. API endpoint: <code>https://banks.data.fdic.gov/api/financials?filters=CERT%3A[certificate_number]</code>
+  </p>
+</section>
+
+</main>
+</body>
+</html>

@@ -6,8 +6,6 @@
 
 **Date:** 10 June 2026
 
-**arXiv subject classifications:** cs.AI (primary); cs.LG; cs.NE; cs.CY
-
 **Keywords:** tholonic model, N-D-C triad, neural networks, symbolic AI, deep learning, transformer architecture, self-similarity, golden ratio, AI alignment, structural stability, five constants, information bottleneck, neurosymbolic AI, AI safety
 
 ---

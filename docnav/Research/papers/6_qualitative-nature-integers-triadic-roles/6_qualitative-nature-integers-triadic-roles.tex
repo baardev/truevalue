@@ -17,18 +17,30 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi
+}
+\makeatother
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
 \title{The Qualitative Nature of One, Two, and Three:\\
 \large Structural Role Assignment in Minimal Recursive Systems}
-\author{J. W. Milton\\[4pt]\small Clarity Coalition}
-\date{17 April 2026 \\ \small v1.0}
+\author{J. W. Milton\\[4pt]{\small Clarity Coalition}}
+\date{\small 17 April 2026 \\ v1.0}
 
 \begin{document}
 \maketitle
 
-\noindent\textbf{Provisional arXiv subjects:} math.HO; math.LO (secondary: cs.LO; q-bio.NC)
+\noindent\textbf{Keywords:} integers; triadic roles; N-D-C framework; structural role assignment; philosophy of mathematics; recursion
 
 \begin{abstract}
 The tholonic framework assigns three functionally distinct roles to the

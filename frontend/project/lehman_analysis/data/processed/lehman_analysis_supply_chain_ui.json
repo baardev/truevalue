@@ -1,0 +1,198 @@
+{
+  "_meta": {
+    "material": "lehman_analysis",
+    "case_type": "bank structural failure: Lehman Brothers Holdings Inc. September 2008",
+    "generated": "2026-06-20",
+    "snapshot_date": "Q2 2008 (last full quarter before failure on September 15, 2008)",
+    "sources": [
+      "Lehman Brothers Holdings Inc. 10-K filings 2005-2007 (SEC EDGAR)",
+      "Lehman Brothers Holdings Inc. 10-Q filing Q2 2008 (SEC EDGAR)",
+      "Valukas Report: Report of Anton R. Valukas, Examiner (March 2010, US Bankruptcy Court SDNY)",
+      "FCIC: Financial Crisis Inquiry Commission Final Report (January 2011)",
+      "Federal Reserve Bank of New York: Lehman Brothers failure analysis and repo market stress",
+      "FDIC Resolution Handbook: Lehman Brothers Holdings Inc. Chapter 11 proceedings",
+      "Basel Committee: Lessons of the financial crisis for the Basel II framework (2009)"
+    ],
+    "note": "8-phase N-D-C structural analysis of Lehman Brothers as of Q2 2008. Phase balances reflect the actual structural state of the institution at that date, derived from public SEC filings, the Valukas Examiner Report, and FCIC testimony. Phases 1 and 7 appeared coherent under standard regulatory and reporting frameworks but masked structural failures in Phases 0, 2, 3, and 6. Repo 105 accounting manipulation (removing approximately $50B of assets at quarter-end) rendered Phase 1 reporting deceptive. This is the largest bankruptcy filing in US history."
+  },
+  "entities": {
+    "synthetic": {
+      "label": "Lehman Brothers Q2 2008 Structural Baseline",
+      "description": "N-D-C phase analysis derived from public SEC filings, the Valukas Examiner Report, and FCIC findings for Lehman Brothers Holdings Inc. Quarterly snapshot as of 30 June 2008. Values reflect the structural balance of each institutional function. Lehman failed on September 15, 2008: 77 days after this snapshot."
+    }
+  },
+  "phase_meta": {
+    "0": {
+      "name": "Funding Base and Liability Structure",
+      "transparency": "LOW",
+      "transformation": "Diverse funding sources assembled into a stable liability base to support asset deployment"
+    },
+    "1": {
+      "name": "Capital Adequacy (Reported)",
+      "transparency": "MEDIUM",
+      "transformation": "Regulatory and internal capital maintained against risk-weighted assets: reported metrics only; Repo 105 manipulation active"
+    },
+    "2": {
+      "name": "Asset Quality and Portfolio Concentration",
+      "transparency": "LOW",
+      "transformation": "Capital deployed into loans, securities, commercial real estate, and leveraged positions"
+    },
+    "3": {
+      "name": "Leverage and Risk Management",
+      "transparency": "LOW",
+      "transformation": "Gross leverage and risk exposure controlled through limits, hedging, and stress testing"
+    },
+    "4": {
+      "name": "Liquidity Pool and Funding Access",
+      "transparency": "MEDIUM",
+      "transformation": "Short-term obligations met through liquid asset pool and contingency funding"
+    },
+    "5": {
+      "name": "Earnings and Net Revenue",
+      "transparency": "HIGH",
+      "transformation": "Asset portfolio and fee income converted into net revenue after funding costs and write-downs"
+    },
+    "6": {
+      "name": "Market Confidence and Counterparty Trust",
+      "transparency": "MEDIUM",
+      "transformation": "Institutional credibility sustained to maintain repo counterparty, prime brokerage, and rating agency relationships"
+    },
+    "7": {
+      "name": "Regulatory Oversight and Reporting",
+      "transparency": "HIGH",
+      "transformation": "SEC and Fed supervisory obligations met; CSE program self-assessment maintained"
+    }
+  },
+  "phases": {
+    "synthetic": {
+      "0": {
+        "D": 85,
+        "C": 300,
+        "balance": 28.3,
+        "N": 45,
+        "sustainability": 0.002,
+        "notes": "Lehman funded approximately $200-250B in assets through overnight and short-term repo agreements that required daily rollover. Commercial paper and interbank borrowings added further short-term dependency. No effective maturity diversification requirement was enforced. C (funding volume) vastly exceeded D (diversity and maturity constraints), creating extreme run-risk that any counterparty withdrawal would be immediately terminal. The funding base was structurally indistinguishable from a bank run waiting for a trigger.",
+        "data_quality": "medium",
+        "metrics": {
+          "repo_funding_overnight_pct": {"value": "~80%", "unit": "of wholesale funding was overnight or <7 days", "source": "FCIC Report Chapter 18; NY Fed repo market analysis", "note": "Lehman's reliance on short-term repo was the highest among major broker-dealers at time of failure."},
+          "total_repo_liabilities_q2_2008": {"value": 188.5, "unit": "USD billions", "source": "Lehman 10-Q Q2 2008", "note": "Repo liabilities requiring daily rollover; any counterparty refusal triggered immediate liquidity crisis."},
+          "commercial_paper_outstanding": {"value": 21.3, "unit": "USD billions", "source": "Valukas Report p. 63", "note": "Additional short-term funding requiring rollover; evaporated in first week of September 2008."}
+        }
+      },
+      "1": {
+        "D": 195,
+        "C": 190,
+        "balance": 97.4,
+        "N": 188,
+        "sustainability": 2.857,
+        "notes": "WARNING: This phase appeared coherent under standard regulatory reporting and is analytically deceptive. Lehman reported Tier 1 capital ratios of approximately 10-11% through Q2 2008, satisfying Basel II minimum requirements. However, Repo 105 accounting manipulation removed approximately $50B of assets from the balance sheet at each quarter-end, reducing reported net leverage from approximately 13.9x to 12.1x as of Q2 2008. The Valukas Report concluded this was an actionable balance sheet manipulation. True leverage including Repo 105 assets was approximately 30.7x in Q1 2008.",
+        "data_quality": "high",
+        "metrics": {
+          "tier1_capital_ratio_reported": {"value": 11.0, "unit": "%, Q2 2008", "source": "Lehman 10-Q Q2 2008", "note": "Satisfied Basel II minimum of 4%; appeared adequately capitalized."},
+          "repo_105_assets_removed": {"value": 50.4, "unit": "USD billions at Q2 2008 quarter-end", "source": "Valukas Report p. 7-10; Lehman internal documents", "note": "Repo 105 transactions temporarily removed assets to reduce reported leverage by approximately 1.5x at each quarter-end reporting date."},
+          "true_leverage_gross": {"value": 30.7, "unit": "x gross leverage Q1 2008", "source": "Valukas Report; FCIC", "note": "Versus reported net leverage of 12.1x: a 2.5x difference driven by off-balance-sheet treatment and Repo 105."}
+        }
+      },
+      "2": {
+        "D": 75,
+        "C": 290,
+        "balance": 25.9,
+        "N": 38,
+        "sustainability": 0.002,
+        "notes": "Lehman accumulated $32.6B in commercial real estate (CRE) positions by 2008 and approximately $25B in residential mortgage-related exposure, representing highly concentrated, illiquid positions in sectors directly exposed to the housing correction. No effective concentration limits or single-sector caps were enforced internally. Originate-to-hold strategy replaced earlier originate-to-distribute, meaning Lehman warehoused assets it could not sell. Write-downs of $8.2B in Q2 2008 confirmed the portfolio deterioration. C (concentrated exposure) massively exceeded D (underwriting and concentration constraints).",
+        "data_quality": "high",
+        "metrics": {
+          "cre_exposure_peak": {"value": 32.6, "unit": "USD billions", "source": "Valukas Report; Lehman 10-Q Q2 2008", "note": "Commercial real estate, the largest single concentrated position. Values declined 20-40% from peak by mid-2008."},
+          "residential_mortgage_exposure": {"value": 24.8, "unit": "USD billions", "source": "Lehman 10-Q Q2 2008", "note": "Including Alt-A and subprime residuals warehoused after securitization markets froze."},
+          "write_downs_q2_2008": {"value": 8.2, "unit": "USD billions in Q2 2008 alone", "source": "Lehman Q2 2008 earnings", "note": "First major public acknowledgment of portfolio deterioration; insufficient relative to actual losses."}
+        }
+      },
+      "3": {
+        "D": 55,
+        "C": 320,
+        "balance": 17.2,
+        "N": 23,
+        "sustainability": 0.001,
+        "notes": "The deepest structural failure in the chain. Lehman's target leverage was 25x internally but gross leverage reached 30.7x in Q1 2008: 23% above stated targets. The internal risk committee was routinely overridden by revenue-generating business units. VaR limits were exceeded and waivers granted rather than exposure reduced. Stress testing scenarios did not capture correlated real estate declines. D (enforced leverage and risk limits) was structurally absent: constraints existed on paper but were not binding in practice. The Valukas Report found that risk limit overrides were common and undisclosed. Phase 3 entered Breakdown in Q1 2007 and remained there throughout.",
+        "data_quality": "medium",
+        "metrics": {
+          "gross_leverage_q1_2008": {"value": 30.7, "unit": "x (actual vs 25x target)", "source": "Valukas Report; FCIC Chapter 5", "note": "Target of 25x routinely exceeded; risk committee waivers granted rather than positions reduced."},
+          "var_limit_overrides": {"value": "routine", "unit": "qualitative: documented in Valukas Report", "source": "Valukas Report p. 87-92", "note": "Risk limit breaches were a regular occurrence, resolved by raising limits rather than reducing exposure."},
+          "leverage_reduction_q2_2008": {"value": 4.0, "unit": "USD billions asset reduction (insufficient)", "source": "Lehman 10-Q Q2 2008", "note": "Management publicly claimed deleveraging progress; actual progress was minimal relative to $700B balance sheet."}
+        }
+      },
+      "4": {
+        "D": 185,
+        "C": 80,
+        "balance": 43.2,
+        "N": 53,
+        "sustainability": 0.009,
+        "notes": "Lehman maintained a claimed liquidity pool of approximately $45B, but the Valukas Report found that a significant portion was encumbered (pledged as collateral) or consisted of assets that could not be liquidated under stress conditions. Unlike commercial banks, Lehman had no FDIC insurance and limited Federal Reserve emergency access. When repo counterparties began demanding more collateral and refusing to roll agreements in September 2008, the liquidity pool proved inadequate in real-time. C (actually available liquid assets) was significantly below D (what was needed to meet $250B+ in daily rollover obligations).",
+        "data_quality": "medium",
+        "metrics": {
+          "claimed_liquidity_pool": {"value": 45.5, "unit": "USD billions, Q2 2008", "source": "Lehman management presentations; Valukas Report", "note": "Claimed pool; Valukas found substantial portion was encumbered or illiquid in stress."},
+          "actual_usable_liquidity_estimate": {"value": 25, "unit": "USD billions estimated (PROVISIONAL)", "source": "Valukas Report analysis; FCIC", "note": "Estimate of liquid assets accessible within 24 hours under stress conditions."},
+          "repo_rollover_required_daily": {"value": 188.5, "unit": "USD billions daily", "source": "Lehman 10-Q Q2 2008", "note": "Daily funding requirement dwarfed available liquidity; failure was guaranteed once counterparties withdrew."}
+        }
+      },
+      "5": {
+        "D": 155,
+        "C": 95,
+        "balance": 61.3,
+        "N": 74,
+        "sustainability": 0.028,
+        "notes": "Earnings appeared positive through Q4 2007 ($4.2B full-year net income in 2007, a record). Q2 2008 produced a net loss of $2.8B: the first quarterly loss in the firm's public history. Q3 2008 produced a further loss of $3.9B (announced September 10, 2008, five days before failure). The revenue model depended on continuous asset price appreciation and securitization market liquidity: both of which evaporated in 2007-2008. This phase crossed from Good into Critical over six quarters, a trajectory visible in declining NIM and asset write-downs.",
+        "data_quality": "high",
+        "metrics": {
+          "net_income_fy2007": {"value": 4.2, "unit": "USD billions (record year)", "source": "Lehman 10-K 2007", "note": "Record earnings masked structural deterioration. Leveraged returns on illiquid assets inflated reported income."},
+          "net_loss_q2_2008": {"value": -2.8, "unit": "USD billions", "source": "Lehman Q2 2008 earnings; 10-Q", "note": "First quarterly loss as public company. Market reaction was negative but recovery was expected by management."},
+          "net_loss_q3_2008": {"value": -3.9, "unit": "USD billions", "source": "Lehman earnings release September 10, 2008", "note": "Announced 5 days before failure; effectively the public signal of terminal insolvency."}
+        }
+      },
+      "6": {
+        "D": 180,
+        "C": 55,
+        "balance": 30.6,
+        "N": 30,
+        "sustainability": 0.006,
+        "notes": "Counterparty trust collapsed progressively from August 2008. Korea Development Bank deal to acquire a stake in Lehman collapsed on September 9: removing the last credible recapitalization path. Barclays and Bank of America declined to acquire Lehman without a government backstop (unlike Bear Stearns, where the Fed provided emergency support). Prime brokerage clients began withdrawing assets in the final week. By September 12, repo counterparties were refusing to roll agreements. Phase 6 was in Breakdown by Q3 2008: the model would have detected this deterioration through Q1-Q2 2008 as institutional investors reduced exposure.",
+        "data_quality": "medium",
+        "metrics": {
+          "kdb_deal_collapse": {"value": "September 9, 2008", "unit": "date: recapitalization path closed", "source": "Reuters; FCIC Report Chapter 18", "note": "Korea Development Bank acquisition talks collapse; Lehman stock fell 45% in one day."},
+          "prime_brokerage_withdrawals": {"value": "accelerating", "unit": "qualitative: billions in final week", "source": "Valukas Report; FCIC testimony", "note": "Prime brokerage clients (hedge funds) withdrew assets, further draining liquidity."},
+          "credit_rating_a_through_sept9": {"value": 1, "unit": "binary: A rated until 6 days before failure", "source": "S&P, Moody's rating action history", "note": "Lehman was investment-grade rated until September 9, 2008. Downgrade came 6 days before failure."}
+        }
+      },
+      "7": {
+        "D": 195,
+        "C": 185,
+        "balance": 94.9,
+        "N": 180,
+        "sustainability": 0.909,
+        "notes": "Lehman satisfied formal regulatory requirements under the SEC Consolidated Supervised Entity (CSE) program, which allowed broker-dealers to self-monitor using internal models. This phase appearing Coherent is the key diagnostic deception: the CSE program did not require independent verification of leverage calculations, and Repo 105 manipulation was not identified by examiners. The Federal Reserve had emergency observation authority in 2008 but lacked statutory resolution tools for non-bank institutions. The FCIC concluded that regulatory oversight was fundamentally inadequate: a Phase 7 D that appeared high but was structurally hollow.",
+        "data_quality": "high",
+        "metrics": {
+          "cse_program_compliance": {"value": 1, "unit": "binary: compliant throughout", "source": "SEC; Valukas Report", "note": "SEC CSE program allowed self-reporting and internal model use. No independent verification of Repo 105 or leverage calculations."},
+          "formal_enforcement_actions_at_failure": {"value": 0, "unit": "active enforcement orders at time of failure", "source": "SEC enforcement database", "note": "No public enforcement orders despite structural deterioration visible for 18+ months."},
+          "repo_105_disclosed_to_sec": {"value": "footnote only", "unit": "qualitative: not highlighted to regulators", "source": "Valukas Report p. 14", "note": "Repo 105 was disclosed in accounting footnotes but not identified by SEC CSE program examiners as a material issue."}
+        }
+      }
+    }
+  },
+  "system": {
+    "balance": 49.9,
+    "average_N": 79,
+    "bottleneck_phase_ids": [0, 2, 3, 4, 5, 6],
+    "interpretation": "Lehman Brothers presents a more severe and more broadly distributed structural failure than SVB. Six of eight phases are below the 61.8% coherence floor, versus four in SVB. The chain average of 49.9% (vs SVB's 61.3%) places the system firmly in Failure. The primary failure originated in Phase 3 (Leverage and Risk Management, 17.2%), which entered Breakdown in Q1 2007: 20 months before failure. Phase 0 (Funding Base, 28.3%) was in Breakdown throughout 2007-2008. Phases 1 and 7 appeared Coherent, creating a deceptive institutional health signal identical in structure to SVB: reporting and regulatory phases masked operational catastrophe. The key structural distinction from SVB: Lehman's failure involved six concurrent bottleneck phases and a funding structure (overnight repo) that collapsed in days once counterparty confidence broke. SVB had 18 months of visible Breakdown before failure; Lehman's terminal phase was 6 days from KDB deal collapse to bankruptcy filing.",
+    "quarterly_phase3_trend": {
+      "Q3_2006": {"D": 120, "C": 240, "balance": 50.0, "note": "Leverage at 26x; approaching Failure threshold"},
+      "Q4_2006": {"D": 100, "C": 260, "balance": 38.5, "note": "Leverage at 28x; near Breakdown boundary"},
+      "Q1_2007": {"D": 85, "C": 290, "balance": 29.3, "note": "Breakdown threshold crossed. Leverage 30x+. Model alert."},
+      "Q2_2007": {"D": 75, "C": 305, "balance": 24.6, "note": "Bear Stearns hedge funds collapse; subprime crisis spreads"},
+      "Q3_2007": {"D": 65, "C": 315, "balance": 20.6, "note": "Subprime crisis systemic; repo haircuts rising"},
+      "Q4_2007": {"D": 60, "C": 318, "balance": 18.9, "note": "Record full-year earnings mask structural collapse"},
+      "Q1_2008": {"D": 55, "C": 322, "balance": 17.1, "note": "Peak leverage 30.7x; Bear Stearns fails; Fed emergency action"},
+      "Q2_2008": {"D": 55, "C": 320, "balance": 17.2, "note": "Final full quarter; Q2 loss $2.8B; KDB talks begin"}
+    }
+  }
+}

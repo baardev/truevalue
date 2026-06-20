@@ -6,7 +6,7 @@
 
 **Date:** 19 May 2026
 
-**Provisional arXiv subjects:** math.OC; cs.GT (secondary: math.DS)
+**Keywords:** game theory; Nash equilibrium; triadic balance; tholonic model; classical constants; strategic interaction
 
 ---
 

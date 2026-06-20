@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light">
+<title>Lehman Brothers: Post-Crisis Context and Regulatory Reform</title>
+<style>
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { font-family:ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Arial; background:#edf2f7; color:#1a202c; }
+  header { background:#1e3a8a; color:#eff6ff; padding:18px 28px; display:flex; justify-content:space-between; align-items:center; }
+  header h1 { font-size:17px; font-weight:600; }
+  header nav a { color:#bfdbfe; text-decoration:none; font-size:13px; margin-left:14px; }
+  header nav a:hover { color:#eff6ff; }
+  main { max-width:980px; margin:0 auto; padding:28px 20px; }
+  section { background:#fff; border-radius:10px; padding:22px 24px; margin-bottom:18px; box-shadow:0 1px 6px rgba(0,0,0,.07); }
+  h2 { font-size:17px; font-weight:600; color:#0f172a; margin-bottom:12px; }
+  h3 { font-size:14px; font-weight:600; color:#1e3a8a; margin-bottom:10px; }
+  p { color:#475569; font-size:14px; line-height:1.65; margin-bottom:8px; }
+  ul { margin-left:20px; }
+  li { color:#475569; font-size:14px; line-height:1.6; margin-bottom:4px; }
+  table { width:100%; border-collapse:collapse; font-size:13px; margin-bottom:12px; }
+  th { text-align:left; padding:9px 12px; color:#64748b; font-size:11px; text-transform:uppercase; letter-spacing:.05em; border-bottom:2px solid #e2e8f0; background:#f8fafc; }
+  td { padding:10px 12px; border-bottom:1px solid #f1f5f9; vertical-align:top; color:#334155; }
+  tr:last-child td { border-bottom:none; }
+  .scope-note { background:#eff6ff; border:1px solid #bfdbfe; border-radius:10px; padding:18px 22px; margin-bottom:18px; font-size:14px; color:#1e40af; }
+  .scope-note h3 { color:#1e3a8a; margin-bottom:8px; }
+  .reform-done { color:#16a34a; font-weight:700; }
+  .reform-partial { color:#d97706; font-weight:700; }
+  .reform-pending { color:#dc2626; font-weight:700; }
+</style>
+</head>
+<body>
+<header>
+  <h1>💼 Lehman Brothers: Post-Crisis Context and Regulatory Reform</h1>
+  <nav>
+    <a href="../supply_chain/index.html">Structural Analysis</a>
+    <a href="../supply_chain/dashboard.html">Dashboard</a>
+    <a href="../index.html">Hub</a>
+    <a href="/">Home</a>
+  </nav>
+</header>
+<main>
+
+<div class="scope-note">
+  <h3>Scope of this page</h3>
+  <p>
+    This page addresses the post-crisis regulatory reforms enacted in response to Lehman's failure,
+    their mapping to the N-D-C phase failures identified in the structural analysis, and the
+    forward-looking screening framework for broker-dealer risk using public SEC data.
+    Full value chain financial modelling (revenue attribution, fee decomposition, desk-level profitability)
+    is deferred pending additional data sourcing from Valukas Report appendices and estate filings.
+  </p>
+</div>
+
+<!-- Dodd-Frank reform scorecard -->
+<section>
+  <h2>Post-Lehman Regulatory Reform Scorecard (Status: June 2026)</h2>
+  <p>
+    The Dodd-Frank Wall Street Reform and Consumer Protection Act (2010) was the primary legislative
+    response to the 2008 financial crisis. The table below maps each major provision to the
+    N-D-C phase it addresses and its implementation status as of mid-2026.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Reform</th>
+        <th>N-D-C phase addressed</th>
+        <th>What it fixes</th>
+        <th>Status (June 2026)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Title I: SIFI Designation and Enhanced Prudential Standards</strong></td>
+        <td>Phase 3: Leverage</td>
+        <td>FSOC designates systemically important financial institutions (SIFIs); enhanced capital, leverage, and liquidity requirements; stress testing; risk committee requirements. Restores D-constraint function in Phase 3.</td>
+        <td class="reform-partial">Partially enacted. Some non-bank SIFI designations rescinded 2017-2019. Re-designation activity resumed 2022-2024. Framework incomplete for non-bank broker-dealers at Lehman scale.</td>
+      </tr>
+      <tr>
+        <td><strong>Title II: Orderly Liquidation Authority (OLA)</strong></td>
+        <td>Phases 0, 4, 6: Resolution quality</td>
+        <td>Creates FDIC-equivalent resolution authority for systemically important non-banks. Would have enabled government bridge institution for Lehman instead of Chapter 11. Directly improves TVPCI-R.</td>
+        <td class="reform-done">Enacted and available. OLA has not been triggered as of 2026 (no equivalent failure scale). Living will (§165d) requirements for SIFI firms active and enforced.</td>
+      </tr>
+      <tr>
+        <td><strong>Title VII: Derivatives and Swap Reform</strong></td>
+        <td>Phase 3: Leverage and risk instruments</td>
+        <td>Requires central clearing and margin for standardized swaps; trade repository reporting; mandatory disclosure of OTC derivatives positions. Reduces the opacity that allowed Lehman's off-balance-sheet exposures to go undetected.</td>
+        <td class="reform-done">Substantially implemented. CFTC and SEC rules in effect. Approximately 80% of standardized swap volume now centrally cleared. Residual bilateral exposures remain for bespoke instruments.</td>
+      </tr>
+      <tr>
+        <td><strong>Volcker Rule (§619)</strong></td>
+        <td>Phase 2 and 3: Asset quality and concentration</td>
+        <td>Prohibits proprietary trading by banking entities; limits investments in hedge funds and private equity. Does not directly apply to pure broker-dealers; applies to bank holding company affiliates. Addresses the originate-to-hold model that concentrated Phase 2 risk at Lehman.</td>
+        <td class="reform-partial">Enacted for banking entities; several rounds of amendments (2019, 2020) narrowed scope. Pure investment banks outside bank holding company structure remain partially exempt from Volcker restrictions.</td>
+      </tr>
+      <tr>
+        <td><strong>Basel III Leverage Ratio (global)</strong></td>
+        <td>Phase 3: Leverage</td>
+        <td>Minimum 3% Tier 1 leverage ratio (supplementary 5% for G-SIBs in the US). Creates a non-risk-weighted backstop against excessive gross leverage. Directly addresses Lehman's 30.7x leverage. Applied to banking entities, not pure broker-dealers.</td>
+        <td class="reform-done">Implemented for US banking entities as of 2018. Enhanced supplementary leverage ratio (eSLR) at 5% for G-SIB holding companies and 6% for their insured depositories.</td>
+      </tr>
+      <tr>
+        <td><strong>Basel III Liquidity Coverage Ratio (LCR)</strong></td>
+        <td>Phases 0 and 4: Funding stability and liquidity</td>
+        <td>Requires 100% coverage of 30-day stressed outflows with high-quality liquid assets. For banking entities with $250B+ in assets: addressing the funding run-risk that Lehman exhibited at Phase 0. Note: does not directly apply to pure broker-dealers.</td>
+        <td class="reform-partial">Implemented for US banks. LCR and NSFR requirements do not extend to pure broker-dealers in the same form. Gap remains for Lehman-type entities operating outside bank holding company structure.</td>
+      </tr>
+      <tr>
+        <td><strong>Repo 105 prohibition (SEC accounting)</strong></td>
+        <td>Phase 1: Capital adequacy deception</td>
+        <td>SEC and FASB guidance post-Valukas Report targeted the accounting treatment that allowed Repo 105. ASU 2011-03 removed the sale accounting treatment for most repo-to-maturity transactions, requiring balance sheet treatment instead.</td>
+        <td class="reform-done">FASB ASU 2011-03 enacted. Repo-to-maturity transactions must now remain on balance sheet. Quarter-end window dressing through repo structures substantially eliminated for entities reporting under US GAAP.</td>
+      </tr>
+      <tr>
+        <td><strong>SEC Form PF / large trader reporting</strong></td>
+        <td>Phase 7: Regulatory oversight effectiveness</td>
+        <td>Quarterly reporting of portfolio composition, leverage, liquidity, and counterparty exposure for large investment advisors and broker-dealers. Provides regulators with current balance sheet data more frequently than annual 10-K filings. Closes part of the Q1 2007 to September 2008 supervisory gap.</td>
+        <td class="reform-partial">Implemented for investment advisors. Broker-dealer reporting enhancements proposed but not fully standardized across all Phase 3 risk metrics. SEC market data program under ongoing development.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Five model value context -->
+<section>
+  <h2>Five-Model Value Context: Post-Crisis Regulatory Completeness</h2>
+  <p>
+    The five coherence axes measure not only structural failure but also the completeness of the
+    regulatory response. Where an axis score remains low despite reforms, it indicates unfinished work.
+  </p>
+  <table>
+    <thead>
+      <tr>
+        <th>Axis</th>
+        <th>Lehman Q2 2008 Score</th>
+        <th>Post-Dodd-Frank Estimated Score</th>
+        <th>Remaining gap</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>π (chain average)</strong></td>
+        <td style="color:#dc2626;font-weight:700;">49.9%</td>
+        <td style="color:#d97706;font-weight:700;">~65-70% (est.)</td>
+        <td>6 of 8 phases addressed by reform; Phase 0 (funding structure) and Phase 3 (leverage for pure broker-dealers) still partially unresolved.</td>
+      </tr>
+      <tr>
+        <td><strong>φ (distribution)</strong></td>
+        <td style="color:#dc2626;font-weight:700;">22%</td>
+        <td style="color:#d97706;font-weight:700;">~45-50% (est.)</td>
+        <td>Repo 105 elimination reduces deceptive Phase 1 signal. But broker-dealer Phase 3 leverage reporting still largely self-monitored via internal models for non-bank entities.</td>
+      </tr>
+      <tr>
+        <td><strong>√2 (structural constraint)</strong></td>
+        <td style="color:#dc2626;font-weight:700;">18%</td>
+        <td style="color:#d97706;font-weight:700;">~45% (est.)</td>
+        <td>Basel III leverage ratio (3%) and SIFI standards restored D-function for banking entities. Pure broker-dealers outside bank holding companies retain more flexibility. Leverage override culture requires independent risk committee requirements not yet fully mandated.</td>
+      </tr>
+      <tr>
+        <td><strong>ln2 (value transformation)</strong></td>
+        <td style="color:#dc2626;font-weight:700;">38%</td>
+        <td style="color:#d97706;font-weight:700;">~52% (est.)</td>
+        <td>Volcker Rule and concentration guidance partially addressed originate-to-hold accumulation in banking entities. Pure broker-dealer concentration limits for illiquid assets remain weaker than recommended by FCIC. NSFR not yet applied to broker-dealers.</td>
+      </tr>
+      <tr>
+        <td><strong>e (financial abstraction)</strong></td>
+        <td style="color:#dc2626;font-weight:700;">6%</td>
+        <td style="color:#16a34a;font-weight:700;">~55% (est.)</td>
+        <td>Largest improvement axis. Repo 105 eliminated; swap clearing and reporting enacted; Form PF provides regulatory visibility. The e axis has recovered most because accounting and reporting reforms directly address the manipulation mechanism.</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- Broker-dealer screening application -->
+<section>
+  <h2>Applying the Framework: Broker-Dealer Structural Screening (2026)</h2>
+  <p>
+    The Lehman analysis is reproducible for large broker-dealers and investment banks using
+    quarterly SEC filings, Federal Reserve H.8 data, and CFTC swap data repositories.
+    The post-Dodd-Frank reporting improvements make the Lehman Phase 3 and Phase 0 signals
+    more visible than they were in 2007-2008.
+  </p>
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Public Data Source (post-Dodd-Frank)</th><th>Warning Signal</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Ph 0: Funding</strong></td><td>Fed H.8, SIFMA repo statistics, quarterly 10-Q liquidity disclosures</td><td>Overnight repo above 50% of wholesale funding; term funding below 30% of total liabilities</td></tr>
+      <tr><td><strong>Ph 1: Capital</strong></td><td>SEC EDGAR 10-Q; Basel III Pillar 3 disclosures</td><td>Gap between reported leverage and supplementary leverage ratio; Level 3 assets above 10% of equity</td></tr>
+      <tr><td><strong>Ph 2: Assets</strong></td><td>SEC 10-Q fair value hierarchy (Level 1/2/3 breakdown)</td><td>Level 3 assets above 10% of total; single-sector CRE or RMBS exposure above 8% of assets</td></tr>
+      <tr><td><strong>Ph 3: Leverage</strong></td><td>SEC EDGAR 10-Q; Fed enhanced prudential standard disclosures; CFTC swap data</td><td>Gross leverage above 20x; VaR utilization above 90% for two consecutive quarters; risk limit waiver disclosures</td></tr>
+      <tr><td><strong>Ph 4: Liquidity</strong></td><td>Fed LCR disclosure (for bank holding companies); 10-Q liquidity pool footnotes</td><td>LCR below 120% (warning); unencumbered liquidity pool below 20 days of stressed outflows</td></tr>
+      <tr><td><strong>Ph 5: Earnings</strong></td><td>SEC 10-Q income statement; write-down trends vs. net revenue</td><td>Write-downs exceeding 20% of net revenue for two consecutive quarters; NIM compression in rising rate environment</td></tr>
+      <tr><td><strong>Ph 6: Confidence</strong></td><td>Credit agency rating actions; prime brokerage client asset trends; CDS spreads</td><td>CDS spread widening above 150bps; rating review action initiated; prime brokerage account outflows disclosed</td></tr>
+      <tr><td><strong>Ph 7: Regulatory</strong></td><td>FDIC examination reports (for bank entities); FINRA broker-dealer audits</td><td>Formal enforcement actions; resolution plan rejection; stress test failure (DFAST)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+</main>
+</body>
+</html>

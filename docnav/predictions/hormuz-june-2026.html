@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tholonic Prediction: Strait of Hormuz — June 2026</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+.page { max-width: 1000px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.5); overflow: hidden; }
+.header {
+    background: linear-gradient(135deg, #0f2027 0%, #2c5364 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header h1 { font-size: 18px; font-weight: 300; line-height: 1.4; }
+.header a { color: #7dd3fc; text-decoration: none; margin-left: 12px; font-size: 14px; }
+.header a:hover { color: white; }
+
+.status-banner {
+    background: #f0f9ff;
+    border-left: 5px solid #2c6fbf;
+    padding: 14px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+}
+.status-badge { padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 700; letter-spacing: 0.05em; white-space: nowrap; }
+.status-badge.pending { background: #dbeafe; color: #1d4ed8; }
+.status-badge.confirmed { background: #dcfce7; color: #15803d; }
+.status-badge.falsified { background: #fee2e2; color: #b91c1c; }
+.status-dates { flex: 1; color: #374151; }
+.status-dates strong { color: #111827; }
+.status-dates span { color: #9ca3af; margin: 0 8px; }
+
+.content { padding: 30px; }
+.section { margin-bottom: 36px; }
+.section h2 { font-size: 17px; color: #111827; margin-bottom: 14px; padding-bottom: 8px; border-bottom: 2px solid #2c5364; }
+.section p { font-size: 14px; color: #374151; line-height: 1.7; margin-bottom: 10px; }
+.section ul { margin-left: 20px; }
+.section li { font-size: 14px; color: #374151; line-height: 1.7; margin-bottom: 6px; }
+
+/* Polymarket odds cluster */
+.odds-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin: 16px 0; }
+.odds-card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 14px; }
+.odds-card .market-q { font-size: 12px; color: #374151; margin-bottom: 8px; line-height: 1.4; }
+.odds-card .prob-row { display: flex; align-items: baseline; gap: 8px; }
+.odds-card .prob-yes { font-size: 32px; font-weight: 700; }
+.odds-card .prob-label { font-size: 12px; color: #6b7280; }
+.odds-card .vol { font-size: 11px; color: #9ca3af; margin-top: 4px; }
+.odds-card .prob-yes.high { color: #15803d; }
+.odds-card .prob-yes.low { color: #b91c1c; }
+.odds-card .prob-yes.mid { color: #d97706; }
+.odds-card .resolve-date { font-size: 11px; color: #6b7280; margin-top: 4px; }
+.odds-note { font-size: 13px; background: #fffbeb; border-left: 3px solid #f59e0b; padding: 10px 12px; border-radius: 0 6px 6px 0; margin-top: 10px; color: #78350f; }
+
+/* Phase chain */
+.phase-chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 14px 0; }
+.phase-pill { padding: 6px 12px; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid transparent; }
+.phase-pill.coherent { background: #dcfce7; color: #15803d; border-color: #22c55e; }
+.phase-pill.stressed { background: #fff7ed; color: #c2410c; border-color: #f97316; }
+.phase-pill.critical { background: #fee2e2; color: #b91c1c; border-color: #ef4444; font-size: 13px; padding: 7px 13px; }
+.phase-arrow { color: #9ca3af; font-size: 14px; }
+
+/* NDC grid */
+.phase-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 16px 0; }
+.phase-card { border: 1px solid #e5e7eb; border-radius: 8px; overflow: hidden; }
+.phase-card-header { padding: 10px 14px; display: flex; justify-content: space-between; align-items: center; }
+.phase-card-header.p1 { background: #dcfce7; }
+.phase-card-header.p2 { background: #dcfce7; }
+.phase-card-header.p3 { background: #fff7ed; }
+.phase-card-header.p4 { background: #fee2e2; }
+.phase-name { font-size: 13px; font-weight: 700; color: #111827; }
+.phase-balance { font-size: 18px; font-weight: 800; }
+.p1 .phase-balance, .p2 .phase-balance { color: #15803d; }
+.p3 .phase-balance { color: #c2410c; }
+.p4 .phase-balance { color: #b91c1c; }
+.phase-card-body { padding: 12px 14px; }
+.ndc-mini { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.ndc-item { text-align: center; padding: 8px 6px; border-radius: 4px; }
+.ndc-item.n { background: #dbeafe; }
+.ndc-item.d { background: #dcfce7; }
+.ndc-item.c { background: #fee2e2; }
+.ndc-item .role { font-size: 9px; font-weight: 700; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em; }
+.ndc-item .val { font-size: 18px; font-weight: 700; color: #111827; }
+.phase-desc { font-size: 12px; color: #374151; line-height: 1.5; margin-top: 6px; }
+.phase-d-note { font-size: 11px; color: #374151; margin-top: 6px; padding: 6px 8px; background: #f9fafb; border-radius: 4px; }
+.phase-d-note strong { color: #374151; }
+.phase-d-note .d-label { color: #15803d; font-weight: 700; }
+.phase-d-note .c-label { color: #b91c1c; font-weight: 700; }
+.phase-d-note .imbalance { color: #b91c1c; font-weight: 600; }
+
+/* Reasoning */
+.reasoning-block { background: #eff6ff; border-left: 4px solid #1d4ed8; padding: 16px; border-radius: 0 8px 8px 0; margin: 12px 0; font-size: 14px; color: #1e3a5f; line-height: 1.7; }
+.reasoning-block strong { color: #1d4ed8; }
+
+/* Structural probability derivation */
+.prob-derivation { background: #0f2027; color: white; border-radius: 8px; padding: 20px; margin: 16px 0; }
+.prob-derivation h3 { font-size: 14px; font-weight: 600; color: #7dd3fc; margin-bottom: 14px; }
+.prob-step { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+.prob-step:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+.prob-step .step-label { font-size: 11px; background: rgba(255,255,255,0.1); padding: 4px 8px; border-radius: 4px; color: #9ca3af; white-space: nowrap; min-width: 80px; text-align: center; margin-top: 2px; }
+.prob-step .step-text { font-size: 13px; color: #d1d5db; line-height: 1.5; flex: 1; }
+.prob-step .step-pct { font-size: 20px; font-weight: 800; color: #f0d080; min-width: 60px; text-align: right; }
+.prob-final { display: flex; align-items: center; justify-content: space-between; margin-top: 16px; padding-top: 16px; border-top: 2px solid rgba(255,255,255,0.2); }
+.prob-final .label { font-size: 13px; color: #9ca3af; }
+.prob-final .pct { font-size: 36px; font-weight: 800; color: #f0d080; }
+
+/* Comparison table */
+.compare-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+.compare-table th { background: #0f2027; color: white; padding: 10px 12px; text-align: left; font-weight: 500; }
+.compare-table td { padding: 10px 12px; border-bottom: 1px solid #e5e7eb; }
+.compare-table .market-name { font-weight: 600; color: #111827; }
+.compare-table .polymarket-pct { font-weight: 700; color: #1d4ed8; }
+.compare-table .model-pct { font-weight: 700; color: #0f2027; }
+.compare-table .agree { color: #15803d; font-weight: 600; }
+.compare-table .diverge-low { color: #b91c1c; font-weight: 600; }
+.compare-table .diverge-high { color: #d97706; font-weight: 600; }
+
+/* Prediction card */
+.prediction-card { border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 16px; overflow: hidden; }
+.prediction-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #f9fafb; border-bottom: 1px solid #e5e7eb; }
+.prediction-id { font-size: 11px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.05em; }
+.prediction-title { font-size: 15px; font-weight: 600; color: #111827; margin-top: 2px; }
+.pred-status { font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 700; }
+.pred-status.pending { background: #dbeafe; color: #1d4ed8; }
+.prediction-body { padding: 16px; }
+.prediction-statement { font-size: 14px; color: #111827; font-weight: 500; margin-bottom: 10px; padding: 10px; background: #f0f9ff; border-left: 3px solid #2c5364; line-height: 1.6; }
+.prediction-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 12px; }
+.meta-box { background: #f9fafb; border-radius: 6px; padding: 10px 12px; }
+.meta-label { font-size: 10px; text-transform: uppercase; color: #6b7280; letter-spacing: 0.05em; margin-bottom: 3px; }
+.meta-val { font-size: 13px; color: #111827; line-height: 1.4; }
+.falsification-box { background: #fff5f5; border: 1px dashed #fca5a5; border-radius: 6px; padding: 10px 12px; margin-top: 10px; font-size: 12px; color: #7f1d1d; }
+.falsification-box strong { display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+.check-date-box { display: flex; align-items: center; gap: 16px; background: #0f2027; color: white; padding: 14px 20px; border-radius: 8px; margin: 20px 0; font-size: 14px; }
+.check-date-box .date-label { font-size: 11px; text-transform: uppercase; color: #9ca3af; letter-spacing: 0.06em; }
+.check-date-box .date-val { font-size: 18px; font-weight: 700; color: #7dd3fc; }
+.check-date-box .sep { color: #4b5563; font-size: 20px; }
+
+.disclaimer { background: #f9fafb; border-radius: 8px; padding: 14px 16px; font-size: 12px; color: #6b7280; line-height: 1.6; margin-top: 20px; border: 1px solid #e5e7eb; }
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+<h1>⚓ Tholonic Prediction: Strait of Hormuz Traffic Normalization — June 2026<br/>
+<span style="font-size:13px; color:#93c5fd;">N-D-C Structural Analysis vs. Polymarket Crowd Probability</span></h1>
+<div>
+<a href="/index.html">Home</a>
+<a href="https://polymarket.com/event/strait-of-hormuz-traffic-returns-to-normal-by-end-of-june" target="_blank">Polymarket ↗</a>
+</div>
+</div>
+
+<div class="status-banner">
+<span class="status-badge pending">PENDING VERIFICATION</span>
+<div class="status-dates">
+<strong>Analysis date:</strong> 17 June 2026
+<span>|</span>
+<strong>Market closes:</strong> 30 June 2026
+<span>|</span>
+<strong>Days remaining at analysis:</strong> 13 days
+<span>|</span>
+<strong>Resolution source:</strong> IMF Portwatch (7-day average ≥ 60 transit calls)
+</div>
+</div>
+
+<div class="content">
+
+<div class="section">
+<h2>What is being predicted</h2>
+<p>
+The Polymarket prediction market "Strait of Hormuz traffic returns to normal by end of June?" resolves YES if the IMF Portwatch 7-day moving average of ship transit calls at the Strait of Hormuz reaches or exceeds <strong>60 ships per day</strong> at any point on or before 30 June 2026. Normal traffic is defined precisely by this threshold. The market resolves NO if this threshold is not reached by that date.
+</p>
+<p>
+As of the analysis date (17 June 2026), there are <strong>13 days remaining</strong> for the outcome to occur. The Polymarket crowd has priced the following cluster of related outcomes:
+</p>
+<div class="odds-grid">
+<div class="odds-card">
+<div class="market-q">Strait of Hormuz traffic returns to normal by June 30?</div>
+<div class="prob-row"><span class="prob-yes low">19%</span><span class="prob-label">Yes</span></div>
+<div class="vol">$24.9M volume</div>
+<div class="resolve-date">Resolves: 30 June 2026 · IMF Portwatch ≥ 60 ships/day (7-day avg)</div>
+</div>
+<div class="odds-card">
+<div class="market-q">Iran agrees to unrestricted shipping through Hormuz by June 30?</div>
+<div class="prob-row"><span class="prob-yes low">13%</span><span class="prob-label">Yes</span></div>
+<div class="vol">$550.9K volume</div>
+<div class="resolve-date">Resolves: 30 June 2026 · Formal Iranian agreement</div>
+</div>
+<div class="odds-card">
+<div class="market-q">US-Iran deal text released by June 30?</div>
+<div class="prob-row"><span class="prob-yes high">93%</span><span class="prob-label">Yes</span></div>
+<div class="vol">$2M volume</div>
+<div class="resolve-date">Resolves: 30 June 2026 · Upstream Phase 2</div>
+</div>
+<div class="odds-card">
+<div class="market-q">Strait of Hormuz traffic returns to normal by July 31?</div>
+<div class="prob-row"><span class="prob-yes mid">56%</span><span class="prob-label">Yes</span></div>
+<div class="vol">Related market</div>
+<div class="resolve-date">Resolves: 31 July 2026 · IMF Portwatch ≥ 60 ships/day</div>
+</div>
+</div>
+<div class="odds-note">
+<strong>Key structural observation from the Polymarket cluster:</strong> The crowd prices deal text at 93% but Hormuz normalization at only 19% by the same date. The 74-point gap between these two outcomes is not priced inconsistently; it reflects a genuine phase gap. The tholonic analysis below explains this gap structurally and derives an independent probability estimate.
+</div>
+</div>
+
+<div class="section">
+<h2>Four-phase N-D-C analysis</h2>
+<p>
+The Iran-Hormuz outcome chain is modeled as four sequential phases. Each phase must succeed for the downstream phases to be possible. Phase scores are derived from structural first principles: D (definition/constraint) captures the barriers and requirements that limit the phase; C (contribution/integration) captures the enabling forces and outputs. Balance and N are computed from D and C.
+</p>
+<div class="phase-chain">
+<span class="phase-pill coherent">P1: Diplomatic Contact 91.7%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P2: Deal Text 94.0%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill stressed">P3: Hormuz Terms 62.5% ⚠</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill critical">P4: Traffic Normalization 50.8% ✕</span>
+</div>
+<p>Chain average: <strong>74.8%</strong> (Stressed zone). Two of four phases are below the coherent threshold; the last two phases represent a cascade failure path.</p>
+
+<div class="phase-grid">
+
+<div class="phase-card">
+<div class="phase-card-header p1">
+<span class="phase-name">Phase 1: Diplomatic Contact</span>
+<span class="phase-balance">91.7%</span>
+</div>
+<div class="phase-card-body">
+<div class="ndc-mini">
+<div class="ndc-item n"><div class="role">N</div><div class="val">211</div></div>
+<div class="ndc-item d"><div class="role">D</div><div class="val">220</div></div>
+<div class="ndc-item c"><div class="role">C</div><div class="val">240</div></div>
+</div>
+<div class="phase-desc">Establishment of diplomatic channel, willingness to meet, intermediary (Oman) facilitation. Currently active and coherent.</div>
+<div class="phase-d-note">
+<span class="d-label">D (220):</span> US-Iran historical enmity, domestic political constraints on both sides, formal channel requirements, intermediary dependency.<br/>
+<span class="c-label">C (240):</span> Oman's facilitation, economic pressure on Iran, Trump's deal-making motivation, Iranian need for sanction relief.<br/>
+C slightly exceeds D. <strong>Phase is Coherent.</strong> Consistent with Polymarket meeting probability of 96%.
+</div>
+</div>
+</div>
+
+<div class="phase-card">
+<div class="phase-card-header p2">
+<span class="phase-name">Phase 2: Framework / Deal Text</span>
+<span class="phase-balance">94.0%</span>
+</div>
+<div class="phase-card-body">
+<div class="ndc-mini">
+<div class="ndc-item n"><div class="role">N</div><div class="val">228</div></div>
+<div class="ndc-item d"><div class="role">D</div><div class="val">235</div></div>
+<div class="ndc-item c"><div class="role">C</div><div class="val">250</div></div>
+</div>
+<div class="phase-desc">Formal written agreement covering nuclear parameters, sanctions relief, and general diplomatic terms. Both parties motivated to close text.</div>
+<div class="phase-d-note">
+<span class="d-label">D (235):</span> Technical nuclear verification requirements, Congressional oversight (US), IRGC/hardliner resistance (Iran), sanction-relief legal mechanics.<br/>
+<span class="c-label">C (250):</span> JCPOA framework as precedent, economic urgency on both sides, Oman facilitation, Trump's political interest in a deal.<br/>
+C exceeds D. <strong>Phase is Coherent.</strong> Consistent with Polymarket deal-text probability of 93%.
+</div>
+</div>
+</div>
+
+<div class="phase-card">
+<div class="phase-card-header p3">
+<span class="phase-name">Phase 3: Hormuz-Specific Terms</span>
+<span class="phase-balance" style="color:#c2410c;">62.5%</span>
+</div>
+<div class="phase-card-body">
+<div class="ndc-mini">
+<div class="ndc-item n"><div class="role">N</div><div class="val">138</div></div>
+<div class="ndc-item d"><div class="role">D</div><div class="val">280</div></div>
+<div class="ndc-item c"><div class="role">C</div><div class="val">175</div></div>
+</div>
+<div class="phase-desc">Iran formally agreeing to restore unrestricted commercial shipping through the Strait of Hormuz as part of the deal package.</div>
+<div class="phase-d-note">
+<span class="d-label">D (280):</span> Iran's strategic incentive to retain Hormuz as leverage (self-imposed D). IRGC control of the strait. UNCLOS disputes (Iran contests innocent passage for warships). Domestic audience management. Verification requirements for "unrestricted" shipping.<br/>
+<span class="c-label">C (175):</span> US pressure, regional economic benefit to Iran from restored trade, deal-package incentives, Arab trading partners' pressure.<br/>
+<span class="imbalance">D exceeds C by 37.5 points. Phase is Stressed.</span> The D-overshoot here is structurally distinctive: one of the largest D contributors is Iran's own strategic self-interest in not releasing this leverage.
+</div>
+</div>
+</div>
+
+<div class="phase-card">
+<div class="phase-card-header p4">
+<span class="phase-name">Phase 4: Operational Traffic Normalization</span>
+<span class="phase-balance" style="color:#b91c1c;">50.8%</span>
+</div>
+<div class="phase-card-body">
+<div class="ndc-mini">
+<div class="ndc-item n"><div class="role">N</div><div class="val">107</div></div>
+<div class="ndc-item d"><div class="role">D</div><div class="val">295</div></div>
+<div class="ndc-item c"><div class="role">C</div><div class="val">150</div></div>
+</div>
+<div class="phase-desc">Physical ships transiting at ≥ 60 per day (7-day moving average, IMF Portwatch) by 30 June 2026.</div>
+<div class="phase-d-note">
+<span class="d-label">D (295):</span> Maritime insurance markets require 2–4 weeks to reopen after geopolitical resolution (Lloyd's, P&amp;I clubs). Tanker operators require independent security assessment. IMF Portwatch 7-day MA means normalization must SUSTAIN, not merely occur once. Ship re-routing decisions have 1–2 week lead times. Physical clearance of any obstructions. <strong>13-day time constraint</strong> makes all of the above structurally impossible to satisfy even if Phase 3 resolves today.<br/>
+<span class="c-label">C (150):</span> Pent-up shipping demand, economic pressure from China/India/Japan, commercial incentives to restore routes.<br/>
+<span class="imbalance">D exceeds C by 49.2 points. Phase is Critical.</span> Even independent of Phase 3, Phase 4 cannot reach the resolution threshold within the 13-day window on operational grounds alone.
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<div class="section">
+<h2>Tholonic structural reasoning</h2>
+<div class="reasoning-block">
+<p style="margin-bottom:10px;"><strong>Phase cascade structure:</strong> Phases 1 and 2 are Coherent because both parties have strong structural incentives (D and C roughly balanced, C slightly dominant). The system becomes stressed at Phase 3 because Iran's incentive to retain Hormuz leverage flips the D-C balance: C drops while D rises. Phase 4 then fails not only because Phase 3 is stressed, but because Phase 4 has its own independent physical impossibility given the time constraint.</p>
+<p style="margin-bottom:10px;"><strong>The 74-point crowd gap is structurally correct:</strong> Polymarket prices deal text at 93% and Hormuz normalization at 19%. The N-D-C model explains exactly why: Phases 1-2 are coherent (high upstream success probability) and Phases 3-4 are stressed-to-critical (low downstream delivery probability). The crowd has correctly intuited the phase cascade failure even without the structural vocabulary to name it.</p>
+<p><strong>The Phase 4 time constraint is the binding variable:</strong> For the IMF Portwatch 7-day moving average to reach 60 by June 30, normalization must begin no later than June 24. Maritime insurance markets (Lloyds, P&amp;I clubs) do not reopen on 7-day timelines after geopolitical events of this magnitude. This is a structural impossibility embedded in Phase 4's D-side, independent of whether Phase 3 resolves. Even if Iran signs a full Hormuz terms agreement tomorrow (June 18), Phase 4 operational normalization by June 30 is structurally near-impossible on lead-time grounds alone.</p>
+</div>
+</div>
+
+<div class="section">
+<h2>Structural probability derivation</h2>
+<div class="prob-derivation">
+<h3>Step-by-step structural estimate for "Hormuz traffic returns to normal by June 30"</h3>
+
+<div class="prob-step">
+<span class="step-label">Phase 3<br/>balance</span>
+<div class="step-text">Iran formally agreeing to unrestricted Hormuz shipping. Phase 3 balance score = 62.5%. This is the structural coherence of that agreement happening at all (not yet constrained by the June 30 deadline).</div>
+<span class="step-pct">62.5%</span>
+</div>
+
+<div class="prob-step">
+<span class="step-label">Phase 4<br/>balance</span>
+<div class="step-text">Operational traffic reaching ≥ 60 ships/day sustained 7-day average. Phase 4 balance score = 50.8%. This is the structural coherence of normalization happening (unconstrained by deadline).</div>
+<span class="step-pct">50.8%</span>
+</div>
+
+<div class="prob-step">
+<span class="step-label">Cascade<br/>compound</span>
+<div class="step-text">Phase 3 must precede Phase 4. If Phase 3 fails, Phase 4 is impossible. Compound probability if independent: 62.5% × 50.8%.</div>
+<span class="step-pct">31.8%</span>
+</div>
+
+<div class="prob-step">
+<span class="step-label">Time<br/>constraint</span>
+<div class="step-text">Even if Phase 3 resolves today (June 17), Phase 4 requires maritime insurance reopening (2–4 weeks), tanker re-routing (1–2 weeks), and 7 days of sustained data. On a 13-day window, the conditional probability that operational normalization completes in time, given agreement, is structurally estimated at 20–25%.</div>
+<span class="step-pct">×25%</span>
+</div>
+
+<div class="prob-step">
+<span class="step-label">Adjusted<br/>estimate</span>
+<div class="step-text">31.8% × 25% = 7.9%. Rounded to nearest meaningful precision, the model's structural probability estimate is approximately 5–10%.</div>
+<span class="step-pct">~8%</span>
+</div>
+
+<div class="prob-final">
+<div class="label">Model structural probability for "Hormuz traffic normal by June 30"</div>
+<div class="pct">~8%</div>
+</div>
+</div>
+</div>
+
+<div class="section">
+<h2>Model vs. Polymarket comparison</h2>
+<table class="compare-table">
+<thead>
+<tr>
+<th>Market</th>
+<th>Polymarket "Yes"</th>
+<th>Model estimate</th>
+<th>Model direction</th>
+<th>Interpretation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="market-name">Strait of Hormuz traffic normal by June 30</td>
+<td class="polymarket-pct">19%</td>
+<td class="model-pct">~8%</td>
+<td class="diverge-low">Model lower</td>
+<td>Model is more bearish on normalization. The 19% may partially price "any improvement counts" rather than the strict ≥ 60 ships 7-day MA threshold.</td>
+</tr>
+<tr>
+<td class="market-name">Iran agrees unrestricted Hormuz shipping by June 30</td>
+<td class="polymarket-pct">13%</td>
+<td class="model-pct">~12%</td>
+<td class="agree">Broadly agree</td>
+<td>Phase 3 balance of 62.5% discounted by time constraint gives ~12%. Closely in line with Polymarket.</td>
+</tr>
+<tr>
+<td class="market-name">US-Iran deal text by June 30</td>
+<td class="polymarket-pct">93%</td>
+<td class="model-pct">~92%</td>
+<td class="agree">Agree</td>
+<td>Phase 2 coherent at 94%, minor time-discount. Polymarket and model agree.</td>
+</tr>
+<tr>
+<td class="market-name">Hormuz traffic normal by July 31</td>
+<td class="polymarket-pct">56%</td>
+<td class="model-pct">~40–50%</td>
+<td class="diverge-low">Model slightly lower</td>
+<td>July 31 gives a 6-week post-deal window. Model gives Phase 4 reasonable time, but Phase 3 D-overshoot (62.5%) remains the binding constraint. Model slightly below crowd.</td>
+</tr>
+</tbody>
+</table>
+<p style="margin-top:10px; font-size:13px; color:#374151;">
+<strong>Key divergence:</strong> The model is 11 percentage points below Polymarket on "traffic normal by June 30" (8% vs. 19%). The structural reason is Phase 4's operational lead-time impossibility: the crowd appears to assign some weight to scenarios where a geopolitical agreement produces near-immediate traffic resumption. The model's Phase 4 D-scoring suggests this scenario is structurally implausible within 13 days regardless of what Phase 3 does.
+</p>
+</div>
+
+<div class="section">
+<h2>Predictions</h2>
+
+<div class="prediction-card">
+<div class="prediction-header">
+<div>
+<div class="prediction-id">Prediction 1 — Primary</div>
+<div class="prediction-title">Hormuz traffic does NOT return to normal by June 30 (market resolves "No")</div>
+</div>
+<span class="pred-status pending">PENDING</span>
+</div>
+<div class="prediction-body">
+<div class="prediction-statement">
+The IMF Portwatch 7-day moving average of Hormuz transit calls will NOT reach 60 by June 30, 2026. The model assigns approximately 8% structural probability to "Yes," implying approximately 92% confidence in "No." Phase 4's operational lead-time requirements (maritime insurance reopening, tanker re-routing, 7 days of sustained data) cannot be satisfied in a 13-day window even if Phase 3 (Iran formal agreement) resolves today. Phase 3's own D-overshoot (62.5%, D=280, C=175) makes that earlier resolution additionally improbable.
+</div>
+<div class="prediction-meta">
+<div class="meta-box"><div class="meta-label">Model "No" confidence</div><div class="meta-val">~92%</div></div>
+<div class="meta-box"><div class="meta-label">Polymarket "No" confidence</div><div class="meta-val">~81% (19% "Yes")</div></div>
+<div class="meta-box"><div class="meta-label">Model vs. crowd divergence</div><div class="meta-val">Model 11pp more bearish on normalization</div></div>
+<div class="meta-box"><div class="meta-label">Resolution source</div><div class="meta-val">IMF Portwatch portwatch.imf.org Strait of Hormuz transit calls</div></div>
+</div>
+<div class="falsification-box">
+<strong>Falsification condition</strong>
+IMF Portwatch 7-day MA of Hormuz transit calls reaches ≥ 60 on or before June 30, 2026. This would require maritime insurance markets, tanker operators, and sufficient ship volume to all operationalize within 13 days of analysis, which the model identifies as a structural impossibility.
+</div>
+</div>
+</div>
+
+<div class="prediction-card">
+<div class="prediction-header">
+<div>
+<div class="prediction-id">Prediction 2 — Structural (Phase Gap)</div>
+<div class="prediction-title">Deal text will exist but Hormuz normalization will not follow before July 15</div>
+</div>
+<span class="pred-status pending">PENDING</span>
+</div>
+<div class="prediction-body">
+<div class="prediction-statement">
+A US-Iran deal text will be released by June 30 (model agrees with Polymarket at ~92-93%), but the Hormuz normalization threshold will not be reached before July 15, 2026 (Polymarket prices July 15 normalization at 38%). The model predicts this intermediate window (deal text exists but Hormuz not yet normalized) will persist for at least 2-4 weeks after deal text publication, consistent with Phase 4 operational lead time of 2-4 weeks for maritime insurance and shipping route restoration.
+</div>
+<div class="prediction-meta">
+<div class="meta-box"><div class="meta-label">Phase gap prediction</div><div class="meta-val">Deal text by Jun 30, but Hormuz not until after Jul 15 at earliest</div></div>
+<div class="meta-box"><div class="meta-label">Structural basis</div><div class="meta-val">Phase 4 operational D-side (insurance, routing) requires 2–4 week lead time post-Phase 3</div></div>
+<div class="meta-box"><div class="meta-label">Polymarket July 15 price</div><div class="meta-val">38%</div></div>
+<div class="meta-box"><div class="meta-label">Model estimate for July 15</div><div class="meta-val">~25–35% (slightly below crowd)</div></div>
+</div>
+<div class="falsification-box">
+<strong>Falsification condition</strong>
+Hormuz traffic reaches ≥ 60 7-day MA before July 15, 2026 within two weeks of any deal text release. This would indicate Phase 4 operational barriers (insurance, routing) are far more flexible than the structural model scores them.
+</div>
+</div>
+</div>
+
+<div class="check-date-box">
+<div>
+<div class="date-label">Primary check date</div>
+<div class="date-val">30 June 2026</div>
+</div>
+<span class="sep">|</span>
+<div>
+<div class="date-label">Secondary check date</div>
+<div class="date-val">15 July 2026</div>
+</div>
+<span class="sep">|</span>
+<div style="font-size:13px; color:#d1d5db; line-height:1.6;">
+Check IMF Portwatch for Hormuz transit data. Update prediction status to CONFIRMED or FALSIFIED.<br/>
+Source: <a href="https://portwatch.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730" style="color:#7dd3fc;">portwatch.imf.org — Strait of Hormuz</a>
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Data sources and verification procedure</h2>
+<ul>
+<li><strong>IMF Portwatch (primary resolution source):</strong> <a href="https://portwatch.imf.org/pages/cb5856222a5b4105adc6ee7e880a1730" style="color:#1d4ed8;" target="_blank">portwatch.imf.org — Strait of Hormuz transit calls</a>. Check the 7-day moving average column.</li>
+<li><strong>Polymarket markets to track:</strong>
+<ul style="margin-top:6px;">
+<li><a href="https://polymarket.com/event/strait-of-hormuz-traffic-returns-to-normal-by-end-of-june" style="color:#1d4ed8;" target="_blank">Hormuz traffic normal by June 30</a> (primary)</li>
+<li><a href="https://polymarket.com/event/iran-agrees-to-unrestricted-shipping-through-hormuz-by-june-30" style="color:#1d4ed8;" target="_blank">Iran agrees unrestricted shipping by June 30</a></li>
+</ul>
+</li>
+<li><strong>Verification procedure:</strong> On June 30, check whether IMF Portwatch shows a 7-day MA of Hormuz transit calls ≥ 60 for any date on or before June 30. If yes, Prediction 1 is falsified. If no, Prediction 1 is confirmed. Record the Polymarket resolution alongside the model outcome.</li>
+<li><strong>Secondary check on July 15:</strong> Check Polymarket July 15 market and IMF Portwatch data to assess whether the deal-text-to-normalization lead time is within the structural 2-4 week window predicted by the model.</li>
+</ul>
+</div>
+
+<div class="section">
+<h2>What this comparison tells us about the model</h2>
+<p>
+The model agrees with the Polymarket crowd on two out of four outcomes (deal text at ~93%, Iran formal agreement at ~13%) and diverges on one (traffic normalization at 8% vs. 19%). The divergence is structural, not arbitrary: Phase 4's D-side is dominated by maritime insurance and operational lead times that are measurable institutional facts, not opinions.
+</p>
+<p>
+If Prediction 1 is confirmed (market resolves "No"), the result is expected given that Polymarket itself prices it at 81% "No". The stronger evidential result would be if Prediction 2 holds: that the deal text exists by June 30 but Hormuz normalization takes more than two weeks after deal text publication. That specific sequence would confirm the model's phase-gap structure: upstream phases succeed while downstream phases lag by the operational lead times the model scores as D-side constraints.
+</p>
+<p>
+The July 31 market at 56% is the most interesting longer-horizon signal. The model scores it at ~40-50%, slightly below the crowd. If the July 31 market resolves "No" (below 56%), the model's Phase 3 D-overshoot reading (Iran retaining leverage even after text release) would gain evidential support.
+</p>
+</div>
+
+<div class="disclaimer">
+<strong>Disclaimer:</strong> These predictions are derived analytically from the Tholonic N-D-C framework applied to publicly available structural information. They are not financial forecasts and do not constitute investment advice. Phase scores are structural estimates, not statistical models trained on historical data. This page is a scientific validation instrument: the predictions are documented before the outcome is known so that both confirmation and falsification can be recorded honestly.
+</div>
+
+</div>
+</div>
+</body>
+</html>

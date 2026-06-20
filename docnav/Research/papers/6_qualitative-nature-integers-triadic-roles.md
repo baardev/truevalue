@@ -6,7 +6,7 @@
 
 **Date:** 17 April 2026
 
-**Provisional arXiv subjects:** math.HO; math.LO (secondary: cs.LO; q-bio.NC)
+**Keywords:** integers; triadic roles; N-D-C framework; structural role assignment; philosophy of mathematics; recursion
 
 ---
 

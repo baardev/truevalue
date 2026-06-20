@@ -22,11 +22,21 @@ if [[ ! -f "$TEX" ]]; then
   exit 1
 fi
 
+# Markdown figures use paths like figures/1_foo.png relative to the paper folder.
+# Shared assets live in docnav/Research/papers/figures/ (sibling of each paper dir).
+if grep -q 'includegraphics.*{figures/' "$TEX" 2>/dev/null && [[ ! -e "${PAPER_DIR}/figures" ]]; then
+  ln -sfn "../figures" "${PAPER_DIR}/figures"
+fi
+
 if ! command -v pdflatex >/dev/null 2>&1; then
   echo "error: pdflatex not found. Install a TeX distribution (for example texlive-most on Manjaro/arch)." >&2
   exit 1
 fi
 
 cd "$PAPER_DIR"
+pdflatex -interaction=nonstopmode "${BASE}.tex"
+if [[ -f "refs.bib" ]]; then
+  bibtex "${BASE}" || true
+fi
 pdflatex -interaction=nonstopmode "${BASE}.tex"
 pdflatex -interaction=nonstopmode "${BASE}.tex"

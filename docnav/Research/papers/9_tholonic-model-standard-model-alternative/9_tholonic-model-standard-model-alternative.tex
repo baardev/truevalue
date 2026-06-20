@@ -17,18 +17,30 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi
+}
+\makeatother
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\title{The Tholonic Model as a Candidate Alternative:\\
-\large to the Standard Model: Structural Derivations and Parameter Reduction}
+\title{The Tholonic Model as a Candidate Alternative to the Standard Model:\\
+\large Structural Derivations and Parameter Reduction}
 \author{J. W. Milton\\[4pt]{\small Clarity Coalition}}
-\date{19 May 2026 \\ \small v1.0}
+\date{\small 19 May 2026 \\ v1.0}
 
 \begin{document}
 \maketitle
 
-\noindent\textbf{Provisional arXiv subjects:} hep-ph; hep-th (secondary: math-ph; physics.hist-ph)
+\noindent\textbf{Keywords:} tholonic model, Standard Model, N-D-C triad, fine structure constant, fermion generations, color charge, quark confinement, Koide formula, parameter reduction, unified field theory, falsifiability
 
 \begin{abstract}
 The Standard Model of particle physics is the most precisely tested

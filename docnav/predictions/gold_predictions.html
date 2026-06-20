@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Gold – Tholonic Predictions: COMEX Q3 2026</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a2535 0%, #2c3e50 60%, #8b6914 100%);
+    min-height: 100vh;
+    padding: 20px;
+}
+.page { max-width: 1000px; margin: 0 auto; background: white; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.4); overflow: hidden; }
+.header {
+    background: linear-gradient(135deg, #1a2535 0%, #2c3e50 100%);
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header h1 { font-size: 20px; font-weight: 300; }
+.header a { color: #f0d080; text-decoration: none; margin-left: 12px; font-size: 14px; }
+.header a:hover { color: white; }
+
+.status-banner {
+    background: #fff8e7;
+    border-left: 5px solid #c9922a;
+    padding: 16px 30px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    font-size: 14px;
+}
+.status-badge {
+    background: #2c6fbf;
+    color: white;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+}
+.status-badge.pending { background: #2c6fbf; }
+.status-badge.confirmed { background: #15803d; }
+.status-badge.falsified { background: #b91c1c; }
+.status-dates { flex: 1; }
+.status-dates strong { color: #2c3e50; }
+.status-dates span { color: #6c757d; margin-left: 12px; }
+
+.content { padding: 30px; }
+.section { margin-bottom: 36px; }
+.section h2 {
+    font-size: 17px;
+    color: #2c3e50;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #c9922a;
+}
+.section p { font-size: 14px; color: #495057; line-height: 1.7; margin-bottom: 10px; }
+.section ul { margin-left: 20px; }
+.section li { font-size: 14px; color: #495057; line-height: 1.7; margin-bottom: 6px; }
+
+/* Parameter cards */
+.param-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+.param-card {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 14px;
+    border-top: 3px solid #c9922a;
+    text-align: center;
+}
+.param-card.stressed { border-top-color: #ef4444; background: #fff5f5; }
+.param-card.coherent { border-top-color: #22c55e; background: #f0fdf4; }
+.param-label { font-size: 11px; text-transform: uppercase; color: #6c757d; margin-bottom: 4px; letter-spacing: 0.04em; }
+.param-value { font-size: 24px; font-weight: 700; color: #2c3e50; }
+.param-unit { font-size: 11px; color: #6c757d; margin-top: 3px; }
+.param-note { font-size: 11px; color: #ef4444; margin-top: 4px; font-weight: 600; }
+
+/* Phase chain visual */
+.phase-chain { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 12px 0; }
+.phase-pill {
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid transparent;
+}
+.phase-pill.coherent { background: #dcfce7; color: #15803d; border-color: #22c55e; }
+.phase-pill.stressed { background: #fee2e2; color: #b91c1c; border-color: #ef4444; font-size: 13px; padding: 6px 12px; }
+.phase-pill.good { background: #e0f2fe; color: #0369a1; border-color: #38bdf8; }
+.phase-arrow { color: #9ca3af; font-size: 14px; }
+
+/* NDC triangle mini */
+.ndc-row { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin: 12px 0; }
+.ndc-box {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+.ndc-box.n-box { background: #dbeafe; border-left: 4px solid #1d4ed8; }
+.ndc-box.d-box { background: #dcfce7; border-left: 4px solid #15803d; }
+.ndc-box.c-box { background: #fee2e2; border-left: 4px solid #b91c1c; }
+.ndc-box .role { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #6c757d; }
+.ndc-box .val { font-size: 20px; font-weight: 700; color: #2c3e50; }
+.ndc-box .desc { font-size: 11px; color: #6c757d; margin-top: 3px; }
+.imbalance-note { font-size: 12px; color: #ef4444; font-weight: 600; margin-top: 6px; }
+
+/* Baseline table */
+.data-table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+.data-table th { background: #2c3e50; color: white; padding: 8px 12px; text-align: left; font-weight: 600; }
+.data-table td { padding: 8px 12px; border-bottom: 1px solid #e9ecef; color: #495057; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #f8f9fa; }
+.data-table .trending-down { color: #ef4444; font-weight: 600; }
+.data-table .trending-up { color: #15803d; font-weight: 600; }
+.data-table .neutral { color: #6c757d; }
+
+/* Prediction cards */
+.prediction-card {
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 16px;
+    overflow: hidden;
+}
+.prediction-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border-bottom: 1px solid #e9ecef;
+}
+.prediction-id { font-size: 11px; font-weight: 700; color: #6c757d; text-transform: uppercase; letter-spacing: 0.05em; }
+.prediction-title { font-size: 15px; font-weight: 600; color: #2c3e50; }
+.prediction-status { font-size: 11px; padding: 4px 10px; border-radius: 12px; font-weight: 700; }
+.prediction-status.pending { background: #dbeafe; color: #1d4ed8; }
+.prediction-status.confirmed { background: #dcfce7; color: #15803d; }
+.prediction-status.falsified { background: #fee2e2; color: #b91c1c; }
+.prediction-body { padding: 16px; }
+.prediction-statement {
+    font-size: 14px;
+    color: #2c3e50;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: #fffbf0;
+    border-left: 3px solid #c9922a;
+    line-height: 1.6;
+}
+.prediction-meta { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px; }
+.prediction-meta-box { background: #f8f9fa; border-radius: 6px; padding: 10px 12px; }
+.prediction-meta-box .meta-label { font-size: 10px; text-transform: uppercase; color: #6c757d; letter-spacing: 0.05em; margin-bottom: 4px; }
+.prediction-meta-box .meta-val { font-size: 13px; color: #2c3e50; line-height: 1.5; }
+.falsification-box {
+    background: #fff5f5;
+    border: 1px dashed #fca5a5;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #7f1d1d;
+}
+.falsification-box strong { display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.04em; }
+
+/* Tholonic reasoning */
+.reasoning-block {
+    background: #f0f4ff;
+    border-left: 4px solid #1d4ed8;
+    padding: 16px;
+    border-radius: 0 8px 8px 0;
+    margin: 12px 0;
+    font-size: 14px;
+    color: #1e3a5f;
+    line-height: 1.7;
+}
+.reasoning-block strong { color: #1d4ed8; }
+
+/* Axis table */
+.axis-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+.axis-table th { padding: 8px 10px; background: #1a2535; color: white; text-align: left; font-weight: 500; }
+.axis-table td { padding: 8px 10px; border-bottom: 1px solid #e9ecef; }
+.axis-table .axis-name { font-weight: 700; color: #c9922a; }
+.axis-table .low-score { color: #ef4444; font-weight: 700; }
+.axis-table .ok-score { color: #15803d; }
+
+.disclaimer {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-size: 12px;
+    color: #6c757d;
+    line-height: 1.6;
+    margin-top: 20px;
+    border: 1px solid #e9ecef;
+}
+.disclaimer strong { color: #2c3e50; }
+
+.check-date-box {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1a2535;
+    color: white;
+    padding: 14px 20px;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 14px;
+}
+.check-date-box .date-label { font-size: 11px; text-transform: uppercase; color: #9ca3af; letter-spacing: 0.06em; }
+.check-date-box .date-val { font-size: 18px; font-weight: 700; color: #f0d080; }
+.check-date-box .sep { color: #4b5563; font-size: 24px; }
+
+</style>
+</head>
+<body>
+<div class="page">
+
+<div class="header">
+<h1>🏅 Gold Supply Chain — Tholonic Predictions: COMEX Q3 2026</h1>
+<div>
+<a href="index.html">Supply Chain</a>
+<a href="dashboard.html">Dashboard</a>
+<a href="project_context.html">Context</a>
+<a href="/docnav/predictions/index.html">All Predictions</a>
+<a href="/index.html">Home</a>
+</div>
+</div>
+
+<div class="status-banner">
+<span class="status-badge pending">PENDING VERIFICATION</span>
+<div class="status-dates">
+<strong>Analysis date:</strong> 17 June 2026
+<span>|</span>
+<strong>COMEX baseline:</strong> 3 June 2026 (most recent available at analysis date)
+<span>|</span>
+<strong>Check date:</strong> 17 September 2026
+</div>
+</div>
+
+<div class="content">
+
+<div class="section">
+<h2>Purpose and methodology</h2>
+<p>
+This page documents a prospective structural prediction derived from the Tholonic N-D-C analysis of the gold supply chain. The prediction was generated on 17 June 2026 from phase balance scores computed independently of COMEX inventory data. The outcome will be checked on 17 September 2026 against publicly available COMEX warehouse inventory reports.
+</p>
+<p>
+The purpose is to test whether the model's structural diagnosis of Phase 6 (Logistics and Vaulting) predicts a measurable, directional outcome in the physical gold market over a 90-day horizon. A prediction confirmed by subsequent data constitutes evidence that the N-D-C structural analysis is tracking real system dynamics. A prediction falsified by subsequent data provides equally useful information: it narrows the conditions under which the model's phase scores are predictive.
+</p>
+<div class="reasoning-block">
+<strong>Epistemological note:</strong> The existing evidence cases in this project (cellular aging, ERCOT, Jackson MS water, econ history) demonstrate retrospective correspondence: the model's stressed phases match what independent experts identified after the fact. Prospective predictions that are subsequently confirmed or falsified are epistemologically stronger. This page is a documented attempt at that stronger standard.
+</div>
+</div>
+
+<div class="section">
+<h2>Model parameters: gold supply chain phase scores</h2>
+<p>Nine-phase supply chain scored from structural first principles using the N-D-C framework. Analysis date: June 2026. Chain average balance: <strong>82.5%</strong>.</p>
+
+<div class="phase-chain">
+<span class="phase-pill good">P0: Geology 83.9%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P1: Mining 94.6%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P2: Processing 96.0%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P3: Doré 89.3%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P4: Refining 95.1%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P5: Bar Casting 95.0%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill stressed">P6: Vaulting 65.5% ⚠</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill coherent">P7: Exchange 92.2%</span>
+<span class="phase-arrow">→</span>
+<span class="phase-pill good">P8: Recycling 80.0%</span>
+</div>
+
+<p>Phase 6 (Logistics and Vaulting) is the only Stressed phase in the chain, sitting 17 points below the chain average and 29 points below the nearest Coherent threshold. Every other phase scores above 80%. The bottleneck is structural and isolated.</p>
+
+<p><strong>Phase 6 N-D-C decomposition:</strong></p>
+<div class="ndc-row">
+<div class="ndc-box n-box">
+<div class="role">N — Emergent State</div>
+<div class="val">118</div>
+<div class="desc">The operational vaulting system as it actually functions: sluggish, opaque, over-constrained relative to delivery demand.</div>
+</div>
+<div class="ndc-box d-box">
+<div class="role">D — Definition (Constraints)</div>
+<div class="val">204</div>
+<div class="desc">Vault security requirements, insurance mandates, transport protocols, LBMA chain-of-custody documentation, regulatory oversight, weight-list audit obligations.</div>
+</div>
+<div class="ndc-box c-box">
+<div class="role">C — Contribution (Integration)</div>
+<div class="val">161</div>
+<div class="desc">Network delivery integration, warehouse-to-exchange warrant conversion velocity, inter-vault allocation capacity, logistics throughput to COMEX registered status.</div>
+<div class="imbalance-note">D exceeds C by 26.7% — over-constrained</div>
+</div>
+</div>
+
+<p>Sustainability score for Phase 6: <strong>0.05</strong> (near-zero; the phase is self-sustaining only marginally, not efficiently). Transparency: <strong>Low</strong>. The opacity of Phase 6 is itself a D-side contributor: opaque custody raises documentation and verification requirements without adding delivery capacity.</p>
+</div>
+
+<div class="section">
+<h2>Five-axis diagnostic at analysis date</h2>
+<p>Chain scores on the five tholonic constant axes, derived from the current phase map:</p>
+<table class="axis-table">
+<thead>
+<tr>
+<th>Axis</th>
+<th>Chain score</th>
+<th>What it measures</th>
+<th>Reading for gold</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="axis-name">π (pi)</td>
+<td class="ok-score">82.5%</td>
+<td>Chain-average operational balance</td>
+<td>Coherent system overall; single bottleneck at Phase 6 drags the average.</td>
+</tr>
+<tr>
+<td class="axis-name">φ (phi)</td>
+<td class="ok-score">~85%</td>
+<td>Proportional value distribution across phases</td>
+<td>Value flows coherently through Phases 1–5 and 7; Phase 6 is the redistribution break.</td>
+</tr>
+<tr>
+<td class="axis-name">√2</td>
+<td class="low-score">~65%</td>
+<td>Structural overhead: physical D binding</td>
+<td>Phase 6 physical and regulatory constraints are the dominant chain friction. √2 axis flags this as infrastructure and governance reform territory.</td>
+</tr>
+<tr>
+<td class="axis-name">ln 2</td>
+<td class="ok-score">~80%</td>
+<td>Transformation efficiency: input-to-output conversion</td>
+<td>Physical gold is transformed correctly through most phases; transformation loss is concentrated at Phase 6 custody handoff.</td>
+</tr>
+<tr>
+<td class="axis-name">e</td>
+<td class="low-score">~55%</td>
+<td>Financial abstraction linkage: instruments tied to real metrics</td>
+<td>COMEX futures OI substantially exceeds registered physical inventory. No financial instrument directly penalises Phase 6 delivery friction. Structural e-axis deficit.</td>
+</tr>
+</tbody>
+</table>
+<p style="margin-top:10px;">The two below-threshold axes (√2 at ~65%, e at ~55%) both trace to Phase 6. The √2 signal means physical or institutional binding constraints; the e signal means funding structures are not operationally connected to delivery performance. Both converge on the same phase.</p>
+</div>
+
+<div class="section">
+<h2>COMEX inventory baseline (3 June 2026)</h2>
+<p>Baseline established from publicly available CME Group COMEX warehouse inventory reports. Source: goldsilver.ai COMEX monitor aggregating CME daily data.</p>
+<table class="data-table">
+<thead>
+<tr><th>Metric</th><th>Value (3 Jun 2026)</th><th>30-day change</th><th>Trend</th></tr>
+</thead>
+<tbody>
+<tr>
+<td>Registered gold (warranted for delivery)</td>
+<td>~15.3M oz (476 tonnes)</td>
+<td class="trending-down">−516,600 oz (−3.3%)</td>
+<td class="trending-down">Drawdown</td>
+</tr>
+<tr>
+<td>Eligible gold (vault-held, not warranted)</td>
+<td>~12.9M oz (401 tonnes)</td>
+<td class="trending-down">−457,300 oz (−3.4%)</td>
+<td class="trending-down">Drawdown</td>
+</tr>
+<tr>
+<td>Total COMEX vault inventory</td>
+<td>~28.2M oz (877 tonnes)</td>
+<td class="trending-down">−973,900 oz (−3.3%)</td>
+<td class="trending-down">Drawdown</td>
+</tr>
+<tr>
+<td>Eligible / Registered ratio</td>
+<td>0.84</td>
+<td class="neutral">—</td>
+<td class="neutral">Eligible below Registered</td>
+</tr>
+<tr>
+<td>August 2026 futures open interest</td>
+<td>264,145 contracts (26.4M oz)</td>
+<td class="neutral">—</td>
+<td class="trending-down">Peak delivery month approaching</td>
+</tr>
+</tbody>
+</table>
+<p style="margin-top:8px; font-size:12px; color:#6c757d;">Note: inventory figures as of the CME report date of 3 June 2026, the most recent available at the time of this analysis (17 June 2026). Daily figures fluctuate; these are used as the snapshot baseline for the 90-day prediction window.</p>
+</div>
+
+<div class="section">
+<h2>Tholonic reasoning</h2>
+<p>The prediction follows directly from the Phase 6 D-overshoot structure and its relationship with Phase 7:</p>
+<div class="reasoning-block">
+<p style="margin-bottom:10px;"><strong>Phase 6 D-overshoot (D=204, C=161):</strong> Vault and logistics constraints (D) substantially exceed the system's capacity to integrate and deliver metal (C). The D-C gap of 43 points means that for every unit of constraint the vaulting system imposes, it generates only 0.79 units of delivery integration capacity. Metal enters Phase 6 custody more easily than it exits toward Phase 7 registration.</p>
+<p style="margin-bottom:10px;"><strong>Phase 7 is Coherent (92.2%):</strong> The exchange registration mechanism is structurally healthy. Demand for warranted, deliverable gold is well-integrated with the exchange system. This creates a structural pull: Phase 7 pulls metal from Phase 6, but Phase 6 cannot supply it efficiently because C is under-developed relative to D.</p>
+<p><strong>Predicted result:</strong> When a Coherent downstream phase (Phase 7) pulls from a D-overstretched upstream phase (Phase 6), the upstream buffer (registered inventory) depletes rather than replenishes. The delivery obligation imposed by the August 2026 futures open interest amplifies this: even 1% of 26.4M oz standing for physical delivery is 264,000 oz that must transit Phase 6. The model predicts that Phase 6 cannot absorb this without further registered drawdown.</p>
+</div>
+<p>What would reverse the prediction: a structural improvement in Phase 6 C (new vault interconnection agreements, reduced documentation friction, faster warrant conversion, or new logistics entrants) that narrows the D-C gap. The model does not predict timing of such improvements; it predicts only that absent them, the drawdown continues.</p>
+</div>
+
+<div class="section">
+<h2>Predictions</h2>
+
+<div class="prediction-card">
+<div class="prediction-header">
+<div>
+<div class="prediction-id">Prediction 1 — Primary (Directional)</div>
+<div class="prediction-title">Registered gold inventory continues its drawdown over the 90-day window</div>
+</div>
+<span class="prediction-status pending">PENDING</span>
+</div>
+<div class="prediction-body">
+<div class="prediction-statement">
+Registered COMEX gold inventory on 17 September 2026 will be lower than the June 3, 2026 baseline of 15.3M oz (476 tonnes). The ongoing Phase 6 D-overshoot (D=204, C=161, balance 65.5%) constrains vault-to-exchange delivery integration, sustaining the registered drawdown trend. If the current −3.3%/month pace continues linearly, the September 17 registered stock would be approximately 13.8M oz. Any figure below 15.3M oz confirms the directional prediction.
+</div>
+<div class="prediction-meta">
+<div class="prediction-meta-box">
+<div class="meta-label">Baseline (3 Jun 2026)</div>
+<div class="meta-val">~15.3M oz registered (476 t)</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Predicted direction</div>
+<div class="meta-val">Lower on 17 Sep 2026</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Trend projection (at current pace)</div>
+<div class="meta-val">~13.8M oz by Sep 17</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Data source to check</div>
+<div class="meta-val">CME Group daily inventory report; goldsilver.ai COMEX monitor</div>
+</div>
+</div>
+<div class="falsification-box">
+<strong>Falsification condition</strong>
+Registered inventory on 17 September 2026 is at or above 15.3M oz. This would indicate Phase 6 C has improved (faster warrant conversion, new vault integration, or reduced delivery friction) faster than the structural model implies.
+</div>
+</div>
+</div>
+
+<div class="prediction-card">
+<div class="prediction-header">
+<div>
+<div class="prediction-id">Prediction 2 — Structural (Ratio)</div>
+<div class="prediction-title">Eligible/registered ratio stays at or below 1.0 throughout the test window</div>
+</div>
+<span class="prediction-status pending">PENDING</span>
+</div>
+<div class="prediction-body">
+<div class="prediction-statement">
+The eligible/registered ratio will remain at or below 1.0 throughout the June 17 – September 17 window, and will not sustain a reading above 1.0 for more than two consecutive weeks. At Phase 6 D-overshoot, vault custody constraints make warranting eligible gold into registered status harder than withdrawing warranted gold for delivery. The current ratio of 0.84 reflects this: eligible is already below registered, meaning more gold is already committed (warranted) than is sitting uncommitted. Phase 6 C improvement would manifest first as an eligible build above registered — that is the reversal signal.
+</div>
+<div class="prediction-meta">
+<div class="prediction-meta-box">
+<div class="meta-label">Baseline ratio (3 Jun 2026)</div>
+<div class="meta-val">0.84 (eligible below registered)</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Predicted range</div>
+<div class="meta-val">0.60 – 1.00 throughout window</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Monitoring frequency</div>
+<div class="meta-val">Weekly (CME daily data)</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Data source to check</div>
+<div class="meta-val">CME Group daily COMEX warehouse stocks report</div>
+</div>
+</div>
+<div class="falsification-box">
+<strong>Falsification condition</strong>
+Eligible/registered ratio rises above 1.0 and sustains above 1.0 for at least two consecutive weeks during the window. This would indicate Phase 6 C is strengthening: vault operators are successfully building eligible stocks faster than registered is being drawn down, suggesting delivery friction is declining.
+</div>
+</div>
+</div>
+
+<div class="prediction-card">
+<div class="prediction-header">
+<div>
+<div class="prediction-id">Prediction 3 — Event-Specific (August Delivery)</div>
+<div class="prediction-title">August 2026 delivery cycle produces a net registered drawdown exceeding 1M oz</div>
+</div>
+<span class="prediction-status pending">PENDING</span>
+</div>
+<div class="prediction-body">
+<div class="prediction-statement">
+The August 2026 COMEX gold futures contract (264,145 contracts, 26.4M oz open interest as of the analysis date) will produce a net registered inventory drawdown exceeding 1.0M oz during the delivery period of 1 July – 31 August 2026. Phase 6 D-overshoot means the logistics chain cannot efficiently rebuild registered stocks against open interest demand. Even 0.5% standing for physical delivery (132,000 contracts, 13.2M oz) would require registered replenishment that Phase 6 cannot provide at current C levels. A drawdown above 1M oz is the structural prediction; a drawdown above 2M oz would be strongly consistent with Phase 6 scoring at the current level.
+</div>
+<div class="prediction-meta">
+<div class="prediction-meta-box">
+<div class="meta-label">August OI at analysis date</div>
+<div class="meta-val">264,145 contracts (26.4M oz)</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Predicted drawdown</div>
+<div class="meta-val">&gt;1.0M oz during Jul–Aug</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Measurement window</div>
+<div class="meta-val">1 July – 31 August 2026</div>
+</div>
+<div class="prediction-meta-box">
+<div class="meta-label">Data source to check</div>
+<div class="meta-val">CME Group daily inventory report; COMEX delivery notices</div>
+</div>
+</div>
+<div class="falsification-box">
+<strong>Falsification condition</strong>
+Net registered change during 1 July – 31 August 2026 is less than −1.0M oz (i.e., drawdown is smaller than 1M oz, or registered inventory rises). This would indicate Phase 6 is more permeable than the balance score implies, or that the August delivery cycle passes largely via EFP (exchange for physical) rather than outright delivery, in which case Phase 6 structural friction is being routed around rather than resolved.
+</div>
+</div>
+</div>
+
+<div class="check-date-box">
+<div>
+<div class="date-label">Verification date</div>
+<div class="date-val">17 September 2026</div>
+</div>
+<span class="sep">|</span>
+<div style="font-size:13px; color:#d1d5db; line-height:1.6;">
+Check all three predictions against CME Group daily COMEX warehouse inventory reports for 17 Sep 2026 (or nearest business day).<br/>
+Record outcome as: <strong style="color:#f0d080;">CONFIRMED</strong>, <strong style="color:#fca5a5;">FALSIFIED</strong>, or <strong style="color:#9ca3af;">INDETERMINATE</strong> (if data is unavailable or ambiguous).<br/>
+Update the status badges on this page and add a result note below each prediction card.
+</div>
+</div>
+
+</div>
+
+<div class="section">
+<h2>Data sources and verification procedure</h2>
+<ul>
+<li><strong>CME Group daily COMEX gold warehouse stocks:</strong> <a href="https://www.cmegroup.com/delivery_reports/Gold_stocks.xls" style="color:#1d4ed8;">cmegroup.com/delivery_reports/Gold_stocks.xls</a> — daily XLS report; free public access.</li>
+<li><strong>COMEX monitor (aggregated):</strong> goldsilver.ai/metal-prices/comex-gold — tracks registered, eligible, and ratio with 30-day trend charts.</li>
+<li><strong>COMEX delivery notices:</strong> CME Group publishes daily delivery intention notices during delivery months. These show actual physical metal moving through Phase 6 into Phase 7.</li>
+<li><strong>Project scraper:</strong> <code>src/ingest/comex_scraper.py</code> fetches the CME daily XLS. Run this weekly between now and September 17 to build a local time series.</li>
+</ul>
+<p style="margin-top:10px;"><strong>Verification procedure:</strong> On September 17, 2026, retrieve the CME daily report and record: (1) registered oz, (2) eligible oz, (3) eligible/registered ratio. Compare to the June 3 baselines. For Prediction 3, sum the daily registered changes over July 1 – August 31. Record each prediction as Confirmed, Falsified, or Indeterminate and update this page.</p>
+</div>
+
+<div class="disclaimer">
+<strong>Disclaimer:</strong> These predictions are derived analytically from the Tholonic N-D-C phase balance model applied to publicly available structural data. They are structural predictions, not financial forecasts. They do not constitute investment advice. Phase scores are synthetic estimates from the June 2026 model run; they should be updated when new supply chain data becomes available. The prediction page is a scientific validation instrument, not a trading signal.
+</div>
+
+</div>
+</div>
+</body>
+</html>

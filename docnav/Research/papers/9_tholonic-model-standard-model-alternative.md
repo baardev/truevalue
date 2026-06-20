@@ -8,8 +8,6 @@
 
 **Keywords:** tholonic model, Standard Model, N-D-C triad, fine structure constant, fermion generations, color charge, quark confinement, Koide formula, parameter reduction, unified field theory, falsifiability
 
-**Provisional arXiv subjects:** hep-ph; hep-th (secondary: math-ph; physics.hist-ph)
-
 ---
 
 ## Abstract

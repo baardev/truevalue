@@ -17,18 +17,30 @@
 \usepackage{geometry}
 \geometry{margin=1in}
 
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi
+}
+\makeatother
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 
-\title{Engineering Toward $N$: Cambridge Semantics as Empirical Validation\\
-{\large of the Tholonic N-D-C Framework}}
-\author{J. W. Milton\\[4pt]\small Clarity Coalition}
-\date{16 April 2026 \\ \small v1.0}
+\title{Engineering Toward N:\\
+\large Cambridge Semantics as Empirical Validation of the Tholonic N-D-C Framework}
+\author{J. W. Milton\\[4pt]{\small Clarity Coalition}}
+\date{\small 16 April 2026 \\ v1.0}
 
 \begin{document}
 \maketitle
 
-\noindent\textbf{Provisional arXiv subjects:} cs.AI; cs.DB (secondary: cs.LO; math.HO)
+\noindent\textbf{Keywords:} Cambridge Semantics; N-D-C framework; empirical validation; knowledge graphs; consilience; engineering toward N
 
 \begin{abstract}
 The tholonic framework models any coherent system as a recursive triadic

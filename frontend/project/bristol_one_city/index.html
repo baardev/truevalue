@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Bristol One City: Urban Delivery Chain Hub v1.1</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #0d2235; color: #e8f4f9; min-height: 100vh;
+}
+.hero {
+  background: linear-gradient(135deg, #0d2235 0%, #1a4a6b 60%, #2b7a9c 100%);
+  padding: 48px 32px 40px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.kicker {
+  display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: #0d2235; background: #7ec8e3;
+  padding: 5px 16px; border-radius: 999px; margin-bottom: 18px;
+}
+h1 { font-size: 36px; font-weight: 300; letter-spacing: -0.5px; margin-bottom: 12px; color: #fff; }
+.subtitle {
+  font-size: 15px; opacity: 0.8; max-width: 700px; margin: 0 auto 32px;
+  line-height: 1.6; color: #c8e6f4;
+}
+.kpi-row {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  max-width: 900px; margin: 0 auto;
+}
+.kpi {
+  background: rgba(255,255,255,0.08); border-radius: 12px; padding: 18px 14px;
+  border: 1px solid rgba(126,200,227,0.2);
+}
+.kpi-val { font-size: 26px; font-weight: 800; color: #7ec8e3; }
+.kpi-lbl { font-size: 11px; opacity: 0.75; margin-top: 4px; line-height: 1.4; }
+.container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+.alert {
+  background: linear-gradient(135deg, rgba(185,28,28,0.25), rgba(185,28,28,0.1));
+  border: 1px solid rgba(239,68,68,0.4); border-left: 4px solid #ef4444;
+  border-radius: 12px; padding: 20px 24px; margin-bottom: 28px;
+}
+.alert-title { font-size: 13px; font-weight: 700; color: #ef4444; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+.alert p { font-size: 14px; color: #fca5a5; line-height: 1.6; }
+.section-title {
+  font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em;
+  color: #7ec8e3; margin-bottom: 16px;
+}
+.layer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
+.layer-card {
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(126,200,227,0.15);
+  border-radius: 14px; padding: 24px; text-decoration: none; color: inherit;
+  transition: background 0.2s, border-color 0.2s; display: block;
+}
+.layer-card:hover { background: rgba(126,200,227,0.12); border-color: rgba(126,200,227,0.4); }
+.layer-card.deferred { opacity: 0.5; cursor: default; pointer-events: none; }
+.layer-icon { font-size: 28px; margin-bottom: 12px; }
+.layer-title { font-size: 16px; font-weight: 700; color: #7ec8e3; margin-bottom: 6px; }
+.layer-desc { font-size: 13px; opacity: 0.75; line-height: 1.5; }
+.phase-strip {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px;
+  margin-bottom: 28px; border: 1px solid rgba(126,200,227,0.1);
+}
+.phases { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 12px; }
+.phase-chip {
+  padding: 6px 12px; border-radius: 8px; font-size: 11px; font-weight: 600;
+  border: 1px solid rgba(255,255,255,0.15);
+}
+.phase-chip.excellent { background: rgba(21,128,61,0.3); color: #86efac; border-color: rgba(21,128,61,0.4); }
+.phase-chip.good { background: rgba(14,116,144,0.3); color: #67e8f9; border-color: rgba(14,116,144,0.4); }
+.phase-chip.fair { background: rgba(194,120,3,0.3); color: #fbbf24; border-color: rgba(194,120,3,0.4); }
+.phase-chip.poor { background: rgba(185,28,28,0.4); color: #fca5a5; border-color: rgba(185,28,28,0.5); }
+.radar-section {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 24px;
+  border: 1px solid rgba(126,200,227,0.1); margin-bottom: 28px;
+}
+.coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+.coherence-card {
+  background: rgba(255,255,255,0.05); border-radius: 10px; padding: 16px 10px;
+  text-align: center; border: 1px solid rgba(126,200,227,0.1);
+}
+.coherence-symbol { font-size: 20px; font-weight: 900; color: #7ec8e3; margin-bottom: 6px; }
+.coherence-score { font-size: 22px; font-weight: 800; margin-bottom: 4px; }
+.coherence-score.good { color: #67e8f9; }
+.coherence-score.fair { color: #fbbf24; }
+.coherence-score.poor { color: #fca5a5; }
+.coherence-label { font-size: 10px; opacity: 0.65; line-height: 1.3; }
+.bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.bar-label { width: 170px; font-size: 12px; opacity: 0.75; text-align: right; flex-shrink: 0; }
+.bar-track { flex: 1; background: rgba(255,255,255,0.08); border-radius: 4px; height: 18px; }
+.bar-fill { height: 18px; border-radius: 4px; display: flex; align-items: center; justify-content: flex-end; padding-right: 8px; }
+.bar-fill.excellent { background: linear-gradient(90deg, #15803d, #22c55e); }
+.bar-fill.good { background: linear-gradient(90deg, #0e7490, #06b6d4); }
+.bar-fill.fair { background: linear-gradient(90deg, #b45309, #f59e0b); }
+.bar-fill.poor { background: linear-gradient(90deg, #991b1b, #ef4444); }
+.bar-val { font-size: 11px; font-weight: 700; color: #fff; }
+.nav { text-align: center; padding: 24px; border-top: 1px solid rgba(255,255,255,0.08); margin-top: 8px; }
+.nav a {
+  color: #7ec8e3; text-decoration: none; font-size: 13px;
+  font-weight: 600; margin: 0 14px;
+}
+.nav a:hover { text-decoration: underline; }
+.version-badge {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.15); padding: 3px 10px; border-radius: 999px;
+  margin-left: 10px; vertical-align: middle; position: relative; top: -3px;
+}
+.finance-panel {
+  background: rgba(255,255,255,0.04); border-radius: 12px; padding: 20px 24px;
+  border: 1px solid rgba(126,200,227,0.1); margin-bottom: 28px;
+}
+.finance-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.finance-item { }
+.finance-val { font-size: 20px; font-weight: 800; color: #7ec8e3; }
+.finance-lbl { font-size: 11px; opacity: 0.65; margin-top: 4px; line-height: 1.4; }
+.finance-src { font-size: 10px; opacity: 0.4; margin-top: 3px; }
+.scope3-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,0.06); }
+.scope3-col { font-size: 12px; }
+.scope3-head { font-size: 11px; font-weight: 700; color: #7ec8e3; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+@media (max-width: 800px) {
+  .finance-grid { grid-template-columns: 1fr 1fr; }
+  .scope3-row { grid-template-columns: 1fr; }
+}
+  .kpi-row { grid-template-columns: 1fr 1fr; }
+  .layer-grid { grid-template-columns: 1fr; }
+  .coherence-grid { grid-template-columns: repeat(3, 1fr); }
+}
+canvas { max-width: 100%; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <span class="kicker">Urban Policy Delivery Chain</span>
+  <h1>Bristol One City <span class="version-badge">v1.1</span></h1>
+  <p class="subtitle">
+    7-phase N-D-C analysis of Bristol's One City Plan delivery chain: from political mandate through
+    governance, capital deployment, and infrastructure delivery to measurable city-wide outcomes.
+    Four missions. 2030 carbon-neutral target. Municipal sustainability-linked bond opportunity.
+  </p>
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">81.3%</div>
+      <div class="kpi-lbl">Chain balance (Good zone; masked by Phase 5 bottleneck)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">58.3%</div>
+      <div class="kpi-lbl">Phase 5 balance: community uptake (Poor: primary bottleneck)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">10.7 yr</div>
+      <div class="kpi-lbl">Male life expectancy gap: most vs. least deprived wards</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">£1bn+</div>
+      <div class="kpi-lbl">City Leap 20-yr JV investment vs. £2m BCAI raised to date</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <div class="alert">
+    <div class="alert-title">Primary structural failure: community and household uptake (Phase 5, 58.3%)</div>
+    <p>
+      Bristol has built an exceptionally well-defined delivery system at the institutional level: the One City
+      Plan has strong mandates (Phase 0, 88.9%), coordinated governance (Phase 1, 84.0%), contractually-grounded
+      strategies (Phase 2, 90.6%), and robust outcome measurement (Phase 6, 91.9%). The failure is at the
+      point of contact with communities. Only 750 of 470,000 residents participate in the Bristol Climate Action
+      Investment. The 10.7-year male life expectancy gap between deprived and affluent wards is not improving.
+      Scope 3 (consumption-based) emissions account for 60–75% of a typical Bristol household's carbon footprint
+      and 70–90% of the city's corporate footprint, yet remain structurally untracked in the delivery chain.
+      The D-C gap at Phase 5 is 100 points: the widest in the chain. Capital deployment (Phase 3, 70.9%) is
+      the secondary bottleneck: £1bn+ City Leap institutional framework vs. £2m mobilised through citizen
+      mechanisms against a city economy of £22.8bn GDP.
+    </p>
+  </div>
+
+  <div class="section-title">Municipal Finance Context</div>
+  <div class="finance-panel">
+    <div style="font-size:11px;opacity:0.5;margin-bottom:14px;">
+      Source: Bristol City Council Budget Report 2026/27; Wikipedia Economy of Bristol; BBC News Jun 2025. Added v1.1.
+    </div>
+    <div class="finance-grid">
+      <div class="finance-item">
+        <div class="finance-val">£22.8bn</div>
+        <div class="finance-lbl">City GDP (£47,148 per capita; pop. 482,998). Strongest performer among major UK cities outside London.</div>
+        <div class="finance-src">Wikipedia / Centre for Cities 2024</div>
+      </div>
+      <div class="finance-item">
+        <div class="finance-val">£634.1m</div>
+        <div class="finance-lbl">Bristol City Council General Fund budget 2026/27, funded via council tax (Band D: ~£2,460), business rates, and government grants.</div>
+        <div class="finance-src">BCC Budget Report 2026/27</div>
+      </div>
+      <div class="finance-item">
+        <div class="finance-val">£63m</div>
+        <div class="finance-lbl">SEND / Dedicated Schools Grant deficit "time bomb": council faces insolvency risk within 10 months without central government extension.</div>
+        <div class="finance-src">BBC News Jun 2025</div>
+      </div>
+      <div class="finance-item">
+        <div class="finance-val">£32m/yr</div>
+        <div class="finance-lbl">Annual Private Finance Initiative (PFI) charges servicing long-term infrastructure assets (Temple Quarter regeneration and others).</div>
+        <div class="finance-src">BCC Capital Strategy 2023/24–2032/33</div>
+      </div>
+    </div>
+    <div class="scope3-row">
+      <div class="scope3-col">
+        <div class="scope3-head">Corporate Scope 3 (GHG Protocol)</div>
+        <div style="opacity:0.75;line-height:1.6;">
+          Represents <strong style="color:#7ec8e3;">70–90%</strong> of an average company's total GHG inventory.
+          In Commercial Real Estate and Construction, indirect embodied carbon and tenant energy push this to
+          <strong style="color:#7ec8e3;">85–95%</strong>.
+          Framework: GHG Protocol Corporate Value Chain Standard (15 categories).
+          Estimation: spend-based modelling, activity metrics, or LCA.
+        </div>
+      </div>
+      <div class="scope3-col">
+        <div class="scope3-head">Residential Scope 3 (Household)</div>
+        <div style="opacity:0.75;line-height:1.6;">
+          Approximately <strong style="color:#7ec8e3;">60–75%</strong> of a Bristol household's personal carbon
+          footprint comes from indirect (Scope 3) sources: embedded emissions of food, clothing, purchased goods,
+          and services. Direct gas heating = Scope 1; electricity = Scope 2.
+          Framework: PAS 2070 or territorial consumption-based accounting.
+          Estimation: household expenditure surveys, localized utility and consumption data.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">Analytical Layers</div>
+  <div class="layer-grid">
+    <a href="supply_chain/index.html" class="layer-card">
+      <div class="layer-icon">⛓️</div>
+      <div class="layer-title">Supply Chain</div>
+      <div class="layer-desc">
+        7-phase urban delivery chain from political mandate through governance, strategy, capital,
+        infrastructure, community uptake to outcome measurement. Phase 5 bottleneck analysis.
+        N-D-C dashboard, project context, and intervention worksheet.
+      </div>
+    </a>
+    <div class="layer-card deferred">
+      <div class="layer-icon">💰</div>
+      <div class="layer-title">Value Chain</div>
+      <div class="layer-desc">
+        Municipal SL Bond structure under evaluation: cTVF KPI calibration against Bristol City Council
+        financials (£634.1m budget, £63m SEND deficit) and City Leap carbon/energy targets.
+        ICMA SLBP alignment, SPT design, and coupon step-up structure. City Leap Business Plan
+        (Apr 2024) provides energy and carbon KPI anchors.
+        Requires Phase 5 intervention data and institutional investor engagement before activation.
+      </div>
+    </div>
+    <a href="supply_chain/recycling_analysis.html" class="layer-card">
+      <div class="layer-icon">🔄</div>
+      <div class="layer-title">Just Transition Return Chain</div>
+      <div class="layer-desc">
+        TVPCI-R analysis: how much of City Leap, BCAI, and One City investment recirculates to
+        Bristol's most deprived communities. B_chain = 47.0 (severe imbalance).
+        TVPCI-R = 50.7 (Failure zone).
+      </div>
+    </a>
+  </div>
+
+  <div class="section-title">Phase Health Map</div>
+  <div class="phase-strip">
+    <div style="font-size:12px;opacity:0.6;margin-bottom:8px;">7 delivery phases: Phase 5 is the primary bottleneck</div>
+    <div class="phases">
+      <div class="phase-chip good">P0: Vision &amp; Mandate<br/>88.9%</div>
+      <div class="phase-chip good">P1: Governance<br/>84.0%</div>
+      <div class="phase-chip excellent">P2: Strategy Design<br/>90.6%</div>
+      <div class="phase-chip fair">P3: Capital Deploy<br/>70.9%</div>
+      <div class="phase-chip good">P4: Infrastructure<br/>84.6%</div>
+      <div class="phase-chip poor">P5: Community Uptake<br/>58.3% &#9888;</div>
+      <div class="phase-chip excellent">P6: Outcomes<br/>91.9%</div>
+    </div>
+  </div>
+
+  <div class="section-title">Phase N-D-C Balance (Synthetic Baseline)</div>
+  <div class="radar-section">
+    <div style="margin-bottom:16px;">
+      <div class="bar-row">
+        <div class="bar-label">P0: Vision &amp; Mandate</div>
+        <div class="bar-track"><div class="bar-fill good" style="width:88.9%"><span class="bar-val">88.9%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">P1: Governance</div>
+        <div class="bar-track"><div class="bar-fill good" style="width:84.0%"><span class="bar-val">84.0%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">P2: Strategy Design</div>
+        <div class="bar-track"><div class="bar-fill excellent" style="width:90.6%"><span class="bar-val">90.6%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">P3: Capital Deploy</div>
+        <div class="bar-track"><div class="bar-fill fair" style="width:70.9%"><span class="bar-val">70.9%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">P4: Infrastructure</div>
+        <div class="bar-track"><div class="bar-fill good" style="width:84.6%"><span class="bar-val">84.6%</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">P5: Community Uptake</div>
+        <div class="bar-track"><div class="bar-fill poor" style="width:58.3%"><span class="bar-val">58.3% &#9888;</span></div></div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label">P6: Outcomes</div>
+        <div class="bar-track"><div class="bar-fill excellent" style="width:91.9%"><span class="bar-val">91.9%</span></div></div>
+      </div>
+    </div>
+    <div style="font-size:11px;opacity:0.5;text-align:center;">
+      Thresholds: Excellent ≥95% | Good 80-94% | Fair 61.8-79% | Poor &lt;61.8%
+    </div>
+  </div>
+
+  <div class="section-title">Five-Model Coherence (Baseline)</div>
+  <div class="coherence-grid">
+    <div class="coherence-card">
+      <div class="coherence-symbol">π</div>
+      <div class="coherence-score good">81.3</div>
+      <div class="coherence-label">Operational balance (chain average). Good zone. Masked by Phase 5.</div>
+    </div>
+    <div class="coherence-card">
+      <div class="coherence-symbol">φ</div>
+      <div class="coherence-score fair">71.0</div>
+      <div class="coherence-label">Value distribution. Phase 5 N=107 vs chain avg 194 distorts proportionality.</div>
+    </div>
+    <div class="coherence-card">
+      <div class="coherence-symbol">√2</div>
+      <div class="coherence-score poor">65.0</div>
+      <div class="coherence-label">Structural overhead. D&gt;&gt;C at Phases 3 and 5: binding constraints blocking flow.</div>
+    </div>
+    <div class="coherence-card">
+      <div class="coherence-symbol">ln2</div>
+      <div class="coherence-score poor">61.0</div>
+      <div class="coherence-label">Temporal gap. 6+ years from 2019 declaration; 2030 deadline is 4 years away.</div>
+    </div>
+    <div class="coherence-card">
+      <div class="coherence-symbol">e</div>
+      <div class="coherence-score poor">52.0</div>
+      <div class="coherence-label">Financial abstraction. £2m BCAI vs £22.8bn city GDP. Municipal SL Bond structure under cTVF evaluation (v1.1).</div>
+    </div>
+  </div>
+
+  <div class="section-title">Key Stakeholders</div>
+  <div style="background:rgba(255,255,255,0.04);border-radius:12px;padding:20px;border:1px solid rgba(126,200,227,0.1);margin-bottom:28px;">
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;font-size:12px;">
+      <div>
+        <div style="color:#7ec8e3;font-weight:700;margin-bottom:8px;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;">Governance Board</div>
+        <div style="opacity:0.75;line-height:1.8;">
+          City Funds (Andy Street)<br/>
+          Bristol City Council (Christina Gray, Nick Hibbert, Tony Dyer)<br/>
+          TUC (Ines Lage)<br/>
+          University of Bristol (2 seats)<br/>
+          City of Bristol College<br/>
+          Bristol Climate and Nature Partnership (Lizzie Testani)<br/>
+          University Hospitals Bristol and Weston NHS<br/>
+          North Bristol NHS Trust<br/>
+          VOSCUR (voluntary sector)
+        </div>
+      </div>
+      <div>
+        <div style="color:#7ec8e3;font-weight:700;margin-bottom:8px;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;">Delivery Partners</div>
+        <div style="opacity:0.75;line-height:1.8;">
+          Ameresco Ltd (City Leap 50% JV partner)<br/>
+          Vattenfall Heat UK (City Leap subcontractor)<br/>
+          Abundance Investment (BCAI platform)<br/>
+          Arup (Climate Strategy author)<br/>
+          Centre for Sustainable Energy<br/>
+          Cabot Institute, University of Bristol (VLR)<br/>
+          Green Finance Institute (LCB toolkit)<br/>
+          Living Places Earth (place-based advisor)<br/>
+          Bristol Advisory Committee on Climate Change
+        </div>
+      </div>
+      <div>
+        <div style="color:#7ec8e3;font-weight:700;margin-bottom:8px;font-size:11px;text-transform:uppercase;letter-spacing:0.06em;">Financial and Bond Layer</div>
+        <div style="opacity:0.75;line-height:1.8;">
+          Bristol City Council (50% City Leap stake)<br/>
+          PWLB (primary borrowing facility)<br/>
+          Abundance Investment (LCB issuance)<br/>
+          Institutional bond market (SLB potential)<br/>
+          City Funds (impact capital pool)<br/>
+          DESNZ (Department for Energy Security and Net Zero)<br/>
+          ICMA (SLB Principles framework)<br/>
+          TrueValue Analytics (cTVF verification)
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <a href="../../index.html">&#8592; TrueValue Analytics Home</a>
+  <a href="supply_chain/index.html">Supply Chain Analysis</a>
+  <a href="supply_chain/dashboard.html">N-D-C Dashboard</a>
+  <a href="supply_chain/project_context.html">Project Context</a>
+  <a href="supply_chain/recycling_analysis.html">Just Transition Return Chain</a>
+  <a href="value_chain/index.html">Value Chain (Deferred)</a>
+  <a href="https://www.bristolcityleap.co.uk/wp-content/uploads/2024/04/Bristol-City-Leap-Summary-Of-Initial-Business-Plan-web-version.pdf" target="_blank">City Leap Business Plan (PDF)</a>
+  <a href="https://democracy.bristol.gov.uk/documents/s122535/Budget%20Report.pdf" target="_blank">BCC Budget Report 2026/27</a>
+</div>
+
+</body>
+</html>
