@@ -1,0 +1,98 @@
+======================================================================
+  EXPERIMENT 3.2 — ACTIVATION STEERING
+  Noise: random Gaussian + structured (mean-pool) at 10% activation norm
+  Metric: half-life (layers until perturbation < 50% of injection)
+  Prediction: φ-zone (45–80%) has shorter half-life (faster absorption)
+  (positive φ-advantage = φ-zone HL shorter than outside = PASS)
+======================================================================
+
+  Assessing GPT-1 ...
+    rand-adv=+3.000 (PASS)  struct-adv=+2.828 (PASS)  → overall PASS
+
+  Assessing distilGPT-2 ...
+    rand-adv=+1.500 (PASS)  struct-adv=+1.500 (PASS)  → overall PASS
+
+  Assessing GPT-2 small ...
+    rand-adv=+3.000 (PASS)  struct-adv=+3.000 (PASS)  → overall PASS
+
+  Assessing GPT-2 medium ...
+    rand-adv=+5.600 (PASS)  struct-adv=+2.017 (PASS)  → overall PASS
+
+  Assessing GPT-2 large ...
+    rand-adv=+7.500 (PASS)  struct-adv=+7.500 (PASS)  → overall PASS
+
+  Assessing GPT-2 XL ...
+    rand-adv=+10.065 (PASS)  struct-adv=+10.065 (PASS)  → overall PASS
+
+  Assessing GPT-Neo 125m ...
+    rand-adv=+3.000 (PASS)  struct-adv=+3.000 (PASS)  → overall PASS
+
+  Assessing GPT-Neo 1.3B ...
+    rand-adv=+5.600 (PASS)  struct-adv=+3.050 (PASS)  → overall PASS
+
+  Assessing Pythia 160m ...
+    rand-adv=+3.000 (PASS)  struct-adv=+3.000 (PASS)  → overall PASS
+
+  Assessing Pythia 410m ...
+    rand-adv=+5.600 (PASS)  struct-adv=+5.600 (PASS)  → overall PASS
+
+  Assessing OPT 125m ...
+    rand-adv=+3.000 (PASS)  struct-adv=+3.000 (PASS)  → overall PASS
+
+  Assessing Qwen2.5-0.5B ...
+    ERROR: 403 Forbidden
+
+  Assessing Qwen3-0.6B ...
+    ERROR: 403 Forbidden
+
+  Assessing TinyLlama 1.1B ...
+    rand-adv=+4.714 (PASS)  struct-adv=+4.714 (PASS)  → overall PASS
+
+  Assessing Mistral-7B ...
+    rand-adv=+6.857 (PASS)  struct-adv=+6.857 (PASS)  → overall PASS
+
+  Assessing Llama-3-8B ...
+    ERROR: 403 Forbidden
+
+  Assessing Gemma-2B ...
+    ERROR: 403 Forbidden
+
+  Assessing Phi-2 ...
+    rand-adv=+6.857 (PASS)  struct-adv=+6.857 (PASS)  → overall PASS
+
+  Assessing Phi-3-mini ...
+    ERROR: 'type'
+
+  Assessing Falcon-7B ...
+    ERROR: 'FalconModel' object has no attribute 'get_head_mask'
+
+======================================================================
+  SUMMARY — Activation Steering (Experiment 3.2)
+  Model                rand-adv  struct-adv   rand  struct  overall
+  ---------------------------------------------------------------
+  GPT-1                  +3.000      +2.828   PASS    PASS     PASS
+  distilGPT-2            +1.500      +1.500   PASS    PASS     PASS
+  GPT-2 small            +3.000      +3.000   PASS    PASS     PASS
+  GPT-2 medium           +5.600      +2.017   PASS    PASS     PASS
+  GPT-2 large            +7.500      +7.500   PASS    PASS     PASS
+  GPT-2 XL              +10.065     +10.065   PASS    PASS     PASS
+  GPT-Neo 125m           +3.000      +3.000   PASS    PASS     PASS
+  GPT-Neo 1.3B           +5.600      +3.050   PASS    PASS     PASS
+  Pythia 160m            +3.000      +3.000   PASS    PASS     PASS
+  Pythia 410m            +5.600      +5.600   PASS    PASS     PASS
+  OPT 125m               +3.000      +3.000   PASS    PASS     PASS
+  Qwen2.5-0.5B        ERROR: 403 Forbidden
+  Qwen3-0.6B          ERROR: 403 Forbidden
+  TinyLlama 1.1B         +4.714      +4.714   PASS    PASS     PASS
+  Mistral-7B             +6.857      +6.857   PASS    PASS     PASS
+  Llama-3-8B          ERROR: 403 Forbidden
+  Gemma-2B            ERROR: 403 Forbidden
+  Phi-2                  +6.857      +6.857   PASS    PASS     PASS
+  Phi-3-mini          ERROR: 'type'
+  Falcon-7B           ERROR: 'FalconModel' object has no attribute 'get_head_mask'
+
+  Overall pass rate: 14/14 = 100%
+  Prediction: φ-zone half-life < outside half-life (positive advantage)
+
+  Results saved → /home/jw/src/tv/frontend/project/tholonic_ai/model_health/activation_steering_results.json
+======================================================================

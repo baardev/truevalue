@@ -7,7 +7,7 @@ compute estimates.
 ---
 
 ## Context: What We Have Already Established on CPU
-
+ 
 | Experiment | Result | Status |
 |---|---|---|
 | Data-driven phase boundary detection (14 models, 6 families) | 78% pass rate (51/65) — above 67% threshold | Confirmed |

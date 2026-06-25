@@ -1,0 +1,97 @@
+======================================================================
+  EXPERIMENT 3.1 — ATTENTION MASK PERTURBATION
+  Noise: mean-pool position leak (NOISE_FRAC=0.05)
+  Prediction: φ-zone (45–80%) absorbs perturbation faster
+  (positive φ-advantage = PASS)
+======================================================================
+
+  Assessing GPT-1 ...
+    φ-advantage=-0.2237  φ-zone decay=-0.9828  outside decay=-0.7591  → FAIL
+
+  Assessing distilGPT-2 ...
+    φ-advantage=-1.7257  φ-zone decay=-2.2008  outside decay=-0.4751  → FAIL
+
+  Assessing GPT-2 small ...
+    φ-advantage=-0.2273  φ-zone decay=-0.8460  outside decay=-0.6187  → FAIL
+
+  Assessing GPT-2 medium ...
+    φ-advantage=-0.2374  φ-zone decay=0.0127  outside decay=0.2501  → FAIL
+
+  Assessing GPT-2 large ...
+    φ-advantage=-0.0360  φ-zone decay=-0.0227  outside decay=0.0133  → FAIL
+
+  Assessing GPT-2 XL ...
+    φ-advantage=-0.0191  φ-zone decay=-0.0367  outside decay=-0.0176  → FAIL
+
+  Assessing GPT-Neo 125m ...
+    φ-advantage=+0.0757  φ-zone decay=0.1284  outside decay=0.0527  → PASS
+
+  Assessing GPT-Neo 1.3B ...
+    φ-advantage=-0.0575  φ-zone decay=0.1651  outside decay=0.2226  → FAIL
+
+  Assessing Pythia 160m ...
+    φ-advantage=+0.9655  φ-zone decay=0.1882  outside decay=-0.7773  → PASS
+
+  Assessing Pythia 410m ...
+    φ-advantage=+0.4820  φ-zone decay=0.0630  outside decay=-0.4191  → PASS
+
+  Assessing OPT 125m ...
+    φ-advantage=-0.5482  φ-zone decay=-2.1299  outside decay=-1.5817  → FAIL
+
+  Assessing Qwen2.5-0.5B ...
+    ERROR: 403 Forbidden
+
+  Assessing Qwen3-0.6B ...
+    ERROR: 403 Forbidden
+
+  Assessing TinyLlama 1.1B ...
+    φ-advantage=+    φ-advantage=n/a  φ-zone decay=n/a  outside decay=n/a  → FAIL
+
+  Assessing Llama-3-8    φ-advantage=+0.9681  φ-zone decay=-0.0686  outside decay=-1.0367  → PASS
+
+  Assessing Llama-3-8B ...
+    ERROR: 403 Forbidden
+
+  Assessing Gemma-2B ...
+    ERROR: 403 Forbidden
+
+  Assessing Phi-2 ...
+    φ-advantage=+0.0348  φ-zone decay=-0.0808  outside decay=-0.1156  → PASS
+
+  Assessing Phi-3-mini ...
+    ERROR: 'type'
+
+  Assessing Falcon-7B ...
+    ERROR: 'FalconModel' object has no attribute 'get_head_mask'
+
+======================================================================
+  SUMMARY — Attention Mask Perturbation (Experiment 3.1)
+  Model               φ-advantage   φ decay  out decay  Verdict
+  ------------------------------------------------------------
+  GPT-1                   -0.2237   -0.9828    -0.7591     FAIL
+  distilGPT-2             -1.7257   -2.2008    -0.4751     FAIL
+  GPT-2 small             -0.2273   -0.8460    -0.6187     FAIL
+  GPT-2 medium            -0.2374    0.0127     0.2501     FAIL
+  GPT-2 large             -0.0360   -0.0227     0.0133     FAIL
+  GPT-2 XL                -0.0191   -0.0367    -0.0176     FAIL
+  GPT-Neo 125m            +0.0757    0.1284     0.0527     PASS
+  GPT-Neo 1.3B            -0.0575    0.1651     0.2226     FAIL
+  Pythia 160m             +0.9655    0.1882    -0.7773     PASS
+  Pythia 410m             +0.4820    0.0630    -0.4191     PASS
+  OPT 125m                -0.5482   -2.1299    -1.5817     FAIL
+  Qwen2.5-0.5B        ERROR: 403 Forbidden
+  Qwen3-0.6B          ERROR: 403 Forbidden
+  TinyLlama 1.1B          +0.8313   -0.7276    -1.5589     PASS
+  Mistral-7B              +0.9681   -0.0686    -1.0367     PASS
+  Llama-3-8B          ERROR: 403 Forbidden
+  Gemma-2B            ERROR: 403 Forbidden
+  Phi-2                   +0.0348   -0.0808    -0.1156     PASS
+  Phi-3-mini          ERROR: 'type'
+  Falcon-7B           ERROR: 'FalconModel' object has no attribute 'get_head_mask'
+
+  Pass rate: 6/14 = 43%
+  Tholonic prediction: φ-zone decay rate > outside zone decay rate
+  (positive φ-advantage means the prediction is supported)
+
+  Results saved → /home/jw/src/tv/frontend/project/tholonic_ai/model_health/attn_mask_perturbation_results.json
+======================================================================

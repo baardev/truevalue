@@ -1,0 +1,131 @@
+{
+  "experiment": "1.3 \u2014 OOD Robustness (revised protocol)",
+  "id_domain": "WikiText-103 validation",
+  "ood_domains": [
+    "AG News test (news domain)",
+    "Prose fallback corpus (news/history)"
+  ],
+  "primary_metric": "mean_ood_abs_ppl (absolute OOD perplexity, lower = better)",
+  "note": "OOD/ID ratio kept for reference; confounded when ID perplexities differ",
+  "results": [
+    {
+      "checkpoint": "row2_baseline_seed42.pt",
+      "condition": "baseline",
+      "seed": 42,
+      "id_ppl": 334.416,
+      "ood1_name": "AG News test (news domain)",
+      "ood1_ppl": 30590.451,
+      "ood1_ratio": 91.4742,
+      "ood2_name": "Prose fallback corpus (news/history)",
+      "ood2_ppl": 30982.439,
+      "ood2_ratio": 92.6464,
+      "mean_ood_ratio": 92.0603,
+      "mean_ood_abs_ppl": 30590.451
+    },
+    {
+      "checkpoint": "row2_tholonic_seed42.pt",
+      "condition": "tholonic",
+      "seed": 42,
+      "id_ppl": 278.668,
+      "ood1_name": "AG News test (news domain)",
+      "ood1_ppl": 26262.391,
+      "ood1_ratio": 94.2427,
+      "ood2_name": "Prose fallback corpus (news/history)",
+      "ood2_ppl": 45388.189,
+      "ood2_ratio": 162.8757,
+      "mean_ood_ratio": 128.5592,
+      "mean_ood_abs_ppl": 26262.391
+    },
+    {
+      "checkpoint": "row2_baseline_seed7.pt",
+      "condition": "baseline",
+      "seed": 7,
+      "id_ppl": 317.041,
+      "ood1_name": "AG News test (news domain)",
+      "ood1_ppl": 25367.138,
+      "ood1_ratio": 80.0123,
+      "ood2_name": "Prose fallback corpus (news/history)",
+      "ood2_ppl": 17907.284,
+      "ood2_ratio": 56.4826,
+      "mean_ood_ratio": 68.2475,
+      "mean_ood_abs_ppl": 25367.138
+    },
+    {
+      "checkpoint": "row2_tholonic_seed7.pt",
+      "condition": "tholonic",
+      "seed": 7,
+      "id_ppl": 275.534,
+      "ood1_name": "AG News test (news domain)",
+      "ood1_ppl": 24005.423,
+      "ood1_ratio": 87.1232,
+      "ood2_name": "Prose fallback corpus (news/history)",
+      "ood2_ppl": 76372.508,
+      "ood2_ratio": 277.1798,
+      "mean_ood_ratio": 182.1515,
+      "mean_ood_abs_ppl": 24005.423
+    },
+    {
+      "checkpoint": "row2_baseline_seed13.pt",
+      "condition": "baseline",
+      "seed": 13,
+      "id_ppl": 305.508,
+      "ood1_name": "AG News test (news domain)",
+      "ood1_ppl": 25430.935,
+      "ood1_ratio": 83.2414,
+      "ood2_name": "Prose fallback corpus (news/history)",
+      "ood2_ppl": 23611.85,
+      "ood2_ratio": 77.2871,
+      "mean_ood_ratio": 80.2643,
+      "mean_ood_abs_ppl": 25430.935
+    },
+    {
+      "checkpoint": "row2_tholonic_seed13.pt",
+      "condition": "tholonic",
+      "seed": 13,
+      "id_ppl": 270.468,
+      "ood1_name": "AG News test (news domain)",
+      "ood1_ppl": 24930.115,
+      "ood1_ratio": 92.1739,
+      "ood2_name": "Prose fallback corpus (news/history)",
+      "ood2_ppl": 64207.808,
+      "ood2_ratio": 237.395,
+      "mean_ood_ratio": 164.7844,
+      "mean_ood_abs_ppl": 24930.115
+    }
+  ],
+  "paired_comparison": [
+    {
+      "seed": 42,
+      "baseline_abs_ppl": 30590.451,
+      "tholonic_abs_ppl": 26262.391,
+      "tholonic_advantage_abs": 4328.06,
+      "tholonic_advantage_pct": 14.15,
+      "tholonic_better": true,
+      "baseline_ratio": 92.0603,
+      "tholonic_ratio": 128.5592
+    },
+    {
+      "seed": 7,
+      "baseline_abs_ppl": 25367.138,
+      "tholonic_abs_ppl": 24005.423,
+      "tholonic_advantage_abs": 1361.715,
+      "tholonic_advantage_pct": 5.37,
+      "tholonic_better": true,
+      "baseline_ratio": 68.2475,
+      "tholonic_ratio": 182.1515
+    },
+    {
+      "seed": 13,
+      "baseline_abs_ppl": 25430.935,
+      "tholonic_abs_ppl": 24930.115,
+      "tholonic_advantage_abs": 500.82,
+      "tholonic_advantage_pct": 1.97,
+      "tholonic_better": true,
+      "baseline_ratio": 80.2643,
+      "tholonic_ratio": 164.7844
+    }
+  ],
+  "n_seeds_tested": 3,
+  "n_pass": 3,
+  "verdict": "PASS"
+}

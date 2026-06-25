@@ -26,6 +26,8 @@ SQRT2 = math.sqrt(2)
 CONSTS = [("φ", PHI), ("ln2", LOG2), ("e", E), ("√2", SQRT2)]
 TOL = 0.08
 
+DTYPE = torch.bfloat16 if torch.cuda.is_available() else torch.float32
+
 ROLE_ZONES = {          # expected constant → layer fraction (start, end)
     "e":   (0.00, 0.20),
     "√2":  (0.20, 0.55),
@@ -47,6 +49,7 @@ TEXTS = [
 ]
 
 MODELS = [
+    # ── original 14 (CPU-established baseline) ────────────────────────────────
     ("openai-community/openai-gpt",         "GPT-1",         "GPT-1",   12),
     ("distilgpt2",                           "distilGPT-2",   "GPT-2",    6),
     ("gpt2",                                 "GPT-2 small",   "GPT-2",   12),
@@ -61,6 +64,20 @@ MODELS = [
     ("Qwen/Qwen2.5-0.5B",                    "Qwen2.5-0.5B",  "Qwen",    24),
     ("Qwen/Qwen3-0.6B",                      "Qwen3-0.6B",    "Qwen",    28),
     ("TinyLlama/TinyLlama-1.1B-Chat-v1.0",  "TinyLlama 1.1B","LLaMA",   22),
+    # ── held-out replication families (Priority 2 — requires GPU) ────────────
+    # Mistral: sliding window attention — different D structure, highest-risk case
+    ("mistralai/Mistral-7B-v0.1",            "Mistral-7B",    "Mistral", 32),
+    # Llama-2/3: grouped query attention — tests GQA architectures
+    # NOTE: both require accepting Meta's licence at huggingface.co/meta-llama
+    ("meta-llama/Llama-2-7b-hf",             "Llama-2-7B",    "LLaMA-2", 32),
+    ("meta-llama/Meta-Llama-3-8B",           "Llama-3-8B",    "LLaMA-3", 32),
+    # Gemma: GeGLU activations
+    ("google/gemma-2b",                      "Gemma-2B",      "Gemma",   18),
+    # Phi: dense small models trained on synthetic data
+    ("microsoft/phi-2",                      "Phi-2",         "Phi",     32),
+    ("microsoft/Phi-3-mini-4k-instruct",     "Phi-3-mini",    "Phi",     32),
+    # Falcon: parallel attention + MLP design
+    ("tiiuae/falcon-7b",                     "Falcon-7B",     "Falcon",  32),
 ]
 
 # ── helpers ───────────────────────────────────────────────────────────────────
@@ -278,25 +295,27 @@ def assess(hf_name, display_name, family, n_layers_expected):
     tok = AutoTokenizer.from_pretrained(hf_name, trust_remote_code=True)
     if tok.pad_token is None:
         tok.pad_token = tok.eos_token
+
+    # Single load: bfloat16 on GPU (halves VRAM vs float32; A100 supports it natively)
     mdl = AutoModelForCausalLM.from_pretrained(
         hf_name, output_hidden_states=True, output_attentions=True,
-        trust_remote_code=True, dtype=torch.float32,
+        trust_remote_code=True, torch_dtype=DTYPE,
+        low_cpu_mem_usage=True,
     )
     mdl.eval()
     n = mdl.config.num_hidden_layers
 
-    # Phase detection
+    # Phase detection (needs gradients for gradient-sensitivity metric)
     boundaries = run_phase_detection(mdl, tok, n)
     ax1, ax2, ax3, ax4, annotated = score_boundaries(boundaries, n)
 
-    # Virial balance (run without gradients — separate pass for speed)
-    mdl2 = AutoModelForCausalLM.from_pretrained(
-        hf_name, trust_remote_code=True, dtype=torch.float32,
-    )
-    mdl2.eval()
-    per_layer = run_virial(mdl2, tok, n)
+    # Virial balance — reuse same loaded model, no separate load needed
+    per_layer = run_virial(mdl, tok, n)
     ax5, mean_dc = score_virial(per_layer)
-    del mdl2
+
+    del mdl
+    if torch.cuda.is_available():
+        torch.cuda.empty_cache()
 
     overall = round((ax1 + ax2 + ax3 + ax4 + ax5) / 5)
 
