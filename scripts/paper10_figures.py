@@ -344,22 +344,29 @@ MODELS = [
     ("distilGPT-2", "GPT-2", 2, 3, 67, 25, 40, 0, 26),
     ("GPT-2 small", "GPT-2", 2, 4, 50, 40, 25, 0, 33),
     ("GPT-2 medium", "GPT-2", 4, 6, 67, 40, 25, 0, 31),
-    ("GPT-2 large", "GPT-2", 3, 4, 75, 40, 87, 0, 47),
+    ("GPT-2 large", "GPT-2", 3, 4, 75, 40, 89, 0, 47),
     ("GPT-2 XL", "GPT-2", 4, 4, 100, 40, 25, 0, 33),
-    ("GPT-Neo 125m", "GPT-Neo", 4, 4, 100, 40, 97, 4, 55),
+    ("GPT-Neo 125m", "GPT-Neo", 4, 4, 100, 40, 97, 4, 58),
     ("GPT-Neo 1.3B", "GPT-Neo", 5, 7, 71, 40, 25, 23, 36),
-    ("Pythia 160m", "Pythia", 4, 4, 100, 18, 25, 0, 34),
-    ("Pythia 410m", "Pythia", 5, 6, 83, 40, 62, 0, 44),
-    ("OPT 125m", "OPT", 3, 3, 100, 40, 97, 0, 52),
-    ("Qwen2.5-0.5B", "Qwen", 6, 7, 86, 97, 75, 0, 57),
-    ("Qwen3-0.6B", "Qwen", 5, 6, 83, 40, 25, 0, 35),
+    ("Pythia 160m", "Pythia", 2, 3, 67, 40, 25, 0, 26),
+    ("Pythia 410m", "Pythia", 5, 6, 83, 40, 69, 0, 50),
+    ("OPT 125m", "OPT", 3, 3, 100, 40, 25, 0, 33),
+    ("Qwen2.5-0.5B", "Qwen", 5, 7, 71, 96, 87, 0, 59),
+    ("Qwen3-0.6B", "Qwen", 5, 6, 83, 40, 25, 0, 30),
     ("TinyLlama-1.1B", "LLaMA", 2, 4, 50, 40, 79, 0, 44),
+    ("Mistral-7B", "Mistral", 5, 6, 83, 40, 25, 0, 30),
+    ("Llama-3-8B", "LLaMA-3", 5, 6, 83, 40, 25, 0, 38),
+    ("Gemma-2B", "Gemma", 2, 5, 40, 2, 25, 0, 23),
+    ("Phi-2", "Phi", 4, 4, 100, 40, 25, 0, 38),
+    ("Phi-3-mini", "Phi", 6, 7, 86, 40, 91, 82, 66),
+    ("Falcon-7B", "Falcon", 4, 6, 67, 72, 25, 0, 43),
 ]
 
 FAMILY_COLORS = {
     "GPT-1": "#7f7f7f", "GPT-2": "#1f5fa8", "GPT-Neo": "#c2542b",
     "Pythia": "#3c8a4e", "OPT": "#8a5fa8", "Qwen": "#b8860b",
-    "LLaMA": "#a83232",
+    "LLaMA": "#a83232", "Mistral": "#2a6f97", "LLaMA-3": "#6b4c9a",
+    "Gemma": "#c77dff", "Phi": "#e07a5f", "Falcon": "#588157",
 }
 
 
@@ -377,10 +384,10 @@ def fig_pass_rates():
         ax.text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 1.5,
                 f"{m[2]}/{m[3]}", ha="center", fontsize=7.6)
     ax.axhline(67, color="black", linestyle="--", lw=1.1)
-    ax.text(13.45, 68.5, "67% threshold", fontsize=8.5, ha="right")
-    ax.axhline(78, color=N_COLOR, linestyle="-", lw=1.1, alpha=0.7)
-    ax.text(13.45, 79.5, "combined 78% (51/65)", fontsize=8.5, ha="right",
-            color=N_COLOR)
+    ax.text(len(MODELS) - 0.55, 68.5, "67% threshold", fontsize=8.5, ha="right")
+    ax.axhline(75.5, color=N_COLOR, linestyle="-", lw=1.1, alpha=0.7)
+    ax.text(len(MODELS) - 0.55, 77.0, "combined 75.5% (74/98)", fontsize=8.5,
+            ha="right", color=N_COLOR)
     ax.set_xticks(range(len(MODELS)))
     ax.set_xticklabels(names, rotation=40, ha="right", fontsize=8.2)
     ax.set_ylabel("pass rate at detected boundaries (%)")
@@ -433,7 +440,7 @@ def fig_health_heatmap():
                    "ln2\ncompression", "virial\nbalance", "overall"]
     data = np.array([[m[4], m[5], m[6], m[7], m[8]] for m in MODELS],
                     dtype=float)
-    fig, ax = plt.subplots(figsize=(7.4, 6.6))
+    fig, ax = plt.subplots(figsize=(7.4, 9.2))
     im = ax.imshow(data, cmap="RdYlGn", vmin=0, vmax=100, aspect="auto")
     ax.set_xticks(range(len(axes_labels)))
     ax.set_xticklabels(axes_labels, fontsize=9)
@@ -447,7 +454,7 @@ def fig_health_heatmap():
                     ("white" if v <= 25 else "black"))
     cbar = fig.colorbar(im, ax=ax, shrink=0.8)
     cbar.set_label("axis score (0-100)", fontsize=9)
-    ax.set_title("Structural health grading across 14 models (Section 13.4)\n"
+    ax.set_title("Structural health grading across 20 models (Section 13.4)\n"
                  r"$\sqrt{2}$ scaling axis omitted from source table; "
                  "overall is the five-axis composite", fontsize=10)
     save(fig, "10_health-heatmap.png")
@@ -457,7 +464,7 @@ def fig_health_heatmap():
 # Figure 10: virial gap (data)
 # ----------------------------------------------------------------------------
 def fig_virial_gap():
-    fig, ax = plt.subplots(figsize=(8.0, 5.2))
+    fig, ax = plt.subplots(figsize=(8.0, 7.8))
     names = [m[0] for m in MODELS]
     virial = [m[7] for m in MODELS]
     colors = [FAMILY_COLORS[m[1]] for m in MODELS]
@@ -475,7 +482,7 @@ def fig_virial_gap():
     ax.set_xlim(0, 108)
     ax.set_xlabel("virial balance axis score (0-100)")
     ax.set_title("The universal C-dominance gap: virial balance scores\n"
-                 "measured D/C ratios fall between 0.08 and 0.32 against the "
+                 "measured D/C ratios fall between 0.02 and 0.59 against the "
                  "0.5 target", fontsize=10.5)
     save(fig, "10_virial-gap.png")
 

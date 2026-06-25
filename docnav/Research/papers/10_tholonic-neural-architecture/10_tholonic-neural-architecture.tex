@@ -97,18 +97,20 @@ depth) and \(\sqrt{2}\) at the early scaling boundary (predicted 20-55\%
 depth), are systematically displaced: \(\phi\) lands in the final 20\%
 of layers in 17 of 32 passing cases, and \(\sqrt{2}\) lands in the first
 20\% of layers in 12 of 18 cases. This displacement is directionally
-consistent across all 18 architecture families tested, is not explained
-by architectural variation, and is correlated with the one variable that
-distinguishes the outlier model (Phi-3-mini, the only model with
-non-trivial virial balance, trained with minimal post-hoc RLHF). The
-paper argues that this pattern is the structural fingerprint of
-post-training C-dominant intervention: every current alignment procedure
-(RLHF, Constitutional AI, safety fine-tuning) adds integrative capacity
-without a corresponding increase in definitional constraint,
-systematically inflating C relative to D in precisely the interior zones
-where the framework predicts self-sustaining balance. A causal training
-experiment confirms that adding the virial balance regulariser during
-training improves convergence speed with a growing advantage (0.153 nat
+consistent across all nine architecture families in the 20-model
+replication, is not explained by architectural variation, and is
+correlated with the primary outlier on virial balance: Phi-3-mini
+(virial score 82, the only model approaching the D/C = 0.5 target),
+trained with minimal post-hoc RLHF, while GPT-Neo 125m and 1.3B score 4
+and 23 and the remaining 17 models score 0. The paper argues that this
+pattern is the structural fingerprint of post-training C-dominant
+intervention: every current alignment procedure (RLHF, Constitutional
+AI, safety fine-tuning) adds integrative capacity without a
+corresponding increase in definitional constraint, systematically
+inflating C relative to D in precisely the interior zones where the
+framework predicts self-sustaining balance. A causal training experiment
+confirms that adding the virial balance regulariser during training
+improves convergence speed with a growing advantage (0.153 nat
 improvement at 10,000 steps across all three seeds, gap widening
 throughout training), providing the first direct evidence that D/C
 balance is a causally useful training signal. A second causal experiment
@@ -3056,15 +3058,15 @@ GPT-1 & GPT-1 & 67 & 40 & 25 & 0 & 26 \\
 distilGPT-2 & GPT-2 & 67 & 25 & 40 & 0 & 26 \\
 GPT-2 small & GPT-2 & 50 & 40 & 25 & 0 & 33 \\
 GPT-2 medium & GPT-2 & 67 & 40 & 25 & 0 & 31 \\
-GPT-2 large & GPT-2 & 75 & 40 & 87 & 0 & 47 \\
+GPT-2 large & GPT-2 & 75 & 40 & 89 & 0 & 47 \\
 GPT-2 XL & GPT-2 & 100 & 40 & 25 & 0 & 33 \\
-GPT-Neo 125m & GPT-Neo & 100 & 40 & 97 & 4 & 55 \\
+GPT-Neo 125m & GPT-Neo & 100 & 40 & 97 & 4 & 58 \\
 GPT-Neo 1.3B & GPT-Neo & 71 & 40 & 25 & 23 & 36 \\
-Pythia 160m & Pythia & 100 & 18 & 25 & 0 & 34 \\
-Pythia 410m & Pythia & 83 & 40 & 62 & 0 & 44 \\
-OPT 125m & OPT & 100 & 40 & 97 & 0 & 52 \\
-Qwen2.5-0.5B & Qwen & 86 & \textbf{97} & 75 & 0 & 57 \\
-Qwen3-0.6B & Qwen & 83 & 40 & 25 & 0 & 35 \\
+Pythia 160m & Pythia & 67 & 40 & 25 & 0 & 26 \\
+Pythia 410m & Pythia & 83 & 40 & 69 & 0 & 50 \\
+OPT 125m & OPT & 100 & 40 & 25 & 0 & 33 \\
+Qwen2.5-0.5B & Qwen & 71 & \textbf{96} & 87 & 0 & 59 \\
+Qwen3-0.6B & Qwen & 83 & 40 & 25 & 0 & 30 \\
 TinyLlama-1.1B & LLaMA & 50 & 40 & 79 & 0 & 44 \\
 Mistral-7B & Mistral & 83 & 40 & 25 & 0 & 30 \\
 Llama-3-8B & LLaMA-3 & 83 & 40 & 25 & 0 & 38 \\
@@ -3080,50 +3082,55 @@ Falcon-7B & Falcon & 67 & 72 & 25 & 0 & 43 \\
 \pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/10_health-heatmap.png}}
 \caption{Figure 9. Five-axis structural health profile across the 20
 tested models, shown as a heatmap (boundary fidelity, phi equilibrium,
-ln2 compression, virial balance, and composite). The all-but-empty
-virial column is the dominant feature: no current architecture
-approaches the D/C = 0.5 equilibrium target.}
+ln2 compression, virial balance, and composite). The virial column is
+the dominant feature: 17 of 20 models score zero, with only Phi-3-mini
+(82) approaching the D/C = 0.5 equilibrium target.}
 \end{figure}
 
 \textbf{The virial bottleneck.} The most striking result is structural
-rather than phase-based: 18 of 20 models score 0 on the virial-balance
-axis. All architectures are strongly C-dominant; measured D/C ratios
+rather than phase-based: 17 of 20 models score 0 on the virial-balance
+axis. The three non-zero scores are GPT-Neo 125m (4), GPT-Neo 1.3B (23),
+and Phi-3-mini (82); only Phi-3-mini approaches the D/C = 0.5
+equilibrium target. All architectures are strongly C-dominant; among the
+14 models with recorded mean D/C activation ratios, measured values
 range from approximately 0.02 to 0.59 against the theoretical target of
 0.5. This is a direct empirical corroboration of the C-dominance
 prediction stated in Section 11.2: the architectural imbalance is not
 incidental but universal across nine families, six years of design
 generations, and model sizes from 82M to 7B parameters.
 
-The one meaningful outlier is Phi-3-mini (virial = 82, D/C = 0.591),
-which achieves the highest overall structural health score in the
-20-model set (66). Phi-3-mini was trained primarily on synthetic data
-with substantially less post-hoc RLHF than comparably sized
-instruction-tuned models. This is consistent with the post-training
-intervention interpretation developed in Section 13.3c: less C-dominant
-post-training correction produces a more structurally balanced model.
-The correlation between training procedure and virial balance, if it
-holds under broader sampling, would be the clearest evidence that
-current alignment procedures are the proximate cause of universal
-C-dominance, rather than the architectural choices themselves.
+Phi-3-mini (virial = 82, D/C = 0.591) achieves the highest overall
+structural health score in the 20-model set (66). Phi-3-mini was trained
+primarily on synthetic data with substantially less post-hoc RLHF than
+comparably sized instruction-tuned models. GPT-Neo 125m and 1.3B show
+small non-zero virial scores (4 and 23) but remain far from equilibrium.
+This pattern is consistent with the post-training intervention
+interpretation developed in Section 13.3c: less C-dominant post-training
+correction produces a more structurally balanced model. The correlation
+between training procedure and virial balance, if it holds under broader
+sampling, would be the clearest evidence that current alignment
+procedures are the proximate cause of universal C-dominance, rather than
+the architectural choices themselves.
 
 \begin{figure}
 \centering
 \pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/10_virial-gap.png}}
 \caption{Figure 10. Virial balance axis scores for the 20 tested models.
-Eighteen of twenty score zero; Phi-3-mini (82) is the only model
-approaching the D/C = 0.5 virial equilibrium target. Measured D/C ratios
-across all models fall between approximately 0.02 and 0.59.}
+Seventeen of twenty score zero; GPT-Neo 125m (4) and 1.3B (23) show
+small non-zero scores; Phi-3-mini (82) alone approaches the D/C = 0.5
+virial equilibrium target.}
 \end{figure}
 
 \textbf{Family trends.} Boundary fidelity (axis 1) and ln2 compression
 (axis 4) show the most inter-model variation and the clearest
-relationship with architecture quality. GPT-Neo 125m and OPT 125m each
-achieve ln2 compression scores of 97, indicating near-perfect tholonic
-governance of the output-projection stage. Qwen2.5-0.5B achieves the
-highest \(\phi\)-equilibrium score (97), suggesting that its mid-network
-has the strongest self-similar stability of any model tested. More
-modern architectures (Qwen, GPT-Neo, OPT) consistently outscore older
-ones (GPT-1, distilGPT-2) on phase-structure axes, consistent with the
+relationship with architecture quality. GPT-Neo 125m achieves an ln2
+compression score of 97, indicating near-perfect tholonic governance of
+the output-projection stage; GPT-2 large (89) and Phi-3-mini (91) also
+score highly on this axis. Qwen2.5-0.5B achieves the highest
+\(\phi\)-equilibrium score (96), suggesting that its mid-network has the
+strongest self-similar stability of any model tested. More modern
+architectures (Qwen, GPT-Neo, Phi) consistently outscore older ones
+(GPT-1, distilGPT-2) on phase-structure axes, consistent with the
 hypothesis that training dynamics inadvertently favour tholonic
 organisation even without an explicit structural objective.
 
@@ -3148,8 +3155,11 @@ simulating a corrupted causal mask in which tokens receive a diluted
 version of all other positions. The tholonic prediction is that the
 \(\phi\)-zone absorbs this structured noise faster, measured as a
 continuous decay rate:
-\(\text{decay}(l) = 1 - \overline{s_{l+2:L}/s_{l+1}}\). The pass rate
-across 14 models was 43\% (6/14, same as the context-length test).
+\(\text{decay}(l) = 1 - \overline{s_{l+2:L}/s_{l+1}}\). A 20-model
+protocol is in place; results are reported for the 14 models with
+completed runs (Qwen2.5-0.5B, Qwen3-0.6B, Llama-3-8B, Gemma-2B,
+Phi-3-mini, and Falcon-7B pending). The pass rate across the 14
+evaluated models was 43\% (6/14, same as the context-length test).
 Architectures that passed include Pythia-160m (+0.97), TinyLlama-1.1B
 (+0.83), Mistral-7B (+0.97), GPT-Neo 125m (+0.08), Pythia-410m (+0.48),
 and Phi-2 (+0.03). The entire GPT-2 family (GPT-1 through GPT-2 XL,
@@ -3167,9 +3177,9 @@ number of subsequent layers required for the perturbation to fall below
 50\% of its injection magnitude. The tholonic prediction is that the
 \(\phi\)-zone (45-80\% depth) has shorter half-life than surrounding
 zones:
-\(\overline{h(\phi\text{-zone})} < \overline{h(\text{outside})}\). The
-pass rate across 14 models was \textbf{14/14 = 100\%}, for both noise
-types independently and for the joint criterion.
+\(\overline{h(\phi\text{-zone})} < \overline{h(\text{outside})}\). Using
+the same 14-model completed subset, the pass rate was \textbf{14/14 =
+100\%}, for both noise types independently and for the joint criterion.
 
 \begin{longtable}[]{@{}
   >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
@@ -3198,7 +3208,7 @@ distilGPT-2 & GPT-2 & +1.50 & +1.50 & PASS \\
 GPT-2 small & GPT-2 & +3.00 & +3.00 & PASS \\
 GPT-2 medium & GPT-2 & +5.60 & +2.02 & PASS \\
 GPT-2 large & GPT-2 & +7.50 & +7.50 & PASS \\
-GPT-2 XL & GPT-2 & +10.07 & +10.07 & PASS \\
+GPT-2 XL & GPT-2 & +10.06 & +10.06 & PASS \\
 GPT-Neo 125m & GPT-Neo & +3.00 & +3.00 & PASS \\
 GPT-Neo 1.3B & GPT-Neo & +5.60 & +3.05 & PASS \\
 Pythia 160m & Pythia & +3.00 & +3.00 & PASS \\
@@ -3221,14 +3231,13 @@ threshold faster (shorter half-life), but the average downstream
 magnitude after injection is not monotonically lower than in surrounding
 zones (negative decay rate on average). The zone acts as a rapid
 first-pass damper that brings large perturbations down quickly, but does
-not prevent residual leakage at later layers.
-
-The 100\% pass rate on Experiment 3.2 is the strongest single-experiment
-evidence obtained to date. It is consistent with the tholonic prediction
-that the \(\phi\)-zone is a genuine self-stabilizing attractor at every
-scale of the network hierarchy. The fact that this property holds even
-in GPT-2, whose interior zone balance is among the most disrupted (all
-GPT-2 models fail the boundary fidelity axis of the health assessment),
+not prevent residual leakage at later layers. The 100\% pass rate on
+Experiment 3.2 is the strongest single-experiment evidence obtained to
+date. It is consistent with the tholonic prediction that the
+\(\phi\)-zone is a genuine self-stabilizing attractor at every scale of
+the network hierarchy. The fact that this property holds even in GPT-2,
+whose interior zone balance is among the most disrupted (all GPT-2
+models fail the boundary fidelity axis of the health assessment),
 suggests the half-life attractor property is deeply embedded and is not
 erased by post-training alignment procedures, even though those
 procedures do displace the equilibrium zone's location and reduce the
@@ -3330,14 +3339,14 @@ distinct groups: the two endpoint constants (\(e\), \(\ln 2\)) appear
 with high fidelity in every architecture tested, while the two interior
 constants (\(\phi\), \(\sqrt{2}\)) are systematically displaced toward
 the output and embedding endpoints respectively. This displacement is
-directionally consistent across all 18 architecture families tested, and
-is not explained by architectural variation. The one model that departs
-from this pattern, Phi-3-mini, trained on synthetic data with minimal
-post-hoc RLHF, also has the highest virial balance score (82) of any
-model tested. Third, a causal training experiment confirms that adding
-the virial regulariser during training improves validation loss by 0.153
-nats at 10,000 steps compared to a matched baseline, with the advantage
-widening throughout training.
+directionally consistent across all nine architecture families in the
+20-model replication, and is not explained by architectural variation.
+Phi-3-mini, trained on synthetic data with minimal post-hoc RLHF, has
+the highest virial balance score (82) of any model tested; GPT-Neo 125m
+and 1.3B score 4 and 23 respectively. Third, a causal training
+experiment confirms that adding the virial regulariser during training
+improves validation loss by 0.153 nats at 10,000 steps compared to a
+matched baseline, with the advantage widening throughout training.
 
 Fourth, and most directly, the activation steering experiment
 (Experiment 3.2) shows that the \(\phi\)-zone is a genuine
