@@ -11,6 +11,8 @@ The **intended outcome** matches papers **1 to 5**: under `<N>_<slug>/` you have
 
 Companion papers live as `docnav/Research/papers/<N>_<slug>.md`. The canonical build lives in `<N>_<slug>/<N>_<slug>.tex`.
 
+**In-series citation URLs:** Markdown sources should link cross-references to PDFs using direct-download URLs from `docnav/Research/papers/github_pdf_urls.md` (see `.cursor/rules/research-paper-references.mdc`). Pandoc converts those links to `\href{...}{...}` in the output `.tex`.
+
 ## Steps
 
 1. **Pandoc** (standalone) from the `docnav/Research/papers` directory:

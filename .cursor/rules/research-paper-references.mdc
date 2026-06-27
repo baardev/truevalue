@@ -1,0 +1,55 @@
+---
+description: Citation and cross-reference URL conventions for research papers under docnav/Research/papers/
+globs: docnav/Research/papers/**/*.md
+alwaysApply: false
+---
+
+# Research Paper Reference URLs
+
+## Canonical URL list
+
+`docnav/Research/papers/github_pdf_urls.md` is the **single source of truth** for GitHub URLs to every paper PDF in this series.
+
+When citing another paper in the series (in prose or in the References section), use the **Direct download** URL from that file:
+
+```
+https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/<N>_<slug>/<N>_<slug>.pdf
+```
+
+Do **not** use `raw.githubusercontent.com` links. Paper PDFs are in Git LFS; `github.com/.../raw/main/...` resolves LFS and returns real PDF bytes. `raw.githubusercontent.com` often returns the LFS pointer text instead of the PDF.
+
+Do **not** invent or guess URLs. Copy them from `github_pdf_urls.md` or follow its documented pattern after adding a new paper entry there.
+
+## When to link
+
+Link **both** citation keys and plain prose when referring to another paper in the series:
+
+| In text | Markdown form |
+|---------|----------------|
+| `[Mil26a]` citation key | `[Mil26a](<direct-download-url>)` |
+| `paper 3`, `Paper 3`, `papers 1 through 3` | `[paper 3](<url>)`, `[Paper 3](<url>)`, or per-number links for ranges |
+| `Paper 3 of this series` | `[Paper 3 of this series](<url>)` |
+| References line ending in `(Paper N of this series.)` | Link the paper phrase: `([Paper N of this series](<url>).)` |
+
+External references (journals, books, standards) keep their normal citation format. Only **in-series** Milton / Clarity Coalition papers use URLs from `github_pdf_urls.md`.
+
+## Per-paper citation keys
+
+Citation keys such as `[Mil26a]` are **not global** across the series. The same key can map to different paper numbers in different files. When linking a key, use the URL for the paper that key denotes **in that file's References section**, not a fixed global mapping.
+
+## Adding a new paper
+
+When a new paper is added to the series:
+
+1. Add a `## Paper N` section to `github_pdf_urls.md` with file page and direct download URLs.
+2. Use those URLs in the new paper's cross-references to prior papers.
+3. After the PDF is pushed to GitHub, link citations in older papers that refer to the new paper.
+
+After rebuilding PDFs locally: commit, `git push`, then run `./pushpng.sh` from the repo root so GitHub has the LFS objects.
+
+## Checklist
+
+- [ ] Every in-series `[Mil…]` / `[M26…]` citation key in the `.md` links to the correct direct-download URL
+- [ ] Every plain `paper N` / `Paper N` cross-reference in prose links to the same URL
+- [ ] URLs match `docnav/Research/papers/github_pdf_urls.md` (not `raw.githubusercontent.com`)
+- [ ] New papers have an entry in `github_pdf_urls.md` before cross-references are written

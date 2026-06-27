@@ -12,7 +12,7 @@
 
 ## Abstract
 
-We argue that the minimum non-trivial structure capable of sustained recursive self-organization is a three-role partition with a single emergent state and two functionally distinct auxiliary variables. Starting from a binary state space $\{0, 1\}$ and the requirement that any interaction involve at least one bit of state difference, we show that the smallest non-degenerate simplex (the triangle) induces exactly three directed roles: a *negotiation* variable $N$ that carries the running emergent state, a *definition/limitation* variable $D$ that bounds, and a *contribution/integration* variable $C$ that accumulates. The result is a proof that $m = 2$ is insufficient and $m = 3$ is necessary for non-trivial convergence under mild functional independence conditions (Lemma 4.2). We then demonstrate that the triadic partition supports a self-similar hierarchical extension: any triad can serve as a node in a higher-level triad without altering the three-role grammar, producing unbounded depth from three principles. This framework supplies a formal substrate for the tholonic ladder family of recurrences [Mil24] and for a class of phase-resolved transparency scoring systems [Mil24], but the present paper establishes only the structural core: minimality, irreducibility, and self-similar nesting. No empirical claims are made beyond the logical and topological argument within the stated axioms.
+We argue that the minimum non-trivial structure capable of sustained recursive self-organization is a three-role partition with a single emergent state and two functionally distinct auxiliary variables. Starting from a binary state space $\{0, 1\}$ and the requirement that any interaction involve at least one bit of state difference, we show that the smallest non-degenerate simplex (the triangle) induces exactly three directed roles: a *negotiation* variable $N$ that carries the running emergent state, a *definition/limitation* variable $D$ that bounds, and a *contribution/integration* variable $C$ that accumulates. The result is a proof that $m = 2$ is insufficient and $m = 3$ is necessary for non-trivial convergence under mild functional independence conditions (Lemma 4.2). We then demonstrate that the triadic partition supports a self-similar hierarchical extension: any triad can serve as a node in a higher-level triad without altering the three-role grammar, producing unbounded depth from three principles. This framework supplies a formal substrate for the tholonic ladder family of recurrences [Mil24](https://tholonia.github.io/the-book/) and for a class of phase-resolved transparency scoring systems [Mil24](https://tholonia.github.io/the-book/), but the present paper establishes only the structural core: minimality, irreducibility, and self-similar nesting. No empirical claims are made beyond the logical and topological argument within the stated axioms.
 
 ---
 
@@ -29,7 +29,7 @@ This paper proposes an answer grounded in the properties of binary state spaces 
 
 The framework is *formal and structural*. It does not derive specific dynamical laws or empirical constants. It says: if a system is to organize itself under these minimal axioms, it must have at least three distinct functional roles, and those roles compose self-similarly. This is a constraint on admissible architectures, not a prediction of particular outputs.
 
-**Related frameworks.** The tholonic ladder recurrence family [Mil24] instantiates this framework concretely by showing that five classical mathematical constants ($\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$) emerge as limits of three-variable recurrences whose branches differ only in initial seeds and traversal rules. The present paper supplies the foundational argument for *why three variables, and why these three roles*. The supply-chain transparency scoring method (TVPCI) [Mil24] applies the same triadic partition in a non-dynamical, evidence-scoring context, demonstrating that the three-role structure generalizes beyond recurrence. This paper isolates the structural core common to both applications.
+**Related frameworks.** The tholonic ladder recurrence family [Mil24](https://tholonia.github.io/the-book/) instantiates this framework concretely by showing that five classical mathematical constants ($\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$) emerge as limits of three-variable recurrences whose branches differ only in initial seeds and traversal rules. The present paper supplies the foundational argument for *why three variables, and why these three roles*. The supply-chain transparency scoring method (TVPCI) [Mil24](https://tholonia.github.io/the-book/) applies the same triadic partition in a non-dynamical, evidence-scoring context, demonstrating that the three-role structure generalizes beyond recurrence. This paper isolates the structural core common to both applications.
 
 **Scope.** We establish minimality and self-similarity within the stated axioms. We do not claim that every three-variable system is irreducible, that all self-organizing systems reduce to this scaffold, or that the framework produces novel predictions about specific natural phenomena. The claim is narrower: given the axioms of binary state space and simplex topology, *three* is a lower bound, and the same three roles compose hierarchically.
 
@@ -100,11 +100,11 @@ where $\alpha_k$ and $\beta_k$ are derived from the remaining $m-1$ variables. A
 
 *Proof.* Assume $m = 2$. Then only one auxiliary variable, say $y$, is available. The update must be of the form $x^{(1)}_{k+1} = g(x^{(1)}_k; y_k)$. But then either (i) $y_k$ is constant, in which case $g$ reduces to a function of $x^{(1)}_k$ alone and the limit, if it exists, is a fixed point of that function (violating the non-triviality condition), or (ii) $y_k$ evolves according to its own rule $y_{k+1} = h(x^{(1)}_k, y_k)$, which pushes the effective dimensionality to 2 but still links $\alpha_k$ and $\beta_k$ through a single functional chain. Condition (1) (functional independence) requires that the two auxiliary contributions enter $g$ through structurally distinct pathways: one bounding/constraining the step magnitude, the other contributing/integrating additive or multiplicative structure. A single auxiliary variable cannot carry both roles simultaneously with functional independence, because its value alone determines both the bound and the contribution, collapsing them into a single degree of freedom. Hence $m \ge 3$. $\square$
 
-**Remark.** This lemma is deliberately weak in its hypotheses. It does not claim that *all* three-variable recurrences are irreducible; it claims that a system with a distinguished state and two functionally independent auxiliary roles cannot be reduced to fewer than three variables without losing the structural distinction between bounding and integrating. The empirical evidence that the five tholonic ladder branches cannot be expressed as non-trivial 2-variable recurrences is presented elsewhere [Mil24]; Lemma 4.2 provides the formal lower bound.
+**Remark.** This lemma is deliberately weak in its hypotheses. It does not claim that *all* three-variable recurrences are irreducible; it claims that a system with a distinguished state and two functionally independent auxiliary roles cannot be reduced to fewer than three variables without losing the structural distinction between bounding and integrating. The empirical evidence that the five tholonic ladder branches cannot be expressed as non-trivial 2-variable recurrences is presented elsewhere [Mil24](https://tholonia.github.io/the-book/); Lemma 4.2 provides the formal lower bound.
 
 ### 4.2 The three roles
 
-The three functional roles correspond to the three axes of the triangular geometry ($\S 3$) and to the three semantic positions in the tholonic triad [Mil24]:
+The three functional roles correspond to the three axes of the triangular geometry ($\S 3$) and to the three semantic positions in the tholonic triad [Mil24](https://tholonia.github.io/the-book/):
 
 **Definition 4.3** (Triadic role partition). For a three-variable recurrence $(N, D, C)$:
 
@@ -112,7 +112,7 @@ The three functional roles correspond to the three axes of the triangular geomet
 - $D$ (*definition/limitation*): the bounding or constraining parameter; what limits the state at each step.
 - $C$ (*contribution/integration*): the accumulating or synthesizing parameter; what drives growth or combines past states.
 
-These roles are assigned by function, not by numerical value. Two variables may share the same numerical seed (e.g., $D_0 = C_0 = 2$ for the $\sqrt{2}$ branch [Mil24]) while remaining operationally distinct: one bounds, the other integrates.
+These roles are assigned by function, not by numerical value. Two variables may share the same numerical seed (e.g., $D_0 = C_0 = 2$ for the $\sqrt{2}$ branch [Mil24](https://tholonia.github.io/the-book/)) while remaining operationally distinct: one bounds, the other integrates.
 
 **Proposition 4.4** (Role stability under seed degeneracy). *If $D_0 = C_0$ numerically but the recurrence rule applies $D$ and $C$ through distinct operations, the roles are not degenerate. The operational distinction (bounding vs. integrating) persists even when the numerical values coincide.*
 
@@ -130,7 +130,7 @@ The three roles map onto the three directed axes of the labeled triangle ($\S 3$
 | Contribution | $B \to b$ | $C$ | Accumulates; integrates; adds |
 | Instantiation | $C \to c$ | $N$ (derivative) | Instantiates the emergent state |
 
-The Instantiation axis supplies the step structure that drives $N$ forward; $N$ itself is the running composite of the interactions between $D$ and $C$. The geometry is not decorative: it supplies the combinatorial constraints on seed values for the $\pi/4$ branch [Mil24], where the axis multipliers $(5, 3, 2)$ uniquely determine the seeds $(1, 3, 5)$ and the step $\Delta = 4$.
+The Instantiation axis supplies the step structure that drives $N$ forward; $N$ itself is the running composite of the interactions between $D$ and $C$. The geometry is not decorative: it supplies the combinatorial constraints on seed values for the $\pi/4$ branch [Mil24](https://tholonia.github.io/the-book/), where the axis multipliers $(5, 3, 2)$ uniquely determine the seeds $(1, 3, 5)$ and the step $\Delta = 4$.
 
 ![Figure 3. Three functional roles of the triadic partition.](figures/3_three-roles.png)
 
@@ -182,7 +182,7 @@ The question of whether $m = 2$ or $m = 4$ could serve equally well has natural 
 
 ### 6.2 Connection to the tholonic ladder
 
-The five tholonic ladder branches [Mil24] instantiate the abstract triadic framework with a specific family of recurrences. The ladder paper establishes:
+The five tholonic ladder branches [Mil24](https://tholonia.github.io/the-book/) instantiate the abstract triadic framework with a specific family of recurrences. The ladder paper establishes:
 
 - A single three-variable recurrence template $(N_k, D_k, C_k)$.
 - Five branches distinguished by initial seeds and traversal rules.
@@ -194,7 +194,7 @@ The present paper supplies the *architectural justification* for that family: th
 
 ### 6.3 Connection to supply-chain transparency scoring
 
-The TVPCI framework [Mil24] applies the same triadic partition in an evidence-scoring context rather than a recurrence context. A transparency score for a supply-chain entity is computed from:
+The TVPCI framework [Mil24](https://tholonia.github.io/the-book/) applies the same triadic partition in an evidence-scoring context rather than a recurrence context. A transparency score for a supply-chain entity is computed from:
 
 - $N$: the *negotiated score*, the emergent trustworthiness metric.
 - $D$: *definitional evidence*, constraining what counts as transparency (documentation, audit trails, certifications).
@@ -238,7 +238,7 @@ This demonstrates that the triadic partition is not specific to recurrence dynam
 3. *(Continuous limit).* What is the continuous-time analogue of the triadic recurrence, and does it correspond to a known class of differential equations (e.g., three-variable Lotka-Volterra, Lorenz system)?
 4. *(Observational signatures).* If a physical or biological system satisfies the triadic axioms, what measurable signatures would distinguish it from a system organized under a different structural grammar?
 
-**Empirical grounding.** The five-constants paper [Mil24] provides a concrete computational instantiation. The TVPCI paper [Mil24] provides a non-dynamical application. Neither claims empirical validation of the framework as a description of natural phenomena. The next step is to identify a domain where the three-role partition makes a falsifiable prediction: either a system that *must* exhibit three functionally independent roles at a certain level of description, or a system where the absence of one role predicts a specific type of failure or instability. Until such a prediction is formulated and tested, the framework remains a structural taxonomy, albeit one with formal minimality and self-similarity attached.
+**Empirical grounding.** The five-constants paper [Mil24](https://tholonia.github.io/the-book/) provides a concrete computational instantiation. The TVPCI paper [Mil24](https://tholonia.github.io/the-book/) provides a non-dynamical application. Neither claims empirical validation of the framework as a description of natural phenomena. The next step is to identify a domain where the three-role partition makes a falsifiable prediction: either a system that *must* exhibit three functionally independent roles at a certain level of description, or a system where the absence of one role predicts a specific type of failure or instability. Until such a prediction is formulated and tested, the framework remains a structural taxonomy, albeit one with formal minimality and self-similarity attached.
 
 ---
 
@@ -246,7 +246,7 @@ This demonstrates that the triadic partition is not specific to recurrence dynam
 
 We have argued that the minimum non-trivial structure capable of sustained recursive self-organization within a binary state space is a three-role partition with functionally distinct bounding and integrating contributions to a distinguished emergent state. The argument derives from information-theoretic minimality (binary encoding), geometric minimality (2-simplex), and functional independence (Lemma 4.2), yielding $m \ge 3$ as a lower bound. The same three-role grammar supports unbounded self-similar nesting, producing hierarchical depth without new primitives.
 
-The framework supplies the architectural foundation for the tholonic ladder recurrence family [Mil24] and for triadic transparency scoring [Mil24]. Its contribution is logical and geometric: minimality, irreducibility, and hierarchical closure under three axioms. The open work is classification (which recurrences satisfy the axioms and converge), embedding completeness (whether new structures emerge at depth), and empirical connection (can the framework be falsified in a natural system).
+The framework supplies the architectural foundation for the tholonic ladder recurrence family [Mil24](https://tholonia.github.io/the-book/) and for triadic transparency scoring [Mil24](https://tholonia.github.io/the-book/). Its contribution is logical and geometric: minimality, irreducibility, and hierarchical closure under three axioms. The open work is classification (which recurrences satisfy the axioms and converge), embedding completeness (whether new structures emerge at depth), and empirical connection (can the framework be falsified in a natural system).
 
 ---
 
@@ -264,7 +264,7 @@ The framework supplies the architectural foundation for the tholonic ladder recu
 
 [{\L}uk20] J. {\L}ukasiewicz, "O logice trójwartościowej" (On three-valued logic), *Ruch Filozoficzny* 5, 1920, pp. 170–171. English translation in L. Borkowski (ed.), *Selected Works*, North-Holland, 1970.
 
-[Mil24] J. W. Milton, *Tholonia: The Existential Mechanics of Awareness*, self-published, 2024. Available at https://tholonia.github.io/the-book/.
+[Mil24](https://tholonia.github.io/the-book/) J. W. Milton, *Tholonia: The Existential Mechanics of Awareness*, self-published, 2024. Available at https://tholonia.github.io/the-book/.
 
 [ML98] S. Mac Lane, *Categories for the Working Mathematician*, 2nd ed., Springer, 1998.
 

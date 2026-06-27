@@ -28,7 +28,7 @@ Consciousness remains one of the most intensively studied and least theoreticall
 
 The psychedelic renaissance of the 2010s and 2020s has produced a rich literature on the neuroscience of psilocybin, LSD, DMT, and MDMA [Car21]. The central finding is consistent across compounds and measurement modalities: psychedelic states are characterized by suppression of the Default Mode Network [Car12, Mck21] and by a corresponding increase in global neural entropy [Car18]. The REBUS model [Car19] provides the most developed mechanistic account: psychedelics flatten the hierarchical prior landscape, reducing the influence of high-level predictive priors and increasing the propagation of sensory prediction errors through cortical hierarchies.
 
-The tholonic N-D-C framework, introduced in papers 1 through 3 of this series [Mil26a, Mil26b, Mil26c], describes how any coherent system maintains stability through the balance of a constraint apparatus (D) and a productive apparatus (C), with the coherent state N emerging from their approximate balance. This paper argues that the DMN, predictive priors, and the REBUS model together describe a D-apparatus in precise computational terms, and that the resulting tholonic mapping provides a quantitative state-space for consciousness that spans both normal and altered states.
+The tholonic N-D-C framework, introduced in papers [1](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) through [3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) of this series [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), [Mil26b](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf), [Mil26c](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf), describes how any coherent system maintains stability through the balance of a constraint apparatus (D) and a productive apparatus (C), with the coherent state N emerging from their approximate balance. This paper argues that the DMN, predictive priors, and the REBUS model together describe a D-apparatus in precise computational terms, and that the resulting tholonic mapping provides a quantitative state-space for consciousness that spans both normal and altered states.
 
 **What this paper provides.** A formal N-D-C mapping for consciousness grounded in predictive coding; a two-dimensional D/C state-space covering ten consciousness states with predicted B-scores; a tholonic account of psychedelic mechanism including the REBUS correspondence; a structural account of maladaptive high-D states and psychedelic therapy; and four falsifiable predictions.
 
@@ -40,7 +40,7 @@ The tholonic N-D-C framework, introduced in papers 1 through 3 of this series [M
 
 ## 2. The Tholonic N-D-C Framework
 
-The tholonic model, grounded mathematically in paper 1 [Mil26a] and axiomatically in paper 3 [Mil26c], holds that any coherent, self-sustaining system exhibits three structurally distinct functional roles.
+The tholonic model, grounded mathematically in [paper 1](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) and axiomatically in [paper 3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) [Mil26c](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf), holds that any coherent, self-sustaining system exhibits three structurally distinct functional roles.
 
 **N (Negotiation)** is the emergent stable state: the coherent identity of the system that persists as a consequence of D and C remaining in approximate balance. N is not any single component; it is the relational outcome of D and C. In the conscious system, N is the experienced sense of self: the stable, bounded, first-person perspective that integrates perception, memory, and action.
 
@@ -52,7 +52,7 @@ The tholonic model, grounded mathematically in paper 1 [Mil26a] and axiomaticall
 
 $$B(D,C) = \frac{2 \cdot \min(D,C)}{D + C} \cdot 100$$
 
-A score of 100 indicates perfect balance. Scores above 80 indicate coherent operation. The $1/\varphi$ threshold at B = 61.8 marks the boundary of structural instability, as established in paper 2 [Mil26b].
+A score of 100 indicates perfect balance. Scores above 80 indicate coherent operation. The $1/\varphi$ threshold at B = 61.8 marks the boundary of structural instability, as established in [paper 2](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf) [Mil26b](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf).
 
 **Magnitude requirement.** The balance score measures relative balance, not absolute magnitude. A system with D = 0.1 and C = 0.1 scores B = 100 but has no coherent N: both drives are effectively absent. Consciousness requires not only D $\approx$ C but also adequate magnitude of both. This is addressed in §5.2.
 
@@ -299,11 +299,11 @@ The four falsifiable predictions in §10 can be tested against existing neuroima
 
 [Mck21] McKenna, D., and Riba, J. New world tryptamine hallucinogens and the neuroscience of ayahuasca. *Current Topics in Behavioral Neurosciences* 36, 2021.
 
-[Mil26a] Milton, J. W. Emergence of classical constants from a minimal recursive triadic framework. Clarity Coalition, 2026. (Paper 1 of this series.)
+[Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) Milton, J. W. Emergence of classical constants from a minimal recursive triadic framework. Clarity Coalition, 2026. ([Paper 1 of this series](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf).)
 
-[Mil26b] Milton, J. W. Phase-resolved transparency classification of the gold supply chain. Clarity Coalition, 2026. (Paper 2 of this series.)
+[Mil26b](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf) Milton, J. W. Phase-resolved transparency classification of the gold supply chain. Clarity Coalition, 2026. ([Paper 2 of this series](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/2_supply-chain-transparency-tvpci/2_supply-chain-transparency-tvpci.pdf).)
 
-[Mil26c] Milton, J. W. A minimal recursive triadic framework for self-similar hierarchical systems. Clarity Coalition, 2026. (Paper 3 of this series.)
+[Mil26c](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) Milton, J. W. A minimal recursive triadic framework for self-similar hierarchical systems. Clarity Coalition, 2026. ([Paper 3 of this series](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf).)
 
 [Rav21] Rao, R. P. N., and Ballard, D. H. Predictive coding in the visual cortex: a functional interpretation of some extra-classical receptive field effects. *Nature Neuroscience* 2(1), 1999.
 

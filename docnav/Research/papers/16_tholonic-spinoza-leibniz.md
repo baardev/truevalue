@@ -12,7 +12,7 @@
 
 ## Abstract
 
-The tholonic N-D-C framework, grounded mathematically in the recursive iteration of the first three primes and tested empirically across neural, biological, cosmological, and physical domains in papers 1 through 15 of this series, describes how any coherent self-sustaining system maintains stability through three functional roles: Negotiation (N, the emergent equilibrium), Definition (D, the constraining parameter), and Contribution (C, the integrating expressive output). Two seventeenth-century philosophers, Baruch Spinoza (1632-1677) and Gottfried Wilhelm Leibniz (1646-1716), independently developed metaphysical systems that, when examined structurally rather than doctrinally, anticipate key elements of the tholonic model with remarkable precision.
+The tholonic N-D-C framework, grounded mathematically in the recursive iteration of the first three primes and tested empirically across neural, biological, cosmological, and physical domains in papers [1](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) through [15](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/15_consciousness-dmn-d-apparatus/15_consciousness-dmn-d-apparatus.pdf) of this series, describes how any coherent self-sustaining system maintains stability through three functional roles: Negotiation (N, the emergent equilibrium), Definition (D, the constraining parameter), and Contribution (C, the integrating expressive output). Two seventeenth-century philosophers, Baruch Spinoza (1632-1677) and Gottfried Wilhelm Leibniz (1646-1716), independently developed metaphysical systems that, when examined structurally rather than doctrinally, anticipate key elements of the tholonic model with remarkable precision.
 
 This paper performs a systematic structural comparison between the tholonic model and each philosopher's mature metaphysics. Spinoza's system contributes three tholonically significant parallels: his distinction between *Natura naturans* (active, productive Nature) and *Natura naturata* (the produced modal system) maps onto the bidirectional N-to-D-and-C recursion; his doctrine of *conatus*, the striving of every mode to persevere in its own being, maps onto the N-state's structural self-maintenance condition; and the parallelism of Thought and Extension as attributes of the one substance maps onto D-C complementarity within a single N level. Leibniz's monadology offers a tighter structural parallel at the unit level: his monads, self-contained, self-sustaining, hierarchically nested units that each mirror the entire universe from their own level, map directly onto tholons. The doctrine of pre-established harmony, read structurally rather than theologically, maps onto the emergent balance condition that produces N from D and C at each hierarchical level.
 
@@ -32,7 +32,7 @@ The paper argues that Spinoza most accurately captured the dynamic process dimen
 
 ## 2. The Tholonic N-D-C Framework
 
-The tholonic model is developed in full in papers 1 through 3 of this series [Mil26a, Mil26b, Mil26c]. This section provides the minimal recap required for the comparisons that follow.
+The tholonic model is developed in full in papers [1](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) through [3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) of this series [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), [Mil26b](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf), [Mil26c](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf). This section provides the minimal recap required for the comparisons that follow.
 
 ### 2.1 Core Structure
 
@@ -384,23 +384,23 @@ The tholonic model adds what neither philosopher could provide: the formal balan
 
 [Lei10] Leibniz, G. W. *Theodicy.* 1710. Trans. E. M. Huggard. Open Court, 1952.
 
-[Mil26a] Milton, J. W. *Recursive Tholonic Five Constants.* Clarity Coalition, paper 1, 2026.
+[Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) Milton, J. W. *Recursive Tholonic Five Constants.* Clarity Coalition, [paper 1](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), 2026.
 
-[Mil26b] Milton, J. W. *Minimal Recursive Triadic Framework.* Clarity Coalition, paper 3, 2026.
+[Mil26b](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) Milton, J. W. *Minimal Recursive Triadic Framework.* Clarity Coalition, [paper 3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf), 2026.
 
-[Mil26c] Milton, J. W. *Qualitative Nature of Integers and Triadic Roles.* Clarity Coalition, paper 6, 2026.
+[Mil26c](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf) Milton, J. W. *Qualitative Nature of Integers and Triadic Roles.* Clarity Coalition, [paper 6](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/6_qualitative-nature-integers-triadic-roles/6_qualitative-nature-integers-triadic-roles.pdf), 2026.
 
-[Mil26d] Milton, J. W. *Tholonic Model and the Standard Model: An Alternative Framework.* Clarity Coalition, paper 9, 2026.
+[Mil26d](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/9_tholonic-model-standard-model-alternative/9_tholonic-model-standard-model-alternative.pdf) Milton, J. W. *Tholonic Model and the Standard Model: An Alternative Framework.* Clarity Coalition, [paper 9](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/9_tholonic-model-standard-model-alternative/9_tholonic-model-standard-model-alternative.pdf), 2026.
 
-[Mil26e] Milton, J. W. *Neural Networks as Tholonic Systems.* Clarity Coalition, paper 10, 2026.
+[Mil26e](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/10_tholonic-neural-architecture/10_tholonic-neural-architecture.pdf) Milton, J. W. *Neural Networks as Tholonic Systems.* Clarity Coalition, [paper 10](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/10_tholonic-neural-architecture/10_tholonic-neural-architecture.pdf), 2026.
 
-[Mil26f] Milton, J. W. *Newton and the Tholonic Framework.* Clarity Coalition, paper 12, 2026.
+[Mil26f](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/12_newton-tholonic-framework/12_newton-tholonic-framework.pdf) Milton, J. W. *Newton and the Tholonic Framework.* Clarity Coalition, [paper 12](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/12_newton-tholonic-framework/12_newton-tholonic-framework.pdf), 2026.
 
-[Mil26g] Milton, J. W. *Dual Entropy Tholonic Cosmology.* Clarity Coalition, paper 13, 2026.
+[Mil26g](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/13_dual-entropy-tholonic-cosmology/13_dual-entropy-tholonic-cosmology.pdf) Milton, J. W. *Dual Entropy Tholonic Cosmology.* Clarity Coalition, [paper 13](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/13_dual-entropy-tholonic-cosmology/13_dual-entropy-tholonic-cosmology.pdf), 2026.
 
-[Mil26h] Milton, J. W. *Cancer and D-Collapse.* Clarity Coalition, paper 14, 2026.
+[Mil26h](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/14_cancer-d-collapse/14_cancer-d-collapse.pdf) Milton, J. W. *Cancer and D-Collapse.* Clarity Coalition, [paper 14](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/14_cancer-d-collapse/14_cancer-d-collapse.pdf), 2026.
 
-[Mil26i] Milton, J. W. *The Default Mode Network as D-Apparatus.* Clarity Coalition, paper 15, 2026.
+[Mil26i](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/15_consciousness-dmn-d-apparatus/15_consciousness-dmn-d-apparatus.pdf) Milton, J. W. *The Default Mode Network as D-Apparatus.* Clarity Coalition, [paper 15](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/15_consciousness-dmn-d-apparatus/15_consciousness-dmn-d-apparatus.pdf), 2026.
 
 [Gar02] Garrett, D. "Spinoza's Conatus Argument." In *Spinoza: Metaphysical Themes.* ed. Koistinen and Biro. Oxford University Press, 2002.
 

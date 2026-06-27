@@ -91,9 +91,19 @@ End with an unnumbered references section using inline citation keys in `[AuthYY
 [AuthYY] Author, A. *Title.* Publisher, Year.
 ```
 
+**In-series paper URLs:** `docnav/Research/papers/github_pdf_urls.md` holds the canonical GitHub URLs for every paper PDF. When citing another paper in this series (in the References section or in prose), link citation keys and plain `paper N` / `Paper N` text to the **Direct download** URL from that file:
+
+```markdown
+[Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) Milton, J. W. ...
+
+Prior work in [paper 3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) establishes ...
+```
+
+Use `github.com/.../raw/main/...` only. Do not use `raw.githubusercontent.com`. When adding a new paper, add its URLs to `github_pdf_urls.md` first. See `.cursor/rules/research-paper-references.mdc` for the full convention.
+
 ## Step 8: Cross-references to other papers in the series
 
-Cite other papers in the series as `paper N` or `[Mil26N]` in the text.
+Cite other papers in the series as `paper N` or `[Mil26N]` in the text. **Both forms must link to the PDF** using URLs from `github_pdf_urls.md` (see Step 7). Citation keys are not global: `[Mil26a]` may denote different paper numbers in different files; always match the URL to that file's References mapping.
 
 ## Step 9: Generate figures when helpful or necessary
 
@@ -195,6 +205,7 @@ Do not manually edit `\date{}`, `\author{}`, or the Keywords line in the `.tex` 
 - [ ] All body sections numbered (`## 1.`, `## 2.`, ...)
 - [ ] Introduction contains "What this paper provides / does not provide / Organization"
 - [ ] References section present (even if minimal)
+- [ ] In-series citations (`[Mil…]`, `paper N`, `Paper N`) link to direct-download URLs from `github_pdf_urls.md`
 - [ ] No em dashes anywhere (use colons, commas, or new sentences)
 - [ ] Inline math uses `$...$`, display math uses `$$...$$`
 - [ ] Every quantitative claim has a supporting figure

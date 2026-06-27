@@ -52,7 +52,7 @@ The triad is not merely a vector: the three positions have distinct semantic rol
 
 ### 2.1 Geometric origin of the axis labels
 
-The tholonic geometry [Mil24] assigns successive powers of two, $2^0, 2^1, \ldots, 2^5$, to six vertices of a triangular configuration: outer role vertices $N = 2^0$, $D = 2^1$, $C = 2^2$, and three inner midpoint vertices carrying $2^3, 2^4, 2^5$. Each directed axis runs from one outer role vertex through an inner midpoint to another outer role vertex; its three vertex values sum to $7$ times a characteristic multiplier:
+The tholonic geometry [Mil24](https://tholonia.github.io/the-book/) assigns successive powers of two, $2^0, 2^1, \ldots, 2^5$, to six vertices of a triangular configuration: outer role vertices $N = 2^0$, $D = 2^1$, $C = 2^2$, and three inner midpoint vertices carrying $2^3, 2^4, 2^5$. Each directed axis runs from one outer role vertex through an inner midpoint to another outer role vertex; its three vertex values sum to $7$ times a characteristic multiplier:
 
 - Definition axis ($N \to D$, through $2^5$): $\;1 + 32 + 2 = 35 = 7 \times 5$
 - Contribution axis ($C \to N$, through $2^4$): $\;4 + 16 + 1 = 21 = 7 \times 3$
@@ -482,6 +482,6 @@ Offset behavior under non-zero $N_0$ initializations: see Proposition 6.5.
 
 [Rud76] W. Rudin, *Principles of Mathematical Analysis*, 3rd ed., McGraw-Hill, 1976.
 
-[Mil24] J. W. Milton, *Tholonia: The Existential Mechanics of Awareness*, self-published, 2024. Available at https://tholonia.github.io/the-book/.
+[Mil24](https://tholonia.github.io/the-book/) J. W. Milton, *Tholonia: The Existential Mechanics of Awareness*, self-published, 2024. Available at https://tholonia.github.io/the-book/.
 
 [Swe03] F. J. Swetz, "Leibniz, the Yijing, and the Religious Conversion of the Chinese," *Mathematics Magazine* 76(4), 2003, pp. 276–291.
