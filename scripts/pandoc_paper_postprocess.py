@@ -287,6 +287,29 @@ def main() -> None:
         body,
     )
 
+    # Rewrite absolute image paths to paths relative to the output .tex directory.
+    # Markdown sources use absolute paths (e.g. /home/user/.../figures/foo.png) so
+    # the IDE preview works regardless of where the .md file lives.  pdflatex runs
+    # from inside the paper directory, so the .tex must use paths relative to that
+    # directory (e.g. figures/foo.png).
+    out_dir = args.output.parent.resolve()
+
+    def _rewrite_img_path(m: re.Match) -> str:
+        path_str = m.group(1)
+        if path_str.startswith("/"):
+            try:
+                rel = str(Path(path_str).resolve().relative_to(out_dir))
+                return "{" + rel + "}"
+            except ValueError:
+                pass
+        return m.group(0)
+
+    body = re.sub(
+        r"\{(/[^}]+\.(?:png|jpg|jpeg|pdf|eps|svg))\}",
+        _rewrite_img_path,
+        body,
+    )
+
     packages = PACKAGES
     code_preamble = extract_pandoc_code_preamble(tex)
     if code_preamble:

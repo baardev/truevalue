@@ -277,6 +277,18 @@ Requires every `project_context.html` to contain a Phase Intervention Worksheet 
 
 Enforces that `docs/skills.md` is updated whenever any skill under `.cursor/skills/` is added, changed, or deleted. See the rule file for exact obligations.
 
+### `research-paper-images`
+
+**File:** `.cursor/rules/research-paper-images.mdc`
+**Triggers on:** `docnav/Research/papers/**/*.md`
+
+Governs image path conventions for research papers. Key rules:
+
+- All `![caption](path)` references in paper `.md` files must use **absolute filesystem paths** (e.g. `/home/jw/src/tv/docnav/Research/papers/17_foo/figures/17_bar.png`). Absolute paths render correctly in the IDE Markdown preview regardless of where the `.md` file sits relative to the figures folder.
+- `scripts/pandoc_paper_postprocess.py` automatically rewrites absolute image paths to paths relative to the output `.tex` directory before writing the final `.tex`, so `pdflatex` (which runs from inside the paper folder) finds the figures correctly.
+- Paper-specific figures live in `docnav/Research/papers/<N>_<slug>/figures/`. Shared figures live in `docnav/Research/papers/figures/`.
+- Naming convention: `<N>_<short-descriptor>.png`.
+
 ---
 
 ## Maintenance

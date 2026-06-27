@@ -108,11 +108,13 @@ Figures are expected whenever the paper:
 
 **Figure naming convention:** `<N>_<short-descriptor>.png`, stored in `docnav/Research/papers/<N>_<slug>/figures/`. For example: `14_ndc-cancer-triangle.png`, `14_d-collapse-grades.png`.
 
-**Embed in Markdown** immediately after the relevant paragraph:
+**Embed in Markdown** immediately after the relevant paragraph using an **absolute path**:
 
 ```markdown
-![Caption text.](figures/14_ndc-cancer-triangle.png)
+![Caption text.](/home/jw/src/tv/docnav/Research/papers/14_cancer-d-collapse/figures/14_ndc-cancer-triangle.png)
 ```
+
+Absolute paths are required so the IDE Markdown preview renders the figure regardless of where the `.md` file sits relative to the figures folder. The postprocessor (`scripts/pandoc_paper_postprocess.py`) automatically converts absolute paths to the correct relative path inside the output `.tex` before running `pdflatex`. Never use relative paths like `figures/14_foo.png` or `14_cancer-d-collapse/figures/14_foo.png` in the Markdown source.
 
 **Style rules (non-negotiable):**
 - White background. Papers print on white; transparent or dark backgrounds render as black rectangles in PDF.
@@ -198,4 +200,4 @@ Do not manually edit `\date{}`, `\author{}`, or the Keywords line in the `.tex` 
 - [ ] Every quantitative claim has a supporting figure
 - [ ] Every N-D-C role mapping has a triangle diagram
 - [ ] All figures use white background, canonical N/D/C colors, and correct triangle orientation
-- [ ] All figure paths resolve: `figures/<N>_<descriptor>.png` in `<N>_<slug>/figures/`
+- [ ] All figure paths in the Markdown use **absolute paths** (`/home/jw/src/tv/docnav/...`), not relative paths
