@@ -1,6 +1,6 @@
 # Elinor Ostrom's Design Principles and the Tholonic N-D-C Framework: Governance as Structural Balance
 
-**Author:** J. W. Milton, Clarity Coalition
+**Author:** Sarah Jones and J. W. Milton, Clarity Coalition
 
 **Version:** 1.0
 
@@ -259,6 +259,9 @@ The tholonic model adds four things to Ostrom's framework: a continuous balance 
 Ostrom and the tholonic model are not competing frameworks. They are complementary: Ostrom provides the empirical phenomenology of governance health and failure; the tholonic model provides the structural account of why those phenomena take the forms they do. Together they constitute a more powerful diagnostic and predictive framework than either provides alone.
 
 ---
+## Acknowledgments
+
+Sarah Jones founded the Clarity Coalition and originated the tholonic governance framework applied in this paper. J. W. Milton developed the tholonic N-D-C model and drafted the manuscript.
 
 ## References
 
