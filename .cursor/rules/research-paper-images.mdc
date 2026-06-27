@@ -1,0 +1,60 @@
+---
+description: Image path conventions for research papers under docnav/Research/papers/
+globs: docnav/Research/papers/**/*.md
+alwaysApply: false
+---
+
+# Research Paper Image Paths
+
+## Rule: always use absolute paths in Markdown
+
+All `![caption](path)` references inside `docnav/Research/papers/*.md` must use
+**absolute filesystem paths**, e.g.:
+
+```markdown
+![Caption.](/home/jw/src/tv/docnav/Research/papers/17_ostrom-tholonic-governance/figures/17_cpr-tholon-triangle.png)
+```
+
+**Why:** The `.md` file sits at `docnav/Research/papers/<N>_<slug>.md` while its
+figures live one level deeper at `docnav/Research/papers/<N>_<slug>/figures/`.
+A relative path like `17_ostrom-tholonic-governance/figures/foo.png` renders
+correctly in the file-manager tree but breaks the IDE Markdown preview.  An
+absolute path renders correctly everywhere.
+
+## How the PDF build handles this
+
+`scripts/pandoc_paper_postprocess.py` automatically rewrites every absolute image
+path to a path relative to the output `.tex` directory before writing the final
+`.tex`.  The rewrite rule is:
+
+```
+/home/jw/src/tv/docnav/Research/papers/<N>_<slug>/figures/foo.png
+  →  figures/foo.png
+```
+
+`pdflatex` runs from inside `<N>_<slug>/` (see `scripts/research_paper_pdflatex.sh`),
+so `figures/foo.png` resolves correctly at compile time.
+
+## Figure storage convention
+
+Paper-specific figures live in `docnav/Research/papers/<N>_<slug>/figures/`.
+Shared figures (used across multiple papers) live in
+`docnav/Research/papers/figures/` (the shared pool).
+
+The pdflatex script creates a symlink `<paper-dir>/figures -> ../figures` only
+when the paper dir has no `figures/` directory of its own and the `.tex` references
+`{figures/...}`.  Paper-specific figures do not need this symlink.
+
+## Naming convention
+
+```
+<N>_<short-descriptor>.png
+```
+
+Examples: `17_cpr-tholon-triangle.png`, `14_ndc-cancer-triangle.png`.
+
+## Checklist
+
+- [ ] Every `![...]()` in the `.md` uses an absolute path starting with `/home/jw/src/tv/`
+- [ ] The figure file exists at that absolute path before running the PDF build
+- [ ] The postprocessor is invoked with `--md <paper>.md` so path rewriting is active

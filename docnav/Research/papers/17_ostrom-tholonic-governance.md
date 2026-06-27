@@ -1,0 +1,289 @@
+# Elinor Ostrom's Design Principles and the Tholonic N-D-C Framework: Governance as Structural Balance
+
+**Author:** J. W. Milton, Clarity Coalition
+
+**Version:** 1.0
+
+**Date:** 26 June 2026
+
+**Keywords:** Elinor Ostrom; common-pool resources; design principles; tholonic model; N-D-C framework; tragedy of the commons; polycentric governance; institutional analysis; sustainability; governance balance score
+
+---
+
+## Abstract
+
+Elinor Ostrom's Nobel Prize-winning work on the governance of common-pool resources (CPR) identified eight design principles that reliably distinguish self-governing institutions that sustain shared resources from those that collapse. These principles were derived empirically from field data across dozens of cultures and resource types: alpine meadows in Switzerland, fisheries in Turkey and Japan, irrigation systems in Spain and the Philippines. This paper argues that Ostrom's eight principles are not an arbitrary empirical checklist but a structural finding: they describe the conditions under which a CPR governance institution achieves and maintains the N-D-C balance predicted by the tholonic model.
+
+The paper makes four claims. First, the eight design principles divide cleanly into D-type principles (boundary definition, rule specification, monitoring, graduated sanctions, conflict resolution), which constitute the constraining apparatus of the governance tholon, and C-type principles (collective-choice arrangements, external recognition of rights, nested enterprises), which constitute its integrating and participatory apparatus. Second, Ostrom's documented failure mode, the tragedy of the commons, is a C-dominant partial tholon: collective extraction (C) is active while institutional constraint (D) is absent or too weak to match it. Third, a structurally distinct second failure mode, high-D regulatory collapse, occurs when D dominates without C: centralized top-down regulation without collective participation produces rigid, brittle institutions that cannot adapt. Ostrom's framework identifies both failure types but does not have a formal vocabulary for the distinction. The tholonic model provides it. Fourth, the tholonic balance score $B$ provides a continuous governance health metric that extends Ostrom's binary principle-presence assessment to a graded scalar, enabling differentiated predictions about partial institutions.
+
+Illustrative B-scores are computed for four cases drawn from Ostrom's documented case studies: Törbel, Switzerland (near-complete institutional balance, $B \approx 100$); Alanya, Turkey (above-threshold partial balance, $B \approx 67$); open-access fishery collapse (C-dominant failure, $B \to 0$); and Atlantic groundfish regulatory failure (D-dominant failure, $B \to 0$ via the opposite imbalance). Ostrom's framework predicts that all three non-ideal cases are problematic; the tholonic model additionally predicts that the C-dominant and D-dominant failures will produce structurally different collapse patterns with different time profiles and different intervention requirements. Three falsifiable predictions are stated.
+
+---
+
+## 1. Introduction
+
+**What this paper provides.** A systematic mapping of Ostrom's eight design principles onto tholonic D and C roles; a formal account of why the tragedy of the commons is a C-dominant partial tholon; the identification of a structurally distinct D-dominant failure mode not captured by Ostrom's framework; illustrative B-scores for four documented case studies; three falsifiable predictions that distinguish the tholonic account from Ostrom's framework; and a connection to the TVPCI supply chain transparency scoring model developed in earlier papers of this series.
+
+**What this paper does not provide.** Original field data on CPR governance; a comprehensive survey of Ostrom's complete body of work; a claim that Ostrom was unaware of the underlying structural logic (she may well have intuited elements of it); or primary statistical analysis of Ostrom's case study database. The B-scores computed here are illustrative, derived from the qualitative principle-presence assessments in Ostrom's own published case studies, not from independent measurement.
+
+**Organization.** §2 introduces Ostrom's framework and the CPR problem. §3 briefly recaps the tholonic N-D-C model. §4 maps the CPR governance system onto the tholonic framework and classifies the eight principles. §5 analyzes four case studies with B-scores. §6 identifies what the tholonic model adds beyond Ostrom's framework. §7 states falsifiable predictions. §8 connects the governance analysis to the project's supply chain work. §9 concludes.
+
+---
+
+## 2. Ostrom's Framework: Common-Pool Resources and the Design Principles
+
+### 2.1 The Common-Pool Resource Problem
+
+A common-pool resource (CPR) is a resource system characterized by two properties [Ost90]:
+
+**Subtractability**: each unit consumed by one user reduces the stock available to others. A fish caught is not available to the next fisher; water extracted from an aquifer lowers the water table for all users; a pasture grazed reduces the forage available next season.
+
+**Difficulty of exclusion**: it is costly or impossible to prevent potential users from accessing the resource. Open fisheries, shared aquifers, common pastures, and unenclosed forests are all CPRs: barriers to entry are high to enforce or absent entirely.
+
+This combination produces the structural problem that Garrett Hardin [Har68] formalized as the "tragedy of the commons": if each individual user acts rationally to maximize personal extraction, the cumulative effect depletes the resource to the detriment of all. The dominant theoretical prescriptions were either privatize the resource (align individual incentives with conservation through property rights) or regulate it through central state authority.
+
+Ostrom's contribution was to show, through decades of field research spanning more than fifty CPR case studies across six continents, that a third path existed and had been practiced successfully for centuries in many communities without awareness of either prescription [Ost90]. Self-governing communities regularly achieve sustainable resource management through locally evolved institutional rules, and the institutions that succeed share a recognizable structural pattern.
+
+### 2.2 The Eight Design Principles
+
+From the comparative analysis of successful and failed CPR governance institutions, Ostrom identified eight design principles (she later refined these with colleagues, but the eight-principle formulation from *Governing the Commons* [Ost90] is the canonical statement):
+
+**Principle 1: Clearly defined boundaries.** Individuals or households who have rights to withdraw resource units from the CPR must be clearly defined, as must the boundaries of the CPR itself.
+
+**Principle 2: Congruence between rules and local conditions.** Appropriation and provision rules are matched to local conditions, including the relevant attributes of the resource system and the community.
+
+**Principle 3: Collective-choice arrangements.** Most individuals affected by the operational rules can participate in modifying those rules.
+
+**Principle 4: Monitoring.** Monitors who actively audit CPR conditions and appropriator behavior are present, and are accountable to the appropriators or are themselves appropriators.
+
+**Principle 5: Graduated sanctions.** Appropriators who violate operational rules are likely to receive graduated sanctions (ranging from very low to very high, depending on the seriousness and context of the offense) from other appropriators, from officials accountable to these appropriators, or from both.
+
+**Principle 6: Conflict-resolution mechanisms.** Appropriators and their officials have rapid access to low-cost local arenas to resolve conflicts among appropriators or between appropriators and officials.
+
+**Principle 7: Minimal recognition of rights to organize.** The rights of appropriators to devise their own institutions are not challenged by external governmental authorities.
+
+**Principle 8: Nested enterprises** (for systems embedded in larger systems). Appropriation, provision, monitoring, enforcement, conflict resolution, and governance activities are organized in multiple layers of nested enterprises.
+
+### 2.3 The Evidential Weight of These Principles
+
+A crucial point for the tholonic analysis is that these principles were not derived from theory and then tested against data. They were extracted from the data first, through systematic comparison of case studies, and the theoretical interpretation followed. Their empirical provenance means that any structural model that can account for why these eight and not some other set should be considered structurally significant, not merely descriptive.
+
+### 2.4 Polycentric Governance
+
+Beyond the eight principles, Ostrom developed the concept of polycentric governance [Ost10]: the observation that large-scale CPR systems are most reliably managed by multiple overlapping centers of decision-making authority at different scales, each with jurisdiction appropriate to the scale of the resource dynamics it governs. This is not a normative prescription but an empirical regularity: monocentric governance, whether private or governmental, consistently underperforms polycentric governance for CPRs at regional and global scales.
+
+---
+
+## 3. The Tholonic N-D-C Framework
+
+The tholonic model is developed in full in papers 1 through 3 of this series [Mil26a, Mil26b, Mil26c]. The minimal recap required here is as follows.
+
+A *tholon* is any stable, self-sustaining structure simultaneously instantiating three functional roles. **N (Negotiation)** is the emergent stable equilibrium: the coherent state that persists as a consequence of D and C remaining in approximate balance. **D (Definition)** is the constraining apparatus: all mechanisms that limit, bound, specify, and filter. D is internally focused. **C (Contribution)** is the integrating-expressive apparatus: all mechanisms that generate, connect, and produce output. C is externally focused.
+
+A *partial tholon* realizes only one or two of these roles and is structurally unstable. D-dominant systems become rigid and brittle. C-dominant systems dissipate without coherence. The balance score is:
+
+$$B(D,C) = \frac{2 \cdot \min(D,C)}{D + C} \cdot 100$$
+
+The stability threshold is $B = 61.8$ ($1/\varphi$, where $\varphi$ is the golden ratio). Below this threshold, the N-state is structurally fragile. The relation between N, D, and C is recursive: a parent N differentiates into D and C, which negotiate to produce a child N, which becomes the parent N of the next level.
+
+---
+
+## 4. Mapping Ostrom onto the Tholonic Framework
+
+### 4.1 The CPR System as a Tholon
+
+The CPR governance system maps onto the tholonic framework at two levels simultaneously.
+
+**Level 1: The resource.** The resource system itself (the fishery, the aquifer, the alpine meadow) is the N-state at the ecological level. It is the stable, self-sustaining state that the governance institution exists to maintain. The resource's D component is its natural regeneration rate and ecological constraints; its C component is the harvest and use flows that human communities extract from it. A sustainable resource is one where $D \approx C$: extraction approximately matches regeneration. Ostrom calls this the "sustainable yield" condition; the tholonic model formalizes it as ecological N-balance.
+
+**Level 2: The governance institution.** The institution itself is a tholon whose N-state is the stable governance configuration (the set of rules that is actually followed, respected, and enforced over time). Its D component is all the institutional mechanisms that constrain and define extraction (boundary rules, provision rules, monitoring, sanctions, conflict resolution). Its C component is all the institutional mechanisms that integrate participation and connect the institution to its environment (collective choice, external recognition, nested enterprises).
+
+![N-D-C triangle diagram showing the CPR governance tholon: N at top as the stable governance configuration and sustainable resource, D lower-right as institutional constraints and boundary rules, C lower-left as collective participation and integrative mechanisms.](/home/jw/src/tv/docnav/Research/papers/17_ostrom-tholonic-governance/figures/17_cpr-tholon-triangle.png)
+
+The two levels are coupled. The governance institution (Level 2) exists to maintain the resource (Level 1). If the governance institution achieves N-balance (the rules are followed, respected, and adaptive), the resource level also tends toward N-balance (sustainable yield). If the governance institution collapses into a partial tholon, the resource collapses in a predictable direction depending on which component (D or C) is missing.
+
+### 4.2 D-Type and C-Type Principles
+
+The eight design principles divide cleanly by tholonic role:
+
+**D-type principles (constraining apparatus):**
+
+- *Principle 1 (Defined boundaries):* definitional by construction. It specifies who is and is not inside the resource system and the institution. Establishing identity and limits is the primary D function.
+- *Principle 2 (Rules match local conditions):* the specification of what rules apply under what local constraints. Rule specificity is a D function.
+- *Principle 4 (Monitoring):* the measurement and enforcement of compliance with rules. Monitoring is the operational expression of the constraining apparatus: it makes rules real rather than nominal.
+- *Principle 5 (Graduated sanctions):* the enforcement mechanism that gives consequences to rule violation. Sanctions are D's teeth.
+- *Principle 6 (Conflict resolution):* mechanisms that resolve disputes about rule interpretation and application. Conflict resolution maintains D-coherence: it ensures that the constraining apparatus does not fragment into competing claims.
+
+**C-type principles (integrating-participatory apparatus):**
+
+- *Principle 3 (Collective-choice arrangements):* the mechanism by which those affected by rules participate in modifying them. Collective choice is integrative: it connects the lived experience of resource users (C-signals from the resource level) to the rule structure (D). Without this C principle, D becomes rigid.
+- *Principle 7 (External recognition of rights):* the connection of the institution to the larger governance environment. External recognition is the outward-facing, integrative function that embeds the local institution within the systems around it. Without this, even a well-balanced local institution is fragile to external disruption.
+- *Principle 8 (Nested enterprises):* the hierarchical structure of governance at multiple scales. Nesting is the explicit C-D scaling mechanism: it ensures that C flows at the local level connect to D structures at the regional level, and so on. This is the tholonic recursive hierarchy stated as a governance principle.
+
+![Grouped bar chart showing the eight design principles classified by D or C role, with illustrative presence scores for four case studies: Törbel Switzerland, Alanya Turkey, open-access failure, and D-dominant regulatory failure.](/home/jw/src/tv/docnav/Research/papers/17_ostrom-tholonic-governance/figures/17_principles-classification.png)
+
+### 4.3 The Tragedy of the Commons as C-Dominant Partial Tholon
+
+Hardin's tragedy scenario [Har68] describes an institution with zero D and non-zero C. Every individual exercises their capacity to extract (C-behavior: contribution of individual extraction to the collective pool, but from the institution's perspective, pure C-runaway without constraint). No rules define who may extract, in what quantity, with what monitoring or sanction. The institution has no D apparatus at all.
+
+In tholonic terms this is a pure C-dominant partial tholon: $D \approx 0$, $C > 0$. The balance score is $B \to 0$. The N-state (sustainable resource management) is impossible because N cannot form without D. Resource collapse is not a failure of individual rationality; it is the structural consequence of attempting to maintain N with only one of its two constitutive components.
+
+Ostrom's empirical correction to Hardin, that communities often develop D structures spontaneously to prevent this collapse, is the tholonic claim that systems under pressure to maintain N tend toward D-C balance. The community converges on the governance institution not because any individual chooses the institution over extraction, but because the structural attractor of a system under N-pressure is balance, not either extreme.
+
+### 4.4 The D-Dominant Failure Mode: Regulatory Brittleness
+
+Ostrom's framework identifies the tragedy of the commons (C-dominant) as the primary failure mode. It does not provide an equally formal account of the opposite failure: D-dominant governance collapse. The tholonic model predicts this failure mode as clearly as the C-dominant one, and it has a different structural profile.
+
+A D-dominant governance institution is one where boundary rules, monitoring, and sanctions are strong and centralized, but collective-choice arrangements and external integration are absent or suppressed. Top-down regulatory management of fisheries by national governments exemplifies this: the D apparatus (quotas, licensing, patrol) is present and formally rigorous, but Principle 3 (collective choice) and Principle 8 (nested enterprises connecting local knowledge to regulatory design) are absent.
+
+The tholonic prediction for D-dominant partial tholons is rigidity and brittleness. The institution cannot adapt to changing conditions because there is no C mechanism (collective participation) through which new information flows from resource users to rule-makers. The rules become outdated relative to the resource state; the institution defends outdated rules with increasing force; and when the mismatch between rules and reality becomes critical, the institution collapses suddenly rather than adapting gradually.
+
+The Atlantic groundfish (cod) collapse of the early 1990s is a documented case of precisely this pattern. Canadian and U.S. federal fisheries management had strong D (quotas, monitoring, enforcement) but suppressed local collective-choice mechanisms (Principle 3) and operated at a single centralized scale rather than through nested enterprises (Principle 8). Scientific assessments that underestimated the stock, combined with politically motivated quota decisions that overrode monitoring data, produced a D-dominant failure: the institution defended its quotas past the point at which adaptation was possible, and the fishery collapsed to near-zero within three years.
+
+---
+
+## 5. Case Studies with B-Score Analysis
+
+B-scores are computed by scoring each case study on the presence and quality of each principle (0 = absent, 0.5 = partially present, 1.0 = fully present), summing the D-type scores (max 5.0) and C-type scores (max 3.0), normalizing each to a 0-to-100 scale, and applying the balance formula. The qualitative assessments are drawn from Ostrom's documented case studies in *Governing the Commons* [Ost90] and subsequent work.
+
+$$D_{\text{norm}} = \frac{\sum \text{D principles scored}}{5} \times 100, \quad C_{\text{norm}} = \frac{\sum \text{C principles scored}}{3} \times 100$$
+
+$$B = \frac{2 \cdot \min(D_{\text{norm}}, C_{\text{norm}})}{D_{\text{norm}} + C_{\text{norm}}} \times 100$$
+
+### 5.1 Törbel, Switzerland (Alpine Meadow, Documented Since 1483)
+
+The Törbel village commons is one of Ostrom's most thoroughly documented long-run success cases [Ost90, Ch. 3]. The community has maintained alpine meadows, forests, and irrigation systems collectively for over five centuries through formal statutes (the earliest surviving document dates to 1483) and a village assembly that meets annually.
+
+**D principles:** Principle 1 (clearly defined boundaries, documented since 1483): 1.0. Principle 2 (rules match local conditions, including seasonal grazing calendars calibrated to snowpack): 1.0. Principle 4 (monitoring by elected guards): 1.0. Principle 5 (graduated fines for violations, documented in village records): 1.0. Principle 6 (village assembly as conflict resolution forum): 1.0. D-type sum: 5.0/5.0.
+
+**C principles:** Principle 3 (annual village assembly with all resident households): 1.0. Principle 7 (Swiss cantonal law recognizes village commons institutions): 1.0. Principle 8 (nested within cantonal and federal resource governance): 1.0. C-type sum: 3.0/3.0.
+
+$$D_{\text{norm}} = 100, \quad C_{\text{norm}} = 100, \quad B = 100$$
+
+This perfect B-score reflects an institution that has had five centuries to achieve full D-C integration. It is structurally coherent in every dimension the tholonic model identifies.
+
+### 5.2 Alanya, Turkey (Inshore Fishery, Self-Organized from the 1970s)
+
+The Alanya fishery is a case Ostrom presents as a self-organized success that emerged within a generation [Ost90, Ch. 3]. Turkish inshore fishers developed a lottery system for rotating fishing spots, eliminating competition and overfishing. The institution is genuine and has functioned for decades.
+
+**D principles:** Principle 1 (spot boundaries clearly defined, lottery positions publicly registered): 1.0. Principle 2 (seasonal calendar matched to fish migration): 1.0. Principle 4 (mutual monitoring, each fisher observes others at adjacent spots): 1.0. Principle 5 (social sanction and local fine system): 0.5 (informal rather than formalized). Principle 6 (local mediation through cooperative): 1.0. D-type sum: 4.5/5.0.
+
+**C principles:** Principle 3 (cooperative meetings with full membership): 1.0. Principle 7 (Turkish government has not formally recognized the local rules; legal status is ambiguous): 0.5. Principle 8 (no nested governance structure; single-level institution): 0.0. C-type sum: 1.5/3.0.
+
+$$D_{\text{norm}} = 90, \quad C_{\text{norm}} = 50, \quad B = \frac{2 \times 50}{90 + 50} \times 100 = 71.4$$
+
+The B-score of 71.4 is above the $1/\varphi$ threshold of 61.8, consistent with the institution's documented sustainability. But the C-deficit is visible: weak external recognition and no nested structure make the institution vulnerable to disruption by external authority or to scaling pressure. Ostrom notes exactly this: the Alanya system works well at small scale but has not adapted successfully to regional fisheries management.
+
+### 5.3 Open-Access Fishery (C-Dominant Failure)
+
+Ostrom documents multiple pre-institutional or failed-institutional cases that approximate open access: no boundary rules, no monitoring, no sanctions. The Turkish inshore fisheries before Alanya developed its system serve as a reference [Ost90].
+
+**D principles:** all effectively absent: no defined boundaries (1: 0.0), no locally matched rules (2: 0.0), no monitoring system (4: 0.0), no sanctions (5: 0.0), no conflict resolution (6: 0.0). D-type sum: 0.0/5.0.
+
+**C principles:** no formal collective-choice mechanism (3: 0.0), no external recognition (7: 0.0), no nested structure (8: 0.0). C-type sum: 0.0/3.0.
+
+With both D and C at zero, the B-score formula is indeterminate (0/0). In tholonic terms this represents a pre-institutional state: there is no governance tholon yet. Individual extraction (ecological C) proceeds without any governance D. The resource experiences C-dominant pressure without any institutional N-formation. The trajectory is toward depletion unless an institutional tholon self-organizes.
+
+For comparison purposes: a minimal-D open access case (one partial principle, no C) gives $D_{\text{norm}} = 10$, $C_{\text{norm}} = 0$, $B = 0$, still well below threshold.
+
+### 5.4 Atlantic Groundfish Regulatory Failure (D-Dominant)
+
+The Canadian and U.S. Atlantic groundfish (cod) collapse of 1992-1994 is a documented case of centralized D-dominant governance failure. Federal quota management had strong formal D but effectively excluded local user participation and operated at a single national scale.
+
+**D principles:** Principle 1 (licensing boundaries defined): 1.0. Principle 2 (quotas set by federal scientists, partly matched to conditions but miscalibrated due to data inadequacy): 0.5. Principle 4 (monitoring by federal observers): 1.0. Principle 5 (license suspension and fines): 1.0. Principle 6 (federal administrative courts): 0.5. D-type sum: 4.0/5.0.
+
+**C principles:** Principle 3 (collective-choice: fisher advisory committees existed but were consistently overridden; effectively 0.0 real influence): 0.0. Principle 7 (external recognition: the institution was the state, so this principle is vacuously met but not meaningfully applicable): 0.5. Principle 8 (nested enterprises: no nested local-regional-national structure; monocentric federal management): 0.0. C-type sum: 0.5/3.0.
+
+$$D_{\text{norm}} = 80, \quad C_{\text{norm}} = 17, \quad B = \frac{2 \times 17}{80 + 17} \times 100 = 35.1$$
+
+This B-score of 35.1, well below the 61.8 threshold, reflects a D-dominant partial tholon. The institution had the structural properties of rigidity: it maintained quotas that its own scientists were questioning, overrode local knowledge about the declining state of the stock, and collapsed when the mismatch between its rules and reality became impossible to ignore. The collapse was sudden precisely because D-dominant systems do not adapt gradually; they resist until structural failure.
+
+![B-score comparison chart for the four case studies, showing Törbel at B=100, Alanya at B=71.4, open-access at B=0, and Atlantic groundfish at B=35, with the stability threshold at 61.8 marked.](/home/jw/src/tv/docnav/Research/papers/17_ostrom-tholonic-governance/figures/17_bscore-cases.png)
+
+---
+
+## 6. What the Tholonic Model Adds
+
+### 6.1 From Binary Assessment to Continuous Score
+
+Ostrom's framework assesses principle presence as binary: a principle is either present (institutional success more likely) or absent (failure more likely). Real governance institutions are almost never fully described by this binary; principles are typically partially present, partially enforced, or present in form but not in function.
+
+The tholonic B-score provides a continuous metric. Alanya's B of 71.4 is meaningfully different from Törbel's B of 100: it quantifies the gap and identifies specifically which dimension (C-deficit from weak external recognition and no nesting) accounts for it. This is not merely a refinement in measurement precision; it enables differentiated intervention targeting. An institution with $B = 70$ from D-deficit needs different interventions than one with $B = 70$ from C-deficit, even though both are above the threshold and both are technically "sustainable."
+
+### 6.2 Two Structurally Distinct Failure Modes
+
+Ostrom's framework has one primary failure mode: absence of sufficient design principles. The tholonic model identifies two structurally distinct failure modes with different profiles:
+
+**C-dominant failure (tragedy of the commons):** $D \approx 0$, $C > 0$. Resource is extracted without constraint. Collapse is typically gradual and competitive: many small actors each extracting more than their proportional share, with no mechanism for coordination. The resource depletes steadily. Intervention requires D-construction: boundary rules, monitoring, and sanctions.
+
+**D-dominant failure (regulatory brittleness):** $D > 0$, $C \approx 0$. Rules are enforced without participation. Collapse is typically sudden and catastrophic: the institution holds its position until reality overruns it. Intervention requires C-construction: collective choice mechanisms, external legitimacy, and nested scales. Paradoxically, this failure mode is harder to prevent because it looks like success (compliance is maintained, rules are enforced) until near the point of collapse.
+
+The Atlantic groundfish case and Alanya's future vulnerability are both D-dominant risks. Ostrom notes both but has no formal basis for distinguishing them from C-dominant risks. The tholonic model does.
+
+### 6.3 Cross-Scale Propagation
+
+Because the tholonic model is recursive, a D-C imbalance at one level propagates upward and downward through the governance hierarchy. An institution that is D-dominant at the local level (Principle 3 absent: no collective choice) undermines the N-state at the regional level (Principle 8 absent: no nested integration), because the regional institution cannot receive C-signals from the local level. Ostrom's framework documents the nested enterprises principle (8) as important but does not model the mechanism by which single-level failure propagates across levels. The tholonic recursive hierarchy makes this mechanism explicit: a partial tholon at level $k$ deprives level $k+1$ of the child N it needs to form its own stable state.
+
+---
+
+## 7. Falsifiable Predictions
+
+The tholonic account of CPR governance generates three predictions that are distinguishable from what Ostrom's framework predicts:
+
+**Prediction 1: Two collapse signatures, not one.** C-dominant governance failures (B near zero with D near zero) should show a different temporal and distributional pattern than D-dominant governance failures (B near zero with C near zero). C-dominant collapses should be gradual, distributed across many small-scale actors, with continuous resource decline. D-dominant collapses should be sudden, concentrated in a short time window, and preceded by official reassurances of adequate resource levels. This prediction can be tested against the historical record of documented CPR collapses.
+
+**Prediction 2: Continuous B-score predicts graded sustainability.** Across Ostrom's documented case studies, institutions with higher B-scores (regardless of whether the deficit is in D or C) should show longer documented lifespans, lower frequency of crisis episodes, and more rapid recovery from external disturbances. Institutions with B near 61.8 (the boundary zone) should show unstable oscillation: periods of function followed by crises, rather than either stable operation or collapse. This prediction is testable against the Ostrom case study archive.
+
+**Prediction 3: D-C direction of deficit predicts intervention effectiveness.** For institutions below the B-score threshold, interventions that target the deficit side (C-deficit institutions benefit from collective-choice investment; D-deficit institutions benefit from monitoring and sanctions investment) should have higher success rates than interventions that target the non-deficit side. This is a specific prediction that goes against the common assumption that all Ostrom principles are equally important in all contexts.
+
+---
+
+## 8. Connection to the TVPCI Supply Chain Framework
+
+The tholonic governance analysis developed here is structurally continuous with the supply chain transparency work in papers 2 and 4 of this series [Mil26b, Mil26d].
+
+A supply chain phase is a governance institution of a specific type: one where the CPR is the production input (mineral stock, biomass, water), the extractors are the supply chain actors at that phase, and the governance institution is the combination of regulatory framework (D) and industry cooperative mechanisms (C) that governs extraction and processing at that phase.
+
+The TVPCI transparency score [Mil26b] measures the visibility of the custodial flow: how observable is the D-C interaction at each phase? Phases with high TVPCI-D (well-documented regulatory frameworks) and low TVPCI-C (poorly documented cooperative participation) are precisely D-dominant partial tholons in the Ostrom sense: they are brittle to regulatory change and resistant to adaptive pressure from downstream actors. The Ostrom framework and the tholonic supply chain analysis converge on the same diagnostic: governance health requires balance between the constraining apparatus and the participatory apparatus at every phase. The supply chain fails the same way a CPR fails, for the same structural reason.
+
+The connection also runs in the other direction: Ostrom's eight principles, translated into supply chain language, provide a practical checklist for diagnosing governance health at each supply chain phase. A phase with clearly defined custody boundaries (Principle 1), processing standards matched to local conditions (Principle 2), certified monitoring (Principle 4), graduated compliance enforcement (Principle 5), dispute arbitration (Principle 6), producer representation in standard-setting (Principle 3), regulatory recognition of cooperative norms (Principle 7), and integration into multi-level certification systems (Principle 8) scores $B = 100$. Most commodity supply chain phases score far below that, and the tholonic model specifies exactly where the deficits lie and what their structural consequences are.
+
+---
+
+## 9. Conclusions
+
+Elinor Ostrom's eight design principles for sustainable CPR governance are not an arbitrary empirical list. They are the observational fingerprint of a governance tholon: the structural conditions under which a self-governing institution achieves and maintains the D-C balance required to produce a stable N-state (sustainable resource management). The five D-type principles constitute the constraining apparatus of the institution; the three C-type principles constitute its integrating and participatory apparatus. The tragedy of the commons is a C-dominant partial tholon; D-dominant regulatory collapse is its structural mirror image.
+
+The tholonic model adds four things to Ostrom's framework: a continuous balance score ($B$) that extends her binary principle-presence assessment to a graded scalar; a formal account of two structurally distinct failure modes with different temporal signatures; a mechanism for cross-scale propagation through the recursive tholonic hierarchy; and a direct connection to the supply chain governance analysis developed elsewhere in this series.
+
+Ostrom and the tholonic model are not competing frameworks. They are complementary: Ostrom provides the empirical phenomenology of governance health and failure; the tholonic model provides the structural account of why those phenomena take the forms they do. Together they constitute a more powerful diagnostic and predictive framework than either provides alone.
+
+---
+
+## References
+
+[Ost90] Ostrom, E. *Governing the Commons: The Evolution of Institutions for Collective Action.* Cambridge University Press, 1990.
+
+[Ost05] Ostrom, E. *Understanding Institutional Diversity.* Princeton University Press, 2005.
+
+[Ost10] Ostrom, E. "Beyond Markets and States: Polycentric Governance of Complex Economic Systems." *American Economic Review* 100:3 (2010), 641-672. (Nobel Prize lecture.)
+
+[OstGar93] Ostrom, E., Gardner, R., and Walker, J. *Rules, Games, and Common-Pool Resources.* University of Michigan Press, 1993.
+
+[Har68] Hardin, G. "The Tragedy of the Commons." *Science* 162:3859 (1968), 1243-1248.
+
+[Dob14] Dietz, T., Ostrom, E., and Stern, P. C. "The Struggle to Govern the Commons." *Science* 302:5652 (2003), 1907-1912.
+
+[Mil26a] Milton, J. W. *Recursive Tholonic Five Constants.* Clarity Coalition, paper 1, 2026.
+
+[Mil26b] Milton, J. W. *Supply Chain Transparency and the TVPCI.* Clarity Coalition, paper 2, 2026.
+
+[Mil26c] Milton, J. W. *Minimal Recursive Triadic Framework.* Clarity Coalition, paper 3, 2026.
+
+[Mil26d] Milton, J. W. *Game-Theoretic Triadic Balance.* Clarity Coalition, paper 4, 2026.
+
+[Mil26e] Milton, J. W. *Tholonic N-D-C Structure and Its Philosophical Predecessors: Spinoza and Leibniz.* Clarity Coalition, paper 16, 2026.
+
+[Cox10] Cox, M., Arnold, G., and Villamayor Tomás, S. "A Review of Design Principles for Community-Based Natural Resource Management." *Ecology and Society* 15:4 (2010), article 38.
+
+[Rod20] Rodríguez-Meza, J. *The Eight Ostrom Principles in Practice: Cross-Country Evidence.* Working paper, 2020.
