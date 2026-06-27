@@ -68,7 +68,7 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 
 **File:** `.cursor/skills/create-research-paper/SKILL.md`
 
-**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Steps 7–8 require in-series citations to link to direct-download PDF URLs from `docnav/Research/papers/github_pdf_urls.md`. Includes a figure generation step (Step 9) covering when figures are required, naming conventions, style rules (white background, canonical N/D/C colors, correct triangle orientation), and figure types by section. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
+**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Steps 7–8 require in-series citations to link to direct-download PDF URLs from `docnav/Research/papers/github_pdf_urls.md`. References entries must use visible URLs on separate lines for PDF/print (`.cursor/rules/research-paper-pdf.mdc`). Includes a figure generation step (Step 9) covering when figures are required, naming conventions, style rules (white background, canonical N/D/C colors, correct triangle orientation), and figure types by section. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
 
 **When to use it:** Whenever the user asks to "create a paper", "write a paper", "make this a paper", or turn a notes or discovery file into a formal research paper in the series.
 
@@ -82,7 +82,7 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 
 **File:** `.cursor/skills/research-paper-latex/SKILL.md`
 
-**What it does:** Converts a companion research paper from Markdown (`docnav/Research/papers/<n>_<slug>.md`) to the **same artifact pattern as papers 1 to 5**: canonical LaTeX under `<n>_<slug>/` plus a **built PDF** and usual LaTeX sidecars. Flow is **Pandoc** to raw standalone `.tex`, **`scripts/pandoc_paper_postprocess.py`** for preprint-style layout (title page Keywords line) and headings, then **`scripts/research_paper_pdflatex.sh`** (two-pass **`pdflatex`**). Markdown in-series links should use URLs from `github_pdf_urls.md` before conversion. Without **`pdflatex`** on PATH, only **`.tex`** exists until the user installs TeX and runs the script.
+**What it does:** Converts a companion research paper from Markdown (`docnav/Research/papers/<n>_<slug>.md`) to the **same artifact pattern as papers 1 to 5**: canonical LaTeX under `<n>_<slug>/` plus a **built PDF** and usual LaTeX sidecars. Flow is **Pandoc** to raw standalone `.tex`, **`scripts/pandoc_paper_postprocess.py`** for preprint-style layout (title page Keywords line) and headings, then **`scripts/research_paper_pdflatex.sh`** (two-pass **`pdflatex`**). Markdown in-series links should use URLs from `github_pdf_urls.md` before conversion. **Before building:** in-series References must use visible URLs on separate lines (`.cursor/rules/research-paper-pdf.mdc`). Without **`pdflatex`** on PATH, only **`.tex`** exists until the user installs TeX and runs the script.
 
 **When to use it:** Whenever you ask to turn paper 6 (or a similar numbered paper) from `.md` into **`.tex` and `.pdf`**, rebuild paper 6 end to end, or match the repo’s existing paper folder layout.
 
@@ -277,6 +277,13 @@ Requires every `project_context.html` to contain a Phase Intervention Worksheet 
 
 Enforces that `docs/skills.md` is updated whenever any skill under `.cursor/skills/` is added, changed, or deleted. See the rule file for exact obligations.
 
+### `research-paper-pdf`
+
+**File:** `.cursor/rules/research-paper-pdf.mdc`
+**Triggers on:** `docnav/Research/papers/**/*.md`, `docnav/Research/papers/**/*.tex`, `scripts/pandoc_paper_postprocess.py`, `scripts/research_paper_pdflatex.sh`
+
+Mandatory PDF build rules for research papers. Before Pandoc or `pdflatex`, every in-series References entry must include the full direct-download URL as visible plain text on its own line (angle-bracket form). Hyperlink-only References block PDF completion. Includes pre-build gate checklist and post-build verification. Works with `xurl` in the postprocessor for URL wrapping.
+
 ### `research-paper-references`
 
 **File:** `.cursor/rules/research-paper-references.mdc`
@@ -285,6 +292,8 @@ Enforces that `docs/skills.md` is updated whenever any skill under `.cursor/skil
 Governs in-series citation URLs for research papers. Key rules:
 
 - `docnav/Research/papers/github_pdf_urls.md` is the single source of truth for GitHub PDF URLs.
+- **Every** mention of an in-series paper number must be a hyperlink. No exceptions: abstract, prose, proposition labels, parentheticals.
+- **References entries** must include the full direct-download URL as visible plain text (not only as hyperlink anchor text), so printed PDFs and text exports remain usable.
 - Link both citation keys (`[Mil26a]`) and plain prose (`paper 3`, `Paper 1 of this series`) to the **Direct download** URL (`github.com/.../raw/main/...`).
 - Do not use `raw.githubusercontent.com` (LFS pointer issue).
 - Citation keys are per-file, not global; match URLs to each file's References mapping.
@@ -301,6 +310,13 @@ Governs image path conventions for research papers. Key rules:
 - `scripts/pandoc_paper_postprocess.py` automatically rewrites absolute image paths to paths relative to the output `.tex` directory before writing the final `.tex`, so `pdflatex` (which runs from inside the paper folder) finds the figures correctly.
 - Paper-specific figures live in `docnav/Research/papers/<N>_<slug>/figures/`. Shared figures live in `docnav/Research/papers/figures/`.
 - Naming convention: `<N>_<short-descriptor>.png`.
+
+### `funding-contact`
+
+**File:** `.cursor/rules/funding-contact.mdc`
+**Triggers on:** `docs/funding/**`
+
+Specifies the canonical contact email for all funding proposals and compute access letters. When editing any file under `docs/funding/`, replace `[email]` or any placeholder with `jeffmilton@claritycoalition.net`. No other email address should appear in funding documents.
 
 ---
 

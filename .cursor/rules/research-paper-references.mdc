@@ -22,6 +22,8 @@ Do **not** invent or guess URLs. Copy them from `github_pdf_urls.md` or follow i
 
 ## When to link
 
+**Every** mention of an in-series paper number must be a hyperlink. There are no exceptions: not in the abstract, not in section headings, not in proposition labels, not in parenthetical asides, not in the References section. If the words "Paper N" or "Papers N and M" appear without a surrounding `[...](<url>)`, the file does not comply with this rule.
+
 Link **both** citation keys and plain prose when referring to another paper in the series:
 
 | In text | Markdown form |
@@ -29,9 +31,32 @@ Link **both** citation keys and plain prose when referring to another paper in t
 | `[Mil26a]` citation key | `[Mil26a](<direct-download-url>)` |
 | `paper 3`, `Paper 3`, `papers 1 through 3` | `[paper 3](<url>)`, `[Paper 3](<url>)`, or per-number links for ranges |
 | `Paper 3 of this series` | `[Paper 3 of this series](<url>)` |
-| References line ending in `(Paper N of this series.)` | Link the paper phrase: `([Paper N of this series](<url>).)` |
+| References line ending in `(Paper N of this series.)` | Include paper number in prose and append the full URL as visible plain text on the same line |
+| References entry for in-series paper | Citation key plus bibliographic line plus **visible** direct-download URL (plain text, not hidden behind link anchor text) |
+
+### References section format (required for print and plain text)
+
+Hyperlink-only references fail in printed PDFs and text exports: anchor text such as "paper 1" prints with no URL. Every in-series References entry must therefore include the full direct-download URL as **visible plain text**. Put the URL on its own line after the bibliographic line so printed PDFs can wrap long URLs cleanly:
+
+```
+[Mil26a] Milton, J. W. *Title.* Clarity Coalition, paper 1 in this series, 2026.
+
+<https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
+```
+
+Prose cross-references in the body may remain as `[Paper 1](<url>)` hyperlinks for digital reading. The References section is where print readers resolve what each paper number means.
+
+**PDF build gate:** When creating a PDF, this format is mandatory. Do not run Pandoc or `research_paper_pdflatex.sh` until every in-series References entry passes. See `.cursor/rules/research-paper-pdf.mdc`.
 
 External references (journals, books, standards) keep their normal citation format. Only **in-series** Milton / Clarity Coalition papers use URLs from `github_pdf_urls.md`.
+
+### Quick-reference URL pattern
+
+```
+https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/<N>_<slug>/<N>_<slug>.pdf
+```
+
+Copy the exact URL from `github_pdf_urls.md`; do not construct it by hand.
 
 ## Per-paper citation keys
 
@@ -51,5 +76,7 @@ After rebuilding PDFs locally: commit, `git push`, then run `./pushpng.sh` from 
 
 - [ ] Every in-series `[Mil…]` / `[M26…]` citation key in the `.md` links to the correct direct-download URL
 - [ ] Every plain `paper N` / `Paper N` cross-reference in prose links to the same URL
+- [ ] Every in-series References entry has a visible URL on its own line (angle-bracket form)
 - [ ] URLs match `docnav/Research/papers/github_pdf_urls.md` (not `raw.githubusercontent.com`)
 - [ ] New papers have an entry in `github_pdf_urls.md` before cross-references are written
+- [ ] PDF build blocked until References pass `.cursor/rules/research-paper-pdf.mdc` pre-build gate

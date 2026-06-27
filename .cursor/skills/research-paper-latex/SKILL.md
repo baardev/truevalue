@@ -11,9 +11,13 @@ The **intended outcome** matches papers **1 to 5**: under `<N>_<slug>/` you have
 
 Companion papers live as `docnav/Research/papers/<N>_<slug>.md`. The canonical build lives in `<N>_<slug>/<N>_<slug>.tex`.
 
-**In-series citation URLs:** Markdown sources should link cross-references to PDFs using direct-download URLs from `docnav/Research/papers/github_pdf_urls.md` (see `.cursor/rules/research-paper-references.mdc`). Pandoc converts those links to `\href{...}{...}` in the output `.tex`.
+**In-series citation URLs:** Markdown sources should link cross-references to PDFs using direct-download URLs from `docnav/Research/papers/github_pdf_urls.md` (see `.cursor/rules/research-paper-references.mdc`). Pandoc converts body hyperlinks to `\href{...}{...}` in the output `.tex`.
+
+**PDF References rule (mandatory):** Before building, every in-series References entry must include the full direct-download URL as **visible plain text** on its own line (angle-bracket form). Hyperlink-only References (`[Mil26a](url) ... [paper 1](url)`) are not acceptable: they vanish in print. See `.cursor/rules/research-paper-pdf.mdc`. Do not run `research_paper_pdflatex.sh` until the pre-build gate passes.
 
 ## Steps
+
+0. **Pre-build gate** (mandatory). Open the source `.md` References section and verify every in-series entry follows the print-safe format in `.cursor/rules/research-paper-pdf.mdc`. Fix the Markdown before Pandoc if any entry uses hyperlink-only URLs.
 
 1. **Pandoc** (standalone) from the `docnav/Research/papers` directory:
    ```bash
@@ -41,9 +45,12 @@ Companion papers live as `docnav/Research/papers/<N>_<slug>.md`. The canonical b
 
    **BibTeX:** papers that use **`natbib`** and a **`.bib`** file need **`bibtex <basename>`** between the first and second `pdflatex` pass (extend the script or run by hand for those papers). Paper 6 as converted from Markdown uses **inline / Pandoc-style references**, so two **`pdflatex`** passes alone are enough unless you add **`natbib`** and a **`.bib`** later.
 
+4. **Post-build check.** Open the generated PDF References section. Confirm each in-series entry shows the full URL as readable text, not only a hyperlink label. If URLs overflow the margin, ensure `xurl` is loaded (already in `pandoc_paper_postprocess.py`) and URLs are on separate lines in the `.md`.
+
 ## Requirements
 
 - Markdown must use `## Abstract` then `## 1. Introduction` (Pandoc pattern the script expects).
+- In-series References must use visible URLs on separate lines (`.cursor/rules/research-paper-pdf.mdc`). Hyperlink-only References block PDF completion.
 - Postprocessor is tuned for paper 6’s heading style; generalizing to other `.md` files may need regex updates in `scripts/pandoc_paper_postprocess.py`.
 
 ## Files touched

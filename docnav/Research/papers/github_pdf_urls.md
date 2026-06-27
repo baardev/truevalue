@@ -137,3 +137,10 @@ After rebuilding PDFs locally: commit, `git push`, then run `./pushpng.sh` from 
 
 - File page: https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/17_ostrom-tholonic-governance/17_ostrom-tholonic-governance.pdf
 - Direct download: https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/17_ostrom-tholonic-governance/17_ostrom-tholonic-governance.pdf
+
+## Paper 18
+
+**Title:** Transformer Architectures as Tholonic Instantiations: A Formal Role Assignment and Structural Derivation
+
+- File page: https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/18_ndc-transformer-role-assignment/18_ndc-transformer-role-assignment.pdf
+- Direct download: https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/18_ndc-transformer-role-assignment/18_ndc-transformer-role-assignment.pdf

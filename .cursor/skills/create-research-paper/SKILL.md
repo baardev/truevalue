@@ -91,15 +91,23 @@ End with an unnumbered references section using inline citation keys in `[AuthYY
 [AuthYY] Author, A. *Title.* Publisher, Year.
 ```
 
-**In-series paper URLs:** `docnav/Research/papers/github_pdf_urls.md` holds the canonical GitHub URLs for every paper PDF. When citing another paper in this series (in the References section or in prose), link citation keys and plain `paper N` / `Paper N` text to the **Direct download** URL from that file:
+**In-series paper URLs:** `docnav/Research/papers/github_pdf_urls.md` holds the canonical GitHub URLs for every paper PDF. When citing another paper in this series in **prose**, link `paper N` / `Paper N` text to the **Direct download** URL from that file.
+
+**References entries (PDF/print-safe, mandatory):** Each in-series References entry must name the paper number in plain prose and include the full URL as **visible text on its own line**. Do not use hyperlink-only References; they vanish when the PDF is printed. See `.cursor/rules/research-paper-pdf.mdc`.
 
 ```markdown
-[Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) Milton, J. W. ...
+[Mil26a] Milton, J. W. *Title.* Clarity Coalition, paper 1 in this series, 2026.
 
+<https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
+```
+
+Prose example:
+
+```markdown
 Prior work in [paper 3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) establishes ...
 ```
 
-Use `github.com/.../raw/main/...` only. Do not use `raw.githubusercontent.com`. When adding a new paper, add its URLs to `github_pdf_urls.md` first. See `.cursor/rules/research-paper-references.mdc` for the full convention.
+Use `github.com/.../raw/main/...` only. Do not use `raw.githubusercontent.com`. When adding a new paper, add its URLs to `github_pdf_urls.md` first. See `.cursor/rules/research-paper-references.mdc` for prose linking and `.cursor/rules/research-paper-pdf.mdc` for PDF References format.
 
 ## Step 8: Cross-references to other papers in the series
 
@@ -147,6 +155,8 @@ Absolute paths are required so the IDE Markdown preview renders the figure regar
 **Before building the PDF:** ensure every `figures/` reference in the Markdown resolves. The build script creates `<paper-dir>/figures -> ../figures` automatically when figures are in the shared pool; place paper-specific figures in `<N>_<slug>/figures/` directly.
 
 ## Step 10: Build LaTeX and PDF
+
+Run the pre-build gate in `.cursor/rules/research-paper-pdf.mdc` first. Do not build if any in-series References entry lacks a visible URL on its own line.
 
 After the Markdown is complete, run the full build pipeline (Pandoc → postprocessor → pdflatex). Always pass `--md` to the postprocessor so it reads the header fields automatically:
 
@@ -206,6 +216,7 @@ Do not manually edit `\date{}`, `\author{}`, or the Keywords line in the `.tex` 
 - [ ] Introduction contains "What this paper provides / does not provide / Organization"
 - [ ] References section present (even if minimal)
 - [ ] In-series citations (`[Mil…]`, `paper N`, `Paper N`) link to direct-download URLs from `github_pdf_urls.md`
+- [ ] In-series References entries use visible URLs on separate lines (`.cursor/rules/research-paper-pdf.mdc`)
 - [ ] No em dashes anywhere (use colons, commas, or new sentences)
 - [ ] Inline math uses `$...$`, display math uses `$$...$$`
 - [ ] Every quantitative claim has a supporting figure
