@@ -68,7 +68,7 @@ Both paths end with the same post-creation steps: homepage registration (via `ad
 
 **File:** `.cursor/skills/create-research-paper/SKILL.md`
 
-**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Steps 7–8 require in-series citations to link to direct-download PDF URLs from `docnav/Research/papers/github_pdf_urls.md`. References entries must use visible URLs on separate lines for PDF/print (`.cursor/rules/research-paper-pdf.mdc`). Includes a figure generation step (Step 9) covering when figures are required, naming conventions, style rules (white background, canonical N/D/C colors, correct triangle orientation), and figure types by section. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
+**What it does:** Scaffolds a new numbered research paper in `docnav/Research/papers/` with the canonical header (title, Author, Version, Date, Keywords), Abstract with `---` dividers, numbered body sections, and an Introduction with the standard "What this paper provides / does not provide / Organization" block. Determines the next available paper number, chooses a slug, and runs the pre-build checklist. Steps 7–8 require in-series citations to link to file page (blob) PDF URLs from `docnav/Research/papers/github_pdf_urls.md`. References entries must use visible URLs on separate lines for PDF/print (`.cursor/rules/research-paper-pdf.mdc`). Includes a figure generation step (Step 9) covering when figures are required, naming conventions, style rules (white background, canonical N/D/C colors, correct triangle orientation), and figure types by section. Delegates LaTeX and PDF generation to the `research-paper-latex` skill.
 
 **When to use it:** Whenever the user asks to "create a paper", "write a paper", "make this a paper", or turn a notes or discovery file into a formal research paper in the series.
 
@@ -282,7 +282,7 @@ Enforces that `docs/skills.md` is updated whenever any skill under `.cursor/skil
 **File:** `.cursor/rules/research-paper-pdf.mdc`
 **Triggers on:** `docnav/Research/papers/**/*.md`, `docnav/Research/papers/**/*.tex`, `scripts/pandoc_paper_postprocess.py`, `scripts/research_paper_pdflatex.sh`
 
-Mandatory PDF build rules for research papers. Before Pandoc or `pdflatex`, every in-series References entry must include the full direct-download URL as visible plain text on its own line (angle-bracket form). Hyperlink-only References block PDF completion. Includes pre-build gate checklist and post-build verification. Works with `xurl` in the postprocessor for URL wrapping.
+Mandatory PDF build rules for research papers. Before Pandoc or `pdflatex`, every in-series References entry must include the full file page (blob) URL as visible plain text on its own line (angle-bracket form). Hyperlink-only References block PDF completion. Includes pre-build gate checklist and post-build verification. Works with `xurl` in the postprocessor for URL wrapping.
 
 ### `research-paper-references`
 
@@ -293,8 +293,8 @@ Governs in-series citation URLs for research papers. Key rules:
 
 - `docnav/Research/papers/github_pdf_urls.md` is the single source of truth for GitHub PDF URLs.
 - **Every** mention of an in-series paper number must be a hyperlink. No exceptions: abstract, prose, proposition labels, parentheticals.
-- **References entries** must include the full direct-download URL as visible plain text (not only as hyperlink anchor text), so printed PDFs and text exports remain usable.
-- Link both citation keys (`[Mil26a]`) and plain prose (`paper 3`, `Paper 1 of this series`) to the **Direct download** URL (`github.com/.../raw/main/...`).
+- **References entries** must include the full file page (blob) URL as visible plain text (not only as hyperlink anchor text), so printed PDFs and text exports remain usable.
+- Link both citation keys (`[Mil26a]`) and plain prose (`paper 3`, `Paper 1 of this series`) to the **File page** URL (`github.com/.../blob/main/...`).
 - Do not use `raw.githubusercontent.com` (LFS pointer issue).
 - Citation keys are per-file, not global; match URLs to each file's References mapping.
 - Add new papers to `github_pdf_urls.md` before writing cross-references.

@@ -18,7 +18,7 @@ The tholonic triad assigns three functionally distinct roles (Negotiation $N$, D
 
 ## 1. Introduction
 
-Game theory models strategic interaction among agents with distinct objectives. A central question is how collective outcomes emerge from individual incentives, particularly when the number of agents is small and their interests are partially opposed. The triadic framework introduced by Milton [Mil24](https://tholonia.github.io/the-book/) and formalized in [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) posits that a three-role partition (a state $N$ under negotiation, a bounding force $D$ that constrains it, and an integrating force $C$ that extends it) is the minimal structure sufficient for convergent recursion toward nontrivial limits. The present paper asks: what does this system look like when recast as a game?
+Game theory models strategic interaction among agents with distinct objectives. A central question is how collective outcomes emerge from individual incentives, particularly when the number of agents is small and their interests are partially opposed. The triadic framework introduced by Milton [Mil24](https://tholonia.github.io/the-book/) and formalized in [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) posits that a three-role partition (a state $N$ under negotiation, a bounding force $D$ that constrains it, and an integrating force $C$ that extends it) is the minimal structure sufficient for convergent recursion toward nontrivial limits. The present paper asks: what does this system look like when recast as a game?
 
 The translation is natural. The two auxiliary variables $D$ and $C$ pull the state $N$ in opposite directions: $D$ contracts, $C$ expands. Their interaction can be modeled as a two-player alternating-move game in which each player selects a magnitude of influence at each stage, and the state $N$ evolves as the cumulative payoff. The balance condition, under which the system converges, becomes an equilibrium condition in the game.
 
@@ -26,11 +26,11 @@ The translation is natural. The two auxiliary variables $D$ and $C$ pull the sta
 
 1. A formal game-theoretic model of the tholonic triad as a two-player alternating-move game with an evolving payoff state.
 2. Identification of the triadic balance condition as a pure-strategy Nash equilibrium of the stage game.
-3. Game-theoretic reinterpretations of the diagonal-invariance and swap-symmetry theorems from [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) in terms of zero-sum and symmetric subgame structure.
+3. Game-theoretic reinterpretations of the diagonal-invariance and swap-symmetry theorems from [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) in terms of zero-sum and symmetric subgame structure.
 4. A mapping of the three traversal classes (Advancing, Self-redefined, Fixed) to distinct game-theoretic information structures.
 5. For each of the five documented branches, an explicit strategic interpretation of the players' actions.
 
-**What this paper does not provide.** New convergence proofs for the five branches (these are established in [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf)), or novel equilibrium existence results beyond those that follow from the existing recurrence structure. The contribution is the translation itself: a demonstration that the triadic system admits a coherent and non-trivial game-theoretic description.
+**What this paper does not provide.** New convergence proofs for the five branches (these are established in [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf)), or novel equilibrium existence results beyond those that follow from the existing recurrence structure. The contribution is the translation itself: a demonstration that the triadic system admits a coherent and non-trivial game-theoretic description.
 
 **Organization.** Section 2 defines the game model. Section 3 gives strategic interpretations of the three roles. Section 4 analyzes equilibrium. Section 5 maps traversal classes to game types. Section 6 discusses the five branches in strategic terms. Section 7 covers related work. Section 8 discusses scope and open questions. Section 9 concludes.
 
@@ -52,7 +52,7 @@ We consider a two-player alternating-move game $\mathcal{G}$ played over stages 
 
 $$N_{k+1} = f(N_k; D_k, C_k),$$
 
-where $f$ is a given update rule. The form of $f$ defines the game type. Following [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), we consider branches in which $f$ is one of:
+where $f$ is a given update rule. The form of $f$ defines the game type. Following [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), we consider branches in which $f$ is one of:
 
 $$f_{\pi/4}(N; D, C) = N - \frac{1}{D} + \frac{1}{C},$$
 
@@ -64,7 +64,7 @@ $$f_{\sqrt{2}}(N; D, C) = \frac{N + D/N}{C},$$
 
 $$f_{\ln 2}(N; D, C) = N + (-1)^k \frac{D}{k + C}.$$
 
-**Strategy spaces.** The strategy of each player is a rule for selecting $D_k$ (respectively $C_k$) at each stage, possibly depending on history. Three canonical strategy classes emerge, corresponding to the traversal classes of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf):
+**Strategy spaces.** The strategy of each player is a rule for selecting $D_k$ (respectively $C_k$) at each stage, possibly depending on history. Three canonical strategy classes emerge, corresponding to the traversal classes of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf):
 
 - **Advancing (Class A):** $D_{k+1} = D_k + \Delta_D$, $C_{k+1} = C_k + \Delta_C$ for fixed increments $\Delta_D, \Delta_C$. The players receive an exogenous parameter injection at each stage.
 - **Self-redefined (Class B):** $D_{k+1}$ and $C_{k+1}$ are functions of the previous tuple $(N_k, D_k, C_k)$ only. The players adapt their actions based on the evolving state.
@@ -108,7 +108,7 @@ $\mathcal{C}$ can be understood as a *maximizing* or *accumulating* player, exte
 
 ### 3.4 Irreducibility as Strategic Necessity
 
-Lemma 3.1 of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) (triadic irreducibility) acquires a game-theoretic interpretation: a single-player game with only a state variable produces either unbounded growth or trivial convergence. Two players with opposing incentives are the minimum structure for non-trivial equilibrium; the state $N$ is the arena in which their contest plays out. Fewer than three roles give either no competition (one player) or competition without a scoreboard (two players, no state). The triad as a two-player game with payoff state is thus the minimal strategic structure for convergent dynamics to a non-trivial limit.
+Lemma 3.1 of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) (triadic irreducibility) acquires a game-theoretic interpretation: a single-player game with only a state variable produces either unbounded growth or trivial convergence. Two players with opposing incentives are the minimum structure for non-trivial equilibrium; the state $N$ is the arena in which their contest plays out. Fewer than three roles give either no competition (one player) or competition without a scoreboard (two players, no state). The triad as a two-player game with payoff state is thus the minimal strategic structure for convergent dynamics to a non-trivial limit.
 
 ---
 
@@ -132,7 +132,7 @@ where the inequalities reflect the minimizing objective of $\mathcal{D}$ and the
 
 *Proof.* $\mathcal{D}$ chooses $D$ to minimize $N - 1/D + 1/C$; equivalently, to maximize $1/D$. Since $1/D$ is decreasing in $D$, $\mathcal{D}$ prefers larger $D$. $\mathcal{C}$ chooses $C$ to maximize $N - 1/D + 1/C$; equivalently, to maximize $1/C$, which is achieved for smaller $C$. With $D = C$, the terms cancel: $\Delta N = 0$. Neither player can achieve a net positive contribution unilaterally without the other's response. This is the unique symmetric equilibrium of the one-shot stage game. $\square$
 
-The diagonal-invariance theorem of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) (Proposition 6.2) states that $D = C$ yields no net state change; Proposition 4.2 shows this is not merely an algebraic identity but an equilibrium property.
+The diagonal-invariance theorem of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) (Proposition 6.2) states that $D = C$ yields no net state change; Proposition 4.2 shows this is not merely an algebraic identity but an equilibrium property.
 
 **Proposition 4.3** (Swap symmetry as zero-sum subgame). For the Class A update, let $\mathcal{G}_{(D_0, C_0)}$ denote the game initialized with $(D_0, C_0)$. Then
 
@@ -140,7 +140,7 @@ $$N_\infty^{\mathcal{G}_{(D_0, C_0)}} + N_\infty^{\mathcal{G}_{(C_0, D_0)}} = 2 
 
 The two games are strategic mirrors: swapping the players' initial actions reverses the sign of the net contribution at every stage, making the combined payoff constant. This is precisely the zero-sum property for the *difference* between the two game instances.
 
-*Proof.* Follows from Proposition 6.3 of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf). The strategic interpretation is that $\mathcal{G}_{(D_0, C_0)}$ and $\mathcal{G}_{(C_0, D_0)}$ form a zero-sum pair: the gain of $\mathcal{C}$ in one game is exactly the loss of $\mathcal{D}$ in the mirrored game, and vice versa. $\square$
+*Proof.* Follows from Proposition 6.3 of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf). The strategic interpretation is that $\mathcal{G}_{(D_0, C_0)}$ and $\mathcal{G}_{(C_0, D_0)}$ form a zero-sum pair: the gain of $\mathcal{C}$ in one game is exactly the loss of $\mathcal{D}$ in the mirrored game, and vice versa. $\square$
 
 ### 4.2 The Limit as Correlated Equilibrium
 
@@ -154,7 +154,7 @@ This limit point can be interpreted as a *correlated equilibrium* of the repeate
 
 ## 5. Traversal Classes as Information Structures
 
-The three traversal classes of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) map to three distinct game-theoretic information structures.
+The three traversal classes of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) map to three distinct game-theoretic information structures.
 
 ### 5.1 Class A (Advancing): Exogenous Shocks
 
@@ -178,7 +178,7 @@ The $\sqrt{2}$ and $\ln 2$ branches belong to Class C. Despite the identical str
 
 ## 6. Strategic Interpretation of the Five Branches
 
-Each of the five documented branches of the tholonic ladder [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) admits a distinct strategic narrative under the game-theoretic framing.
+Each of the five documented branches of the tholonic ladder [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) admits a distinct strategic narrative under the game-theoretic framing.
 
 ### 6.1 $\pi/4$: The Alternating Tug-of-War
 
@@ -224,7 +224,7 @@ Both players commit to constant actions ($D_0 = C_0 = 1$). The payoff function i
 
 2. **Taxonomic unification.** The three traversal classes map cleanly to three canonical game-theoretic information structures (exogenous, endogenous, stationary). This mapping is not forced by the recurrence formulation; it is a discovered correspondence that adds a layer of explanation for why the three classes behave differently.
 
-3. **Connective tissue.** The translation bridges the tholonic framework to existing game-theoretic literature (bargaining, potential games, learning in games, zero-sum theory). These connections provide vocabulary and theorems that may prove useful for the open conjectures of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), particularly Conjecture 8.3 (finite classification of named limits).
+3. **Connective tissue.** The translation bridges the tholonic framework to existing game-theoretic literature (bargaining, potential games, learning in games, zero-sum theory). These connections provide vocabulary and theorems that may prove useful for the open conjectures of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf), particularly Conjecture 8.3 (finite classification of named limits).
 
 **Open questions.** Several questions raised by the game-theoretic framing remain open:
 
@@ -233,7 +233,7 @@ Both players commit to constant actions ($D_0 = C_0 = 1$). The payoff function i
 3. Does the game-theoretic perspective suggest new branches (i.e., new equilibrium limits) that were not visible from the recurrence perspective alone?
 4. Can the convergence-rate hierarchy ($O(1/k)$ for $\pi/4$ and $\ln 2$, faster for the rest) be derived from the information structure of the corresponding game class (Class A/Class C slow, Class B fast) as a general theorem?
 
-**Limitations.** This paper provides a descriptive translation, not a predictive extension. The game-theoretic model does not (yet) generate new constants or new convergence guarantees beyond those already established by the recurrence framework. The value is in the reinterpretation: a lens through which the structural theorems of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) acquire strategic meaning.
+**Limitations.** This paper provides a descriptive translation, not a predictive extension. The game-theoretic model does not (yet) generate new constants or new convergence guarantees beyond those already established by the recurrence framework. The value is in the reinterpretation: a lens through which the structural theorems of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) acquire strategic meaning.
 
 ---
 
@@ -243,7 +243,7 @@ We have recast the tholonic triad $(N, D, C)$ as a two-player alternating-move g
 
 The swap-symmetry and diagonal-invariance theorems of the original recurrence framework acquire direct game-theoretic characterizations as zero-sum and symmetric equilibrium properties. The three traversal classes map to three canonical game-theoretic information structures: exogenous shocks (Class A), endogenous state evolution with complete information (Class B), and stationary strategies (Class C). Each of the five converged constants ($\pi/4$, $\varphi$, $e$, $\sqrt{2}$, $\ln 2$) is reinterpreted as the equilibrium payoff of a distinct strategic interaction.
 
-This translation does not alter the mathematical content of the recurrence framework, but it supplies a new vocabulary. The minimal strategic structure that underlies the triad (two opposing agents plus a negotiated state) connects naturally to bargaining theory, potential games, and learning dynamics. Whether this connection can be leveraged to resolve the open conjectures of [Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) remains to be seen.
+This translation does not alter the mathematical content of the recurrence framework, but it supplies a new vocabulary. The minimal strategic structure that underlies the triad (two opposing agents plus a negotiated state) connects naturally to bargaining theory, potential games, and learning dynamics. Whether this connection can be leveraged to resolve the open conjectures of [Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) remains to be seen.
 
 ---
 
@@ -255,7 +255,7 @@ This translation does not alter the mathematical content of the recurrence frame
 
 [Mil24](https://tholonia.github.io/the-book/) J. W. Milton, *Tholonia: The Existential Mechanics of Awareness*, self-published, 2024. Available at https://tholonia.github.io/the-book/.
 
-[Mil26a](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) J. W. Milton, "Emergence of Classical Constants from a Minimal Recursive Triadic Framework," arXiv preprint, 2026.
+[Mil26a](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf) J. W. Milton, "Emergence of Classical Constants from a Minimal Recursive Triadic Framework," arXiv preprint, 2026.
 
 [MS94] E. Maskin and J. Tirole, "Markov Perfect Equilibrium," *Journal of Economic Theory*, 1994.
 

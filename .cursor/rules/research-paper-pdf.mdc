@@ -15,13 +15,13 @@ Hyperlink-only in-series references are **not acceptable** in a PDF-bound paper.
 **Before running Pandoc or `pdflatex`, every in-series References entry must:**
 
 1. Name the paper number in plain prose (`paper 1 in this series`, not only a hyperlink).
-2. Include the full **Direct download** URL from `docnav/Research/papers/github_pdf_urls.md` as **visible plain text**.
+2. Include the full **File page** (blob) URL from `docnav/Research/papers/github_pdf_urls.md` as **visible plain text**.
 3. Put the URL on its **own line** after the bibliographic line, wrapped in angle brackets so Pandoc emits `\url{...}`:
 
 ```
 [Mil26a] Milton, J. W. *Title.* Clarity Coalition, paper 1 in this series, 2026.
 
-<https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
+<https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
 ```
 
 Do **not** use hyperlink-only forms such as:
@@ -38,7 +38,7 @@ Before `research_paper_pdflatex.sh`:
 
 - [ ] Every in-series References entry has a visible URL on its own line (angle-bracket form above).
 - [ ] No in-series References entry relies on hyperlink anchor text alone.
-- [ ] URLs match `github_pdf_urls.md` (`github.com/.../raw/main/...`, never `raw.githubusercontent.com`).
+- [ ] URLs match `github_pdf_urls.md` (`github.com/.../blob/main/...`, never `raw.githubusercontent.com`, never `/raw/main/`).
 
 If any entry fails, fix the `.md` **before** building the PDF. Do not ship a PDF with hyperlink-only References.
 

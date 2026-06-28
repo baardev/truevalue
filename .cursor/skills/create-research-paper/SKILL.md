@@ -98,16 +98,16 @@ End with an unnumbered references section using inline citation keys in `[AuthYY
 ```markdown
 [Mil26a] Milton, J. W. *Title.* Clarity Coalition, paper 1 in this series, 2026.
 
-<https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
+<https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
 ```
 
 Prose example:
 
 ```markdown
-Prior work in [paper 3](https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) establishes ...
+Prior work in [paper 3](https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf) establishes ...
 ```
 
-Use `github.com/.../raw/main/...` only. Do not use `raw.githubusercontent.com`. When adding a new paper, add its URLs to `github_pdf_urls.md` first. See `.cursor/rules/research-paper-references.mdc` for prose linking and `.cursor/rules/research-paper-pdf.mdc` for PDF References format.
+Use `github.com/.../blob/main/...` only. Do not use `raw.githubusercontent.com` or `/raw/main/` links for citations. When adding a new paper, add its URLs to `github_pdf_urls.md` first. See `.cursor/rules/research-paper-references.mdc` for prose linking and `.cursor/rules/research-paper-pdf.mdc` for PDF References format.
 
 ## Step 8: Cross-references to other papers in the series
 

@@ -10,13 +10,13 @@ alwaysApply: false
 
 `docnav/Research/papers/github_pdf_urls.md` is the **single source of truth** for GitHub URLs to every paper PDF in this series.
 
-When citing another paper in the series (in prose or in the References section), use the **Direct download** URL from that file:
+When citing another paper in the series (in prose or in the References section), use the **File page** (blob) URL from that file:
 
 ```
-https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/<N>_<slug>/<N>_<slug>.pdf
+https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/<N>_<slug>/<N>_<slug>.pdf
 ```
 
-Do **not** use `raw.githubusercontent.com` links. Paper PDFs are in Git LFS; `github.com/.../raw/main/...` resolves LFS and returns real PDF bytes. `raw.githubusercontent.com` often returns the LFS pointer text instead of the PDF.
+The blob link opens the full rendered PDF on GitHub, including all images and figures. Do **not** use `raw.githubusercontent.com` links and do **not** use `/raw/main/` links for citations.
 
 Do **not** invent or guess URLs. Copy them from `github_pdf_urls.md` or follow its documented pattern after adding a new paper entry there.
 
@@ -28,11 +28,11 @@ Link **both** citation keys and plain prose when referring to another paper in t
 
 | In text | Markdown form |
 |---------|----------------|
-| `[Mil26a]` citation key | `[Mil26a](<direct-download-url>)` |
+| `[Mil26a]` citation key | `[Mil26a](<blob-url>)` |
 | `paper 3`, `Paper 3`, `papers 1 through 3` | `[paper 3](<url>)`, `[Paper 3](<url>)`, or per-number links for ranges |
 | `Paper 3 of this series` | `[Paper 3 of this series](<url>)` |
 | References line ending in `(Paper N of this series.)` | Include paper number in prose and append the full URL as visible plain text on the same line |
-| References entry for in-series paper | Citation key plus bibliographic line plus **visible** direct-download URL (plain text, not hidden behind link anchor text) |
+| References entry for in-series paper | Citation key plus bibliographic line plus **visible** blob URL (plain text, not hidden behind link anchor text) |
 
 ### References section format (required for print and plain text)
 
@@ -41,7 +41,7 @@ Hyperlink-only references fail in printed PDFs and text exports: anchor text suc
 ```
 [Mil26a] Milton, J. W. *Title.* Clarity Coalition, paper 1 in this series, 2026.
 
-<https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
+<https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf>
 ```
 
 Prose cross-references in the body may remain as `[Paper 1](<url>)` hyperlinks for digital reading. The References section is where print readers resolve what each paper number means.
@@ -53,7 +53,7 @@ External references (journals, books, standards) keep their normal citation form
 ### Quick-reference URL pattern
 
 ```
-https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/<N>_<slug>/<N>_<slug>.pdf
+https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/<N>_<slug>/<N>_<slug>.pdf
 ```
 
 Copy the exact URL from `github_pdf_urls.md`; do not construct it by hand.
@@ -74,9 +74,9 @@ After rebuilding PDFs locally: commit, `git push`, then run `./pushpng.sh` from 
 
 ## Checklist
 
-- [ ] Every in-series `[Mil…]` / `[M26…]` citation key in the `.md` links to the correct direct-download URL
+- [ ] Every in-series `[Mil…]` / `[M26…]` citation key in the `.md` links to the correct blob URL
 - [ ] Every plain `paper N` / `Paper N` cross-reference in prose links to the same URL
 - [ ] Every in-series References entry has a visible URL on its own line (angle-bracket form)
-- [ ] URLs match `docnav/Research/papers/github_pdf_urls.md` (not `raw.githubusercontent.com`)
+- [ ] URLs use `/blob/main/` pattern from `docnav/Research/papers/github_pdf_urls.md` (not `raw.githubusercontent.com`, not `/raw/main/`)
 - [ ] New papers have an entry in `github_pdf_urls.md` before cross-references are written
 - [ ] PDF build blocked until References pass `.cursor/rules/research-paper-pdf.mdc` pre-build gate

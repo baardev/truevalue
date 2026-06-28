@@ -11,7 +11,7 @@ The **intended outcome** matches papers **1 to 5**: under `<N>_<slug>/` you have
 
 Companion papers live as `docnav/Research/papers/<N>_<slug>.md`. The canonical build lives in `<N>_<slug>/<N>_<slug>.tex`.
 
-**In-series citation URLs:** Markdown sources should link cross-references to PDFs using direct-download URLs from `docnav/Research/papers/github_pdf_urls.md` (see `.cursor/rules/research-paper-references.mdc`). Pandoc converts body hyperlinks to `\href{...}{...}` in the output `.tex`.
+**In-series citation URLs:** Markdown sources should link cross-references to PDFs using file page (blob) URLs from `docnav/Research/papers/github_pdf_urls.md` (see `.cursor/rules/research-paper-references.mdc`). Pandoc converts body hyperlinks to `\href{...}{...}` in the output `.tex`.
 
 **PDF References rule (mandatory):** Before building, every in-series References entry must include the full direct-download URL as **visible plain text** on its own line (angle-bracket form). Hyperlink-only References (`[Mil26a](url) ... [paper 1](url)`) are not acceptable: they vanish in print. See `.cursor/rules/research-paper-pdf.mdc`. Do not run `research_paper_pdflatex.sh` until the pre-build gate passes.
 

@@ -1,6 +1,6 @@
 # Research paper PDFs on GitHub
 
-**Canonical reference for paper citations.** When writing or editing papers in this series, link every in-series cross-reference (citation keys such as `[Mil26a]` and plain prose such as `paper 3` or `Paper 1 of this series`) to the **Direct download** URL listed below. Do not guess URLs or use `raw.githubusercontent.com`. See `.cursor/rules/research-paper-references.mdc` and `.cursor/skills/create-research-paper/SKILL.md` (Steps 7–8).
+**Canonical reference for paper citations.** When writing or editing papers in this series, link every in-series cross-reference (citation keys such as `[Mil26a]` and plain prose such as `paper 3` or `Paper 1 of this series`) to the **File page** (blob) URL listed below. The blob link opens the full rendered PDF on GitHub, including all images and figures. Do not guess URLs or use `raw.githubusercontent.com` or `/raw/main/` links for citations. See `.cursor/rules/research-paper-references.mdc` and `.cursor/skills/create-research-paper/SKILL.md` (Steps 7–8).
 
 Repository: [baardev/truevalue](https://github.com/baardev/truevalue) (branch `main`)
 
@@ -10,8 +10,8 @@ Base path: `docnav/Research/papers/<slug>/<slug>.pdf`
 
 | Link type | URL pattern | Use when |
 |-----------|-------------|----------|
-| **GitHub file page** | `https://github.com/baardev/truevalue/blob/main/...` | Browse on GitHub, use the Download button |
-| **Direct PDF download** | `https://github.com/baardev/truevalue/raw/main/...` | Open in a PDF reader or save the file directly |
+| **GitHub file page** | `https://github.com/baardev/truevalue/blob/main/...` | **Use for all in-paper citations and cross-references.** Opens the full rendered PDF with images on GitHub. |
+| **Direct PDF download** | `https://github.com/baardev/truevalue/raw/main/...` | Save or download the raw file only. Do not use for citations. |
 
 Paper PDFs are stored in Git LFS. The direct `raw` link on `github.com` resolves LFS and returns the real PDF bytes. Links on `raw.githubusercontent.com` often return the LFS pointer text instead of the PDF; avoid those for download.
 
