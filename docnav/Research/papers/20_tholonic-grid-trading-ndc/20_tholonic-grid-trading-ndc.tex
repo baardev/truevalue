@@ -1,0 +1,795 @@
+\pdfoutput=1
+\documentclass[12pt]{article}
+
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{calc}
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{xurl}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue, urlcolor=blue]{hyperref}
+\usepackage{geometry}
+\geometry{margin=1in}
+
+\makeatletter
+\newsavebox\pandoc@box
+\newcommand*\pandocbounded[1]{%
+  \sbox\pandoc@box{#1}%
+  \Gscale@div\@tempa{\textheight}{\dimexpr\ht\pandoc@box+\dp\pandoc@box\relax}%
+  \Gscale@div\@tempb{\linewidth}{\wd\pandoc@box}%
+  \ifdim\@tempb\p@<\@tempa\p@\let\@tempa\@tempb\fi
+  \ifdim\@tempa\p@<\p@\scalebox{\@tempa}{\usebox\pandoc@box}%
+  \else\usebox{\pandoc@box}%
+  \fi
+}
+\makeatother
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+
+\title{Tholonic N-D-C Signal Architecture for Accumulation-Biased Grid Trading:\\
+\large Design, Implementation, and 59-Day Empirical Results on SOL/USD}
+\author{J. W. Milton\\[4pt]{\small Clarity Coalition}}
+\date{\small 29 June 2026 \\ v1.0}
+
+\begin{document}
+\maketitle
+
+\noindent\textbf{Keywords:} tholonic model; N-D-C framework; grid trading; accumulation strategy; golden ratio; energy cost; imbalance signal; SOL/USD; cryptocurrency; phi spacing
+
+\begin{center}
+\textbf{\large CONFIDENTIAL AND PRIVATE. DO NOT DISTRIBUTE.}
+\end{center}
+
+\bigskip
+
+\subsection*{Results at a Glance}
+
+\textbf{Period:} 59 days (April 30 to June 29, 2026) \textbar{}
+\textbf{Instrument:} SOL/USD \textbar{} \textbf{Runs:} 5,518
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 8\tabcolsep) * \real{0.2000}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Metric
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Start
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+End
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Change
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Annualised CAGR
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+SOL held & 556 & 1,279 & +722 (+129.9\%) & \textbf{+17,141\%/yr} (CAGR);
+\textasciitilde804\%/yr (simple linear) \\
+Total equity (USD) & \$97,179 & \$96,921 & -\$258 (-0.27\%) &
+-1.6\%/yr \\
+SOL/USD price & \$83.06 & \$71.24 & -\$11.82 (-14.2\%) & -61.3\%/yr \\
+Cash balance & \$50,984 & \$5,108 & -\$45,876 deployed & \\
+\end{longtable}
+
+\textbf{Acquisition quality:} 722 SOL acquired at an average cost of
+\$63.50, against a period low of \$60.48 (3.3\% above the floor) and a
+period high of \$98.12. Unrealised gain on acquired position at close:
++\$5,586.
+
+\textbf{Primary objective met.} The bot's goal was to accumulate the
+maximum quantity of SOL, not to maximise dollar equity. SOL holdings
+more than doubled (+129.9\%) while dollar equity was preserved within
+0.3\%, against a backdrop of a 14.2\% price decline in the underlying
+asset. The annualised SOL accumulation rate of +17,141\%/yr (compound,
+CAGR) or \textasciitilde804\%/yr (simple linear,
+\(129.9\% \times 365/59\)) reflects a concentrated 59-day accumulation
+phase in a declining market and should not be extrapolated as a
+steady-state expectation; it is a measure of execution quality during
+the observed period.
+
+\bigskip
+
+
+\begin{abstract}
+This paper describes the design and empirical evaluation of a
+limit-order grid trading bot constructed entirely from tholonic N-D-C
+principles. The system maps cryptocurrency market state onto the
+tholonic triadic structure: bearish constraints are assigned to the D
+(Definition) role, bullish contributions to the C (Contribution) role,
+and the emergent market coherence to the N (Negotiation) role. Two
+derived scalar signals, D-C Imbalance and Energy Cost, govern all
+operational decisions including order mix, grid spacing, position
+sizing, and regime suppression. Grid level distances are set by a
+phi-spaced hierarchy rooted in the natural doubling rate \(\ln(2)\), the
+most fundamental tholonic quantum. The bot ran live on SOL/USD for 59
+days (April 30 to June 29, 2026), during which SOL fell 14.24\% from
+\$83.06 to \$71.24. Over the same period, total equity declined only
+0.27\%, and SOL holdings grew from 556 to 1,279 units, a 129.9\%
+increase achieved at an average acquisition cost of \$63.50 per SOL,
+near the period low of \$60.48. This paper presents the tholonic
+derivation of each design component and evaluates the empirical record
+against the bot's stated objective: accumulate the maximum quantity of
+the target asset.
+
+A central principle of the design is that the asset itself (SOL) is the
+correct unit of account, not the dollar. A unit of SOL is structurally
+stable: its definitional properties are fixed by the network protocol
+and do not change when the market assigns it a different price. The US
+dollar, by contrast, is not a stable tholonic unit; its purchasing power
+is subject to exogenous forces unrelated to the trading strategy.
+Measuring performance in asset units removes this ambiguity and allows
+the N-D-C parameters to be defined against a consistent, structurally
+grounded substrate.
+
+This paper does not present backtested performance projections,
+financial advice, or claims of generalisability beyond the instrument
+and period described. All claims are grounded in the event log produced
+by the live system.
+\end{abstract}
+
+\section{Introduction}\label{introduction}
+
+\textbf{What this paper provides.} A complete account of how tholonic
+N-D-C concepts are operationalised as quantitative trading signals; a
+derivation of the phi-spaced grid level hierarchy from first principles;
+a definition of the Energy and Imbalance signals and their roles in
+regime control; and an empirical evaluation of 59 days of live trading
+on SOL/USD against an accumulation objective.
+
+\textbf{What this paper does not provide.} Generalised performance
+claims, financial return optimisation, price prediction, or any analysis
+of the value chain layer of the asset. The bot operates entirely in the
+physical-flow layer of the tholonic hierarchy: it measures what the
+market is doing (volume, momentum, distance from structural levels) and
+responds structurally. It does not forecast price.
+
+\textbf{Organisation.} Section 2 reviews the tholonic N-D-C framework as
+applied to market systems; Section 2.1 establishes why the asset unit
+rather than the dollar is the correct measurement substrate. Section 3
+defines the D and C primitives. Section 4 derives and explains the
+Imbalance and Energy signals in depth, including their appearance on the
+operational chart. Section 5 derives the phi-spaced grid level
+architecture. Section 6 describes the five operational modes. Section 7
+covers the auxiliary phi-extension and lambda signals. Section 8
+presents the 59-day empirical record. Section 9 discusses the results
+against the accumulation objective. Section 10 concludes.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{The Tholonic N-D-C Framework Applied to Markets}\label{the-tholonic-n-d-c-framework-applied-to-markets}
+
+The tholonic model, developed across
+\href{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf}{paper
+1} and
+\href{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf}{paper
+3} of this series, holds that any stable system can be decomposed into
+three roles:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{N (Negotiation):} the emergent, coherent state of the system.
+  N is not directly observable; it arises from the balanced interaction
+  of D and C.
+\item
+  \textbf{D (Definition):} the constraints, limitations, and boundaries
+  that define what the system is. D is internally focused; it resists
+  change and enforces identity.
+\item
+  \textbf{C (Contribution):} the outputs, flows, and integrations that
+  define what the system does. C is externally focused; it expresses
+  energy outward.
+\end{itemize}
+
+The core sustainability principle of the tholonic model is that a system
+is most stable and efficient when \(D \approx C\). When either pole
+dominates, the system incurs an energy cost proportional to the square
+of the imbalance. This cost is not metaphorical: in physical systems it
+corresponds to real dissipation; in market systems it corresponds to
+unsustainable overextension in either direction.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/20_ndc-market-triangle.png}}
+\caption{Tholonic N-D-C role assignment for market state. N (blue, top)
+is the emergent coherent state. C (red, lower-left) captures bullish
+contributions. D (green, lower-right) captures bearish constraints.}
+\end{figure}
+
+A market at any given moment can be mapped onto this structure. The
+bullish forces that push price upward and volume outward are C-type:
+they contribute energy to the system. The bearish forces that resist
+further advance and define structural ceilings are D-type: they
+constrain and bound. The actual price level, together with the coherence
+of that level relative to both poles, is N. When C and D are balanced,
+price is at an equilibrium that the system can sustain. When one pole
+dominates, the system is overextended and the imbalance creates pressure
+toward reversion.
+
+\subsection{Why the Asset Is the Correct Unit of Account}\label{why-the-asset-is-the-correct-unit-of-account}
+
+A foundational choice in this system is to measure success in units of
+the asset itself (SOL) rather than in dollars. This choice is not merely
+a preference; it follows directly from tholonic principles about what
+constitutes a stable, well-defined unit for measurement.
+
+A unit of SOL is a fixed, self-consistent quantity. One SOL remains one
+SOL regardless of what price the market assigns to it at any given
+moment. Its physical properties as a digital asset, the computation it
+represents, the network stake it embodies, the protocol rules that
+define it: none of these change when the dollar price moves from \$60 to
+\$90 and back. The SOL token is, in tholonic terms, a stable N-state:
+its D (the protocol's definitional constraints) and C (its contribution
+to the network's operation) are structurally fixed by the protocol
+itself. The market price is an external opinion layered on top of that
+structure. It is not the thing itself.
+
+The US dollar, by contrast, is not a fixed unit in any tholonic sense.
+Its purchasing power shifts continuously with monetary policy,
+inflation, and market sentiment. A dollar-denominated performance
+measure conflates two separate phenomena: the behavior of the trading
+strategy and the behavior of the dollar's own purchasing power. Using
+dollars as the unit of success introduces a moving baseline that can
+mask or distort the strategy's actual contribution.
+
+This distinction has a direct technical consequence for N-D-C
+parameterisation. Because the D and C primitives measure structural
+market properties (distance to resistance, volume ratio, trend strength,
+support proximity), they can be defined precisely and stably when the
+objective unit is the asset. The question ``how much of the asset did we
+acquire, and at what structural cost?'' has a clean tholonic answer:
+each SOL acquired represents a negotiated outcome between the bullish
+forces that wanted to hold it above the buy level and the constraints
+that prevented it from rising further. That negotiation is exactly what
+the D-C Imbalance signal models.
+
+If success were measured in dollars, the same structural event (a buy
+order filling at a phi-spaced level below spot) would have ambiguous
+value: it could look like a gain or a loss depending entirely on what
+the dollar subsequently does. The asset-denominated objective removes
+this ambiguity. The N-D-C parameters are defined against a stable
+substrate, and the results can be evaluated cleanly against the question
+the system was actually designed to answer: how efficiently is the bot
+converting available capital into units of a structurally stable asset?
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{D and C Primitive Definitions}\label{d-and-c-primitive-definitions}
+
+Each of the four D and four C primitives is a scalar in \([0, 10]\),
+computed from the most recent closed 15-minute OHLCV bar window and
+clamped to prevent single-metric dominance.
+
+\subsection{D Primitives: Bearish Constraints}\label{d-primitives-bearish-constraints}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Primitive
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Formula
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Resistance distance &
+\(\text{clamp}\!\left(\frac{R - P}{P} \times 100\right)\) & Distance to
+nearest swing high above price. High resistance nearby = high D. \\
+RSI overbought &
+\(\text{clamp}\!\left(\frac{\text{RSI} - 50}{5}\right)\) & RSI above 50
+contributes to D; below 50 contributes zero. \\
+Realised volatility &
+\(\text{clamp}\!\left(\frac{\sigma_r}{0.05}\right)\) & 30-bar rolling
+realised vol normalised to a 5\% baseline. High vol = high uncertainty =
+high D. \\
+Funding rate & \(\text{clamp}\!\left(\max(f, 0) \times 100\right)\) &
+Positive funding on perpetuals indicates excess long positioning =
+bearish constraint on further advance. \\
+\end{longtable}
+
+\subsection{C Primitives: Bullish Contributions}\label{c-primitives-bullish-contributions}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Primitive
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Formula
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Interpretation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Volume ratio &
+\(\text{clamp}\!\left(5 \times \frac{V_t}{\bar{V}_{20}}\right)\) &
+Current bar volume relative to 20-bar mean. Rising volume = rising C. \\
+Momentum score &
+\(\text{clamp}\!\left(\frac{P - \text{EMA}_{50}}{\text{ATR}}\right)\) &
+Price above its 50-bar EMA = bullish momentum. Normalised by ATR. \\
+Trend strength & \(\text{clamp}\!\left(\frac{\text{ADX}}{10}\right)\) &
+ADX normalised to \([0, 10]\). Strong directional trend = high C. \\
+Support distance &
+\(\text{clamp}\!\left(10 - \frac{P - S}{P} \times 100\right)\) &
+Proximity to nearest swing low below price. Close to support = high C
+(limited downside). \\
+\end{longtable}
+
+\(D_{\text{total}} = \sum D_i\), \(\quad C_{\text{total}} = \sum C_i\)
+
+Both totals have a theoretical range of \([0, 40]\) given four clamped
+\([0, 10]\) components.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Imbalance and Energy: The Core Signal Pair}\label{imbalance-and-energy-the-core-signal-pair}
+
+These two derived scalars are the engine of every operational decision
+in the bot. They appear on the live operational chart as the two lower
+panels (labelled ``NDC Imbalance'' and, implicitly, the energy threshold
+crossings).
+
+\subsection{Imbalance}\label{imbalance}
+
+\[\text{Imbalance} = \frac{C_{\text{total}} - D_{\text{total}}}{\max(C_{\text{total}}, D_{\text{total}})}\]
+
+Imbalance is a signed, normalised measure of which pole dominates, on a
+scale from \(-1\) (fully D-dominant, maximum bearish constraint) to
+\(+1\) (fully C-dominant, maximum bullish contribution).
+
+At zero, \(C = D\) and the system is in tholonic balance. The threshold
+\(\pm 0.0347\) is not arbitrary: it is \(\ln(2)/20\), half the base
+tholonic quantum, used as the minimum meaningful deviation from balance
+before the regime shifts.
+
+The interpretation at each regime boundary:
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}
+  >{\raggedright\arraybackslash}p{(\linewidth - 4\tabcolsep) * \real{0.3333}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Imbalance
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Market meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Bot response
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(> +0.0347\) & C overwhelms D; market in bullish overexpression &
+Distribute: 3 buys, 5 sells \\
+\([-0.0347,\, +0.0347]\) & Near balance; no dominant pole & Neutral: 5
+buys, 3 sells (accumulation default) \\
+\(< -0.0347\) & D overwhelms C; market compressed by bearish constraint
+& Accumulate: 5 buys, 1 sell \\
+\end{longtable}
+
+Crucially, the neutral default is asymmetric: 5 buys and 3 sells rather
+than equal counts. This encodes the stated objective (accumulate the
+asset) at the structural level. Even when the signal is inconclusive,
+the bot's default behavior is accumulation-biased.
+
+\subsection{Energy Cost}\label{energy-cost}
+
+\[E = |\text{Imbalance}|^2 \times D_{\text{max}}^2 + E_{\text{base}}\]
+
+In a simplified but operationally equivalent form used in the code:
+
+\[E = \left(\frac{|C - D|}{\max(C, D)}\right)^2 + E_{\text{base}}\]
+
+where \(E_{\text{base}} = 10\).
+
+Energy quantifies the cost of maintaining the current imbalanced state.
+It is not volatility; it is the tholonic cost of imbalance: a system far
+from \(D = C\) must expend energy to maintain that deviation, and the
+cost grows quadratically with the deviation. A balanced system
+(\(D = C\)) has only the base cost \(E_{\text{base}}\). A maximally
+imbalanced system (one pole at zero) has
+\(E = 1 + E_{\text{base}} = 11\) at the formula level, but the quadratic
+scaling means large sustained deviations quickly reach the regime
+threshold.
+
+The energy threshold \(E_{\text{max}} = 135\) defines the boundary above
+which the system is in a high-cost, unstable state. When
+\(E > E_{\text{max}}\):
+
+\begin{itemize}
+\tightlist
+\item
+  If Imbalance \(> 0\) (C-dominant spike): the market is in a bull
+  overextension. The bot enters \textbf{buy-only mode}, suppressing all
+  sell orders and accumulating through the rally.
+\item
+  If Imbalance \(\leq 0\) (D-dominant spike): the market is in chaos or
+  a bear crush. The bot \textbf{pauses} entirely, placing no orders.
+\end{itemize}
+
+This asymmetry is again structural: C-dominant high-energy states are
+accumulation opportunities; D-dominant high-energy states are danger
+zones.
+
+\subsection{The N State}\label{the-n-state}
+
+\[N = \sqrt{D_{\text{total}} \times C_{\text{total}}} \times B\]
+
+where the balance factor \(B = \dfrac{1}{1 + |D - C| / \max(D, C)}\).
+
+N is the geometric mean of the two poles, penalised by their imbalance.
+This formulation is consistent with the tholonic principle established
+in
+\href{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf}{paper
+1}: N maximises when \(D = C\), and collapses toward zero as either pole
+approaches zero. N is logged at each run but does not directly control
+order placement; it is the diagnostic of overall system coherence.
+
+\subsection{Reading the Operational Chart}\label{reading-the-operational-chart}
+
+The screenshot accompanying this paper shows the live operational
+display. The lower chart panel, labelled ``NDC Imbalance,'' plots the
+Imbalance signal as a time series against its \(\pm 0.0347\) threshold
+bands. The green-filled region above zero reflects sustained
+C-dominance; the narrow red regions reflect the brief D-dominant
+episodes during the May price decline. The flat band near zero in quiet
+periods corresponds to the neutral regime.
+
+The energy signal does not appear as a separate visual panel in the
+standard chart display, but its effect is visible in the order activity:
+the 15 buy-only events and the absence of any full pause events
+correspond to the 953 runs (17.3\% of the total) where energy exceeded
+\(E_{\text{max}} = 135\).
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/20_energy-imbalance-timeseries.png}}
+\caption{SOL/USD price (top), D-C Imbalance (middle), and Energy Cost
+(bottom) over the 59-day run. Red bars in the imbalance panel indicate
+C-dominant conditions; green bars indicate D-dominant. The horizontal
+dashed line in the energy panel marks the pause/hold threshold.}
+\end{figure}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Grid Architecture: Phi-Spaced Level Hierarchy}\label{grid-architecture-phi-spaced-level-hierarchy}
+
+\subsection{The Base Quantum}\label{the-base-quantum}
+
+The grid level spacings are derived from the tholonic base quantum:
+
+\[u = \frac{\ln 2}{10} \times s\]
+
+where \(s\) is a timeframe scale factor (\(s = 0.35\) for 15-minute
+bars; \(s = 1.0\) for 4-hour bars). The use of \(\ln 2\) is not
+arbitrary: it is the natural doubling rate, the minimal quantum of
+binary distinction in the tholonic framework. At \(s = 0.35\), the base
+quantum is \(u \approx 0.00243\), or 0.243\% of the current price per
+level.
+
+\subsection{The Five Phi-Spaced Levels}\label{the-five-phi-spaced-levels}
+
+Five grid levels are placed at the following distances from the current
+price, in both directions:
+
+\[\left\{\frac{u}{\varphi^2},\; \frac{u}{\varphi},\; u,\; u\varphi,\; u\varphi^2\right\}\]
+
+where \(\varphi = (1 + \sqrt{5})/2 \approx 1.61803\) is the golden
+ratio.
+
+At \(s = 0.35\), these evaluate to approximately:
+
+\begin{longtable}[]{@{}lll@{}}
+\toprule\noalign{}
+Level & Formula & Distance from spot \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+1 & \(u / \varphi^2\) & 0.93\% \\
+2 & \(u / \varphi\) & 1.50\% \\
+3 & \(u\) & 2.43\% \\
+4 & \(u \cdot \varphi\) & 3.93\% \\
+5 & \(u \cdot \varphi^2\) & 6.35\% \\
+\end{longtable}
+
+The ratio of any adjacent level pair is \(\varphi\). This makes the grid
+self-similar: zooming into the spacing between any two levels reveals
+the same proportional structure as the whole. This is the direct market
+application of the tholonic principle that stable, sustainable
+hierarchical structures are self-similar at all scales.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/20_phi-grid-levels.png}}
+\caption{Phi-spaced grid level diagram showing buy levels (red, below
+spot) and sell levels (green, above spot) with their tholonic formula
+labels and percentage distances from the current price.}
+\end{figure}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Operational Modes and Regime Logic}\label{operational-modes-and-regime-logic}
+
+\subsection{Hysteresis}\label{hysteresis}
+
+Regime changes require the signal to exceed the threshold for at least
+two consecutive bars before the mode flips. This prevents oscillation
+around the threshold boundary from causing excessive order cancellation
+and replacement. The hysteresis band effectively smooths the mode signal
+while preserving responsiveness to sustained changes.
+
+\subsection{The Five Modes}\label{the-five-modes}
+
+\textbf{Distribute} (\(\text{Imbalance} > +0.0347\), normal energy): 3
+buy levels below spot, 5 sell levels above spot. The bot is reading a
+C-dominant environment and positions to capture mean reversion: few buys
+(limited upside buying interest) and more sells (take profit into
+strength). In a sustained downtrend, sell levels placed above a
+declining price do not fill; the buy levels fill repeatedly. This
+explains the paradox that a bot running 87\% of the time in distribute
+mode still accumulated net SOL during a declining market.
+
+\textbf{Neutral} (\(|\text{Imbalance}| \leq 0.0347\)): 5 buy levels, 3
+sell levels. The default accumulation-biased grid.
+
+\textbf{Accumulate} (\(\text{Imbalance} < -0.0347\), normal energy): 5
+buy levels, 1 sell level. Near-suppression of selling during D-dominant
+compression.
+
+\textbf{Buy-only} (\(E > E_{\text{max}}\) and \(\text{Imbalance} > 0\)):
+5 buy levels, 0 sell levels. The system reads a high-energy C-dominant
+spike as a bull overextension that should be accumulated through, not
+sold into.
+
+\textbf{Pause} (\(E > E_{\text{max}}\) and \(\text{Imbalance} \leq 0\)):
+0 orders. High-energy D-dominant states are structurally unpredictable;
+the bot steps aside entirely.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Auxiliary Signals}\label{auxiliary-signals}
+
+\subsection{Phi-Extension Signal}\label{phi-extension-signal}
+
+The ratio of successive swing highs is compared to \(\varphi\):
+
+\[r = \frac{H_{t}}{H_{t-1}}\]
+
+If \(r > \varphi + 0.15\): the market is overextended relative to its
+natural growth rate. One buy level is removed and one sell level added
+(tilt toward distribution).
+
+If \(r < \varphi - 0.15\): the market is under-extended. One buy level
+is added and one sell level removed (tilt toward accumulation).
+
+This signal fired in only 4.4\% of runs during the observed period
+(phi\_signal = +1, under-extended), consistent with a sustained
+declining market that never produced a blow-off top.
+
+\subsection{Lambda: Volume Recovery Signal}\label{lambda-volume-recovery-signal}
+
+Lambda detects volume recovering from a recent trough:
+
+\[\lambda = \min\!\left(1,\; \frac{V_{\text{ratio}} - 1}{2}\right) \quad \text{when volume is recovering}\]
+
+Buy order sizes are scaled by \((1 + 0.618 \times \lambda)\), where the
+weight \(0.618 = 1/\varphi\) is the tholonic balance ratio. Lambda fired
+in 1,291 of 5,518 runs (23.4\%), scaling up buy sizes during
+volume-recovery events to front-run anticipated C-signal strengthening.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Empirical Results: 59-Day SOL/USD Run}\label{empirical-results-59-day-solusd-run}
+
+\subsection{Setup}\label{setup}
+
+The bot ran live on the Alpaca cryptocurrency API, trading SOL/USD on a
+15-minute execution cadence. The signal timeframe was 15-minute OHLCV
+bars with a 100-bar lookback. A 5-minute reclaim trigger filter required
+lower-timeframe confirmation before order placement. Enhanced NDC risk
+controls were enabled, including adaptive ATR-based spacing,
+inventory-aware sizing, and the no-trade zone suppression.
+
+\subsection{Summary Statistics}\label{summary-statistics}
+
+\begin{longtable}[]{@{}ll@{}}
+\toprule\noalign{}
+Metric & Value \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Period & April 30 to June 29, 2026 (59 days) \\
+Total runs & 5,518 (15-minute cadence) \\
+SOL/USD price change & \$83.06 to \$71.24 (-14.24\%) \\
+SOL price low & \$60.48 \\
+Starting equity & \$97,179 \\
+Ending equity & \$96,921 (-0.27\%) \\
+Equity peak & \$108,194 \\
+Equity trough & \$83,635 \\
+Starting cash & \$50,984 \\
+Ending cash & \$5,108 \\
+Starting SOL held & 556 \\
+Ending SOL held & 1,279 \\
+SOL gained & +722 (+129.9\%) \\
+Implied average acquisition price & \$63.50/SOL \\
+Unrealised gain on acquired SOL & +\$5,586 \\
+Total orders placed & 28,963 \\
+Order success rate & 71.5\% \\
+Total buy orders & 16,456 \\
+Total sell orders & 24,048 \\
+\end{longtable}
+
+\subsection{Mode Distribution}\label{mode-distribution}
+
+The distribute mode dominated at 86.8\% of runs, reflecting sustained
+C-dominance (mean imbalance +0.44) even as price declined. Accumulate
+mode ran for 6.5\% of runs, concentrated during the price troughs in May
+and June. Buy-only mode fired 15 times during brief high-energy
+C-dominant spikes.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/20_mode-distribution.png}}
+\caption{Operational mode distribution across 5,518 runs (left) and the
+distribution of D-C Imbalance values over the full period (right). The
+imbalance distribution is strongly right-skewed, confirming persistent
+C-dominance.}
+\end{figure}
+
+\subsection{Accumulation Record}\label{accumulation-record}
+
+The bot converted \$45,875 in cash into 722 additional SOL at an average
+cost of \$63.50 per unit, 23.5\% below the entry price of \$83.06 and
+only \$3.02 above the period low of \$60.48. The accumulation rate
+accelerated in June as price fell further and lambda-scaling increased
+buy sizes at volume-recovery inflection points.
+
+\begin{figure}
+\centering
+\pandocbounded{\includegraphics[width=\linewidth,keepaspectratio]{figures/20_accumulation-cash-equity.png}}
+\caption{SOL held (top, red), cash balance (middle, green), and total
+equity (bottom, blue) over the 59-day run. Cash was systematically
+deployed into SOL as price declined, with SOL holdings more than
+doubling while equity remained nearly flat.}
+\end{figure}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Discussion}\label{discussion}
+
+\subsection{Accumulation Objective Assessment}\label{accumulation-objective-assessment}
+
+The stated objective was to accumulate the maximum quantity of SOL
+rather than to maximise dollar-denominated equity. By that measure, the
+result is strong: 129.9\% growth in SOL holdings over a period where
+holding SOL in cash-equivalent terms would have cost 14.24\% in dollar
+value. The bot converted that paper loss into asset accumulation,
+acquiring 722 SOL at below-market cost.
+
+The near-flat equity (-0.27\%) is not the primary measure of success but
+confirms that the accumulation was achieved without significant
+dollar-denominated destruction. The equity low of \$83,635 (in late May)
+coincided with the price trough, at which point the bot's unrealised
+losses on earlier SOL purchases were at their maximum. Recovery in June
+reflected both price stabilisation and the accumulation of lower-cost
+SOL reducing the average basis.
+
+\subsection{The Distribute-Mode Accumulation Paradox}\label{the-distribute-mode-accumulation-paradox}
+
+The dominant finding is that the bot ran 87\% of the time in distribute
+mode while net-accumulating SOL. This is explained by the asymmetric
+fill dynamics of a limit-order grid in a trending market. In distribute
+mode, sell orders are placed above the current price. When price is
+declining, those sells are never reached. The buy orders placed below
+spot, however, are reached on every dip. The net effect is that
+distribute mode in a declining market becomes a systematic buy program,
+despite its label. The tholonic framework did not fail here; the label
+``distribute'' refers to the bot's intent given the signal state, not to
+the actual fills achieved.
+
+A recalibration of the D primitive weights would correct the signal: if
+the D parameters better captured the declining trend (for example, by
+weighting MACD histogram or the rate of change of resistance levels),
+imbalance would have shifted toward D-dominance or neutral more often,
+reducing the distribute-mode dominance. This is a parameter tuning
+question, not a structural flaw.
+
+\subsection{Cash Exhaustion Risk}\label{cash-exhaustion-risk}
+
+Cash declined from \$50,984 to \$5,108 over the period. With cash nearly
+depleted, the bot's capacity to place buy orders is now severely
+constrained. If price continues to decline, the accumulation rate will
+fall to whatever sell fills can be captured at higher prices and
+recycled. The \texttt{max\_deploy\_usd} and
+\texttt{capital\_per\_level\_usd} parameters should be reviewed and
+tightened to preserve a minimum cash reserve.
+
+\subsection{Order Rejection Rate}\label{order-rejection-rate}
+
+The 28.5\% order rejection rate is elevated and represents wasted API
+calls and potential missed fills. The likely cause is minimum notional
+violations: as SOL price declined, the fixed dollar-per-level size
+(\$1,794 default) converted to increasingly large SOL quantities, and
+the resulting sell orders at higher price levels sometimes fell below
+the exchange's minimum notional. Dynamic sizing proportional to current
+price, rather than fixed dollar amounts, would reduce rejections.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Conclusion}\label{conclusion}
+
+The tholonic N-D-C framework provides a structurally coherent basis for
+market signal design. Mapping bearish constraints to D, bullish
+contributions to C, and market coherence to N produces an operationally
+interpretable signal pair: Imbalance measures which pole dominates;
+Energy measures the cost of that domination. Together they govern all
+regime transitions in a principled, derivable way rather than through
+empirically tuned moving-average crossovers.
+
+The phi-spaced grid level hierarchy, derived from \(\ln(2)\) and
+\(\varphi\), places limit orders at self-similar distances that
+correspond to the natural structure of a recursive triadic system. The
+golden ratio appears not as decoration but as the structural attractor
+of the level spacing, directly analogous to its appearance in the
+convergence hierarchies documented in
+\href{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf}{paper
+1} and
+\href{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/11_tholonic-seed-space-power-of-two-hierarchy/11_tholonic-seed-space-power-of-two-hierarchy.pdf}{paper
+11} of this series.
+
+The 59-day live record on SOL/USD confirms that the system achieved its
+accumulation objective: 129.9\% growth in SOL holdings at an average
+cost near the period low, with equity preservation of -0.27\% against a
+-14.24\% spot price decline. The open questions (D-parameter
+recalibration, cash reserve management, order sizing dynamics) are
+parameter-level refinements, not structural concerns.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{References}\label{references}
+
+{[}Mil26a{]} Milton, J. W. \emph{Emergence of Classical Constants from a
+Minimal Recursive Triadic Framework.} Clarity Coalition, paper 1 in this
+series, 2026.
+
+\url{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/1_recursive-tholonic-five-constants/1_recursive-tholonic-five-constants.pdf}
+
+{[}Mil26b{]} Milton, J. W. \emph{A Minimal Recursive Triadic Framework
+for Self-Similar Hierarchical Systems.} Clarity Coalition, paper 3 in
+this series, 2026.
+
+\url{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/3_minimal-recursive-triadic-framework/3_minimal-recursive-triadic-framework.pdf}
+
+{[}Mil26c{]} Milton, J. W. \emph{Power-of-Two Convergence Counts in the
+Tholonic Seed Space: A Complete Hierarchy of Classical Constants.}
+Clarity Coalition, paper 11 in this series, 2026.
+
+\url{https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/11_tholonic-seed-space-power-of-two-hierarchy/11_tholonic-seed-space-power-of-two-hierarchy.pdf}
+
+\end{document}

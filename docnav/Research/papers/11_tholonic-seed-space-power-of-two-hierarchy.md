@@ -302,10 +302,10 @@ Grouping by accessibility:
 
 | Stage | Constants | Combinations | Multiplier from previous stage |
 |-------|-----------|-------------|-------------------------------|
-| 0 — Singular | $\pi/4$ | 1 | (origin) |
-| 1 — Rare | $e$ | 16 | $\times 16$ |
-| 2 — Common | $\ln 2$ | 64 | $\times 4$ |
-| 3 — Universal | $\varphi$, $\sqrt{2}$ | 256 | $\times 4$ |
+| 0: Singular | $\pi/4$ | 1 | (origin) |
+| 1: Rare | $e$ | 16 | $\times 16$ |
+| 2: Common | $\ln 2$ | 64 | $\times 4$ |
+| 3: Universal | $\varphi$, $\sqrt{2}$ | 256 | $\times 4$ |
 
 Each outward step multiplies accessibility by 4. $\pi$ occupies the slot between Stage 0 ($\pi/4$) and Stage 1 ($e$), at $\times 4$ from the origin.
 

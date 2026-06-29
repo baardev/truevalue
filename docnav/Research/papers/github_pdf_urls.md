@@ -144,3 +144,17 @@ After rebuilding PDFs locally: commit, `git push`, then run `./pushpng.sh` from 
 
 - File page: https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/18_ndc-transformer-role-assignment/18_ndc-transformer-role-assignment.pdf
 - Direct download: https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/18_ndc-transformer-role-assignment/18_ndc-transformer-role-assignment.pdf
+
+## Paper 19
+
+**Title:** Phase-Resolved Sustainable Supply Chain Analysis Using a Triadic Balance Framework: Structural Alignment with Planetary Boundaries
+
+- File page: https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/19_ndc-planetary-boundaries-supply-chain/19_ndc-planetary-boundaries-supply-chain.pdf
+- Direct download: https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/19_ndc-planetary-boundaries-supply-chain/19_ndc-planetary-boundaries-supply-chain.pdf
+
+## Paper 20
+
+**Title:** Tholonic N-D-C Signal Architecture for Accumulation-Biased Grid Trading: Design, Implementation, and 59-Day Empirical Results on SOL/USD
+
+- File page: https://github.com/baardev/truevalue/blob/main/docnav/Research/papers/20_tholonic-grid-trading-ndc/20_tholonic-grid-trading-ndc.pdf
+- Direct download: https://github.com/baardev/truevalue/raw/main/docnav/Research/papers/20_tholonic-grid-trading-ndc/20_tholonic-grid-trading-ndc.pdf

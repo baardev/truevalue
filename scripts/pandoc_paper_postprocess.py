@@ -81,8 +81,15 @@ def _md_author_to_latex(author_raw: str) -> str:
 # LaTeX extraction helpers
 # ---------------------------------------------------------------------------
 
-def extract_abstract_and_body(tex: str) -> tuple[str, str]:
-    """Return (abstract text, body from first numbered \\subsection{1. ...} onward)."""
+def extract_abstract_and_body(tex: str) -> tuple[str, str, str]:
+    """Return (pre_abstract block, abstract text, body from first numbered subsection onward).
+
+    pre_abstract captures any content that appears between \\begin{document} and
+    \\subsection{Abstract} that is not part of the title/header block — specifically
+    CONFIDENTIAL notices and unnumbered summary sections such as 'Results at a Glance'.
+    These are injected into the final document after \\maketitle and keywords but before
+    \\begin{abstract}.
+    """
     m_intro = re.search(
         r"\\subsection\{1\.\s+[^}]+\}(?:\\label\{[^}]+\})?",
         tex,
@@ -105,7 +112,51 @@ def extract_abstract_and_body(tex: str) -> tuple[str, str]:
     ).strip()
 
     rest = tex[intro_start:]
-    return abstract_raw, rest
+
+    # ── Extract pre-abstract block ─────────────────────────────────────────
+    # Everything between \begin{document} and \subsection{Abstract} is normally
+    # the title section header block, which the postprocessor replaces with
+    # \maketitle.  But authors may include two extra elements there:
+    #   1. A CONFIDENTIAL notice (bold paragraph before the \section{title})
+    #   2. An unnumbered summary section (e.g. "Results at a Glance")
+    # We extract these and re-inject them after \maketitle.
+    pre_abstract = ""
+    doc_match = re.search(r"\\begin\{document\}", tex)
+    if doc_match:
+        pre_block = tex[doc_match.end():m_abs.start()]
+
+        # 1. CONFIDENTIAL notice: bold paragraph before the \section{} title
+        conf_match = re.search(r"\\textbf\{(CONFIDENTIAL[^}]*)\}", pre_block)
+        if conf_match:
+            pre_abstract += (
+                "\\begin{center}\n"
+                "\\textbf{\\large " + conf_match.group(1) + "}\n"
+                "\\end{center}\n\n"
+                "\\bigskip\n\n"
+            )
+
+        # 2. Unnumbered summary subsections (e.g. "Results at a Glance")
+        # Match \subsection{<non-digit-starting title>} ... up to the next \subsection
+        for m in re.finditer(
+            r"(\\subsection\{(?!\d)(?P<title>[^}]+)\}"
+            r"(?:\\label\{[^}]+\})?\s*"
+            r"(?P<content>.*?))"
+            r"(?=\\subsection\{|\\begin\{center\}\\rule|\Z)",
+            pre_block,
+            re.DOTALL,
+        ):
+            title = m.group("title").strip()
+            content = m.group("content").strip()
+            # Strip trailing \rule dividers from content
+            content = re.sub(
+                r"\\begin\{center\}\\rule\{[^}]+\}\{[^}]+\}\\end\{center\}\s*$",
+                "",
+                content,
+            ).strip()
+            if content:
+                pre_abstract += f"\\subsection*{{{title}}}\n\n{content}\n\n\\bigskip\n\n"
+
+    return pre_abstract, abstract_raw, rest
 
 
 def promote_subsection_headings(body: str) -> str:
@@ -205,11 +256,13 @@ PACKAGES = r"""\pdfoutput=1
 
 def build_preamble(title: str, author: str, date: str,
                    keywords: str = "", version: str = "",
-                   packages: str = PACKAGES) -> str:
+                   packages: str = PACKAGES,
+                   pre_abstract: str = "") -> str:
     date_version = f"\\small {date}" + (f" \\\\ v{version}" if version else "")
     keywords_block = ""
     if keywords.strip():
         keywords_block = f"\\noindent\\textbf{{Keywords:}} {keywords}\n\n"
+    pre_abstract_block = (pre_abstract + "\n") if pre_abstract.strip() else ""
     return (
         packages
         + f"\\title{{{title}}}\n"
@@ -218,6 +271,7 @@ def build_preamble(title: str, author: str, date: str,
         + "\\begin{document}\n"
         + "\\maketitle\n\n"
         + keywords_block
+        + pre_abstract_block
         + "\\begin{abstract}\n"
     )
 
@@ -280,7 +334,7 @@ def main() -> None:
     keywords = resolve(args.keywords, "keywords", _DEFAULT_KEYWORDS)
 
     tex = args.input.read_text(encoding="utf-8")
-    abstract, body = extract_abstract_and_body(tex)
+    pre_abstract, abstract, body = extract_abstract_and_body(tex)
     body = promote_subsection_headings(body)
     body = re.sub(
         r"\\includegraphics\[keepaspectratio\]",
@@ -316,7 +370,8 @@ def main() -> None:
     if code_preamble:
         packages = PACKAGES + "\n" + code_preamble
 
-    preamble = build_preamble(title, author, date, keywords, version, packages=packages)
+    preamble = build_preamble(title, author, date, keywords, version, packages=packages,
+                              pre_abstract=pre_abstract)
     out = preamble + abstract + "\n\\end{abstract}\n\n" + body
     if "\\end{document}" not in out:
         out += "\n\\end{document}\n"
