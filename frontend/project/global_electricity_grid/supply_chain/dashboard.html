@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Global Electricity Grid: Supply Chain Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #90caf9; background: rgba(21,101,192,0.25);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 28px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8b949e; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #161b22; border-radius: 10px; padding: 18px 16px; border-left: 4px solid #1565c0; }
+  .kpi.alert-kpi { border-left-color: #e74c3c; }
+  .kpi.good-kpi { border-left-color: #27ae60; }
+  .kpi-val { font-size: 26px; font-weight: 800; color: #90caf9; }
+  .kpi.alert-kpi .kpi-val { color: #f97066; }
+  .kpi.good-kpi .kpi-val { color: #56d364; }
+  .kpi-lbl { font-size: 11px; color: #8b949e; margin-top: 4px; }
+  .alert-bar {
+    background: rgba(192,57,43,0.12); border: 1px solid rgba(192,57,43,0.35);
+    border-left: 5px solid #c0392b; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+  }
+  .alert-bar h3 { color: #f97066; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .alert-bar p { font-size: 13px; color: #8b949e; line-height: 1.6; }
+  .panel { background: #161b22; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .panel h2 { font-size: 14px; font-weight: 700; color: #90caf9; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px; }
+  .phase-row { margin-bottom: 14px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .phase-label { font-size: 13px; color: #e6edf3; font-weight: 600; }
+  .phase-scores { font-size: 11px; color: #8b949e; }
+  .phase-scores span { margin-left: 8px; }
+  .bar-bg { background: #21262d; border-radius: 6px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s ease; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; margin-left: 8px; text-transform: uppercase;
+  }
+  .badge.high { background: rgba(63,185,80,0.2); color: #3fb950; }
+  .badge.medium { background: rgba(255,195,0,0.2); color: #ffc300; }
+  .badge.low { background: rgba(249,112,102,0.2); color: #f97066; }
+  .badge.bottleneck { background: rgba(192,57,43,0.3); color: #f97066; border: 1px solid rgba(192,57,43,0.5); }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    background: #21262d; border-radius: 10px; padding: 16px 10px; text-align: center;
+    border: 1px solid rgba(21,101,192,0.35);
+  }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #90caf9; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #1565c0; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .zone-stressed { background: rgba(255,195,0,0.18); color: #ffc300; }
+  .zone-failure { background: rgba(249,112,102,0.18); color: #f97066; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #21262d; color: #90caf9; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; }
+  td { padding: 10px 12px; border-bottom: 1px solid #21262d; color: #8b949e; vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+  .phase-num { font-size: 16px; font-weight: 800; color: #90caf9; }
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a { color: #90caf9; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 14px; opacity: 0.85; }
+  .nav a:hover { opacity: 1; text-decoration: underline; }
+  @media (max-width:700px) { .kpi-row, .coherence-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="kicker">Global Electricity Grid</div>
+    <h1>⚡ Global Electricity Grid</h1>
+    <p class="subtitle">Supply Chain N-D-C Dashboard: 7 Phases | BAU chain balance: 81.8% | Bottleneck: Phase 2 (74.1%) and Phase 3 (74.5%)</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">81.8%</div>
+      <div class="kpi-lbl">BAU chain average balance (Good zone)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">203.1</div>
+      <div class="kpi-lbl">Average N value across 7 phases (BAU)</div>
+    </div>
+    <div class="kpi alert-kpi">
+      <div class="kpi-val">74.1%</div>
+      <div class="kpi-lbl">Phase 2 bottleneck: Transmission (interconnection queue backlog)</div>
+    </div>
+    <div class="kpi good-kpi">
+      <div class="kpi-val">94.1%</div>
+      <div class="kpi-lbl">Phase 4 strongest: Distribution (regulated, well-documented)</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <h3>Bottleneck Alert: Phases 2 and 3: Interconnection Queues and Storage Shortfall</h3>
+    <p>Phase 2 (Transmission, balance 74.1%) has the highest D-value in the chain (D=290) because
+      interconnection queue backlogs, permitting delays, and cross-border transmission capacity shortfalls
+      documented by IEA Electricity Grids and Secure Energy Transitions analysis are constraints not yet
+      matched by built transmission capacity (C=215). Phase 3 (Balancing and Storage, balance 74.5%) is
+      broken by the same structural pattern: reserve margin and balancing requirements (D=275) outpace
+      deployed storage and demand-response capacity (C=205). Curtailment of solar and wind, published by
+      CAISO, ERCOT, and National Grid ESO, is the visible symptom of this gap. These are the primary bond
+      intervention targets.</p>
+  </div>
+
+  <!-- Phase bars -->
+  <div class="panel">
+    <h2>Phase N-D-C Balance Analysis (BAU)</h2>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">0</span> Fuel and Resource Input</span>
+        <span class="phase-scores">
+          D=230 <span>C=280</span> <span>N=208</span>
+          <span class="badge medium">Medium</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:82.1%;background:linear-gradient(90deg,#546e7a,#90a4ae)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">82.1%: Coal, gas, uranium fuel supply plus renewable resource potential. Fuel reserves public (IEA, USGS); extraction contracts often private.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">1</span> Generation</span>
+        <span class="phase-scores">
+          D=260 <span>C=300</span> <span>N=242</span>
+          <span class="badge high">High</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:86.7%;background:linear-gradient(90deg,#0d47a1,#1565c0)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">86.7%: Coal still largest single source (35%, ~10,587 TWh) for 50th consecutive year. Renewables + nuclear reached 40% combined in 2024, first time ever.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">2</span> Transmission</span>
+        <span class="phase-scores">
+          D=290 <span>C=215</span> <span>N=185</span>
+          <span class="badge low">Low</span>
+          <span class="badge bottleneck">Bottleneck</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:74.1%;background:linear-gradient(90deg,#7b1010,#e74c3c)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">74.1%: Interconnection queue backlogs and permitting delays (IEA). Cross-border transmission capacity shortfalls. KEY BOTTLENECK.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">3</span> Balancing and Storage</span>
+        <span class="phase-scores">
+          D=275 <span>C=205</span> <span>N=177</span>
+          <span class="badge low">Low</span>
+          <span class="badge bottleneck">Bottleneck</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:74.5%;background:linear-gradient(90deg,#7b1010,#e74c3c)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">74.5%: Reserve margin and balancing requirements outpace deployed storage and demand response. Curtailment documented by CAISO, ERCOT, National Grid ESO. KEY BOTTLENECK.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">4</span> Distribution</span>
+        <span class="phase-scores">
+          D=240 <span>C=255</span> <span>N=233</span>
+          <span class="badge high">High</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:94.1%;background:linear-gradient(90deg,#1b5e20,#43a047)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">94.1%: Strongest phase. Regulated utilities file distribution data with regulators in most jurisdictions.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">5</span> End Use and Demand</span>
+        <span class="phase-scores">
+          D=225 <span>C=270</span> <span>N=205</span>
+          <span class="badge medium">Medium</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:83.3%;background:linear-gradient(90deg,#154f80,#2980b9)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">83.3%: National statistics agencies publish sectoral demand. Electrification of transport and heating raises demand growth.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">6</span> Retirement and Decommissioning</span>
+        <span class="phase-scores">
+          D=250 <span>C=195</span> <span>N=172</span>
+          <span class="badge low">Low</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:78.0%;background:linear-gradient(90deg,#8B4A00,#f57c00)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">78.0%: Ash pond and decommissioning disclosure gap; wind turbine blade and solar panel end-of-life volumes rising.</div>
+    </div>
+  </div>
+
+  <!-- Coherence pentagon -->
+  <div class="panel">
+    <h2>Five-Model Coherence: BAU Baseline Scores</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">pi (π)</div>
+        <div class="coherence-val">81.8</div>
+        <div class="coherence-desc">Operational balance: chain average; Good zone</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">phi (φ)</div>
+        <div class="coherence-val">70.0</div>
+        <div class="coherence-desc">Proportional value distribution across phases</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">sqrt2 (√2)</div>
+        <div class="coherence-val">68.0</div>
+        <div class="coherence-desc">Structural overhead from interconnection queues</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2</div>
+        <div class="coherence-val">75.0</div>
+        <div class="coherence-desc">Growth transformation: capacity added but not fully delivered</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e</div>
+        <div class="coherence-val">58.0</div>
+        <div class="coherence-desc">Financial abstraction: markets weakly linked to grid targets</div>
+        <span class="coherence-zone zone-failure">Failure</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#8b949e;margin-top:12px;font-style:italic;">
+      Phi-derived thresholds: Coherent at or above 80%; Stressed 61.8-80% (phi-inverse); Failure 38.2-61.8%;
+      Breakdown below 38.2%. All scores PROVISIONAL: derived from structural N-D-C analysis of IEA data.
+    </p>
+  </div>
+
+  <!-- Phase detail table -->
+  <div class="panel">
+    <h2>Phase Detail Table (BAU)</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Name</th>
+          <th>D</th>
+          <th>C</th>
+          <th>Balance</th>
+          <th>N</th>
+          <th>Transparency</th>
+          <th>Key Metric</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phase-num">0</td>
+          <td>Fuel and Resource Input</td>
+          <td>230</td><td>280</td>
+          <td style="color:#ffc300;font-weight:700;">82.1%</td>
+          <td>208</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Coal, gas, uranium fuel supply; renewable resource maps</td>
+        </tr>
+        <tr>
+          <td class="phase-num">1</td>
+          <td>Generation</td>
+          <td>260</td><td>300</td>
+          <td style="color:#56d364;font-weight:700;">86.7%</td>
+          <td>242</td>
+          <td><span class="badge high">High</span></td>
+          <td>30,850 TWh generated 2024; coal 35%, renewables+nuclear 40%</td>
+        </tr>
+        <tr>
+          <td class="phase-num">2</td>
+          <td>Transmission</td>
+          <td>290</td><td>215</td>
+          <td style="color:#f97066;font-weight:700;">74.1% ⚠</td>
+          <td>185</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Interconnection queue backlogs; permitting delays (IEA)</td>
+        </tr>
+        <tr>
+          <td class="phase-num">3</td>
+          <td>Balancing and Storage</td>
+          <td>275</td><td>205</td>
+          <td style="color:#f97066;font-weight:700;">74.5% ⚠</td>
+          <td>177</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Storage and demand response lag reserve margin requirements</td>
+        </tr>
+        <tr>
+          <td class="phase-num">4</td>
+          <td>Distribution</td>
+          <td>240</td><td>255</td>
+          <td style="color:#56d364;font-weight:700;">94.1%</td>
+          <td>233</td>
+          <td><span class="badge high">High</span></td>
+          <td>Regulated utility distribution networks</td>
+        </tr>
+        <tr>
+          <td class="phase-num">5</td>
+          <td>End Use and Demand</td>
+          <td>225</td><td>270</td>
+          <td style="color:#ffc300;font-weight:700;">83.3%</td>
+          <td>205</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Electrification of transport and heating raises demand</td>
+        </tr>
+        <tr>
+          <td class="phase-num">6</td>
+          <td>Retirement and Decommissioning</td>
+          <td>250</td><td>195</td>
+          <td style="color:#f97066;font-weight:700;">78.0%</td>
+          <td>172</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Ash disposal and decommissioning disclosure gap</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Scenario comparison -->
+  <div class="panel">
+    <h2>Scenario Comparison: BAU vs Mitigation (IEA NZE 2050-Aligned)</h2>
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>BAU Balance</th><th>Mitigation Balance</th><th>D-C Change</th><th>Mechanism</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">2</span> Transmission</td>
+          <td style="color:#f97066;font-weight:700;">74.1%</td>
+          <td style="color:#56d364;font-weight:700;">92.0%</td>
+          <td>D 290 to 250 (-40); C 215 to 230 (+15)</td>
+          <td>Streamlined interconnection permitting reform, grid-enhancing technologies, HVDC interconnector buildout</td>
+        </tr>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">3</span> Balancing and Storage</td>
+          <td style="color:#f97066;font-weight:700;">74.5%</td>
+          <td style="color:#56d364;font-weight:700;">97.8%</td>
+          <td>D 275 to 230 (-45); C 205 to 225 (+20)</td>
+          <td>Utility-scale battery storage, demand response and VPP programmes, pumped-hydro expansion</td>
+        </tr>
+        <tr>
+          <td>Chain Average</td>
+          <td style="color:#ffc300;font-weight:700;">81.8%</td>
+          <td style="color:#56d364;font-weight:700;">87.5%</td>
+          <td colspan="2">Only Phase 2 and Phase 3 are modified; other phases held roughly constant to isolate the effect</td>
+        </tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:#8b949e;margin-top:12px;font-style:italic;">
+      Full derivation and intervention detail: see <a href="project_context.html" style="color:#90caf9;font-weight:600;">Project Context: Phase Intervention Worksheet</a>.
+    </p>
+  </div>
+
+</div>
+<div class="nav">
+  <a href="../../../../index.html">← Main Homepage</a>
+  <a href="../index.html">Grid Hub</a>
+  <a href="index.html">Supply Chain Hub</a>
+  <a href="project_context.html">Project Context</a>
+  <a href="recycling_analysis.html">Ecological Return</a>
+</div>
+</body>
+</html>

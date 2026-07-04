@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cocoa International Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Cocoa International Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>cocoa_international_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">30</span> / 30
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>CI-001</td><td>0</td><td>All producers</td><td>Global</td><td>2024</td><td>global_cocoa_production_mt</td><td>5000000</td><td>metric tonnes per year</td><td>public</td><td>ICCO Quarterly Bulletin of Cocoa Statistics</td><td>https://www.icco.org/statistics/</td><td>Total global production 2023/24 season estimate</td></tr>
+<tr><td>CI-002</td><td>0</td><td>CCC / COCOBOD</td><td>Ivory Coast + Ghana</td><td>2024</td><td>west_africa_production_share_pct</td><td>60</td><td>percent of global</td><td>public</td><td>ICCO Quarterly Bulletin 2024</td><td>https://www.icco.org/statistics/</td><td>Ivory Coast 44% + Ghana 16% + small West Africa contributions</td></tr>
+<tr><td>CI-003</td><td>0</td><td>Smallholder farmers</td><td>Ivory Coast</td><td>2024</td><td>farm_count_ivory_coast_approx</td><td>600000</td><td>smallholder farms</td><td>public</td><td>Conseil Cafe-Cacao (CCC)</td><td>https://www.conseilcafecacao.ci/</td><td>Approximate licensed producer count in CCC registry</td></tr>
+<tr><td>CI-004</td><td>0</td><td>Smallholder farmers</td><td>Global</td><td>2024</td><td>avg_farm_size_ha</td><td>2</td><td>hectares</td><td>public</td><td>IDH Cocoa Barometer 2022</td><td>https://cocoabarometer.org/</td><td>Global average cocoa farm size for smallholders</td></tr>
+<tr><td>CI-005</td><td>0</td><td>ILO / NORC research</td><td>Ivory Coast + Ghana</td><td>2020</td><td>child_labor_estimated_persons</td><td>1560000</td><td>children aged 5-17 in hazardous work</td><td>public</td><td>NORC University of Chicago for US DoL 2020</td><td>https://www.dol.gov/agencies/ilab</td><td>Study covers 2018/19 production year</td></tr>
+<tr><td>CI-006</td><td>0</td><td>Multiple NGOs</td><td>Ivory Coast</td><td>2024</td><td>deforestation_area_inside_protected_forest_ha</td><td>100000</td><td>hectares (estimate)</td><td>public</td><td>Mighty Earth Cocoa Scorecard 2023</td><td>https://www.mightyearth.org/cocoa-scorecard/</td><td>Estimate of cocoa grown illegally inside protected forest areas</td></tr>
+<tr><td>CI-007</td><td>0</td><td>EU Commission</td><td>EU</td><td>2023</td><td>eudr_deadline</td><td>2025-12-30</td><td>regulatory deadline</td><td>public</td><td>EU Regulation 2023/1115</td><td>https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en</td><td>Deadline for EUDR compliance for large operators; SMEs 2026-06-30</td></tr>
+<tr><td>CI-008</td><td>1</td><td>World Cocoa Foundation</td><td>West Africa</td><td>2024</td><td>fermentation_duration_days</td><td>6</td><td>days (average)</td><td>public</td><td>World Cocoa Foundation post-harvest guidelines</td><td>https://worldcocoafoundation.org/</td><td>Range 5-8 days; optimal 6 days for Forastero beans</td></tr>
+<tr><td>CI-009</td><td>1</td><td>Industry standard</td><td>West Africa</td><td>2024</td><td>drying_duration_days</td><td>10</td><td>days sun drying (average)</td><td>public</td><td>World Cocoa Foundation post-harvest guidelines</td><td>https://worldcocoafoundation.org/</td><td>Range 7-14 days depending on weather</td></tr>
+<tr><td>CI-010</td><td>1</td><td>Cargill</td><td>Ivory Coast</td><td>2024</td><td>flavor_precursor_development_pct</td><td>85</td><td>percent derived from fermentation</td><td>inferred</td><td>Cargill Cocoa technical guidance</td><td>https://www.cargill.com/sustainability/cocoa</td><td>Industry consensus; fermentation develops pyrazines and Maillard precursors</td></tr>
+<tr><td>CI-011</td><td>1</td><td>IDH / WCF</td><td>Global</td><td>2022</td><td>sustainability_certification_coverage_pct</td><td>24</td><td>percent of global supply</td><td>public</td><td>IDH Cocoa Barometer 2022</td><td>https://cocoabarometer.org/</td><td>Includes Rainforest Alliance + UTZ + Fairtrade; does not verify fermentation practices</td></tr>
+<tr><td>CI-012</td><td>1</td><td>ILO / ICI</td><td>Ivory Coast</td><td>2023</td><td>clmrs_enrolled_households</td><td>700000</td><td>farm households</td><td>public</td><td>ICI / Cargill Cocoa Promise 2023</td><td>https://www.cargill.com/sustainability/cocoa</td><td>Approximate total enrolled across all CLMRS programs in Ivory Coast</td></tr>
+<tr><td>CI-013</td><td>2</td><td>CCC</td><td>Ivory Coast</td><td>2024</td><td>farm_gate_price_guaranteed_cif_pct</td><td>64</td><td>percent of CIF price</td><td>public</td><td>Conseil Cafe-Cacao price announcement 2023-24</td><td>https://www.conseilcafecacao.ci/</td><td>CCC sets minimum guaranteed price as percentage of CIF before season opens</td></tr>
+<tr><td>CI-014</td><td>2</td><td>CCC</td><td>Ivory Coast</td><td>2024</td><td>lbc_count_ivory_coast</td><td>190</td><td>Licensed Buying Companies</td><td>public</td><td>Conseil Cafe-Cacao 2023</td><td>https://www.conseilcafecacao.ci/</td><td>Number of licensed intermediary buyers operating in Ivory Coast</td></tr>
+<tr><td>CI-015</td><td>2</td><td>COCOBOD</td><td>Ghana</td><td>2024</td><td>farm_gate_price_usd_per_mt_ghana</td><td>1600</td><td>USD per metric tonne</td><td>public</td><td>COCOBOD Ghana / World Cocoa Foundation</td><td>https://worldcocoafoundation.org/</td><td>Ghana farm-gate price (LBC-to-farmer purchase price) 2023-24 season</td></tr>
+<tr><td>CI-016</td><td>2</td><td>CCC</td><td>Ivory Coast</td><td>2024</td><td>farm_gate_price_usd_per_mt_ivory_coast</td><td>1400</td><td>USD per metric tonne</td><td>public</td><td>ICCO / World Cocoa Foundation Market Update 2024</td><td>https://worldcocoafoundation.org/</td><td>Approximate guaranteed minimum farm-gate price 2023-24 season</td></tr>
+<tr><td>CI-017</td><td>3</td><td>Barry Callebaut / ICCO</td><td>Ivory Coast</td><td>2024</td><td>ivory_coast_origin_grinding_mt</td><td>750000</td><td>metric tonnes per year</td><td>public</td><td>ICCO Quarterly Bulletin / Barry Callebaut Annual Report 2024</td><td>https://www.icco.org/statistics/</td><td>Approximate origin grinding volumes at ADM/Cargill/Olam/Barry Callebaut Ivory Coast plants</td></tr>
+<tr><td>CI-018</td><td>3</td><td>ICCO</td><td>Ivory Coast</td><td>2024</td><td>origin_grinding_share_pct</td><td>35</td><td>percent of Ivory Coast harvest</td><td>public</td><td>ICCO Quarterly Bulletin 2024</td><td>https://www.icco.org/statistics/</td><td>35% of approximately 2.2 Mt harvest = 770</td><td>000 Mt origin processed</td></tr>
+<tr><td>CI-019</td><td>3</td><td>Port Autonome d&#x27;Abidjan</td><td>Ivory Coast</td><td>2024</td><td>abidjan_port_cocoa_throughput_mt</td><td>1000000</td><td>metric tonnes per year</td><td>public</td><td>Port Autonome d&#x27;Abidjan commodity statistics</td><td>https://www.paa.ci/</td><td>Approximate annual cocoa throughput at Abidjan port</td></tr>
+<tr><td>CI-020</td><td>4</td><td>Port of Rotterdam</td><td>Netherlands</td><td>2024</td><td>rotterdam_amsterdam_cocoa_mt</td><td>1200000</td><td>metric tonnes per year</td><td>public</td><td>Port of Rotterdam Authority commodity flows 2024</td><td>https://www.portofrotterdam.com/en/news-and-press-releases/commodities-handled</td><td>Combined Rotterdam + Amsterdam cocoa volume (beans + semi-finished)</td></tr>
+<tr><td>CI-021</td><td>4</td><td>Shipping industry</td><td>Global</td><td>2024</td><td>abidjan_to_rotterdam_transit_days</td><td>12</td><td>days (typical)</td><td>public</td><td>Port of Rotterdam Authority / shipping industry</td><td>https://www.portofrotterdam.com/</td><td>Range 10-14 days; 22-26 days via Cape (Red Sea avoidance)</td></tr>
+<tr><td>CI-022</td><td>4</td><td>Shipping industry</td><td>Global</td><td>2024</td><td>red_sea_rerouting_extra_days</td><td>10</td><td>days added</td><td>public</td><td>Port of Rotterdam / shipping press 2024</td><td>https://www.portofrotterdam.com/</td><td>Average extra transit time via Cape of Good Hope for vessels avoiding Red Sea (2024)</td></tr>
+<tr><td>CI-023</td><td>5</td><td>Port of Amsterdam</td><td>Netherlands</td><td>2024</td><td>amsterdam_grinding_capacity_mt</td><td>600000</td><td>metric tonnes per year</td><td>public</td><td>Port of Amsterdam / ICCO</td><td>https://www.icco.org/statistics/</td><td>Amsterdam is world&#x27;s largest single cocoa grinding location</td></tr>
+<tr><td>CI-024</td><td>5</td><td>Barry Callebaut</td><td>Global</td><td>2024</td><td>barry_callebaut_total_volume_mt</td><td>2200000</td><td>metric tonnes cocoa and chocolate processed</td><td>public</td><td>Barry Callebaut Annual Report 2024</td><td>https://www.barry-callebaut.com/en/investors/annual-report</td><td>FY2023/24 total volume across all Barry Callebaut facilities globally</td></tr>
+<tr><td>CI-025</td><td>5</td><td>ICCO analysis</td><td>Global</td><td>2024</td><td>top3_processors_destination_share_pct</td><td>60</td><td>percent of global destination grinding</td><td>inferred</td><td>ICCO / industry analysis</td><td>https://www.icco.org/</td><td>Barry Callebaut + Cargill + Olam control approximately 60%+ of global destination grinding</td></tr>
+<tr><td>CI-026</td><td>6</td><td>Fairtrade International</td><td>Global</td><td>2023</td><td>fairtrade_price_premium_usd_per_mt</td><td>200</td><td>USD per metric tonne above market price</td><td>public</td><td>Fairtrade International Cocoa 2023 Monitoring Report</td><td>https://www.fairtrade.net/issue/cocoa</td><td>Fairtrade minimum premium paid to cooperatives; how much reaches individual farmers varies</td></tr>
+<tr><td>CI-027</td><td>6</td><td>Fairtrade / ICCO</td><td>Global</td><td>2024</td><td>farm_gate_to_retail_ratio</td><td>6</td><td>retail USD per USD 1 farm gate</td><td>inferred</td><td>ICCO / Fairtrade / Euromonitor</td><td>https://www.icco.org/statistics/</td><td>Farm gate approx USD 1</td><td>400/Mt vs retail chocolate equivalent approx USD 8</td><td>000+/Mt (as cocoa content)</td></tr>
+<tr><td>CI-028</td><td>6</td><td>Euromonitor</td><td>Global</td><td>2024</td><td>global_chocolate_retail_market_usd</td><td>130000000000</td><td>USD</td><td>public</td><td>Euromonitor / Statista 2024</td><td>https://www.statista.com/statistics/238849/global-production-of-chocolate-confectionery/</td><td>Global retail chocolate and confectionery market value 2024</td></tr>
+<tr><td>CI-029</td><td>6</td><td>Fairtrade</td><td>Global</td><td>2023</td><td>fairtrade_certified_cocoa_volume_mt</td><td>400000</td><td>metric tonnes certified and sold</td><td>public</td><td>Fairtrade International Annual Report 2023</td><td>https://www.fairtrade.net/issue/cocoa</td><td>Fairtrade-certified cocoa sold on Fairtrade terms 2023</td></tr>
+<tr><td>CI-030</td><td>0</td><td>ICCO</td><td>Ivory Coast</td><td>2024</td><td>ivory_coast_production_mt</td><td>2200000</td><td>metric tonnes per year</td><td>public</td><td>ICCO Quarterly Bulletin 2024</td><td>https://www.icco.org/statistics/</td><td>Ivory Coast 2023/24 season production estimate; range 2.0-2.4 Mt depending on year</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+{
+  "_meta": {
+    "project": "solar_pv_supply_chain",
+    "chain": "solar_pv_manufacturing_and_deployment_chain",
+    "region": "Global, manufacturing concentrated in China; secondary hubs in Southeast Asia, EU, US, India",
+    "generated": "2026-07-02",
+    "source": "IEA Special Report on Solar PV Global Supply Chains (2022); IEA The State of Clean Technology Manufacturing briefing",
+    "version": "1.0"
+  },
+  "entities": {
+    "synthetic": {
+      "name": "Solar PV Supply Chain",
+      "region": "China (dominant manufacturing, all five stages); Southeast Asia, EU, US, India (secondary and emerging)",
+      "chain_type": "Manufactured commodity, single scenario, extreme geographic concentration, energy-transition critical mineral and manufacturing chain"
+    }
+  },
+  "phase_meta": [
+    {"name": "Polysilicon Production", "transparency": "Low-Medium", "transformation": "Quartz and metallurgical-grade silicon to solar-grade polysilicon"},
+    {"name": "Ingot and Wafer Manufacturing", "transparency": "Low", "transformation": "Polysilicon to monocrystalline or multicrystalline wafers"},
+    {"name": "Cell Manufacturing", "transparency": "Medium-High", "transformation": "Wafers to photovoltaic cells"},
+    {"name": "Module Assembly", "transparency": "High", "transformation": "Cells to encapsulated, framed PV modules"},
+    {"name": "Installation and Grid Connection", "transparency": "Medium-High", "transformation": "Modules to installed, grid-connected generating capacity"},
+    {"name": "End-of-Life and Recycling", "transparency": "Low", "transformation": "Retired modules to recovered glass, silicon, silver, and residual waste"}
+  ],
+  "phases": {
+    "synthetic": [
+      {
+        "id": 0,
+        "name": "Polysilicon Production",
+        "D": 310, "C": 210,
+        "balance": 67.7, "N": 173, "sustainability": 0.91,
+        "status": "Fair",
+        "notes": "Xinjiang province alone accounts for approximately 40% of global polysilicon manufacturing capacity. UFLPA (US Uyghur Forced Labor Prevention Act) and related import restrictions have specifically targeted Xinjiang-sourced polysilicon since 2021-2022 due to documented forced-labor concerns, creating a structural compliance-cost and opacity gap. D-heavy: constraint load (feedstock purity specs, energy intensity, labour-sourcing scrutiny) exceeds contribution capacity.",
+        "data_quality": "Low-Medium: aggregate capacity is public (IEA), but facility-level labor and sourcing data is largely opaque",
+        "metrics": {
+          "xinjiang_share_of_global_polysilicon_capacity_pct": 40,
+          "china_investment_in_pv_capacity_since_2011_usd_billion": 50,
+          "china_pv_manufacturing_jobs_created": 300000,
+          "china_global_pv_demand_share_pct": 36,
+          "uflpa_restrictions_active_since": "2021-2022"
+        }
+      },
+      {
+        "id": 1,
+        "name": "Ingot and Wafer Manufacturing",
+        "D": 300, "C": 195,
+        "balance": 65.0, "N": 157, "sustainability": 0.87,
+        "status": "Fair",
+        "notes": "BOTTLENECK, worst phase in chain. China holds approximately 95-98% of global ingot and wafer capacity, up from about 80% in 2010. Extreme single-point concentration: one out of every seven solar panels produced worldwide is manufactured by a single facility. Low transparency at the facility ownership and supply-contract level.",
+        "data_quality": "Low: facility-level ownership and supply-contract data not publicly disclosed; aggregate capacity shares from IEA and industry trackers",
+        "metrics": {
+          "china_wafer_ingot_share_pct_current": 97,
+          "china_wafer_ingot_share_pct_2010": 80,
+          "single_facility_share_of_global_panels_pct": 14.3,
+          "announced_capacity_expansion_target_china_share_pct": 95
+        }
+      },
+      {
+        "id": 2,
+        "name": "Cell Manufacturing",
+        "D": 270, "C": 230,
+        "balance": 85.2, "N": 212, "sustainability": 2.0,
+        "status": "Good",
+        "notes": "China's cell manufacturing share rose from about 60% in 2010 to almost 80-85% by the early 2020s. In 2010 the cell market was more diversified: Chinese Taipei 14%, Japan 7%, Germany 6%. Medium-high transparency: production volumes tracked by industry associations (e.g. BloombergNEF, PV InfoLink).",
+        "data_quality": "Medium-High: production volumes tracked by industry associations",
+        "metrics": {
+          "china_cell_share_pct_current": 82,
+          "china_cell_share_pct_2010": 60,
+          "chinese_taipei_share_pct_2010": 14,
+          "japan_share_pct_2010": 7,
+          "germany_share_pct_2010": 6
+        }
+      },
+      {
+        "id": 3,
+        "name": "Module Assembly",
+        "D": 250, "C": 260,
+        "balance": 96.2, "N": 245, "sustainability": 5.0,
+        "status": "Excellent",
+        "notes": "Most geographically diverse stage in the chain. Southeast Asian countries (Malaysia, Thailand, Vietnam) plus a growing US and India assembly base provide partial diversification, even though China remains dominant at roughly 80%. High transparency: trade and customs data are public.",
+        "data_quality": "High: trade and customs data are public",
+        "metrics": {
+          "china_module_share_pct": 80,
+          "southeast_asia_diversification_countries": ["Malaysia", "Thailand", "Vietnam"],
+          "emerging_assembly_bases": ["United States", "India"]
+        }
+      },
+      {
+        "id": 4,
+        "name": "Installation and Grid Connection",
+        "D": 235, "C": 270,
+        "balance": 87.0, "N": 219, "sustainability": 2.22,
+        "status": "Good",
+        "notes": "Utility-scale and distributed rooftop installation, interconnection to grid. Medium-high transparency: installed capacity tracked nationally by IEA and national energy agencies.",
+        "data_quality": "Medium-High: installed capacity tracked nationally",
+        "metrics": {
+          "tracking_bodies": ["IEA", "national energy agencies"]
+        }
+      },
+      {
+        "id": 5,
+        "name": "End-of-Life and Recycling",
+        "D": 260, "C": 190,
+        "balance": 73.1, "N": 163, "sustainability": 1.25,
+        "status": "Fair",
+        "notes": "Secondary bottleneck. Under 10% of retired panels are formally recycled through mandated take-back or recycling infrastructure in most markets (PROVISIONAL estimate); most jurisdictions lack mandated take-back schemes. Low transparency: end-of-life volumes and disposal pathways are poorly tracked globally.",
+        "data_quality": "Low: end-of-life volumes and disposal pathways poorly tracked globally; recycling rate figure is a PROVISIONAL estimate",
+        "metrics": {
+          "global_formal_recycling_rate_pct": "<10 (PROVISIONAL, most markets lack mandated take-back)",
+          "mandated_take_back_schemes": "Rare; not present in most jurisdictions"
+        }
+      }
+    ]
+  },
+  "system": {
+    "balance": 79.0,
+    "average_N": 194.8,
+    "bottleneck_phase_ids": [1, 0],
+    "interpretation": "The solar PV supply chain scores 79.0% chain average balance, just below the 80% Good/Coherent threshold. Phase 1 (Ingot and Wafer Manufacturing, 65.0%) is the worst-performing phase and the most geographically concentrated stage in the entire chain: China holds approximately 95-98% of global capacity, and one in seven solar panels worldwide comes from a single facility. Phase 0 (Polysilicon Production, 67.7%) is the second-worst phase, driven by Xinjiang's approximately 40% share of global polysilicon capacity and the structural compliance and opacity gap created by UFLPA forced-labor import restrictions since 2021-2022. Phase 5 (End-of-Life and Recycling, 73.1%) is a secondary stressed phase: under 10% of retired panels are formally recycled in most markets. The defining structural feature of this chain is that China's manufacturing share exceeds 80% at every stage, more than double its 36% share of global PV demand: a proportional value-distribution failure documented in the phi-axis score."
+  },
+  "scenarios": {
+    "baseline": {
+      "label": "Current state (2026 baseline, PROVISIONAL)",
+      "scores": {
+        "pi": 79.0,
+        "phi": 60.0,
+        "sqrt2": 66.0,
+        "ln2": 82.0,
+        "e": 55.0
+      },
+      "notes": "pi = chain average balance across 6 phases (79.0, just below Good/Coherent threshold). phi = proportional value distribution: China captures over 80% of manufacturing value across every stage while holding only 36% of global demand, the sharpest phi-failure of any chain in this repository's corpus (Stressed zone, close to the 61.8% Failure boundary). sqrt2 = structural overhead: single-facility concentration (1 in 7 panels), and UFLPA compliance costs are documented structural friction (Stressed zone). ln2 = growth and transformation: solar PV has the strongest cost-decline and technology-conversion track record of any energy technology in the corpus (Coherent zone). e = financial abstraction: national tariffs, IRA 45X and EU Net Zero Industry Act tax credits, and anti-dumping duties exist but are inconsistently linked to physical supply-chain diversification outcomes (Stressed zone). The phi-axis score (60.0) is the standout failure signal for this chain and is the headline diagnostic finding."
+    }
+  }
+}

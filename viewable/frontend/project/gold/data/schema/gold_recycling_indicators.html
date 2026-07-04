@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gold Recycling Indicators</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Gold Recycling Indicators</h1>
+        <p class="subtitle">CSV viewer generated from <strong>gold_recycling_indicators.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">59</span> / 59
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>indicator_id<span class="sort-indicator"></span></th>
+<th>indicator_label<span class="sort-indicator"></span></th>
+<th>role<span class="sort-indicator"></span></th>
+<th>scoring_rule<span class="sort-indicator"></span></th>
+<th>max_points<span class="sort-indicator"></span></th>
+<th>waste_stream<span class="sort-indicator"></span></th>
+<th>source_hint<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>P0_N1</td><td>Drill cuttings volume declared per exploration lot</td><td>N</td><td>+15 if quantified with mass balance; +8 if acknowledged only; 0 if absent</td><td>15</td><td>Drill cuttings</td><td>ICMM Exploration Best Practice 2009</td></tr>
+<tr><td>0</td><td>P0_N2</td><td>Exploration footprint (ha disturbed) declared against permit boundary</td><td>N</td><td>+15 if within permit with boundary map; +8 if declared without map; 0 if absent</td><td>15</td><td>Land clearance</td><td>National environmental permit records</td></tr>
+<tr><td>0</td><td>P0_D1</td><td>Written environmental management plan specific to exploration site</td><td>D</td><td>+20 if site-specific and substantive; +10 if generic corporate policy only; 0 if absent</td><td>20</td><td>All streams</td><td>ICMM Mining Principles 2021</td></tr>
+<tr><td>0</td><td>P0_D2</td><td>Drill fluid and brine disposal method declared and bounded</td><td>D</td><td>+15 if method specified with containment standard; +8 if method named only; 0 if absent</td><td>15</td><td>Brine / drill fluid</td><td>National regulations</td></tr>
+<tr><td>0</td><td>P0_C1</td><td>Independent environmental baseline survey within 24 months</td><td>C</td><td>+25 if from accredited third party within window; +12 if from company-funded external consultant; 0 otherwise</td><td>25</td><td>All streams</td><td>ICMM Good Practice Guidance for Mining and Biodiversity</td></tr>
+<tr><td>0</td><td>P0_C2</td><td>Satellite or aerial footprint verification against declared boundary</td><td>C</td><td>+10 if imagery dated within 12 months and matched to permit; 0 otherwise</td><td>10</td><td>Land clearance</td><td>Open-access satellite (e.g. Sentinel-2)</td></tr>
+<tr><td>1</td><td>P1_N1</td><td>Waste rock volume declared per mining period (tonnes)</td><td>N</td><td>+20 if declared with mass balance per reporting period; +10 if annual aggregate only; 0 if absent</td><td>20</td><td>Waste rock / overburden</td><td>Newmont 2024 SR; ICMM Tailings reporting</td></tr>
+<tr><td>1</td><td>P1_N2</td><td>Tailings volume and solids content declared per period</td><td>N</td><td>+20 if volume and solids percentage both stated; +10 if volume only; 0 if absent</td><td>20</td><td>Tailings slurry</td><td>ICMM Tailings Standard 2020</td></tr>
+<tr><td>1</td><td>P1_N3</td><td>Acid mine drainage occurrence declared (pH / sulfate readings)</td><td>N</td><td>+10 if pH and sulfate measured at mine boundary; +5 if acknowledged qualitatively; 0 if absent</td><td>10</td><td>Acid mine drainage</td><td>National water quality regulations</td></tr>
+<tr><td>1</td><td>P1_D1</td><td>Tailings storage facility (TSF) design certified by independent engineer</td><td>D</td><td>+25 if ICMM-aligned ITRB review within 3 years; +12 if internal review only; 0 if absent</td><td>25</td><td>Tailings slurry</td><td>ICMM Tailings Standard 2020 Requirement 6</td></tr>
+<tr><td>1</td><td>P1_D2</td><td>Progressive reclamation plan with annual targets filed with regulator</td><td>D</td><td>+20 if filed with measurable targets; +10 if plan exists without regulatory filing; 0 if absent</td><td>20</td><td>Land clearance / waste rock</td><td>Newmont 2024 SR (162 ha/yr target)</td></tr>
+<tr><td>1</td><td>P1_D3</td><td>Cyanide management protocol (for heap-leach sites) declared</td><td>D</td><td>+15 if ICMC-aligned; +8 if internal protocol only; 0 if absent or not applicable (mark N/A)</td><td>15</td><td>Cyanide (ASGM or industrial)</td><td>ICMC Cyanide Code; Newmont Path to Zero Cyanide Spills</td></tr>
+<tr><td>1</td><td>P1_C1</td><td>Independent TSF inspection report within 12 months</td><td>C</td><td>+25 if from independent qualified person (IQP) per ICMM standard; +12 if from company engineer; 0 otherwise</td><td>25</td><td>Tailings slurry</td><td>ICMM Tailings Standard 2020</td></tr>
+<tr><td>1</td><td>P1_C2</td><td>Third-party reclamation progress audit matched to annual target</td><td>C</td><td>+20 if audited externally and result matched to target; +10 if internally audited; 0 otherwise</td><td>20</td><td>Land clearance</td><td>Newmont 2024 SR (192 ha actual vs 162 target)</td></tr>
+<tr><td>1</td><td>P1_C3</td><td>Community or NGO monitoring report on AMD or dust impacts</td><td>C</td><td>+15 if published third-party report within 24 months; +8 if company-funded community survey; 0 otherwise</td><td>15</td><td>Acid mine drainage / dust</td><td>Community benefit agreements; national NGO</td></tr>
+<tr><td>2</td><td>P2_N1</td><td>Cyanide solution volume and concentration declared per leach cycle</td><td>N</td><td>+20 if volume and WAD-CN concentration both stated per cycle; +10 if annual aggregate; 0 if absent</td><td>20</td><td>Cyanide solution</td><td>Newmont 2024 SR; ICMC Cyanide Code</td></tr>
+<tr><td>2</td><td>P2_N2</td><td>Process water volume drawn and recycled declared</td><td>N</td><td>+20 if both intake and recycled volume stated; +10 if only recycled percentage stated; 0 if absent</td><td>20</td><td>Process water</td><td>Newmont 2024 SR (71% recycled)</td></tr>
+<tr><td>2</td><td>P2_N3</td><td>Cyanide spill count and volume declared per period</td><td>N</td><td>+10 if count and volume both stated; +5 if count only; 0 if absent</td><td>10</td><td>Cyanide spills</td><td>Newmont 2024 SR (30 spills/yr)</td></tr>
+<tr><td>2</td><td>P2_D1</td><td>Stack emissions permit with enforceable SO2/NOx limits (roasting)</td><td>D</td><td>+25 if from national regulator with numeric limits; +12 if internal target only; 0 if absent or not applicable</td><td>25</td><td>SO2 / NOx (roasting)</td><td>National air quality regulations</td></tr>
+<tr><td>2</td><td>P2_D2</td><td>Cyanide detoxification procedure declared and bounded</td><td>D</td><td>+20 if procedure matches ICMC standard with measurable outcome; +10 if procedure named only; 0 if absent</td><td>20</td><td>Cyanide solution</td><td>ICMC Cyanide Code Article 6</td></tr>
+<tr><td>2</td><td>P2_D3</td><td>Water balance model for site (intake vs recycled vs discharge)</td><td>D</td><td>+15 if independent water balance model on file; +8 if internal model; 0 if absent</td><td>15</td><td>Process water</td><td>ICMM Water Stewardship Framework</td></tr>
+<tr><td>2</td><td>P2_C1</td><td>Third-party stack emissions test (external accredited lab) within 24 months</td><td>C</td><td>+30 if from accredited lab within window; +15 if from company lab; 0 otherwise</td><td>30</td><td>SO2 / NOx</td><td>National accreditation body</td></tr>
+<tr><td>2</td><td>P2_C2</td><td>Effluent discharge cross-checked to national environmental registry</td><td>C</td><td>+20 if matched to registry entry; +10 if company-reported only; 0 otherwise</td><td>20</td><td>Process water / heavy metals</td><td>National environmental registry</td></tr>
+<tr><td>2</td><td>P2_C3</td><td>Independent cyanide spill audit or Path-to-Zero program verification</td><td>C</td><td>+10 if third-party verified; +5 if internal audit; 0 otherwise</td><td>10</td><td>Cyanide spills</td><td>Newmont Path to Zero Cyanide Spills</td></tr>
+<tr><td>3</td><td>P3_N1</td><td>Slag volume declared per smelting run (tonnes)</td><td>N</td><td>+20 if declared per run with composition; +10 if annual aggregate; 0 if absent</td><td>20</td><td>Smelter slag</td><td>Industry LCA benchmarks</td></tr>
+<tr><td>3</td><td>P3_N2</td><td>SO2 and NOx emissions declared per furnace cycle against permit</td><td>N</td><td>+20 if declared with permit reference; +10 if declared without permit link; 0 if absent</td><td>20</td><td>SO2 / NOx</td><td>National air quality permit</td></tr>
+<tr><td>3</td><td>P3_N3</td><td>Mercury capture waste volume declared (where mercury used)</td><td>N</td><td>+10 if quantified; +5 if acknowledged; 0 if absent or not applicable</td><td>10</td><td>Mercury capture waste</td><td>Minamata Convention monitoring</td></tr>
+<tr><td>3</td><td>P3_D1</td><td>Furnace emissions permit with numeric limits from national regulator</td><td>D</td><td>+25 if from regulator with annual compliance report; +12 if internal target; 0 if absent</td><td>25</td><td>SO2 / NOx / particulates</td><td>National air quality regulations</td></tr>
+<tr><td>3</td><td>P3_D2</td><td>Slag characterisation and disposal pathway documented</td><td>D</td><td>+20 if characterisation (TCLP or equivalent) and licensed disposal site named; +10 if disposal site named only; 0 if absent</td><td>20</td><td>Smelter slag</td><td>National hazardous waste regulations</td></tr>
+<tr><td>3</td><td>P3_D3</td><td>Mercury handling and capture policy aligned to Minamata Convention</td><td>D</td><td>+15 if policy explicitly references Minamata; +8 if generic mercury policy; 0 if absent or not applicable</td><td>15</td><td>Mercury capture waste</td><td>Minamata Convention</td></tr>
+<tr><td>3</td><td>P3_C1</td><td>Third-party stack test for SO2/NOx/particulates within 24 months</td><td>C</td><td>+30 if from accredited external lab; +15 if company lab; 0 otherwise</td><td>30</td><td>SO2 / NOx</td><td>National accreditation body</td></tr>
+<tr><td>3</td><td>P3_C2</td><td>Slag disposal cross-checked to licensed facility manifest</td><td>C</td><td>+20 if manifest matched to licensed facility; +10 if company-reported disposal only; 0 otherwise</td><td>20</td><td>Smelter slag</td><td>Licensed facility manifest</td></tr>
+<tr><td>4</td><td>P4_N1</td><td>Acid pickling liquor volume declared per refining batch</td><td>N</td><td>+20 if volume and acid concentration both stated; +10 if volume only; 0 if absent</td><td>20</td><td>Acid pickling liquors</td><td>LBMA Responsible Sourcing</td></tr>
+<tr><td>4</td><td>P4_N2</td><td>Anode slime (PGM-bearing) volume declared per electrolytic run</td><td>N</td><td>+15 if declared with assay; +8 if volume only; 0 if absent</td><td>15</td><td>Anode slime</td><td>Industry LCA; LBMA</td></tr>
+<tr><td>4</td><td>P4_N3</td><td>Cooling water discharge volume and temperature declared</td><td>N</td><td>+10 if both volume and temperature delta stated; +5 if volume only; 0 if absent</td><td>10</td><td>Cooling water</td><td>National water quality regulations</td></tr>
+<tr><td>4</td><td>P4_D1</td><td>Acid neutralisation facility certified and discharge permit current</td><td>D</td><td>+25 if permit current and neutralisation certified; +12 if permit exists without neutralisation cert; 0 if absent</td><td>25</td><td>Acid pickling liquors</td><td>National environmental regulations</td></tr>
+<tr><td>4</td><td>P4_D2</td><td>Chlorine and HCl emission controls documented (Miller process)</td><td>D</td><td>+20 if scrubber specification and performance bounds documented; +10 if scrubber existence noted only; 0 if absent or not applicable</td><td>20</td><td>Chlorine / HCl gas</td><td>National air quality regulations</td></tr>
+<tr><td>4</td><td>P4_C1</td><td>Third-party effluent quality test for acid discharge within 12 months</td><td>C</td><td>+30 if from accredited lab; +15 if company lab; 0 otherwise</td><td>30</td><td>Acid effluent</td><td>National accreditation body</td></tr>
+<tr><td>4</td><td>P4_C2</td><td>PGM anode slime custody chain to secondary processor documented</td><td>C</td><td>+15 if full custody chain to licensed secondary processor; +8 if processor named only; 0 otherwise</td><td>15</td><td>Anode slime</td><td>Secondary PGM processor records</td></tr>
+<tr><td>5</td><td>P5_N1</td><td>Metal filings and swarf volume declared per production run</td><td>N</td><td>+15 if declared with recovery rate; +8 if acknowledged; 0 if absent</td><td>15</td><td>Metal shavings / filings</td><td>Industry convention</td></tr>
+<tr><td>5</td><td>P5_N2</td><td>Assay cupel waste (lead and silver) volume declared</td><td>N</td><td>+15 if declared with disposal method; +8 if acknowledged; 0 if absent</td><td>15</td><td>Assay cupel waste</td><td>LBMA GDL; national hazardous waste</td></tr>
+<tr><td>5</td><td>P5_N3</td><td>Lubricant and coolant volume used and disposed declared</td><td>N</td><td>+10 if volume and disposal route stated; +5 if acknowledged; 0 if absent</td><td>10</td><td>Cutting lubricants</td><td>National waste regulations</td></tr>
+<tr><td>5</td><td>P5_D1</td><td>Filings recovery policy and refiner destination documented</td><td>D</td><td>+20 if recovery rate and refiner destination named; +10 if policy exists without destination; 0 if absent</td><td>20</td><td>Metal shavings / filings</td><td>Internal refinery records</td></tr>
+<tr><td>5</td><td>P5_D2</td><td>Assay cupel waste classified as hazardous and licensed disposal confirmed</td><td>D</td><td>+20 if hazardous classification and licensed facility; +10 if licensed facility named without classification; 0 if absent</td><td>20</td><td>Assay cupel waste</td><td>National hazardous waste regulations</td></tr>
+<tr><td>5</td><td>P5_C1</td><td>Independent verification of filings recovery rate (weight reconciliation)</td><td>C</td><td>+25 if external auditor verifies; +12 if internal reconciliation; 0 otherwise</td><td>25</td><td>Metal shavings / filings</td><td>External assayer or auditor</td></tr>
+<tr><td>5</td><td>P5_C2</td><td>Cupel waste disposal manifest matched to licensed facility</td><td>C</td><td>+20 if manifest on file; +10 if company-stated disposal; 0 otherwise</td><td>20</td><td>Assay cupel waste</td><td>Licensed hazardous waste facility</td></tr>
+<tr><td>6</td><td>P6_N1</td><td>HVAC energy consumption declared per vault per year</td><td>N</td><td>+15 if declared in kWh with source (utility bill); +8 if estimated; 0 if absent</td><td>15</td><td>Climate-control energy</td><td>Utility bill / energy audit</td></tr>
+<tr><td>6</td><td>P6_N2</td><td>Armoured transport fuel consumption and route distance declared</td><td>N</td><td>+15 if fuel per route declared; +8 if annual aggregate; 0 if absent</td><td>15</td><td>Transport diesel exhaust</td><td>Transport operator records</td></tr>
+<tr><td>6</td><td>P6_N3</td><td>Packaging and desiccant waste volume declared</td><td>N</td><td>+10 if declared; +5 if acknowledged; 0 if absent</td><td>10</td><td>Packaging waste</td><td>Internal logistics records</td></tr>
+<tr><td>6</td><td>P6_D1</td><td>Energy efficiency policy for vault climate control documented</td><td>D</td><td>+20 if policy with measurable kWh target; +10 if generic energy policy; 0 if absent</td><td>20</td><td>Climate-control energy</td><td>Internal sustainability policy</td></tr>
+<tr><td>6</td><td>P6_D2</td><td>Transport emissions reduction plan aligned to science-based target</td><td>D</td><td>+20 if SBT-aligned; +10 if plan exists without SBT reference; 0 if absent</td><td>20</td><td>Transport diesel exhaust</td><td>Science Based Targets initiative</td></tr>
+<tr><td>6</td><td>P6_C1</td><td>Third-party energy audit of vault facility within 36 months</td><td>C</td><td>+25 if from certified energy auditor; +12 if internal audit; 0 otherwise</td><td>25</td><td>Climate-control energy</td><td>ISO 50001 or equivalent</td></tr>
+<tr><td>6</td><td>P6_C2</td><td>Transport emissions verified by logistics provider third-party report</td><td>C</td><td>+20 if logistics provider&#x27;s external sustainability report covers this route; +10 if provider self-reported; 0 otherwise</td><td>20</td><td>Transport diesel exhaust</td><td>Transport operator sustainability report</td></tr>
+<tr><td>7</td><td>P7_N1</td><td>Data centre energy consumption for registry systems declared</td><td>N</td><td>+15 if declared in kWh with utility or cloud provider invoice; +8 if estimated; 0 if absent</td><td>15</td><td>Data centre energy</td><td>Cloud provider sustainability report (e.g. AWS/Azure)</td></tr>
+<tr><td>7</td><td>P7_N2</td><td>Paper documentation and packaging waste volume declared</td><td>N</td><td>+10 if declared; +5 if acknowledged; 0 if absent</td><td>10</td><td>Paper / packaging</td><td>Internal records</td></tr>
+<tr><td>7</td><td>P7_D1</td><td>Exchange IT infrastructure covered by renewable energy commitment</td><td>D</td><td>+20 if exchange has public renewable energy certificate (REC) or PPA covering registry systems; +10 if commitment without certificate; 0 if absent</td><td>20</td><td>Data centre energy</td><td>Exchange sustainability report (COMEX/CME Group; LME/HKEX)</td></tr>
+<tr><td>7</td><td>P7_D2</td><td>Electronic dematerialisation policy reducing paper documentation</td><td>D</td><td>+15 if policy in force with measurable paper reduction target; +8 if policy exists without target; 0 if absent</td><td>15</td><td>Paper / packaging</td><td>Exchange operational policy</td></tr>
+<tr><td>7</td><td>P7_C1</td><td>Exchange sustainability report independently verified (third-party assurance)</td><td>C</td><td>+30 if sustainability report carries external assurance statement; +15 if company-stated only; 0 if no report</td><td>30</td><td>All streams</td><td>Exchange annual/sustainability report</td></tr>
+<tr><td>7</td><td>P7_C2</td><td>Cloud or data centre provider third-party carbon neutrality certification</td><td>C</td><td>+20 if provider holds valid third-party carbon neutrality or net-zero cert; +10 if self-declared; 0 if absent</td><td>20</td><td>Data centre energy</td><td>CDP; ISO 14064; cloud provider cert</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plastic Biosphere: Supply Chain Dashboard</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #0d1117; color: #c9d1d9; min-height: 100vh; padding: 24px;
+}
+.container { max-width: 1060px; margin: 0 auto; }
+.header { margin-bottom: 22px; }
+.kicker { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #80d8ff; margin-bottom: 6px; }
+h1 { font-size: 28px; font-weight: 300; color: #e6edf3; margin-bottom: 6px; }
+.sub { font-size: 13px; color: #8b949e; line-height: 1.6; max-width: 760px; }
+
+.kpi-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 22px; }
+.kpi { background: #161b22; border: 1px solid #30363d; border-radius: 10px; padding: 14px 20px; min-width: 140px; text-align: center; }
+.kpi-val { font-size: 24px; font-weight: 800; color: #58a6ff; line-height: 1; }
+.kpi-val.warn { color: #f85149; }
+.kpi-val.ok   { color: #3fb950; }
+.kpi-label { font-size: 10px; color: #8b949e; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+.alert { background: #1a1a0e; border: 1px solid #6e4c00; border-left: 4px solid #f9a825; border-radius: 0 8px 8px 0; padding: 12px 16px; margin-bottom: 22px; font-size: 13px; color: #e3c26e; line-height: 1.6; }
+.alert strong { color: #f9a825; }
+
+.panel { background: #161b22; border: 1px solid #30363d; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; }
+.panel-kicker { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: #80d8ff; margin-bottom: 6px; }
+h2 { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 14px; }
+
+/* Phase bar chart */
+.phase-row { margin-bottom: 14px; }
+.phase-label { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.phase-name { font-size: 12px; color: #c9d1d9; font-weight: 600; }
+.phase-bal { font-size: 12px; font-weight: 800; }
+.bal-coherent { color: #58a6ff; }
+.bal-stressed  { color: #e3b341; }
+.bal-failure   { color: #f85149; }
+.bar-track { height: 8px; background: #21262d; border-radius: 4px; position: relative; overflow: visible; }
+.bar-d { height: 8px; border-radius: 4px 0 0 4px; float: left; }
+.bar-c { height: 8px; border-radius: 0 4px 4px 0; float: left; }
+.bar-mark { position: absolute; top: -3px; width: 2px; height: 14px; background: rgba(255,255,255,0.3); }
+.bar-legend { display: flex; gap: 16px; font-size: 10px; color: #8b949e; margin-top: 4px; }
+.bar-legend span { display: flex; align-items: center; gap: 4px; }
+.dot-d { width: 8px; height: 8px; border-radius: 2px; background: #1d4ed8; display: inline-block; }
+.dot-c { width: 8px; height: 8px; border-radius: 2px; background: #ef4444; display: inline-block; }
+
+/* Coherence pentagon */
+#pent-svg { max-width: 300px; width: 100%; }
+
+/* Phase table */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+th { text-align: left; padding: 7px 10px; background: #21262d; color: #8b949e; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 1px solid #30363d; }
+td { padding: 8px 10px; border-bottom: 1px solid #21262d; vertical-align: top; }
+tr:last-child td { border-bottom: none; }
+.trans-badge { display: inline-block; font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; padding: 2px 7px; border-radius: 999px; }
+.trans-high   { background: #1f3a1f; color: #56d364; }
+.trans-medium { background: #3a2a00; color: #e3b341; }
+.trans-low    { background: #3a0f0f; color: #f85149; }
+
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+.nav { text-align: center; margin-top: 20px; padding-bottom: 8px; }
+.nav a { color: #58a6ff; text-decoration: none; font-size: 13px; font-weight: 600; margin: 0 10px; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 640px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="header">
+  <div class="kicker">Plastic Biosphere · Supply Chain · Analytics Dashboard</div>
+  <h1>🌊 Global Plastic Dispersal: Phase Dashboard</h1>
+  <p class="sub">Phase-resolved N-D-C balance analysis. 8 phases from polymer production to trophic bioaccumulation. Chain average: 69.2% (Stressed). Three Failure-zone phases (5, 6, 7). Primary bottleneck: Phase 7 at 50.5%.</p>
+</div>
+
+<div class="kpi-row">
+  <div class="kpi"><div class="kpi-val">69.2%</div><div class="kpi-label">Chain Balance (π)</div></div>
+  <div class="kpi"><div class="kpi-val">131</div><div class="kpi-label">Average N</div></div>
+  <div class="kpi"><div class="kpi-val warn">3</div><div class="kpi-label">Failure Phases</div></div>
+  <div class="kpi"><div class="kpi-val warn">50.5%</div><div class="kpi-label">Primary Bottleneck</div></div>
+  <div class="kpi"><div class="kpi-val ok">89.3%</div><div class="kpi-label">Strongest Phase</div></div>
+  <div class="kpi"><div class="kpi-val warn">38.5</div><div class="kpi-label">e-Axis (Finance)</div></div>
+</div>
+
+<div class="alert">
+  <strong>Bottleneck: Phase 7 (Trophic Transfer and Bioaccumulation, 50.5%).</strong>
+  Phases 5-7 all enter the Failure zone (below 61.8%) because the transition from monitored marine-surface dispersal to deep-sea and biological phases crosses a transparency cliff: measurement coverage drops below 5%, no remediation technology exists, and corrective biological responses (plastisphere bacteria) operate at rates orders of magnitude below the accumulation rate. Phase 7 is the deepest in Failure because it combines the lowest D-C ratio (95 vs. 188) with zero operational corrective mechanisms and the lowest data quality in the chain. The structural cause is not a single-phase problem: it is the progressive loss of custody and observability as plastic crosses the thermocline boundary.
+</div>
+
+<!-- Phase Balance Bars -->
+<div class="panel">
+  <div class="panel-kicker">Phase Balance</div>
+  <h2>D-C-N Balance by Phase</h2>
+  <div class="bar-legend" style="margin-bottom:14px;">
+    <span><span class="dot-d"></span> D (Definition / Constraints)</span>
+    <span><span class="dot-c"></span> C (Contribution / Output flow)</span>
+  </div>
+  <div id="phase-bars"></div>
+</div>
+
+<div class="two-col">
+  <!-- Coherence Pentagon -->
+  <div class="panel">
+    <div class="panel-kicker">Five-Model Coherence</div>
+    <h2>Coherence Pentagon</h2>
+    <div style="display:flex;justify-content:center;">
+      <div id="pent-svg"></div>
+    </div>
+    <div id="pent-scores" style="margin-top:12px;font-size:12px;"></div>
+  </div>
+
+  <!-- Phase Table -->
+  <div class="panel">
+    <div class="panel-kicker">Phase Reference</div>
+    <h2>Phase Detail Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Phase</th>
+          <th>Bal%</th>
+          <th>N</th>
+          <th>Transp.</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0</td><td>Polymer Production</td><td style="color:#58a6ff;font-weight:700;">89.3</td><td>213</td><td><span class="trans-badge trans-high">High</span></td></tr>
+        <tr><td>1</td><td>Use &amp; Fragmentation</td><td style="color:#e3b341;font-weight:700;">79.0</td><td>167</td><td><span class="trans-badge trans-medium">Medium</span></td></tr>
+        <tr><td>2</td><td>Terrestrial Dispersal</td><td style="color:#e3b341;font-weight:700;">73.3</td><td>141</td><td><span class="trans-badge trans-low">Low-Med</span></td></tr>
+        <tr><td>3</td><td>Freshwater Transport</td><td style="color:#e3b341;font-weight:700;">75.4</td><td>149</td><td><span class="trans-badge trans-medium">Medium</span></td></tr>
+        <tr><td>4</td><td>Marine Surface</td><td style="color:#e3b341;font-weight:700;">68.8</td><td>123</td><td><span class="trans-badge trans-medium">Medium</span></td></tr>
+        <tr><td>5</td><td>Deep-Sea Sediment</td><td style="color:#f85149;font-weight:700;">57.6 ⚠</td><td>90</td><td><span class="trans-badge trans-low">Low</span></td></tr>
+        <tr><td>6</td><td>Biological Uptake</td><td style="color:#f85149;font-weight:700;">60.0 ⚠</td><td>93</td><td><span class="trans-badge trans-low">Low-Med</span></td></tr>
+        <tr><td>7</td><td>Trophic Transfer</td><td style="color:#f85149;font-weight:700;">50.5 ⚠</td><td>68</td><td><span class="trans-badge trans-low">Low</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="nav">
+  <a href="/index.html">Home</a>
+  <a href="../index.html">Hub</a>
+  <a href="index.html">Supply Chain</a>
+  <a href="project_context.html">Context</a>
+  <a href="recycling_analysis.html">Return Chain</a>
+</div>
+</div>
+
+<script>
+(function(){
+  var PHASES = [
+    {id:0, name:"Polymer Production",    D:252, C:225, bal:89.3, zone:"coherent"},
+    {id:1, name:"Use & Fragmentation",   D:238, C:188, bal:79.0, zone:"stressed"},
+    {id:2, name:"Terrestrial Dispersal", D:225, C:165, bal:73.3, zone:"stressed"},
+    {id:3, name:"Freshwater Transport",  D:228, C:172, bal:75.4, zone:"stressed"},
+    {id:4, name:"Marine Surface",        D:215, C:148, bal:68.8, zone:"stressed"},
+    {id:5, name:"Deep-Sea Sediment",     D:205, C:118, bal:57.6, zone:"failure"},
+    {id:6, name:"Biological Uptake",     D:200, C:120, bal:60.0, zone:"failure"},
+    {id:7, name:"Trophic Transfer",      D:188, C:95,  bal:50.5, zone:"failure"},
+  ];
+  var MAX_D = 252, MAX_C = 225;
+  var el = document.getElementById('phase-bars');
+  PHASES.forEach(function(p){
+    var balClass = p.zone === 'coherent' ? 'bal-coherent' : p.zone === 'stressed' ? 'bal-stressed' : 'bal-failure';
+    var dW = Math.round(p.D / MAX_D * 100);
+    var cW = Math.round(p.C / MAX_C * 100);
+    el.innerHTML += '<div class="phase-row">'
+      + '<div class="phase-label">'
+      + '<span class="phase-name">Ph' + p.id + ': ' + p.name + '</span>'
+      + '<span class="phase-bal ' + balClass + '">' + p.bal.toFixed(1) + '%' + (p.zone==='failure'?' ⚠':'') + '</span>'
+      + '</div>'
+      + '<div style="display:flex;gap:3px;margin-bottom:3px;">'
+      + '<div style="flex:' + dW + ';height:8px;background:#1d4ed8;border-radius:4px 0 0 4px;"></div>'
+      + '<div style="flex:' + cW + ';height:8px;background:#ef4444;border-radius:0 4px 4px 0;"></div>'
+      + '<div style="flex:' + (200 - dW - cW) + ';height:8px;background:#21262d;"></div>'
+      + '</div>'
+      + '<div style="font-size:10px;color:#8b949e;">D=' + p.D + '  C=' + p.C + '  |D-C|=' + Math.abs(p.D-p.C) + '</div>'
+      + '</div>';
+  });
+})();
+
+(function(){
+  var PRIMARY = "#58a6ff";
+  var AXES = [
+    {key:"pi",    label:"π",     sub:"Operational",  angle:0  },
+    {key:"phi",   label:"φ",     sub:"Proportional", angle:72 },
+    {key:"sqrt2", label:"√2",    sub:"Structural",   angle:144},
+    {key:"ln2",   label:"ln(2)", sub:"Temporal",     angle:216},
+    {key:"e",     label:"e",     sub:"Finance",      angle:288},
+  ];
+  var scores = {pi:69.2, phi:58.5, sqrt2:63.4, ln2:52.0, e:38.5};
+  var SC = {pi:"#58a6ff",phi:"#e3b341",sqrt2:"#3fb950",ln2:"#f85149",e:"#d2a8ff"};
+
+  function toRad(d){ return (d-90)*Math.PI/180; }
+  function pt(cx,cy,r,a){ var rad=toRad(a); return {x:cx+r*Math.cos(rad),y:cy+r*Math.sin(rad)}; }
+  function pentPath(cx,cy,r,s){
+    return AXES.map(function(a,i){var p=pt(cx,cy,r*s,a.angle);return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ')+'Z';
+  }
+  function dataPath(cx,cy,r,sc){
+    return AXES.map(function(a,i){var pct=Math.min(100,sc[a.key]||0)/100;var p=pt(cx,cy,r*pct,a.angle);return (i?'L':'M')+p.x.toFixed(2)+','+p.y.toFixed(2);}).join(' ')+'Z';
+  }
+
+  var CX=130,CY=130,R=100;
+  var s='<svg viewBox="-30 -20 290 300" xmlns="http://www.w3.org/2000/svg" style="width:100%;overflow:visible;">';
+  s+='<path d="'+pentPath(CX,CY,R,1.0)+' '+pentPath(CX,CY,R,0.618)+'" fill="rgba(88,166,255,0.08)" fill-rule="evenodd"/>';
+  s+='<path d="'+pentPath(CX,CY,R,0.618)+' '+pentPath(CX,CY,R,0.382)+'" fill="rgba(248,81,73,0.12)" fill-rule="evenodd"/>';
+  s+='<path d="'+pentPath(CX,CY,R,0.382)+'" fill="rgba(183,28,28,0.3)"/>';
+  [0.25,0.50,0.75,1.0].forEach(function(v){s+='<path d="'+pentPath(CX,CY,R,v)+'" fill="none" stroke="rgba(255,255,255,0.10)" stroke-width="'+(v===1?1.2:0.6)+'"/>';});
+  AXES.forEach(function(a){var tip=pt(CX,CY,R,a.angle);s+='<line x1="'+CX+'" y1="'+CY+'" x2="'+tip.x.toFixed(2)+'" y2="'+tip.y.toFixed(2)+'" stroke="rgba(255,255,255,0.14)" stroke-width="1"/>';});
+  s+='<path d="'+dataPath(CX,CY,R,scores)+'" fill="rgba(88,166,255,0.22)" stroke="#58a6ff" stroke-width="2" stroke-linejoin="round"/>';
+  AXES.forEach(function(a){var v=scores[a.key]||0;var p=pt(CX,CY,R*v/100,a.angle);s+='<circle cx="'+p.x.toFixed(2)+'" cy="'+p.y.toFixed(2)+'" r="4" fill="'+SC[a.key]+'" stroke="#0d1117" stroke-width="1.5"/>';});
+  AXES.forEach(function(a){var lp=pt(CX,CY,R+18,a.angle);s+='<text x="'+lp.x.toFixed(2)+'" y="'+lp.y.toFixed(2)+'" text-anchor="middle" dominant-baseline="middle" font-size="13" font-weight="900" fill="#e6edf3">'+a.label+'</text>';});
+  s+='</svg>';
+  document.getElementById('pent-svg').innerHTML = s;
+
+  var info='';
+  AXES.forEach(function(a){
+    var v=scores[a.key];
+    var zone=v>=80?'Good':v>=61.8?'Stressed':v>=38.2?'Failure':'Breakdown';
+    var zc=v>=80?'#3fb950':v>=61.8?'#e3b341':v>=38.2?'#f85149':'#b71c1c';
+    info+='<div style="display:flex;align-items:center;gap:8px;margin-bottom:7px;">'
+      +'<span style="font-size:13px;font-weight:900;color:'+SC[a.key]+';width:22px;text-align:center;">'+a.label+'</span>'
+      +'<span style="font-size:12px;color:#c9d1d9;flex:1;">'+a.sub+'</span>'
+      +'<span style="font-size:13px;font-weight:800;color:'+SC[a.key]+';">'+v.toFixed(1)+'</span>'
+      +'<span style="font-size:10px;font-weight:700;color:'+zc+';">'+zone+'</span>'
+      +'</div>';
+  });
+  document.getElementById('pent-scores').innerHTML = info;
+})();
+</script>
+</body>
+</html>

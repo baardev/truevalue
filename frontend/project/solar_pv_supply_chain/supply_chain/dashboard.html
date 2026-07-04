@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Solar PV Supply Chain: Dashboard</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #0d1117; color: #e6edf3; min-height: 100vh; padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .header { text-align: center; margin-bottom: 28px; }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: #ffcc80; background: rgba(230,81,0,0.25);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 28px; font-weight: 300; color: #e6edf3; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; color: #8b949e; }
+  .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+  .kpi { background: #161b22; border-radius: 10px; padding: 18px 16px; border-left: 4px solid #e65100; }
+  .kpi.alert-kpi { border-left-color: #e74c3c; }
+  .kpi.good-kpi { border-left-color: #27ae60; }
+  .kpi-val { font-size: 26px; font-weight: 800; color: #ffcc80; }
+  .kpi.alert-kpi .kpi-val { color: #f97066; }
+  .kpi.good-kpi .kpi-val { color: #56d364; }
+  .kpi-lbl { font-size: 11px; color: #8b949e; margin-top: 4px; }
+  .alert-bar {
+    background: rgba(230,81,0,0.12); border: 1px solid rgba(230,81,0,0.35);
+    border-left: 5px solid #e65100; border-radius: 10px; padding: 16px 20px; margin-bottom: 20px;
+  }
+  .alert-bar h3 { color: #f97066; font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; }
+  .alert-bar p { font-size: 13px; color: #8b949e; line-height: 1.6; }
+  .panel { background: #161b22; border-radius: 12px; padding: 24px; margin-bottom: 20px; }
+  .panel h2 { font-size: 14px; font-weight: 700; color: #ffcc80; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 18px; }
+  .phase-row { margin-bottom: 14px; }
+  .phase-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; }
+  .phase-label { font-size: 13px; color: #e6edf3; font-weight: 600; }
+  .phase-scores { font-size: 11px; color: #8b949e; }
+  .phase-scores span { margin-left: 8px; }
+  .bar-bg { background: #21262d; border-radius: 6px; height: 12px; overflow: hidden; }
+  .bar-fill { height: 100%; border-radius: 6px; transition: width 0.8s ease; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; margin-left: 8px; text-transform: uppercase;
+  }
+  .badge.high { background: rgba(63,185,80,0.2); color: #3fb950; }
+  .badge.medium { background: rgba(255,195,0,0.2); color: #ffc300; }
+  .badge.low { background: rgba(249,112,102,0.2); color: #f97066; }
+  .badge.bottleneck { background: rgba(230,81,0,0.3); color: #f97066; border: 1px solid rgba(230,81,0,0.5); }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item {
+    background: #21262d; border-radius: 10px; padding: 16px 10px; text-align: center;
+    border: 1px solid rgba(230,81,0,0.3);
+  }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #ffcc80; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #e65100; margin-bottom: 4px; }
+  .coherence-desc { font-size: 10px; color: #8b949e; line-height: 1.3; margin-top: 4px; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent { background: rgba(63,185,80,0.18); color: #3fb950; }
+  .zone-stressed { background: rgba(255,195,0,0.18); color: #ffc300; }
+  table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  th { background: #21262d; color: #ffcc80; font-weight: 700; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; }
+  td { padding: 10px 12px; border-bottom: 1px solid #21262d; color: #8b949e; vertical-align: top; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+  .phase-num { font-size: 16px; font-weight: 800; color: #ffcc80; }
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a { color: #ffcc80; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 14px; opacity: 0.85; }
+  .nav a:hover { opacity: 1; text-decoration: underline; }
+  @media (max-width:700px) { .kpi-row, .coherence-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="header">
+    <div class="kicker">Global Manufacturing and Deployment Chain</div>
+    <h1>☀️ Solar PV Supply Chain</h1>
+    <p class="subtitle">Supply Chain N-D-C Dashboard: 6 Phases | Chain balance: 79.0% | Bottleneck: Phase 1 (65.0%) and Phase 0 (67.7%)</p>
+  </div>
+
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-val">79.0%</div>
+      <div class="kpi-lbl">Chain average balance (Fair zone, below 80% Good threshold)</div>
+    </div>
+    <div class="kpi">
+      <div class="kpi-val">194.8</div>
+      <div class="kpi-lbl">Average N value across 6 phases</div>
+    </div>
+    <div class="kpi alert-kpi">
+      <div class="kpi-val">65.0%</div>
+      <div class="kpi-lbl">Phase 1 bottleneck: Ingot and Wafer Manufacturing (most concentrated stage)</div>
+    </div>
+    <div class="kpi good-kpi">
+      <div class="kpi-val">96.2%</div>
+      <div class="kpi-lbl">Phase 3 strongest: Module Assembly (most geographically diverse stage)</div>
+    </div>
+  </div>
+
+  <div class="alert-bar">
+    <h3>Bottleneck Alert: Phases 1 and 0: Manufacturing Concentration and Sourcing Opacity</h3>
+    <p>Phase 1 (Ingot and Wafer Manufacturing, balance 65.0%) has the highest D-value in the chain
+      (D=300) because China's approximately 95-98% capacity share (up from 80% in 2010) has produced
+      extreme single-point concentration: one out of every seven solar panels worldwide comes from a
+      single facility. Phase 0 (Polysilicon Production, balance 67.7%, D=310, the highest D in the
+      entire chain) is broken by the combination of feedstock purity requirements and the structural
+      opacity created by UFLPA forced-labor import restrictions on Xinjiang-sourced material
+      (approximately 40% of global polysilicon capacity) since 2021-2022. The D-C imbalance in Phase 0
+      (gap = 100) and Phase 1 (gap = 105) are the primary bond and policy intervention targets.</p>
+  </div>
+
+  <!-- Phase bars -->
+  <div class="panel">
+    <h2>Phase N-D-C Balance Analysis</h2>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">0</span> Polysilicon Production</span>
+        <span class="phase-scores">
+          D=310 <span>C=210</span> <span>N=173</span>
+          <span class="badge low">Low-Medium</span>
+          <span class="badge bottleneck">Bottleneck</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:67.7%;background:linear-gradient(90deg,#bf360c,#e65100)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">67.7%: Xinjiang ~40% of global polysilicon capacity; UFLPA import restrictions on forced-labor-linked material since 2021-2022.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">1</span> Ingot and Wafer Manufacturing</span>
+        <span class="phase-scores">
+          D=300 <span>C=195</span> <span>N=157</span>
+          <span class="badge low">Low</span>
+          <span class="badge bottleneck">Bottleneck</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:65.0%;background:linear-gradient(90deg,#8B1A1A,#e74c3c)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">65.0%: China holds ~95-98% of global capacity, up from ~80% in 2010. 1 in 7 panels worldwide from a single facility. KEY BOTTLENECK.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">2</span> Cell Manufacturing</span>
+        <span class="phase-scores">
+          D=270 <span>C=230</span> <span>N=212</span>
+          <span class="badge medium">Medium-High</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:85.2%;background:linear-gradient(90deg,#0e7a6a,#00796b)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">85.2%: China cell share rose from ~60% (2010) to ~80-85% (early 2020s). Tracked by BloombergNEF, PV InfoLink.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">3</span> Module Assembly</span>
+        <span class="phase-scores">
+          D=250 <span>C=260</span> <span>N=245</span>
+          <span class="badge high">High</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:96.2%;background:linear-gradient(90deg,#1b7a3d,#2e7d32)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">96.2%: Most diverse stage. Southeast Asia (Malaysia, Thailand, Vietnam) plus growing US/India base. C exceeds D.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">4</span> Installation and Grid Connection</span>
+        <span class="phase-scores">
+          D=235 <span>C=270</span> <span>N=219</span>
+          <span class="badge medium">Medium-High</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:87.0%;background:linear-gradient(90deg,#0e7a6a,#00796b)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">87.0%: Installed capacity tracked nationally by IEA and national energy agencies. C exceeds D.</div>
+    </div>
+
+    <div class="phase-row">
+      <div class="phase-header">
+        <span class="phase-label"><span class="phase-num">5</span> End-of-Life and Recycling</span>
+        <span class="phase-scores">
+          D=260 <span>C=190</span> <span>N=163</span>
+          <span class="badge low">Low</span>
+        </span>
+      </div>
+      <div class="bar-bg"><div class="bar-fill" style="width:73.1%;background:linear-gradient(90deg,#bf360c,#e65100)"></div></div>
+      <div style="font-size:11px;color:#8b949e;margin-top:4px;">73.1%: Under 10% of retired panels formally recycled in most markets (PROVISIONAL). Most jurisdictions lack mandated take-back.</div>
+    </div>
+  </div>
+
+  <!-- Coherence pentagon -->
+  <div class="panel">
+    <h2>Five-Model Coherence: Baseline Scores</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">pi (π)</div>
+        <div class="coherence-val">79.0</div>
+        <div class="coherence-desc">Operational balance: chain average; Fair zone</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">phi (φ)</div>
+        <div class="coherence-val">60.0</div>
+        <div class="coherence-desc">Proportional value distribution: China 80%+ value vs 36% demand</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">sqrt2 (√2)</div>
+        <div class="coherence-val">66.0</div>
+        <div class="coherence-desc">Structural overhead: single-facility concentration, UFLPA friction</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2</div>
+        <div class="coherence-val">82.0</div>
+        <div class="coherence-desc">Growth transformation: strongest cost-decline record of any energy tech</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e</div>
+        <div class="coherence-val">55.0</div>
+        <div class="coherence-desc">Financial abstraction: tariffs/credits not consistently linked to outcomes</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+    </div>
+    <p style="font-size:11px;color:#8b949e;margin-top:12px;font-style:italic;">
+      Phi-derived thresholds: Coherent above 61.8% (phi-inverse); Failure 38.2-61.8%; Breakdown below 38.2%.
+      All scores PROVISIONAL: derived from N-D-C structural analysis grounded in IEA (2022) data.
+    </p>
+  </div>
+
+  <!-- Phase detail table -->
+  <div class="panel">
+    <h2>Phase Detail Table</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Name</th>
+          <th>D</th>
+          <th>C</th>
+          <th>Balance</th>
+          <th>N</th>
+          <th>Transparency</th>
+          <th>Key Metric</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="phase-num">0</td>
+          <td>Polysilicon Production</td>
+          <td>310</td><td>210</td>
+          <td style="color:#f97066;font-weight:700;">67.7% ⚠</td>
+          <td>173</td>
+          <td><span class="badge low">Low-Medium</span></td>
+          <td>Xinjiang ~40% of global capacity; UFLPA restrictions since 2021-2022</td>
+        </tr>
+        <tr>
+          <td class="phase-num">1</td>
+          <td>Ingot and Wafer Manufacturing</td>
+          <td>300</td><td>195</td>
+          <td style="color:#f97066;font-weight:700;">65.0% ⚠</td>
+          <td>157</td>
+          <td><span class="badge low">Low</span></td>
+          <td>China ~95-98% share; 1 in 7 panels from a single facility</td>
+        </tr>
+        <tr>
+          <td class="phase-num">2</td>
+          <td>Cell Manufacturing</td>
+          <td>270</td><td>230</td>
+          <td style="color:#56d364;font-weight:700;">85.2%</td>
+          <td>212</td>
+          <td><span class="badge medium">Medium-High</span></td>
+          <td>China share ~80-85%, up from 60% in 2010</td>
+        </tr>
+        <tr>
+          <td class="phase-num">3</td>
+          <td>Module Assembly</td>
+          <td>250</td><td>260</td>
+          <td style="color:#56d364;font-weight:700;">96.2%</td>
+          <td>245</td>
+          <td><span class="badge high">High</span></td>
+          <td>Most diverse stage: Malaysia, Thailand, Vietnam, US, India</td>
+        </tr>
+        <tr>
+          <td class="phase-num">4</td>
+          <td>Installation and Grid Connection</td>
+          <td>235</td><td>270</td>
+          <td style="color:#56d364;font-weight:700;">87.0%</td>
+          <td>219</td>
+          <td><span class="badge medium">Medium-High</span></td>
+          <td>Installed capacity tracked nationally (IEA, national agencies)</td>
+        </tr>
+        <tr>
+          <td class="phase-num">5</td>
+          <td>End-of-Life and Recycling</td>
+          <td>260</td><td>190</td>
+          <td style="color:#f97066;font-weight:700;">73.1%</td>
+          <td>163</td>
+          <td><span class="badge low">Low</span></td>
+          <td>Under 10% formal recycling in most markets (PROVISIONAL)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Priority interventions -->
+  <div class="panel">
+    <h2>Priority Interventions: Bottleneck Phases</h2>
+    <p style="font-size:12px;color:#8b949e;margin-bottom:16px;font-style:italic;">
+      Each intervention is grounded in the five-model axis that diagnoses the failure type.
+      All impact estimates are PROVISIONAL. See Project Context for full analysis and funding detail.
+    </p>
+
+    <!-- Constant legend -->
+    <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:18px;">
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #ffcc80;">
+        <div style="font-size:11px;font-weight:700;color:#ffcc80;">pi (π) 79.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Operational: chain average. Phases below this drag the system.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #f97066;">
+        <div style="font-size:11px;font-weight:700;color:#f97066;">phi (φ) 60.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Proportional: value flow across phase transitions.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #f97066;">
+        <div style="font-size:11px;font-weight:700;color:#f97066;">sqrt2 (√2) 66.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Structural: physical / institutional friction raising D.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #ffc300;">
+        <div style="font-size:11px;font-weight:700;color:#ffc300;">ln2 82.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Growth: value transformation blocked by time or capital gap.</div>
+      </div>
+      <div style="background:#21262d;border-radius:8px;padding:10px 8px;text-align:center;border-top:3px solid #f97066;">
+        <div style="font-size:11px;font-weight:700;color:#f97066;">e 55.0</div>
+        <div style="font-size:9px;color:#8b949e;margin-top:3px;line-height:1.3;">Financial abstraction: funding exists but not yet linked.</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Phase</th>
+          <th>Current Balance</th>
+          <th>Failure Axis</th>
+          <th>Top Intervention</th>
+          <th>D-C Impact</th>
+          <th>Target Balance</th>
+          <th>Timeline</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">1</span> Ingot/Wafer</td>
+          <td style="color:#f97066;font-weight:700;">65.0%</td>
+          <td><span style="color:#f97066;font-weight:700;">phi + sqrt2</span>: 95-98% single-country share and single-facility concentration stack D to 300</td>
+          <td>
+            <strong>1.</strong> US IRA 45X manufacturing credits for domestic ingot/wafer capacity.<br>
+            <strong>2.</strong> EU Net Zero Industry Act 40% domestic benchmark.<br>
+            <strong>3.</strong> Facility-level ownership disclosure requirements.
+          </td>
+          <td>D 300 to ~260; C 195 to ~215. Gap closes from 105 to ~45.</td>
+          <td style="color:#ffc300;font-weight:700;">78-82%</td>
+          <td>5-10 years (capacity build-out lead time)</td>
+        </tr>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">0</span> Polysilicon</td>
+          <td style="color:#f97066;font-weight:700;">67.7%</td>
+          <td><span style="color:#f97066;font-weight:700;">sqrt2 + phi</span>: UFLPA compliance cost is structural overhead; Xinjiang 40% concentration is a phi-axis value-capture signal</td>
+          <td>
+            <strong>1.</strong> Traceability and chain-of-custody verification systems for polysilicon origin.<br>
+            <strong>2.</strong> IRA 45X polysilicon production credit.<br>
+            <strong>3.</strong> Public facility-level sourcing disclosure.
+          </td>
+          <td>D 310 to ~270 (traceability reduces compliance-cost overhead); C 210 to ~230 (verified-origin supply gains market access).</td>
+          <td style="color:#ffc300;font-weight:700;">80-83%</td>
+          <td>3-5 years (traceability systems); 5-10 years (capacity diversification)</td>
+        </tr>
+        <tr>
+          <td><span class="phase-num" style="font-size:14px;">5</span> End-of-Life</td>
+          <td style="color:#f97066;font-weight:700;">73.1%</td>
+          <td><span style="color:#f97066;font-weight:700;">sqrt2</span>: absence of mandated take-back infrastructure is pure structural overhead blocking recovery</td>
+          <td>
+            <strong>1.</strong> Mandated take-back and recycling schemes (EU WEEE Directive extension precedent).<br>
+            <strong>2.</strong> Public disclosure requirements for disposal pathways.<br>
+            <strong>3.</strong> Recovered-material (glass, silicon, silver) offtake market development.
+          </td>
+          <td>C 190 to ~220 (mandated collection raises recoverable volume). D unchanged until schemes adopted broadly.</td>
+          <td style="color:#ffc300;font-weight:700;">82-85%</td>
+          <td>Policy adoption: 3-7 years; infrastructure build-out: 5-10 years</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p style="font-size:11px;color:#8b949e;margin-top:14px;font-style:italic;">
+      If all three sets of interventions succeed: Phase 1 reaches 78-82%, Phase 0 reaches 80-83%, Phase 5 reaches 82-85%.
+      Chain average pi score rises from 79.0% to approximately 85-87%, entering the Good zone (80-94% = Good, 95-100% = Excellent).
+      The phi-axis would rise from 60.0 toward 70+ once China's manufacturing share moves closer to its demand share.
+      <a href="project_context.html" style="color:#ffcc80;font-weight:600;">Full analysis in Project Context.</a>
+    </p>
+  </div>
+
+</div>
+<div class="nav">
+  <a href="../../../../index.html">← Main Homepage</a>
+  <a href="../index.html">Solar PV Hub</a>
+  <a href="index.html">Supply Chain Hub</a>
+  <a href="project_context.html">Project Context</a>
+  <a href="recycling_analysis.html">Ecological Return</a>
+</div>
+</body>
+</html>

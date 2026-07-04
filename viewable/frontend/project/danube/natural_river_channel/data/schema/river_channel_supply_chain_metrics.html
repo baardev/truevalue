@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>River Channel Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>River Channel Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>river_channel_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">25</span> / 25
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>mean_annual_discharge_delta_m3_s</td><td>6500</td><td>m3/s</td><td>public</td><td>Via Donau Hydrological Yearbook 2022</td><td>https://www.viadonau.org</td><td>Long-term mean annual discharge at Danube Delta (Ceatal Izmail gauge); 206 km3/yr; highest flow in Europe after Volga and Rhine</td></tr>
+<tr><td>2</td><td>0</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>alpine_contribution_pct</td><td>35</td><td>percent</td><td>public</td><td>ICPDR JDS4 Hydrology Chapter 2022</td><td>https://www.icpdr.org</td><td>Share of Danube mean annual flow originating from Alpine catchments (Inn; Salzach; Salzach; Enns tributaries)</td></tr>
+<tr><td>3</td><td>0</td><td>ERA5 Copernicus</td><td>Danube Basin</td><td>2022-01-01</td><td>snowmelt_timing_shift_days</td><td>18</td><td>days earlier than 1980</td><td>public</td><td>Copernicus ERA5 Climate Reanalysis 2022</td><td>https://climate.copernicus.eu</td><td>Advance in mean peak snowmelt date across Alpine and Carpathian Danube headwaters since 1980 due to warming</td></tr>
+<tr><td>4</td><td>1</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>discharge_iron_gate_m3_s</td><td>5680</td><td>m3/s</td><td>public</td><td>ICPDR JDS4 multi-station discharge network 2022</td><td>https://www.icpdr.org</td><td>Mean annual discharge at Iron Gate I dam (Djerdap I); includes all tributary contributions above this point</td></tr>
+<tr><td>5</td><td>1</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>major_tributaries_contributing_flow</td><td>7</td><td>count</td><td>public</td><td>ICPDR River Basin Management Plan 2022</td><td>https://www.icpdr.org</td><td>Major Danube tributaries: Inn; Morava; Drava; Sava; Tisza; Mures; Siret; each contributing &gt;5% of total basin discharge</td></tr>
+<tr><td>6</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>wfd_good_ecological_status_mainstream_pct</td><td>18</td><td>percent</td><td>public</td><td>ICPDR JDS4 Hydromorphology Module 2022</td><td>https://www.icpdr.org</td><td>Share of Danube mainstream river reach classified at WFD Good or High Ecological Status/Potential; 82% at Moderate or below</td></tr>
+<tr><td>7</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>channelised_reach_pct</td><td>80</td><td>percent</td><td>public</td><td>ICPDR Hydromorphological Assessment 2022</td><td>https://www.icpdr.org</td><td>Share of Danube mainstream affected by navigation training works; flood embankments; hydropower regulation; or channel straightening</td></tr>
+<tr><td>8</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>side_arm_connectivity_index</td><td>0.22</td><td>index 0-1</td><td>public</td><td>ICPDR JDS4 Hydromorphology 2022</td><td>https://www.icpdr.org</td><td>Lateral connectivity index for Danube floodplain side-arms; 0.22 reflects near-complete disconnection; pre-regulation estimate 0.75</td></tr>
+<tr><td>9</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>gravel_bar_area_remaining_km2</td><td>420</td><td>km2</td><td>public</td><td>ICPDR Sediment Management Framework 2022</td><td>https://www.icpdr.org</td><td>Remaining active gravel bar area in Danube mainstream; 77% loss from historical 1800 km2 due to channel incision and flow regulation</td></tr>
+<tr><td>10</td><td>3</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>sediment_delivery_to_delta_mt_yr</td><td>17</td><td>Mt/yr</td><td>public</td><td>ICPDR Sediment Management Framework for the Danube River Basin 2022</td><td>https://www.icpdr.org</td><td>Annual sediment (suspended + bedload) reaching the Danube Delta; 57% reduction from pre-regulation 40 Mt/yr due to Iron Gate trapping</td></tr>
+<tr><td>11</td><td>3</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>iron_gate_sediment_trap_efficiency_pct</td><td>70</td><td>percent</td><td>public</td><td>ICPDR Sediment Budget Assessment 2022</td><td>https://www.icpdr.org</td><td>Fraction of incoming bedload trapped by Iron Gate I and II reservoirs; also traps approximately 40% of suspended load</td></tr>
+<tr><td>12</td><td>3</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>channel_bed_incision_rate_mm_yr</td><td>8</td><td>mm/yr</td><td>public</td><td>Via Donau Channel Morphology Assessment 2022</td><td>https://www.viadonau.org</td><td>Mean channel bed incision rate in the regulated Danube reaches downstream of Iron Gate; threatening bridge foundations and navigation depths</td></tr>
+<tr><td>13</td><td>3</td><td>Copernicus</td><td>Romania</td><td>2022-01-01</td><td>delta_subsidence_mm_per_yr</td><td>4.5</td><td>mm/yr</td><td>public</td><td>Copernicus Coastline Monitoring Service 2022</td><td>https://land.copernicus.eu</td><td>Mean annual delta platform subsidence rate; 0.8 mm/yr accretion against 4.5 mm/yr subsidence gives net loss of 3.7 mm/yr</td></tr>
+<tr><td>14</td><td>4</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>annual_freshwater_delivery_to_black_sea_km3</td><td>195</td><td>km3/yr</td><td>public</td><td>DDBRA Hydrological Annual Report 2022</td><td>https://www.ddbra.ro</td><td>Annual freshwater discharge from all three Danube Delta arms to the Black Sea; critical for NW Black Sea shelf ecosystem function</td></tr>
+<tr><td>15</td><td>4</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>nitrogen_load_to_black_sea_kt_yr</td><td>380</td><td>kt N/yr</td><td>public</td><td>ICPDR Danube Watch Nutrient Report 2022</td><td>https://www.icpdr.org</td><td>Annual nitrogen load from Danube to Black Sea; primary driver of NW Black Sea eutrophication; dominated by Ukrainian and Hungarian agricultural runoff</td></tr>
+<tr><td>16</td><td>0</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>annual_flood_damage_eur_bn</td><td>2.8</td><td>EUR billion/yr</td><td>public</td><td>ICPDR Flood Risk Management Plan 2022</td><td>https://www.icpdr.org</td><td>Mean annual flood damage across the Danube basin; 2002 and 2013 major events each exceeded EUR 12 billion total damage</td></tr>
+<tr><td>17</td><td>2</td><td>EU WFD</td><td>Danube Basin</td><td>2022-01-01</td><td>wfd_moderate_or_below_mainstream_pct</td><td>82</td><td>percent</td><td>public</td><td>EU WFD RBMP Danube 2022</td><td>https://ec.europa.eu/environment/water</td><td>Share of Danube mainstream at WFD Moderate or below ecological status; driven by hydromorphological pressures (channelisation; regulation)</td></tr>
+<tr><td>18</td><td>3</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>pre_iron_gate_sediment_delivery_mt_yr</td><td>40</td><td>Mt/yr</td><td>public</td><td>ICPDR Historical Sediment Budget 2022</td><td>https://www.icpdr.org</td><td>Pre-regulation annual sediment delivery to Danube Delta; reconstructed from historical surveys; basis for 57% reduction calculation</td></tr>
+<tr><td>19</td><td>1</td><td>Via Donau</td><td>Austria</td><td>2022-01-01</td><td>discharge_vienna_m3_s</td><td>1900</td><td>m3/s</td><td>public</td><td>Via Donau Hydrological Yearbook 2022</td><td>https://www.viadonau.org</td><td>Long-term mean annual discharge at Vienna gauging station; first major measurement point including Inn tributary contribution</td></tr>
+<tr><td>20</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>navigation_training_works_km</td><td>1800</td><td>km</td><td>public</td><td>ICPDR Navigation-Ecology Integration Report 2022</td><td>https://www.icpdr.org</td><td>Total length of Danube mainstream reach with groynes; bank revetments; and channel training works for navigation maintenance</td></tr>
+<tr><td>21</td><td>0</td><td>EU Floods Directive</td><td>Danube Basin</td><td>2022-01-01</td><td>floodplain_retention_volume_km3</td><td>7.2</td><td>km3</td><td>public</td><td>ICPDR Flood Risk Management Plan 2022</td><td>https://www.icpdr.org</td><td>Remaining active floodplain retention volume; was estimated 26 km3 pre-regulation; loss due to levees and floodplain conversion</td></tr>
+<tr><td>22</td><td>3</td><td>Via Donau</td><td>Danube Basin</td><td>2022-01-01</td><td>iron_gate_annual_generation_gwh</td><td>4700</td><td>GWh/yr</td><td>public</td><td>Via Donau Energy and Navigation Report 2022</td><td>https://www.viadonau.org</td><td>Annual electricity generation from Iron Gate I and II combined (2320 MW installed); primary reason for original dam construction</td></tr>
+<tr><td>23</td><td>4</td><td>Black Sea Commission</td><td>Black Sea</td><td>2022-01-01</td><td>hypoxia_events_nw_shelf_per_decade</td><td>3</td><td>events/decade</td><td>public</td><td>Black Sea Commission Environmental Report 2022</td><td>https://www.blacksea-commission.org</td><td>Frequency of hypoxia events on NW Black Sea shelf triggered by Danube nutrient pulses combined with stratification; worsening trend</td></tr>
+<tr><td>24</td><td>2</td><td>WWF</td><td>Danube Basin</td><td>2022-01-01</td><td>active_floodplain_area_km2</td><td>5200</td><td>km2</td><td>public</td><td>WWF Living Danube Restoration Assessment 2022</td><td>https://www.wwf.at</td><td>Current active floodplain area connected to main channel; down from 26000 km2 pre-regulation; 80% loss</td></tr>
+<tr><td>25</td><td>3</td><td>ICPDR</td><td>Danube Basin</td><td>2022-01-01</td><td>critical_shallow_sections_navigation</td><td>7</td><td>count</td><td>public</td><td>Danube Commission Fairway Assessment 2022</td><td>https://www.danubecom-intern.org</td><td>Number of persistently shallow sections on the navigable Danube that regularly restrict vessel drafts below 2.5 m TEN-T standard</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

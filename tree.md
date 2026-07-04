@@ -175,6 +175,34 @@ index.html                          Root — project grid, Papers (DocNav drafts
 │   │   ├── system_lifecycle.html
 │   │   └── dashboard.html
 │   └── value_chain/index.html      ERCOT Uri deferred value layer
+├── frontend/project/global_electricity_grid/index.html  Global Electricity Grid — BAU vs. IEA NZE 2050 dual-scenario hub
+│   ├── supply_chain/index.html     Supply Chain — 7-phase dual-scenario (BAU vs. Mitigation), bottleneck Phases 2-3
+│   │   ├── dashboard.html          Dark-theme dashboard with grouped BAU/Mitigation bar charts and coherence pentagon
+│   │   ├── project_context.html    Context, Phase Intervention Worksheet (Transmission, Balancing and Storage), ERCOT Uri cross-link
+│   │   └── recycling_analysis.html TVPCI-R — ash, turbine blade, and battery end-of-life return chain
+│   ├── value_chain/index.html      Value Chain — e-layer score, capacity market and green bond structure
+│   └── data/processed/global_electricity_grid_supply_chain_ui.json
+├── frontend/project/solar_pv_supply_chain/index.html  Solar PV Supply Chain — Polysilicon to End-of-Life hub
+│   ├── supply_chain/index.html     Supply Chain — 6-phase analysis, bottleneck Phase 1 (Ingot and Wafer, 65.0%)
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and coherence pentagon
+│   │   ├── project_context.html    Context, Phase Intervention Worksheet (Ingot/Wafer, Polysilicon), phi-axis concentration finding
+│   │   └── recycling_analysis.html TVPCI-R — panel glass/silicon/silver recovery, manufacturing scrap
+│   ├── value_chain/index.html      Value Chain — e-layer score, tariff and diversification bond structure
+│   └── data/processed/solar_pv_supply_chain_supply_chain_ui.json
+├── frontend/project/lithium_battery_supply_chain/index.html  Lithium Battery Supply Chain — Mining to Second-Life hub
+│   ├── supply_chain/index.html     Supply Chain — 6-phase analysis, bottleneck Phase 1 (Mineral Refining, 67.2%)
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and coherence pentagon
+│   │   ├── project_context.html    Context, Phase Intervention Worksheet (Refining, Cathode/Anode Material)
+│   │   └── recycling_analysis.html TVPCI-R — black mass recovery, second-life grid storage repurposing
+│   ├── value_chain/index.html      Value Chain — e-layer score, critical minerals fund and offtake bond structure
+│   └── data/processed/lithium_battery_supply_chain_supply_chain_ui.json
+├── frontend/project/ammonia_fertilizer_chain/index.html  Ammonia and Nitrogen Fertilizer Chain — Food-Energy-Planetary Boundary hub
+│   ├── supply_chain/index.html     Supply Chain — 6-phase analysis, bottleneck Phase 5 (Environmental Return, 57.6%, Failure zone)
+│   │   ├── dashboard.html          Dark-theme dashboard with NDC bars and coherence pentagon
+│   │   ├── project_context.html    Context, Phase Intervention Worksheet (Environmental Return, Field Application), Paper 19 C-type PB link
+│   │   └── recycling_analysis.html TVPCI-R — N2O capture, manure/organic-N recycling, struvite recovery
+│   ├── value_chain/index.html      Value Chain — e-layer score, NUE-linked sustainability bond structure
+│   └── data/processed/ammonia_fertilizer_chain_supply_chain_ui.json
 ├── frontend/project/water_compare/index.html   NEWater vs. OCWD comparative analysis
 ├── frontend/project/olive_compare/index.html   Marina Alta vs. Andalucia olive ecosystem comparison
 │   └── data/andalucia_olive_supply_chain_ui.json  Andalucia 8-phase supply chain N-D-C data (phases.synthetic format)
@@ -589,6 +617,20 @@ frontend/project/cellular_aging/
     └── cellular_aging_supply_chain_ui.json  Phase N-D-C data (8 phases, synthetic baseline)
 ```
 
+```
+frontend/project/plastic_biosphere/
+├── index.html                              Hub — 8-phase overview, phase strip, five-model coherence pentagon
+├── supply_chain/
+│   ├── index.html                          Supply chain summary — links to all sub-pages
+│   ├── dashboard.html                      Dark-theme D-C-N bars, coherence pentagon, phase table
+│   ├── project_context.html                Phase Intervention Worksheet, evolutionary stress prediction, data sources
+│   └── recycling_analysis.html            TVPCI-R return chain: bacterial degradation + human remediation
+├── value_chain/
+│   └── index.html                          Deferred — e-axis context and value chain scope note
+└── data/processed/
+    └── plastic_biosphere_supply_chain_ui.json  Phase N-D-C data (8 phases, global baseline 2024)
+```
+
 ---
 
 ## Navigation symmetry summary
@@ -600,6 +642,7 @@ Every commodity has the same page set at the same depth:
 | **Gold** | `gold/supply_chain/` (index, dashboard, what_if) | `gold/value_chain/` (index, dashboard, what_if) |
 | **West African Shea** | `west_african_shea/supply_chain/` (index, project_context, dashboard, what_if) | `west_african_shea/value_chain/` (index, dashboard, what_if) |
 | **Cellular Aging** | `cellular_aging/supply_chain/` (index, dashboard, project_context, recycling_analysis) | `cellular_aging/value_chain/` (index, deferred) |
+| **Plastic Biosphere** | `plastic_biosphere/supply_chain/` (index, dashboard, project_context, recycling_analysis) | `plastic_biosphere/value_chain/` (index, deferred) |
 
 Cross-commodity navigation is always available in every page header.
 Each commodity hub (`gold/index.html`, `shea/index.html`) links to both its layers.

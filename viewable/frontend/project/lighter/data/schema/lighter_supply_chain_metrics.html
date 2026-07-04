@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighter Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Lighter Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>lighter_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">41</span> / 41
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>World LPG Association</td><td>Global</td><td>2023-12-31</td><td>global_lpg_production_mt</td><td>320000000</td><td>MT/year</td><td>public</td><td>World LPG Association Annual Report 2023</td><td>https://www.wlpga.org</td><td>Global LPG/NGL production used as butane feedstock for lighter manufacturing</td></tr>
+<tr><td>2</td><td>0</td><td>CME Group</td><td>USA</td><td>2024-12-31</td><td>butane_spot_price_usd_per_gal</td><td>0.85</td><td>USD/gallon</td><td>public</td><td>NYMEX CME Group propane/butane futures</td><td>https://www.cmegroup.com</td><td>Mont Belvieu normal butane spot (C4) annual average 2024</td></tr>
+<tr><td>3</td><td>0</td><td>ICIS</td><td>Global</td><td>2024-12-31</td><td>pp_resin_spot_price_usd_per_mt</td><td>900</td><td>USD/MT</td><td>public</td><td>ICIS Polyolefins Price Report</td><td>https://www.icis.com</td><td>Polypropylene homopolymer injection grade spot price range mid; feedstock for lighter body molding</td></tr>
+<tr><td>4</td><td>0</td><td>London Metal Exchange</td><td>Global</td><td>2024-12-31</td><td>steel_wire_rod_price_usd_per_mt</td><td>580</td><td>USD/MT</td><td>public</td><td>LME Steel Scrap Index</td><td>https://www.lme.com</td><td>Steel used for spring stamping and valve components</td></tr>
+<tr><td>5</td><td>0</td><td>Fastmarkets</td><td>Global</td><td>2024-12-31</td><td>ferrocerium_alloy_price_usd_per_kg</td><td>12.50</td><td>USD/kg</td><td>estimated</td><td>Fastmarkets minor metals market (estimated)</td><td>https://www.fastmarkets.com</td><td>Ferrocerium (iron-cerium alloy) used in flint rods; minor metals pricing estimated from rare earth/cerium oxide market</td></tr>
+<tr><td>6</td><td>0</td><td>IEA</td><td>Global</td><td>2023-12-31</td><td>global_butane_trade_volume_mt</td><td>85000000</td><td>MT/year</td><td>public</td><td>IEA Oil Market Report 2023</td><td>https://www.iea.org</td><td>Global LPG (butane/propane) trade volumes; China is net importer of LPG feedstock</td></tr>
+<tr><td>7</td><td>1</td><td>China Lighter Industry Association</td><td>China</td><td>2023-12-31</td><td>wenzhou_lighter_factories_count</td><td>3000</td><td>count</td><td>public</td><td>China Lighter Industry Association (CLCA)</td><td>https://www.clca.org.cn</td><td>Estimated number of lighter manufacturers in Wenzhou/Zhejiang cluster; CLCA industry survey data</td></tr>
+<tr><td>8</td><td>1</td><td>China NBS</td><td>China</td><td>2023-12-31</td><td>wenzhou_lighter_employment</td><td>200000</td><td>persons</td><td>public</td><td>China National Bureau of Statistics (NBS) Light Industry Survey</td><td>https://www.stats.gov.cn</td><td>Employment in lighter and ignition device manufacturing in Zhejiang province</td></tr>
+<tr><td>9</td><td>1</td><td>China Customs</td><td>China</td><td>2023-12-31</td><td>lighter_component_piece_cost_per_unit</td><td>0.04</td><td>USD/unit</td><td>inferred</td><td>China Customs export data / Alibaba OEM listings</td><td>https://www.alibaba.com</td><td>Inferred piece-part cost per assembled lighter unit (all 30+ components); derived from FOB price decomposition</td></tr>
+<tr><td>10</td><td>1</td><td>Plastics Technology</td><td>Global</td><td>2023-12-31</td><td>pp_injection_mold_cycle_time_sec</td><td>8</td><td>seconds</td><td>estimated</td><td>Plastics Technology trade press (industry benchmark)</td><td>https://www.ptonline.com</td><td>Typical injection mold cycle time for small PP lighter body halves; 8-12 second industry benchmark</td></tr>
+<tr><td>11</td><td>1</td><td>China NBS</td><td>China</td><td>2023-12-31</td><td>zhejiang_min_wage_per_hour_usd</td><td>2.20</td><td>USD/hour</td><td>public</td><td>China NBS / Zhejiang Provincial Government minimum wage order 2023</td><td>https://www.stats.gov.cn</td><td>Zhejiang Province minimum wage (converted from CNY at 7.1 CNY/USD); assembly labor cost basis</td></tr>
+<tr><td>12</td><td>2</td><td>CLCA</td><td>China</td><td>2023-12-31</td><td>assembly_throughput_units_per_worker_per_hour</td><td>400</td><td>units/worker/hour</td><td>estimated</td><td>China Lighter Industry Association / trade press estimates</td><td>https://www.clca.org.cn</td><td>Typical semi-automated assembly line throughput per worker-hour in Wenzhou factories</td></tr>
+<tr><td>13</td><td>2</td><td>Alibaba Global Sources</td><td>China</td><td>2023-12-31</td><td>factory_gate_fob_price_generic_usd_per_unit</td><td>0.12</td><td>USD/unit</td><td>inferred</td><td>Alibaba / Global Sources OEM listings (inferred from UN Comtrade)</td><td>https://www.alibaba.com</td><td>Generic unbranded lighter FOB Wenzhou/Ningbo; range $0.10-$0.15; mid-point used</td></tr>
+<tr><td>14</td><td>2</td><td>UN Comtrade</td><td>China</td><td>2023-12-31</td><td>china_lighter_exports_units_billion</td><td>10.0</td><td>billion units/year</td><td>public</td><td>UN Comtrade HS 9613</td><td>https://comtrade.un.org</td><td>China lighter exports (HS 9613.10 + 9613.20); approximately 10 billion units per year</td></tr>
+<tr><td>15</td><td>2</td><td>CLCA</td><td>China</td><td>2023-12-31</td><td>lighter_components_per_unit_count</td><td>30</td><td>count</td><td>public</td><td>China Lighter Industry Association technical documentation</td><td>https://www.clca.org.cn</td><td>Number of precision-engineered components in a standard disposable lighter; varies 28-35 depending on model</td></tr>
+<tr><td>16</td><td>3</td><td>ISO</td><td>Global</td><td>2023-12-31</td><td>iso_9994_standard_year</td><td>2005</td><td>year</td><td>public</td><td>ISO 9994:2005 Lighters — Safety requirements</td><td>https://www.iso.org/standard/39985.html</td><td>ISO 9994:2005 specifies safety requirements and test methods for lighters; superseded by ISO 9994:2024 (reaff)</td></tr>
+<tr><td>17</td><td>3</td><td>CEN</td><td>Europe</td><td>2023-12-31</td><td>en_13869_child_resistance_standard_year</td><td>2016</td><td>year</td><td>public</td><td>EN 13869:2016 Lighters — Child-resistance for lighters</td><td>https://www.cen.eu</td><td>EN 13869 specifies child-resistance requirements; mandatory for EU and UK markets</td></tr>
+<tr><td>18</td><td>3</td><td>SGS Bureau Veritas</td><td>Global</td><td>2023-12-31</td><td>lighter_certification_cost_per_sku_usd</td><td>2500</td><td>USD/SKU</td><td>estimated</td><td>SGS / Bureau Veritas / TUV lab fee schedules (estimated range)</td><td>https://www.sgs.com</td><td>Estimated certification cost per lighter SKU including ISO 9994 and EN 13869 testing; range $2000-$4000</td></tr>
+<tr><td>19</td><td>3</td><td>Industry estimate</td><td>Global</td><td>2023-12-31</td><td>iso_9994_test_cycle_days</td><td>21</td><td>days</td><td>estimated</td><td>Industry estimate based on SGS / Bureau Veritas standard lead times</td><td></td><td>Typical test cycle from sample submission to pass/fail report; includes ignition test 30000 cycles; drop test; fuel leakage</td></tr>
+<tr><td>20</td><td>3</td><td>Industry estimate</td><td>Global</td><td>2023-12-31</td><td>iso_9994_test_pass_rate_pct</td><td>94</td><td>percent</td><td>estimated</td><td>Industry estimate / CPSC lighter recall statistics</td><td>https://www.cpsc.gov</td><td>Estimated first-submission pass rate for ISO 9994; based on CPSC recall history and CLCA member reports</td></tr>
+<tr><td>21</td><td>4</td><td>Drewry</td><td>Global</td><td>2024-06-30</td><td>container_freight_rate_shanghai_la_usd_per_feu</td><td>3200</td><td>USD/FEU</td><td>public</td><td>Drewry World Container Index</td><td>https://www.drewry.co.uk</td><td>Shanghai to Los Angeles freight rate per 40ft container (FEU); mid-2024 average</td></tr>
+<tr><td>22</td><td>4</td><td>Industry calculation</td><td>Global</td><td>2023-12-31</td><td>lighters_per_40ft_container_units</td><td>2000000</td><td>units/FEU</td><td>inferred</td><td>Industry dimension calculation (standard lighter 8x4x3 cm; FEU 67 CBM)</td><td></td><td>Calculated from standard BIC-size lighter dimensions (approx 7.8×4.2×1.4 cm); packed in display boxes; cartons; pallets; ~2M units per 40ft</td></tr>
+<tr><td>23</td><td>4</td><td>Industry estimate</td><td>Global</td><td>2023-12-31</td><td>packaging_cost_per_unit_usd</td><td>0.008</td><td>USD/unit</td><td>estimated</td><td>ICIS corrugated paper pricing + industry estimate</td><td></td><td>Display box and outer carton packaging cost per unit; corrugated paper spot price basis</td></tr>
+<tr><td>24</td><td>5</td><td>UN Comtrade</td><td>USA</td><td>2023-12-31</td><td>us_lighter_imports_hs9613_value_usd</td><td>450000000</td><td>USD/year</td><td>public</td><td>UN Comtrade HS 9613</td><td>https://comtrade.un.org</td><td>USA lighter imports (HS 9613.10 + 9613.20) declared customs value; largest single import market</td></tr>
+<tr><td>25</td><td>5</td><td>UN Comtrade</td><td>EU</td><td>2023-12-31</td><td>eu_lighter_imports_hs9613_value_usd</td><td>380000000</td><td>USD/year</td><td>public</td><td>UN Comtrade HS 9613</td><td>https://comtrade.un.org</td><td>EU-27 lighter imports (HS 9613) declared customs value aggregate</td></tr>
+<tr><td>26</td><td>5</td><td>US Census Bureau</td><td>USA</td><td>2023-12-31</td><td>us_lighter_import_declared_value_per_unit_usd</td><td>0.15</td><td>USD/unit</td><td>public</td><td>US Census Bureau AES / Panjiva customs manifests</td><td>https://www.census.gov</td><td>Declared customs value per unit for bulk generic lighter imports to USA; range $0.10-$0.22</td></tr>
+<tr><td>27</td><td>5</td><td>Freightos</td><td>Global</td><td>2024-06-30</td><td>container_freight_rate_shanghai_rotterdam_usd_per_feu</td><td>2900</td><td>USD/FEU</td><td>public</td><td>Freightos Baltic Index (FBX)</td><td>https://www.freightos.com</td><td>Shanghai to Rotterdam freight rate per FEU; mid-2024 average</td></tr>
+<tr><td>28</td><td>5</td><td>US CBP</td><td>USA</td><td>2023-12-31</td><td>us_lighter_import_duty_rate_pct</td><td>3.9</td><td>percent</td><td>public</td><td>US CBP HTS 9613.10 duty rate</td><td>https://hts.usitc.gov</td><td>US MFN tariff rate for lighters (HTS 9613.10.00); standard most-favoured nation rate</td></tr>
+<tr><td>29</td><td>6</td><td>NACS</td><td>USA</td><td>2023-12-31</td><td>convenience_store_wholesale_margin_pct</td><td>22</td><td>percent</td><td>public</td><td>NACS State of the Industry Report 2023</td><td>https://www.nacsonline.com</td><td>Typical wholesale margin for tobacco accessories (including lighters) in US convenience store channel</td></tr>
+<tr><td>30</td><td>6</td><td>Industry estimate</td><td>Global</td><td>2023-12-31</td><td>wholesale_distribution_cost_per_unit_usd</td><td>0.03</td><td>USD/unit</td><td>estimated</td><td>Industry distribution cost benchmarks (estimated)</td><td></td><td>Pick-and-pack; last-mile; regional warehouse cost per unit; estimated from logistics industry benchmarks</td></tr>
+<tr><td>31</td><td>7</td><td>Direct observation</td><td>USA</td><td>2023-12-31</td><td>retail_price_generic_lighter_usd</td><td>0.89</td><td>USD/unit</td><td>public</td><td>Direct observation / Amazon / Walmart</td><td></td><td>Generic unbranded lighter retail price at US mass-market (Walmart; Dollar General); range $0.79-$0.99</td></tr>
+<tr><td>32</td><td>7</td><td>Direct observation</td><td>USA</td><td>2023-12-31</td><td>retail_price_bic_classic_usd</td><td>1.49</td><td>USD/unit</td><td>public</td><td>Direct observation / BIC Group investor relations</td><td></td><td>BIC Classic lighter retail price at US convenience store; range $1.29-$1.59</td></tr>
+<tr><td>33</td><td>7</td><td>BIC Group</td><td>Global</td><td>2023-12-31</td><td>bic_lighter_units_sold_billion</td><td>1.5</td><td>billion units/year</td><td>public</td><td>BIC Group Annual Report 2023</td><td>https://www.bic-group.com/investors</td><td>BIC branded lighter units sold globally per year; BIC commands approximately 15% of global lighter market</td></tr>
+<tr><td>34</td><td>7</td><td>NACS</td><td>USA</td><td>2023-12-31</td><td>convenience_store_lighter_retail_margin_pct</td><td>38</td><td>percent</td><td>public</td><td>NACS State of the Industry Report 2023</td><td>https://www.nacsonline.com</td><td>Retail margin on lighters in US convenience store channel; highest-margin tobacco accessory category</td></tr>
+<tr><td>35</td><td>7</td><td>BIC Group</td><td>Global</td><td>2023-12-31</td><td>bic_brand_premium_over_generic_pct</td><td>67</td><td>percent</td><td>estimated</td><td>BIC Annual Report 2023 pricing vs UN Comtrade declared values (inferred)</td><td>https://www.bic-group.com/investors</td><td>BIC retail price premium over generic OEM at equivalent channel; $1.49 vs $0.89; brand-premium E-layer finding</td></tr>
+<tr><td>36</td><td>8</td><td>CPSC</td><td>USA</td><td>2023-12-31</td><td>lighter_recycling_rate_pct</td><td>0.3</td><td>percent</td><td>inferred</td><td>CPSC consumer guidance + Ellen MacArthur Foundation single-use plastics estimates</td><td>https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Lighters</td><td>Estimated global recycling diversion rate for disposable lighters; &lt;1% based on absence of any systematic lighter-specific recycling stream in any major market; inferred from Ellen MacArthur Foundation and CPSC guidance</td></tr>
+<tr><td>37</td><td>8</td><td>Ellen MacArthur Foundation</td><td>Global</td><td>2023-12-31</td><td>lighter_pp_waste_mt_per_year</td><td>50000</td><td>MT/year</td><td>inferred</td><td>Ellen MacArthur Foundation single-use plastics data + production volume calculation</td><td>https://ellenmacarthurfoundation.org</td><td>Estimated PP plastic waste from lighter bodies; 10 billion units × 5g PP body per unit = 50</td><td>000 MT PP/year entering waste stream; near-zero recovery</td></tr>
+<tr><td>38</td><td>8</td><td>EPA IPCC</td><td>Global</td><td>2023-12-31</td><td>lighter_butane_venting_mt_co2e_per_year</td><td>14500</td><td>MT CO2e/year</td><td>inferred</td><td>EPA AP-42 fugitive emissions methodology + IPCC AR6 GWP + production volume estimate</td><td></td><td>Estimated butane venting to atmosphere from incompletely exhausted lighters at disposal; 10 billion units × 0.5g residual butane × 2.9 kg CO2e/kg butane (IPCC AR6 GWP100) = approximately 14</td><td>500 MT CO2e/year</td></tr>
+<tr><td>39</td><td>8</td><td>France CITEO</td><td>France</td><td>2023-12-31</td><td>france_citeo_rep_lighters_included</td><td>1</td><td>binary (1=yes)</td><td>public</td><td>CITEO REP emballages menagers (French Extended Producer Responsibility)</td><td>https://www.citeo.com</td><td>France is the only major market with a specific EPR framework that includes lighter packaging under the REP emballages system (2022); no other EU member state has lighter-specific EPR; coverage is packaging only not device itself</td></tr>
+<tr><td>40</td><td>8</td><td>CPSC DOT</td><td>USA</td><td>2023-12-31</td><td>lighter_hazardous_waste_threshold_fuel_remaining</td><td>1</td><td>binary (1=yes/classified hazardous)</td><td>public</td><td>CPSC lighter disposal guidance; DOT 49 CFR Part 173 hazardous materials transportation</td><td>https://www.cpsc.gov/Business--Manufacturing/Business-Education/Business-Guidance/Lighters</td><td>USA regulatory position: lighter with residual fuel = hazardous household waste; CPSC advises exhausting fuel before disposal; no curbside recycling stream accepts butane-filled lighters</td></tr>
+<tr><td>41</td><td>8</td><td>ISO</td><td>Global</td><td>2023-12-31</td><td>lighter_recyclable_materials_technically_pct</td><td>80</td><td>percent</td><td>inferred</td><td>ISO 14040 LCA material characterization; industry material composition estimates</td><td></td><td>Estimated percent of lighter unit mass that is technically recyclable (PP body; steel components; ferrocerium); approximately 80% by mass is recyclable material IF disassembled and decontaminated; actual recovery rate near-zero due to absence of disassembly infrastructure</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

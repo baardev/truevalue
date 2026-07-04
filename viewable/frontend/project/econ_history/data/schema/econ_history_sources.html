@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Econ History Sources</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Econ History Sources</h1>
+        <p class="subtitle">CSV viewer generated from <strong>econ_history_sources.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">20</span> / 20
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>source_id<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>phase_coverage<span class="sort-indicator"></span></th>
+<th>update_frequency<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>access_method<span class="sort-indicator"></span></th>
+<th>cost<span class="sort-indicator"></span></th>
+<th>reliability_score<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>Screpanti and Zamagni An Outline of the History of Economic Thought</td><td>secondary</td><td>0,1,2,3,4,5,6,7,8,9</td><td>static</td><td>https://global.oup.com/</td><td></td><td>paid</td><td>9</td><td>Comprehensive academic survey covering all major schools</td></tr>
+<tr><td>2</td><td>Heilbroner The Worldly Philosophers</td><td>secondary</td><td>0,1,2,3,4,5,6,7</td><td>static</td><td>https://www.simonandschuster.com/</td><td></td><td>paid</td><td>8</td><td>Classic accessible survey of economic thought from Smith onward</td></tr>
+<tr><td>3</td><td>Polanyi The Great Transformation</td><td>secondary</td><td>2,3,4,5,6</td><td>static</td><td>https://www.beacon.org/</td><td></td><td>paid</td><td>9</td><td>Essential for phases 2-6: embeddedness market society and institutional change</td></tr>
+<tr><td>4</td><td>British Museum Mesopotamian Archives</td><td>primary</td><td>0</td><td>static</td><td>https://www.britishmuseum.org/</td><td></td><td>free</td><td>8</td><td>Cuneiform tablet records; primary source for Phase 0 economic transactions</td></tr>
+<tr><td>5</td><td>Stanford Encyclopedia of Philosophy - Ancient Economic Thought</td><td>secondary</td><td>0,1</td><td>periodic</td><td>https://plato.stanford.edu/entries/ancient-economies/</td><td></td><td>free</td><td>9</td><td>Peer-reviewed philosophical encyclopedia entries</td></tr>
+<tr><td>6</td><td>de Roover The Rise and Decline of the Medici Bank</td><td>secondary</td><td>2</td><td>static</td><td></td><td></td><td>paid</td><td>9</td><td>Definitive archival study of medieval banking Phase 2</td></tr>
+<tr><td>7</td><td>VOC Historical Archives (Dutch National Archives)</td><td>primary</td><td>3</td><td>static</td><td>https://www.nationaalarchief.nl/</td><td></td><td>free</td><td>9</td><td>Primary corporate records of the VOC including share registers</td></tr>
+<tr><td>8</td><td>Bank of England Archives</td><td>primary</td><td>3,7,8,9</td><td>periodic</td><td>https://www.bankofengland.co.uk/archive</td><td></td><td>free</td><td>9</td><td>Central bank records from founding 1694 to present</td></tr>
+<tr><td>9</td><td>Adam Smith Wealth of Nations 1776</td><td>primary</td><td>4</td><td>static</td><td>https://www.gutenberg.org/ebooks/3300</td><td></td><td>free</td><td>10</td><td>Foundational primary text of Phase 4</td></tr>
+<tr><td>10</td><td>Ricardo Principles of Political Economy 1817</td><td>primary</td><td>4</td><td>static</td><td>https://www.gutenberg.org/ebooks/33310</td><td></td><td>free</td><td>10</td><td>Primary text for comparative advantage and value theory</td></tr>
+<tr><td>11</td><td>Marshall Principles of Economics 1890</td><td>primary</td><td>5</td><td>static</td><td>https://www.econlib.org/library/Marshall/marP.html</td><td></td><td>free</td><td>10</td><td>Primary text of marginalist synthesis Phase 5</td></tr>
+<tr><td>12</td><td>Keynes General Theory 1936</td><td>primary</td><td>5,6</td><td>static</td><td>https://www.gutenberg.org/ebooks/58212</td><td></td><td>free</td><td>10</td><td>Primary text of Keynesian revolution Phase 6</td></tr>
+<tr><td>13</td><td>IMF Historical Data and WEO</td><td>public</td><td>6,7,8,9</td><td>annual</td><td>https://www.imf.org/en/Publications/WEO</td><td></td><td>free</td><td>9</td><td>World Economic Outlook data from Bretton Woods onward</td></tr>
+<tr><td>14</td><td>Federal Reserve Historical Data</td><td>public</td><td>7,8,9</td><td>monthly</td><td>https://www.federalreserve.gov/datadownload/</td><td></td><td>free</td><td>9</td><td>US monetary policy data essential for Phases 7-9</td></tr>
+<tr><td>15</td><td>BIS OTC Derivatives Statistics</td><td>public</td><td>8</td><td>quarterly</td><td>https://www.bis.org/statistics/derstats.htm</td><td></td><td>free</td><td>9</td><td>Global derivatives data for Phase 8 financialization analysis</td></tr>
+<tr><td>16</td><td>Piketty Capital in the Twenty-First Century</td><td>secondary</td><td>9</td><td>static</td><td>https://www.hup.harvard.edu/catalog.php?isbn=9780674430006</td><td></td><td>paid</td><td>8</td><td>Long-run inequality data and Phase 9 paradigm challenge</td></tr>
+<tr><td>17</td><td>Friedman A Monetary History of the United States</td><td>secondary</td><td>6,7</td><td>static</td><td></td><td></td><td>paid</td><td>9</td><td>Foundational monetarist text Phase 7</td></tr>
+<tr><td>18</td><td>Lucas Econometrica 1976 Econometric Policy Evaluation</td><td>primary</td><td>7</td><td>static</td><td>https://www.jstor.org/stable/1913386</td><td></td><td>paid</td><td>10</td><td>Lucas critique primary text Phase 7</td></tr>
+<tr><td>19</td><td>Williamson What Washington Means by Policy Reform 1990</td><td>primary</td><td>8</td><td>static</td><td></td><td></td><td>paid</td><td>9</td><td>Washington Consensus primary definition text Phase 8</td></tr>
+<tr><td>20</td><td>Complexity Economics Institute for New Economic Thinking</td><td>secondary</td><td>9</td><td>ongoing</td><td>https://www.ineteconomics.org/</td><td></td><td>free</td><td>7</td><td>Post-2008 alternative framework research Phase 9</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

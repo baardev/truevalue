@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighter Supply Chain Ui</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Lighter Supply Chain Ui</h1>
+        <p class="subtitle">Generated from <strong>lighter_supply_chain_ui.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated&quot;: &quot;2026-04-30T00:00:00&quot;,
+    &quot;generator&quot;: &quot;hand-crafted baseline — run generate_ui_data.py to refresh from CSVs&quot;,
+    &quot;sources&quot;: [
+      &quot;data/schema/supply_chain_phases.csv&quot;,
+      &quot;data/schema/lighter_supply_chain_metrics.csv&quot;,
+      &quot;data/lighter_supply_chain_phases.csv&quot;,
+      &quot;WLPGA Annual Report 2023&quot;,
+      &quot;UN Comtrade HS 9613&quot;,
+      &quot;BIC Group Annual Report 2023&quot;,
+      &quot;NACS State of the Industry Report 2023&quot;,
+      &quot;Drewry World Container Index 2024&quot;,
+      &quot;ISO 9994:2005; EN 13869:2016&quot;,
+      &quot;China NBS Zhejiang Province; CLCA (estimated)&quot;
+    ],
+    &quot;note&quot;: &quot;Synthetic baseline derived using pdi-to-html-pipeline.mdc formula. D/C/N values reflect transparency tiers. Re-run generate_ui_data.py to refresh from source CSVs.&quot;
+  },
+  &quot;entities&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;label&quot;: &quot;Synthetic Baseline&quot;,
+      &quot;description&quot;: &quot;Industry-level synthetic data for the lighter supply chain. Derived from published commodity data, UN Comtrade, BIC Annual Report, and Wenzhou manufacturing estimates. Not tied to a specific company.&quot;
+    },
+    &quot;bic&quot;: {
+      &quot;label&quot;: &quot;BIC Group&quot;,
+      &quot;description&quot;: &quot;World&#x27;s leading branded lighter manufacturer. Public company listed on Euronext Paris. Approximately 1.5 billion units per year; Lighters segment revenue $2.24B (2023). Phase 7 data from BIC Annual Report 2023. All other phases fall back to synthetic baseline.&quot;,
+      &quot;source_url&quot;: &quot;https://www.bic-group.com/investors&quot;
+    },
+    &quot;generic_oem&quot;: {
+      &quot;label&quot;: &quot;Generic Wenzhou OEM&quot;,
+      &quot;description&quot;: &quot;Representative generic lighter manufacturer in the Wenzhou/Zhejiang cluster. Private company; no public financial data. Profile derived from CLCA industry data, China NBS wage data, and UN Comtrade export statistics.&quot;,
+      &quot;phase_speciality&quot;: [
+        1,
+        2
+      ]
+    }
+  },
+  &quot;phase_meta&quot;: {
+    &quot;0&quot;: {
+      &quot;name&quot;: &quot;Raw Material Extraction&quot;,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Chemical/geological extraction&quot;
+    },
+    &quot;1&quot;: {
+      &quot;name&quot;: &quot;Component Manufacturing&quot;,
+      &quot;transparency&quot;: &quot;Low&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Mechanical/thermal forming&quot;
+    },
+    &quot;2&quot;: {
+      &quot;name&quot;: &quot;Lighter Assembly&quot;,
+      &quot;transparency&quot;: &quot;Low&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Mechanical assembly&quot;
+    },
+    &quot;3&quot;: {
+      &quot;name&quot;: &quot;QA Testing &amp; Certification&quot;,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Safety/compliance testing&quot;
+    },
+    &quot;4&quot;: {
+      &quot;name&quot;: &quot;Packaging &amp; Containerization&quot;,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Packaging; logistics&quot;
+    },
+    &quot;5&quot;: {
+      &quot;name&quot;: &quot;Ocean Freight &amp; Import&quot;,
+      &quot;transparency&quot;: &quot;High&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Logistics; customs&quot;
+    },
+    &quot;6&quot;: {
+      &quot;name&quot;: &quot;Wholesale Distribution&quot;,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Custody transfer&quot;
+    },
+    &quot;7&quot;: {
+      &quot;name&quot;: &quot;Retail&quot;,
+      &quot;transparency&quot;: &quot;High&quot;,
+      &quot;recycling&quot;: false,
+      &quot;transformation&quot;: &quot;Sale to consumer&quot;
+    },
+    &quot;8&quot;: {
+      &quot;name&quot;: &quot;End-of-Life &amp; Waste Management&quot;,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;recycling&quot;: true,
+      &quot;transformation&quot;: &quot;Disposal (landfill &gt;99%) or material recovery (&lt;1%)&quot;
+    }
+  },
+  &quot;phases&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;0&quot;: {
+        &quot;D&quot;: 272,
+        &quot;C&quot;: 256,
+        &quot;balance&quot;: 83.0,
+        &quot;N&quot;: 219,
+        &quot;sustainability&quot;: 0.3,
+        &quot;notes&quot;: &quot;Butane/LPG + PP resin + ferrocerium in situ -&gt; liquefied C4; pellets; alloy rod stock. China is net LPG importer; butane feedstock price NYMEX-driven.&quot;,
+        &quot;data_quality&quot;: &quot;Medium — commodity prices public; Chinese domestic feedstock delivery estimated&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Not available — upstream commodity extraction emissions not tracked to lighter unit level&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;global_lpg_production_mt&quot;: 320000000,
+          &quot;butane_spot_price_usd_per_kg&quot;: 0.62,
+          &quot;pp_resin_spot_price_usd_per_kg&quot;: 0.9,
+          &quot;ferrocerium_price_usd_per_kg&quot;: 12.5
+        }
+      },
+      &quot;1&quot;: {
+        &quot;D&quot;: 248,
+        &quot;C&quot;: 264,
+        &quot;balance&quot;: 70.0,
+        &quot;N&quot;: 179,
+        &quot;sustainability&quot;: 0.15,
+        &quot;notes&quot;: &quot;PP resin + steel + ferrocerium -&gt; 30+ discrete components. 3,000 Wenzhou factories; $0.04 total piece-part cost. BOTTLENECK: lowest balance in chain.&quot;,
+        &quot;data_quality&quot;: &quot;Partial — factory count and employment public (CLCA; NBS); individual costs proprietary&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Not available — injection molding energy intensity not tracked to lighter unit level&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;factory_count&quot;: 3000,
+          &quot;employment&quot;: 200000,
+          &quot;piece_part_cost_usd&quot;: 0.04,
+          &quot;labor_cost_per_unit_usd&quot;: 0.005,
+          &quot;mold_cycle_time_sec&quot;: 8
+        }
+      },
+      &quot;2&quot;: {
+        &quot;D&quot;: 248,
+        &quot;C&quot;: 264,
+        &quot;balance&quot;: 72.0,
+        &quot;N&quot;: 184,
+        &quot;sustainability&quot;: 0.18,
+        &quot;notes&quot;: &quot;Components + butane -&gt; sealed assembled lighter. 400 units/worker/hour; FOB $0.10-$0.15. BOTTLENECK: second-lowest balance; opaque factory economics.&quot;,
+        &quot;data_quality&quot;: &quot;Partial — FOB price inferred from Comtrade; throughput estimated from CLCA&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Not available&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;units_per_year_billion&quot;: 10.0,
+          &quot;throughput_units_per_worker_hour&quot;: 400,
+          &quot;fob_price_generic_usd&quot;: 0.12,
+          &quot;fob_price_branded_oem_usd&quot;: 0.18,
+          &quot;assembly_cost_per_unit_usd&quot;: 0.015,
+          &quot;butane_fill_grams&quot;: 4.0
+        }
+      },
+      &quot;3&quot;: {
+        &quot;D&quot;: 272,
+        &quot;C&quot;: 256,
+        &quot;balance&quot;: 85.0,
+        &quot;N&quot;: 224,
+        &quot;sustainability&quot;: 0.42,
+        &quot;notes&quot;: &quot;Assembled lighter -&gt; ISO 9994 / EN 13869 certified. 21-day cycle; $2,500/SKU; 94% first-submission pass rate. Standards publicly available.&quot;,
+        &quot;data_quality&quot;: &quot;Populated for standards; estimated for pass rates and costs&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Not available&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;certification_cost_per_sku_usd&quot;: 2500,
+          &quot;test_cycle_days&quot;: 21,
+          &quot;iso_pass_rate_pct&quot;: 94,
+          &quot;certification_cost_per_unit_usd&quot;: 0.0025
+        }
+      },
+      &quot;4&quot;: {
+        &quot;D&quot;: 248,
+        &quot;C&quot;: 256,
+        &quot;balance&quot;: 82.0,
+        &quot;N&quot;: 207,
+        &quot;sustainability&quot;: 0.45,
+        &quot;notes&quot;: &quot;Certified lighters -&gt; containerized units. 2,000,000 units per FEU; $3,200 freight rate; $0.008 packaging cost. IMDG Class 2.1 DG documentation required.&quot;,
+        &quot;data_quality&quot;: &quot;Populated for freight rates and container capacity; estimated for packaging cost&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Ocean shipping emissions: approximately 0.0002 kg CO2e per unit (estimated from IMO 2023 GHG strategy)&quot;,
+        &quot;scope_quality&quot;: &quot;Low — estimated&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;units_per_feu&quot;: 2000000,
+          &quot;container_freight_shanghai_la_usd_per_feu&quot;: 3200,
+          &quot;container_freight_shanghai_rotterdam_usd_per_feu&quot;: 2900,
+          &quot;freight_cost_per_unit_usd&quot;: 0.0016,
+          &quot;packaging_cost_per_unit_usd&quot;: 0.008
+        }
+      },
+      &quot;5&quot;: {
+        &quot;D&quot;: 272,
+        &quot;C&quot;: 216,
+        &quot;balance&quot;: 91.0,
+        &quot;N&quot;: 222,
+        &quot;sustainability&quot;: 0.65,
+        &quot;notes&quot;: &quot;Containerized -&gt; customs-cleared. Highest transparency phase. UN Comtrade HS 9613 public data. US: 3B units/year; $0.15/unit declared value; 3.9% import duty.&quot;,
+        &quot;data_quality&quot;: &quot;Populated — UN Comtrade; US Census Bureau; Panjiva (subscription)&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Not available at unit level&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;us_lighter_imports_billion_units&quot;: 3.0,
+          &quot;us_declared_value_per_unit_usd&quot;: 0.15,
+          &quot;us_import_duty_rate_pct&quot;: 3.9,
+          &quot;us_import_duty_per_unit_usd&quot;: 0.006,
+          &quot;global_lighter_exports_billion_units&quot;: 10.0
+        }
+      },
+      &quot;6&quot;: {
+        &quot;D&quot;: 248,
+        &quot;C&quot;: 256,
+        &quot;balance&quot;: 80.0,
+        &quot;N&quot;: 202,
+        &quot;sustainability&quot;: 0.48,
+        &quot;notes&quot;: &quot;Palletized -&gt; retail shelf-ready. 22% distributor margin (NACS); $0.45 wholesale generic; $0.90 wholesale BIC. Proprietary distributor economics.&quot;,
+        &quot;data_quality&quot;: &quot;Partial — category margins from NACS SOTI 2023; individual distributor data proprietary&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Not available at unit level&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;distributor_margin_pct&quot;: 22,
+          &quot;distribution_cost_per_unit_usd&quot;: 0.03,
+          &quot;wholesale_price_generic_usd&quot;: 0.45,
+          &quot;wholesale_price_bic_usd&quot;: 0.9
+        }
+      },
+      &quot;7&quot;: {
+        &quot;D&quot;: 248,
+        &quot;C&quot;: 224,
+        &quot;balance&quot;: 92.0,
+        &quot;N&quot;: 217,
+        &quot;sustainability&quot;: 0.55,
+        &quot;notes&quot;: &quot;Shelf -&gt; consumer. Highest transparency phase. $0.89 generic; $1.49 BIC; 38% retail margin; $0.60 brand premium is PRIMARY E-LAYER FINDING (coupling ratio 0.60).&quot;,
+        &quot;data_quality&quot;: &quot;Populated — BIC Annual Report 2023; NACS SOTI 2023; direct observation&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Consumer use phase: approximately 0.009 kg CO2e per lighter (butane combustion); estimated from 4g butane per unit&quot;,
+        &quot;scope_quality&quot;: &quot;Medium — calculated from butane mass and combustion stoichiometry&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;retail_price_generic_usd&quot;: 0.89,
+          &quot;retail_price_bic_usd&quot;: 1.49,
+          &quot;retail_margin_pct&quot;: 38,
+          &quot;bic_brand_premium_usd&quot;: 0.6,
+          &quot;bic_brand_premium_pct&quot;: 67,
+          &quot;bic_units_sold_billion&quot;: 1.5,
+          &quot;bic_lighter_revenue_usd_billion&quot;: 2.24,
+          &quot;e_layer_coupling_ratio&quot;: 0.6
+        }
+      },
+      &quot;8&quot;: {
+        &quot;D&quot;: 215,
+        &quot;C&quot;: 85,
+        &quot;balance&quot;: 56.7,
+        &quot;N&quot;: 85,
+        &quot;sustainability&quot;: 0.03,
+        &quot;notes&quot;: &quot;Used lighter -&gt; landfill (&gt;99%) or trace material recovery (&lt;1%). PRIMARY CHAIN BOTTLENECK (lowest balance). 50,000 MT PP waste/year; 14,500 MT CO2e/year butane venting. No take-back scheme; no compatible recycling stream; residual butane = hazardous waste.&quot;,
+        &quot;data_quality&quot;: &quot;Partial — waste volumes calculated from public production data; recycling rate estimated/inferred; no systematic lighter-specific waste data exists&quot;,
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Butane venting at disposal: ~14,500 MT CO2e/year (10B units × 0.5g residual butane × 2.9 kg CO2e/kg). PP waste: 50,000 MT PP/year. Both figures inferred from production volumes.&quot;,
+        &quot;scope_quality&quot;: &quot;Low — inferred from production volume and product specifications; no direct measurement&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: 0,
+        &quot;energy_clean_pct&quot;: null,
+        &quot;metrics&quot;: {
+          &quot;recycling_rate_pct&quot;: 0.3,
+          &quot;pp_waste_mt_per_year&quot;: 50000,
+          &quot;steel_waste_mt_per_year&quot;: 5000,
+          &quot;ferrocerium_waste_mt_per_year&quot;: 1500,
+          &quot;butane_venting_mt_co2e_per_year&quot;: 14500,
+          &quot;technically_recyclable_by_mass_pct&quot;: 80,
+          &quot;actually_recovered_pct&quot;: 0.3,
+          &quot;hazardous_waste_classification&quot;: true,
+          &quot;producer_takeback_program&quot;: false,
+          &quot;france_epr_coverage&quot;: true
+        }
+      }
+    }
+  },
+  &quot;system&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;balance&quot;: 79.1,
+      &quot;average_N&quot;: 193,
+      &quot;bottleneck_phase_ids&quot;: [
+        8,
+        1,
+        2
+      ],
+      &quot;interpretation&quot;: &quot;The lighter supply chain operates at 79.1% average D-C balance across 9 phases. Phase 8 (End-of-Life and Waste Management) is the primary bottleneck at 56.7% balance: a D-C imbalance of 215 vs 85 reflects a regulatory constraint environment (hazardous waste classification, no recycling stream, EPR gap) combined with near-zero circularity contribution. The manufacturing bottlenecks at Phase 1 (70.0%) and Phase 2 (72.0%) remain — the Wenzhou cluster&#x27;s opacity and sub-cent margins are structural. The chain performs well at QA certification (85.0%), ocean freight (91.0%), and retail (92.0%). The secondary analytical finding is the BIC brand premium at Phase 7 (E-layer coupling ratio 0.60). The primary sustainability finding is Phase 8: 10 billion lighters per year entering waste streams with near-zero recovery, 50,000 MT PP plastic, and 14,500 MT CO2e from butane venting.&quot;,
+      &quot;water_recycling_pct&quot;: null,
+      &quot;waste_circularity_pct&quot;: 0.3,
+      &quot;clean_energy_pct&quot;: null,
+      &quot;key_finding&quot;: &quot;Phase 8 (End-of-Life) is the primary chain bottleneck at 56.7% balance. 10 billion lighters/year enter landfill with &lt;1% recovery. Secondary finding: Brand-premium E-layer decoupling at Phase 7 (BIC premium $0.60/unit, coupling ratio 0.60) is the only meaningful abstract value in an otherwise price-compressed chain.&quot;,
+      &quot;eol_pp_waste_mt_per_year&quot;: 50000,
+      &quot;eol_co2e_butane_venting_mt_per_year&quot;: 14500,
+      &quot;eol_recycling_rate_pct&quot;: 0.3
+    }
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

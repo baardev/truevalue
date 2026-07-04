@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Model Engine Reports</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Model Engine Reports</h1>
+        <p class="subtitle">Generated from <strong>model_engine_reports.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated&quot;: &quot;2026-05-01T23:13:02.779119+00:00&quot;,
+    &quot;note&quot;: &quot;Regenerate: python3 scripts/export_model_engine_reports_json.py&quot;,
+    &quot;modules&quot;: [
+      &quot;src.simulation.pi_engine&quot;,
+      &quot;src.simulation.phi_engine&quot;,
+      &quot;src.simulation.sqrt2_engine&quot;,
+      &quot;src.simulation.ln2_engine&quot;,
+      &quot;src.simulation.e_engine&quot;
+    ]
+  },
+  &quot;pi&quot;: {
+    &quot;gold&quot;: {
+      &quot;commodity&quot;: &quot;gold&quot;,
+      &quot;model&quot;: &quot;pi&quot;,
+      &quot;pi_constant&quot;: 3.14159,
+      &quot;data_source_path&quot;: &quot;/home/jw/src/tv/frontend/project/gold/data/processed/gold_supply_chain_ui.json&quot;,
+      &quot;phases&quot;: [
+        {
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Geological Occurrence &amp; Prospecting&quot;,
+          &quot;D&quot;: 227.0,
+          &quot;C&quot;: 208.0,
+          &quot;dc_ratio&quot;: 1.091,
+          &quot;balance_reported&quot;: 83.9,
+          &quot;balance_exponential&quot;: 84.59,
+          &quot;N&quot;: 182.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Low physical visibility; seismic, drilling, geological modelling.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mine Extraction&quot;,
+          &quot;D&quot;: 270.0,
+          &quot;C&quot;: 277.0,
+          &quot;dc_ratio&quot;: 0.975,
+          &quot;balance_reported&quot;: 94.6,
+          &quot;balance_exponential&quot;: 95.07,
+          &quot;N&quot;: 259.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;High D-natural constraint (geology). High C from global production network. Source metrics: production_tonnes_year, economic_demonstrated_reserves_tonnes, economic_life_years, gdp_contribution_pct....&quot;
+        },
+        {
+          &quot;phase_id&quot;: 2,
+          &quot;phase_name&quot;: &quot;Ore Processing &amp; Concentration&quot;,
+          &quot;D&quot;: 276.0,
+          &quot;C&quot;: 271.0,
+          &quot;dc_ratio&quot;: 1.018,
+          &quot;balance_reported&quot;: 95.96,
+          &quot;balance_exponential&quot;: 96.44,
+          &quot;N&quot;: 263.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;95% of ore becomes tailings (D-natural). Water recycling target: 75%.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Doré Production&quot;,
+          &quot;D&quot;: 264.0,
+          &quot;C&quot;: 249.0,
+          &quot;dc_ratio&quot;: 1.06,
+          &quot;balance_reported&quot;: 89.3,
+          &quot;balance_exponential&quot;: 89.26,
+          &quot;N&quot;: 229.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Doré purity defines refinery access. Moderate D-institutional (assay standards).&quot;
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Refining&quot;,
+          &quot;D&quot;: 263.0,
+          &quot;C&quot;: 270.0,
+          &quot;dc_ratio&quot;: 0.974,
+          &quot;balance_reported&quot;: 95.1,
+          &quot;balance_exponential&quot;: 94.95,
+          &quot;N&quot;: 253.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Acid-leach chemistry (D-natural). LBMA RGG adds D-institutional layer.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Bar Casting &amp; Assay&quot;,
+          &quot;D&quot;: 253.0,
+          &quot;C&quot;: 247.0,
+          &quot;dc_ratio&quot;: 1.024,
+          &quot;balance_reported&quot;: 95.0,
+          &quot;balance_exponential&quot;: 95.37,
+          &quot;N&quot;: 237.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Bar weight/purity fixed by LBMA spec (D-institutional). Low opacity once cast.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Logistics &amp; Vaulting&quot;,
+          &quot;D&quot;: 204.0,
+          &quot;C&quot;: 161.0,
+          &quot;dc_ratio&quot;: 1.267,
+          &quot;balance_reported&quot;: 65.5,
+          &quot;balance_exponential&quot;: 65.6,
+          &quot;N&quot;: 118.0,
+          &quot;balance_zone&quot;: &quot;stressed&quot;,
+          &quot;balance_zone_label&quot;: &quot;Stressed&quot;,
+          &quot;balance_zone_color&quot;: &quot;amber&quot;,
+          &quot;notes&quot;: &quot;Bottleneck: vault capacity (D) far exceeds network integration (C). Opaque custody.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 7,
+          &quot;phase_name&quot;: &quot;Exchange Registration&quot;,
+          &quot;D&quot;: 254.0,
+          &quot;C&quot;: 265.0,
+          &quot;dc_ratio&quot;: 0.958,
+          &quot;balance_reported&quot;: 92.2,
+          &quot;balance_exponential&quot;: 92.03,
+          &quot;N&quot;: 239.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Exchange data is public anchor. Paper claims are out of scope (supply chain only).&quot;
+        },
+        {
+          &quot;phase_id&quot;: 8,
+          &quot;phase_name&quot;: &quot;Recycling &amp; Recovery&quot;,
+          &quot;D&quot;: 245.0,
+          &quot;C&quot;: 250.0,
+          &quot;dc_ratio&quot;: 0.98,
+          &quot;balance_reported&quot;: 80.0,
+          &quot;balance_exponential&quot;: 96.08,
+          &quot;N&quot;: 210.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Circular economy phase. Feeds back to Phase 4. ~28% of annual gold supply.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_pi_score&quot;: 89.9,
+        &quot;min_score&quot;: 65.6,
+        &quot;max_score&quot;: 96.4,
+        &quot;system_status&quot;: &quot;Operationally coherent — most phases in healthy balance&quot;,
+        &quot;total_phases&quot;: 9,
+        &quot;zone_counts&quot;: {
+          &quot;coherent&quot;: 8,
+          &quot;stressed&quot;: 1
+        },
+        &quot;worst_phase&quot;: &quot;P6 Logistics &amp; Vaulting&quot;,
+        &quot;worst_score&quot;: 65.6,
+        &quot;best_phase&quot;: &quot;P2 Ore Processing &amp; Concentration&quot;,
+        &quot;best_score&quot;: 96.44
+      }
+    },
+    &quot;shea&quot;: {
+      &quot;commodity&quot;: &quot;shea&quot;,
+      &quot;model&quot;: &quot;pi&quot;,
+      &quot;pi_constant&quot;: 3.14159,
+      &quot;data_source_path&quot;: &quot;/home/jw/src/tv/frontend/project/west_african_shea/data/processed/shea_supply_chain_ui.json&quot;,
+      &quot;phases&quot;: [
+        {
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Collection&quot;,
+          &quot;D&quot;: 235.0,
+          &quot;C&quot;: 175.0,
+          &quot;dc_ratio&quot;: 1.343,
+          &quot;balance_reported&quot;: 68.2,
+          &quot;balance_exponential&quot;: 60.01,
+          &quot;N&quot;: 178.0,
+          &quot;balance_zone&quot;: &quot;failure&quot;,
+          &quot;balance_zone_label&quot;: &quot;Failure&quot;,
+          &quot;balance_zone_color&quot;: &quot;red&quot;,
+          &quot;notes&quot;: &quot;94% women; 3M employed in Burkina Faso; seasonal May–Oct. D-dominant: land tenure, no market access, no finance (D-institutional barriers).&quot;
+        },
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;First sale / aggregation&quot;,
+          &quot;D&quot;: 220.0,
+          &quot;C&quot;: 195.0,
+          &quot;dc_ratio&quot;: 1.128,
+          &quot;balance_reported&quot;: 78.5,
+          &quot;balance_exponential&quot;: 79.67,
+          &quot;N&quot;: 192.0,
+          &quot;balance_zone&quot;: &quot;stressed&quot;,
+          &quot;balance_zone_label&quot;: &quot;Stressed&quot;,
+          &quot;balance_zone_color&quot;: &quot;amber&quot;,
+          &quot;notes&quot;: &quot;Sellers 150 US$/MT; nuts 425 US$/MT. Low C: aggregators capture spread with limited competition.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 2,
+          &quot;phase_name&quot;: &quot;Trading / bulking&quot;,
+          &quot;D&quot;: 245.0,
+          &quot;C&quot;: 230.0,
+          &quot;dc_ratio&quot;: 1.065,
+          &quot;balance_reported&quot;: 88.0,
+          &quot;balance_exponential&quot;: 88.48,
+          &quot;N&quot;: 218.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Traders 250 US$/MT; large exporters 250–800 US$/MT. Wide exporter range signals opacity and market fragmentation.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Processing (nuts to butter)&quot;,
+          &quot;D&quot;: 265.0,
+          &quot;C&quot;: 255.0,
+          &quot;dc_ratio&quot;: 1.039,
+          &quot;balance_reported&quot;: 92.5,
+          &quot;balance_exponential&quot;: 92.73,
+          &quot;N&quot;: 241.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Serious Shea: 100% renewable energy. 925 kg butter/woman/season. BAU uses 20 kg firewood/kg butter — driving deforestation. CO₂e reduction: &gt;95% vs BAU.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Export&quot;,
+          &quot;D&quot;: 210.0,
+          &quot;C&quot;: 165.0,
+          &quot;dc_ratio&quot;: 1.273,
+          &quot;balance_reported&quot;: 64.0,
+          &quot;balance_exponential&quot;: 65.14,
+          &quot;N&quot;: 158.0,
+          &quot;balance_zone&quot;: &quot;stressed&quot;,
+          &quot;balance_zone_label&quot;: &quot;Stressed&quot;,
+          &quot;balance_zone_color&quot;: &quot;amber&quot;,
+          &quot;notes&quot;: &quot;BOTTLENECK. 265k–445k t/year region. 90% of exported shea ends up in chocolate (C-concentration risk — single buyer-segment dependency). EU import standards now require clean-energy processing (D-institutional barrier — excludes BAU firewood processors). Export route OPAQUE. €50B Sahel ingredients market potential by 2030.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Manufacturing (butter to cosmetic)&quot;,
+          &quot;D&quot;: 250.0,
+          &quot;C&quot;: 238.0,
+          &quot;dc_ratio&quot;: 1.05,
+          &quot;balance_reported&quot;: 90.2,
+          &quot;balance_exponential&quot;: 90.85,
+          &quot;N&quot;: 234.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Cleo: 95% shea content. 100% renewable energy in manufacturing. Location OPAQUE.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Retail&quot;,
+          &quot;D&quot;: 240.0,
+          &quot;C&quot;: 265.0,
+          &quot;dc_ratio&quot;: 0.906,
+          &quot;balance_reported&quot;: 91.8,
+          &quot;balance_exponential&quot;: 82.81,
+          &quot;N&quot;: 237.0,
+          &quot;balance_zone&quot;: &quot;coherent&quot;,
+          &quot;balance_zone_label&quot;: &quot;Coherent&quot;,
+          &quot;balance_zone_color&quot;: &quot;green&quot;,
+          &quot;notes&quot;: &quot;Cleo 30/50/100 ml. 30 US$/30g = 1 US$/g. Income uplift to women: 11.875× (Serious Shea baseline → Cleo 10% share).&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_pi_score&quot;: 80.0,
+        &quot;min_score&quot;: 60.0,
+        &quot;max_score&quot;: 92.7,
+        &quot;system_status&quot;: &quot;Moderate operational stress — isolated D–C drift&quot;,
+        &quot;total_phases&quot;: 7,
+        &quot;zone_counts&quot;: {
+          &quot;failure&quot;: 1,
+          &quot;stressed&quot;: 2,
+          &quot;coherent&quot;: 4
+        },
+        &quot;worst_phase&quot;: &quot;P0 Collection&quot;,
+        &quot;worst_score&quot;: 60.01,
+        &quot;best_phase&quot;: &quot;P3 Processing (nuts to butter)&quot;,
+        &quot;best_score&quot;: 92.73
+      }
+    }
+  },
+  &quot;phi&quot;: {
+    &quot;gold&quot;: {
+      &quot;commodity&quot;: &quot;gold&quot;,
+      &quot;model&quot;: &quot;phi&quot;,
+      &quot;phi_constant&quot;: 1.61803,
+      &quot;phases&quot;: [
+        {
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Prospecting&quot;,
+          &quot;N&quot;: 183
+        },
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mining&quot;,
+          &quot;N&quot;: 259
+        },
+        {
+          &quot;phase_id&quot;: 2,
+          &quot;phase_name&quot;: &quot;Processing&quot;,
+          &quot;N&quot;: 263
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Doré&quot;,
+          &quot;N&quot;: 229
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Refining&quot;,
+          &quot;N&quot;: 253
+        },
+        {
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Casting&quot;,
+          &quot;N&quot;: 237
+        },
+        {
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Vaulting&quot;,
+          &quot;N&quot;: 118
+        },
+        {
+          &quot;phase_id&quot;: 7,
+          &quot;phase_name&quot;: &quot;Exchange&quot;,
+          &quot;N&quot;: 239
+        }
+      ],
+      &quot;boundaries&quot;: [
+        {
+          &quot;from_phase_id&quot;: 0,
+          &quot;from_phase_name&quot;: &quot;Prospecting&quot;,
+          &quot;to_phase_id&quot;: 1,
+          &quot;to_phase_name&quot;: &quot;Mining&quot;,
+          &quot;n_from&quot;: 183,
+          &quot;n_to&quot;: 259,
+          &quot;ratio&quot;: 1.4153,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.2027,
+          &quot;phi_score&quot;: 77.8,
+          &quot;status&quot;: &quot;moderate&quot;,
+          &quot;label&quot;: &quot;Near-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Mild deviation from φ-proportion — monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Monitor phase N-values for sustained imbalance.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 1,
+          &quot;from_phase_name&quot;: &quot;Mining&quot;,
+          &quot;to_phase_id&quot;: 2,
+          &quot;to_phase_name&quot;: &quot;Processing&quot;,
+          &quot;n_from&quot;: 259,
+          &quot;n_to&quot;: 263,
+          &quot;ratio&quot;: 1.0154,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.6026,
+          &quot;phi_score&quot;: 47.5,
+          &quot;status&quot;: &quot;compressed&quot;,
+          &quot;label&quot;: &quot;Under-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 1.015 is below φ — value growth is compressed at this boundary.&quot;,
+          &quot;intervention&quot;: &quot;Strengthen downstream C parameters or reduce upstream D constraints to allow more proportional value flow.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 2,
+          &quot;from_phase_name&quot;: &quot;Processing&quot;,
+          &quot;to_phase_id&quot;: 3,
+          &quot;to_phase_name&quot;: &quot;Doré&quot;,
+          &quot;n_from&quot;: 263,
+          &quot;n_to&quot;: 229,
+          &quot;ratio&quot;: 0.8707,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.7473,
+          &quot;phi_score&quot;: 39.7,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Value suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;Downstream phase N-value collapsed to 0.871× the upstream. Value is not passing through — either retained upstream or lost at boundary.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) D-institutional barriers at boundary, (2) custody transfer overhead, (3) intermediary extraction between phases.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 3,
+          &quot;from_phase_name&quot;: &quot;Doré&quot;,
+          &quot;to_phase_id&quot;: 4,
+          &quot;to_phase_name&quot;: &quot;Refining&quot;,
+          &quot;n_from&quot;: 229,
+          &quot;n_to&quot;: 253,
+          &quot;ratio&quot;: 1.1048,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.5132,
+          &quot;phi_score&quot;: 53.0,
+          &quot;status&quot;: &quot;compressed&quot;,
+          &quot;label&quot;: &quot;Under-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 1.105 is below φ — value growth is compressed at this boundary.&quot;,
+          &quot;intervention&quot;: &quot;Strengthen downstream C parameters or reduce upstream D constraints to allow more proportional value flow.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 4,
+          &quot;from_phase_name&quot;: &quot;Refining&quot;,
+          &quot;to_phase_id&quot;: 5,
+          &quot;to_phase_name&quot;: &quot;Casting&quot;,
+          &quot;n_from&quot;: 253,
+          &quot;n_to&quot;: 237,
+          &quot;ratio&quot;: 0.9368,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.6813,
+          &quot;phi_score&quot;: 43.1,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Value suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;Downstream phase N-value collapsed to 0.937× the upstream. Value is not passing through — either retained upstream or lost at boundary.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) D-institutional barriers at boundary, (2) custody transfer overhead, (3) intermediary extraction between phases.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 5,
+          &quot;from_phase_name&quot;: &quot;Casting&quot;,
+          &quot;to_phase_id&quot;: 6,
+          &quot;to_phase_name&quot;: &quot;Vaulting&quot;,
+          &quot;n_from&quot;: 237,
+          &quot;n_to&quot;: 118,
+          &quot;ratio&quot;: 0.4979,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 1.1201,
+          &quot;phi_score&quot;: 25.0,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Value suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;Downstream phase N-value collapsed to 0.498× the upstream. Value is not passing through — either retained upstream or lost at boundary.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) D-institutional barriers at boundary, (2) custody transfer overhead, (3) intermediary extraction between phases.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 6,
+          &quot;from_phase_name&quot;: &quot;Vaulting&quot;,
+          &quot;to_phase_id&quot;: 7,
+          &quot;to_phase_name&quot;: &quot;Exchange&quot;,
+          &quot;n_from&quot;: 118,
+          &quot;n_to&quot;: 239,
+          &quot;ratio&quot;: 2.0254,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.4074,
+          &quot;phi_score&quot;: 60.4,
+          &quot;status&quot;: &quot;moderate&quot;,
+          &quot;label&quot;: &quot;Near-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Mild deviation from φ-proportion — monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Monitor phase N-values for sustained imbalance.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_phi_score&quot;: 49.5,
+        &quot;min_score&quot;: 25.0,
+        &quot;max_score&quot;: 77.8,
+        &quot;system_status&quot;: &quot;Low coherence — systemic proportionality breakdown&quot;,
+        &quot;healthy_boundaries&quot;: 0,
+        &quot;critical_boundaries&quot;: 2,
+        &quot;total_boundaries&quot;: 7,
+        &quot;worst_boundary&quot;: &quot;P5→P6&quot;,
+        &quot;worst_score&quot;: 25.0,
+        &quot;best_boundary&quot;: &quot;P0→P1&quot;,
+        &quot;best_score&quot;: 77.8
+      }
+    },
+    &quot;shea&quot;: {
+      &quot;commodity&quot;: &quot;shea&quot;,
+      &quot;model&quot;: &quot;phi&quot;,
+      &quot;phi_constant&quot;: 1.61803,
+      &quot;phases&quot;: [
+        {
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Collection&quot;,
+          &quot;N&quot;: 178,
+          &quot;value_usd_per_mt&quot;: null
+        },
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;First Sale&quot;,
+          &quot;N&quot;: 192,
+          &quot;value_usd_per_mt&quot;: 150
+        },
+        {
+          &quot;phase_id&quot;: 2,
+          &quot;phase_name&quot;: &quot;Trading/Bulking&quot;,
+          &quot;N&quot;: 218,
+          &quot;value_usd_per_mt&quot;: 250
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Processing&quot;,
+          &quot;N&quot;: 241,
+          &quot;value_usd_per_mt&quot;: 4000
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Export&quot;,
+          &quot;N&quot;: 158,
+          &quot;value_usd_per_mt&quot;: null
+        },
+        {
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Manufacturing&quot;,
+          &quot;N&quot;: 234,
+          &quot;value_usd_per_mt&quot;: null
+        },
+        {
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Retail&quot;,
+          &quot;N&quot;: 237,
+          &quot;value_usd_per_mt&quot;: 47500
+        }
+      ],
+      &quot;boundaries&quot;: [
+        {
+          &quot;from_phase_id&quot;: 0,
+          &quot;from_phase_name&quot;: &quot;Collection&quot;,
+          &quot;to_phase_id&quot;: 1,
+          &quot;to_phase_name&quot;: &quot;First Sale&quot;,
+          &quot;n_from&quot;: 178,
+          &quot;n_to&quot;: 192,
+          &quot;ratio&quot;: 1.0787,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.5394,
+          &quot;phi_score&quot;: 51.3,
+          &quot;status&quot;: &quot;compressed&quot;,
+          &quot;label&quot;: &quot;Under-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 1.079 is below φ — value growth is compressed at this boundary.&quot;,
+          &quot;intervention&quot;: &quot;Strengthen downstream C parameters or reduce upstream D constraints to allow more proportional value flow.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 1,
+          &quot;from_phase_name&quot;: &quot;First Sale&quot;,
+          &quot;to_phase_id&quot;: 2,
+          &quot;to_phase_name&quot;: &quot;Trading/Bulking&quot;,
+          &quot;n_from&quot;: 192,
+          &quot;n_to&quot;: 218,
+          &quot;ratio&quot;: 1.1354,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.4826,
+          &quot;phi_score&quot;: 55.1,
+          &quot;status&quot;: &quot;moderate&quot;,
+          &quot;label&quot;: &quot;Near-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Mild deviation from φ-proportion — monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Monitor phase N-values for sustained imbalance.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 2,
+          &quot;from_phase_name&quot;: &quot;Trading/Bulking&quot;,
+          &quot;to_phase_id&quot;: 3,
+          &quot;to_phase_name&quot;: &quot;Processing&quot;,
+          &quot;n_from&quot;: 218,
+          &quot;n_to&quot;: 241,
+          &quot;ratio&quot;: 1.1055,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.5125,
+          &quot;phi_score&quot;: 53.1,
+          &quot;status&quot;: &quot;compressed&quot;,
+          &quot;label&quot;: &quot;Under-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 1.106 is below φ — value growth is compressed at this boundary.&quot;,
+          &quot;intervention&quot;: &quot;Strengthen downstream C parameters or reduce upstream D constraints to allow more proportional value flow.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 3,
+          &quot;from_phase_name&quot;: &quot;Processing&quot;,
+          &quot;to_phase_id&quot;: 4,
+          &quot;to_phase_name&quot;: &quot;Export&quot;,
+          &quot;n_from&quot;: 241,
+          &quot;n_to&quot;: 158,
+          &quot;ratio&quot;: 0.6556,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.9624,
+          &quot;phi_score&quot;: 30.4,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Value suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;Downstream phase N-value collapsed to 0.656× the upstream. Value is not passing through — either retained upstream or lost at boundary.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) D-institutional barriers at boundary, (2) custody transfer overhead, (3) intermediary extraction between phases.&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 4,
+          &quot;from_phase_name&quot;: &quot;Export&quot;,
+          &quot;to_phase_id&quot;: 5,
+          &quot;to_phase_name&quot;: &quot;Manufacturing&quot;,
+          &quot;n_from&quot;: 158,
+          &quot;n_to&quot;: 234,
+          &quot;ratio&quot;: 1.481,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.137,
+          &quot;phi_score&quot;: 84.4,
+          &quot;status&quot;: &quot;healthy&quot;,
+          &quot;label&quot;: &quot;φ-proportional&quot;,
+          &quot;color&quot;: &quot;good&quot;,
+          &quot;description&quot;: &quot;Value passes through this boundary in natural proportion.&quot;,
+          &quot;intervention&quot;: null
+        },
+        {
+          &quot;from_phase_id&quot;: 5,
+          &quot;from_phase_name&quot;: &quot;Manufacturing&quot;,
+          &quot;to_phase_id&quot;: 6,
+          &quot;to_phase_name&quot;: &quot;Retail&quot;,
+          &quot;n_from&quot;: 234,
+          &quot;n_to&quot;: 237,
+          &quot;ratio&quot;: 1.0128,
+          &quot;phi_target&quot;: 1.61803,
+          &quot;distance_from_phi&quot;: 0.6052,
+          &quot;phi_score&quot;: 47.3,
+          &quot;status&quot;: &quot;compressed&quot;,
+          &quot;label&quot;: &quot;Under-proportional&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 1.013 is below φ — value growth is compressed at this boundary.&quot;,
+          &quot;intervention&quot;: &quot;Strengthen downstream C parameters or reduce upstream D constraints to allow more proportional value flow.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_phi_score&quot;: 53.6,
+        &quot;min_score&quot;: 30.4,
+        &quot;max_score&quot;: 84.4,
+        &quot;system_status&quot;: &quot;Low coherence — systemic proportionality breakdown&quot;,
+        &quot;healthy_boundaries&quot;: 1,
+        &quot;critical_boundaries&quot;: 1,
+        &quot;total_boundaries&quot;: 6,
+        &quot;worst_boundary&quot;: &quot;P3→P4&quot;,
+        &quot;worst_score&quot;: 30.4,
+        &quot;best_boundary&quot;: &quot;P4→P5&quot;,
+        &quot;best_score&quot;: 84.4
+      },
+      &quot;value_amplification&quot;: [
+        {
+          &quot;from_phase_id&quot;: 1,
+          &quot;from_phase_name&quot;: &quot;First Sale&quot;,
+          &quot;to_phase_id&quot;: 2,
+          &quot;to_phase_name&quot;: &quot;Trading/Bulking&quot;,
+          &quot;value_from&quot;: 150,
+          &quot;value_to&quot;: 250,
+          &quot;actual_multiple&quot;: 1.67,
+          &quot;phi_steps_equivalent&quot;: 1.06,
+          &quot;note&quot;: &quot;1.7× value amplification ≈ 1.1 φ-steps&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 2,
+          &quot;from_phase_name&quot;: &quot;Trading/Bulking&quot;,
+          &quot;to_phase_id&quot;: 3,
+          &quot;to_phase_name&quot;: &quot;Processing&quot;,
+          &quot;value_from&quot;: 250,
+          &quot;value_to&quot;: 4000,
+          &quot;actual_multiple&quot;: 16.0,
+          &quot;phi_steps_equivalent&quot;: 5.76,
+          &quot;note&quot;: &quot;16.0× value amplification ≈ 5.8 φ-steps&quot;
+        },
+        {
+          &quot;from_phase_id&quot;: 3,
+          &quot;from_phase_name&quot;: &quot;Processing&quot;,
+          &quot;to_phase_id&quot;: 6,
+          &quot;to_phase_name&quot;: &quot;Retail&quot;,
+          &quot;value_from&quot;: 4000,
+          &quot;value_to&quot;: 47500,
+          &quot;actual_multiple&quot;: 11.88,
+          &quot;phi_steps_equivalent&quot;: 5.14,
+          &quot;note&quot;: &quot;11.9× value amplification ≈ 5.1 φ-steps&quot;
+        }
+      ]
+    }
+  },
+  &quot;sqrt2&quot;: {
+    &quot;gold&quot;: {
+      &quot;commodity&quot;: &quot;gold&quot;,
+      &quot;model&quot;: &quot;sqrt2&quot;,
+      &quot;constant&quot;: 1.41421,
+      &quot;natural_overhead_pct&quot;: 41.4,
+      &quot;boundaries&quot;: [
+        {
+          &quot;boundary_id&quot;: &quot;P0→P1&quot;,
+          &quot;from_phase&quot;: &quot;Prospecting&quot;,
+          &quot;to_phase&quot;: &quot;Mining&quot;,
+          &quot;from_phase_id&quot;: 0,
+          &quot;to_phase_id&quot;: 1,
+          &quot;d_structural&quot;: 8.0,
+          &quot;c_structural&quot;: 3.0,
+          &quot;opacity&quot;: &quot;high&quot;,
+          &quot;notes&quot;: &quot;Geological survey data is commercially sensitive. Permit requirements are formally specified but the underlying data (ore body estimates, exploration results) is proprietary. Structural asymmetry: high requirements, low public delivery.&quot;,
+          &quot;data_source&quot;: &quot;inferred&quot;,
+          &quot;symmetry_ratio&quot;: 0.375,
+          &quot;sqrt2_score&quot;: 28.7,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.625,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;extractive&quot;,
+          &quot;label&quot;: &quot;Extraction point&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;D &gt;&gt; C (ratio 0.38): boundary demands substantially more than it delivers. Excess structural overhead — potential toll gate.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) which requirements are institutional vs. natural, (2) whether documentation burden can be reduced without loss of integrity, (3) who captures the overhead delta between D and C at this boundary.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P1→P2&quot;,
+          &quot;from_phase&quot;: &quot;Mining&quot;,
+          &quot;to_phase&quot;: &quot;Processing&quot;,
+          &quot;from_phase_id&quot;: 1,
+          &quot;to_phase_id&quot;: 2,
+          &quot;d_structural&quot;: 6.0,
+          &quot;c_structural&quot;: 5.0,
+          &quot;opacity&quot;: &quot;medium&quot;,
+          &quot;notes&quot;: &quot;Mine-to-mill transfer uses internal tracking systems. Ore grade and tonnage reported in company disclosures but not in real-time. Some symmetry due to industry-standard run-of-mine documentation.&quot;,
+          &quot;data_source&quot;: &quot;inferred&quot;,
+          &quot;symmetry_ratio&quot;: 0.833,
+          &quot;sqrt2_score&quot;: 71.7,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.167,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;near-symmetric&quot;,
+          &quot;label&quot;: &quot;Near-symmetric&quot;,
+          &quot;color&quot;: &quot;good&quot;,
+          &quot;description&quot;: &quot;Mild asymmetry (ratio 0.83). Monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Review documentation requirements against actual delivery scope.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P2→P3&quot;,
+          &quot;from_phase&quot;: &quot;Processing&quot;,
+          &quot;to_phase&quot;: &quot;Doré Production&quot;,
+          &quot;from_phase_id&quot;: 2,
+          &quot;to_phase_id&quot;: 3,
+          &quot;d_structural&quot;: 7.0,
+          &quot;c_structural&quot;: 6.0,
+          &quot;opacity&quot;: &quot;medium&quot;,
+          &quot;notes&quot;: &quot;LBMA Good Delivery standards create formal documentation requirements. Assay certificates provide C-side delivery. Slight asymmetry: requirements include proprietary smelter specs not always available.&quot;,
+          &quot;data_source&quot;: &quot;inferred&quot;,
+          &quot;symmetry_ratio&quot;: 0.857,
+          &quot;sqrt2_score&quot;: 75.1,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.143,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;near-symmetric&quot;,
+          &quot;label&quot;: &quot;Near-symmetric&quot;,
+          &quot;color&quot;: &quot;good&quot;,
+          &quot;description&quot;: &quot;Mild asymmetry (ratio 0.86). Monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Review documentation requirements against actual delivery scope.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P3→P4&quot;,
+          &quot;from_phase&quot;: &quot;Doré Production&quot;,
+          &quot;to_phase&quot;: &quot;Refining&quot;,
+          &quot;from_phase_id&quot;: 3,
+          &quot;to_phase_id&quot;: 4,
+          &quot;d_structural&quot;: 7.0,
+          &quot;c_structural&quot;: 7.0,
+          &quot;opacity&quot;: &quot;low&quot;,
+          &quot;notes&quot;: &quot;LBMA Good Delivery standard creates near-perfect structural symmetry: every requirement is matched by a specific deliverable. Refinery-to-bar boundary is the most transparent in the chain.&quot;,
+          &quot;data_source&quot;: &quot;public_LBMA&quot;,
+          &quot;symmetry_ratio&quot;: 1.0,
+          &quot;sqrt2_score&quot;: 100.0,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.0,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;symmetric&quot;,
+          &quot;label&quot;: &quot;Structurally balanced&quot;,
+          &quot;color&quot;: &quot;excellent&quot;,
+          &quot;description&quot;: &quot;D and C loads are symmetric — boundary imposes only natural overhead.&quot;,
+          &quot;intervention&quot;: null
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P4→P5&quot;,
+          &quot;from_phase&quot;: &quot;Refining&quot;,
+          &quot;to_phase&quot;: &quot;Vaulting / Custody&quot;,
+          &quot;from_phase_id&quot;: 4,
+          &quot;to_phase_id&quot;: 5,
+          &quot;d_structural&quot;: 8.0,
+          &quot;c_structural&quot;: 7.0,
+          &quot;opacity&quot;: &quot;medium&quot;,
+          &quot;notes&quot;: &quot;Vault entry requires bar registration (serial, weight, fineness), insurance documentation, and COMEX eligibility approval. Slight D&gt;C asymmetry: eligibility requirements slightly exceed publicly available bar records.&quot;,
+          &quot;data_source&quot;: &quot;inferred_COMEX&quot;,
+          &quot;symmetry_ratio&quot;: 0.875,
+          &quot;sqrt2_score&quot;: 77.9,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.125,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;near-symmetric&quot;,
+          &quot;label&quot;: &quot;Near-symmetric&quot;,
+          &quot;color&quot;: &quot;good&quot;,
+          &quot;description&quot;: &quot;Mild asymmetry (ratio 0.88). Monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Review documentation requirements against actual delivery scope.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P5→P6&quot;,
+          &quot;from_phase&quot;: &quot;Vaulting / Custody&quot;,
+          &quot;to_phase&quot;: &quot;Exchange (COMEX)&quot;,
+          &quot;from_phase_id&quot;: 5,
+          &quot;to_phase_id&quot;: 6,
+          &quot;d_structural&quot;: 8.0,
+          &quot;c_structural&quot;: 8.0,
+          &quot;opacity&quot;: &quot;low&quot;,
+          &quot;notes&quot;: &quot;COMEX warehouse receipts represent the highest structural symmetry in the gold chain: every bar is documented, weighted, assayed, and registered. The structural D=C balance is near-perfect.&quot;,
+          &quot;data_source&quot;: &quot;public_COMEX&quot;,
+          &quot;symmetry_ratio&quot;: 1.0,
+          &quot;sqrt2_score&quot;: 100.0,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.0,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;symmetric&quot;,
+          &quot;label&quot;: &quot;Structurally balanced&quot;,
+          &quot;color&quot;: &quot;excellent&quot;,
+          &quot;description&quot;: &quot;D and C loads are symmetric — boundary imposes only natural overhead.&quot;,
+          &quot;intervention&quot;: null
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P6→P7&quot;,
+          &quot;from_phase&quot;: &quot;Exchange (COMEX)&quot;,
+          &quot;to_phase&quot;: &quot;Retail / Fabrication&quot;,
+          &quot;from_phase_id&quot;: 6,
+          &quot;to_phase_id&quot;: 7,
+          &quot;d_structural&quot;: 6.0,
+          &quot;c_structural&quot;: 4.0,
+          &quot;opacity&quot;: &quot;medium&quot;,
+          &quot;notes&quot;: &quot;OTC market operates with less structural symmetry than COMEX. Unallocated gold accounts, paper claims, and opaque OTC delivery create C-side deficiency relative to D-side requirements.&quot;,
+          &quot;data_source&quot;: &quot;inferred&quot;,
+          &quot;symmetry_ratio&quot;: 0.667,
+          &quot;sqrt2_score&quot;: 51.3,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.333,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;asymmetric&quot;,
+          &quot;label&quot;: &quot;Moderate asymmetry&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 0.67 deviates from structural symmetry target (1.0).&quot;,
+          &quot;intervention&quot;: &quot;Identify whether D or C can be rebalanced toward symmetry.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_sqrt2_score&quot;: 72.1,
+        &quot;min_score&quot;: 28.7,
+        &quot;max_score&quot;: 100.0,
+        &quot;system_status&quot;: &quot;Moderate symmetry — isolated boundary asymmetries&quot;,
+        &quot;symmetric_boundaries&quot;: 2,
+        &quot;asymmetric_boundaries&quot;: 1,
+        &quot;total_boundaries&quot;: 7,
+        &quot;worst_boundary&quot;: &quot;P0→P1&quot;,
+        &quot;worst_score&quot;: 28.7,
+        &quot;best_boundary&quot;: &quot;P3→P4&quot;,
+        &quot;best_score&quot;: 100.0
+      }
+    },
+    &quot;shea&quot;: {
+      &quot;commodity&quot;: &quot;shea&quot;,
+      &quot;model&quot;: &quot;sqrt2&quot;,
+      &quot;constant&quot;: 1.41421,
+      &quot;natural_overhead_pct&quot;: 41.4,
+      &quot;boundaries&quot;: [
+        {
+          &quot;boundary_id&quot;: &quot;P0→P1&quot;,
+          &quot;from_phase&quot;: &quot;Collection&quot;,
+          &quot;to_phase&quot;: &quot;First Sale&quot;,
+          &quot;from_phase_id&quot;: 0,
+          &quot;to_phase_id&quot;: 1,
+          &quot;d_structural&quot;: 2.0,
+          &quot;c_structural&quot;: 6.0,
+          &quot;opacity&quot;: &quot;high&quot;,
+          &quot;notes&quot;: &quot;Informal market: collectors deliver nuts with minimal formal specification. D is near-zero (no formal requirements at first sale), but C appears high because delivery is informal and volume-based — the asymmetry is real but reversed from extraction (under-specified delivery, not over-demanded).&quot;,
+          &quot;data_source&quot;: &quot;inferred_informal&quot;,
+          &quot;symmetry_ratio&quot;: 3.0,
+          &quot;sqrt2_score&quot;: 1.8,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 2.0,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;under-specified&quot;,
+          &quot;label&quot;: &quot;Under-specified boundary&quot;,
+          &quot;color&quot;: &quot;warn&quot;,
+          &quot;description&quot;: &quot;D &lt;&lt; C (ratio 3.00): boundary delivers more than it formally demands. May indicate informal flows, undocumented custody changes, or missing requirements.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) whether informal flows are bypassing formal requirements, (2) missing structural documentation on the D side, (3) custody chain gaps that appear as excess C delivery.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P1→P2&quot;,
+          &quot;from_phase&quot;: &quot;First Sale&quot;,
+          &quot;to_phase&quot;: &quot;Trading / Bulking&quot;,
+          &quot;from_phase_id&quot;: 1,
+          &quot;to_phase_id&quot;: 2,
+          &quot;d_structural&quot;: 3.0,
+          &quot;c_structural&quot;: 6.0,
+          &quot;opacity&quot;: &quot;high&quot;,
+          &quot;notes&quot;: &quot;Bulking aggregators purchase from multiple collectors with minimal formal specification. Volume is the primary metric; moisture, quality grade, and provenance are not formally tracked. Structural asymmetry: low D, high informal C.&quot;,
+          &quot;data_source&quot;: &quot;inferred_informal&quot;,
+          &quot;symmetry_ratio&quot;: 2.0,
+          &quot;sqrt2_score&quot;: 13.5,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 1.0,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;asymmetric&quot;,
+          &quot;label&quot;: &quot;Moderate asymmetry&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 2.00 deviates from structural symmetry target (1.0).&quot;,
+          &quot;intervention&quot;: &quot;Identify whether D or C can be rebalanced toward symmetry.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P2→P3&quot;,
+          &quot;from_phase&quot;: &quot;Trading / Bulking&quot;,
+          &quot;to_phase&quot;: &quot;Processing&quot;,
+          &quot;from_phase_id&quot;: 2,
+          &quot;to_phase_id&quot;: 3,
+          &quot;d_structural&quot;: 6.0,
+          &quot;c_structural&quot;: 5.0,
+          &quot;opacity&quot;: &quot;medium&quot;,
+          &quot;notes&quot;: &quot;Processors apply quality standards (FFA%, moisture, trash content) but documentary evidence of pre-delivery testing is rare. C-side partially met: delivery occurs with informal quality checks rather than formal certificates.&quot;,
+          &quot;data_source&quot;: &quot;inferred&quot;,
+          &quot;symmetry_ratio&quot;: 0.833,
+          &quot;sqrt2_score&quot;: 71.7,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.167,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;near-symmetric&quot;,
+          &quot;label&quot;: &quot;Near-symmetric&quot;,
+          &quot;color&quot;: &quot;good&quot;,
+          &quot;description&quot;: &quot;Mild asymmetry (ratio 0.83). Monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Review documentation requirements against actual delivery scope.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P3→P4&quot;,
+          &quot;from_phase&quot;: &quot;Processing&quot;,
+          &quot;to_phase&quot;: &quot;Export&quot;,
+          &quot;from_phase_id&quot;: 3,
+          &quot;to_phase_id&quot;: 4,
+          &quot;d_structural&quot;: 7.0,
+          &quot;c_structural&quot;: 4.0,
+          &quot;opacity&quot;: &quot;high&quot;,
+          &quot;notes&quot;: &quot;Export boundary has high D-side requirements (phytosanitary, MSDS, Certificates of Analysis, Organic certification if applicable). C-side delivery is partial — many small processors cannot meet full documentation requirements, creating structural asymmetry that functions as an export barrier.&quot;,
+          &quot;data_source&quot;: &quot;public_export_docs&quot;,
+          &quot;symmetry_ratio&quot;: 0.571,
+          &quot;sqrt2_score&quot;: 42.4,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.429,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;asymmetric&quot;,
+          &quot;label&quot;: &quot;Moderate asymmetry&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;Ratio 0.57 deviates from structural symmetry target (1.0).&quot;,
+          &quot;intervention&quot;: &quot;Identify whether D or C can be rebalanced toward symmetry.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P4→P5&quot;,
+          &quot;from_phase&quot;: &quot;Export&quot;,
+          &quot;to_phase&quot;: &quot;Manufacturing&quot;,
+          &quot;from_phase_id&quot;: 4,
+          &quot;to_phase_id&quot;: 5,
+          &quot;d_structural&quot;: 7.0,
+          &quot;c_structural&quot;: 3.0,
+          &quot;opacity&quot;: &quot;high&quot;,
+          &quot;notes&quot;: &quot;OPAQUE. The boundary between shea export and European/global manufacturing is the least visible in the chain. Import specifications (REACH compliance, cosmetic-grade certificates) are high D, but actual delivery documentation is private B2B data.&quot;,
+          &quot;data_source&quot;: &quot;OPAQUE&quot;,
+          &quot;symmetry_ratio&quot;: 0.429,
+          &quot;sqrt2_score&quot;: 31.9,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.571,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;extractive&quot;,
+          &quot;label&quot;: &quot;Extraction point&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;D &gt;&gt; C (ratio 0.43): boundary demands substantially more than it delivers. Excess structural overhead — potential toll gate.&quot;,
+          &quot;intervention&quot;: &quot;Investigate: (1) which requirements are institutional vs. natural, (2) whether documentation burden can be reduced without loss of integrity, (3) who captures the overhead delta between D and C at this boundary.&quot;
+        },
+        {
+          &quot;boundary_id&quot;: &quot;P5→P6&quot;,
+          &quot;from_phase&quot;: &quot;Manufacturing&quot;,
+          &quot;to_phase&quot;: &quot;Retail&quot;,
+          &quot;from_phase_id&quot;: 5,
+          &quot;to_phase_id&quot;: 6,
+          &quot;d_structural&quot;: 5.0,
+          &quot;c_structural&quot;: 4.0,
+          &quot;opacity&quot;: &quot;medium&quot;,
+          &quot;notes&quot;: &quot;EU cosmetics regulation requires safety dossiers and labeling. However, shea traceability claims (origin, organic, fair trade) are inconsistently documented at retail. D side is formally specified; C side delivery is partial.&quot;,
+          &quot;data_source&quot;: &quot;public_EU_cosm_reg&quot;,
+          &quot;symmetry_ratio&quot;: 0.8,
+          &quot;sqrt2_score&quot;: 67.0,
+          &quot;target_ratio&quot;: 1.0,
+          &quot;distance_from_target&quot;: 0.2,
+          &quot;natural_overhead_pct&quot;: 41.4,
+          &quot;status&quot;: &quot;near-symmetric&quot;,
+          &quot;label&quot;: &quot;Near-symmetric&quot;,
+          &quot;color&quot;: &quot;good&quot;,
+          &quot;description&quot;: &quot;Mild asymmetry (ratio 0.80). Monitor for drift.&quot;,
+          &quot;intervention&quot;: &quot;Review documentation requirements against actual delivery scope.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_sqrt2_score&quot;: 38.1,
+        &quot;min_score&quot;: 1.8,
+        &quot;max_score&quot;: 71.7,
+        &quot;system_status&quot;: &quot;Low symmetry — systemic boundary distortion&quot;,
+        &quot;symmetric_boundaries&quot;: 0,
+        &quot;asymmetric_boundaries&quot;: 3,
+        &quot;total_boundaries&quot;: 6,
+        &quot;worst_boundary&quot;: &quot;P0→P1&quot;,
+        &quot;worst_score&quot;: 1.8,
+        &quot;best_boundary&quot;: &quot;P2→P3&quot;,
+        &quot;best_score&quot;: 71.7
+      }
+    }
+  },
+  &quot;ln2&quot;: {
+    &quot;gold&quot;: {
+      &quot;commodity&quot;: &quot;gold&quot;,
+      &quot;model&quot;: &quot;ln2&quot;,
+      &quot;constant&quot;: 0.69315,
+      &quot;target_cd_ratio&quot;: 2.0,
+      &quot;phases&quot;: [
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mining&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 4.0,
+          &quot;d_institutional&quot;: 5.0,
+          &quot;c_contribution&quot;: 5.0,
+          &quot;value_in_usd&quot;: null,
+          &quot;value_out_usd&quot;: null,
+          &quot;data_source&quot;: &quot;synthetic&quot;,
+          &quot;institutional_examples&quot;: &quot;State royalties (3–6%), corporate income tax, environmental bond, community benefit agreements&quot;,
+          &quot;d_institutional_note&quot;: &quot;High. Mining jurisdiction matters enormously: identical ore faces D-institutional loads ranging from 2 (permissive) to 8 (high-tax, high-compliance).&quot;,
+          &quot;d_total&quot;: 9.0,
+          &quot;cd_ratio&quot;: 0.556,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 33.8,
+          &quot;capture_score&quot;: 24.9,
+          &quot;institutional_fraction_pct&quot;: 55.6,
+          &quot;monetary_multiplier&quot;: null,
+          &quot;ln2_steps_equivalent&quot;: null,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Conduit suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;C/D = 0.56 — phase is contributing less than its constraint burden. Institutional load = 56% of total D. A natural growth conduit has been converted into an extraction point.&quot;,
+          &quot;intervention&quot;: &quot;Reduce D-institutional burden (5.0 / 9.0 total). Identify: (1) which institutional constraints are removable, (2) market access barriers, (3) certification cost relative to benefit.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 2,
+          &quot;phase_name&quot;: &quot;Processing / Milling&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 5.0,
+          &quot;d_institutional&quot;: 4.0,
+          &quot;c_contribution&quot;: 7.0,
+          &quot;value_in_usd&quot;: null,
+          &quot;value_out_usd&quot;: null,
+          &quot;data_source&quot;: &quot;synthetic&quot;,
+          &quot;institutional_examples&quot;: &quot;Tailings management permits, water use licenses, cyanide discharge standards&quot;,
+          &quot;d_institutional_note&quot;: &quot;Moderate. Environmental compliance creates significant but reducible D-institutional load.&quot;,
+          &quot;d_total&quot;: 9.0,
+          &quot;cd_ratio&quot;: 0.778,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 40.0,
+          &quot;capture_score&quot;: 32.9,
+          &quot;institutional_fraction_pct&quot;: 44.4,
+          &quot;monetary_multiplier&quot;: null,
+          &quot;ln2_steps_equivalent&quot;: null,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Conduit suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;C/D = 0.78 — phase is contributing less than its constraint burden. Institutional load = 44% of total D. A natural growth conduit has been converted into an extraction point.&quot;,
+          &quot;intervention&quot;: &quot;Reduce D-institutional burden (4.0 / 9.0 total). Identify: (1) which institutional constraints are removable, (2) market access barriers, (3) certification cost relative to benefit.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Smelting / Doré Production&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 3.0,
+          &quot;d_institutional&quot;: 3.0,
+          &quot;c_contribution&quot;: 6.0,
+          &quot;value_in_usd&quot;: null,
+          &quot;value_out_usd&quot;: null,
+          &quot;data_source&quot;: &quot;synthetic&quot;,
+          &quot;institutional_examples&quot;: &quot;Concentrate trade regulations, environmental permits for SO2 emissions, anti-money-laundering documentation&quot;,
+          &quot;d_institutional_note&quot;: &quot;Moderate. The smelting chemistry is natural; the surrounding documentation burden is institutional.&quot;,
+          &quot;d_total&quot;: 6.0,
+          &quot;cd_ratio&quot;: 1.0,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 47.2,
+          &quot;capture_score&quot;: 28.7,
+          &quot;institutional_fraction_pct&quot;: 50.0,
+          &quot;monetary_multiplier&quot;: null,
+          &quot;ln2_steps_equivalent&quot;: null,
+          &quot;status&quot;: &quot;constrained&quot;,
+          &quot;label&quot;: &quot;Constrained conduit&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;C/D = 1.00 — natural growth is partially suppressed by institutional overhead (50%).&quot;,
+          &quot;intervention&quot;: &quot;Review institutional D-loading for reduction opportunities.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Refining&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 4.0,
+          &quot;d_institutional&quot;: 3.0,
+          &quot;c_contribution&quot;: 7.0,
+          &quot;value_in_usd&quot;: null,
+          &quot;value_out_usd&quot;: null,
+          &quot;data_source&quot;: &quot;synthetic_LBMA&quot;,
+          &quot;institutional_examples&quot;: &quot;LBMA Good Delivery accreditation, correspondent banking requirements, AML/KYC reporting&quot;,
+          &quot;d_institutional_note&quot;: &quot;Moderate-low. LBMA standards are close to natural requirements; accreditation costs are the main institutional burden.&quot;,
+          &quot;d_total&quot;: 7.0,
+          &quot;cd_ratio&quot;: 1.0,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 47.2,
+          &quot;capture_score&quot;: 34.3,
+          &quot;institutional_fraction_pct&quot;: 42.9,
+          &quot;monetary_multiplier&quot;: null,
+          &quot;ln2_steps_equivalent&quot;: null,
+          &quot;status&quot;: &quot;constrained&quot;,
+          &quot;label&quot;: &quot;Constrained conduit&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;C/D = 1.00 — natural growth is partially suppressed by institutional overhead (43%).&quot;,
+          &quot;intervention&quot;: &quot;Review institutional D-loading for reduction opportunities.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 7,
+          &quot;phase_name&quot;: &quot;Fabrication&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 3.0,
+          &quot;d_institutional&quot;: 6.0,
+          &quot;c_contribution&quot;: 5.0,
+          &quot;value_in_usd&quot;: null,
+          &quot;value_out_usd&quot;: null,
+          &quot;data_source&quot;: &quot;synthetic&quot;,
+          &quot;institutional_examples&quot;: &quot;Import duties (0–12% by jurisdiction), hallmarking legal requirements, VAT on gold, luxury tax&quot;,
+          &quot;d_institutional_note&quot;: &quot;High. Fabrication is the most institutionally captured transformation phase. Import duties and VAT create major D-institutional load that does not correspond to physical transformation cost.&quot;,
+          &quot;d_total&quot;: 9.0,
+          &quot;cd_ratio&quot;: 0.556,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 33.8,
+          &quot;capture_score&quot;: 18.9,
+          &quot;institutional_fraction_pct&quot;: 66.7,
+          &quot;monetary_multiplier&quot;: null,
+          &quot;ln2_steps_equivalent&quot;: null,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Conduit suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;C/D = 0.56 — phase is contributing less than its constraint burden. Institutional load = 67% of total D. A natural growth conduit has been converted into an extraction point.&quot;,
+          &quot;intervention&quot;: &quot;Reduce D-institutional burden (6.0 / 9.0 total). Identify: (1) which institutional constraints are removable, (2) market access barriers, (3) certification cost relative to benefit.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_ln2_score&quot;: 40.4,
+        &quot;min_score&quot;: 33.8,
+        &quot;max_score&quot;: 47.2,
+        &quot;system_status&quot;: &quot;Low conduit efficiency — systematic institutional capture&quot;,
+        &quot;conduit_phases&quot;: 0,
+        &quot;captured_phases&quot;: 2,
+        &quot;total_phases&quot;: 5,
+        &quot;avg_institutional_pct&quot;: 51.9,
+        &quot;worst_phase&quot;: &quot;P1 Mining&quot;,
+        &quot;worst_score&quot;: 33.8,
+        &quot;best_phase&quot;: &quot;P3 Smelting / Doré Production&quot;,
+        &quot;best_score&quot;: 47.2
+      }
+    },
+    &quot;shea&quot;: {
+      &quot;commodity&quot;: &quot;shea&quot;,
+      &quot;model&quot;: &quot;ln2&quot;,
+      &quot;constant&quot;: 0.69315,
+      &quot;target_cd_ratio&quot;: 2.0,
+      &quot;phases&quot;: [
+        {
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Collection / Harvest&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 3.0,
+          &quot;d_institutional&quot;: 4.0,
+          &quot;c_contribution&quot;: 3.0,
+          &quot;value_in_usd&quot;: null,
+          &quot;value_out_usd&quot;: 150.0,
+          &quot;data_source&quot;: &quot;public_WCA_markets&quot;,
+          &quot;institutional_examples&quot;: &quot;No formal market price mechanism, land tenure insecurity (women&#x27;s collection rights often informal), no access to credit for tools/transport&quot;,
+          &quot;d_institutional_note&quot;: &quot;High relative to D-natural. Women collectors operate without formal price discovery, market access, or institutional support — all of which are institutional barriers that elevate D above its natural D=1 baseline.&quot;,
+          &quot;d_total&quot;: 7.0,
+          &quot;cd_ratio&quot;: 0.429,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 30.8,
+          &quot;capture_score&quot;: 24.0,
+          &quot;institutional_fraction_pct&quot;: 57.1,
+          &quot;monetary_multiplier&quot;: null,
+          &quot;ln2_steps_equivalent&quot;: null,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Conduit suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;C/D = 0.43 — phase is contributing less than its constraint burden. Institutional load = 57% of total D. A natural growth conduit has been converted into an extraction point.&quot;,
+          &quot;intervention&quot;: &quot;Reduce D-institutional burden (4.0 / 7.0 total). Identify: (1) which institutional constraints are removable, (2) market access barriers, (3) certification cost relative to benefit.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Processing (nuts → butter)&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 4.0,
+          &quot;d_institutional&quot;: 3.0,
+          &quot;c_contribution&quot;: 8.0,
+          &quot;value_in_usd&quot;: 150.0,
+          &quot;value_out_usd&quot;: 4000.0,
+          &quot;data_source&quot;: &quot;public_RONGEAD_Acorn&quot;,
+          &quot;institutional_examples&quot;: &quot;Firewood/fuel cost (natural but constrained by market), Organic certification barrier (~$5,000–$15,000 upfront), equipment financing gaps&quot;,
+          &quot;d_institutional_note&quot;: &quot;Moderate. Firewood scarcity is a natural-institutional hybrid: the physics are natural (fire needed to boil) but the fuel cost and access are institutional. Certification creates a hard D-institutional gate for export markets.&quot;,
+          &quot;d_total&quot;: 7.0,
+          &quot;cd_ratio&quot;: 1.143,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 52.6,
+          &quot;capture_score&quot;: 34.3,
+          &quot;institutional_fraction_pct&quot;: 42.9,
+          &quot;monetary_multiplier&quot;: 26.67,
+          &quot;ln2_steps_equivalent&quot;: 4.74,
+          &quot;status&quot;: &quot;constrained&quot;,
+          &quot;label&quot;: &quot;Constrained conduit&quot;,
+          &quot;color&quot;: &quot;fair&quot;,
+          &quot;description&quot;: &quot;C/D = 1.14 — natural growth is partially suppressed by institutional overhead (43%).&quot;,
+          &quot;intervention&quot;: &quot;Review institutional D-loading for reduction opportunities.&quot;
+        },
+        {
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Manufacturing (butter → cosmetics)&quot;,
+          &quot;phase_type&quot;: &quot;transformation&quot;,
+          &quot;d_natural&quot;: 3.0,
+          &quot;d_institutional&quot;: 7.0,
+          &quot;c_contribution&quot;: 6.0,
+          &quot;value_in_usd&quot;: 4000.0,
+          &quot;value_out_usd&quot;: 47500.0,
+          &quot;data_source&quot;: &quot;public_Cleo_retail_RONGEAD&quot;,
+          &quot;institutional_examples&quot;: &quot;EU Cosmetics Regulation 1223/2009, REACH compliance, allergen labeling, minimum order quantities (100k–1M units), cosmetic safety assessment dossier&quot;,
+          &quot;d_institutional_note&quot;: &quot;Very high. EU cosmetic regulation creates significant D-institutional load for formulation, testing, and market access. MOQ requirements mean small-batch producers cannot access premium retail channels regardless of product quality.&quot;,
+          &quot;d_total&quot;: 10.0,
+          &quot;cd_ratio&quot;: 0.6,
+          &quot;target_ratio&quot;: 2.0,
+          &quot;ln2_score&quot;: 35.0,
+          &quot;capture_score&quot;: 17.4,
+          &quot;institutional_fraction_pct&quot;: 70.0,
+          &quot;monetary_multiplier&quot;: 11.88,
+          &quot;ln2_steps_equivalent&quot;: 3.57,
+          &quot;status&quot;: &quot;suppressed&quot;,
+          &quot;label&quot;: &quot;Conduit suppressed&quot;,
+          &quot;color&quot;: &quot;poor&quot;,
+          &quot;description&quot;: &quot;C/D = 0.60 — phase is contributing less than its constraint burden. Institutional load = 70% of total D. A natural growth conduit has been converted into an extraction point.&quot;,
+          &quot;intervention&quot;: &quot;Reduce D-institutional burden (7.0 / 10.0 total). Identify: (1) which institutional constraints are removable, (2) market access barriers, (3) certification cost relative to benefit.&quot;
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_ln2_score&quot;: 39.5,
+        &quot;min_score&quot;: 30.8,
+        &quot;max_score&quot;: 52.6,
+        &quot;system_status&quot;: &quot;Low conduit efficiency — systematic institutional capture&quot;,
+        &quot;conduit_phases&quot;: 0,
+        &quot;captured_phases&quot;: 2,
+        &quot;total_phases&quot;: 3,
+        &quot;avg_institutional_pct&quot;: 56.7,
+        &quot;worst_phase&quot;: &quot;P0 Collection / Harvest&quot;,
+        &quot;worst_score&quot;: 30.8,
+        &quot;best_phase&quot;: &quot;P3 Processing (nuts → butter)&quot;,
+        &quot;best_score&quot;: 52.6
+      }
+    }
+  },
+  &quot;e&quot;: {
+    &quot;gold&quot;: {
+      &quot;commodity&quot;: &quot;gold&quot;,
+      &quot;model&quot;: &quot;e&quot;,
+      &quot;e_constant&quot;: 2.71828,
+      &quot;data_source_path&quot;: &quot;/home/jw/src/tv/frontend/project/gold/data/schema/gold_e_model_claims.csv&quot;,
+      &quot;claims&quot;: [
+        {
+          &quot;record_id&quot;: &quot;2&quot;,
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mine Extraction&quot;,
+          &quot;claim_type&quot;: &quot;streaming_agreement&quot;,
+          &quot;coupling_ratio&quot;: 0.9,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 90,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;225.0&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;11.3&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;Franco-Nevada 2023 Annual Report; Royal Gold 2023 Annual Report; Wheaton Precious Metals 2023 Annual Report&quot;,
+          &quot;notes&quot;: &quot;Streaming companies hold contractual rights to purchase fixed percentages of mine output at below-market fixed prices. Top 3 streaming companies collectively entitled to ~5% of global mine production (~175 tonnes/year). Abstract claim value estimated as NPV of streaming obligations at current spot. Coupling is high (~0.90) because streaming rights are legally tied to actual physical production — decoupling is value-capture (phi concern) not physical abstraction (e concern). Rehypothecation not applicable.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;3&quot;,
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mine Extraction&quot;,
+          &quot;claim_type&quot;: &quot;royalty_interest&quot;,
+          &quot;coupling_ratio&quot;: 0.95,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 95,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;225.0&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;4.5&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;Company 10-K and annual report filings&quot;,
+          &quot;notes&quot;: &quot;Net smelter return (NSR) and gross overriding royalties entitle holders to a percentage of revenue from mine output. Coupling ratio near 1.0 — royalties only trigger if physical gold is actually produced and sold. No physical decoupling. E-layer fully coherent at this sub-layer.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;4&quot;,
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mine Extraction&quot;,
+          &quot;claim_type&quot;: &quot;forward_sales_hedge&quot;,
+          &quot;coupling_ratio&quot;: 1.0,
+          &quot;coupling_ratio_status&quot;: &quot;MEASURED&quot;,
+          &quot;e_score&quot;: 100,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;6.4&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;6.4&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;World Gold Council Gold Demand Trends 2023; company annual reports&quot;,
+          &quot;notes&quot;: &quot;Producer hedging (forward sales) has declined dramatically from &gt;3000 tonnes in early 2000s to ~100 tonnes currently. Each forward sale commits specific anticipated future production. Coupling ratio = 1.0 — the abstract forward claim is directly tied to and cancelled by physical delivery. Not rehypothecated.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;7&quot;,
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Refining&quot;,
+          &quot;claim_type&quot;: &quot;metal_lease&quot;,
+          &quot;coupling_ratio&quot;: 0.4,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 40,
+          &quot;is_rehypothecated&quot;: true,
+          &quot;physical_value_usd_billions&quot;: &quot;418.0&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;418.0&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;World Gold Council Gold Demand Trends 2023; BIS OTC Derivatives Statistics; IMF Article IV consultations; Jeffrey Christian (CPM Group) CFTC Hearing testimony March 2010&quot;,
+          &quot;notes&quot;: &quot;Gold on lease globally estimated at 5000-8000 tonnes (WGC/analyst consensus). Midpoint 6500 tonnes used. Physical gold has physically moved from central bank vaults to bullion bank/refinery working capital. Central bank records it as still held. Bullion bank uses it as working capital and may re-lend to a second institution. Same physical gold underpins 2-3 simultaneous claims. Coupling ratio estimated 0.40 (gold lent 2-3 times on average). This is the most significant structural rehypothecation mechanism in the upstream chain. Source for re-lending rate: CPM Group; Gold Anti-Trust Action Comm&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;8&quot;,
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Refining&quot;,
+          &quot;claim_type&quot;: &quot;loco_swap&quot;,
+          &quot;coupling_ratio&quot;: 0.95,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 95,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;32.2&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;32.2&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;LBMA documentation; Bank for International Settlements OTC derivatives statistics&quot;,
+          &quot;notes&quot;: &quot;Loco swaps are location-exchange agreements: gold physically in London is swapped with gold physically in New York or Zurich. Each leg has a corresponding physical asset. Coupling ratio near 1.0. Not rehypothecated. Minor slippage from settlement timing gives ~0.95.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;10&quot;,
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Logistics &amp; Vaulting&quot;,
+          &quot;claim_type&quot;: &quot;allocated_position&quot;,
+          &quot;coupling_ratio&quot;: 1.0,
+          &quot;coupling_ratio_status&quot;: &quot;MEASURED&quot;,
+          &quot;e_score&quot;: 100,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;321.5&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;321.5&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;LBMA Allocated Account documentation; custodian prospectus filings&quot;,
+          &quot;notes&quot;: &quot;Allocated gold: specific serial-numbered bars are legally assigned to account holder. Custodian cannot use the gold for any other purpose. Full 1:1 physical backing by definition. E-layer perfectly coupled at this sub-layer.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;11&quot;,
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Logistics &amp; Vaulting&quot;,
+          &quot;claim_type&quot;: &quot;unallocated_position&quot;,
+          &quot;coupling_ratio&quot;: null,
+          &quot;coupling_ratio_status&quot;: &quot;OPAQUE&quot;,
+          &quot;e_score&quot;: 5,
+          &quot;is_rehypothecated&quot;: true,
+          &quot;physical_value_usd_billions&quot;: &quot;OPAQUE&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;OPAQUE&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;LBMA Unallocated Account documentation (publicly describes allocated vs unallocated distinction); Jeffrey Christian (CPM Group) CFTC Hearing March 2010 (estimated 100:1 paper to physical in bullion banking at that time); BIS OTC derivatives statistics&quot;,
+          &quot;notes&quot;: &quot;THIS IS THE PRIMARY E-LAYER OPACITY. Unallocated LBMA positions are not publicly reported in aggregate. No regulator collects or publishes this figure. Analyst estimates of the coupling ratio range from 0.01 to 0.10. E-score of 5 uses midpoint of this range (0.05) and is flagged ESTIMATED/OPAQUE. The actual figure may be lower. This is the most significant decoupling event in the entire gold supply chain and the defining structural feature of the paper gold market. Jeffrey Christian (2010) described the bullion banking system as operating with ~100 units of paper claims per 1 unit of physical &quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;12&quot;,
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Logistics &amp; Vaulting&quot;,
+          &quot;claim_type&quot;: &quot;etf_share&quot;,
+          &quot;coupling_ratio&quot;: 0.98,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 98,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;180.0&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;180.0&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;World Gold Council ETF tracker (monthly); GLD prospectus SEC filing; IAU prospectus SEC filing; independent auditor reports (annual physical audit)&quot;,
+          &quot;notes&quot;: &quot;ETF gold is held in allocated, audited, segregated accounts. Annual independent physical audits are required. Coupling ratio ~0.98 reflects minor tracking differences from management fees and creation/redemption timing. Not rehypothecated. The strongest e-layer coherence in the downstream vaulting layer. Total global gold ETF holdings ~80-100M oz as of 2024 (WGC tracker). Midpoint 90M oz used.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;13&quot;,
+          &quot;phase_id&quot;: 7,
+          &quot;phase_name&quot;: &quot;Exchange Registration&quot;,
+          &quot;claim_type&quot;: &quot;futures_contract&quot;,
+          &quot;coupling_ratio&quot;: 0.133,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 13,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;12.0&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;90.0&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;COMEX daily warehouse reports (public, free); CFTC Commitment of Traders report (public, weekly); CME Group contract specifications&quot;,
+          &quot;notes&quot;: &quot;COMEX registered inventory (physically deliverable) ~5-8M oz as of 2024 (midpoint 6M oz used). Total open interest ~400000-500000 contracts x 100 oz = 40-50M oz equivalent (midpoint 45M oz used). Coupling ratio = 6/45 = 0.133. This means only ~13% of open interest is backed by deliverable physical gold at any given time. The overwhelming majority of contracts are cash-settled or rolled without physical delivery — this is by design and fully disclosed in COMEX contract specifications. E-score = 13. Note: COMEX eligible inventory (not registered but potentially deliverable with re-licensing) add&quot;
+        }
+      ],
+      &quot;phase_scores&quot;: [
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;Mine Extraction&quot;,
+          &quot;phase_score&quot;: 90,
+          &quot;claim_count&quot;: 3,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;streaming_agreement&quot;,
+            &quot;royalty_interest&quot;,
+            &quot;forward_sales_hedge&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Refining&quot;,
+          &quot;phase_score&quot;: 40,
+          &quot;claim_count&quot;: 2,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;metal_lease&quot;,
+            &quot;loco_swap&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Logistics &amp; Vaulting&quot;,
+          &quot;phase_score&quot;: 5,
+          &quot;claim_count&quot;: 3,
+          &quot;has_opaque&quot;: true,
+          &quot;claim_types&quot;: [
+            &quot;allocated_position&quot;,
+            &quot;unallocated_position&quot;,
+            &quot;etf_share&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 7,
+          &quot;phase_name&quot;: &quot;Exchange Registration&quot;,
+          &quot;phase_score&quot;: 13,
+          &quot;claim_count&quot;: 1,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;futures_contract&quot;
+          ]
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_e_score&quot;: 60.2,
+        &quot;min_score&quot;: 13,
+        &quot;max_score&quot;: 98,
+        &quot;system_status&quot;: &quot;Moderate decoupling — review low e-score phases&quot;,
+        &quot;phases_in_average&quot;: 4,
+        &quot;total_claim_rows&quot;: 9
+      },
+      &quot;worst_claim&quot;: {
+        &quot;record_id&quot;: &quot;11&quot;,
+        &quot;phase_id&quot;: 6,
+        &quot;phase_name&quot;: &quot;Logistics &amp; Vaulting&quot;,
+        &quot;claim_type&quot;: &quot;unallocated_position&quot;,
+        &quot;coupling_ratio&quot;: null,
+        &quot;coupling_ratio_status&quot;: &quot;OPAQUE&quot;,
+        &quot;e_score&quot;: 5,
+        &quot;is_rehypothecated&quot;: true,
+        &quot;physical_value_usd_billions&quot;: &quot;OPAQUE&quot;,
+        &quot;abstract_value_usd_billions&quot;: &quot;OPAQUE&quot;,
+        &quot;source_type&quot;: &quot;public; estimated&quot;,
+        &quot;source_name&quot;: &quot;LBMA Unallocated Account documentation (publicly describes allocated vs unallocated distinction); Jeffrey Christian (CPM Group) CFTC Hearing March 2010 (estimated 100:1 paper to physical in bullion banking at that time); BIS OTC derivatives statistics&quot;,
+        &quot;notes&quot;: &quot;THIS IS THE PRIMARY E-LAYER OPACITY. Unallocated LBMA positions are not publicly reported in aggregate. No regulator collects or publishes this figure. Analyst estimates of the coupling ratio range from 0.01 to 0.10. E-score of 5 uses midpoint of this range (0.05) and is flagged ESTIMATED/OPAQUE. The actual figure may be lower. This is the most significant decoupling event in the entire gold supply chain and the defining structural feature of the paper gold market. Jeffrey Christian (2010) described the bullion banking system as operating with ~100 units of paper claims per 1 unit of physical &quot;
+      }
+    },
+    &quot;shea&quot;: {
+      &quot;commodity&quot;: &quot;shea&quot;,
+      &quot;model&quot;: &quot;e&quot;,
+      &quot;e_constant&quot;: 2.71828,
+      &quot;data_source_path&quot;: &quot;/home/jw/src/tv/frontend/project/west_african_shea/data/schema/shea_e_model_claims.csv&quot;,
+      &quot;claims&quot;: [
+        {
+          &quot;record_id&quot;: &quot;1&quot;,
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Wild Harvest &amp; Collection&quot;,
+          &quot;claim_type&quot;: &quot;carbon_credit&quot;,
+          &quot;coupling_ratio&quot;: 0.65,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 65,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;0.054&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;0.084&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;Acorn EP Carbon Season 1–3 project documentation; Gold Standard VCU registry; RONGEAD 2019 Shea Value Chain Report&quot;,
+          &quot;notes&quot;: &quot;Shea parkland carbon credits are issued against verified CO2 sequestration by shea trees. Physical backing: ~2.7M tCO2e verified in Acorn S1-S3. Abstract issued: 4.2M tCO2e (Acorn alone). Coupling risk: additionality concerns (shea trees were there before the project), permanence risk (climate stress, land clearing), leakage. Coupling estimated at 0.65 reflecting ~35% discount for permanence and additionality uncertainty. Not rehypothecated but same credit may be counted in multiple corporate Scope 3 registries.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;2&quot;,
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;First Sale &amp; Collection&quot;,
+          &quot;claim_type&quot;: &quot;fair_trade_certification&quot;,
+          &quot;coupling_ratio&quot;: 0.18,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 18,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;0.001&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;0.006&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;RONGEAD 2019 Shea Value Chain Analysis; KPMG 2018 Sector Review; Fairtrade International annual reports; Rainforest Alliance sourcing reports&quot;,
+          &quot;notes&quot;: &quot;PRIMARY DECOUPLING. Research consistently shows only 10–30% of Fair Trade certified shea volumes actually receives the farmgate premium. Estimated: ~120,000t certified globally; ~15,000t receives documented premium. Brand buyers report 100% of volume in sustainability disclosures as &#x27;Fair Trade certified&#x27;. Collectors receive standard market price for remainder. Abstract certification claims vastly exceed verified premium delivery. Not financial rehypothecation — structural certification gap.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;3&quot;,
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Processing&quot;,
+          &quot;claim_type&quot;: &quot;organic_certification&quot;,
+          &quot;coupling_ratio&quot;: 0.78,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 78,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;0.200&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;0.256&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;ECOCERT Africa certification registry; processor annual reports; Export Promotion Authority Ghana&quot;,
+          &quot;notes&quot;: &quot;Organic certification requires physical field inspection and chain-of-custody documentation. Coupling is relatively high (0.78) compared to Fair Trade because third-party auditors conduct real site visits. Gap reflects: some double-counting with Fair Trade certification; minor yield estimation errors; small volumes included without full traceability back to specific farms. Most reliable certification layer in the shea chain.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;4&quot;,
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Export&quot;,
+          &quot;claim_type&quot;: &quot;letter_of_credit&quot;,
+          &quot;coupling_ratio&quot;: 0.95,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 95,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;0.400&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;0.400&quot;,
+          &quot;source_type&quot;: &quot;public&quot;,
+          &quot;source_name&quot;: &quot;IFC commodity finance documentation; Standard Chartered trade finance reports; Ghana Export Promotion Authority statistics&quot;,
+          &quot;notes&quot;: &quot;Letters of credit are backed by bills of lading and warehouse receipts. High coupling — financial instrument is cancelled by physical delivery. Standard documentary trade finance structure. Minor 0.05 slippage from renegotiated terms, partial shipments, and credit note adjustments. Not rehypothecated.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;5&quot;,
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Export&quot;,
+          &quot;claim_type&quot;: &quot;otc_forward_contract&quot;,
+          &quot;coupling_ratio&quot;: 0.75,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 75,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;0.100&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;0.130&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;Commodity trade desk filings; AAK annual report; IOI Group sourcing disclosures; UNCTAD commodity finance review 2022&quot;,
+          &quot;notes&quot;: &quot;Larger buyers lock in supply price via bilateral OTC forward contracts. No central clearing or exchange registration. Coupling below 1.0 due to: contract re-negotiation when market moves sharply (common in soft commodity markets), partial delivery acceptance, and some speculative positioning by commodity traders. Volume estimate from UNCTAD and buyer disclosure analysis.&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;6&quot;,
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Industrial Manufacturing&quot;,
+          &quot;claim_type&quot;: &quot;sustainability_brand_claim&quot;,
+          &quot;coupling_ratio&quot;: 0.42,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 42,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;0.800&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;1.900&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;L&#x27;Oréal Sustainability Report 2023; Unilever Sustainable Living Plan 2022; BASF Beauty Ingredients sourcing policy; Global Shea Alliance membership disclosures&quot;,
+          &quot;notes&quot;: &quot;SECOND MAJOR DECOUPLING POINT. Companies market approximately $1.9B worth of &#x27;sustainable shea&#x27; cosmetics and food products annually. Traceability typically extends only to tier-1 aggregator — not to specific cooperatives or collectors. Physical backing is the proportion of volume with verified chain-of-custody documentation back to farm level (estimated $800M, sourced via verified GSA-compliant schemes). Coupling 0.42 reflects the structural gap between brand-level sustainability claims and farm-level verification. This is an authenticity coupling problem rather than a financial coupling prob&quot;
+        },
+        {
+          &quot;record_id&quot;: &quot;7&quot;,
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Retail Distribution&quot;,
+          &quot;claim_type&quot;: &quot;consumer_label_claim&quot;,
+          &quot;coupling_ratio&quot;: 0.45,
+          &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+          &quot;e_score&quot;: 45,
+          &quot;is_rehypothecated&quot;: false,
+          &quot;physical_value_usd_billions&quot;: &quot;1.200&quot;,
+          &quot;abstract_value_usd_billions&quot;: &quot;2.700&quot;,
+          &quot;source_type&quot;: &quot;public; estimated&quot;,
+          &quot;source_name&quot;: &quot;EU Cosmetics Regulation 1223/2009 enforcement reports; EU Green Claims Directive 2024 impact assessment; Nielsen sustainable consumer survey 2023; Mintel natural cosmetics market data&quot;,
+          &quot;notes&quot;: &quot;Consumer-facing &#x27;natural&#x27;, &#x27;organic&#x27;, &#x27;100% shea butter&#x27;, &#x27;fair trade certified&#x27;, &#x27;ethically sourced&#x27; labels on retail cosmetics and food products. EU Cosmetics Regulation requires safety dossier but does not mandate supply chain claim verification. Coupling 0.45 reflects: verified organic/FT claims (high coupling ~0.80) are minority; majority of &#x27;natural&#x27; and &#x27;sustainable&#x27; claims are marketing language with weak regulatory backing. EU Green Claims Directive (2024) expected to force substantiation — significant compliance exposure for brands. Physical backing estimated as products with indepen&quot;
+        }
+      ],
+      &quot;phase_scores&quot;: [
+        {
+          &quot;phase_id&quot;: 0,
+          &quot;phase_name&quot;: &quot;Wild Harvest &amp; Collection&quot;,
+          &quot;phase_score&quot;: 65,
+          &quot;claim_count&quot;: 1,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;carbon_credit&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 1,
+          &quot;phase_name&quot;: &quot;First Sale &amp; Collection&quot;,
+          &quot;phase_score&quot;: 18,
+          &quot;claim_count&quot;: 1,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;fair_trade_certification&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 3,
+          &quot;phase_name&quot;: &quot;Processing&quot;,
+          &quot;phase_score&quot;: 78,
+          &quot;claim_count&quot;: 1,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;organic_certification&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 4,
+          &quot;phase_name&quot;: &quot;Export&quot;,
+          &quot;phase_score&quot;: 75,
+          &quot;claim_count&quot;: 2,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;letter_of_credit&quot;,
+            &quot;otc_forward_contract&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 5,
+          &quot;phase_name&quot;: &quot;Industrial Manufacturing&quot;,
+          &quot;phase_score&quot;: 42,
+          &quot;claim_count&quot;: 1,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;sustainability_brand_claim&quot;
+          ]
+        },
+        {
+          &quot;phase_id&quot;: 6,
+          &quot;phase_name&quot;: &quot;Retail Distribution&quot;,
+          &quot;phase_score&quot;: 45,
+          &quot;claim_count&quot;: 1,
+          &quot;has_opaque&quot;: false,
+          &quot;claim_types&quot;: [
+            &quot;consumer_label_claim&quot;
+          ]
+        }
+      ],
+      &quot;system_summary&quot;: {
+        &quot;system_e_score&quot;: 53.8,
+        &quot;min_score&quot;: 18,
+        &quot;max_score&quot;: 78,
+        &quot;system_status&quot;: &quot;Moderate decoupling — review low e-score phases&quot;,
+        &quot;phases_in_average&quot;: 6,
+        &quot;total_claim_rows&quot;: 7
+      },
+      &quot;worst_claim&quot;: {
+        &quot;record_id&quot;: &quot;2&quot;,
+        &quot;phase_id&quot;: 1,
+        &quot;phase_name&quot;: &quot;First Sale &amp; Collection&quot;,
+        &quot;claim_type&quot;: &quot;fair_trade_certification&quot;,
+        &quot;coupling_ratio&quot;: 0.18,
+        &quot;coupling_ratio_status&quot;: &quot;ESTIMATED&quot;,
+        &quot;e_score&quot;: 18,
+        &quot;is_rehypothecated&quot;: false,
+        &quot;physical_value_usd_billions&quot;: &quot;0.001&quot;,
+        &quot;abstract_value_usd_billions&quot;: &quot;0.006&quot;,
+        &quot;source_type&quot;: &quot;public; estimated&quot;,
+        &quot;source_name&quot;: &quot;RONGEAD 2019 Shea Value Chain Analysis; KPMG 2018 Sector Review; Fairtrade International annual reports; Rainforest Alliance sourcing reports&quot;,
+        &quot;notes&quot;: &quot;PRIMARY DECOUPLING. Research consistently shows only 10–30% of Fair Trade certified shea volumes actually receives the farmgate premium. Estimated: ~120,000t certified globally; ~15,000t receives documented premium. Brand buyers report 100% of volume in sustainability disclosures as &#x27;Fair Trade certified&#x27;. Collectors receive standard market price for remainder. Abstract certification claims vastly exceed verified premium delivery. Not financial rehypothecation — structural certification gap.&quot;
+      }
+    }
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spain Olive Oil Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Spain Olive Oil Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>spain_olive_oil_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">49</span> / 49
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>OO-P0-001</td><td>0</td><td>Dcoop</td><td>Spain</td><td>2023</td><td>grove_area_ha</td><td>2500000</td><td>ha</td><td>public</td><td>Olive Oils from Spain — oliveoilsfromspain.org</td><td>https://oliveoilsfromspain.org/industry/</td><td>Total Spanish olive grove area</td></tr>
+<tr><td>OO-P0-002</td><td>0</td><td>Dcoop</td><td>Spain</td><td>2023</td><td>olive_trees_count</td><td>340000000</td><td>trees</td><td>public</td><td>Olive Oils from Spain — oliveoilsfromspain.org</td><td>https://oliveoilsfromspain.org/industry/</td><td>Total Spanish olive trees</td></tr>
+<tr><td>OO-P0-003</td><td>0</td><td>Multiple</td><td>Spain</td><td>2022</td><td>farms_count</td><td>380000</td><td>farms</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>Over 380K farms</td></tr>
+<tr><td>OO-P0-004</td><td>0</td><td>Multiple</td><td>Spain</td><td>2022</td><td>avg_farm_size_ha</td><td>7</td><td>ha</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>52% &lt;5ha; only 16.5% &gt;20ha</td></tr>
+<tr><td>OO-P0-005</td><td>0</td><td>Multiple</td><td>Andalusia (Spain)</td><td>2023</td><td>share_production_andalusia_pct</td><td>75</td><td>percent</td><td>public</td><td>Olive Oils from Spain</td><td>https://oliveoilsfromspain.org/industry/</td><td>75% of Spanish production from Andalusia</td></tr>
+<tr><td>OO-P0-006</td><td>0</td><td>Raul Tendero (farmer)</td><td>Spain (Toledo)</td><td>2023</td><td>cap_income_share_pct</td><td>30</td><td>percent</td><td>public</td><td>CDE/University of Bern — Lea Lamotte</td><td>https://www.cde.unibe.ch/insights__media/blogs/coffee_corner/in_the_heart_of_empty_spain_the_uncertain_future_of_olive_oil/index_eng.html</td><td>CAP provides ~30% of eligible producer income on average</td></tr>
+<tr><td>OO-P0-007</td><td>0</td><td>Multiple</td><td>Spain</td><td>2022</td><td>share_traditional_farms_pct</td><td>87</td><td>percent</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>87% non-irrigated; only 3% super-intensive</td></tr>
+<tr><td>OO-P0-008</td><td>0</td><td>Multiple</td><td>Spain</td><td>2022</td><td>share_super_intensive_pct</td><td>3</td><td>percent</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>Super-intensive groves (&gt;400 trees/ha): 40-65% higher yield but require irrigation</td></tr>
+<tr><td>OO-P1-001</td><td>1</td><td>Dcoop</td><td>Spain (Antequera)</td><td>2023</td><td>harvest_season_start</td><td>November</td><td></td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>November to January harvest window</td></tr>
+<tr><td>OO-P1-002</td><td>1</td><td>Dcoop</td><td>Spain (Antequera)</td><td>2023</td><td>harvest_season_end</td><td>January</td><td></td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td></td></tr>
+<tr><td>OO-P1-003</td><td>1</td><td>Benito (farmer)</td><td>Spain (Antequera)</td><td>2019</td><td>harvest_kg_per_day_good_year</td><td>8000</td><td>kg/day</td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>Pre-drought reference year</td></tr>
+<tr><td>OO-P1-004</td><td>1</td><td>Benito (farmer)</td><td>Spain (Antequera)</td><td>2022</td><td>harvest_kg_per_day_drought</td><td>1000</td><td>kg/day</td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>2022 drought year (87.5% reduction from 2019)</td></tr>
+<tr><td>OO-P1-005</td><td>1</td><td>Multiple</td><td>Spain</td><td>2022</td><td>production_drop_2022_23_pct</td><td>48</td><td>percent</td><td>public</td><td>Bottega del Sarto — Global Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>IOC-cited 48% production drop due to drought</td></tr>
+<tr><td>OO-P1-006</td><td>1</td><td>Multiple</td><td>Spain</td><td>2023</td><td>seasonal_worker_shortage_pct</td><td>15</td><td>percent</td><td>public</td><td>Bottega del Sarto — Global Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>Spanish Ministry of Agriculture data: 15% seasonal worker deficit in 2023</td></tr>
+<tr><td>OO-P1-007</td><td>1</td><td>Dcoop</td><td>Spain</td><td>2019</td><td>production_record_tonnes</td><td>275000</td><td>tonnes</td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>2019 record: 275K tonnes; 2022 projected 90K tonnes (one-third)</td></tr>
+<tr><td>OO-P1-008</td><td>1</td><td>Dcoop</td><td>Spain</td><td>2022</td><td>production_drought_tonnes</td><td>90000</td><td>tonnes</td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>2022 drought year harvest forecast</td></tr>
+<tr><td>OO-P2-001</td><td>2</td><td>Multiple</td><td>Spain</td><td>2023</td><td>mills_count</td><td>1755</td><td>mills</td><td>public</td><td>Olive Oils from Spain</td><td>https://oliveoilsfromspain.org/industry/</td><td>1755 active oil mills</td></tr>
+<tr><td>OO-P2-002</td><td>2</td><td>Multiple</td><td>Spain (Villacarrillo/Jaen)</td><td>2023</td><td>largest_mill_capacity_tpd</td><td>2500</td><td>t olives/day</td><td>public</td><td>Business Insider — Dcoop documentary 2023 + oliveoilsfromspain.org</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>World&#x27;s largest oil mill at Villacarrillo (Jaen)</td></tr>
+<tr><td>OO-P2-003</td><td>2</td><td>Acesur</td><td>Spain (Andalusia)</td><td>2025</td><td>ai_quality_samples_per_day</td><td>600</td><td>samples/day</td><td>public</td><td>Deutsche Bank — Acesur/La Espanola 2025</td><td>https://www.youtube.com/watch?v=MoPqPsebq28</td><td>Easy Taste AI device: objective automated organoleptic analysis</td></tr>
+<tr><td>OO-P2-004</td><td>2</td><td>Multiple</td><td>Spain</td><td>2023</td><td>extraction_rate_pct</td><td>20</td><td>percent</td><td>inferred</td><td>IOC / industry standard</td><td>https://www.internationaloliveoil.org/olive-world/olive-oil/</td><td>Typical oil extraction rate (17-25% by variety and ripeness)</td></tr>
+<tr><td>OO-P2-005</td><td>2</td><td>Multiple</td><td>Spain</td><td>2022</td><td>largest_mill_process_cooperative</td><td>Dcoop</td><td></td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>Dcoop: 75K farming families; largest cooperative in Spain</td></tr>
+<tr><td>OO-P2-006</td><td>2</td><td>Multiple</td><td>Spain</td><td>2022</td><td>evoo_acidity_max_pct</td><td>0.8</td><td>percent oleic acid</td><td>public</td><td>International Olive Council</td><td>https://www.internationaloliveoil.org/olive-world/olive-oil/</td><td>IOC EVOO standard: &lt;=0.8g/100g free acidity</td></tr>
+<tr><td>OO-P3-001</td><td>3</td><td>Multiple</td><td>Spain</td><td>2016</td><td>pomace_organization_recognized</td><td>1</td><td></td><td>public</td><td>Olive Oil Times — Pomace Industry 2016</td><td>https://www.oliveoiltimes.com/business/europe/spains-olive-pomace-oil-industry-gets-a-voice/50290</td><td>Professional Organization of Olive Pomace Oil recognized by Spanish Ministry of Agriculture</td></tr>
+<tr><td>OO-P3-002</td><td>3</td><td>Multiple</td><td>Spain</td><td>2023</td><td>alperujo_yield_t_per_t_olives</td><td>0.8</td><td>t alperujo/t olives</td><td>inferred</td><td>Industry standard / Sustainable Food Trust 2018</td><td>https://sustainablefoodtrust.org/news-views/the-supply-chain-of-fats-olive-oil/</td><td>Typical alperujo yield from milling</td></tr>
+<tr><td>OO-P3-003</td><td>3</td><td>Dcoop</td><td>Spain</td><td>2023</td><td>alperujo_uses</td><td>fertilizer + biomass + animal feed</td><td></td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>Composted for fertilizer or used as biomass fuel</td></tr>
+<tr><td>OO-P4-001</td><td>4</td><td>Dcoop</td><td>Spain (Antequera)</td><td>2023</td><td>storage_capacity_mt</td><td>300000</td><td>metric tonnes</td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>World&#x27;s largest olive oil storage facility</td></tr>
+<tr><td>OO-P4-002</td><td>4</td><td>Dcoop</td><td>Spain</td><td>2023</td><td>storage_max_duration_years</td><td>2</td><td>years</td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>Oil maintained at constant temperature; nitrogen-blanketed</td></tr>
+<tr><td>OO-P4-003</td><td>4</td><td>Multiple</td><td>Spain</td><td>2023</td><td>storage_atmosphere</td><td>nitrogen</td><td></td><td>public</td><td>Business Insider — Dcoop documentary 2023</td><td>https://www.youtube.com/watch?v=oD3Zg0d3T-s</td><td>Nitrogen blanket prevents oxidation in stainless steel tanks</td></tr>
+<tr><td>OO-P5-001</td><td>5</td><td>Multiple</td><td>Spain</td><td>2023</td><td>bottlers_count</td><td>1500</td><td>bottlers</td><td>public</td><td>Olive Oils from Spain</td><td>https://oliveoilsfromspain.org/industry/</td><td>1500+ bottlers</td></tr>
+<tr><td>OO-P5-002</td><td>5</td><td>Multiple</td><td>Spain</td><td>2021</td><td>bulk_export_share_pct</td><td>67</td><td>percent</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>~2/3 of exports in bulk</td></tr>
+<tr><td>OO-P5-003</td><td>5</td><td>Spain aggregate</td><td>Spain</td><td>2021</td><td>avg_export_price_spain_eur_per_kg</td><td>3.22</td><td>EUR/kg</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>2015-2021 average; vs Italy 4.42 EUR/kg</td></tr>
+<tr><td>OO-P5-004</td><td>5</td><td>Italy aggregate</td><td>Italy</td><td>2021</td><td>avg_export_price_italy_eur_per_kg</td><td>4.42</td><td>EUR/kg</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>Italy rebrands Spanish bulk at premium</td></tr>
+<tr><td>OO-P5-005</td><td>5</td><td>Salov/Filippo Berio</td><td>Italy</td><td>2018</td><td>market_share_uk_pct</td><td>23</td><td>percent</td><td>public</td><td>Sustainable Food Trust 2018</td><td>https://sustainablefoodtrust.org/news-views/the-supply-chain-of-fats-olive-oil/</td><td>Salov/Filippo Berio 23% UK market share using Italian branding on Spanish origin oil</td></tr>
+<tr><td>OO-P5-006</td><td>5</td><td>Multiple</td><td>Spain</td><td>2021</td><td>quality_standard_decree</td><td>Royal Decree 760/2021</td><td></td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>New traceability/quality standard; computerized bulk oil movement tracking from Oct 2021</td></tr>
+<tr><td>OO-P5-007</td><td>5</td><td>Multiple</td><td>Global</td><td>2023</td><td>glass_price_increase_pct</td><td>25</td><td>percent</td><td>public</td><td>Bottega del Sarto — Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>Global glass bottle price increase</td></tr>
+<tr><td>OO-P6-001</td><td>6</td><td>MSC Spain</td><td>Spain</td><td>2024</td><td>flexibag_capacity_litres</td><td>24000</td><td>litres per 20ft container</td><td>public</td><td>MSC Spain — Olive Oil Transportation</td><td>https://www.msc.com/en/local-information/europe/spain/spain-olive-oil</td><td>MSC flexibag for bulk olive oil transport</td></tr>
+<tr><td>OO-P6-002</td><td>6</td><td>Rubino RS</td><td>Italy (Puglia)</td><td>2024</td><td>company_age_years</td><td>80</td><td>years</td><td>public</td><td>Rubino RS — Trasporto Olio</td><td>https://www.rubinors.com/trasporto-olio/</td><td>80+ year specialist in olive oil intermodal transport</td></tr>
+<tr><td>OO-P6-003</td><td>6</td><td>Multiple</td><td>Global</td><td>2024</td><td>shipping_delay_red_sea_days</td><td>12.5</td><td>days</td><td>public</td><td>Bottega del Sarto — Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>Red Sea disruptions added 10-15 days to Asia routes (late 2024)</td></tr>
+<tr><td>OO-P6-004</td><td>6</td><td>Multiple</td><td>Global</td><td>2024</td><td>container_rate_vs_prepandemic_x</td><td>2.5</td><td>x pre-pandemic</td><td>public</td><td>Bottega del Sarto — Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>Shipping container rates 2-3x pre-pandemic (still elevated in 2025)</td></tr>
+<tr><td>OO-P7-001</td><td>7</td><td>Multiple</td><td>Spain</td><td>2023</td><td>export_value_eur_2023_24</td><td>6040000000</td><td>EUR</td><td>public</td><td>Olive Oil Times — Export Record December 2024</td><td>https://www.oliveoiltimes.com/business/europe/olive-oil-exports-from-spain-reach-record-high-defying-production-hurdles/135898</td><td>Record EUR 6.04B in 2023/24 crop year</td></tr>
+<tr><td>OO-P7-002</td><td>7</td><td>Multiple</td><td>Spain</td><td>2023</td><td>export_volume_tonnes_2023_24</td><td>742500</td><td>tonnes</td><td>public</td><td>Olive Oil Times — Export Record December 2024</td><td>https://www.oliveoiltimes.com/business/europe/olive-oil-exports-from-spain-reach-record-high-defying-production-hurdles/135898</td><td>Similar volume to prior year; revenue increase from price</td></tr>
+<tr><td>OO-P7-003</td><td>7</td><td>Multiple</td><td>Spain</td><td>2023</td><td>export_avg_price_eur_per_kg</td><td>8.00</td><td>EUR/kg</td><td>public</td><td>Olive Oil Times — Export Record December 2024</td><td>https://www.oliveoiltimes.com/business/europe/olive-oil-exports-from-spain-reach-record-high-defying-production-hurdles/135898</td><td>57% higher than prior year; peak EUR 8.75 in March 2024</td></tr>
+<tr><td>OO-P7-004</td><td>7</td><td>Multiple</td><td>Spain</td><td>2024</td><td>top_destination_italy_share_pct</td><td>28.2</td><td>percent</td><td>public</td><td>CaixaBank Research 2022</td><td>https://www.caixabankresearch.com/en/sectoral-analysis/agrifood/spanish-olive-oil-liquid-gold-must-be-developed-further</td><td>Italy top destination by volume</td></tr>
+<tr><td>OO-P7-005</td><td>7</td><td>Multiple</td><td>Spain</td><td>2023</td><td>usa_exports_eur</td><td>1000000000</td><td>EUR</td><td>public</td><td>Olive Oil Times — Export Record December 2024</td><td>https://www.oliveoiltimes.com/business/europe/olive-oil-exports-from-spain-reach-record-high-defying-production-hurdles/135898</td><td>USA &gt;EUR 1B for first time in 2023/24</td></tr>
+<tr><td>OO-P7-006</td><td>7</td><td>Multiple</td><td>Europe</td><td>2026</td><td>europe_market_value_usd</td><td>13100000000</td><td>USD</td><td>public</td><td>Persistence Market Research 2026</td><td>https://www.persistencemarketresearch.com/market-research/europe-olive-oil-market.asp</td><td>European market USD 13.1B in 2026; forecast USD 16.7B by 2033 CAGR 3.6%</td></tr>
+<tr><td>OO-P7-007</td><td>7</td><td>Acesur/La Espanola</td><td>Spain (Andalusia)</td><td>2025</td><td>export_countries</td><td>120</td><td>countries</td><td>public</td><td>Deutsche Bank — Acesur/La Espanola 2025</td><td>https://www.youtube.com/watch?v=MoPqPsebq28</td><td>Acesur exports La Espanola brand to 120 countries</td></tr>
+<tr><td>OO-P7-008</td><td>7</td><td>Multiple</td><td>Global</td><td>2023</td><td>global_production_mt_2023</td><td>2400000</td><td>tonnes</td><td>public</td><td>Bottega del Sarto — Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>2023: 2.4M tonnes global; 2021: 3.2M tonnes. IOC: 2017/18 forecast 4.7M tonnes never materialised</td></tr>
+<tr><td>OO-P7-009</td><td>7</td><td>Multiple</td><td>Global</td><td>2026</td><td>evoo_market_share_pct</td><td>74</td><td>percent</td><td>public</td><td>Persistence Market Research 2026</td><td>https://www.persistencemarketresearch.com/market-research/europe-olive-oil-market.asp</td><td>EVOO dominates 74% of European olive oil market</td></tr>
+<tr><td>OO-P7-010</td><td>7</td><td>Multiple</td><td>Global</td><td>2025</td><td>price_eur_per_L_2025</td><td>5.40</td><td>EUR/L</td><td>public</td><td>Bottega del Sarto — Supply Chain Challenges</td><td>https://www.shop.bottegadelsarto.com/feed/global-olive-oil-supply-chain-challenges-776804</td><td>2025 partial price recovery from EUR 6.20 peak in 2023</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

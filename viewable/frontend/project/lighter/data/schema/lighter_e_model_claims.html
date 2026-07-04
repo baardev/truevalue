@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighter E Model Claims</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Lighter E Model Claims</h1>
+        <p class="subtitle">CSV viewer generated from <strong>lighter_e_model_claims.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">6</span> / 6
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>claim_type<span class="sort-indicator"></span></th>
+<th>physical_volume<span class="sort-indicator"></span></th>
+<th>physical_unit<span class="sort-indicator"></span></th>
+<th>physical_value_usd_billions<span class="sort-indicator"></span></th>
+<th>abstract_quantity<span class="sort-indicator"></span></th>
+<th>abstract_unit<span class="sort-indicator"></span></th>
+<th>abstract_value_usd_billions<span class="sort-indicator"></span></th>
+<th>coupling_ratio<span class="sort-indicator"></span></th>
+<th>coupling_ratio_status<span class="sort-indicator"></span></th>
+<th>e_score<span class="sort-indicator"></span></th>
+<th>claim_counterparty<span class="sort-indicator"></span></th>
+<th>maturity_or_vintage<span class="sort-indicator"></span></th>
+<th>is_rehypothecated<span class="sort-indicator"></span></th>
+<th>rehypothecation_mechanism<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>Raw Material Extraction</td><td>2024-12-31</td><td>commodity_futures</td><td>320000000</td><td>MT LPG/year</td><td>48.0</td><td>320000000</td><td>MT LPG forward contracts/year</td><td>49.5</td><td>0.90</td><td>well-coupled</td><td>90</td><td>CME NYMEX / ICE</td><td>rolling monthly</td><td>false</td><td>none</td><td>public</td><td>CME Group NYMEX LPG futures; IEA Oil Market Report 2023</td><td>LPG commodity futures (NYMEX C4 butane; ICE propane) closely track physical production volumes. Coupling ratio ~0.90 reflects basis risk between Mont Belvieu hub price and delivered Wenzhou port cost. Limited rehypothecation in LPG vs crude oil market.</td></tr>
+<tr><td>2</td><td>0</td><td>Raw Material Extraction</td><td>2024-12-31</td><td>commodity_price_forwards</td><td>12000000</td><td>MT PP resin/year</td><td>10.8</td><td>11000000</td><td>MT PP resin forwards/year</td><td>10.0</td><td>0.85</td><td>well-coupled</td><td>85</td><td>ICIS OTC broker market</td><td>30-90 day forwards</td><td>false</td><td>none</td><td>public</td><td>ICIS Polyolefins Price Report; ChemAnalyst PP resin pricing</td><td>PP resin forward contracts closely track spot. Coupling ratio 0.85 reflects regional price differentials (Asia vs North America) and feedstock (propylene) lag. No meaningful rehypothecation in polymer markets.</td></tr>
+<tr><td>3</td><td>2</td><td>Lighter Assembly</td><td>2024-12-31</td><td>purchase_orders</td><td>10000000000</td><td>units/year</td><td>1.20</td><td>10500000000</td><td>units/year (OEM POs outstanding)</td><td>1.26</td><td>0.85</td><td>well-coupled</td><td>85</td><td>Global importers / branded buyers</td><td>30-90 day POs</td><td>false</td><td>none</td><td>inferred</td><td>Alibaba / Global Sources OEM platform; Panjiva US import data</td><td>OEM purchase orders vs actual assembly output. Coupling ratio ~0.85 reflects order cancellation risk: importers routinely cancel or reduce orders on 30-day notice. Key structural fragility: Wenzhou factories carry inventory risk because buyers do not hold finished goods.</td></tr>
+<tr><td>4</td><td>5</td><td>Ocean Freight &amp; Import</td><td>2024-12-31</td><td>letter_of_credit</td><td>10000000000</td><td>units/year</td><td>1.50</td><td>9800000000</td><td>units/year (LC-backed)</td><td>1.47</td><td>0.95</td><td>well-coupled</td><td>95</td><td>International banks (HSBC; Citibank; Bank of China)</td><td>30-60 day sight LC</td><td>false</td><td>none</td><td>public</td><td>IMF Trade Finance Monitor 2023; ICC Trade Register</td><td>Documentary letters of credit are the dominant payment instrument for lighter imports. LC coupling ratio ~0.95 because the physical shipment is the document trigger. Minimal decoupling risk in this layer.</td></tr>
+<tr><td>5</td><td>6</td><td>Wholesale Distribution</td><td>2024-12-31</td><td>private_label_sourcing_agreements</td><td>5000000000</td><td>units/year</td><td>0.75</td><td>6000000000</td><td>units/year (retailer PO commitments)</td><td>0.90</td><td>0.70</td><td>moderate-decoupling</td><td>70</td><td>US/EU mass-market retailers (Walmart; Dollar Tree; Tesco)</td><td>annual shelf agreements</td><td>false</td><td>none</td><td>estimated</td><td>NACS State of the Industry 2023; retailer annual reports (estimated)</td><td>Retailer private-label sourcing agreements vs actual sell-through. Coupling ratio ~0.70 because agreements are non-binding volume estimates. Retailer has right to substitute product; reduce orders without penalty. Inventory risk sits with distributor. This is the first material E-layer stress point.</td></tr>
+<tr><td>6</td><td>7</td><td>Retail</td><td>2024-12-31</td><td>brand_premium_claim</td><td>1500000000</td><td>BIC branded units/year</td><td>2.24</td><td>1500000000</td><td>BIC branded units/year</td><td>2.24</td><td>0.60</td><td>significant-decoupling</td><td>60</td><td>End consumer</td><td>perpetual brand claim</td><td>false</td><td>none</td><td>estimated</td><td>BIC Group Annual Report 2023; UN Comtrade HS 9613 declared values (inferred)</td><td>BIC brand premium claim: the BIC Classic retails at $1.49 vs $0.89 for an identical generic OEM unit. The physical product is functionally identical (same ISO 9994 compliance; same butane; same ferrocerium flint). The $0.60 premium ($0.40 per unit = 67% premium) is entirely abstract value — the brand claim. Coupling ratio ~0.60 (physical value $0.89; abstract claim $1.49). This is the PRIMARY E-LAYER FINDING for the lighter supply chain: the only meaningful abstract decoupling occurs at the retail brand premium layer. It confirms the theoretical prediction that in a commodity with near-zero manufacturing cost variation the only available rent is at the brand abstraction layer.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

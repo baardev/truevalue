@@ -155,6 +155,22 @@ After executing the work list, the skill appends one entry to `docs/content-sync
 
 ---
 
+### `export-project-pdfs`
+
+**File:** `.cursor/skills/export-project-pdfs/SKILL.md`
+
+**What it does:** For each requested project, walks its folder under `frontend/project/<slug>/`, renders every page in that project's subtree to its own PDF via headless Chrome (`google-chrome-stable --headless --print-to-pdf`), then merges only that project's own pages (never across projects) into one combined PDF, `docs/pdf_exports/<slug>/<slug>_complete.pdf`, using `pypdf.PdfWriter`. Pages under a `data/` directory (schema/CSV table viewers) are skipped. Starts a temporary `scripts/serve.py --http-only` instance on a free port if no server is already reachable at `--base-url`, and shuts it down afterward. Supports a subset of projects via `--projects`; defaults to every project in `frontend/site-index.json` (each still getting its own separate combined PDF). Reads `deploy/protected-paths.json` and `deploy/auth.env` to supply HTTP Basic Auth credentials for AUBEB and Senegal Agroforestry pages.
+
+**When to use it:** Whenever the user asks to export a project (or projects) as PDF, snapshot every page of a project, or build one combined PDF book for a specific project's full page tree.
+
+**Files it touches:**
+- `scripts/export_project_pdfs.py` (the discover + render + per-project merge script, this skill's only file)
+- `docs/pdf_exports/<slug>/` (output per project: per-page PDFs + `<slug>_complete.pdf`)
+
+**Key constraint:** Requires `all` sandbox permissions since Chrome runs headless with `--no-sandbox`. Never merges pages from different projects into one file; each project's combined PDF is independent.
+
+---
+
 ## Supporting reference files
 
 ### `docs/user-manual.md`

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Value Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Value Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>value_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">24</span> / 24
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>value_phase_id<span class="sort-indicator"></span></th>
+<th>entity_id<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>period_type<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>L001</td><td>Global</td><td>2024-12-31</td><td>annual</td><td>butane_spot_price_usd_per_kg</td><td>0.62</td><td>USD/kg</td><td>public</td><td>CME Group NYMEX butane (C4) futures</td><td>https://www.cmegroup.com</td><td>Mont Belvieu normal butane spot converted from USD/gallon (0.85 USD/gal / 1.37 kg per gal)</td></tr>
+<tr><td>2</td><td>0</td><td>L001</td><td>Global</td><td>2024-12-31</td><td>annual</td><td>pp_resin_spot_price_usd_per_kg</td><td>0.90</td><td>USD/kg</td><td>public</td><td>ICIS Polyolefins Price Report</td><td>https://www.icis.com</td><td>Polypropylene homopolymer injection grade; Asia benchmark spot price</td></tr>
+<tr><td>3</td><td>0</td><td>L001</td><td>Global</td><td>2024-12-31</td><td>annual</td><td>ferrocerium_cost_per_unit_usd</td><td>0.0015</td><td>USD/unit</td><td>estimated</td><td>Fastmarkets minor metals (estimated)</td><td></td><td>Ferrocerium flint rod cost per lighter unit at scale; estimated from kg price and unit weight (0.12g per rod)</td></tr>
+<tr><td>4</td><td>0</td><td>L001</td><td>Global</td><td>2024-12-31</td><td>annual</td><td>steel_spring_cost_per_unit_usd</td><td>0.002</td><td>USD/unit</td><td>estimated</td><td>LME steel pricing + fabrication estimate</td><td></td><td>Steel spring and valve component cost per unit at Wenzhou scale</td></tr>
+<tr><td>5</td><td>1</td><td>L002</td><td>China</td><td>2024-12-31</td><td>annual</td><td>component_manufacturing_cost_per_unit_usd</td><td>0.04</td><td>USD/unit</td><td>inferred</td><td>Alibaba OEM listings; UN Comtrade declared values (inferred)</td><td></td><td>Total component piece-part cost per assembled lighter including body halves; valve; nozzle; spring; wheel; flint rod; O-ring</td></tr>
+<tr><td>6</td><td>1</td><td>L002</td><td>China</td><td>2024-12-31</td><td>annual</td><td>labor_cost_per_unit_usd</td><td>0.005</td><td>USD/unit</td><td>estimated</td><td>China NBS Zhejiang minimum wage 2023 + throughput estimate</td><td></td><td>Labor cost per unit at 400 units/worker/hour and $2.20/hour minimum wage; direct labor only</td></tr>
+<tr><td>7</td><td>1</td><td>L002</td><td>China</td><td>2023-12-31</td><td>annual</td><td>wenzhou_lighter_industry_annual_output_usd</td><td>1200000000</td><td>USD/year</td><td>estimated</td><td>CLCA + China Customs export statistics (estimated)</td><td></td><td>Total factory gate value of Wenzhou lighter industry output; estimated from export volumes and average FOB price</td></tr>
+<tr><td>8</td><td>2</td><td>L002</td><td>China</td><td>2024-12-31</td><td>annual</td><td>assembly_cost_per_unit_usd</td><td>0.015</td><td>USD/unit</td><td>estimated</td><td>CLCA industry data + NBS wage data (estimated)</td><td></td><td>Total assembly cost including direct labor; overhead; butane fill; QA in-line; estimated at scale</td></tr>
+<tr><td>9</td><td>2</td><td>L002</td><td>China</td><td>2024-12-31</td><td>annual</td><td>factory_gate_fob_price_generic_usd</td><td>0.12</td><td>USD/unit</td><td>inferred</td><td>Alibaba / Global Sources / UN Comtrade (inferred)</td><td></td><td>FOB Wenzhou/Ningbo price for generic unbranded lighter; range $0.10-$0.15</td></tr>
+<tr><td>10</td><td>2</td><td>L003</td><td>China</td><td>2024-12-31</td><td>annual</td><td>factory_gate_fob_price_branded_oem_usd</td><td>0.18</td><td>USD/unit</td><td>inferred</td><td>Panjiva US import manifests (estimated)</td><td></td><td>FOB price for branded-spec OEM lighter (BIC equivalent specification); includes quality premium</td></tr>
+<tr><td>11</td><td>3</td><td>L004</td><td>Global</td><td>2023-12-31</td><td>annual</td><td>certification_cost_per_sku_usd</td><td>2500</td><td>USD/SKU</td><td>estimated</td><td>SGS / Bureau Veritas lab fee schedules (estimated)</td><td>https://www.sgs.com</td><td>ISO 9994 + EN 13869 certification cost per lighter SKU; annualized across production run of 1M+ units = $0.0025/unit</td></tr>
+<tr><td>12</td><td>4</td><td>L005</td><td>China</td><td>2024-12-31</td><td>annual</td><td>packaging_cost_per_unit_usd</td><td>0.008</td><td>USD/unit</td><td>estimated</td><td>ICIS corrugated paper + industry estimate</td><td></td><td>Display box and carton packaging cost per unit at scale</td></tr>
+<tr><td>13</td><td>4</td><td>L005</td><td>Global</td><td>2024-06-30</td><td>annual</td><td>container_freight_cost_per_unit_usd</td><td>0.0016</td><td>USD/unit</td><td>public</td><td>Drewry WCI + units per FEU calculation</td><td>https://www.drewry.co.uk</td><td>Container freight cost per unit: $3,200 FEU / 2,000,000 units = $0.0016/unit</td></tr>
+<tr><td>14</td><td>5</td><td>L006</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>cif_landed_cost_generic_usd</td><td>0.15</td><td>USD/unit</td><td>inferred</td><td>US Census Bureau / Panjiva import data</td><td>https://www.census.gov</td><td>CIF landed cost for generic lighter at US port; includes FOB + ocean freight + insurance; duty (3.9%) adds $0.006/unit</td></tr>
+<tr><td>15</td><td>5</td><td>L006</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>us_import_duty_per_unit_usd</td><td>0.006</td><td>USD/unit</td><td>public</td><td>US CBP HTS 9613.10 (3.9% MFN duty)</td><td>https://hts.usitc.gov</td><td>US most-favoured nation duty at 3.9% of declared value ($0.15); China-origin lighters not subject to Section 301 additional tariffs under this HTS classification</td></tr>
+<tr><td>16</td><td>5</td><td>L006</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>us_lighter_imports_total_units</td><td>3000000000</td><td>units/year</td><td>public</td><td>UN Comtrade HS 9613</td><td>https://comtrade.un.org</td><td>US lighter imports approximately 3 billion units per year; majority from China</td></tr>
+<tr><td>17</td><td>6</td><td>L007</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>wholesale_price_generic_usd</td><td>0.45</td><td>USD/unit</td><td>estimated</td><td>NACS SOTI 2023 + retail price backsolve (estimated)</td><td>https://www.nacsonline.com</td><td>Generic lighter wholesale price at US distributor to convenience store; derived from retail $0.89 at 49% gross margin</td></tr>
+<tr><td>18</td><td>6</td><td>L007</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>distributor_margin_pct</td><td>22</td><td>percent</td><td>public</td><td>NACS State of the Industry Report 2023</td><td>https://www.nacsonline.com</td><td>Distributor gross margin on lighter category in US convenience channel</td></tr>
+<tr><td>19</td><td>7</td><td>L008</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>retail_price_generic_usd</td><td>0.89</td><td>USD/unit</td><td>public</td><td>Direct observation / Amazon / Walmart</td><td>https://www.walmart.com</td><td>Generic lighter retail price at US mass-market</td></tr>
+<tr><td>20</td><td>7</td><td>L008</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>retail_price_bic_classic_usd</td><td>1.49</td><td>USD/unit</td><td>public</td><td>Direct observation / BIC Group Annual Report 2023</td><td>https://www.bic-group.com/investors</td><td>BIC Classic lighter retail price at US convenience store</td></tr>
+<tr><td>21</td><td>7</td><td>L008</td><td>USA</td><td>2023-12-31</td><td>annual</td><td>retail_margin_generic_pct</td><td>38</td><td>percent</td><td>public</td><td>NACS State of the Industry Report 2023</td><td>https://www.nacsonline.com</td><td>Retailer gross margin on generic lighter in US convenience channel</td></tr>
+<tr><td>22</td><td>7</td><td>L009</td><td>Global</td><td>2023-12-31</td><td>annual</td><td>bic_lighter_revenue_usd</td><td>2240000000</td><td>USD/year</td><td>public</td><td>BIC Group Annual Report 2023 (Lighters segment)</td><td>https://www.bic-group.com/investors</td><td>BIC Group Lighters segment revenue 2023; includes all lighter product categories globally</td></tr>
+<tr><td>23</td><td>7</td><td>L009</td><td>Global</td><td>2023-12-31</td><td>annual</td><td>bic_lighter_units_sold_billion</td><td>1.5</td><td>billion units/year</td><td>public</td><td>BIC Group Annual Report 2023</td><td>https://www.bic-group.com/investors</td><td>BIC branded lighter units sold globally</td></tr>
+<tr><td>24</td><td>7</td><td>L009</td><td>Global</td><td>2023-12-31</td><td>annual</td><td>bic_brand_premium_usd_per_unit</td><td>0.60</td><td>USD/unit</td><td>inferred</td><td>BIC Annual Report 2023 vs UN Comtrade declared values</td><td>https://www.bic-group.com/investors</td><td>BIC retail price ($1.49) minus generic equivalent ($0.89); pure brand abstraction premium; PRIMARY E-LAYER FINDING</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

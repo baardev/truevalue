@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighter Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Lighter Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>lighter_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">9</span> / 9
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Raw Material Extraction</td><td>Pre-supply</td><td>Butane/LPG in subsurface reservoir; PP resin monomer (propylene); steel ore; cerium/iron ore</td><td>Liquefied butane (pressurized); PP resin pellets; steel coil; ferrocerium alloy rod stock</td><td>Chemical/geological extraction and refining</td><td>Years</td><td>Medium</td><td>Global LPG production volume; PP resin output; ferrocerium alloy production</td><td>MT/year (LPG); MT/year (PP resin)</td><td>ISO purity specification for butane (&gt;95% isobutane+normal butane); PP resin MFI spec for injection molding; ferrocerium alloy composition (Ce:Fe ratio); geological reserve constraints; regulatory safety classifications for LPG</td><td>Global LPG supply to petrochemical sector; PP resin delivered to Chinese compounders and molders; ferrocerium rod stock shipped to Wenzhou component manufacturers; steel coil to spring stamping facilities</td><td>POPULATED</td><td>Raw material feedstocks are globally traded commodities with published spot prices and trade statistics. Butane: NYMEX C4 spot (CME Group); PP resin: ICIS Polyolefins benchmark. China is a net importer of LPG; domestic propylene production feeds PP resin industry. Sources: WLPGA Annual Report 2023; IEA Oil Market Report 2023; ICIS Polyolefins Price Report; LME steel; Fastmarkets minor metals (ferrocerium estimated).</td></tr>
+<tr><td>1</td><td>Component Manufacturing</td><td>Upstream</td><td>PP resin pellets; steel coil; ferrocerium alloy rod stock; brass/zinc alloy billet</td><td>30+ discrete precision components: body halves (PP); valve assembly; nozzle; flint wheel (steel); flint rod (ferrocerium); compression spring (steel); O-ring (nitrile rubber); child-resistance lever</td><td>Injection molding (PP body); die casting (valve/nozzle); stamping (spring); turning (flint rod); casting (wheel)</td><td>Continuous</td><td>Low</td><td>Component piece-part counts and tolerances; mold cycle time; reject rate</td><td>units/hour/mold; mm tolerance (±0.05mm)</td><td>ISO 9994 dimensional tolerances for all safety-critical components; child-resistance lever geometry (EN 13869 spec); pressure vessel wall thickness minimum (body halves); flint wheel serration depth and pitch; valve spring preload specification; mold steel grade and temperature; cycle time upper bound (12 sec for body half)</td><td>30+ precision components delivered per lighter unit assembled; typical daily output per factory: 500,000 units equivalent (component basis); component cost per lighter unit: ~$0.04 at scale; reject rate &lt;2% at Tier-1 Wenzhou factories</td><td>PARTIAL</td><td>Component manufacturing is concentrated in Wenzhou/Zhejiang with approximately 3,000 registered manufacturers (CLCA). The sector is LOW transparency because most factories are private, unlisted, and do not publish production data. Piece-part costs are inferred from FOB price decomposition and Alibaba OEM listings. Mold cycle times from Plastics Technology trade press benchmarks. Employment from China NBS light industry survey. Sources: CLCA; China NBS; Alibaba; Plastics Technology; estimated.</td></tr>
+<tr><td>2</td><td>Lighter Assembly</td><td>Upstream</td><td>30+ discrete components; butane gas (pressurized cylinder at point of fill)</td><td>Sealed; gas-filled; assembled lighter body (pre-certification)</td><td>Mechanical assembly (body); valve insertion; wheel and flint installation; butane filling; crimping/sealing</td><td>Continuous</td><td>Low</td><td>Units assembled per line per shift; butane fill weight per unit (approx 4g); seal integrity pass rate</td><td>units/hour; grams butane/unit</td><td>Butane fill specification: 4.0±0.2g per unit; crimp torque specification (valve to body); alignment tolerance for child-resistance lever; in-line leak test pass criterion; minimum fuel pressure at 20°C; assembly sequence must follow ISO 9994 validated build plan</td><td>~10 billion units assembled per year globally (China dominant); typical throughput 400 units/worker/hour on semi-automated line; factory gate FOB price: $0.10-$0.15 generic; $0.16-$0.22 branded OEM spec; labor cost: ~$0.005/unit at Zhejiang minimum wage</td><td>PARTIAL</td><td>Assembly is the most opaque phase. Factory count, line capacity, and throughput are not publicly reported. FOB price is inferred from UN Comtrade declared customs values and Alibaba/Global Sources OEM platform data. Butane fill weight inferred from product weight and fuel capacity specifications. Sources: CLCA (estimated); Alibaba; UN Comtrade; China NBS; calculated.</td></tr>
+<tr><td>3</td><td>QA Testing &amp; Certification</td><td>Midstream</td><td>Assembled lighter (sealed; gas-filled; uncertified)</td><td>Certified lighter bearing ISO 9994 and/or EN 13869 compliance mark (or rejected unit)</td><td>Safety and compliance testing (ignition reliability; drop test; fuel leakage; child-resistance; flame height)</td><td>Days-Weeks</td><td>Medium</td><td>Test pass rate per ISO 9994 clause; certification cycle time; cost per SKU</td><td>percent pass; days; USD/SKU</td><td>ISO 9994:2005/2024 clause-by-clause compliance: ignition test (30,000 cycles); drop test (1.8m onto concrete); fuel leakage test (no leakage at 48°C); flame height limit (≤50mm uncontrolled); EN 13869 child-resistance panel test (80% of test children unable to operate in 5 minutes); mandatory for EU/UK/Canada markets; CPSC 16 CFR Part 1212 for USA</td><td>Certified lighters: approximately 94% first-submission pass rate; typical certification cycle 21 days; cost $2,000-$4,000 per SKU per market; rejected units returned or destroyed; certification mark enables market access</td><td>POPULATED</td><td>ISO 9994 and EN 13869 are publicly available standards. CPSC 16 CFR Part 1212 (USA child-resistance) is public federal regulation. Test house fee schedules (SGS, Bureau Veritas, TUV) are partially public. Pass rate estimated from CPSC recall history and CLCA member data. This phase is MEDIUM transparency because test results are not published for individual SKUs; only certification marks are consumer-visible. Sources: ISO 9994:2005; EN 13869:2016; CPSC; SGS; Bureau Veritas; estimated.</td></tr>
+<tr><td>4</td><td>Packaging &amp; Containerization</td><td>Midstream</td><td>Certified lighters (bulk trays or display boxes)</td><td>Palletized units in sealed 20ft/40ft shipping containers (HS 9613.10 or 9613.20)</td><td>Retail packaging; carton assembly; palletization; container loading</td><td>Days</td><td>Medium</td><td>Units per 40ft container; packaging cost per unit; container load factor</td><td>units/FEU; USD/unit; percent container utilization</td><td>Retail display box graphics and legal text (WARNING; age restriction; country of origin); barcode/EAN compliance; carton strength (BCT minimum for stacking); pallet configuration (100×120cm EURO or 48×40in USA); container loading sequence; IMO dangerous goods classification for butane-filled lighters (Class 2.1; Packing Group II)</td><td>Approximately 2,000,000 lighter units per 40ft FEU (7.8×4.2×1.4cm per unit; display box overhead; carton; pallet); container freight rate: $2,900-$3,200/FEU Shanghai to major ports mid-2024; packaging cost: $0.008/unit; dangerous goods documentation (IMDG Class 2.1)</td><td>POPULATED</td><td>Container freight rates are publicly published (Drewry WCI; Freightos Baltic Index). Container capacity calculation is deterministic from product dimensions. Dangerous goods classification is public (IMDG Code). Packaging cost is estimated from corrugated paper commodity pricing. Sources: Drewry WCI 2024; Freightos Baltic Index; IMDG Code; ICIS corrugated (estimated); calculated.</td></tr>
+<tr><td>5</td><td>Ocean Freight &amp; Import</td><td>Downstream</td><td>Containerized lighter units (IMDG Class 2.1 DG shipment)</td><td>Customs-cleared palletized units at destination port warehouse</td><td>Ocean freight; customs declaration (HS 9613); import duty assessment; CPSC/CE compliance verification at border</td><td>2-6 Weeks</td><td>High</td><td>HS 9613 import volumes by country; declared customs value per unit; import duty paid</td><td>units/year; USD/unit declared; USD duty paid</td><td>HS 9613.10 (pocket lighters; gas fuelled; non-refillable) vs 9613.20 (pocket lighters; gas fuelled; refillable); mandatory product liability documentation (CPSC for USA; CE mark for EU); country of origin labeling; IMDG compliance documentation; import duty: US 3.9% MFN; EU 2.7% MFN</td><td>USA lighter imports: approximately 3 billion units/year; declared value ~$0.15/unit; total declared import value ~$450M/year. EU imports ~$380M/year. Total China lighter exports ~10 billion units/year to 150+ countries</td><td>POPULATED</td><td>This is the highest transparency phase. UN Comtrade provides country-level HS 9613 import/export data freely (public). US Census Bureau AES and Panjiva customs manifests provide shipper-level detail. EU Eurostat provides EU-27 data. Import duty rates are published in national tariff schedules. Sources: UN Comtrade HS 9613; US Census Bureau; Panjiva; Freightos Baltic Index; US CBP HTS 9613.10; EU Eurostat.</td></tr>
+<tr><td>6</td><td>Wholesale Distribution</td><td>Downstream</td><td>Customs-cleared palletized units at importer warehouse</td><td>Individual display units delivered to retail store back-room or shelf-ready</td><td>Regional warehousing; pick-and-pack; last-mile logistics; custody transfer to retailer</td><td>Days-Weeks</td><td>Medium</td><td>Units distributed per warehouse per day; distributor margin percent; cost per unit</td><td>units/day; percent; USD/unit</td><td>Retailer shelf-ready packaging specification; minimum order quantity (MOQ); payment terms (net 30/60); product liability insurance requirement; FIFO stock rotation protocol; SKU rationalization (typically 2-4 lighter SKUs per retail format); distributor exclusivity terms</td><td>Distributor gross margin: approximately 22% in US convenience channel (NACS SOTI 2023); distribution cost per unit: ~$0.03; wholesale price to retailer (generic): ~$0.45/unit; wholesale price (BIC): ~$0.90/unit</td><td>PARTIAL</td><td>Wholesale distribution economics are partially disclosed through NACS State of the Industry annual report (convenience channel) and NielsenIQ retail trade data (subscription). Individual distributor economics are proprietary. Margin data is category-level, not SKU-level. Sources: NACS SOTI 2023; estimated; inferred.</td></tr>
+<tr><td>7</td><td>Retail</td><td>Downstream</td><td>Individual display units on retail shelf</td><td>Consumer-held lighter (end use begins)</td><td>Sale to end consumer; custody transfer; brand premium realization</td><td>Continuous</td><td>High</td><td>Retail price point (generic vs branded); retail margin percent; units sold per store per week</td><td>USD/unit; percent; units/store/week</td><td>Retail price management: everyday low price (EDLP) in mass market vs high-low in convenience; minimum advertised price (MAP) policy enforced by BIC for branded product; child-resistant packaging requirement at point of sale (CPSC 16 CFR 1212); age restriction signage (USA: no legal restriction; UK: voluntary 18+ scheme)</td><td>Generic lighter retail price: $0.89 (US mass market); BIC Classic: $1.49 (US C-store); retail margin 38% (NACS SOTI 2023); BIC brand premium: $0.60/unit (67% over generic); BIC sells approximately 1.5 billion branded units globally per year (BIC Annual Report 2023)</td><td>POPULATED</td><td>Retail prices are directly observable (Amazon; Walmart; convenience store shelf). BIC Group publishes annual unit sales and revenue by segment in its Annual Report (public company; listed Euronext Paris). NACS publishes category margin data annually. US Census retail trade data provides channel-level volumes. This is the highest transparency phase alongside Phase 5. Sources: BIC Group Annual Report 2023; NACS SOTI 2023; direct observation; US Census retail trade.</td></tr>
+<tr><td>8</td><td>End-of-Life &amp; Waste Management</td><td>Post-market</td><td>Consumer-held lighter (butane depleted or partially depleted; post-use)</td><td>Landfill/incineration waste stream (&gt;99% of units) OR trace-level recovered material fraction (&lt;1%)</td><td>Disposal to municipal solid waste (overwhelmingly); OR material recovery (marginal: small-scale PP or steel separation where infrastructure exists)</td><td>Continuous</td><td>Medium</td><td>Lighter recycling diversion rate (percent of units NOT going to landfill); estimated PP plastic waste generated per year (MT); estimated butane venting to atmosphere per year (MT CO2e)</td><td>percent diverted from landfill; MT PP/year; MT CO2e/year</td><td>Residual butane hazard: CPSC guidance classifies lighters with remaining fuel as hazardous household waste — consumer must exhaust fuel before disposal; DOT 49 CFR Part 173 designates butane-filled lighters as Class 2.1 hazardous materials for transport; no municipal recycling stream in any major market accepts butane-filled lighters; PP body (Resin ID Code 5) is technically recyclable but excluded from curbside programs due to small size and butane contamination risk; France EPR (CITEO REP emballages 2022) is the only national EPR framework covering lighter packaging — device itself remains outside EPR scope globally; California DTSC classifies lighter with residual fuel as hazardous waste; EU Battery Regulation (2023) does not cover lighter waste; no global lighter producer take-back program exists</td><td>ACTUAL OUTPUT: &lt;1% recycling rate; &gt;99% to landfill or incineration. THEORETICAL RECOVERABLE MATERIAL: 50,000 MT PP/year (10B units × 5g PP body); 5,000 MT steel/year (spring + valve components); 1,500 MT ferrocerium/year. EMISSIONS: approximately 14,500 MT CO2e/year from residual butane venting at disposal (10B units × 0.5g residual butane × 2.9 kg CO2e/kg butane). SCALE: 10 billion lighters enter waste stream per year; cumulative plastic waste from lighter bodies alone estimated at 50,000 MT PP/year indefinitely</td><td>PARTIAL</td><td>End-of-life is the most critical sustainability gap in the lighter supply chain and the PRIMARY CHAIN BOTTLENECK (balance score 56.7%). Transparency is MEDIUM: waste volumes are calculable from production data (public); regulatory framework is public; but actual per-country disposal pathways and recycling rates are estimated/inferred because no systematic data collection exists for lighter-specific waste. The lighter fails the circular economy test at every level: no take-back; no compatible recycling infrastructure; no refillable default pathway for non-refillable variants; no EPR obligation for the device (only France covers packaging); and the presence of residual butane makes the unit a hazardous waste in most jurisdictions. Sources: CPSC disposal guidance; DOT 49 CFR Part 173; Ellen MacArthur Foundation single-use plastics data; CITEO France; California DTSC; ISO 14040 LCA methodology; estimated from production volumes.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

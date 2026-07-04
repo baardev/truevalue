@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gold Recycling Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Gold Recycling Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>gold_recycling_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">8</span> / 8
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>primary_waste_streams<span class="sort-indicator"></span></th>
+<th>omega_p<span class="sort-indicator"></span></th>
+<th>omega_source<span class="sort-indicator"></span></th>
+<th>omega_derivation_note<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Geological Prospecting</td><td>Drill cuttings; brine from core extraction; diesel exhaust from exploration rigs; disturbed soil and vegetation from access roads</td><td>0.05</td><td>Foran 2005; ICMM 2012 LCA</td><td>Low absolute waste volume but high habitat disturbance per unit of eventual output; exploration rarely involves process chemicals. Weight set low relative to production phases.</td><td>PROVISIONAL</td></tr>
+<tr><td>1</td><td>Mine Extraction</td><td>Waste rock (overburden); tailings slurry; acid mine drainage (AMD); particulate dust; blasting NOx; cyanide or mercury at artisanal sites; diesel exhaust from heavy machinery; land clearance and habitat loss</td><td>0.28</td><td>Foran 2005 (direct ops 13% + land prep 6% of sector GHG); Newmont 2024 SR (land reclaimed 192 ha/yr; 24% of suppliers flagged for human rights risk); WGC 2019 Climate Report</td><td>Largest single waste-intensity phase. Tailings volume dominates (100-200 t waste rock per oz Au). Foran GHG split places direct + land at ~19% of sector; Newmont reclamation data confirms ongoing land obligation. Weight elevated to reflect tailings mass.</td><td>PROVISIONAL</td></tr>
+<tr><td>2</td><td>Ore Processing &amp; Concentration</td><td>Cyanide solution (heap leach or tank leach); mercury vapour (ASGM); acid effluent; process water with heavy metals; flotation reagents; sulfur dioxide from roasting; cyanide spill risk; thickener underflow</td><td>0.30</td><td>Foran 2005 (electricity 44% of sector GHG — majority consumed here); Newmont 2024 SR (30 cyanide spills/yr; water recycled 71%); WGC 2019 Climate Report</td><td>Highest energy-intensity phase (cyanide leach + grinding). Electricity share of GHG (44%) is concentrated primarily in phases 2-3. Cyanide management is the dominant acute hazard. Highest omega_p in chain.</td><td>PROVISIONAL</td></tr>
+<tr><td>3</td><td>Doré Production</td><td>Smelter slag; sulfur dioxide and NOx from furnace; acid pickling effluent; mercury capture waste; spent refractories; heat and water vapour</td><td>0.18</td><td>Foran 2005 (electricity share partly here); Newmont 2024 SR (cyanide spills note Phase 2-3 boundary); industry LCA benchmarks</td><td>Smelting is energy- and emissions-intensive but shorter duration than leach. Slag volume is significant (1-5 t slag per t doré). Placed below Phase 2 given shorter process time and smaller effluent volume.</td><td>PROVISIONAL</td></tr>
+<tr><td>4</td><td>Refining</td><td>Acid pickling liquors (nitric and sulfuric); chlorine gas (Miller process); electrolyte slimes (anode slime with PGMs); cooling water discharge; spent electrolyte; minor emissions of chlorine and HCl</td><td>0.10</td><td>Industry LCA benchmarks; LBMA Responsible Sourcing Guidance 2021</td><td>Refinery waste volumes are smaller than extraction phases but chemically aggressive. Acid liquors require neutralisation. PGM-bearing anode slimes are a recoverable by-product but also a waste stream until processed.</td><td>PROVISIONAL</td></tr>
+<tr><td>5</td><td>Bar Casting &amp; Assay</td><td>Metal shavings and filings (recoverable); cutting lubricants and grinding coolant; electroplating rinse water; assay cupel waste (lead, silver); packaging materials</td><td>0.05</td><td>Industry estimates; LBMA GDL documentation</td><td>Relatively low waste intensity. Metal filings are largely recovered. Assay waste (cupels, lead buttons) is a known regulated stream. Energy consumption mainly from annealing and casting furnaces.</td><td>PROVISIONAL</td></tr>
+<tr><td>6</td><td>Logistics &amp; Vaulting</td><td>Diesel exhaust from armoured transport; climate-control energy (HVAC for vault temperature); packaging and desiccant waste; security hardware end-of-life</td><td>0.03</td><td>Industry estimates; Newmont 2024 SR transport emissions</td><td>Near-zero material waste. Primary environmental cost is HVAC energy for vault climate control and transport fuel. Placed low as no process chemicals or transformation occur.</td><td>PROVISIONAL</td></tr>
+<tr><td>7</td><td>Exchange Registration</td><td>Data centre energy (electronic record systems); paper documentation and packaging waste; negligible physical waste</td><td>0.01</td><td>WGC; COMEX reporting infrastructure benchmarks</td><td>Essentially zero physical waste. Environmental cost is limited to digital infrastructure energy. Lowest omega_p in chain by a large margin.</td><td>PROVISIONAL</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

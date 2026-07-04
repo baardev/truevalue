@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shea Data Sources</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Shea Data Sources</h1>
+        <p class="subtitle">CSV viewer generated from <strong>shea_data_sources.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">19</span> / 19
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>source_id<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>phase_coverage<span class="sort-indicator"></span></th>
+<th>update_frequency<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>access_method<span class="sort-indicator"></span></th>
+<th>cost<span class="sort-indicator"></span></th>
+<th>reliability_score<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>FAO 2017 Chen – Shea women empowerment Burkina Faso</td><td>public</td><td>0,1,4</td><td>point-in-time</td><td>http://www.fao.org/3/a-i8062e.pdf</td><td>download</td><td>free</td><td></td><td>POPULATED</td><td>Social Protection and Forestry WP3. Employment, export value, 94% women, income p.24.</td></tr>
+<tr><td>2</td><td>US AID 2013 Lovett – Global Shea NYC conference</td><td>public</td><td>1,2,3</td><td>point-in-time</td><td>https://globalshea.com/uploads/files/nyc_shea_trade_and_industry_conference_presentations/lovett_nyc_global_shea_may_2013_75.pdf</td><td>download</td><td>free</td><td></td><td>POPULATED</td><td>Income per MT by actor; processing 7 bags-&gt;187kg; 12 bags/MT; 5 months.</td></tr>
+<tr><td>3</td><td>Agritech Group 2016 – Serious Shea scoping BAU</td><td>public</td><td>0,1,2,3,4</td><td>point-in-time</td><td></td><td></td><td>free</td><td></td><td>OPAQUE</td><td>West Africa BAU; no quantitative data extracted on page.</td></tr>
+<tr><td>4</td><td>Rousseau et al. 2015 – Shea nut price</td><td>public</td><td>1</td><td>point-in-time</td><td></td><td></td><td>free</td><td></td><td>POPULATED</td><td>250 CFA/kg end 2013.</td></tr>
+<tr><td>5</td><td>Yinug &amp; Fetzer 2008 – West Africa exports</td><td>public</td><td>4</td><td>point-in-time</td><td></td><td></td><td>free</td><td></td><td>POPULATED</td><td>265k-445k t/year region.</td></tr>
+<tr><td>6</td><td>Lovett 2004b – Share consumed in region</td><td>public</td><td>4</td><td>point-in-time</td><td></td><td></td><td>free</td><td></td><td>POPULATED</td><td>57% consumed (one bound).</td></tr>
+<tr><td>7</td><td>US Aid 2010 – Share consumed in region</td><td>public</td><td>4</td><td>point-in-time</td><td></td><td></td><td>free</td><td></td><td>POPULATED</td><td>41% (one bound).</td></tr>
+<tr><td>8</td><td>Clarity Coalition – Cleo Shea True Value page</td><td>public</td><td>3,5,6</td><td>point-in-time</td><td>https://claritycoalition.net/?epkb_post_type_1=true-value-chain-cleo-shea-carbon&amp;seq_no=2</td><td>web</td><td>free</td><td></td><td>POPULATED</td><td>CO2e BAU vs Serious Shea; Cleo product; 95% shea; 100% renewable; prices; income uplift.</td></tr>
+<tr><td>9</td><td>Clarity Coalition – Serious Shea Senegal (BF adapted)</td><td>internal</td><td>0,1,2,3,4</td><td>point-in-time</td><td>https://claritycoalition.net/clarity-true-value-projects/truevalue-africa/serious-shea-burkina-faso-adapted-to-senegal/</td><td>web</td><td>password</td><td></td><td>METADATA_ONLY</td><td>Password-protected. Extracted from nav/title: Senegal Carbon Equity/Debt Fund 2023 – EUR 0.5B by 2053; BF 2021 – US$10M, US$2M profit Year 3.</td></tr>
+<tr><td>10</td><td>Mirova Shea Senegal Feasibility Report v1.1</td><td>confidential</td><td>0,1,2,3,4</td><td>point-in-time</td><td>frontend/project/west_african_shea/data/Mirova-Shea-Senegal-Feasibility-Report-v1.1.pdf</td><td>local_file</td><td></td><td></td><td>PARTIAL</td><td>102 pages. Land-use table extracted (Shea site: 19.16% shrubs, 56.84% open forest, etc.). Main body text not machine-extracted (PDF layout).</td></tr>
+<tr><td>11</td><td>Serious Shea Senegal Business Plan V8 April 2023</td><td>confidential</td><td>0,1,2,3,4,5,6</td><td>point-in-time</td><td>frontend/project/west_african_shea/data/230424-ShortSeriousShea.BPlan_.Pres_.-V8Draft-SNJ.pdf</td><td>local_file</td><td></td><td></td><td>POPULATED</td><td>27 slides. Senegal GGW; €25M invest; €50M gross profit Y10; 3774 T p.a. agro-food; 20 kg wood/kg butter BAU; 35M trees; 26 facilities; 40% Mirova / 60% debt; Agritech 5-10k T/year shea nuts.</td></tr>
+<tr><td>12</td><td>Acorn (Rabobank) Local Partner Onboarding Process</td><td>public</td><td>0,1</td><td>point-in-time</td><td>v2/data/Acorn-Local-Partner-Onboarding-Process.pdf</td><td>local_file</td><td>free</td><td></td><td>REFERENCE_ONLY</td><td>6 slides. Generic agroforestry/carbon project onboarding (eligibility, ground truth, farmer data). No shea-specific metrics; useful as process reference.</td></tr>
+<tr><td>13</td><td>Acorn Project Summary Completed 080523</td><td>confidential</td><td>0,1</td><td>point-in-time</td><td>v2/data/080523-Acorn-Project-Summary-Completed.docx</td><td>local_file</td><td></td><td></td><td>POPULATED</td><td>Senegal Thies/Fatick/Diourbel; 50 pilot farmers Koul; 100k potential participants 10y; 1 ha/farmer; PAPSEN 400 ha irrigated; partner since 2007 (BF, Benin, Togo, CIV, Nigeria, Cameroon).</td></tr>
+<tr><td>14</td><td>George Comments SS Senegal BP April 2023</td><td>confidential</td><td>0,4</td><td>point-in-time</td><td>frontend/project/west_african_shea/data/230401-George-Commnts-SS-Senegal-BP-.docx</td><td>local_file</td><td></td><td></td><td>POPULATED</td><td>Senegal 196,712 km², 17M pop; GGW priority 116,000 km² (11.6M ha); 1M ha starts Senegal; branding/ChainZy.</td></tr>
+<tr><td>15</td><td>EP Carbon new Requirements (plantation sites)</td><td>confidential</td><td>0,1</td><td>point-in-time</td><td>v2/data/Ep-Carbon-new-Requirements.xlsx</td><td>local_file</td><td></td><td></td><td>POPULATED</td><td>Plantation site list: PAPSEN, Ndiakhate Saer, Nghass, Darou Salam, Tambacounda, Belle, GGW Senegal, etc.; Primary/Secondary Area (Ha); Fatick, Diourbel, Shea Plantation Zone.</td></tr>
+<tr><td>16</td><td>Serious Shea Additionality Assessment Acorn</td><td>confidential</td><td>0,1</td><td>point-in-time</td><td>frontend/project/west_african_shea/data/Serious-Shea-Additionality-Assessment1.docx</td><td>local_file</td><td></td><td></td><td>POPULATED</td><td>Barriers: no agroforestry knowledge, finance, expertise, land, markets. Planting: all trees in one year. Senegal Thies/Fatick/Diourbel.</td></tr>
+<tr><td>17</td><td>Serious Shea Global Indicator Framework SDG 2023 refinement</td><td>confidential</td><td>0,1,2,3,4,5,6</td><td>point-in-time</td><td>frontend/project/west_african_shea/data/Serious-Shea-Global-Indicator-Framework-after-2023-refinement.English.xlsx</td><td>local_file</td><td></td><td></td><td>POPULATED</td><td>SDG framework; baseline 100,000 workers / 1M people; Serious Shea 2030 target Zero (poverty); UNSD codes; Cooperatives MoV.</td></tr>
+<tr><td>18</td><td>Serious Shea Financial Model v1.1</td><td>confidential</td><td>0,1,2,3,4,5,6</td><td>point-in-time</td><td>frontend/project/west_african_shea/data/230428-Serious-Shea-Financial-Model-v1.1.xlsx</td><td>local_file</td><td></td><td></td><td>REFERENCE_ONLY</td><td>31-year Senegal ARR forecast; NPV, VCU, costs; structure aligns with BPlan. Numeric extraction not done.</td></tr>
+<tr><td>19</td><td>Clarity Coalition – Serious Shea True Value Leads African Private Sector in Europe (EP 2023)</td><td>public</td><td>3,4,5</td><td>point-in-time</td><td>https://claritycoalition.net/news/serious-shea-true-value-leads-african-private-sector-in-europe/</td><td>web</td><td>free</td><td>0.80</td><td>POPULATED</td><td>European Parliament event coverage. Key data: 90% exported shea used in chocolate; €50B Sahel ingredients potential by 2030; EU import standards requiring clean-energy processing (D-institutional barrier Phase 4); AfDB and World Bank involvement confirmed.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

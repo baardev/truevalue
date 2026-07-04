@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Marina Alta Supply Chain Ui</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Marina Alta Supply Chain Ui</h1>
+        <p class="subtitle">Generated from <strong>marina_alta_supply_chain_ui.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated&quot;: &quot;2026-06-06&quot;,
+    &quot;generator&quot;: &quot;manual-from-pdi-marina_alta_20260606&quot;,
+    &quot;material&quot;: &quot;marina_alta&quot;,
+    &quot;sources&quot;: [
+      &quot;Email research notes from Dr Sarah Jones, CLARITY Coalition (2026-06-06)&quot;,
+      &quot;Business Plan PPTX &#x27;All Roads Lead to a Cherry Farm&#x27; (Sarah Jones + Simon Jones, Jan 2024)&quot;,
+      &quot;Cherry Times: Bad season Alicante mountain cherry 70%+ harvest lost (Jan 2025)&quot;,
+      &quot;FreshPlaza: Spain allocates US$1.66M climate aid for cherry growers&quot;,
+      &quot;La Marina Alta: Alicante Mountain Cherries 2025: Vall de Gallinera loses 122 ha (Jun 2025)&quot;,
+      &quot;MDPI Sustainability: doi.org/10.3390/su17125512 (Water Balance La Marina Alta, 2025)&quot;,
+      &quot;MDPI Water: mdpi.com/2073-4441/13/6/862 (Groundwater Recharge Alicante, 2021)&quot;,
+      &quot;TodoAlicante: cherry sector 2026 recovery and agricultural sector alerts&quot;,
+      &quot;BEXYL Project: Xylella fastidiosa puts Alicante almond at risk&quot;,
+      &quot;CGTN Europe YouTube: Spanish farmers dump olives for green gold pistachios (Oct 2022)&quot;,
+      &quot;Marxa Garden YouTube: Harvesting Resilience: Spain Droughts and Olive Groves (Jan 2024)&quot;,
+      &quot;Observatorio de Precios: Cherry wholesale price data 2007-2025&quot;,
+      &quot;Diputacion Alicante: Guia cultivos comarcas central (2020)&quot;
+    ],
+    &quot;note&quot;: &quot;N-D-C values derived from PDI_marina_alta_20260606.yaml using formulas: balance=100-(|D-C|/max(D,C))*100; N=sqrt(D*C)*(balance/100); sustainability=100/((|D-C|^2)+10). All values PROVISIONAL pending field data collection.&quot;
+  },
+  &quot;entities&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;label&quot;: &quot;Synthetic Baseline&quot;,
+      &quot;description&quot;: &quot;Baseline N-D-C values derived from PDI research data and public sources. See _meta.sources for citations.&quot;
+    }
+  },
+  &quot;phase_meta&quot;: [
+    {
+      &quot;id&quot;: 0,
+      &quot;name&quot;: &quot;Ecosystem Baseline&quot;,
+      &quot;transparency&quot;: &quot;medium&quot;,
+      &quot;transformation&quot;: &quot;Solar + precipitation -&gt; biological capital (aquifer, soil, biodiversity)&quot;
+    },
+    {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: &quot;Agricultural Production&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Ecosystem services + labour + inputs -&gt; fruit biomass on tree&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;name&quot;: &quot;Harvest and Field Processing&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Ripe fruit -&gt; harvested bins -&gt; cooperative/mill intake&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;name&quot;: &quot;Primary Processing&quot;,
+      &quot;transparency&quot;: &quot;medium&quot;,
+      &quot;transformation&quot;: &quot;Raw fruit -&gt; packed PGI cherries / cold-pressed EVOO / shelled almonds&quot;
+    },
+    {
+      &quot;id&quot;: 4,
+      &quot;name&quot;: &quot;Quality Certification&quot;,
+      &quot;transparency&quot;: &quot;high&quot;,
+      &quot;transformation&quot;: &quot;Processed product -&gt; PGI / organic / Flos Olei certified product&quot;
+    },
+    {
+      &quot;id&quot;: 5,
+      &quot;name&quot;: &quot;Market Distribution and Agrotourism&quot;,
+      &quot;transparency&quot;: &quot;medium&quot;,
+      &quot;transformation&quot;: &quot;Certified product -&gt; farm-gate revenue + agrotourism income&quot;
+    },
+    {
+      &quot;id&quot;: 6,
+      &quot;name&quot;: &quot;Crop Transition and Investment&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Failed orchards + capital -&gt; pistachio / carob / modern almond establishment&quot;
+    },
+    {
+      &quot;id&quot;: 7,
+      &quot;name&quot;: &quot;Ecosystem Regeneration&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Degraded aquifer + terrace loss -&gt; restored water balance + biodiversity&quot;
+    }
+  ],
+  &quot;phases&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;0&quot;: {
+        &quot;D&quot;: 220,
+        &quot;C&quot;: 200,
+        &quot;balance&quot;: 90.9,
+        &quot;N&quot;: 191,
+        &quot;sustainability&quot;: 0.244,
+        &quot;notes&quot;: &quot;Aquifer + soil + biodiversity baseline. Marina Alta has highest provincial groundwater recharge (24%, 189mm/yr). CASAMA governance inactive since 1987.&quot;,
+        &quot;data_quality&quot;: &quot;medium&quot;,
+        &quot;metrics&quot;: {
+          &quot;active_farmland_ha&quot;: {
+            &quot;value&quot;: 13150,
+            &quot;unit&quot;: &quot;ha&quot;,
+            &quot;source&quot;: &quot;MDPI Sustainability doi.org/10.3390/su17125512 (2025)&quot;
+          },
+          &quot;provincial_uaa_share_pct&quot;: {
+            &quot;value&quot;: 9.5,
+            &quot;unit&quot;: &quot;percent&quot;,
+            &quot;source&quot;: &quot;MDPI Sustainability doi.org/10.3390/su17125512 (2025)&quot;
+          },
+          &quot;aquifer_recharge_rate_pct&quot;: {
+            &quot;value&quot;: 24,
+            &quot;unit&quot;: &quot;percent of precipitation&quot;,
+            &quot;source&quot;: &quot;MDPI Water mdpi.com/2073-4441/13/6/862 (2021)&quot;
+          },
+          &quot;aquifer_recharge_mm_per_year&quot;: {
+            &quot;value&quot;: 189,
+            &quot;unit&quot;: &quot;mm/year&quot;,
+            &quot;source&quot;: &quot;MDPI Water mdpi.com/2073-4441/13/6/862 (2021)&quot;
+          },
+          &quot;governance_gap&quot;: {
+            &quot;value&quot;: &quot;CASAMA inactive since 1987&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;MDPI Sustainability doi.org/10.3390/su17125512 (2025)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Ecosystem baseline carbon data requires dedicated survey: not yet available&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: 189,
+        &quot;water_unit&quot;: &quot;mm/year aquifer recharge&quot;,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;1&quot;: {
+        &quot;D&quot;: 245,
+        &quot;C&quot;: 200,
+        &quot;balance&quot;: 81.6,
+        &quot;N&quot;: 181,
+        &quot;sustainability&quot;: 0.049,
+        &quot;notes&quot;: &quot;Agricultural production under triple crisis: Drosophila suzukii, pollinator tree mismatch, Xylella fastidiosa. 25% of cherry growers abandoned in 3 years.&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;cherry_area_ha_2017&quot;: {
+            &quot;value&quot;: 2889,
+            &quot;unit&quot;: &quot;ha (Valencian Community)&quot;,
+            &quot;source&quot;: &quot;FreshPlaza freshplaza.com/europe (2025)&quot;
+          },
+          &quot;cherry_area_ha_2022&quot;: {
+            &quot;value&quot;: 2486,
+            &quot;unit&quot;: &quot;ha (Valencian Community)&quot;,
+            &quot;source&quot;: &quot;Cherry Times cherrytimes.it (Jan 2025)&quot;
+          },
+          &quot;vall_gallinera_area_loss_ha_5yr&quot;: {
+            &quot;value&quot;: 122,
+            &quot;unit&quot;: &quot;ha lost 2017-2022&quot;,
+            &quot;source&quot;: &quot;La Marina Alta en.lamarinaalta.com (Jun 2025)&quot;
+          },
+          &quot;almond_production_2025_26_t&quot;: {
+            &quot;value&quot;: 16500,
+            &quot;unit&quot;: &quot;T in-shell (Alicante province)&quot;,
+            &quot;source&quot;: &quot;TodoAlicante todoalicante.es (Nov 2025)&quot;
+          },
+          &quot;xylella_impact&quot;: {
+            &quot;value&quot;: &quot;99% production collapse in northern Alicante 2024/25&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;BEXYL Project bexylproject.org&quot;
+          },
+          &quot;farmers_abandoning_cherry_pct&quot;: {
+            &quot;value&quot;: 25,
+            &quot;unit&quot;: &quot;percent over 3 years&quot;,
+            &quot;source&quot;: &quot;Cherry Times cherrytimes.it (Apr 2024)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Agricultural emissions data requires per-farm survey: not provided&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;2&quot;: {
+        &quot;D&quot;: 255,
+        &quot;C&quot;: 195,
+        &quot;balance&quot;: 76.5,
+        &quot;N&quot;: 171,
+        &quot;sustainability&quot;: 0.028,
+        &quot;notes&quot;: &quot;Harvest bottleneck: 30 people/acre/day for cherry picking; extreme weather vulnerability; 4 days fog = 50% loss (2025). Lowest balance in chain.&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;cherry_labour_per_acre_per_day&quot;: {
+            &quot;value&quot;: 30,
+            &quot;unit&quot;: &quot;people&quot;,
+            &quot;source&quot;: &quot;PPTX business plan (Sarah Jones, Jan 2024)&quot;
+          },
+          &quot;ufo_picking_speed_improvement_pct&quot;: {
+            &quot;value&quot;: 50,
+            &quot;unit&quot;: &quot;percent faster vs traditional&quot;,
+            &quot;source&quot;: &quot;PPTX business plan (NZ UFO case study)&quot;
+          },
+          &quot;cherry_2025_harvested_province_t&quot;: {
+            &quot;value&quot;: 1500,
+            &quot;unit&quot;: &quot;T (of 5000 T potential)&quot;,
+            &quot;source&quot;: &quot;Cherry Times cherrytimes.it (Jan 2025)&quot;
+          },
+          &quot;cherry_2025_vall_gallinera_kg&quot;: {
+            &quot;value&quot;: 47500,
+            &quot;unit&quot;: &quot;kg (5% of normal)&quot;,
+            &quot;source&quot;: &quot;La Marina Alta en.lamarinaalta.com (Jun 2025)&quot;
+          },
+          &quot;fog_loss_pct_2025&quot;: {
+            &quot;value&quot;: 50,
+            &quot;unit&quot;: &quot;percent of Vall de Gallinera crop lost to 4-day fog event&quot;,
+            &quot;source&quot;: &quot;La Marina Alta en.lamarinaalta.com (Jun 2025)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Harvest transport and machinery emissions require separate data input&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;3&quot;: {
+        &quot;D&quot;: 238,
+        &quot;C&quot;: 228,
+        &quot;balance&quot;: 95.8,
+        &quot;N&quot;: 223,
+        &quot;sustainability&quot;: 0.909,
+        &quot;notes&quot;: &quot;Best-managed phase: EVOO mills award-winning (Flos Olei), cooperative packing organised, Almazara La Alqueria CrowdFarming model provides full traceability.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;,
+        &quot;metrics&quot;: {
+          &quot;cherry_cooperative&quot;: {
+            &quot;value&quot;: &quot;Cireres Muntanya d&#x27;Alacant Cooperative, Alpatro (reopened 2024)&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;La Marina Alta en.lamarinaalta.com (Jun 2025)&quot;
+          },
+          &quot;evoo_flos_olei_producer&quot;: {
+            &quot;value&quot;: &quot;Masia el Altet (Alcoi): consistent top ranking&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;tasteatlas.com; masiaelaltet.com&quot;
+          },
+          &quot;evoo_slow_food_producer&quot;: {
+            &quot;value&quot;: &quot;Finca Rontonar, Sierra de Aitana: Alfafarenca and Blanqueta organic&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;sonneil.com/blog/en/olive-oil-tourism-in-spain&quot;
+          },
+          &quot;evoo_crowdfarming_producer&quot;: {
+            &quot;value&quot;: &quot;Almazara La Alqueria, Muro de Alcoy: adopt-a-tree direct model&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;crowdfarming.com; food.soledadpenades.com (Oct 2021)&quot;
+          },
+          &quot;cherry_pack_price_eur_per_box_range&quot;: {
+            &quot;value&quot;: &quot;4-20&quot;,
+            &quot;unit&quot;: &quot;EUR per box (caliber dependent)&quot;,
+            &quot;source&quot;: &quot;La Marina Alta en.lamarinaalta.com (Jun 2025)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Mill energy and water data available from operators: not yet collected&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;4&quot;: {
+        &quot;D&quot;: 228,
+        &quot;C&quot;: 232,
+        &quot;balance&quot;: 98.3,
+        &quot;N&quot;: 226,
+        &quot;sustainability&quot;: 3.846,
+        &quot;notes&quot;: &quot;Highest transparency phase. EU PGI (cherries), Flos Olei (EVOO), organic (almonds/EVOO), UNESCO Gastronomy Denia. C marginally exceeds D: strong institutional support.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;,
+        &quot;metrics&quot;: {
+          &quot;cherry_pgi_certified_ha&quot;: {
+            &quot;value&quot;: 1200,
+            &quot;unit&quot;: &quot;ha&quot;,
+            &quot;source&quot;: &quot;Cherry Times (1,200 ha potential PGI area)&quot;
+          },
+          &quot;cherry_pgi_name&quot;: {
+            &quot;value&quot;: &quot;Cerezas de la Montana de Alicante&quot;,
+            &quot;unit&quot;: &quot;designation&quot;,
+            &quot;source&quot;: &quot;Foods and Wines from Spain foodswinesfromspain.com&quot;
+          },
+          &quot;denia_unesco_gastronomy&quot;: {
+            &quot;value&quot;: &quot;December 2015&quot;,
+            &quot;unit&quot;: &quot;designation date&quot;,
+            &quot;source&quot;: &quot;UNESCO Denia Monitoring Report 2019&quot;
+          },
+          &quot;evoo_flos_olei_ranked&quot;: {
+            &quot;value&quot;: &quot;Masia el Altet consistently top-ranked&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;masiaelaltet.com&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Certification does not require emissions reporting at this stage&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;5&quot;: {
+        &quot;D&quot;: 242,
+        &quot;C&quot;: 225,
+        &quot;balance&quot;: 93.0,
+        &quot;N&quot;: 217,
+        &quot;sustainability&quot;: 0.335,
+        &quot;notes&quot;: &quot;Market well-established locally; export limited by low volume. Agrotourism growing (GetYourGuide olive oil tours, Ruta del Vino, cherry festivals). EUR 25M projected 2026.&quot;,
+        &quot;data_quality&quot;: &quot;medium&quot;,
+        &quot;metrics&quot;: {
+          &quot;cherry_2026_projected_revenue_eur&quot;: {
+            &quot;value&quot;: 25000000,
+            &quot;unit&quot;: &quot;EUR projected&quot;,
+            &quot;source&quot;: &quot;TodoAlicante todoalicante.es (Jun 2026)&quot;
+          },
+          &quot;cherry_2026_projected_volume_kg&quot;: {
+            &quot;value&quot;: &quot;3-4 million&quot;,
+            &quot;unit&quot;: &quot;kg&quot;,
+            &quot;source&quot;: &quot;TodoAlicante todoalicante.es (Jun 2026)&quot;
+          },
+          &quot;evoo_agrotourism_platforms&quot;: {
+            &quot;value&quot;: &quot;GetYourGuide, Ruta del Vino, CrowdFarming&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;getyourguide.com; senoriosderelleu.com&quot;
+          },
+          &quot;cherry_festival&quot;: {
+            &quot;value&quot;: &quot;Fiesta de la Cirera de la Vall de Gallinera (annual, June)&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;La Marina Alta en.lamarinaalta.com&quot;
+          },
+          &quot;market_primary&quot;: {
+            &quot;value&quot;: &quot;Levante region Spain (day-after-harvest freshness window)&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;Cherry Times (Hilario Calabuig interview)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Transport emissions data not yet collected&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;6&quot;: {
+        &quot;D&quot;: 260,
+        &quot;C&quot;: 195,
+        &quot;balance&quot;: 75.0,
+        &quot;N&quot;: 169,
+        &quot;sustainability&quot;: 0.024,
+        &quot;notes&quot;: &quot;Critical investment gap phase. 5-7yr pistachio establishment; D=260 is highest in chain. EU Horizon EUR 83M and Generalitat grants provide C but inadequate without governance.&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;pistachio_price_eur_per_kg&quot;: {
+            &quot;value&quot;: &quot;7-12&quot;,
+            &quot;unit&quot;: &quot;EUR/kg&quot;,
+            &quot;source&quot;: &quot;CGTN Europe YouTube (Oct 2022); newseu.cgtn.com&quot;
+          },
+          &quot;pistachio_spain_national_ha&quot;: {
+            &quot;value&quot;: 70000,
+            &quot;unit&quot;: &quot;ha&quot;,
+            &quot;source&quot;: &quot;CGTN Europe YouTube (Oct 2022)&quot;
+          },
+          &quot;pistachio_first_harvest_years&quot;: {
+            &quot;value&quot;: &quot;5-7&quot;,
+            &quot;unit&quot;: &quot;years&quot;,
+            &quot;source&quot;: &quot;PPTX business plan; viverostoral.com&quot;
+          },
+          &quot;modern_almond_price_eur_per_kg&quot;: {
+            &quot;value&quot;: &quot;3-6&quot;,
+            &quot;unit&quot;: &quot;EUR/kg&quot;,
+            &quot;source&quot;: &quot;PPTX business plan (slide 6)&quot;
+          },
+          &quot;carob_rainfall_minimum_mm&quot;: {
+            &quot;value&quot;: 350,
+            &quot;unit&quot;: &quot;mm/year minimum&quot;,
+            &quot;source&quot;: &quot;terrasafe.eu/2026/01/30/carob&quot;
+          },
+          &quot;eu_horizon_adaptation_eur&quot;: {
+            &quot;value&quot;: 83000000,
+            &quot;unit&quot;: &quot;EUR (Climate Change Adaptation priority 2025-2026)&quot;,
+            &quot;source&quot;: &quot;EU Horizon 2023-2024 WP&quot;
+          },
+          &quot;generalitat_young_farmer_grant_eur&quot;: {
+            &quot;value&quot;: 49701,
+            &quot;unit&quot;: &quot;EUR average per young farmer&quot;,
+            &quot;source&quot;: &quot;FreshPlaza freshplaza.com/europe (2026)&quot;
+          },
+          &quot;covers_cost_eur_per_acre&quot;: {
+            &quot;value&quot;: 30000,
+            &quot;unit&quot;: &quot;EUR per acre (multi-function covers)&quot;,
+            &quot;source&quot;: &quot;PPTX business plan (slide 13)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Crop establishment emissions data not yet available&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;7&quot;: {
+        &quot;D&quot;: 252,
+        &quot;C&quot;: 200,
+        &quot;balance&quot;: 79.4,
+        &quot;N&quot;: 178,
+        &quot;sustainability&quot;: 0.037,
+        &quot;notes&quot;: &quot;Aquifer overexploited; CASAMA inactive since 1987; drip irrigation vs potable water trade-off. Reforestation reduces aquifer recharge by 32% (karstic finding).&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;casama_inactive_since&quot;: {
+            &quot;value&quot;: 1987,
+            &quot;unit&quot;: &quot;year&quot;,
+            &quot;source&quot;: &quot;MDPI Sustainability doi.org/10.3390/su17125512 (2025)&quot;
+          },
+          &quot;marine_intrusion_active&quot;: {
+            &quot;value&quot;: true,
+            &quot;unit&quot;: &quot;boolean&quot;,
+            &quot;source&quot;: &quot;MDPI Sustainability doi.org/10.3390/su17125512 (2025)&quot;
+          },
+          &quot;reforestation_recharge_decrease_pct&quot;: {
+            &quot;value&quot;: 32,
+            &quot;unit&quot;: &quot;percent decrease in aquifer recharge when forests replace agriculture&quot;,
+            &quot;source&quot;: &quot;MDPI Land mdpi.com/2073-445X/12/1/128 (2023)&quot;
+          },
+          &quot;proposed_solutions&quot;: {
+            &quot;value&quot;: &quot;Artificial aquifer recharge; reclaimed water from coastal treatment plants; new storage ponds&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;MDPI Sustainability doi.org/10.3390/su17125512 (2025)&quot;
+          },
+          &quot;tajo_segura_dependency&quot;: {
+            &quot;value&quot;: &quot;Active protests from young farmers against transfer cuts&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;TodoAlicante (Jun 2026)&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Ecosystem regeneration carbon flux data requires dedicated monitoring programme&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: 189,
+        &quot;water_unit&quot;: &quot;mm/year recharge target (current deficit vs historical)&quot;,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      }
+    }
+  },
+  &quot;system&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;balance&quot;: 86.3,
+      &quot;average_N&quot;: 194.5,
+      &quot;bottleneck_phase_ids&quot;: [
+        6,
+        2
+      ],
+      &quot;interpretation&quot;: &quot;The Marina Alta ecosystem faces simultaneous crises across all anchor commodities. The chain average balance of 86.3% (Good zone) masks severe phase-level divergence: Phase 4 (Quality Certification) at 98.3% represents world-class institutional capacity, while Phase 6 (Crop Transition) at 75.0% and Phase 2 (Harvest) at 76.5% represent critical failure points. The structural diagnosis is clear: excellent downstream certification and market infrastructure cannot compensate for a broken agricultural production and investment system. The climate adaptation investment gap (Phase 6) is the single highest-priority intervention point.&quot;,
+      &quot;water_recycling_pct&quot;: null,
+      &quot;waste_circularity_pct&quot;: null,
+      &quot;clean_energy_pct&quot;: null
+    }
+  },
+  &quot;coherence&quot;: {
+    &quot;pi&quot;: 86.3,
+    &quot;phi&quot;: 82.0,
+    &quot;sqrt2&quot;: 78.0,
+    &quot;ln2&quot;: 80.0,
+    &quot;e&quot;: 71.0
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

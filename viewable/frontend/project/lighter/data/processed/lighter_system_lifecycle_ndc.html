@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighter System Lifecycle Ndc</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Lighter System Lifecycle Ndc</h1>
+        <p class="subtitle">Generated from <strong>lighter_system_lifecycle_ndc.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated&quot;: &quot;2026-04-30T00:00:00&quot;,
+    &quot;generator&quot;: &quot;hand-crafted baseline from lighter_system_lifecycle_phases.csv&quot;,
+    &quot;sources&quot;: [
+      &quot;data/lighter_system_lifecycle_phases.csv&quot;,
+      &quot;WLPGA Annual Report 2023&quot;,
+      &quot;CLCA industry estimates&quot;,
+      &quot;UN Comtrade HS 9613&quot;,
+      &quot;BIC Group Annual Report 2023&quot;,
+      &quot;Ellen MacArthur Foundation single-use plastics data (disposal estimates)&quot;,
+      &quot;CPSC disposal guidance&quot;
+    ],
+    &quot;note&quot;: &quot;Synthetic baseline. 5 lifecycle phases. Phase 4 (Disposal) is the critical bottleneck at 62.0% balance.&quot;
+  },
+  &quot;lifecycle_phases&quot;: {
+    &quot;0&quot;: {
+      &quot;name&quot;: &quot;Resource Definition &amp; Material Sourcing&quot;,
+      &quot;category&quot;: &quot;Pre-operation&quot;,
+      &quot;linked_supply_phases&quot;: [
+        0
+      ],
+      &quot;D&quot;: 265,
+      &quot;C&quot;: 250,
+      &quot;balance&quot;: 83.0,
+      &quot;N&quot;: 214,
+      &quot;sustainability_index&quot;: 0.3,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;data_status&quot;: &quot;POPULATED&quot;,
+      &quot;notes&quot;: &quot;Raw material feedstocks are globally traded commodities with published spot prices. Butane: NYMEX C4; PP resin: ICIS Polyolefins. China is net LPG importer. Key risk: geopolitical supply concentration in Middle East and Russia for butane feedstock.&quot;
+    },
+    &quot;1&quot;: {
+      &quot;name&quot;: &quot;Manufacturing &amp; Assembly&quot;,
+      &quot;category&quot;: &quot;Operations&quot;,
+      &quot;linked_supply_phases&quot;: [
+        1,
+        2
+      ],
+      &quot;D&quot;: 258,
+      &quot;C&quot;: 270,
+      &quot;balance&quot;: 71.0,
+      &quot;N&quot;: 187,
+      &quot;sustainability_index&quot;: 0.15,
+      &quot;transparency&quot;: &quot;Low&quot;,
+      &quot;data_status&quot;: &quot;PARTIAL&quot;,
+      &quot;notes&quot;: &quot;3,000 Wenzhou manufacturers operating on sub-cent margins per unit. ISO 9994 tolerance constraints (D) are extreme; contribution (C) is fragmented across many small private actors. Injection molding energy intensity is high but not tracked at unit level. No renewable energy transition underway in Wenzhou lighter cluster.&quot;
+    },
+    &quot;2&quot;: {
+      &quot;name&quot;: &quot;Distribution &amp; Retail&quot;,
+      &quot;category&quot;: &quot;Operations&quot;,
+      &quot;linked_supply_phases&quot;: [
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      &quot;D&quot;: 256,
+      &quot;C&quot;: 242,
+      &quot;balance&quot;: 84.0,
+      &quot;N&quot;: 209,
+      &quot;sustainability_index&quot;: 0.4,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;data_status&quot;: &quot;POPULATED&quot;,
+      &quot;notes&quot;: &quot;Global reach to 150+ countries. Certification requirements (ISO 9994; EN 13869; CPSC) act as D-constraints enabling market access. BIC brand premium ($0.60/unit) is the primary E-layer finding: the only abstract value decoupling in the entire supply chain.&quot;
+    },
+    &quot;3&quot;: {
+      &quot;name&quot;: &quot;Use Phase&quot;,
+      &quot;category&quot;: &quot;Sustaining stewardship&quot;,
+      &quot;linked_supply_phases&quot;: [
+        7
+      ],
+      &quot;D&quot;: 240,
+      &quot;C&quot;: 230,
+      &quot;balance&quot;: 88.0,
+      &quot;N&quot;: 207,
+      &quot;sustainability_index&quot;: 0.6,
+      &quot;transparency&quot;: &quot;High&quot;,
+      &quot;data_status&quot;: &quot;POPULATED&quot;,
+      &quot;notes&quot;: &quot;High D-C balance: the lighter performs reliably within ISO 9994 bounds. Approximately 3,000 ignitions per unit. Average useful life 2-12 weeks depending on usage frequency. Single-use design: no refill pathway for non-refillable variants. Product engineered for disposability, not for lifecycle.&quot;
+    },
+    &quot;4&quot;: {
+      &quot;name&quot;: &quot;Disposal &amp; Circularity&quot;,
+      &quot;category&quot;: &quot;Closure and circularity&quot;,
+      &quot;linked_supply_phases&quot;: [],
+      &quot;D&quot;: 220,
+      &quot;C&quot;: 190,
+      &quot;balance&quot;: 62.0,
+      &quot;N&quot;: 127,
+      &quot;sustainability_index&quot;: 0.05,
+      &quot;transparency&quot;: &quot;High&quot;,
+      &quot;data_status&quot;: &quot;PARTIAL&quot;,
+      &quot;notes&quot;: &quot;LIFECYCLE BOTTLENECK. Near-zero recycling rate: &gt;99% of 10 billion annual units go to landfill. PP body (5g per unit = 50,000 MT PP/year) is technically recyclable but not collected. Residual butane makes the product hazardous waste if not fully exhausted. No manufacturer take-back program at scale. Butane venting: approximately 40,000 MT/year from incompletely exhausted units. The lighter is the canonical example of a commodity optimized for production cost at the complete expense of lifecycle circularity.&quot;
+    }
+  },
+  &quot;system&quot;: {
+    &quot;average_balance&quot;: 77.6,
+    &quot;average_N&quot;: 189,
+    &quot;bottleneck_phase_id&quot;: 4,
+    &quot;bottleneck_phase_name&quot;: &quot;Disposal &amp; Circularity&quot;,
+    &quot;strongest_phase_id&quot;: 3,
+    &quot;strongest_phase_name&quot;: &quot;Use Phase&quot;,
+    &quot;sustainability_finding&quot;: &quot;The lighter lifecycle is characterized by high operational efficiency (Phases 0-3 all above 70% balance) and catastrophic end-of-life failure (Phase 4 at 62.0% balance; sustainability index 0.05). This is a designed feature, not an oversight: the micro-margin manufacturing model requires single-use disposability to maintain the product&#x27;s price point. The true environmental cost (50,000 MT PP plastic waste/year; 40,000 MT butane venting/year) is not internalized in the $0.15 factory gate price.&quot;,
+    &quot;tholonic_interpretation&quot;: &quot;The lifecycle D-C imbalance at Phase 4 (D=220 vs C=190) reveals a structural breakdown: regulatory constraints classify the lighter as hazardous waste at end of life (high D), while the contribution pathways for circularity are near-zero (low C). The parent N for the disposal phase (the physical lighter) cannot transition cleanly to a child N (a recycled material) because no tholonic boundary has been established between use and recovery. This is the tholonic signature of a closed-loop failure.&quot;
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

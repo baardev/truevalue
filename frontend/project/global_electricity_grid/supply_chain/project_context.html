@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light"/>
+<title>Global Electricity Grid: Project Context</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: #eef4fb; color: #2c3e50; padding: 24px;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
+    border-radius: 14px; color: #fff; padding: 36px; margin-bottom: 24px;
+  }
+  .kicker {
+    display: inline-block; font-size: 11px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #0d47a1; background: rgba(255,255,255,0.9);
+    padding: 5px 14px; border-radius: 999px; margin-bottom: 12px;
+  }
+  h1 { font-size: 28px; font-weight: 300; margin-bottom: 8px; }
+  .subtitle { font-size: 14px; opacity: 0.92; line-height: 1.6; max-width: 760px; }
+  .kpi-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 20px; }
+  .kpi { background: rgba(255,255,255,0.15); border-radius: 10px; padding: 14px 12px; }
+  .kpi-val { font-size: 22px; font-weight: 800; }
+  .kpi-lbl { font-size: 11px; opacity: 0.88; margin-top: 3px; }
+  .section { background: #fff; border-radius: 12px; padding: 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  h2 { font-size: 18px; font-weight: 700; color: #0d47a1; margin-bottom: 18px; border-bottom: 2px solid #e3f2fd; padding-bottom: 10px; }
+  h3 { font-size: 15px; font-weight: 700; color: #0d47a1; margin-bottom: 10px; margin-top: 18px; }
+  p { font-size: 14px; color: #495057; line-height: 1.7; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 8px; }
+  th { background: #e3f2fd; color: #0d47a1; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; padding: 10px 12px; text-align: left; }
+  td { padding: 10px 12px; border-bottom: 1px solid #e3f2fd; color: #495057; vertical-align: top; }
+  tr:nth-child(even) td { background: #f5f9fd; }
+  .badge {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    padding: 2px 8px; border-radius: 999px; text-transform: uppercase;
+  }
+  .badge.high { background: #d4edda; color: #155724; }
+  .badge.medium { background: #fff3cd; color: #856404; }
+  .badge.low { background: #fde8e8; color: #842029; }
+  .badge.bottleneck { background: #fde8e8; color: #842029; border: 1px solid #f5c2c7; font-weight: 800; }
+  .bond-box { background: #e3f2fd; border-radius: 10px; padding: 20px; margin-top: 14px; }
+  .bond-box table { margin-top: 0; }
+  .bond-box th { background: #bbdefb; }
+  .sources-list { list-style: none; }
+  .sources-list li { padding: 8px 0; border-bottom: 1px solid #e3f2fd; font-size: 13px; color: #495057; }
+  .sources-list li a { color: #0d47a1; text-decoration: none; font-weight: 600; }
+  .sources-list li a:hover { text-decoration: underline; }
+  .nav { text-align: center; margin-top: 20px; }
+  .nav a { color: #0d47a1; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 12px; }
+  .nav a:hover { text-decoration: underline; }
+  @media (max-width: 700px) { .kpi-strip { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <div class="hero">
+    <span class="kicker">Supply Chain: Project Context</span>
+    <h1>Global Electricity Grid</h1>
+    <p class="subtitle">
+      Global electricity supply chain, 7 analytical phases, from fuel and resource input through
+      generation, transmission, balancing, distribution, end use, and retirement/decommissioning.
+      Dual scenario: BAU (2024 fossil-heavy mix) versus IEA Net Zero Emissions (NZE) 2050-aligned
+      mitigation pathway.
+    </p>
+    <div class="kpi-strip">
+      <div class="kpi">
+        <div class="kpi-val">30,850 TWh</div>
+        <div class="kpi-lbl">2024 global electricity generation</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">700 GW</div>
+        <div class="kpi-lbl">Renewable capacity added 2024 (nearly 80% solar PV)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">81.8%</div>
+        <div class="kpi-lbl">BAU chain balance (Good zone; bottleneck Phases 2 and 3)</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">87.5%</div>
+        <div class="kpi-lbl">Mitigation (IEA NZE 2050) chain balance, modelled pathway</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Global generation overview -->
+  <div class="section">
+    <h2>Global Generation Mix: 2024 Baseline and IEA Pathway</h2>
+    <p>
+      Global electricity generation reached approximately 30,850 TWh in 2024 (IEA Global Energy Review 2025).
+      Coal remained the single largest source for the 50th consecutive year at 35% of generation (approximately
+      10,587 TWh), followed by natural gas at 22% (approximately 6,796 TWh), hydro at 14% (approximately
+      4,417 TWh), nuclear at 9% (approximately 2,765 TWh), wind at 8% (approximately 2,497 TWh), solar
+      PV at 7% (approximately 2,130 TWh), and bioenergy and other sources at approximately 5%. For the
+      first time in 2024, renewables plus nuclear together covered 40% of global generation, with renewables
+      alone contributing 32-33%. Generation from solar and wind rose by a record 670 TWh in 2024; gas
+      generation rose 170 TWh and coal rose 90 TWh over the same period.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Source</th><th>2024 Share</th><th>2030 STEPS</th><th>2030 NZE</th><th>2050 NZE</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Coal</td><td>34.5%</td><td>28%</td><td>20%</td><td>1%</td></tr>
+        <tr><td>Natural Gas</td><td>22.3%</td><td>21%</td><td>17%</td><td>3%</td></tr>
+        <tr><td>Nuclear</td><td>9.1%</td><td>9%</td><td>10%</td><td>12%</td></tr>
+        <tr><td>Hydro</td><td>14.2%</td><td>14%</td><td>14%</td><td>12%</td></tr>
+        <tr><td>Wind</td><td>8.3%</td><td>13%</td><td>18%</td><td>35%</td></tr>
+        <tr><td>Solar</td><td>7.0%</td><td>12%</td><td>18%</td><td>33%</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:14px;">
+      Regional milestones in 2024: in the EU, solar plus wind generation share surpassed the combined
+      share of coal plus gas for the first time. In the United States, solar plus wind reached 16%,
+      overtaking coal. In China, solar plus wind reached nearly 20%. These milestones confirm rapid
+      generation-side progress (Phase 1), which is precisely why the transmission and balancing
+      bottlenecks at Phase 2 and Phase 3 are the binding constraint on the system as a whole: the power
+      is increasingly available, but the grid to carry and balance it is not keeping pace.
+    </p>
+  </div>
+
+  <!-- Phase table -->
+  <div class="section">
+    <h2>Supply Chain Phases: BAU N-D-C Table</h2>
+    <table>
+      <thead>
+        <tr><th>Phase</th><th>Name</th><th>D</th><th>C</th><th>Balance</th><th>N</th><th>Transparency</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>0</td><td>Fuel and Resource Input</td><td>230</td><td>280</td>
+          <td style="font-weight:700;color:#856404;">82.1%</td><td>208</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>Fuel reserves and resource maps public (IEA, USGS); site-level extraction contracts often private</td>
+        </tr>
+        <tr>
+          <td>1</td><td>Generation</td><td>260</td><td>300</td>
+          <td style="font-weight:700;color:#155724;">86.7%</td><td>242</td>
+          <td><span class="badge high">High</span></td>
+          <td>IEA and national grid operators publish generation-by-source data at high frequency</td>
+        </tr>
+        <tr>
+          <td>2</td><td>Transmission</td><td>290</td><td>215</td>
+          <td style="font-weight:700;color:#842029;">74.1% ⚠</td><td>185</td>
+          <td><span class="badge low">Low-Medium</span></td>
+          <td>Queue data exists per grid operator but is fragmented globally</td>
+        </tr>
+        <tr>
+          <td>3</td><td>Balancing and Storage</td><td>275</td><td>205</td>
+          <td style="font-weight:700;color:#842029;">74.5% ⚠</td><td>177</td>
+          <td><span class="badge low">Low-Medium</span></td>
+          <td>Curtailment data published per operator (CAISO, ERCOT, National Grid ESO); no global registry</td>
+        </tr>
+        <tr>
+          <td>4</td><td>Distribution</td><td>240</td><td>255</td>
+          <td style="font-weight:700;color:#155724;">94.1%</td><td>233</td>
+          <td><span class="badge high">High</span></td>
+          <td>Regulated utilities file distribution data with regulators in most jurisdictions</td>
+        </tr>
+        <tr>
+          <td>5</td><td>End Use and Demand</td><td>225</td><td>270</td>
+          <td style="font-weight:700;color:#856404;">83.3%</td><td>205</td>
+          <td><span class="badge medium">Medium-High</span></td>
+          <td>National statistics agencies publish sectoral demand</td>
+        </tr>
+        <tr>
+          <td>6</td><td>Retirement and Decommissioning</td><td>250</td><td>195</td>
+          <td style="font-weight:700;color:#856404;">78.0%</td><td>172</td>
+          <td><span class="badge low">Low-Medium</span></td>
+          <td>Decommissioning liabilities and ash disposal practices often under-disclosed</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Actor network -->
+  <div class="section">
+    <h2>Actor and Data Network</h2>
+    <table>
+      <thead>
+        <tr><th>Actor</th><th>Type</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>International Energy Agency (IEA)</td>
+          <td>Intergovernmental Agency</td>
+          <td>Global Energy Review annual generation mix data; Electricity Grids and Secure Energy Transitions analysis; STEPS/NZE scenario modelling</td>
+        </tr>
+        <tr>
+          <td>National grid operators / transmission system operators</td>
+          <td>Regulated Entity</td>
+          <td>Interconnection queue management, permitting, transmission capacity planning (fragmented globally, no single registry)</td>
+        </tr>
+        <tr>
+          <td>CAISO, ERCOT, National Grid ESO</td>
+          <td>Regional Grid Operators</td>
+          <td>Publish curtailment statistics documenting the Phase 3 balancing and storage gap</td>
+        </tr>
+        <tr>
+          <td>National statistics agencies</td>
+          <td>Government</td>
+          <td>Sectoral electricity demand data (Phase 5)</td>
+        </tr>
+        <tr>
+          <td>Regulated distribution utilities</td>
+          <td>Regulated Entity</td>
+          <td>Distribution network filings (Phase 4, highest-transparency phase)</td>
+        </tr>
+        <tr>
+          <td>globalelectricity.org</td>
+          <td>Data Aggregator</td>
+          <td>Public synthesis of IEA generation mix data</td>
+        </tr>
+        <tr>
+          <td>ERCOT (Texas)</td>
+          <td>Related Case Study</td>
+          <td>Winter Storm Uri failure case study, documented in this repository at
+            <a href="../../grid_ercot_uri/index.html" style="color:#0d47a1;font-weight:600;">frontend/project/grid_ercot_uri</a>:
+            an example of Phase 3-type balancing and winterization failure under acute stress</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Funding landscape -->
+  <div class="section">
+    <h2>Grid Investment and Financing Landscape</h2>
+    <p>
+      Interconnection and grid bottlenecks are IEA's own documented primary barrier to renewables
+      integration: grid queues, permitting delays, insufficient transmission capacity, and inadequate
+      storage and balancing reserves. This structural claim is cited generically to IEA Electricity
+      Grids and Secure Energy Transitions analysis; no specific queue-length statistic beyond what is
+      given in this project's grounding data is asserted, and any additional granularity introduced
+      below is explicitly marked PROVISIONAL.
+    </p>
+    <table>
+      <thead>
+        <tr><th>Financing Route</th><th>Applicability</th><th>Status</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Capacity markets</td>
+          <td>Compensates dispatchable and flexible resources (storage, demand response) for availability, not just energy delivered</td>
+          <td>Active in several jurisdictions (PJM, GB, parts of the EU); not universally linked to specific transmission or storage KPIs (PROVISIONAL characterisation)</td>
+        </tr>
+        <tr>
+          <td>Green and sustainability-linked bonds</td>
+          <td>Could fund transmission and storage buildout against measurable KPIs (queue clearance, GW energized, GWh deployed)</td>
+          <td>Growing market; not yet standardised around grid-specific physical KPIs at scale (this is the e-axis failure identified below)</td>
+        </tr>
+        <tr>
+          <td>Multilateral development bank financing</td>
+          <td>World Bank, regional development banks fund transmission and grid modernisation in emerging markets</td>
+          <td>Active but project-by-project; indicative scale only, not itemised here</td>
+        </tr>
+        <tr>
+          <td>National grid investment programmes</td>
+          <td>Government-directed transmission and storage capital plans (e.g. EU grid action plan, US grid modernisation initiatives)</td>
+          <td>Active; the IEA has stated cumulative global grid investment needs are large and rising through 2050, without this project asserting a specific dollar total beyond that qualitative IEA finding</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Bond opportunity -->
+  <div class="section">
+    <h2>Bond Opportunity Analysis</h2>
+    <div class="bond-box">
+      <table>
+        <thead>
+          <tr><th>Parameter</th><th>Detail</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Bond type</td>
+            <td>Grid Transmission and Storage Resilience Bond (sustainability-linked, KPI-triggered)</td>
+          </tr>
+          <tr>
+            <td>Target phases</td>
+            <td>Phase 2 (Transmission: interconnection permitting reform, grid-enhancing technologies, HVDC interconnector buildout) and Phase 3 (Balancing and Storage: utility-scale batteries, demand response/VPP, pumped-hydro expansion)</td>
+          </tr>
+          <tr>
+            <td>Performance trigger 1</td>
+            <td>Interconnection queue clearance rate (percentage of queued projects reaching commercial operation within a defined window; baseline established per grid operator)</td>
+          </tr>
+          <tr>
+            <td>Performance trigger 2</td>
+            <td>GW of new or upgraded transmission capacity energized (baseline: current interconnector and grid-enhancing technology deployment rate)</td>
+          </tr>
+          <tr>
+            <td>Performance trigger 3</td>
+            <td>GWh of utility-scale storage capacity deployed and operational (baseline: current global installed storage base)</td>
+          </tr>
+          <tr>
+            <td>Performance trigger 4</td>
+            <td>Curtailment rate reduction for solar and wind generation (baseline: CAISO/ERCOT/National Grid ESO published curtailment statistics)</td>
+          </tr>
+          <tr>
+            <td>Revenue basis</td>
+            <td>Capacity market payments, transmission tariff revenue, avoided curtailment value; measurement basis described qualitatively, no specific revenue figure asserted</td>
+          </tr>
+          <tr>
+            <td>Measurement basis</td>
+            <td>IEA annual generation and grid data; regional grid operator curtailment and queue statistics; national regulator transmission filings</td>
+          </tr>
+          <tr>
+            <td>Indicative scale</td>
+            <td>USD/EUR 50-150M indicative scale per tranche (order-of-magnitude estimate consistent with comparable grid infrastructure bond issuances; not a specific costed project)</td>
+          </tr>
+          <tr>
+            <td>Eligible issuers</td>
+            <td>National or regional transmission system operators, multilateral development banks, sovereign green bond programmes, private infrastructure funds</td>
+          </tr>
+          <tr>
+            <td>Tenor</td>
+            <td>10-15 years (aligned with typical HVDC interconnector and pumped-hydro storage construction and asset-life horizons)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Risk factors -->
+  <div class="section">
+    <h2>Key Risk Factors</h2>
+    <table>
+      <thead>
+        <tr><th>Risk</th><th>Type</th><th>Severity</th><th>Mitigation</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Interconnection queue backlog</td>
+          <td>Structural / regulatory</td>
+          <td><span class="badge bottleneck">Critical</span></td>
+          <td>Streamlined permitting reform, one-stop-shop queue processing, grid-enhancing technologies</td>
+        </tr>
+        <tr>
+          <td>Insufficient storage and demand-response capacity</td>
+          <td>Structural / physical</td>
+          <td><span class="badge bottleneck">Critical</span></td>
+          <td>Utility-scale battery deployment, demand response and VPP programmes, pumped-hydro expansion</td>
+        </tr>
+        <tr>
+          <td>Renewable curtailment</td>
+          <td>Operational</td>
+          <td><span class="badge low">High</span></td>
+          <td>Reduce via improved transmission and storage capacity (Phase 2 and 3 interventions above)</td>
+        </tr>
+        <tr>
+          <td>Financial instruments not linked to grid KPIs</td>
+          <td>Financial / governance</td>
+          <td><span class="badge low">High</span></td>
+          <td>Grid Transmission and Storage Resilience Bond design with explicit physical KPI triggers</td>
+        </tr>
+        <tr>
+          <td>Decommissioning and end-of-life disclosure gap</td>
+          <td>Governance / structural</td>
+          <td><span class="badge medium">Medium-High</span></td>
+          <td>Standardised ash pond, blade, and battery end-of-life reporting requirements</td>
+        </tr>
+        <tr>
+          <td>Extreme weather / winterization failure</td>
+          <td>Physical / climate</td>
+          <td><span class="badge medium">Medium</span></td>
+          <td>See ERCOT Uri case study for a documented winterization and balancing failure mode</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Phase Intervention Worksheet -->
+  <div class="section">
+    <h2>Phase Intervention Worksheet</h2>
+    <p style="font-size:13px;color:#6c757d;font-style:italic;margin-bottom:16px;">
+      PROVISIONAL: Recommendations are derived analytically from PDI N-D-C data and public sources.
+      Field validation is required before capital commitment. Each intervention is grounded in the
+      specific mathematical axis that identifies the type of failure.
+    </p>
+
+    <!-- Five-axis failure diagnosis table -->
+    <div style="background:#f5f9fd;border-radius:10px;padding:20px;margin-bottom:20px;border-left:4px solid #0d47a1;">
+      <h3 style="margin-top:0;">How the Five-Model Constants Diagnose Failure</h3>
+      <p>
+        Each of the five coherence axes (pi, phi, sqrt2, ln2, e) measures a different dimension of
+        systemic health. When a phase has a low balance score, the five-model analysis identifies
+        which type of failure is driving it. This determines what category of intervention can
+        actually close the D-C gap, rather than applying generic solutions.
+      </p>
+      <p>
+        The N-D-C balance formula is: <strong>balance = 100 - (|D - C| / max(D, C)) * 100</strong>.
+        A failing phase has D significantly greater than C: the constraint load (D) exceeds the
+        system's contribution capacity (C). Each constant axis explains a different reason why D is
+        elevated or C is suppressed.
+      </p>
+      <table style="margin-top:12px;">
+        <thead>
+          <tr>
+            <th>Constant</th>
+            <th>Chain Score</th>
+            <th>What It Measures</th>
+            <th>If Below 80: The System Has...</th>
+            <th>Intervention Category</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>pi (π)</strong></td>
+            <td style="font-weight:700;color:#27ae60;">81.8</td>
+            <td>Operational balance: chain average across all phases</td>
+            <td>Phases pulling the aggregate below the sustainable threshold</td>
+            <td>Process improvement; technology adoption at the phase level</td>
+          </tr>
+          <tr>
+            <td><strong>phi (φ)</strong></td>
+            <td style="font-weight:700;color:#c0392b;">70.0</td>
+            <td>Proportional value distribution: does each phase receive value proportional to its contribution?</td>
+            <td>Value is being trapped or lost at phase transitions (handoff problems)</td>
+            <td>Market structure reform; cooperative integration; direct-to-consumer models</td>
+          </tr>
+          <tr>
+            <td><strong>sqrt2 (√2)</strong></td>
+            <td style="font-weight:700;color:#c0392b;">68.0</td>
+            <td>Structural overhead: physical or institutional friction that raises D without adding C</td>
+            <td>Physical or institutional binding constraints are the dominant factor</td>
+            <td>Infrastructure investment; mechanisation; governance reform</td>
+          </tr>
+          <tr>
+            <td><strong>ln2</strong></td>
+            <td style="font-weight:700;color:#c0392b;">75.0</td>
+            <td>Value transformation: how effectively does each phase convert inputs into outputs of higher value?</td>
+            <td>Transformation is blocked by a gap in the chain (time lag, capital absence, biological or physical delay)</td>
+            <td>Patient capital instruments; phased transition; multi-stage buildout</td>
+          </tr>
+          <tr>
+            <td><strong>e</strong></td>
+            <td style="font-weight:700;color:#c0392b;">58.0</td>
+            <td>Financial abstraction: how well are financial instruments linked to real performance metrics?</td>
+            <td>Available funding is not yet operationally connected to the physical system</td>
+            <td>Bond instrument design; KPI linkage; governance pre-conditions for finance activation</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;">
+        Phi-derived zone thresholds: Coherent at or above 80%; Stressed 61.8-80% (phi-inverse floor);
+        Failure 38.2-61.8%; Breakdown below 38.2%. The e axis (58.0) is the structurally weakest axis
+        in this chain, falling into the Failure zone by the strict threshold. All three below-80% axes
+        (sqrt2, ln2, e) converge on the same two bottleneck phases: 2 and 3.
+      </p>
+    </div>
+
+    <!-- Phase 2 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">2</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Transmission</div>
+          <div style="font-size:12px;color:#888;">Balance 74.1% | D=290, C=215, gap=75 | Primary failure axes: <strong>sqrt2 (√2)</strong> and <strong>e</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;">
+        <strong>Why sqrt2 diagnoses this failure:</strong> The sqrt2 axis measures structural overhead:
+        physical or institutional friction that raises D (the constraint load) without adding to C (the
+        contribution capacity). In Phase 2, the structural overhead is the interconnection queue itself:
+        projects wait years for grid operators to study and approve connection, a delay documented by
+        IEA Electricity Grids and Secure Energy Transitions analysis as the primary barrier to renewables
+        integration. Cross-border transmission capacity shortfalls compound the queue delay. The sqrt2
+        chain score of 68.0 confirms this is a structural and institutional problem, not a market problem.
+        More generation capacity (a market solution) cannot close a gap that originates in permitting and
+        queue processing constraints.
+      </p>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;">
+        <strong>Why e also signals this failure:</strong> Capacity markets and green bonds exist in
+        principle (e chain score 58.0, Failure zone) but are not structured around specific transmission
+        buildout or queue-clearance KPIs. Financing exists in the abstract; it is not yet operationally
+        linked to the physical queue backlog.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Intervention</th>
+            <th>D-C Mechanism</th>
+            <th>Timeline</th>
+            <th>Indicative Cost</th>
+            <th>Projected Balance</th>
+            <th>Funding Pathway</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Streamlined interconnection permitting reform</strong> (one-stop-shop queue processing). Consolidate multi-agency review into a single coordinated process, following the direction of recent US and EU permitting reform efforts.</td>
+            <td>Directly removes the primary D-flag: queue and permitting delay. Estimated to lower D by approximately 20 points (290 to approximately 270) as fewer projects sit idle awaiting sequential approvals.</td>
+            <td>2-4 years (regulatory reform cycle)</td>
+            <td>Primarily administrative and regulatory reform cost; indicative agency budget in the tens of millions USD globally (order-of-magnitude, not project-specific)</td>
+            <td>74.1% to approximately 82-84%</td>
+            <td>National energy regulators; multilateral development bank technical assistance grants</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Grid-enhancing technologies</strong> (dynamic line rating, topology optimization, advanced power flow control). Increase the effective throughput of existing transmission lines without new construction.</td>
+            <td>Raises C directly by increasing usable capacity of the existing network. Estimated to raise C by approximately 20 points (215 to approximately 235), consistent with published estimates that grid-enhancing technologies can increase effective transmission capacity by a meaningful margin on constrained corridors.</td>
+            <td>1-3 years (software and sensor deployment, minimal new construction permitting)</td>
+            <td>Low relative to new transmission construction; indicative order-of-magnitude estimate, industry-general benchmark, not project-specific</td>
+            <td>82-84% to approximately 88-90%</td>
+            <td>Utility capital plans; grid modernisation programmes; private technology vendors under performance contracts</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>HVDC interconnector buildout</strong>. New high-voltage direct current transmission links to move power across regions and borders where AC transmission capacity is exhausted.</td>
+            <td>Raises C further through new physical transmission capacity, bringing the cumulative Phase 2 position to approximately D=250, C=230, matching the IEA NZE-aligned mitigation scenario values for this phase.</td>
+            <td>5-10 years (typical HVDC interconnector construction and permitting timeline, consistent with comparable continental-scale projects)</td>
+            <td>USD 0.5-2 billion per major interconnector, indicative range consistent with published costs of comparable continental-scale HVDC links, not project-specific</td>
+            <td>88-90% to 92.0% (full combined effect)</td>
+            <td>Multilateral development banks; sovereign green bonds; regional transmission organisation capital plans; private infrastructure funds</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">
+        Combined effect of all three interventions: Phase 2 D falls from 290 to approximately 250 and C
+        rises from 215 to approximately 230, yielding an estimated balance of 92.0%, matching the IEA
+        NZE-aligned mitigation scenario for this phase and moving Phase 2 from Stressed to Coherent.
+      </p>
+    </div>
+
+    <!-- Phase 3 intervention -->
+    <div style="background:#fff;border-radius:10px;padding:20px;margin-bottom:16px;border:2px solid #e74c3c;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
+        <div style="font-size:28px;font-weight:800;color:#e74c3c;">3</div>
+        <div>
+          <div style="font-size:16px;font-weight:700;color:#1a1a1a;">Balancing and Storage</div>
+          <div style="font-size:12px;color:#888;">Balance 74.5% | D=275, C=205, gap=70 | Primary failure axes: <strong>ln2</strong> and <strong>e</strong></div>
+        </div>
+        <span style="margin-left:auto;background:#fde8e8;color:#8B1A1A;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;text-transform:uppercase;">Bottleneck</span>
+      </div>
+
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;">
+        <strong>Why ln2 diagnoses this failure:</strong> The ln2 axis measures value transformation:
+        how effectively a phase converts inputs into outputs of higher value. Phase 3 is an ln2 failure
+        because the strong renewable capacity additions documented in Phase 1 (approximately 700 GW added
+        in 2024, generation from solar and wind up a record 670 TWh) are not being fully converted into
+        firm, balanced, deliverable power. Some of that generation is curtailed rather than delivered,
+        a documented pattern published by CAISO, ERCOT, and National Grid ESO. The ln2 chain score of
+        75.0 confirms this is a transformation gap, not a generation shortfall: the energy exists, but the
+        balancing and storage infrastructure to convert it into reliably deliverable power lags behind.
+      </p>
+      <p style="font-size:13px;color:#495057;margin-bottom:12px;">
+        <strong>Why e also signals this failure:</strong> As with Phase 2, financial instruments for
+        storage and flexibility resources (capacity markets, green bonds) exist but are not consistently
+        linked to specific GWh-deployed or curtailment-reduction KPIs, the same e-axis Failure-zone
+        pattern (58.0) that also constrains Phase 2.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Rank</th>
+            <th>Intervention</th>
+            <th>D-C Mechanism</th>
+            <th>Timeline</th>
+            <th>Indicative Cost</th>
+            <th>Projected Balance</th>
+            <th>Funding Pathway</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>Utility-scale battery storage deployment.</strong> Grid-connected lithium-ion battery energy storage systems (BESS) to absorb excess renewable generation and discharge during peak demand or low-generation periods.</td>
+            <td>Raises C directly by adding dispatchable balancing capacity. Estimated to raise C by approximately 13 points (205 to approximately 218) as deployed storage begins absorbing curtailed generation.</td>
+            <td>2-4 years (typical utility-scale BESS project development and construction)</td>
+            <td>Indicative capital cost consistent with publicly reported utility-scale battery storage benchmarks (industry-general, declining over time, not project-specific)</td>
+            <td>74.5% to approximately 82-84%</td>
+            <td>Capacity market payments; green bonds; utility capital plans; corporate renewable PPA co-location</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>Demand response and virtual power plant (VPP) programmes.</strong> Aggregate distributed flexible load and behind-the-meter resources (EVs, smart thermostats, batteries) to shift demand away from peak periods.</td>
+            <td>Raises C further (218 to approximately 224) and reduces D by approximately 20 points (275 to approximately 255) because shifting demand lowers the reserve margin the system must otherwise build to cover peak load.</td>
+            <td>1-3 years (software and programme rollout, lower capital intensity than storage or transmission)</td>
+            <td>Primarily programme administration and incentive payment cost; low relative to physical infrastructure builds, order-of-magnitude estimate</td>
+            <td>82-84% to approximately 90-92%</td>
+            <td>Utility demand-side management budgets; regulatory incentive programmes; aggregator business models</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Pumped-hydro and long-duration storage expansion.</strong> Multi-hour to multi-day storage capacity to cover extended low-generation periods that batteries alone cannot economically address.</td>
+            <td>Reduces D further (approximately 255 to 230) by covering the multi-hour and multi-day balancing needs that drive the largest reserve-margin requirements, bringing the cumulative Phase 3 position to approximately D=230, C=225, matching the IEA NZE-aligned mitigation scenario values for this phase.</td>
+            <td>5-10 years (typical pumped-hydro or long-duration storage project lead time; asset life 50 or more years)</td>
+            <td>High upfront capital, order-of-magnitude consistent with published pumped-hydro project costs, indicative, not project-specific</td>
+            <td>90-92% to 97.8% (full combined effect)</td>
+            <td>Multilateral development banks; sovereign green bonds; national grid investment programmes</td>
+          </tr>
+        </tbody>
+      </table>
+      <p style="font-size:12px;color:#6c757d;margin-top:10px;font-style:italic;">
+        Combined effect of all three interventions: Phase 3 D falls from 275 to approximately 230 and C
+        rises from 205 to approximately 225, yielding an estimated balance of 97.8%, matching the IEA
+        NZE-aligned mitigation scenario for this phase. If both Phase 2 and Phase 3 interventions succeed,
+        the chain average balance rises from 81.8% to 87.5%, and no phase remains below the 80% Coherent
+        floor (the weakest remaining phase, Phase 0, sits exactly at 80.0%).
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Data sources -->
+  <div class="section">
+    <h2>Primary Data Sources</h2>
+    <ul class="sources-list">
+      <li>
+        <strong>IEA: Global Energy Review 2025, Electricity</strong><br>
+        <a href="https://www.iea.org/reports/global-energy-review-2025/electricity" target="_blank">iea.org/reports/global-energy-review-2025/electricity</a>: 2024 generation totals, generation mix shares, renewable capacity additions, curtailment context
+      </li>
+      <li>
+        <strong>globalelectricity.org</strong><br>
+        Public synthesis citing IEA data on global generation mix and regional milestones
+      </li>
+      <li>
+        <strong>IEA: Electricity Grids and Secure Energy Transitions analysis</strong><br>
+        Source for the structural claim that interconnection queue backlogs, permitting delays, and
+        insufficient transmission and storage capacity are IEA's own documented primary barriers to
+        renewables integration
+      </li>
+      <li>
+        <strong>IEA: World Energy Outlook, STEPS and NZE scenario data</strong><br>
+        Source for the 2030 STEPS, 2030 NZE, and 2050 NZE generation mix share projections used in the mitigation scenario
+      </li>
+      <li>
+        <strong>CAISO, ERCOT, National Grid ESO: published curtailment statistics</strong><br>
+        Source for the Phase 3 balancing and storage gap symptom (renewable curtailment)
+      </li>
+      <li>
+        <strong>This repository: ERCOT Winter Storm Uri case study</strong><br>
+        <a href="../../grid_ercot_uri/index.html">frontend/project/grid_ercot_uri</a>: a documented failure-mode case study of grid balancing and winterization collapse under acute cold-weather stress, referenced as a related but distinct analysis (not modified by this project)
+      </li>
+    </ul>
+  </div>
+
+</div>
+<div class="nav">
+  <a href="../../../../index.html">← Main Homepage</a>
+  <a href="../index.html">Grid Hub</a>
+  <a href="index.html">Supply Chain Hub</a>
+  <a href="dashboard.html">Dashboard</a>
+  <a href="recycling_analysis.html">Ecological Return</a>
+  <a href="../../grid_ercot_uri/index.html">ERCOT Uri Case Study</a>
+</div>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Andalucia Olive Supply Chain Ui</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Andalucia Olive Supply Chain Ui</h1>
+        <p class="subtitle">Generated from <strong>andalucia_olive_supply_chain_ui.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated&quot;: &quot;2026-06-06&quot;,
+    &quot;generator&quot;: &quot;manual-from-pdi-andalucia_olive_20260606&quot;,
+    &quot;material&quot;: &quot;andalucia_olive&quot;,
+    &quot;sources&quot;: [
+      &quot;Olivares Vivos project (Univ. Jaen and SEO/BirdLife): biodiversity monitoring Andalucia olive groves&quot;,
+      &quot;Danyadara (Cadiz): syntropic agroforestry and desertification reversal methodology&quot;,
+      &quot;International Olive Council (IOC): world olive oil production and trade statistics 2023/24&quot;,
+      &quot;Dcoop (Jaen): cooperative production and storage data; 300,000 MT capacity&quot;,
+      &quot;MAPA: Spanish olive oil production and area statistics 2024&quot;,
+      &quot;IOC: Spain export price EUR 3.22/kg vs Italy EUR 4.42/kg (2023/24)&quot;,
+      &quot;CHG Guadalquivir Basin Authority: watershed water balance and deficit reporting&quot;,
+      &quot;Dr Javier Diaz-Forestier (Univ. Jaen): erosion rates 50-100 T/ha/yr Sierra Magina&quot;,
+      &quot;Sarah Jones (CLARITY Coalition) research communication to TrueValue Analytics (2026-06-06)&quot;
+    ],
+    &quot;note&quot;: &quot;N-D-C values derived from PDI_andalucia_olive_20260606.yaml using formulas: balance=100-(|D-C|/max(D,C))*100; N=sqrt(D*C)*(balance/100); sustainability=100/((|D-C|^2)+10). All values PROVISIONAL pending field data collection. Paired comparison system: see PDI_marina_alta_20260606.yaml.&quot;
+  },
+  &quot;entities&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;label&quot;: &quot;Synthetic Baseline&quot;,
+      &quot;description&quot;: &quot;Baseline N-D-C values derived from PDI research data and public sources. Paired with Marina Alta ecosystem for comparative analysis. See _meta.sources for citations.&quot;
+    }
+  },
+  &quot;phase_meta&quot;: [
+    {
+      &quot;id&quot;: 0,
+      &quot;name&quot;: &quot;Ecosystem Baseline&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Precipitation + solar energy -&gt; degraded soil biological capital (Guadalquivir watershed; 50-100 T/ha/yr erosion in Jaen)&quot;
+    },
+    {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: &quot;Agricultural Production&quot;,
+      &quot;transparency&quot;: &quot;medium&quot;,
+      &quot;transformation&quot;: &quot;Monoculture inputs + irrigation -&gt; maturing olives on tree (herbicide bare-soil management)&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;name&quot;: &quot;Harvest&quot;,
+      &quot;transparency&quot;: &quot;medium&quot;,
+      &quot;transformation&quot;: &quot;Ripe olives on tree -&gt; bulk bins delivered to mill (mechanised shakers; 90% mechanisation rate)&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;name&quot;: &quot;Primary Processing&quot;,
+      &quot;transparency&quot;: &quot;medium&quot;,
+      &quot;transformation&quot;: &quot;Olives in bulk bins -&gt; EVOO in tank (Dcoop-scale cooperative mills; 1,750+ mills Andalucia)&quot;
+    },
+    {
+      &quot;id&quot;: 4,
+      &quot;name&quot;: &quot;Quality Certification&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Bulk EVOO -&gt; DOP/IGP certified product (only 8% of production) or uncertified commodity bulk (92%)&quot;
+    },
+    {
+      &quot;id&quot;: 5,
+      &quot;name&quot;: &quot;Market Distribution and Trade&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Bulk EVOO -&gt; export revenue at EUR 3.22/kg average (67% bulk; EUR 890M foregone vs Italian bottling premium)&quot;
+    },
+    {
+      &quot;id&quot;: 6,
+      &quot;name&quot;: &quot;Regenerative Transition&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Conventional monoculture -&gt; cover-cropped biodiversity-enhanced grove (Danyadara; Olivares Vivos; sub-5% penetration)&quot;
+    },
+    {
+      &quot;id&quot;: 7,
+      &quot;name&quot;: &quot;Ecosystem Restoration&quot;,
+      &quot;transparency&quot;: &quot;low&quot;,
+      &quot;transformation&quot;: &quot;Eroded slopes + degraded Guadalquivir watershed -&gt; stabilised soils + biodiversity recovery (nascent; no national programme at scale)&quot;
+    }
+  ],
+  &quot;phases&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;0&quot;: {
+        &quot;D&quot;: 260,
+        &quot;C&quot;: 170,
+        &quot;balance&quot;: 65.4,
+        &quot;N&quot;: 138,
+        &quot;sustainability&quot;: 0.012,
+        &quot;notes&quot;: &quot;Primary structural failure: soil biology severely degraded by 40+ years bare-soil herbicide management; erosion 50-100 T/ha/yr; no high-recharge aquifer system; Guadalquivir at 2.5 km3 annual deficit.&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;olive_grove_area_andalucia_ha&quot;: {
+            &quot;value&quot;: 1800000,
+            &quot;unit&quot;: &quot;ha&quot;,
+            &quot;source&quot;: &quot;MAPA / IOC 2024&quot;
+          },
+          &quot;soil_organic_matter_pct&quot;: {
+            &quot;value&quot;: &quot;0.5-1.5&quot;,
+            &quot;unit&quot;: &quot;% (EU target 3.5%)&quot;,
+            &quot;source&quot;: &quot;Olivares Vivos / Univ. Jaen monitoring data&quot;
+          },
+          &quot;erosion_rate_t_ha_yr&quot;: {
+            &quot;value&quot;: &quot;50-100&quot;,
+            &quot;unit&quot;: &quot;T/ha/yr (Sierra Magina, Jaen)&quot;,
+            &quot;source&quot;: &quot;Dr Javier Diaz-Forestier (Univ. Jaen)&quot;
+          },
+          &quot;biodiversity_deficit_pct&quot;: {
+            &quot;value&quot;: &quot;60-80&quot;,
+            &quot;unit&quot;: &quot;% fewer bird species vs polyculture reference&quot;,
+            &quot;source&quot;: &quot;Olivares Vivos SEO/BirdLife monitoring 2024&quot;
+          },
+          &quot;guadalquivir_annual_deficit_km3&quot;: {
+            &quot;value&quot;: 2.5,
+            &quot;unit&quot;: &quot;km3/year&quot;,
+            &quot;source&quot;: &quot;CHG Guadalquivir Basin Authority&quot;
+          },
+          &quot;bare_soil_management_pct&quot;: {
+            &quot;value&quot;: &quot;approximately 70&quot;,
+            &quot;unit&quot;: &quot;% of Andalucia groves&quot;,
+            &quot;source&quot;: &quot;MAPA land use monitoring&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Ecosystem baseline carbon data requires dedicated soil survey: not yet available at regional scale&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;1&quot;: {
+        &quot;D&quot;: 245,
+        &quot;C&quot;: 215,
+        &quot;balance&quot;: 87.8,
+        &quot;N&quot;: 202,
+        &quot;sustainability&quot;: 0.11,
+        &quot;notes&quot;: &quot;Monoculture production is efficient (irrigation + fertiliser inputs well-managed) but structurally dependent on external inputs due to absent soil biology. Water stress increasing annually.&quot;,
+        &quot;data_quality&quot;: &quot;medium&quot;,
+        &quot;metrics&quot;: {
+          &quot;andalucia_olive_area_ha&quot;: {
+            &quot;value&quot;: 1800000,
+            &quot;unit&quot;: &quot;ha (72% of Spanish olive area)&quot;,
+            &quot;source&quot;: &quot;MAPA 2024&quot;
+          },
+          &quot;intensive_yield_t_per_ha&quot;: {
+            &quot;value&quot;: &quot;3-5&quot;,
+            &quot;unit&quot;: &quot;T/ha (intensive irrigated)&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA production statistics&quot;
+          },
+          &quot;rain_fed_yield_t_per_ha&quot;: {
+            &quot;value&quot;: &quot;1-2&quot;,
+            &quot;unit&quot;: &quot;T/ha (traditional secano)&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA production statistics&quot;
+          },
+          &quot;intensive_irrigated_share_pct&quot;: {
+            &quot;value&quot;: &quot;approximately 40&quot;,
+            &quot;unit&quot;: &quot;% of area&quot;,
+            &quot;source&quot;: &quot;MAPA&quot;
+          },
+          &quot;national_production_share_pct&quot;: {
+            &quot;value&quot;: 72,
+            &quot;unit&quot;: &quot;% of Spanish production&quot;,
+            &quot;source&quot;: &quot;IOC 2023/24&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Agricultural inputs emissions require per-farm survey: not provided&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;2&quot;: {
+        &quot;D&quot;: 248,
+        &quot;C&quot;: 220,
+        &quot;balance&quot;: 88.7,
+        &quot;N&quot;: 207,
+        &quot;sustainability&quot;: 0.126,
+        &quot;notes&quot;: &quot;Mechanised harvest is Andalucia&#x27;s operational strength: 90% mechanisation rate, 80% labour cost reduction vs manual picking. Trade-off: bruising reduces polyphenol content and premium grade ceiling.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;,
+        &quot;metrics&quot;: {
+          &quot;mechanisation_rate_pct&quot;: {
+            &quot;value&quot;: &quot;approximately 90&quot;,
+            &quot;unit&quot;: &quot;% (Jaen and Cordoba; lower in mountain zones)&quot;,
+            &quot;source&quot;: &quot;IOC harvest mechanisation statistics&quot;
+          },
+          &quot;harvest_cost_mechanised_eur_per_t&quot;: {
+            &quot;value&quot;: &quot;50-120&quot;,
+            &quot;unit&quot;: &quot;EUR/T&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA harvest cost data&quot;
+          },
+          &quot;harvest_cost_manual_eur_per_t&quot;: {
+            &quot;value&quot;: &quot;200-400&quot;,
+            &quot;unit&quot;: &quot;EUR/T&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA harvest cost data&quot;
+          },
+          &quot;harvest_window_days&quot;: {
+            &quot;value&quot;: 90,
+            &quot;unit&quot;: &quot;days (November to January)&quot;,
+            &quot;source&quot;: &quot;MAPA harvest calendar&quot;
+          },
+          &quot;labour_reduction_vs_manual_pct&quot;: {
+            &quot;value&quot;: 80,
+            &quot;unit&quot;: &quot;% reduction&quot;,
+            &quot;source&quot;: &quot;IOC mechanisation study&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Harvest machinery fuel emissions data not aggregated&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;3&quot;: {
+        &quot;D&quot;: 245,
+        &quot;C&quot;: 228,
+        &quot;balance&quot;: 93.1,
+        &quot;N&quot;: 220,
+        &quot;sustainability&quot;: 0.334,
+        &quot;notes&quot;: &quot;Best-managed phase: Dcoop-scale cooperative mills are among the world&#x27;s most efficient; extraction rates 18-22%; modern two-phase decanters. Limitation: bulk mixing prevents traceability.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;,
+        &quot;metrics&quot;: {
+          &quot;number_of_mills_andalucia&quot;: {
+            &quot;value&quot;: &quot;approximately 1500&quot;,
+            &quot;unit&quot;: &quot;mills (of 1750 Spain total)&quot;,
+            &quot;source&quot;: &quot;MAPA / IOC milling infrastructure data&quot;
+          },
+          &quot;dcoop_storage_capacity_mt&quot;: {
+            &quot;value&quot;: 300000,
+            &quot;unit&quot;: &quot;MT (world&#x27;s largest)&quot;,
+            &quot;source&quot;: &quot;Dcoop dcoop.es&quot;
+          },
+          &quot;extraction_rate_pct&quot;: {
+            &quot;value&quot;: &quot;18-22&quot;,
+            &quot;unit&quot;: &quot;% oil per olive weight&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA extraction statistics&quot;
+          },
+          &quot;evoo_grade_pct&quot;: {
+            &quot;value&quot;: &quot;approximately 65&quot;,
+            &quot;unit&quot;: &quot;% of production qualifying EVOO grade&quot;,
+            &quot;source&quot;: &quot;IOC Spain production breakdown 2023/24&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Mill energy consumption data not aggregated at Andalucia regional level&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;4&quot;: {
+        &quot;D&quot;: 255,
+        &quot;C&quot;: 190,
+        &quot;balance&quot;: 74.5,
+        &quot;N&quot;: 164,
+        &quot;sustainability&quot;: 0.024,
+        &quot;notes&quot;: &quot;Certification gap: only 8% of production certified DOP/IGP despite 12 active designations. Cooperative bulk mixing destroys traceability. Olivares Vivos biodiversity certification covers only 12,000 of 1.8M ha.&quot;,
+        &quot;data_quality&quot;: &quot;medium&quot;,
+        &quot;metrics&quot;: {
+          &quot;dop_designations_andalucia&quot;: {
+            &quot;value&quot;: 12,
+            &quot;unit&quot;: &quot;active DOP designations&quot;,
+            &quot;source&quot;: &quot;MAPA / Foods and Wines from Spain&quot;
+          },
+          &quot;dop_certified_share_pct&quot;: {
+            &quot;value&quot;: &quot;approximately 8&quot;,
+            &quot;unit&quot;: &quot;% of production&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA certification data&quot;
+          },
+          &quot;uncertified_bulk_share_pct&quot;: {
+            &quot;value&quot;: &quot;approximately 92&quot;,
+            &quot;unit&quot;: &quot;% of production (exits as commodity)&quot;,
+            &quot;source&quot;: &quot;Calculated from MAPA certification data&quot;
+          },
+          &quot;olivares_vivos_area_ha&quot;: {
+            &quot;value&quot;: 12000,
+            &quot;unit&quot;: &quot;ha (2024)&quot;,
+            &quot;source&quot;: &quot;Olivares Vivos olivaresvivos.com&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Certification level emissions boundary not relevant at this phase&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;5&quot;: {
+        &quot;D&quot;: 268,
+        &quot;C&quot;: 175,
+        &quot;balance&quot;: 65.3,
+        &quot;N&quot;: 141,
+        &quot;sustainability&quot;: 0.012,
+        &quot;notes&quot;: &quot;Primary downstream bottleneck: EUR 1.20/kg price gap vs Italy; EUR 890M annual foregone brand premium; 67% bulk export. Same balance as Phase 0: twin structural failures at opposite ends of the chain.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;,
+        &quot;metrics&quot;: {
+          &quot;spain_export_revenue_2023_24_eur&quot;: {
+            &quot;value&quot;: 6040000000,
+            &quot;unit&quot;: &quot;EUR (record)&quot;,
+            &quot;source&quot;: &quot;IOC trade statistics 2023/24&quot;
+          },
+          &quot;spain_export_volume_t&quot;: {
+            &quot;value&quot;: 742500,
+            &quot;unit&quot;: &quot;T&quot;,
+            &quot;source&quot;: &quot;IOC trade statistics 2023/24&quot;
+          },
+          &quot;spain_avg_export_price_eur_per_kg&quot;: {
+            &quot;value&quot;: 3.22,
+            &quot;unit&quot;: &quot;EUR/kg&quot;,
+            &quot;source&quot;: &quot;IOC trade statistics 2023/24&quot;
+          },
+          &quot;italy_avg_export_price_eur_per_kg&quot;: {
+            &quot;value&quot;: 4.42,
+            &quot;unit&quot;: &quot;EUR/kg&quot;,
+            &quot;source&quot;: &quot;IOC trade statistics 2023/24&quot;
+          },
+          &quot;price_gap_eur_per_kg&quot;: {
+            &quot;value&quot;: 1.2,
+            &quot;unit&quot;: &quot;EUR/kg foregone&quot;,
+            &quot;source&quot;: &quot;Calculated from IOC data&quot;
+          },
+          &quot;annual_foregone_value_eur&quot;: {
+            &quot;value&quot;: 890000000,
+            &quot;unit&quot;: &quot;EUR (estimated annual brand premium foregone)&quot;,
+            &quot;source&quot;: &quot;Olive oil project_context.html; IOC calculations&quot;
+          },
+          &quot;bulk_export_share_pct&quot;: {
+            &quot;value&quot;: 67,
+            &quot;unit&quot;: &quot;% of exports by volume&quot;,
+            &quot;source&quot;: &quot;IOC / MAPA trade data&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Logistics and transport emissions not aggregated at export chain level&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;6&quot;: {
+        &quot;D&quot;: 262,
+        &quot;C&quot;: 178,
+        &quot;balance&quot;: 67.9,
+        &quot;N&quot;: 147,
+        &quot;sustainability&quot;: 0.014,
+        &quot;notes&quot;: &quot;Regenerative transition: programmes exist (Danyadara, Olivares Vivos, Regen Academy) but sub-5% grove penetration. No financial instrument to bridge the year-one yield-drop barrier.&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;danyadara_methodology&quot;: {
+            &quot;value&quot;: &quot;Syntropic agroforestry; water retention earthworks; food forest in olive groves&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;Danyadara danyadara.org (Cadiz)&quot;
+          },
+          &quot;olivares_vivos_enrolled_ha&quot;: {
+            &quot;value&quot;: 12000,
+            &quot;unit&quot;: &quot;ha (2024)&quot;,
+            &quot;source&quot;: &quot;Olivares Vivos olivaresvivos.com&quot;
+          },
+          &quot;cover_crop_moisture_retention_gain_pct&quot;: {
+            &quot;value&quot;: &quot;20-35&quot;,
+            &quot;unit&quot;: &quot;% improvement in first 3 years&quot;,
+            &quot;source&quot;: &quot;Danyadara field data; Olivares Vivos monitoring&quot;
+          },
+          &quot;transition_yield_drop_year_1_pct&quot;: {
+            &quot;value&quot;: &quot;10-25&quot;,
+            &quot;unit&quot;: &quot;% (main adoption barrier)&quot;,
+            &quot;source&quot;: &quot;Regen Academy Spain / Danyadara practitioner data&quot;
+          },
+          &quot;financial_instrument_available&quot;: {
+            &quot;value&quot;: &quot;None at scale as of 2026&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;TrueValue Analytics assessment&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Transition phase carbon sequestration potential not yet measured at programme scale&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      },
+      &quot;7&quot;: {
+        &quot;D&quot;: 265,
+        &quot;C&quot;: 172,
+        &quot;balance&quot;: 64.9,
+        &quot;N&quot;: 139,
+        &quot;sustainability&quot;: 0.012,
+        &quot;notes&quot;: &quot;Ecosystem restoration at landscape scale: no national programme; Guadalquivir underfunded; Olivares Vivos 2030 target of 100,000 ha (current 12,000 ha, 0.7% of Andalucia grove area). Lowest balance; most opaque.&quot;,
+        &quot;data_quality&quot;: &quot;low&quot;,
+        &quot;metrics&quot;: {
+          &quot;olivares_vivos_2030_target_ha&quot;: {
+            &quot;value&quot;: 100000,
+            &quot;unit&quot;: &quot;ha (current: 12,000 ha; 0.7% of Andalucia grove area)&quot;,
+            &quot;source&quot;: &quot;Olivares Vivos programme documentation&quot;
+          },
+          &quot;erosion_reduction_with_cover_crops_pct&quot;: {
+            &quot;value&quot;: &quot;70-90&quot;,
+            &quot;unit&quot;: &quot;% reduction achievable within 5 years&quot;,
+            &quot;source&quot;: &quot;Olivares Vivos / Univ. Jaen research&quot;
+          },
+          &quot;restoration_funding_available&quot;: {
+            &quot;value&quot;: &quot;No dedicated national programme at scale&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;TrueValue Analytics assessment&quot;
+          },
+          &quot;eu_soil_strategy_2030_status&quot;: {
+            &quot;value&quot;: &quot;Framework exists; implementation regulations not yet operationalised for olive landscapes&quot;,
+            &quot;unit&quot;: &quot;qualitative&quot;,
+            &quot;source&quot;: &quot;EU Soil Strategy 2030 documentation&quot;
+          }
+        },
+        &quot;scope1_tco2&quot;: null,
+        &quot;scope2_tco2&quot;: null,
+        &quot;scope_source&quot;: &quot;Ecosystem restoration carbon sequestration potential requires landscape-scale monitoring programme&quot;,
+        &quot;scope_quality&quot;: &quot;No data&quot;,
+        &quot;water&quot;: null,
+        &quot;energy&quot;: null,
+        &quot;water_recycling_pct&quot;: null,
+        &quot;energy_clean_pct&quot;: null
+      }
+    }
+  },
+  &quot;system&quot;: {
+    &quot;synthetic&quot;: {
+      &quot;balance&quot;: 75.9,
+      &quot;average_N&quot;: 170,
+      &quot;bottleneck_phase_ids&quot;: [
+        0,
+        5,
+        7
+      ],
+      &quot;strongest_phase_ids&quot;: [
+        3,
+        2
+      ],
+      &quot;interpretation&quot;: &quot;Twin structural failures at Phase 0 (Ecosystem Baseline, 65.4%) and Phase 5 (Market/Trade, 65.3%). Andalucia is operationally efficient in harvest and processing (Phases 2-3) but failing at ecosystem foundation and value capture. System average balance 75.9% vs Marina Alta 86.3%.&quot;,
+      &quot;water_recycling_pct&quot;: null,
+      &quot;waste_circularity_pct&quot;: null,
+      &quot;clean_energy_pct&quot;: null
+    }
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

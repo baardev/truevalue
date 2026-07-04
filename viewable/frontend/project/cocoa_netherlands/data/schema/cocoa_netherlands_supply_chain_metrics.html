@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cocoa Netherlands Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Cocoa Netherlands Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>cocoa_netherlands_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">30</span> / 30
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>CN-001</td><td>0</td><td>Port of Rotterdam Authority</td><td>Netherlands</td><td>2024</td><td>rotterdam_amsterdam_cocoa_throughput_mt</td><td>1200000</td><td>metric tonnes per year</td><td>public</td><td>Port of Rotterdam Authority commodity flows 2024</td><td>https://www.portofrotterdam.com/en/news-and-press-releases/commodities-handled</td><td>Combined Rotterdam + Amsterdam; beans and semi-finished products</td></tr>
+<tr><td>CN-002</td><td>0</td><td>EU Commission</td><td>EU</td><td>2023</td><td>eudr_compliance_deadline_large_operators</td><td>2025-12-30</td><td>date</td><td>public</td><td>EU Regulation 2023/1115 (EUDR)</td><td>https://environment.ec.europa.eu/topics/forests/deforestation/regulation-deforestation-free-products_en</td><td>Deadline for EUDR compliance for large operators importing cocoa to EU</td></tr>
+<tr><td>CN-003</td><td>0</td><td>NVWA</td><td>Netherlands</td><td>2024</td><td>nvwa_inspection_categories</td><td>3</td><td>inspection types</td><td>public</td><td>NVWA Netherlands Food and Consumer Product Safety Authority</td><td>https://www.nvwa.nl/</td><td>Phytosanitary certificate + cadmium/lead screening + documentary EUDR check</td></tr>
+<tr><td>CN-004</td><td>0</td><td>Shipping industry</td><td>Global</td><td>2024</td><td>abidjan_to_rotterdam_days_standard</td><td>12</td><td>days</td><td>public</td><td>Port of Rotterdam Authority</td><td>https://www.portofrotterdam.com/</td><td>Standard routing; 22-26 days via Cape of Good Hope (Red Sea avoidance 2024)</td></tr>
+<tr><td>CN-005</td><td>1</td><td>ECA</td><td>EU</td><td>2024</td><td>eca_cut_test_sample_size_beans</td><td>300</td><td>beans per sample</td><td>public</td><td>European Cocoa Association grading and sampling standards</td><td>https://www.eurococoa.com/</td><td>Standard 300-bean cut test for ECA Fair Average Quality grading</td></tr>
+<tr><td>CN-006</td><td>1</td><td>EU Commission</td><td>EU</td><td>2021</td><td>eu_cadmium_limit_cocoa_beans_mg_per_kg</td><td>0.8</td><td>mg/kg dry weight</td><td>public</td><td>EU Regulation EC 1881/2006 as amended by Commission Regulation 2021/1399</td><td>https://eur-lex.europa.eu/</td><td>Limit for raw cocoa beans; cocoa powder limit is 0.3 mg/kg (stricter)</td></tr>
+<tr><td>CN-007</td><td>1</td><td>ICE Futures Europe</td><td>UK/NL</td><td>2024</td><td>liffe_cocoa_contract_size_tonnes</td><td>10</td><td>metric tonnes per lot</td><td>public</td><td>ICE Futures Europe LIFFE cocoa futures specification</td><td>https://www.theice.com/</td><td>Amsterdam/London LIFFE cocoa futures; USD/tonne denomination</td></tr>
+<tr><td>CN-008</td><td>2</td><td>ICCO</td><td>Netherlands</td><td>2024</td><td>amsterdam_grinding_mt_year</td><td>600000</td><td>metric tonnes per year</td><td>public</td><td>ICCO Grinding Data by Country</td><td>https://www.icco.org/statistics/</td><td>Amsterdam is world&#x27;s largest single cocoa grinding location</td></tr>
+<tr><td>CN-009</td><td>2</td><td>EU Commission</td><td>EU</td><td>2021</td><td>eu_cadmium_limit_cocoa_powder_mg_per_kg</td><td>0.3</td><td>mg/kg</td><td>public</td><td>Commission Regulation 2021/1399 amending EC 1881/2006</td><td>https://eur-lex.europa.eu/</td><td>Stricter limit for cocoa powder; drives origin blending decisions by grinders</td></tr>
+<tr><td>CN-010</td><td>2</td><td>Barry Callebaut</td><td>Global</td><td>2024</td><td>barry_callebaut_global_volume_mt</td><td>2200000</td><td>metric tonnes</td><td>public</td><td>Barry Callebaut Annual Report FY2023/24</td><td>https://www.barry-callebaut.com/en/investors/annual-report</td><td>Total cocoa and chocolate volumes processed globally including NL operations</td></tr>
+<tr><td>CN-011</td><td>2</td><td>ICCO</td><td>Global</td><td>2024</td><td>top3_processors_global_share_pct</td><td>60</td><td>percent of global destination grinding</td><td>inferred</td><td>ICCO / industry analysis</td><td>https://www.icco.org/</td><td>Barry Callebaut + Cargill + Olam combined share of global destination grinding</td></tr>
+<tr><td>CN-012</td><td>3</td><td>IOI Loders Croklaan</td><td>Netherlands</td><td>2024</td><td>ioi_loders_location</td><td>Wormerveer</td><td>municipality (North Holland)</td><td>public</td><td>IOI Loders Croklaan corporate information</td><td>https://www.ioiloders.com/</td><td>Principal European CBE manufacturing facility</td></tr>
+<tr><td>CN-013</td><td>3</td><td>EU Commission</td><td>EU</td><td>2000</td><td>eu_cbe_substitution_limit_pct</td><td>5</td><td>percent of cocoa butter content</td><td>public</td><td>EU Chocolate Directive 2000/36/EC Annex II</td><td>https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32000L0036</td><td>Maximum CBE substitution in products labeled &#x27;contains vegetable fats in addition to cocoa butter&#x27;</td></tr>
+<tr><td>CN-014</td><td>3</td><td>TrueValue shea project</td><td>West Africa</td><td>2024</td><td>shea_phase4_export_D</td><td>210</td><td>N-D-C D-value</td><td>inferred</td><td>TrueValue Analytics west_african_shea supply chain model</td><td>/frontend/project/west_african_shea/data/processed/shea_supply_chain_ui.json</td><td>Shea Phase 4 Export from TrueValue shea project; used as 5% input to Phase 3 composite</td></tr>
+<tr><td>CN-015</td><td>3</td><td>TrueValue shea project</td><td>West Africa</td><td>2024</td><td>shea_phase4_export_C</td><td>165</td><td>N-D-C C-value</td><td>inferred</td><td>TrueValue Analytics west_african_shea supply chain model</td><td>/frontend/project/west_african_shea/data/processed/shea_supply_chain_ui.json</td><td>Shea Phase 4 Export from TrueValue shea project; C=165 reflects weak export infrastructure and opacity</td></tr>
+<tr><td>CN-016</td><td>3</td><td>TrueValue shea project</td><td>West Africa</td><td>2024</td><td>shea_phase4_export_balance_pct</td><td>64.0</td><td>percent</td><td>inferred</td><td>TrueValue Analytics west_african_shea supply chain model</td><td>/frontend/project/west_african_shea/data/processed/shea_supply_chain_ui.json</td><td>Shea export phase balance 64.0% — low transparency; pulls Phase 3 composite balance slightly downward</td></tr>
+<tr><td>CN-017</td><td>3</td><td>IOI Loders Croklaan</td><td>Netherlands</td><td>2024</td><td>cbe_product_range</td><td>Coberine; Illexao; Chocofill</td><td>product names</td><td>public</td><td>IOI Loders Croklaan product range</td><td>https://www.ioiloders.com/product-range/</td><td>Principal CBE products sold to European chocolate manufacturers</td></tr>
+<tr><td>CN-018</td><td>4</td><td>Tony&#x27;s Chocolonely</td><td>Netherlands</td><td>2024</td><td>tonys_sourcing_premium_target_usd_per_mt</td><td>2700</td><td>USD per tonne (Living Income Reference Price Ivory Coast)</td><td>public</td><td>Tony&#x27;s Chocolonely Annual FAIR Report 2023/24</td><td>https://tonyschocolonely.com/nl/en/our-mission/annual-fair-report</td><td>Target farm-gate price vs market rate ~USD 1400/Mt — near-double premium</td></tr>
+<tr><td>CN-019</td><td>4</td><td>Tony&#x27;s Chocolonely</td><td>Netherlands</td><td>2024</td><td>tonys_no_cbe_policy</td><td>true</td><td>boolean (no CBE in any product)</td><td>public</td><td>Tony&#x27;s Chocolonely Annual FAIR Report 2023/24</td><td>https://tonyschocolonely.com/nl/en/our-mission/annual-fair-report</td><td>Tony&#x27;s explicitly avoids CBE substitution; 100% cocoa butter in all products</td></tr>
+<tr><td>CN-020</td><td>4</td><td>Tony&#x27;s Chocolonely</td><td>Netherlands</td><td>2024</td><td>tonys_traceable_beans_pct</td><td>100</td><td>percent</td><td>public</td><td>Tony&#x27;s Chocolonely Annual FAIR Report 2023/24</td><td>https://tonyschocolonely.com/nl/en/our-mission/annual-fair-report</td><td>100% of beans traceable to named cooperative partner (Ghana and Ivory Coast)</td></tr>
+<tr><td>CN-021</td><td>4</td><td>Mondelez</td><td>Netherlands</td><td>2014</td><td>verkade_parent_company</td><td>Mondelez International</td><td>corporate owner</td><td>public</td><td>Mondelez International corporate information</td><td>https://www.mondelezinternational.com/</td><td>Verkade acquired by Mondelez; conventional CBE-using manufacturer model</td></tr>
+<tr><td>CN-022</td><td>5</td><td>Kantar Worldpanel</td><td>Netherlands</td><td>2024</td><td>albert_heijn_grocery_market_share_pct</td><td>35</td><td>percent Dutch grocery</td><td>public</td><td>Kantar Worldpanel Netherlands 2024</td><td>https://www.kantar.com/</td><td>Approximate; Albert Heijn dominant Dutch grocery retailer</td></tr>
+<tr><td>CN-023</td><td>5</td><td>CBS Netherlands</td><td>Netherlands</td><td>2024</td><td>nl_primary_reexport_destinations</td><td>Germany; Belgium; Switzerland; UK</td><td>countries</td><td>public</td><td>CBS Netherlands Statistics (Centraal Bureau voor de Statistiek)</td><td>https://www.cbs.nl/</td><td>Primary destinations for Dutch semi-finished cocoa re-exports</td></tr>
+<tr><td>CN-024</td><td>5</td><td>Fairtrade International</td><td>EU</td><td>2023</td><td>netherlands_fairtrade_purchase_intent_rank</td><td>1</td><td>EU country ranking (highest Fairtrade purchase intent)</td><td>public</td><td>Fairtrade International Consumer Survey 2023</td><td>https://www.fairtrade.net/</td><td>Netherlands #1 in EU for certified and Fairtrade product purchase intention</td></tr>
+<tr><td>CN-025</td><td>5</td><td>Tony&#x27;s Chocolonely</td><td>Netherlands</td><td>2024</td><td>tonys_nl_market_position</td><td>Top-10 chocolate brand</td><td>market position by value</td><td>public</td><td>Tony&#x27;s Chocolonely Annual FAIR Report 2023/24</td><td>https://tonyschocolonely.com/nl/en/our-mission/annual-fair-report</td><td>Tony&#x27;s is a top-10 chocolate brand in Dutch retail by value</td></tr>
+<tr><td>CN-026</td><td>2</td><td>IDH</td><td>Netherlands</td><td>2024</td><td>dutch_sustainability_agreement_market_coverage_pct</td><td>75</td><td>percent of Dutch cocoa market</td><td>public</td><td>IDH Dutch Sustainability Agreement on Cocoa (Duurzaamheidsconvenant Cacao)</td><td>https://www.idhsustainabletrade.com/sectors/cocoa/</td><td>Approximately 75% of Dutch cocoa market covered by IDH sustainability agreement signatories</td></tr>
+<tr><td>CN-027</td><td>0</td><td>EU Commission</td><td>EU</td><td>2023</td><td>eudr_compliance_deadline_sme</td><td>2026-06-30</td><td>date</td><td>public</td><td>EU Regulation 2023/1115 (EUDR)</td><td>https://environment.ec.europa.eu/</td><td>SME/micro-enterprise EUDR compliance deadline (6 months after large operators)</td></tr>
+<tr><td>CN-028</td><td>2</td><td>AEB Amsterdam</td><td>Netherlands</td><td>2024</td><td>aeb_amsterdam_waste_to_energy</td><td>true</td><td>facility processing industrial waste including cocoa shell</td><td>public</td><td>AEB Amsterdam Waste-to-Energy</td><td>https://www.aebamsterdam.nl/</td><td>Amsterdam industrial cocoa shell partially processed through AEB waste-to-energy facility</td></tr>
+<tr><td>CN-029</td><td>1</td><td>ECA</td><td>EU</td><td>2024</td><td>eca_warehouse_operators_amsterdam</td><td>Deli Cocoa; C. Steinweg; ACTA; Cargill Storage</td><td>warehouse operators</td><td>public</td><td>ECA warehouse registry / Port of Amsterdam</td><td>https://www.eurococoa.com/</td><td>Principal licensed cocoa warehouse operators in Amsterdam area</td></tr>
+<tr><td>CN-030</td><td>3</td><td>EU Commission</td><td>EU</td><td>2000</td><td>eu_cbe_permitted_fats</td><td>shea; illipe; sal; palm mid-fraction; kokum gurge; mango kernel</td><td>permitted vegetable fats</td><td>public</td><td>EU Chocolate Directive 2000/36/EC Annex II</td><td>https://eur-lex.europa.eu/legal-content/EN/TXT/?uri=CELEX:32000L0036</td><td>Six permitted vegetable fats for CBE use in EU chocolate</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

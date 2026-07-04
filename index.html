@@ -142,6 +142,8 @@
     .card-link:hover { background: rgba(96,165,250,0.1); }
     .card-link.pdf  { color: #f87171; border-color: rgba(248,113,113,0.3); }
     .card-link.pdf:hover { background: rgba(248,113,113,0.1); }
+    .card-link.flipbook  { color: #c084fc; border-color: rgba(192,132,252,0.3); }
+    .card-link.flipbook:hover { background: rgba(192,132,252,0.1); }
 
     /* hub section wrappers (width from .layout-wide block above) */
     #hub-pdi,
@@ -220,8 +222,8 @@
 <script>
 /* ── Projects (categorized) + Additional Information ─────────── */
 (function () {
-  var SITE_INDEX   = '/frontend/site-index.json?v=20260626';
-  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260615';
+  var SITE_INDEX   = '/frontend/site-index.json?v=20260702';
+  var LAYOUT_INDEX = '/frontend/homepage-layout.json?v=20260702';
 
   function esc(s) {
     return String(s || '')
@@ -259,7 +261,7 @@
 
   function renderHubLinks(links) {
     return (links || []).map(function (l) {
-      var cls = 'card-link' + (l.type === 'pdf' ? ' pdf' : '');
+      var cls = 'card-link' + (l.type ? ' ' + esc(l.type) : '');
       return '<a class="' + cls + '" href="' + esc(l.url) + '">' + esc(l.label) + '</a>';
     }).join('');
   }

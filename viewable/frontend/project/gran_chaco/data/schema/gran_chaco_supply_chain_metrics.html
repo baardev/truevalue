@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gran Chaco Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Gran Chaco Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>gran_chaco_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">30</span> / 30
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>GC001</td><td>0</td><td>UMSEF / Greenpeace Argentina</td><td>Argentina</td><td>2024</td><td>Forest loss in Argentine Gran Chaco</td><td>149649</td><td>hectares/year</td><td>public</td><td>Greenpeace Argentina 2025 report</td><td>https://news.mongabay.com/2025/02/deforestation-boom-in-gran-chaco-raises-alarm-over-argentinas-forest-law/</td><td>2024 data — slight increase from 134700 ha in 2023</td></tr>
+<tr><td>GC002</td><td>0</td><td>UMSEF / Greenpeace Argentina</td><td>Argentina</td><td>2023</td><td>Forest loss in Argentine Gran Chaco</td><td>134700</td><td>hectares/year</td><td>public</td><td>Greenpeace Argentina 2025 report</td><td>https://news.mongabay.com/2025/02/deforestation-boom-in-gran-chaco-raises-alarm-over-argentinas-forest-law/</td><td>2023 baseline</td></tr>
+<tr><td>GC003</td><td>0</td><td>Trase / CONICET</td><td>Argentina</td><td>2019</td><td>Soy-attributed deforestation in Gran Chaco</td><td>37000</td><td>hectares/year</td><td>public</td><td>Trase Earth</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>2019 most recent attribution estimate</td></tr>
+<tr><td>GC004</td><td>0</td><td>Multiple / WEF</td><td>Argentina</td><td>2022</td><td>Total forest loss Argentine Gran Chaco since 1985</td><td>10000000</td><td>hectares cumulative</td><td>public</td><td>WEF Gran Chaco Pathways 2025</td><td>https://reports.weforum.org/docs/WEF_The_Gran_Chaco_Pathways_Towards_a_Sustainable_Future_2025.pdf</td><td>8-10 Mha range cited across sources</td></tr>
+<tr><td>GC005</td><td>1</td><td>USDA</td><td>Argentina</td><td>2023</td><td>Total national soybean production</td><td>50000000</td><td>tonnes</td><td>public</td><td>USDA Soybean Explorer 2024</td><td>https://ipad.fas.usda.gov/cropexplorer</td><td>National aggregate</td></tr>
+<tr><td>GC006</td><td>1</td><td>INDEC / Trase</td><td>Argentina</td><td>2019</td><td>Soy area in Argentine Gran Chaco</td><td>2700000</td><td>hectares</td><td>public</td><td>Trase Earth</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>2.6-2.8 Mha range; midpoint used</td></tr>
+<tr><td>GC007</td><td>1</td><td>INDEC / Trase</td><td>Argentina</td><td>2019</td><td>Soy production from Argentine Chaco</td><td>7750000</td><td>tonnes/year</td><td>public</td><td>Trase Earth</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>6.6-8.9 Mtonnes/year range; midpoint used</td></tr>
+<tr><td>GC008</td><td>2</td><td>AFIP Argentina</td><td>Argentina</td><td>2021</td><td>Soy imports into Argentina from Paraguay</td><td>4018000</td><td>tonnes</td><td>public</td><td>Trase Earth / Sio-granos</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>82% of total imports in 2016-2021</td></tr>
+<tr><td>GC009</td><td>2</td><td>AFIP Argentina</td><td>Argentina</td><td>2021</td><td>Total soy imports into Argentina</td><td>4900000</td><td>tonnes</td><td>public</td><td>Trase Earth / USDA-FAS</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>Up from 0.9 Mtonnes in 2016 after lifting of ROSA register</td></tr>
+<tr><td>GC010</td><td>2</td><td>Planet Tracker</td><td>Argentina+Paraguay</td><td>2019</td><td>Trader concentration — top 12 control of Chaco soy exports</td><td>88</td><td>percent</td><td>public</td><td>Planet Tracker Gran Chaco Report 2022</td><td>https://planet-tracker.org/wp-content/uploads/2022/03/Gran-Chaco-LD-report.pdf</td><td>12 traders controlling &gt;88% of soy exports from Gran Chaco biome</td></tr>
+<tr><td>GC011</td><td>3</td><td>CIARA / Bolsa de Cereales</td><td>Argentina</td><td>2020</td><td>Soy crushing capacity</td><td>62000000</td><td>tonnes/year</td><td>public</td><td>Bolsa de Cereales 2020 via Trase</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>Total Argentine crushing capacity; Rosario accounts for ~80%</td></tr>
+<tr><td>GC012</td><td>3</td><td>CIARA / Bolsa de Cereales</td><td>Argentina</td><td>2020</td><td>Soy crushing capacity utilisation</td><td>57</td><td>percent</td><td>public</td><td>Bolsa de Cereales 2020</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>Down from ~65% in 2015-2019 due to lower domestic production</td></tr>
+<tr><td>GC013</td><td>4</td><td>UN Comtrade / Trase</td><td>EU (27)</td><td>2019</td><td>EU soy cake imports from Argentina</td><td>9400000</td><td>tonnes</td><td>public</td><td>Trase Earth</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>Largest single importer of Argentine soy cake</td></tr>
+<tr><td>GC014</td><td>4</td><td>UN Comtrade</td><td>China</td><td>2021</td><td>Chinese soybean imports from Argentina</td><td>4700000</td><td>tonnes</td><td>public</td><td>UN Comtrade 2021</td><td>https://comtrade.un.org</td><td>Raw soybeans; not cake</td></tr>
+<tr><td>GC015</td><td>4</td><td>UN Comtrade</td><td>India</td><td>2021</td><td>Indian soy oil imports from Argentina</td><td>4200000</td><td>tonnes</td><td>public</td><td>UN Comtrade 2021</td><td>https://comtrade.un.org</td><td>Soy oil; not cake</td></tr>
+<tr><td>GC016</td><td>4</td><td>Trase Earth</td><td>Argentina</td><td>2019</td><td>Soy export volume covered by trader ZDC</td><td>55</td><td>percent</td><td>public</td><td>Trase Earth</td><td>https://trase.earth/insights/argentina-the-overlooked-hub-of-south-american-soy</td><td>Up from 30% in 2016; 45% still uncovered</td></tr>
+<tr><td>GC017</td><td>1</td><td>WEF</td><td>Argentina</td><td>2022</td><td>Argentine Gran Chaco cattle stock share of national total</td><td>33</td><td>percent</td><td>public</td><td>WEF Gran Chaco Pathways 2025</td><td>https://reports.weforum.org/docs/WEF_The_Gran_Chaco_Pathways_Towards_a_Sustainable_Future_2025.pdf</td><td>Primary calf production region</td></tr>
+<tr><td>GC018</td><td>1</td><td>WEF</td><td>Argentina</td><td>2022</td><td>Calves from Gran Chaco marketed to other provinces</td><td>5000000</td><td>calves/year</td><td>public</td><td>WEF Gran Chaco Pathways 2025</td><td>https://reports.weforum.org/docs/WEF_The_Gran_Chaco_Pathways_Towards_a_Sustainable_Future_2025.pdf</td><td>Sent to Buenos Aires Cordoba Santa Fe and Entre Rios</td></tr>
+<tr><td>GC019</td><td>0</td><td>Maor et al.</td><td>Argentina+Bolivia+Brazil</td><td>2026</td><td>Soybean origin prediction accuracy (SIR+TE model)</td><td>192.52</td><td>kilometres mean prediction error</td><td>public</td><td>Maor et al. 2026 Nature Comm. Earth Env.</td><td>https://doi.org/10.1038/s43247-026-03380-8</td><td>267 samples; 5-fold cross-validation; GP regression</td></tr>
+<tr><td>GC020</td><td>0</td><td>Maor et al.</td><td>Argentina+Bolivia+Brazil</td><td>2026</td><td>Soybean origin prediction precision 95% credible region</td><td>0.44</td><td>million km2</td><td>public</td><td>Maor et al. 2026 Nature Comm. Earth Env.</td><td>https://doi.org/10.1038/s43247-026-03380-8</td><td>SIR+TE model; 3.8% of study area</td></tr>
+<tr><td>GC021</td><td>0</td><td>Paruelo et al.</td><td>Argentina</td><td>2009</td><td>CO2 emissions from deforestation (national total)</td><td>20875</td><td>GgC/year</td><td>public</td><td>Paruelo J. et al. 2009 EIAAc bosques subtropicales</td><td></td><td>Average 1996-2005; cited via Fundación Vida Silvestre Argentina</td></tr>
+<tr><td>GC022</td><td>0</td><td>Paruelo et al.</td><td>Argentina (Gran Chaco)</td><td>2009</td><td>Gran Chaco share of national deforestation CO2 emissions</td><td>75</td><td>percent</td><td>public</td><td>Paruelo J. et al. 2009 EIAAc bosques subtropicales</td><td></td><td>75% of 20875 GgC/yr = approx 15656 GgC/yr from Gran Chaco</td></tr>
+<tr><td>GC023</td><td>0</td><td>Paruelo et al.</td><td>Argentina (Gran Chaco — derived)</td><td>2009</td><td>Gran Chaco CO2 from deforestation (derived)</td><td>15656</td><td>GgC/year</td><td>inferred</td><td>Paruelo J. et al. 2009 EIAAc bosques subtropicales</td><td></td><td>Derived: 20875 x 0.75; inferred from published percentage</td></tr>
+<tr><td>GC024</td><td>0</td><td>Paruelo et al.</td><td>Argentina (Chaco-Salteño)</td><td>2009</td><td>Soil cover reduction from erosion (water and wind)</td><td>50</td><td>percent (midpoint of 40-60% range)</td><td>public</td><td>Paruelo J. et al. 2009 EIAAc bosques subtropicales</td><td></td><td>Range 40-60% stated in source; midpoint used as metric value; erosion follows vegetation clearance</td></tr>
+<tr><td>GC025</td><td>0</td><td>Paruelo et al.</td><td>Argentina (Gran Chaco)</td><td>2009</td><td>Water regulation service status</td><td>degraded</td><td>qualitative</td><td>public</td><td>Paruelo J. et al. 2009 EIAAc bosques subtropicales</td><td></td><td>Higher evaporation rates; groundwater pollution from nutrients and agrochemicals documented</td></tr>
+<tr><td>GC026</td><td>0</td><td>Fundación Vida Silvestre / WWF</td><td>Argentina (Gran Chaco)</td><td>2024</td><td>Total Gran Chaco area (all countries)</td><td>107000000</td><td>hectares</td><td>public</td><td>Fundación Vida Silvestre Argentina</td><td>https://granchaco.vidasilvestre.org.ar/</td><td>Argentina 65 Mha (60.4%); Paraguay 30 Mha (28%); Bolivia 12 Mha (11.4%); Brazil 140000 ha (0.1%)</td></tr>
+<tr><td>GC027</td><td>0</td><td>Fundación Vida Silvestre / WWF</td><td>Argentina (Gran Chaco)</td><td>2024</td><td>Argentine Gran Chaco formally protected</td><td>5874474</td><td>hectares</td><td>public</td><td>Fundación Vida Silvestre Argentina</td><td>https://granchaco.vidasilvestre.org.ar/</td><td>9% of total Argentine Chaco; Chaco Seco 3917434 ha; Chaco Humedo 554719 ha; Esteros del Ibera 1402321 ha</td></tr>
+<tr><td>GC028</td><td>0</td><td>Fundación Vida Silvestre / WWF</td><td>Argentina (Gran Chaco)</td><td>2024</td><td>Argentine Gran Chaco protection rate</td><td>9</td><td>percent</td><td>public</td><td>Fundación Vida Silvestre Argentina</td><td>https://granchaco.vidasilvestre.org.ar/</td><td>Only 9% under formal protection; 91% exposed to conversion risk</td></tr>
+<tr><td>GC029</td><td>0</td><td>Fundación Vida Silvestre / WWF</td><td>Argentina (Gran Chaco)</td><td>2024</td><td>Ramsar wetland sites in Argentine Gran Chaco</td><td>4</td><td>sites</td><td>public</td><td>Fundación Vida Silvestre Argentina</td><td>https://granchaco.vidasilvestre.org.ar/</td><td>Bañados del Rio Dulce y Laguna de Mar Chiquita; Humedales de Chaco; Pilcomayo; Lagunas y Esteros del Ibera</td></tr>
+<tr><td>GC030</td><td>0</td><td>Fundación Vida Silvestre / WWF</td><td>Argentina (Gran Chaco)</td><td>2024</td><td>National Parks and Reserves in Argentine Gran Chaco</td><td>12</td><td>parks/reserves</td><td>public</td><td>Fundación Vida Silvestre Argentina</td><td>https://granchaco.vidasilvestre.org.ar/</td><td>7 in Chaco Seco; 3 in Chaco Humedo; 2 in Esteros del Ibera</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

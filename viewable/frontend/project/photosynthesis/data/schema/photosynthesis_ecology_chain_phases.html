@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photosynthesis Ecology Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Photosynthesis Ecology Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>photosynthesis_ecology_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">8</span> / 8
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>ecological_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>carbon_fixation_rate<span class="sort-indicator"></span></th>
+<th>o2_evolution_rate<span class="sort-indicator"></span></th>
+<th>biomass_contribution<span class="sort-indicator"></span></th>
+<th>sequestration_potential<span class="sort-indicator"></span></th>
+<th>efficiency_metric<span class="sort-indicator"></span></th>
+<th>efficiency_value<span class="sort-indicator"></span></th>
+<th>stress_failure_mode<span class="sort-indicator"></span></th>
+<th>stress_metric<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Light Harvesting</td><td>Photon energy capture</td><td>µmol photons m-2 s-1 absorbed</td><td>Indirect (enables all downstream)</td><td>Indirect (enables all downstream)</td><td>Enables all biomass production</td><td>Enables all sequestration</td><td>Absorptance of PAR</td><td>0.85</td><td>Non-photochemical quenching (NPQ): photoprotective thermal dissipation reduces effective energy transfer under excess light; high-light stress decreases Fv/Fm and NPQ activation</td><td>NPQ coefficient (qN): 0 to 1 scale; Fv/Fm depression below 0.83</td><td>POPULATED</td><td>Phase 0 is the gate for the entire system. Absorptance ~0.85 sets the upper bound on all downstream processes. Under shade adaptation antenna size increases; under high light NPQ activated to protect PSII.</td></tr>
+<tr><td>1</td><td>Photosystem II</td><td>Oxygen evolution; electron release</td><td>µmol O2 m-2 s-1</td><td>Supplies electrons for all carbon fixation</td><td>28 µmol O2 m-2 s-1 at saturation</td><td>Foundation of net primary productivity</td><td>Proportional to net GPP (O2 = CO2 on molar basis)</td><td>Maximum quantum yield of PSII (Fv/Fm)</td><td>0.83</td><td>PSII photoinhibition: D1 protein oxidative damage under excess light; Mn4CaO5 cluster disruption under Mn deficiency; donor-side inhibition by Ca2+ or Cl- depletion</td><td>Fv/Fm depression rate under high light (hours); D1 protein turnover rate (molecules per PSII per hour)</td><td>POPULATED</td><td>O2 evolution is the most directly measurable ecological output of photosynthesis. Standard gas exchange and fluorescence measurements provide both O2 and quantum yield simultaneously.</td></tr>
+<tr><td>2</td><td>Electron Transport Chain</td><td>Proton gradient for ATP; electron carrier reduction</td><td>µmol e- m-2 s-1; mV pmf</td><td>Indirect (energizes Calvin cycle)</td><td>Indirect (feeds electrons to PSI)</td><td>Determines ATP and NADPH available for biomass synthesis</td><td>Determines energetic efficiency of carbon fixation</td><td>Linear electron flow rate; cytochrome b6f turnover</td><td>150 e- complex-1 s-1</td><td>State transitions: antenna rebalancing between PSII and PSI limits linear flow efficiency under fluctuating light; cytochrome b6f rate-limitation under cold temperatures (&lt;10°C); cyclic vs linear electron flow balance</td><td>Fraction of cyclic electron flow (CEF/LEF ratio); pmf collapse under cold stress</td><td>POPULATED</td><td>The electron transport chain is a well-measured intermediate. Its rate-limiting role (cytochrome b6f) makes it a primary target for understanding whole-chain carbon flux limitations.</td></tr>
+<tr><td>3</td><td>Photosystem I</td><td>NADPH production; reductant for biosynthesis</td><td>µmol NADPH m-2 s-1</td><td>Energizes Rubisco and Calvin cycle</td><td>Indirect</td><td>NADPH feeds N assimilation and fatty acid synthesis beyond carbon fixation</td><td>Reductant for chloroplast biosynthesis contributes to overall plant biomass</td><td>PSI quantum yield Y(I)</td><td>0.80</td><td>Acceptor-side limitation: NADP+ depletion when Calvin cycle slow (drought); PSI photoinhibition under fluctuating light (rare but permanent damage); ferredoxin:thioredoxin reductase failure affects dark enzyme regulation</td><td>PSI quantum yield Y(NA) and Y(ND) partitioning; PSI photoinhibition assay (P700 recovery kinetics)</td><td>POPULATED</td><td>PSI is more resistant to photoinhibition than PSII under most conditions. Acceptor-side limitation (NADP+ depletion) is the most common ecological stress signal at this phase.</td></tr>
+<tr><td>4</td><td>ATP Synthase</td><td>ATP production; energy currency for growth</td><td>µmol ATP m-2 s-1</td><td>ATP drives carbon fixation in Calvin cycle</td><td>Indirect</td><td>ATP fuels all biosynthetic processes linked to growth; direct driver of RuBP regeneration</td><td>ATP drives carboxylation efficiency; insufficient ATP increases photorespiratory carbon loss</td><td>H+/ATP ratio; ATP synthesis rate</td><td>4.67 H+ per ATP (spinach)</td><td>Drought: pmf dissipation via passive H+ leak increases as membranes dehydrate; cold stress reduces membrane fluidity and H+ conductance; salt stress reduces ΔpH component</td><td>CF0 conductance coefficient gH+ (pmf dissipation rate); ATP/NADPH ratio deviation from 1.28</td><td>POPULATED</td><td>ATP synthase activity is tightly regulated and rarely the primary bottleneck under optimal conditions. Under drought or salt stress it becomes a significant limitation as pmf is destabilized.</td></tr>
+<tr><td>5</td><td>Calvin Cycle Carbon Fixation</td><td>Net CO2 assimilation; primary carbon sequestration</td><td>µmol CO2 m-2 s-1</td><td>20 µmol CO2 m-2 s-1 (C3 25°C saturating light 380 ppm CO2)</td><td>Enabled by Rubisco activity</td><td>Rubisco activity determines gross biomass carbon input</td><td>Net carbon sequestration per leaf area; annual yield linked directly to An</td><td>Net CO2 assimilation rate (An); Rubisco carboxylation rate (Vc)</td><td>25.0 µmol CO2 m-2 s-1 (gross Vc at saturation)</td><td>Photorespiration: CO2 release ~25% of gross fixation at 25°C 21% O2; temperature sensitivity critical: Sc/o falls with T so photorespiration increases sharply above 30°C; drought-induced stomatal closure raises CO2/O2 ratio inside leaf and amplifies photorespiration; CO2 substrate limitation at low atmospheric CO2</td><td>Photorespiration rate (Rd + Rp); Rubisco activation state (%); stomatal conductance gs (mmol H2O m-2 s-1)</td><td>POPULATED</td><td>Phase 5 is the key ecological bottleneck. Photorespiration under current atmosphere wastes ~25-30% of light energy captured at Phase 0-4. This is the primary reason C4 and CAM plants outperform C3 under warm dry conditions.</td></tr>
+<tr><td>6</td><td>Calvin Cycle Reduction</td><td>G3P synthesis; RuBP regeneration; carbon skeleton supply</td><td>µmol G3P m-2 s-1</td><td>Consumes fixed carbon budget (3 ATP 2 NADPH per CO2)</td><td>Indirect (determines how much fixed CO2 becomes biomass)</td><td>G3P is the immediate precursor to all plant biomass compounds</td><td>G3P export to cytosol enables sucrose and export carbon; starch for storage</td><td>G3P yield per CO2 fixed; ATP/NADPH utilization efficiency</td><td>0.93 (fraction of 3-PGA that reaches G3P vs lost to photorespiratory bypass)</td><td>Pi limitation: low cytosolic Pi traps G3P in chloroplast; inhibits Calvin cycle turnover (feedback inhibition of ADP-glucose pyrophosphorylase); cold-induced Pi limitation from reduced sucrose synthesis and export</td><td>Triose phosphate utilization (TPU) limitation flag; cytosolic Pi concentration; starch synthesis rate as overflow indicator</td><td>POPULATED</td><td>TPU limitation (triose phosphate utilization limitation) is a distinct and measurable phase bottleneck. When sucrose synthesis is too slow to consume G3P the Calvin cycle backs up. Common under high CO2 or cold temperatures.</td></tr>
+<tr><td>7</td><td>Carbon Export and Sugar Synthesis</td><td>Sucrose and starch production; phloem loading; sink supply</td><td>µmol C m-2 s-1 exported</td><td>Enables all plant growth and ecosystem carbon flows</td><td>Indirect</td><td>Export of sucrose to phloem fuels growth throughout the plant; starch remobilization sustains respiration overnight</td><td>Net ecosystem carbon balance depends on export vs respiration partitioning</td><td>Carbon export efficiency (export rate / An)</td><td>0.75 (fraction of fixed carbon eventually exported to sinks)</td><td>Sink limitation: when growth is slow (cold; nutrient stress) sucrose accumulates; feedback inhibition reduces An via starch accumulation and Pi trapping; phloem loading gene expression responds to temperature; night temperature determines starch remobilization rate</td><td>Starch/sucrose ratio at end of photoperiod; export efficiency (exported C / fixed C); NPP response to sink strength manipulations</td><td>PARTIAL</td><td>Phase 7 export regulation is partially opaque. In vivo phloem loading rates are difficult to measure non-invasively. Sink strength feedback on source photosynthesis is a major unresolved regulatory mechanism with large implications for crop yield.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

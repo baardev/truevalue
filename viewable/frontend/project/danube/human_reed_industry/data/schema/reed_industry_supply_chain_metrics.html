@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reed Industry Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Reed Industry Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>reed_industry_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">25</span> / 25
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>annual_harvest_permits_issued_ha</td><td>42000</td><td>ha</td><td>public</td><td>DDBRA Annual Harvest Permit Database 2022</td><td>https://www.ddbra.ro</td><td>Annual area licensed for commercial reed harvest across DDBRA sustainable use and buffer zones; most transparent element of the chain</td></tr>
+<tr><td>2</td><td>0</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>annual_harvest_quota_allocated_kt</td><td>200</td><td>kt</td><td>public</td><td>DDBRA Management Plan Quota Setting 2022</td><td>https://www.ddbra.ro</td><td>Total harvest quota allocated across all permit zones; 560 kt sustainable yield but only 200 kt commercially achievable given market constraints</td></tr>
+<tr><td>3</td><td>0</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>permit_compliance_rate_pct</td><td>88</td><td>percent</td><td>public</td><td>DDBRA Annual Enforcement Report 2022</td><td>https://www.ddbra.ro</td><td>Share of licensed operations compliant with permit conditions; 88% well above fisheries 72% due to DDBRA enforcement visibility</td></tr>
+<tr><td>4</td><td>0</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>core_zone_protected_ha</td><td>87500</td><td>ha</td><td>public</td><td>DDBRA Zoning Management Plan 2022</td><td>https://www.ddbra.ro</td><td>Permanently protected core zone area; commercial harvest strictly prohibited; primary biodiversity refuge for 320+ dependent species</td></tr>
+<tr><td>5</td><td>1</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>annual_harvest_actual_kt</td><td>140</td><td>kt/yr</td><td>public</td><td>DDBRA Annual Production Report 2022</td><td>https://www.ddbra.ro</td><td>Actual annual harvest; 70% of allocated quota of 200 kt and only 25% of 560 kt sustainable yield; constrained by market demand not ecology</td></tr>
+<tr><td>6</td><td>1</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>harvesting_machines_active</td><td>65</td><td>count</td><td>public</td><td>DDBRA Equipment Registration 2022</td><td>https://www.ddbra.ro</td><td>Active mechanical harvesters (Ladog cutters and amphibious machines) permitted in DDBRA zone; predominantly SC Deltaprod fleet</td></tr>
+<tr><td>7</td><td>1</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>avg_harvest_efficiency_t_machine_day</td><td>12</td><td>t/machine-day</td><td>public</td><td>SC Deltaprod operational data cited in DDBRA Annual Report 2022</td><td>https://www.ddbra.ro</td><td>Mean mechanical harvest throughput per machine per operating day; constrained by terrain and ice conditions</td></tr>
+<tr><td>8</td><td>1</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>winter_ice_access_days_current</td><td>38</td><td>days</td><td>public</td><td>DDBRA Climatological Record 2022</td><td>https://www.ddbra.ro</td><td>Mean annual days with sufficient ice cover for machinery access; down from 52 days in 1990 at 1.8 days/yr reduction due to climate warming</td></tr>
+<tr><td>9</td><td>1</td><td>DDBRA</td><td>Romania</td><td>2023-01-01</td><td>winter_ice_access_trend_days_per_yr</td><td>1.8</td><td>days/yr reduction</td><td>public</td><td>DDBRA Climate Impact Assessment 2023</td><td>https://www.ddbra.ro</td><td>Rate of decline in winter ice access days per year; at current rate ice access will fall below 20 days/yr by 2040 unless alternative access developed</td></tr>
+<tr><td>10</td><td>2</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>thatching_grade_share_pct</td><td>35</td><td>percent</td><td>public</td><td>DDBRA Value Chain Assessment 2022</td><td>https://www.ddbra.ro</td><td>Share of total harvest volume meeting thatching quality standards; 65% downgraded to bulk biomass due to mixed-quality harvesting</td></tr>
+<tr><td>11</td><td>2</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>thatching_equivalent_price_eur_per_tonne</td><td>285</td><td>EUR/tonne</td><td>public</td><td>European Thatching Federation price survey 2022</td><td>https://www.thatch.org</td><td>Effective price per tonne for thatching-quality reed when sold as bundled product; 6.8x premium over bulk biomass price</td></tr>
+<tr><td>12</td><td>2</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>bulk_biomass_price_eur_per_tonne</td><td>42</td><td>EUR/tonne</td><td>public</td><td>DDBRA market price data 2022</td><td>https://www.ddbra.ro</td><td>Price per tonne for bulk reed sold as biomass energy substrate; mulch; or reed board raw material; low value captures most of harvest</td></tr>
+<tr><td>13</td><td>2</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>processing_facilities_count</td><td>8</td><td>count</td><td>public</td><td>DDBRA Concession Register 2022</td><td>https://www.ddbra.ro</td><td>Number of active processing and bundling facilities for Danube Delta reed; predominantly operated by SC Deltaprod and 3 private operators</td></tr>
+<tr><td>14</td><td>3</td><td>European Thatching Federation</td><td>EU</td><td>2022-01-01</td><td>thatching_reed_export_kt_yr</td><td>49</td><td>kt/yr</td><td>public</td><td>European Thatching Federation Trade Statistics 2022</td><td>https://www.thatch.org</td><td>Annual Danube Delta thatching-quality reed export volume to European and UK markets; largest single source globally</td></tr>
+<tr><td>15</td><td>3</td><td>UK Thatch Advisors Committee</td><td>UK</td><td>2022-01-01</td><td>uk_market_share_of_danube_exports_pct</td><td>42</td><td>percent</td><td>public</td><td>UK Thatch Advisors Committee Import Statistics 2022</td><td>https://www.thatch.org</td><td>UK share of Danube Delta thatching reed exports; UK has strictest sustainability requirements; 42% of export value</td></tr>
+<tr><td>16</td><td>3</td><td>European Thatching Federation</td><td>EU</td><td>2022-01-01</td><td>certification_standard_exists</td><td>0</td><td>binary 0/1</td><td>public</td><td>European Thatching Federation certification review 2022</td><td>https://www.thatch.org</td><td>No reed-specific sustainability certification standard exists anywhere in the world; ad hoc buyer audits only; limits premium market access</td></tr>
+<tr><td>17</td><td>3</td><td>Market Survey</td><td>EU/UK</td><td>2022-01-01</td><td>price_premium_certified_vs_uncertified_est_pct</td><td>25</td><td>percent</td><td>inferred</td><td>Buyer survey data from European Thatching Federation 2022</td><td>https://www.thatch.org</td><td>Estimated price premium that certified sustainable reed would command vs uncertified; based on buyer willingness-to-pay survey</td></tr>
+<tr><td>18</td><td>3</td><td>Market Survey</td><td>EU/UK</td><td>2022-01-01</td><td>forgone_revenue_from_certification_gap_eur_mn_yr</td><td>12</td><td>EUR million/yr</td><td>inferred</td><td>DDBRA value chain analysis 2022; thatching export value x 25% premium</td><td>https://www.ddbra.ro</td><td>Revenue forgone annually due to absence of certification standard; could be captured immediately once standard established and first audits complete</td></tr>
+<tr><td>19</td><td>4</td><td>World Bank</td><td>Romania</td><td>2022-01-01</td><td>seasonal_worker_income_eur_per_season</td><td>1850</td><td>EUR/season</td><td>public</td><td>World Bank Romania Rural Livelihoods Assessment 2022</td><td>https://www.worldbank.org</td><td>Average seasonal income per worker from 8-week reed harvest season; important supplement for Tulcea/Constanta rural households</td></tr>
+<tr><td>20</td><td>4</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>ddbra_concession_revenue_eur_mn_yr</td><td>3.2</td><td>EUR million/yr</td><td>public</td><td>DDBRA Annual Financial Statement 2022</td><td>https://www.ddbra.ro</td><td>Revenue from reed harvest concession fees; funds approximately 18% of DDBRA annual operating budget</td></tr>
+<tr><td>21</td><td>4</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>conservation_reinvestment_ratio_pct</td><td>18</td><td>percent</td><td>public</td><td>DDBRA Annual Report 2022</td><td>https://www.ddbra.ro</td><td>Share of harvest sector revenue reinvested in habitat management and monitoring; above fisheries (8%) but below 25% benchmark</td></tr>
+<tr><td>22</td><td>4</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>total_sector_revenue_eur_mn_yr</td><td>38</td><td>EUR million/yr</td><td>public</td><td>DDBRA Economic Assessment 2022</td><td>https://www.ddbra.ro</td><td>Total reed industry revenues including thatching; bulk biomass; reed board; and mulch; at current 140 kt harvest and 35% thatching grade</td></tr>
+<tr><td>23</td><td>1</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>harvest_labour_seasonal_workers</td><td>820</td><td>persons/season</td><td>public</td><td>DDBRA Labour Registration 2022</td><td>https://www.ddbra.ro</td><td>Registered seasonal harvest workers; plus 3680 in processing and transport giving total 4500 FTE equivalent per season</td></tr>
+<tr><td>24</td><td>0</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>actual_harvest_as_pct_sustainable_quota</td><td>25</td><td>percent</td><td>public</td><td>DDBRA Harvest Utilisation Report 2022</td><td>https://www.ddbra.ro</td><td>Current harvest (140 kt) as share of maximum sustainable yield (560 kt); demonstrates market and logistics constraint rather than ecological limit</td></tr>
+<tr><td>25</td><td>3</td><td>DDBRA</td><td>Romania</td><td>2022-01-01</td><td>market_access_score</td><td>0.42</td><td>index 0-1</td><td>inferred</td><td>DDBRA market access assessment; European Thatching Federation data 2022</td><td>https://www.ddbra.ro</td><td>Index measuring effective access to premium thatching markets; 0.42 reflects friction from absence of certification; fragmented buyer relationships</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

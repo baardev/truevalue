@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Econ History Phase Interactions</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Econ History Phase Interactions</h1>
+        <p class="subtitle">CSV viewer generated from <strong>econ_history_phase_interactions.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">9</span> / 9
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>from_phase<span class="sort-indicator"></span></th>
+<th>to_phase<span class="sort-indicator"></span></th>
+<th>interaction_type<span class="sort-indicator"></span></th>
+<th>d_coupling<span class="sort-indicator"></span></th>
+<th>c_coupling<span class="sort-indicator"></span></th>
+<th>balance_transfer<span class="sort-indicator"></span></th>
+<th>crisis_trigger<span class="sort-indicator"></span></th>
+<th>constraint_propagation<span class="sort-indicator"></span></th>
+<th>visibility<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>1</td><td>paradigm_displacement</td><td>0.60</td><td>0.70</td><td>partial</td><td>commodity_money_displaces_barter</td><td>medium</td><td>Low</td><td>Coinage absorbs and formalizes the weight-standard C outputs of Phase 0. Gift network D constraints are not fully dissolved.</td></tr>
+<tr><td>1</td><td>2</td><td>institutional_layering</td><td>0.55</td><td>0.75</td><td>partial</td><td>roman_collapse_and_church_continuity</td><td>medium</td><td>Low-Medium</td><td>Roman commercial law structures (C from Phase 1) are absorbed into canon law and merchant custom. Empire administration D dissolves but is replaced by church and guild D.</td></tr>
+<tr><td>2</td><td>3</td><td>scale_shift</td><td>0.70</td><td>0.80</td><td>direct</td><td>printing_press_and_state_consolidation</td><td>high</td><td>Medium</td><td>Double-entry bookkeeping C from Phase 2 directly enables state finance and joint-stock instruments. Usury D is partially resolved by new legal fictions (commenda partnership).</td></tr>
+<tr><td>3</td><td>4</td><td>paradigm_inversion</td><td>0.50</td><td>0.85</td><td>direct</td><td>industrial_revolution_invalidates_bullionist_doctrine</td><td>medium</td><td>Medium</td><td>Joint-stock and national debt C from Phase 3 is absorbed into classical theory&#x27;s treatment of capital. Bullionist D is analytically demolished by Smith and Hume.</td></tr>
+<tr><td>4</td><td>5</td><td>methodological_revolution</td><td>0.40</td><td>0.90</td><td>direct</td><td>mathematical_tools_available_continental_europe</td><td>low</td><td>High</td><td>Comparative advantage and price theory C from Phase 4 is re-derived in utility terms by marginalists. Labor D (labor theory of value) is dissolved by marginal utility. Clean break.</td></tr>
+<tr><td>5</td><td>6</td><td>crisis_driven_replacement</td><td>0.30</td><td>0.85</td><td>partial</td><td>great_depression_1929_unemployment_persistence</td><td>high</td><td>High</td><td>Equilibrium framework D from Phase 5 becomes a constraint (cannot explain unemployment). Marginalist micro C survives as the foundation for Keynesian macro. N collapses at Phase 5.</td></tr>
+<tr><td>6</td><td>7</td><td>stress_response</td><td>0.70</td><td>0.80</td><td>partial</td><td>stagflation_1973_1979</td><td>high</td><td>High</td><td>Keynesian fiscal tools C from Phase 6 survive but are subordinated. Bretton Woods D collapses 1971. Multiplier theory D is challenged by rational expectations critique.</td></tr>
+<tr><td>7</td><td>8</td><td>consolidation</td><td>0.80</td><td>0.85</td><td>direct</td><td>berlin_wall_fall_and_ussr_collapse_1989</td><td>low</td><td>High</td><td>Monetarist and deregulation C from Phase 7 is institutionalized as Washington Consensus. Keynesian D is reduced to a residual. Rational expectations D becomes mainstream.</td></tr>
+<tr><td>8</td><td>9</td><td>systemic_failure</td><td>0.20</td><td>0.60</td><td>partial</td><td>global_financial_crisis_2008</td><td>critical</td><td>High</td><td>Efficient market H and DSGE D from Phase 8 are falsified. C outputs (financial engineering instruments) become toxic. No clear replacement N has emerged. Child N is pending.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

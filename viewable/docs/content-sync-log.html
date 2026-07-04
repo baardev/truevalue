@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Content Sync Log</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Content Sync Log</h1>
+        <p class="subtitle">Generated from <strong>content-sync-log.json</strong> (JSON)</p>
+      </div>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>change_type</th><th>date</th><th>description</th><th>files_updated</th><th>json_regenerated</th><th>notes</th><th>pdfs_rebuilt</th></tr></thead>
+          <tbody>
+            <tr><td>tvpci</td><td>2026-05-10</td><td>Resolved Phase 8 / R_p inconsistency: adopted parallel recycling observable model (TVPCI-R + B_chain) as canonical across all Tier 1 TVPCI documents</td><td>[&quot;docnav/Repos/intra/TVPCI/TVPCI_FOUNDATION.md&quot;, &quot;docnav/Repos/intra/TVPCI/TVPCI_FOUNDATION_SIMPLE.md&quot;, &quot;docnav/.ai_notes/concept_notes/tvpci.md&quot;, &quot;docnav/.ai_notes/document_notes/tvpci_foundation.md&quot;, &quot;docnav/.ai_notes/document_notes/tvpci_specification.md&quot;]</td><td>False</td><td>Paper 2 (2_supply-chain-transparency-tvpci.md) was already fully aligned with the R_p parallel model including B_chain formula in Section 8.7 and role assignment in Sections 3.3 and 8.7. TVPCI_FOUNDATION_INTRO.md was already aligned. Research papers 3-6 had no Phase 8 or recycling references. Frontend files (recycling_analysis.html, gold_recycling_ui.json, etc.) were already updated in a prior session per the tvpci-r_recycling_integration_plan.tex.</td><td>[]</td></tr><tr><td>pdi</td><td>2026-05-10</td><td>Extended PDI instrument to support recycling chain type: added chain_type field, primary_chain_link, reentry_primary_phase, and C5_reentry_documented; created gold recycling chain PDI instance</td><td>[&quot;docnav/Repos/intra/PDI/PDI_TEMPLATE.yaml&quot;, &quot;docnav/Repos/intra/PDI/PDI_MATERIAL_AGNOSTIC_PHASE_MAPPING_PROTOCOL.md&quot;, &quot;docnav/Repos/intra/PDI/PDI.html&quot;, &quot;frontend/project/gold/data/PDI_gold_recycling_2026.yaml&quot;, &quot;docs/document-registry.yaml&quot;]</td><td>False</td><td>PDI template is now v1.1. Three new fields added: chain_type (forward|recycling|ecosystem), primary_chain_link block (recycling only: names the primary chain and re-entry phases), reentry_primary_phase per phase in Module 3 (null for forward chains), C5_reentry_documented in Module 4 (recycling only, max opacity score becomes 5). HTML form updated with conditional chain_type selector, A0b primary_chain_link block, C5 opacity question, and updated scoring logic. Gold recycling PDI has 5 phases (R0 Collection through R4 Re-entry Delivery), with Phase R4 carrying reentry_primary_phase: [4, 5]. All data PROVISIONAL. Phase 8 placeholder removed from template Module 3.</td><td>[]</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="footer">
+        Table: 2 row(s), 7 column(s). Nested values are shown as JSON text.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

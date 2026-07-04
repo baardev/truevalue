@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Training Experiments</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Training Experiments</h1>
+        <p class="subtitle">Generated from <strong>training_experiments.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;row2&quot;: {
+    &quot;baseline_mean&quot;: 3.173193923632304,
+    &quot;baseline_std&quot;: 0.047704691846948914,
+    &quot;tholonic_mean&quot;: 3.159801413615545,
+    &quot;tholonic_std&quot;: 0.04217930077228709,
+    &quot;delta_pct&quot;: 0.4220514200855688,
+    &quot;steps_to_target_baseline&quot;: {
+      &quot;4.5&quot;: 50,
+      &quot;4.0&quot;: 50,
+      &quot;3.7&quot;: 50
+    },
+    &quot;steps_to_target_tholonic&quot;: {
+      &quot;4.5&quot;: 50,
+      &quot;4.0&quot;: 50,
+      &quot;3.7&quot;: 50
+    },
+    &quot;verdict&quot;: &quot;TREND ~ — marginal improvement (0.01–0.05 nats)&quot;
+  },
+  &quot;row3&quot;: {
+    &quot;depth_results&quot;: {
+      &quot;2&quot;: {
+        &quot;condition&quot;: &quot;baseline&quot;,
+        &quot;n_layers&quot;: 2,
+        &quot;seed&quot;: 42,
+        &quot;steps&quot;: [
+          50,
+          100,
+          150,
+          200,
+          250,
+          300,
+          350,
+          400,
+          450,
+          500
+        ],
+        &quot;val_loss&quot;: [
+          2.707749682664871,
+          2.5494624435901643,
+          2.4926345467567446,
+          2.4627387702465056,
+          2.4222633838653564,
+          2.391501325368881,
+          2.3590634644031523,
+          2.3087914645671845,
+          2.272061359882355,
+          2.2182134330272674
+        ],
+        &quot;steps_to_target&quot;: {
+          &quot;4.5&quot;: 50,
+          &quot;4.0&quot;: 50,
+          &quot;3.7&quot;: 50
+        },
+        &quot;final_val_loss&quot;: 2.2182134330272674
+      },
+      &quot;4&quot;: {
+        &quot;condition&quot;: &quot;baseline&quot;,
+        &quot;n_layers&quot;: 4,
+        &quot;seed&quot;: 42,
+        &quot;steps&quot;: [
+          50,
+          100,
+          150,
+          200,
+          250,
+          300,
+          350,
+          400,
+          450,
+          500
+        ],
+        &quot;val_loss&quot;: [
+          2.6465373396873475,
+          2.519490420818329,
+          2.465755194425583,
+          2.4467937350273132,
+          2.3982267558574675,
+          2.365914011001587,
+          2.3253593742847443,
+          2.241187846660614,
+          2.1753622114658357,
+          2.1149168610572815
+        ],
+        &quot;steps_to_target&quot;: {
+          &quot;4.5&quot;: 50,
+          &quot;4.0&quot;: 50,
+          &quot;3.7&quot;: 50
+        },
+        &quot;final_val_loss&quot;: 2.1149168610572815
+      },
+      &quot;6&quot;: {
+        &quot;condition&quot;: &quot;baseline&quot;,
+        &quot;n_layers&quot;: 6,
+        &quot;seed&quot;: 42,
+        &quot;steps&quot;: [
+          50,
+          100,
+          150,
+          200,
+          250,
+          300,
+          350,
+          400,
+          450,
+          500
+        ],
+        &quot;val_loss&quot;: [
+          2.581959140300751,
+          2.484463322162628,
+          2.435887265205383,
+          2.4060983419418336,
+          2.381106621026993,
+          2.3177008390426637,
+          2.242860186100006,
+          2.15817591547966,
+          2.1258307099342346,
+          2.115454488992691
+        ],
+        &quot;steps_to_target&quot;: {
+          &quot;4.5&quot;: 50,
+          &quot;4.0&quot;: 50,
+          &quot;3.7&quot;: 50
+        },
+        &quot;final_val_loss&quot;: 2.115454488992691
+      },
+      &quot;8&quot;: {
+        &quot;condition&quot;: &quot;baseline&quot;,
+        &quot;n_layers&quot;: 8,
+        &quot;seed&quot;: 42,
+        &quot;steps&quot;: [
+          50,
+          100,
+          150,
+          200,
+          250,
+          300,
+          350,
+          400,
+          450,
+          500
+        ],
+        &quot;val_loss&quot;: [
+          2.581445735692978,
+          2.483873760700226,
+          2.4249088943004606,
+          2.392922043800354,
+          2.32807776927948,
+          2.2868222177028654,
+          2.197428661584854,
+          2.1412228524684904,
+          2.1829325020313264,
+          2.220060610771179
+        ],
+        &quot;steps_to_target&quot;: {
+          &quot;4.5&quot;: 50,
+          &quot;4.0&quot;: 50,
+          &quot;3.7&quot;: 50
+        },
+        &quot;final_val_loss&quot;: 2.220060610771179
+      },
+      &quot;12&quot;: {
+        &quot;condition&quot;: &quot;baseline&quot;,
+        &quot;n_layers&quot;: 12,
+        &quot;seed&quot;: 42,
+        &quot;steps&quot;: [
+          50,
+          100,
+          150,
+          200,
+          250,
+          300,
+          350,
+          400,
+          450,
+          500
+        ],
+        &quot;val_loss&quot;: [
+          2.5610758483409883,
+          2.470868092775345,
+          2.4093442261219025,
+          2.380229675769806,
+          2.3141082406044005,
+          2.265870547294617,
+          2.1833376944065095,
+          2.190616697072983,
+          2.249000871181488,
+          2.337549239397049
+        ],
+        &quot;steps_to_target&quot;: {
+          &quot;4.5&quot;: 50,
+          &quot;4.0&quot;: 50,
+          &quot;3.7&quot;: 50
+        },
+        &quot;final_val_loss&quot;: 2.337549239397049
+      }
+    },
+    &quot;best_depth&quot;: 4,
+    &quot;best_loss&quot;: 2.1149168610572815,
+    &quot;H0&quot;: 36.342962533201124,
+    &quot;HL&quot;: 17.04021316174209,
+    &quot;ratio&quot;: 2.1327762856157624,
+    &quot;pred_depth&quot;: 1.5739940542594533,
+    &quot;error_pct&quot;: 60.65014864351367,
+    &quot;verdict&quot;: &quot;DOES NOT SUPPORT ✗ — off by 60.7%&quot;
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

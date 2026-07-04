@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Econ History Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Econ History Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>econ_history_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">30</span> / 30
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>epoch<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>3000 BCE</td><td>earliest_written_accounts_count</td><td>5000</td><td>clay tablets</td><td>public</td><td>British Museum Mesopotamian Collection</td><td>https://www.britishmuseum.org/</td><td>Approximate count of surviving administrative tablets from Uruk period</td></tr>
+<tr><td>2</td><td>0</td><td>3000 BCE</td><td>commodity_types_in_exchange</td><td>12</td><td>types</td><td>inferred</td><td>Pollanyi Trade and Market in Early Empires 1957</td><td></td><td>Grain barley silver and livestock documented in Mesopotamian tablets</td></tr>
+<tr><td>3</td><td>1</td><td>400 BCE</td><td>coin_minting_states_count</td><td>30</td><td>city-states</td><td>public</td><td>Kraay Archaic and Classical Greek Coins 1976</td><td></td><td>Approximate number of Greek city-states with independent coinage</td></tr>
+<tr><td>4</td><td>1</td><td>100 CE</td><td>roman_trade_routes_documented</td><td>50</td><td>routes</td><td>public</td><td>Miller The Spice Trade of the Roman Empire 1969</td><td></td><td>Overland and maritime routes documented in Roman sources</td></tr>
+<tr><td>5</td><td>1</td><td>350 BCE</td><td>economic_philosophy_texts</td><td>3</td><td>major texts</td><td>public</td><td>Stanford Encyclopedia of Philosophy - Ancient Economic Thought</td><td>https://plato.stanford.edu/</td><td>Aristotle Politics Oikonomika and Xenophon Oeconomicus</td></tr>
+<tr><td>6</td><td>2</td><td>1397</td><td>deposit_banking_institutions_florence</td><td>8</td><td>institutions</td><td>public</td><td>de Roover The Rise and Decline of the Medici Bank 1963</td><td></td><td>Major Florentine banking houses operating c. 1400</td></tr>
+<tr><td>7</td><td>2</td><td>1494</td><td>accounting_treatise_publication</td><td>1</td><td>foundational text</td><td>public</td><td>Pacioli Summa de Arithmetica 1494</td><td></td><td>Luca Pacioli&#x27;s double-entry bookkeeping codification</td></tr>
+<tr><td>8</td><td>2</td><td>1300</td><td>champagne_fair_annual_attendance</td><td>tens of thousands</td><td>merchants</td><td>secondary</td><td>Moore The Fairs of Medieval England 1985</td><td></td><td>Peak period of Champagne fair circuit c. 1250-1320</td></tr>
+<tr><td>9</td><td>3</td><td>1602</td><td>voc_capital_raised_guilders</td><td>6400000</td><td>guilders</td><td>public</td><td>Gelderblom de Jong Jonker 2013 VOC share capital</td><td>https://dx.doi.org/10.1017/S002205071200065X</td><td>Initial share capital of VOC 1602 as first publicly traded joint-stock company</td></tr>
+<tr><td>10</td><td>3</td><td>1694</td><td>bank_of_england_initial_capital</td><td>1200000</td><td>GBP</td><td>public</td><td>Bank of England History</td><td>https://www.bankofengland.co.uk/</td><td>Founding capital of Bank of England 1694</td></tr>
+<tr><td>11</td><td>3</td><td>1700</td><td>mercantilist_treatises_published</td><td>40</td><td>texts</td><td>secondary</td><td>Magnusson Mercantilism The Shaping of an Economic Language 1994</td><td></td><td>Approximate number of major mercantilist texts published 1500-1776</td></tr>
+<tr><td>12</td><td>4</td><td>1776</td><td>wealth_of_nations_editions_by_1800</td><td>9</td><td>editions</td><td>public</td><td>Glasgow Edition of Works of Adam Smith 1976</td><td></td><td>Number of editions of Wealth of Nations published by 1800 indicating diffusion</td></tr>
+<tr><td>13</td><td>4</td><td>1848</td><td>political_economy_chairs_uk</td><td>6</td><td>university chairs</td><td>secondary</td><td>Kadish The Oxford Economists in the Late Nineteenth Century 1982</td><td></td><td>Approximate number of political economy chairs at UK universities by 1850</td></tr>
+<tr><td>14</td><td>4</td><td>1817</td><td>ricardian_comparative_advantage_countries_cited</td><td>2</td><td>countries</td><td>public</td><td>Ricardo Principles of Political Economy 1817</td><td></td><td>England and Portugal as original illustration of comparative advantage</td></tr>
+<tr><td>15</td><td>5</td><td>1890</td><td>economics_phd_programs_usa</td><td>8</td><td>programs</td><td>secondary</td><td>Coats The American Economics Association 1985</td><td></td><td>Approximate number of PhD programs in economics in the USA by 1900</td></tr>
+<tr><td>16</td><td>5</td><td>1895</td><td>economic_journal_founding</td><td>1</td><td>journal</td><td>public</td><td>Royal Economic Society</td><td>https://www.res.org.uk/</td><td>Economic Journal founded 1891 as first English-language professional economics journal</td></tr>
+<tr><td>17</td><td>5</td><td>1920</td><td>economics_departments_us_universities</td><td>50</td><td>departments</td><td>secondary</td><td>Barber A History of Economic Thought 1967</td><td></td><td>Approximate count of autonomous economics departments in US universities by 1920</td></tr>
+<tr><td>18</td><td>6</td><td>1936</td><td>general_theory_translations</td><td>15</td><td>languages</td><td>public</td><td>Cambridge University Press General Theory editions</td><td></td><td>Number of language translations of Keynes General Theory by 1960</td></tr>
+<tr><td>19</td><td>6</td><td>1944</td><td>bretton_woods_attending_nations</td><td>44</td><td>nations</td><td>public</td><td>IMF History of the IMF</td><td>https://www.imf.org/</td><td>Delegates at Bretton Woods Conference July 1944</td></tr>
+<tr><td>20</td><td>6</td><td>1953</td><td>national_accounts_adopting_countries</td><td>20</td><td>countries</td><td>public</td><td>UN System of National Accounts 1953</td><td></td><td>Countries adopting UN System of National Accounts by 1953</td></tr>
+<tr><td>21</td><td>7</td><td>1979</td><td>us_federal_funds_rate_peak</td><td>20.0</td><td>percent</td><td>public</td><td>Federal Reserve Historical Data</td><td>https://www.federalreserve.gov/</td><td>Federal funds rate peak during Volcker disinflation June 1981</td></tr>
+<tr><td>22</td><td>7</td><td>1980</td><td>inflation_rate_usa</td><td>13.5</td><td>percent</td><td>public</td><td>US Bureau of Labor Statistics</td><td>https://www.bls.gov/</td><td>US CPI inflation rate 1980 motivating monetarist policy shift</td></tr>
+<tr><td>23</td><td>7</td><td>1976</td><td>lucas_critique_citations_by_2000</td><td>5000</td><td>academic citations</td><td>public</td><td>Google Scholar Lucas 1976 Econometrica</td><td></td><td>Approximate citation count of Lucas (1976) indicating paradigm impact</td></tr>
+<tr><td>24</td><td>8</td><td>1989</td><td>washington_consensus_policy_conditions</td><td>10</td><td>conditions</td><td>public</td><td>Williamson What Washington Means by Policy Reform 1989</td><td></td><td>Original ten policy prescriptions of Washington Consensus</td></tr>
+<tr><td>25</td><td>8</td><td>1995</td><td>wto_member_nations</td><td>128</td><td>nations</td><td>public</td><td>WTO History</td><td>https://www.wto.org/</td><td>WTO founding members 1995</td></tr>
+<tr><td>26</td><td>8</td><td>2007</td><td>global_derivatives_notional_value</td><td>683000000000000</td><td>USD</td><td>public</td><td>BIS OTC Derivatives Statistics</td><td>https://www.bis.org/statistics/derstats.htm</td><td>Global OTC derivatives notional outstanding June 2007 pre-crisis peak</td></tr>
+<tr><td>27</td><td>9</td><td>2008</td><td>financial_crisis_gdp_loss_pct</td><td>4.0</td><td>percent of world GDP</td><td>public</td><td>IMF World Economic Outlook 2009</td><td>https://www.imf.org/</td><td>Estimated output loss from 2008-09 global financial crisis</td></tr>
+<tr><td>28</td><td>9</td><td>2014</td><td>piketty_capital_copies_sold</td><td>2500000</td><td>copies</td><td>public</td><td>Harvard University Press Piketty sales data</td><td></td><td>Approximate sales of Capital in the Twenty-First Century by end of 2014</td></tr>
+<tr><td>29</td><td>9</td><td>2020</td><td>covid_fiscal_stimulus_pct_gdp</td><td>16.0</td><td>percent of world GDP</td><td>public</td><td>IMF Fiscal Monitor April 2020</td><td>https://www.imf.org/</td><td>IMF estimate of total fiscal support measures in response to COVID-19</td></tr>
+<tr><td>30</td><td>9</td><td>2024</td><td>active_economic_research_schools</td><td>8</td><td>distinct schools</td><td>inferred</td><td>Survey of heterodox economics literature</td><td></td><td>MMT post-Keynesian complexity behavioral degrowth pluralist mainstream neoclassical coexisting</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

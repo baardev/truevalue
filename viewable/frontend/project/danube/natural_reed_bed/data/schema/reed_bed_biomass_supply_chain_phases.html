@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Reed Bed Biomass Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Reed Bed Biomass Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>reed_bed_biomass_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Hydrological Regime and Nutrient Supply</td><td>Upstream</td><td>Delta water distribution network and arm system</td><td>Seasonal water level fluctuation delivering nutrients and sediment to reed bed</td><td>Spring inundation; nutrient loading; sediment deposition; canal management</td><td>Annual hydrological cycle; multi-decadal morphology</td><td>High</td><td>Seasonal water level amplitude (cm); nutrient load (mg/L N P); sediment deposition</td><td>cm amplitude; mg/L; t/ha/yr</td><td>WFD hydromorphological status requirements; Ramsar water level management targets; Black Sea nutrient load reductions</td><td>Inundation area per season; nutrient delivery to reed substrate; sediment deposition rate</td><td>POPULATED</td><td>145 cm amplitude (was 210 cm; -31%); 380 kt/yr N; 57% sediment reduction from Iron Gate. Structural upstream constraints.</td></tr>
+<tr><td>1</td><td>Reed Establishment and Colonisation</td><td>Upstream</td><td>Inundated or seasonally wet substrate with nutrients</td><td>Established Phragmites australis stand with root mat and initial canopy</td><td>Rhizome spread; shoot establishment; root mat consolidation; vegetative expansion</td><td>2-5 years for new stands; continuous lateral expansion</td><td>Medium</td><td>Reed bed expansion rate (ha/yr); new stand area (ha); rhizome density (g/m2)</td><td>ha/yr expansion; g/m2 rhizome</td><td>Protected zone restrictions; no-harvest buffer zones; invasive species control requirements</td><td>New reed area established; rhizome density; stand colonisation rate on suitable substrate</td><td>PARTIAL</td><td>850 ha/yr expansion; 320 ha/yr loss to subsidence; 530 ha/yr net gain; 0.25 t/ha/yr new vs 0.48 t/ha/yr mature stands</td></tr>
+<tr><td>2</td><td>Biomass Accumulation and Stand Maturation</td><td>Midstream</td><td>Established reed stand entering productive growth phase</td><td>Mature Phragmites stand with maximum standing biomass and high culm quality</td><td>Annual above-ground biomass growth; culm elongation; senescence; root mat deepening</td><td>Annual growing season April-October; peak August</td><td>Medium</td><td>Standing biomass density (t/ha dry weight); culm height (m); culm diameter (mm); culm density</td><td>t/ha dry weight; m height; culms/m2</td><td>Minimum culm quality thresholds for thatching (2.8m height; 7mm diameter); protected zone rules</td><td>Standing biomass accumulated; thatching quality culm fraction; total delta biomass</td><td>PARTIAL</td><td>9.8 t/ha mean biomass; 3.2 m culms; 8.4 mm diameter; 62% thatching quality; 17.2 Mt total delta biomass</td></tr>
+<tr><td>3</td><td>Standing Stock and Harvest-Ready Biomass</td><td>Midstream</td><td>Mature standing reed culms after autumn senescence</td><td>Standing dead culm stock of maximum quality accessible to harvest machinery</td><td>Autumn senescence; winter desiccation increasing culm strength</td><td>October-March; best January-February after hard frost</td><td>Medium</td><td>Harvestable standing stock (tonnes); accessible area (ha); culm quality index</td><td>tonnes accessible; ha accessible; quality index 0-1</td><td>DDBRA core zone access restrictions; seasonal permit conditions; machinery weight limits on ice</td><td>Harvestable standing stock; accessible area; quality-graded potential tonnage</td><td>PARTIAL</td><td>800 kt total harvestable stock; 58000 ha accessible; 87500 ha core zone protected; only 25% of sustainable quota actually harvested</td></tr>
+<tr><td>4</td><td>Ecosystem Service Delivery</td><td>Downstream</td><td>Mature productive reed bed providing multiple simultaneous services</td><td>Provisioned services: biomass; water purification; biodiversity habitat; carbon sequestration; flood buffer</td><td>Service quantification; market access; delivery of multiple co-benefits</td><td>Annual market; continuous habitat and water services</td><td>Medium</td><td>Annual harvest revenue (EUR); water purification value; biodiversity value; carbon credits (tCO2/yr)</td><td>EUR/yr; species count; tCO2/yr</td><td>Market pricing; carbon credit verification standards; TEEB ecosystem service valuation</td><td>Harvest revenue captured; carbon credits issued; biodiversity maintained; water quality service delivered</td><td>PARTIAL</td><td>EUR 38M/yr current capture vs EUR 232M/yr total ecosystem service value; only 16% captured. Phase bottleneck at 74%.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

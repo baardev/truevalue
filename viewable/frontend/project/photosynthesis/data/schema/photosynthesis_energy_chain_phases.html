@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photosynthesis Energy Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Photosynthesis Energy Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>photosynthesis_energy_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">8</span> / 8
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Light Harvesting</td><td>Upstream</td><td>Incident photons (PAR 400-700nm)</td><td>Excitation energy at reaction center</td><td>Antenna pigment absorption and Forster energy transfer to PSII/PSI reaction centers</td><td>Femtoseconds to picoseconds</td><td>High</td><td>Absorbed photon fraction (absorptance) and energy transfer efficiency</td><td>dimensionless (0-1)</td><td>Absorption spectrum constraints; pigment stoichiometry (Chl a/b ~3:1); antenna size (~200-300 Chl per PSII); LHCII trimer geometry; energy funneling gradient</td><td>Excitation energy delivered to P680 and P700; antenna state transitions (State 1/2); non-photochemical quenching activation threshold</td><td>POPULATED</td><td>Absorptance of green leaves ~0.85 of PAR. Energy transfer efficiency within LHCII &gt;95%. Quantum yield of absorbed-to-excited state ~0.90. Reference: Blankenship 2014 Molecular Mechanisms of Photosynthesis.</td></tr>
+<tr><td>1</td><td>Photosystem II</td><td>Upstream</td><td>Excitation energy at P680; H2O as electron donor</td><td>Plastoquinol (PQH2); O2 released; protons into lumen</td><td>Water oxidation at Mn4CaO5 cluster; charge separation at P680; plastoquinone reduction</td><td>Microseconds</td><td>High</td><td>O2 evolution rate; quantum yield of PSII (Fv/Fm)</td><td>µmol O2 m-2 s-1; dimensionless (0-1)</td><td>Excitation threshold ~1.82 eV; Mn4CaO5 cluster stoichiometry; QB binding site specificity; tyrosine Z intermediate; pH gradient requirement; D1 protein turnover under high light</td><td>O2 evolution (4e- per O2); 2 PQH2 per 4 photons; 4 H+ released into lumen per 2 H2O split; feeds electron transport chain</td><td>POPULATED</td><td>Maximum O2 evolution ~25-35 µmol O2 m-2 s-1 in saturating light (spinach). Fv/Fm (max quantum yield PSII) = 0.83 dark-adapted. Reference: Maxwell &amp; Johnson 2000 J Exp Bot.</td></tr>
+<tr><td>2</td><td>Electron Transport Chain</td><td>Midstream</td><td>Plastoquinol (PQH2) from PSII</td><td>Reduced plastocyanin (PC); proton gradient across thylakoid membrane</td><td>Plastoquinol oxidation at cytochrome b6f; Rieske iron-sulfur cluster; plastocyanin reduction; proton pumping (Q-cycle)</td><td>Milliseconds</td><td>High</td><td>Electron transfer rate; proton motive force (pmf)</td><td>µmol e- m-2 s-1; mV</td><td>PQ pool size (~7-15 PQ per PSII); cytochrome b6f rate limitation ~100-200 s-1; pmf threshold for ATP synthase activation; pH gating (low lumenal pH slows cytochrome b6f); antenna state transitions regulated by PQ redox state</td><td>Plastocyanin reduction (feeds PSI); 2 H+ pumped per electron via Q-cycle (total ~4 H+ per 2 electrons passed); thylakoid membrane energization; state transition signals</td><td>POPULATED</td><td>Rate-limiting step of the linear electron flow chain under most conditions. Cytochrome b6f turnover ~100-200 s-1 at 25°C. pmf ~150-200 mV under steady-state illumination. Reference: Cramer et al. 2011 Biochim Biophys Acta.</td></tr>
+<tr><td>3</td><td>Photosystem I</td><td>Midstream</td><td>Reduced plastocyanin; excitation at P700</td><td>Reduced ferredoxin (Fd); NADPH</td><td>Second photochemical reaction; P700 excitation at ~1.77 eV; ferredoxin-NADP+ reductase (FNR) catalysis</td><td>Microseconds</td><td>High</td><td>NADPH production rate; PSI quantum yield</td><td>µmol NADPH m-2 s-1; dimensionless</td><td>P700 excitation threshold ~1.77 eV; ferredoxin specificity; NADP+ availability (limits when Calvin cycle slow); FNR binding; cyclic vs linear electron flow balance; iron-sulfur cluster geometry (Fx Fa Fb)</td><td>Reduced ferredoxin (feeds FNR and other reductases); NADPH synthesis at ~1 per 2 electrons; cyclic electron flow option (feeds proton gradient without net NADPH); nitrite reduction; sulfite reduction side reactions</td><td>POPULATED</td><td>PSI quantum yield (Y(I)) ~0.75-0.85 under moderate light. NADPH production ~8-12 µmol m-2 s-1 in steady-state C3 leaf. Reference: Klughammer &amp; Schreiber 1994 Planta.</td></tr>
+<tr><td>4</td><td>ATP Synthase</td><td>Midstream</td><td>Proton motive force (pmf) across thylakoid membrane</td><td>ATP; H2O released into stroma</td><td>Rotary chemiosmotic phosphorylation; c-ring rotation driven by H+ flux; gamma subunit rotation drives ADP phosphorylation</td><td>Milliseconds</td><td>High</td><td>ATP synthesis rate; H+/ATP stoichiometry</td><td>µmol ATP m-2 s-1; dimensionless</td><td>pmf threshold ~3-4 H+ per ATP synthesized (c14/CF1CF0 in spinach); ΔpH component dominance (~70%); Δψ component (~30%); ADP and Pi availability; CF1 regulatory subunit (thioredoxin-mediated light activation)</td><td>ATP synthesis (3 ATP per ~3-4 H+); thylakoid membrane discharge; stroma alkalinization (pH rises ~0.5 during illumination); regulatory coupling to Calvin cycle demand</td><td>POPULATED</td><td>ATP/NADPH ratio produced by linear electron flow ~1.28 (H+/ATP = 14/3 = 4.67 in spinach). Actual demand for C3 cycle = 1.5 ATP/NADPH. Cyclic flow supplements ATP. Reference: Allen 2003 Science.</td></tr>
+<tr><td>5</td><td>Calvin Cycle Carbon Fixation</td><td>Downstream</td><td>CO2 (from atmosphere via stomata); RuBP</td><td>2x 3-phosphoglycerate (3-PGA)</td><td>CO2 fixation by RuBisCO (Rubisco); competitive oxygenation reaction (photorespiration); RuBP carboxylase/oxygenase chemistry</td><td>Seconds</td><td>Medium</td><td>Net CO2 assimilation rate (An); Rubisco carboxylation rate (Vc)</td><td>µmol CO2 m-2 s-1</td><td>CO2 Km ~9-10 µM (chloroplast); O2 competition (Kc/Ko specificity factor Sc/o ~80 mol/mol at 25°C); RuBP regeneration capacity; Rubisco activation state (~60-90%); Mg2+ and CO2 requirement for activation; stomatal conductance (CO2 diffusion limit)</td><td>CO2 fixed as 3-PGA; but ~25% of CO2 is lost via photorespiration under current atmosphere (21% O2); 2-phosphoglycolate recycled through photorespiratory pathway at energy cost; net carbon gain per unit light absorbed</td><td>POPULATED</td><td>Net CO2 assimilation An = 15-25 µmol CO2 m-2 s-1 (sunlit C3 leaf at 380 ppm CO2 25°C). Rubisco oxygenation/carboxylation ratio Vo/Vc ~0.25 at 25°C 21% O2. Reference: Farquhar et al. 1980 Planta.</td></tr>
+<tr><td>6</td><td>Calvin Cycle Reduction</td><td>Downstream</td><td>3-PGA; ATP and NADPH from light reactions</td><td>Glyceraldehyde-3-phosphate (G3P); RuBP regenerated</td><td>ATP-dependent phosphorylation of 3-PGA; NADPH-dependent reduction to G3P; phosphoribulokinase (PRK) regenerates RuBP</td><td>Seconds</td><td>High</td><td>G3P production rate; ATP and NADPH consumption per CO2 fixed</td><td>µmol G3P m-2 s-1</td><td>ATP stoichiometry (3 ATP per CO2 in linear flow); NADPH stoichiometry (2 NADPH per CO2); PRK specificity for RuBP; phosphate translocator (TPT) capacity; GAPDH (NADPH-dependent) specificity; regulatory thioredoxin control of PRK and GAPDH</td><td>G3P export to cytosol for sucrose synthesis; RuBP regenerated (5 G3P consumed per 3 CO2 fixed); starch synthesis signal (excess G3P); Pi recycled back to stroma</td><td>POPULATED</td><td>Stoichiometry well defined: 3 ATP + 2 NADPH consumed per CO2 fixed into G3P. G3P production tracks An directly. Reference: Raines 2003 Photosynth Res.</td></tr>
+<tr><td>7</td><td>Carbon Export and Sugar Synthesis</td><td>Downstream</td><td>G3P (triose phosphate) in stroma; ADP-glucose for starch</td><td>Sucrose in cytosol; starch granules in chloroplast; phloem-loaded sucrose</td><td>Triose phosphate export via plastid phosphate translocator (TPT); cytosolic sucrose synthesis (SPS); chloroplastic starch synthesis (AGPase); phloem loading</td><td>Minutes to hours</td><td>Medium</td><td>Net carbon export rate; sucrose:starch partitioning ratio</td><td>µmol C m-2 s-1; dimensionless</td><td>TPT transporter capacity and Pi availability; cytosolic Pi:triose-P ratio governs starch/sucrose balance; AGPase allosteric regulation (3-PGA activation; Pi inhibition); SPS phosphorylation state; sucrose feedback on phloem loading; night/day carbon remobilization cycles</td><td>Sucrose synthesis and export to phloem; starch synthesis and nocturnal remobilization; carbon allocated to growth and respiration; regulation of source-sink balance; feedback on upstream photosynthesis rate</td><td>PARTIAL</td><td>Sucrose synthesis rate estimated from starch+sucrose accumulation ~10-20 µmol C m-2 s-1 in illuminated spinach leaf. TPT flux ~3-5 µmol triose-P m-2 s-1. Export regulation partially opaque at phloem loading step. Reference: Stitt et al. 2010 Plant Cell Environ.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

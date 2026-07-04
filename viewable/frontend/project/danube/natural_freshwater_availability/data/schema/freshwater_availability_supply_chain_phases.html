@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Freshwater Availability Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Freshwater Availability Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>freshwater_availability_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Atmospheric Moisture and Evaporation Source</td><td>Source</td><td>Water vapour (Atlantic and Mediterranean origin)</td><td>Moisture-laden air masses over basin</td><td>Evaporation and atmospheric transport</td><td>Seasonal</td><td>High</td><td>Precipitable water column</td><td>kg/m2</td><td>atmospheric moisture content; seasonal circulation patterns; source region evaporation rates</td><td>precipitation flux delivery to basin; moisture recycling feedback</td><td>POPULATED</td><td>Atlantic westerlies and Mediterranean moisture recycling are primary sources. ERA5 provides continuous hourly global coverage. Measurable via satellite and radiosonde. Opacity score: 1.</td></tr>
+<tr><td>1</td><td>Precipitation over Basin</td><td>Input</td><td>Moisture-laden air masses</td><td>Rain and snowfall deposited on land surface</td><td>Condensation and precipitation</td><td>Seasonal (peak May-June; secondary Oct-Nov)</td><td>High</td><td>Total annual precipitation volume</td><td>km3/yr</td><td>orographic constraints (Alps; Carpathians); seasonal circulation regime; storm track positioning</td><td>multiple output pathways: runoff; infiltration; evapotranspiration; snow storage</td><td>POPULATED</td><td>Mean annual precipitation ~800mm over 801463 km2 = ~641 km3/yr total input. Alpine headwaters receive 1200-2000mm. ERA5 and GPM provide near-real-time basin estimates. National rain gauges provide ground truth. Opacity score: 1.</td></tr>
+<tr><td>2</td><td>Catchment Runoff and River Channel Flow</td><td>Midstream</td><td>Precipitation on land surface and snowmelt</td><td>Surface water in river network</td><td>Hydrological routing through catchment and river channel</td><td>Days to weeks (event scale); seasonal (regime scale)</td><td>High</td><td>River discharge</td><td>m3/s</td><td>channel capacity constraints; dam regulation (Iron Gate I and II); land cover and soil moisture state</td><td>Danube network delivers to multiple demand sectors: irrigation; navigation; urban supply; ecology</td><td>POPULATED</td><td>Mean annual discharge at mouth 6500 m3/s (206 km3/yr runoff). GRDC maintains dense gauge network. Flow significantly altered by Iron Gate dams (1972 and 1984). Runoff coefficient 0.32. Opacity score: 1.</td></tr>
+<tr><td>3</td><td>Groundwater Recharge and Aquifer Storage</td><td>Storage</td><td>Infiltrating precipitation and river bank filtration</td><td>Stored groundwater in floodplain and karst aquifers</td><td>Infiltration through soil and vadose zone</td><td>Weeks to decades (aquifer residence time)</td><td>Medium</td><td>Groundwater storage change</td><td>km3</td><td>aquifer recharge rate limitations; clay layer confining conditions; seasonal water table variability</td><td>floodplain aquifer supply to wells; baseflow contribution to rivers during dry periods</td><td>PARTIAL</td><td>Groundwater provides ~35% of basin supply. GRACE-FO measures basin-scale storage anomalies monthly at ~300km resolution. National borehole networks provide point measurements but coverage is uneven across 19 countries. Austria and Hungary best-documented. Opacity score: 2.</td></tr>
+<tr><td>4</td><td>Available Flow to Beneficiaries</td><td>Delivery</td><td>Surface water and groundwater within accessible range</td><td>Accessible freshwater resource for human and ecological use</td><td>Natural conveyance to points of use; seasonal availability</td><td>Continuous (seasonal variation)</td><td>High</td><td>Total renewable freshwater availability per capita</td><td>m3/person/yr</td><td>seasonal low-flow periods limiting availability; allocation competition between sectors and countries</td><td>81 million people; agricultural irrigation; industrial use; ecological flow requirements; navigation</td><td>POPULATED</td><td>206 km3 / 81 million people = ~2543 m3/person/yr. Above UN water scarcity threshold (1700 m3) but with significant seasonal and spatial variation. Drought risk increasing under climate change particularly in lower basin. AQUASTAT provides annual country-level statistics. Opacity score: 1.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

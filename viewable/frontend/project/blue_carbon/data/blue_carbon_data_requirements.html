@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blue Carbon Data Requirements</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Blue Carbon Data Requirements</h1>
+        <p class="subtitle">CSV viewer generated from <strong>blue_carbon_data_requirements.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">36</span> / 36
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>requirement_id<span class="sort-indicator"></span></th>
+<th>data_category<span class="sort-indicator"></span></th>
+<th>required_metric<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>layer<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>status<span class="sort-indicator"></span></th>
+<th>why_needed<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>BC_REQ_001</td><td>project_scope</td><td>project_name</td><td>text</td><td>methodology</td><td></td><td>private</td><td>missing</td><td>Defines the analysis boundary</td><td>Needed before any claims can be assigned to a project</td></tr>
+<tr><td>BC_REQ_002</td><td>project_scope</td><td>project_geography</td><td>polygon_or_coordinates</td><td>supply_chain</td><td>0</td><td>public_or_private</td><td>missing</td><td>Defines physical and ecological boundary</td><td>Required for habitat and carbon baseline mapping</td></tr>
+<tr><td>BC_REQ_003</td><td>project_scope</td><td>habitat_type</td><td>text</td><td>supply_chain</td><td>0</td><td>public_or_private</td><td>missing</td><td>Identifies mangrove seagrass coral or mixed coastal system</td><td>Needed to select valid MRV methodology</td></tr>
+<tr><td>BC_REQ_004</td><td>project_scope</td><td>project_area</td><td>hectares</td><td>supply_chain</td><td>0</td><td>public_or_private</td><td>missing</td><td>Defines scale denominator</td><td>Needed for carbon livelihood and cost metrics</td></tr>
+<tr><td>BC_REQ_005</td><td>baseline_ecology</td><td>baseline_habitat_condition</td><td>index_or_class</td><td>supply_chain</td><td>0</td><td>public_or_private</td><td>missing</td><td>Defines starting ecological state</td><td>Needed before restoration or conservation contribution can be measured</td></tr>
+<tr><td>BC_REQ_006</td><td>baseline_ecology</td><td>carbon_stock_baseline</td><td>tCO2e_per_ha</td><td>supply_chain</td><td>0</td><td>public_or_private</td><td>missing</td><td>Defines starting carbon stock</td><td>Required for carbon benefit calculation</td></tr>
+<tr><td>BC_REQ_007</td><td>baseline_ecology</td><td>sequestration_rate</td><td>tCO2e_per_ha_per_year</td><td>supply_chain</td><td>1</td><td>public_or_private</td><td>missing</td><td>Defines expected carbon flow</td><td>Required for revenue and outcome claims</td></tr>
+<tr><td>BC_REQ_008</td><td>baseline_ecology</td><td>permanence_risk</td><td>index_or_class</td><td>supply_chain</td><td>1</td><td>public_or_private</td><td>missing</td><td>Tests durability of carbon benefit</td><td>Needed for buffer and credit quality</td></tr>
+<tr><td>BC_REQ_009</td><td>baseline_ecology</td><td>leakage_risk</td><td>index_or_class</td><td>supply_chain</td><td>1</td><td>public_or_private</td><td>missing</td><td>Tests displacement of harm</td><td>Needed for credible carbon accounting</td></tr>
+<tr><td>BC_REQ_010</td><td>fisheries</td><td>baseline_fishery_yield</td><td>kg_per_year</td><td>supply_chain</td><td>1</td><td>public_or_private</td><td>missing</td><td>Measures fisheries co-benefit</td><td>Needed if fisheries benefits are part of value story</td></tr>
+<tr><td>BC_REQ_011</td><td>biodiversity</td><td>biodiversity_baseline</td><td>index_or_species_count</td><td>supply_chain</td><td>1</td><td>public_or_private</td><td>missing</td><td>Measures ecological co-benefit</td><td>Needed for ecosystem-service claim validation</td></tr>
+<tr><td>BC_REQ_012</td><td>livelihoods</td><td>households_supported</td><td>count</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Measures social benefit scope</td><td>Needed for community benefit and investor reporting</td></tr>
+<tr><td>BC_REQ_013</td><td>livelihoods</td><td>women_livelihoods_supported</td><td>count</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Measures gender-linked livelihood impact</td><td>Needed if gender or women livelihood KPIs are used</td></tr>
+<tr><td>BC_REQ_014</td><td>governance</td><td>land_or_resource_rights</td><td>text</td><td>methodology</td><td></td><td>public_or_private</td><td>missing</td><td>Defines legal authority and benefit rights</td><td>Needed for Character and Collateral assessment</td></tr>
+<tr><td>BC_REQ_015</td><td>governance</td><td>community_consent_status</td><td>text</td><td>methodology</td><td></td><td>private</td><td>missing</td><td>Tests legitimacy and execution risk</td><td>Needed for Character and long-term coherence</td></tr>
+<tr><td>BC_REQ_016</td><td>governance</td><td>project_counterparties</td><td>text</td><td>financial_abstraction</td><td></td><td>private</td><td>missing</td><td>Identifies issuer sponsor verifier buyers and guarantors</td><td>Needed for coupon and due-diligence design</td></tr>
+<tr><td>BC_REQ_017</td><td>mrv</td><td>mrv_methodology</td><td>text</td><td>methodology</td><td></td><td>public_or_private</td><td>missing</td><td>Defines measurement protocol</td><td>Needed before any outcome-linked coupon can be considered</td></tr>
+<tr><td>BC_REQ_018</td><td>mrv</td><td>verification_provider</td><td>text</td><td>methodology</td><td></td><td>private</td><td>missing</td><td>Defines independent assurance</td><td>Needed for investor credibility</td></tr>
+<tr><td>BC_REQ_019</td><td>mrv</td><td>monitoring_frequency</td><td>interval</td><td>methodology</td><td></td><td>private</td><td>missing</td><td>Defines reporting cadence</td><td>Needed for KPI trigger design</td></tr>
+<tr><td>BC_REQ_020</td><td>mrv</td><td>remote_sensing_method</td><td>text</td><td>methodology</td><td></td><td>public_or_private</td><td>missing</td><td>Defines spatial monitoring approach</td><td>Needed for carbon and habitat change evidence</td></tr>
+<tr><td>BC_REQ_021</td><td>market_access</td><td>buyer_channels</td><td>text</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Tests market pathway</td><td>Needed to convert ecosystem outputs into revenue</td></tr>
+<tr><td>BC_REQ_022</td><td>market_access</td><td>community_market_access_model</td><td>text</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Tests whether local stewards can participate</td><td>Needed for capacity and benefit-flow analysis</td></tr>
+<tr><td>BC_REQ_023</td><td>revenue</td><td>carbon_credit_price</td><td>USD_per_tCO2e</td><td>value_chain</td><td></td><td>public_or_private</td><td>missing</td><td>Defines potential carbon revenue</td><td>Do not use until volume and eligibility are known</td></tr>
+<tr><td>BC_REQ_024</td><td>revenue</td><td>ecosystem_service_revenue_sources</td><td>text</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Identifies non-carbon revenue possibilities</td><td>May include fisheries tourism resilience or avoided-loss value</td></tr>
+<tr><td>BC_REQ_025</td><td>revenue</td><td>revenue_sharing_model</td><td>percent_or_formula</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Defines distribution of value</td><td>Needed for community benefit and fairness analysis</td></tr>
+<tr><td>BC_REQ_026</td><td>costs</td><td>restoration_cost</td><td>USD_per_ha</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Defines capital need</td><td>Needed for capacity and financing analysis</td></tr>
+<tr><td>BC_REQ_027</td><td>costs</td><td>mrv_cost</td><td>USD_per_year</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Defines verification burden</td><td>Needed for net benefit and coupon feasibility</td></tr>
+<tr><td>BC_REQ_028</td><td>costs</td><td>operating_cost</td><td>USD_per_year</td><td>value_chain</td><td></td><td>private</td><td>missing</td><td>Defines maintenance burden</td><td>Needed for long-duration viability</td></tr>
+<tr><td>BC_REQ_029</td><td>finance</td><td>financial_mechanism_type</td><td>text</td><td>financial_abstraction</td><td></td><td>private</td><td>missing</td><td>Identifies bond fund credit facility or blended structure</td><td>Needed before coupon options can be evaluated</td></tr>
+<tr><td>BC_REQ_030</td><td>finance</td><td>coupon_structure_options</td><td>text</td><td>financial_abstraction</td><td></td><td>private</td><td>missing</td><td>Identifies candidate coupon structures</td><td>Requires KPI and verification evidence</td></tr>
+<tr><td>BC_REQ_031</td><td>finance</td><td>guarantee_or_credit_enhancement</td><td>text</td><td>financial_abstraction</td><td></td><td>private</td><td>missing</td><td>Tests collateral and risk reduction</td><td>Needed for bankability analysis</td></tr>
+<tr><td>BC_REQ_032</td><td>finance</td><td>concessional_tranche_terms</td><td>text</td><td>financial_abstraction</td><td></td><td>private</td><td>missing</td><td>Tests blended-finance design</td><td>Needed if commercial risk is too high</td></tr>
+<tr><td>BC_REQ_033</td><td>finance</td><td>investor_eligibility_requirements</td><td>text</td><td>financial_abstraction</td><td></td><td>public_or_private</td><td>missing</td><td>Defines market eligibility</td><td>Needed for Consistency or Certainty assessment</td></tr>
+<tr><td>BC_REQ_034</td><td>kpi</td><td>kpi_definitions</td><td>text</td><td>methodology</td><td></td><td>private</td><td>missing</td><td>Defines performance claims</td><td>Needed for all scoring and coupon trigger logic</td></tr>
+<tr><td>BC_REQ_035</td><td>kpi</td><td>kpi_baseline_values</td><td>mixed</td><td>methodology</td><td></td><td>private</td><td>missing</td><td>Defines starting point for KPI movement</td><td>Needed to avoid narrative-only targets</td></tr>
+<tr><td>BC_REQ_036</td><td>kpi</td><td>kpi_trigger_thresholds</td><td>mixed</td><td>financial_abstraction</td><td></td><td>private</td><td>missing</td><td>Defines coupon adjustment logic</td><td>Only valid after KPI definitions and MRV are credible</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

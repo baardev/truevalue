@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lighter System Lifecycle Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Lighter System Lifecycle Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>lighter_system_lifecycle_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">5</span> / 5
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>lifecycle_phase_id<span class="sort-indicator"></span></th>
+<th>lifecycle_phase_name<span class="sort-indicator"></span></th>
+<th>lifecycle_category<span class="sort-indicator"></span></th>
+<th>linked_supply_phases<span class="sort-indicator"></span></th>
+<th>parent_N<span class="sort-indicator"></span></th>
+<th>D_total<span class="sort-indicator"></span></th>
+<th>C_total<span class="sort-indicator"></span></th>
+<th>balance_score<span class="sort-indicator"></span></th>
+<th>N<span class="sort-indicator"></span></th>
+<th>sustainability_index<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Resource Definition &amp; Material Sourcing</td><td>Pre-operation</td><td>0</td><td>Refined commodity feedstocks</td><td>265</td><td>250</td><td>83.0</td><td>214</td><td>0.30</td><td>Medium</td><td>Global LPG reserve adequacy; PP resin monomer supply sufficiency; ferrocerium alloy availability; steel coil specification; regulatory classification of butane as Class 2.1 dangerous goods; REACH chemical compliance for PP additives</td><td>LPG supply to Chinese petrochemical sector; PP resin pellet delivery to Wenzhou molders; ferrocerium rod stock and steel coil availability to component manufacturers; feedstock price stability index</td><td>Annual feedstock cost per billion lighter units; feedstock supply security index; LPG import dependency ratio for China</td><td>USD/billion units; ratio 0-1; percent import dependency</td><td>public</td><td>WLPGA Annual Report 2023; IEA Oil Market Report 2023; ICIS Polyolefins; China NBS</td><td>POPULATED</td><td>Raw material sourcing is the foundation of the lighter lifecycle. China is highly dependent on Middle East and Russian LPG imports for butane feedstock. PP resin is domestically produced from propylene via steam cracking. Ferrocerium is a minor metals specialty product. The lifecycle constraint is butane price volatility (NYMEX) and geopolitical supply risk (Middle East LPG). Sustainability weakness: butane is a fossil fuel; no sustainable alternative feedstock pathway currently exists at scale. D-C balance 83.0% reflects well-established supply chains with moderate geopolitical price risk.</td></tr>
+<tr><td>1</td><td>Manufacturing &amp; Assembly</td><td>Operations</td><td>1,2</td><td>Operational lighter factory system</td><td>258</td><td>270</td><td>71.0</td><td>187</td><td>0.15</td><td>Low</td><td>ISO 9994 dimensional tolerance compliance for all 30+ components; EN 13869 child-resistance geometry constraints; butane fill specification (4.0±0.2g); crimp torque and seal integrity specification; factory safety regulation (OSHA equivalent; Chinese GB standards); IP restrictions on patented mechanisms</td><td>10 billion units per year assembled and delivered; 400 units/worker/hour throughput; factory gate cost $0.10-$0.15/unit; 3,000 Wenzhou manufacturers competing on micro-margins; component reject rate &lt;2% at Tier-1 factories; labor cost $0.005/unit</td><td>Annual units assembled in China; average factory gate FOB price; unit manufacturing cost decomposition; labor cost as percent of total cost</td><td>billion units/year; USD/unit; USD/unit; percent</td><td>inferred</td><td>CLCA; China NBS Zhejiang; Alibaba OEM; estimated</td><td>PARTIAL</td><td>Manufacturing and assembly is the core lifecycle phase and the most opaque. The 3,000-manufacturer Wenzhou cluster operates on sub-cent margins per unit. This is where the micro-margin optimization described in the project text occurs: wall thickness reduction by fractions of a mm; container packing density optimization; mold redesign to save $0.0001/unit. The lifecycle D-C balance of 71.0% reflects the structural tension: extremely tight D-constraints (ISO tolerances) combined with a fragmented C-contribution landscape (many small manufacturers; no single actor controls assembly volume). Sustainability weakness: high energy intensity of injection molding; no renewable energy transition underway in Wenzhou lighter cluster.</td></tr>
+<tr><td>2</td><td>Distribution &amp; Retail</td><td>Operations</td><td>3,4,5,6,7</td><td>Functioning product distribution system</td><td>256</td><td>242</td><td>84.0</td><td>209</td><td>0.40</td><td>Medium</td><td>ISO 9994/EN 13869 certification required for EU/UK/Canada market access; CPSC 16 CFR 1212 for USA; IMDG Class 2.1 dangerous goods documentation for ocean freight; country of origin labeling; retailer MAP policy compliance; retailer shelf-space allocation</td><td>Global reach: 150+ countries; 10 billion units reaching end consumers annually; US market: ~3 billion units/year; EU market: ~2.5 billion units/year; BIC brand captures 15% of global volume at 67% price premium; generic OEM captures 85% at minimal margin</td><td>Global distribution reach (countries served); US market import volume; EU market import volume; brand vs generic volume split</td><td>count countries; billion units/year; billion units/year; percent</td><td>public</td><td>UN Comtrade HS 9613; BIC Annual Report 2023; NACS SOTI 2023; Drewry WCI</td><td>POPULATED</td><td>Distribution and retail is the phase where the E-layer finding crystallizes. The $0.60 BIC brand premium (coupling ratio 0.60) is the only meaningful abstract value decoupling in the entire supply chain. The physical product is functionally identical across BIC and generic. All other chain economics are tightly coupled to physical cost. This phase also shows the highest transparency (Phase 5 and Phase 7 both High). D-C balance 84.0% reflects a well-functioning logistics and retail system with the primary stress being brand-vs-generic channel conflict.</td></tr>
+<tr><td>3</td><td>Use Phase</td><td>Sustaining stewardship</td><td>7</td><td>Functioning lighter in consumer use</td><td>240</td><td>230</td><td>88.0</td><td>207</td><td>0.60</td><td>High</td><td>ISO 9994 ignition reliability requirement: lighter must ignite on first or second attempt; child-resistance must remain functional throughout useful life; butane pressure must sustain approximately 3,000 ignition strikes; flame height must not exceed 50mm; no fuel leakage after drop test</td><td>Consumer utility: approximately 3,000 ignitions per lighter; average useful life 1-3 weeks (heavy user) to 6 months (occasional user); portability and convenience as primary value driver; single-use design with no refill pathway for non-refillable variants</td><td>Average ignitions per lighter unit; average useful life duration; consumer satisfaction rate (brand loyalty)</td><td>ignitions/unit; weeks/unit; percent</td><td>estimated</td><td>ISO 9994 product specification; BIC product technical data; consumer survey estimates</td><td>POPULATED</td><td>The use phase has high transparency because the physical performance parameters are mandated by ISO 9994 and are testable. BIC publishes product performance claims. Consumer lifecycle is inferred from product specifications. The use phase is characterized by very high D-C balance (88.0%) because the product is engineered to perform reliably within tight ISO bounds. The sustainability weakness is the single-use design: non-refillable lighters are discarded after the butane is exhausted, creating the disposal problem analyzed in Phase 4 of the lifecycle.</td></tr>
+<tr><td>4</td><td>Disposal &amp; Circularity</td><td>Closure and circularity</td><td>(post-use)</td><td>Responsible end-of-life pathway</td><td>220</td><td>190</td><td>62.0</td><td>127</td><td>0.05</td><td>High</td><td>Residual butane hazard (lighter must be fully exhausted before disposal); no household recycling stream accepts butane-filled lighters; lithium recycling exists for battery products but no equivalent for lighter components; landfill classification varies by jurisdiction (lighter is considered hazardous waste if fuel remains)</td><td>Near-zero recycling rate: &gt;99% of disposed lighters go to landfill; PP body is technically recyclable but not collected; steel components are recyclable but not separated; ferrocerium is not recovered; butane vents to atmosphere; no manufacturer take-back program exists at scale</td><td>Lighter recycling rate (percent of units diverted from landfill); estimated plastic waste generated per year; estimated butane emissions per year from disposal</td><td>percent recycled; MT PP/year; MT CO2e/year from butane venting</td><td>inferred</td><td>CPSC disposal guidance; Ellen MacArthur Foundation single-use plastics data; estimated from production volumes</td><td>PARTIAL</td><td>Disposal is the most critical sustainability failure in the lighter lifecycle and the primary bottleneck (balance score 62.0%). The lighter is effectively a non-circular product at scale: no take-back system; no compatible recycling stream; and the presence of residual butane makes the product a hazardous waste. Estimated plastic waste from lighter bodies alone: approximately 50,000 MT PP per year (10 billion units × 5g PP body per unit). Estimated butane venting: approximately 40,000 MT butane/year from incompletely exhausted lighters at disposal. No lighter manufacturer operates a meaningful circular economy program. This is the defining lifecycle finding: the lighter is the canonical example of a commodity optimized for production cost at the complete expense of end-of-life value recovery. The tholonic model confirms: D-C imbalance of 220 vs 190 shows over-constraint (regulatory hazardous classification) combined with near-zero contribution (no circularity infrastructure).</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

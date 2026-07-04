@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<meta name="color-scheme" content="light"/>
+<title>Lithium Battery Supply Chain: Supply and Value Chain Hub</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+    background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 50%, #1a1a2e 100%);
+    min-height: 100vh; padding: 24px; color: #2c3e50;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  .hero {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.28);
+    padding: 40px; margin-bottom: 22px; text-align: center;
+  }
+  .kicker {
+    display: inline-block; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    color: #4a148c; background: #f3e5f5;
+    padding: 6px 14px; border-radius: 999px; margin-bottom: 14px;
+  }
+  h1 { font-size: 36px; font-weight: 300; margin-bottom: 10px; line-height: 1.2; color: #1a1a1a; }
+  .subtitle { font-size: 15px; color: #6c757d; line-height: 1.6; max-width: 760px; margin: 0 auto 8px; }
+  .tag-row { display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 12px; }
+  .tag {
+    font-size: 11px; font-weight: 700; padding: 4px 12px; border-radius: 999px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .tag.purple { background: #f3e5f5; color: #4a148c; }
+  .tag.graphite { background: #eceff1; color: #37474f; }
+  .tag.grid { background: #e3f2fd; color: #0d47a1; }
+  .kpis {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px;
+  }
+  .kpi {
+    background: #f8f9fa; border-radius: 10px; padding: 16px 12px;
+    border-left: 4px solid #6a1b9a;
+  }
+  .kpi.green { border-left-color: #1b5e20; }
+  .kpi.orange { border-left-color: #c0392b; }
+  .kpi-val { font-size: 24px; font-weight: 700; color: #6a1b9a; }
+  .kpi.green .kpi-val { color: #1b5e20; }
+  .kpi.orange .kpi-val { color: #c0392b; }
+  .kpi-lbl { font-size: 11px; color: #6c757d; margin-top: 4px; line-height: 1.3; }
+  .alert-panel {
+    background: #fff3cd; border-left: 5px solid #c0392b;
+    border-radius: 10px; padding: 18px 22px; margin-bottom: 22px;
+  }
+  .alert-panel h3 { color: #c0392b; font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .alert-panel p { font-size: 14px; color: #495057; line-height: 1.6; }
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .card {
+    background: #fff; border-radius: 14px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.18); overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 16px 44px rgba(0,0,0,0.24); }
+  .card-header { padding: 26px 28px 16px; color: #fff; }
+  .card-header.sc { background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%); }
+  .card-header.vc { background: linear-gradient(135deg, #37474f 0%, #62727b 100%); }
+  .card-icon { font-size: 38px; margin-bottom: 8px; }
+  .card-title { font-size: 21px; font-weight: 600; margin-bottom: 6px; }
+  .card-desc { font-size: 13px; opacity: 0.9; line-height: 1.5; }
+  .card-body { padding: 20px 28px 24px; }
+  .card-body ul { list-style: none; margin-bottom: 16px; }
+  .card-body li { font-size: 13px; color: #495057; padding: 5px 0 5px 20px; position: relative; }
+  .card-body li::before { content: "✓"; position: absolute; left: 0; color: #6a1b9a; font-weight: bold; }
+  .btn {
+    display: inline-block; padding: 11px 22px; border-radius: 8px;
+    text-decoration: none; font-weight: 700; font-size: 14px; color: #fff;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .btn.sc { background: linear-gradient(135deg, #4a148c 0%, #6a1b9a 100%); }
+  .btn.vc { background: linear-gradient(135deg, #37474f 0%, #62727b 100%); }
+  .btn:hover { transform: translateY(-2px); box-shadow: 0 8px 20px rgba(0,0,0,0.25); }
+  .sub-links { margin-top: 12px; font-size: 13px; }
+  .sub-links a { color: #6a1b9a; font-weight: 600; text-decoration: none; margin-right: 14px; }
+  .sub-links a:hover { text-decoration: underline; }
+  /* Phase strip */
+  .phase-strip { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .phase-strip h2 { font-size: 14px; font-weight: 700; color: #4a148c; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+  .phases-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; }
+  .phase-cell { text-align: center; }
+  .phase-num { font-size: 22px; font-weight: 800; }
+  .phase-lbl { font-size: 10px; color: #6c757d; margin-top: 3px; line-height: 1.25; }
+  .phase-bar-bg { background: #f0f0f0; border-radius: 4px; height: 8px; margin: 6px 0; overflow: hidden; }
+  .phase-bar-fill { height: 100%; border-radius: 4px; }
+  .phase-balance { font-size: 11px; font-weight: 700; }
+  /* Concentration cards */
+  .conc-card {
+    background: #fff; border-radius: 12px; padding: 20px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    border-top: 4px solid #6a1b9a;
+  }
+  .conc-card .c-icon { font-size: 26px; margin-bottom: 8px; }
+  .conc-card h3 { font-size: 14px; font-weight: 700; color: #1a1a1a; margin-bottom: 6px; }
+  .conc-card .c-val { font-size: 26px; font-weight: 800; color: #6a1b9a; margin-bottom: 4px; }
+  .conc-card p { font-size: 12px; color: #6c757d; line-height: 1.5; }
+  /* Coherence */
+  .coherence-panel { background: #fff; border-radius: 12px; padding: 24px 28px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
+  .coherence-panel h2 { font-size: 14px; font-weight: 700; color: #4a148c; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+  .coherence-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+  .coherence-item { background: #f3e5f5; border-radius: 10px; padding: 16px 10px; text-align: center; }
+  .coherence-name { font-size: 12px; font-weight: 700; color: #4a148c; margin-bottom: 4px; }
+  .coherence-val { font-size: 24px; font-weight: 800; color: #6a1b9a; }
+  .coherence-desc { font-size: 10px; color: #6c757d; margin-top: 4px; line-height: 1.3; }
+  .coherence-zone { font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-top: 5px; display: inline-block; }
+  .zone-coherent { background: #d4edda; color: #155724; }
+  .zone-stressed { background: #fff3cd; color: #856404; }
+  /* Nav */
+  .nav { text-align: center; margin-top: 20px; padding: 16px 0; }
+  .nav a { display: inline-block; color: #fff; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 14px; opacity: 0.85; }
+  .nav a:hover { opacity: 1; text-decoration: underline; }
+  @media (max-width: 700px) { .kpis, .grid, .phases-grid, .coherence-grid { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="kicker">Global: Mining to Second-Life Recycling</div>
+    <h1>🔋 Lithium Battery Supply Chain</h1>
+    <p class="subtitle">
+      Lithium-ion battery chain linking transport decarbonization to grid storage: mining through
+      second-life recycling. 6-phase N-D-C analysis. China holds approximately 85% of global cell
+      production capacity, 85% of cathode active material capacity, and over 90% of anode material
+      capacity. Chain balance 81.5% (Good zone); bottleneck: Phase 1, Mineral Refining and Processing
+      (67.2%), the most concentrated and export-control-exposed stage in the chain.
+    </p>
+    <div class="tag-row">
+      <span class="tag purple">Lithium, Nickel, Cobalt</span>
+      <span class="tag graphite">Graphite Anode</span>
+      <span class="tag purple">Cathode/Anode Materials</span>
+      <span class="tag grid">EV and Grid Storage</span>
+      <span class="tag graphite">Second-Life Recycling</span>
+    </div>
+    <div class="kpis">
+      <div class="kpi">
+        <div class="kpi-val">81.5%</div>
+        <div class="kpi-lbl">System chain balance: Good zone across 6 phases</div>
+      </div>
+      <div class="kpi orange">
+        <div class="kpi-val">67.2%</div>
+        <div class="kpi-lbl">Bottleneck: Phase 1, Mineral Refining and Processing</div>
+      </div>
+      <div class="kpi">
+        <div class="kpi-val">85%</div>
+        <div class="kpi-lbl">China share of global battery cell production capacity (IEA 2025)</div>
+      </div>
+      <div class="kpi green">
+        <div class="kpi-val">&lt;5%</div>
+        <div class="kpi-lbl">Retired EV battery packs formally recycled at scale (PROVISIONAL)</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alert panel -->
+  <div class="alert-panel">
+    <h3>Structural Alert: Midstream Concentration and Export-Control Exposure</h3>
+    <p>
+      The lithium battery chain is not bottlenecked at the mine, it is bottlenecked at the refinery and
+      the materials plant. Upstream mining is geographically distributed across Australia, Chile, and
+      China (lithium), the Democratic Republic of Congo (cobalt), and Indonesia (nickel), together with
+      China (graphite). But midstream processing has consolidated overwhelmingly in China: approximately
+      65% of global lithium refining, 75% of global cobalt refining, and over 90% of global graphite
+      refining. Cathode and anode active material production shows the same pattern, with China holding
+      roughly 85% of cathode and over 90% of anode capacity. This concentration is compounded by
+      documented and ongoing Chinese export restrictions on battery cathode and lithium/graphite
+      processing technology, a structural trade-policy risk that no amount of downstream cell-manufacturing
+      diversification (already underway in the US, EU, Korea, and Japan) can resolve on its own.
+    </p>
+  </div>
+
+  <!-- Phase strip -->
+  <div class="phase-strip">
+    <h2>6-Phase Lithium Battery Supply Chain</h2>
+    <div class="phases-grid">
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#00796b">0</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:92.6%;background:#00796b"></div></div>
+        <div class="phase-balance" style="color:#00796b">92.6%</div>
+        <div class="phase-lbl">Mining</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#e65100">1</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:67.2%;background:#e65100"></div></div>
+        <div class="phase-balance" style="color:#e65100">67.2%</div>
+        <div class="phase-lbl">Mineral Refining ⚠</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#e65100">2</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:72.9%;background:#e65100"></div></div>
+        <div class="phase-balance" style="color:#e65100">72.9%</div>
+        <div class="phase-lbl">Cathode/Anode Materials ⚠</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#00796b">3</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:90.7%;background:#00796b"></div></div>
+        <div class="phase-balance" style="color:#00796b">90.7%</div>
+        <div class="phase-lbl">Cell Manufacturing</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#2e7d32">4</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:87.0%;background:#2e7d32"></div></div>
+        <div class="phase-balance" style="color:#2e7d32">87.0%</div>
+        <div class="phase-lbl">Pack Assembly and Deployment</div>
+      </div>
+      <div class="phase-cell">
+        <div class="phase-num" style="color:#e65100">5</div>
+        <div class="phase-bar-bg"><div class="phase-bar-fill" style="width:78.4%;background:#e65100"></div></div>
+        <div class="phase-balance" style="color:#e65100">78.4%</div>
+        <div class="phase-lbl">Second-Life and Recycling</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Concentration cards -->
+  <div class="grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="conc-card">
+      <div class="c-icon">⛏️</div>
+      <h3>Upstream Mining</h3>
+      <div class="c-val">85%</div>
+      <p>Australia, Chile, and China together mined about 85% of global lithium in 2023. The DRC accounted
+        for roughly 65-70% of global cobalt mining; Indonesia for over half of global nickel mining.</p>
+    </div>
+    <div class="conc-card">
+      <div class="c-icon">🏭</div>
+      <h3>Midstream Refining and Materials</h3>
+      <div class="c-val">65-90%+</div>
+      <p>China refines approximately 65% of global lithium, 75% of global cobalt, and over 90% of global
+        graphite. China also holds approximately 85% of cathode and over 90% of anode material capacity.</p>
+    </div>
+    <div class="conc-card">
+      <div class="c-icon">🔋</div>
+      <h3>Cell Manufacturing and Deployment</h3>
+      <div class="c-val">75-76%</div>
+      <p>China produced more than three-quarters of global lithium-ion battery output in 2024 (up from
+        57% in 2021), though the US, EU, Korea, and Japan hold growing counterweight capacity.</p>
+    </div>
+  </div>
+
+  <!-- Layer cards -->
+  <div class="grid">
+    <div class="card">
+      <div class="card-header sc">
+        <div class="card-icon">🔗</div>
+        <div class="card-title">Supply Chain Analysis</div>
+        <div class="card-desc">6-phase chain from mining through mineral refining, cathode/anode material production, cell manufacturing, pack assembly and deployment, and second-life recycling. Bottleneck at Phase 1 (Mineral Refining, 67.2%) and Phase 2 (Cathode/Anode Materials, 72.9%).</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Phase-level N-D-C analysis (6 phases)</li>
+          <li>Lithium, nickel, cobalt, graphite mining and refining chains</li>
+          <li>Cathode/anode material and cell manufacturing concentration</li>
+          <li>TVPCI-R second-life and recycling return chain</li>
+        </ul>
+        <a class="btn sc" href="supply_chain/index.html">Supply Chain Hub</a>
+        <div class="sub-links">
+          <a href="supply_chain/dashboard.html">Dashboard</a>
+          <a href="supply_chain/project_context.html">Project Context</a>
+          <a href="supply_chain/recycling_analysis.html">Ecological Return</a>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-header vc">
+        <div class="card-icon">💼</div>
+        <div class="card-title">Value Chain Analysis</div>
+        <div class="card-desc">Cost differentials, price decline trends, and financial abstraction (e-score 60.0, Stressed zone). US IRA 45X credits, EU Critical Raw Materials Act, and Minerals Security Partnership funding not yet fully linked to diversification KPIs.</div>
+      </div>
+      <div class="card-body">
+        <ul>
+          <li>Chinese cell prices ~30% cheaper than EU, ~20% cheaper than North America (2024)</li>
+          <li>US IRA Section 45X battery production credits</li>
+          <li>EU Critical Raw Materials Act processing targets</li>
+          <li>Minerals Security Partnership stockpiling and co-investment</li>
+        </ul>
+        <a class="btn vc" href="value_chain/index.html">Value Chain Hub</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Five-model coherence -->
+  <div class="coherence-panel">
+    <h2>Five-Model Coherence: Chain Baseline</h2>
+    <div class="coherence-grid">
+      <div class="coherence-item">
+        <div class="coherence-name">pi (π)</div>
+        <div class="coherence-val">81.5</div>
+        <div class="coherence-desc">Operational balance: chain average across 6 phases</div>
+        <span class="coherence-zone zone-coherent">Coherent</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">phi (φ)</div>
+        <div class="coherence-val">62.0</div>
+        <div class="coherence-desc">Proportional distribution: mining-country value capture vs. midstream</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">sqrt2 (√2)</div>
+        <div class="coherence-val">64.0</div>
+        <div class="coherence-desc">Structural overhead: export licensing and trade-policy risk</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">ln2</div>
+        <div class="coherence-val">78.0</div>
+        <div class="coherence-desc">Growth transformation: ~30% year-over-year cell cost decline</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+      <div class="coherence-item">
+        <div class="coherence-name">e</div>
+        <div class="coherence-val">60.0</div>
+        <div class="coherence-desc">Financial abstraction: IRA 45X, DPA Title III not yet KPI-linked</div>
+        <span class="coherence-zone zone-stressed">Stressed</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:#6c757d;margin-top:14px;font-style:italic;">
+      All scores are PROVISIONAL baselines derived from structural N-D-C analysis of public sources
+      (IEA Global EV Outlook 2025, IEA Global Critical Minerals Outlook 2024, industry reporting).
+      The phi-axis score (62.0) highlights that mining-country value capture is disproportionately small
+      relative to midstream processing value capture, directly echoing this repo's existing analysis of
+      resource-curse dynamics. Phi-derived coherence thresholds: Coherent 80 and above; Stressed 61.8-80;
+      Failure 38.2-61.8; Breakdown below 38.2.
+    </p>
+  </div>
+
+  <!-- Policy context -->
+  <div style="background:#fff;border-radius:12px;padding:24px 28px;margin-bottom:20px;box-shadow:0 4px 16px rgba(0,0,0,0.08);">
+    <h2 style="font-size:14px;font-weight:700;color:#4a148c;text-transform:uppercase;letter-spacing:0.07em;margin-bottom:16px;">Diversification Policy Context</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+      <div style="background:#f3e5f5;border-radius:8px;padding:16px;">
+        <div style="font-size:18px;font-weight:800;color:#4a148c;">US IRA Section 45X</div>
+        <div style="font-size:11px;color:#6c757d;margin-top:4px;">Advanced Manufacturing Production Credit: incentivizes domestic battery cell, module, and critical mineral production</div>
+      </div>
+      <div style="background:#eceff1;border-radius:8px;padding:16px;">
+        <div style="font-size:18px;font-weight:800;color:#37474f;">EU Critical Raw Materials Act</div>
+        <div style="font-size:11px;color:#6c757d;margin-top:4px;">Targets domestic processing capacity for strategic raw materials to reduce single-country dependency</div>
+      </div>
+      <div style="background:#e3f2fd;border-radius:8px;padding:16px;">
+        <div style="font-size:18px;font-weight:800;color:#0d47a1;">Minerals Security Partnership</div>
+        <div style="font-size:11px;color:#6c757d;margin-top:4px;">Allied "friend-shoring" refining investment and strategic stockpiling coordination</div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="nav">
+  <a href="../../../index.html">← Main Homepage</a>
+  <a href="supply_chain/index.html">Supply Chain Hub →</a>
+  <a href="value_chain/index.html">Value Chain Hub →</a>
+</div>
+
+</body>
+</html>

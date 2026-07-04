@@ -1,0 +1,137 @@
+{
+  "_meta": {
+    "generated": "2026-07-02",
+    "material": "global_electricity_grid",
+    "slug": "global_electricity_grid",
+    "region": "Global",
+    "sources": [
+      "IEA Global Energy Review 2025: Electricity (iea.org/reports/global-energy-review-2025/electricity)",
+      "globalelectricity.org (citing IEA data)",
+      "IEA Electricity Grids and Secure Energy Transitions analysis (interconnection queues, permitting delays, storage and demand-response gaps)",
+      "IEA World Energy Outlook: STEPS and NZE 2030/2050 scenario shares",
+      "Cross-reference: frontend/project/grid_ercot_uri (Texas ERCOT Winter Storm Uri failure case study)"
+    ],
+    "note": "Dual-scenario N-D-C baseline: BAU (business as usual, fossil-heavy 2024 generation mix) vs. Mitigation (IEA Net Zero Emissions 2050-aligned high-renewables pathway with grid and storage investment). D/C/balance/N values are fixed inputs per project specification, not recomputed. Formulas: balance = 100 - (|D-C| / max(D,C)) * 100; N = round(sqrt(D*C) * (balance/100)); sustainability = 100 / (|D-C| + 10), a simplified structural derived metric, not a physical measurement.",
+    "arithmetic": {
+      "bau_chain_balance": "(82.1+86.7+74.1+74.5+94.1+83.3+78.0)/7 = 572.8/7 = 81.8285... rounded to 81.8",
+      "bau_average_N": "(208+242+185+177+233+205+172)/7 = 1422/7 = 203.14... rounded to 203.1",
+      "mitigation_chain_balance": "(80.0+85.0+92.0+97.8+92.2+81.5+83.7)/7 = 612.2/7 = 87.4571... rounded to 87.5",
+      "mitigation_average_N": "(200+240+232+226+232+200+187)/7 = 1517/7 = 216.71... rounded to 216.7"
+    }
+  },
+  "entities": {
+    "bau": {
+      "label": "BAU (Business as Usual)",
+      "description": "2024 fossil-heavy global generation mix continued forward without accelerated grid investment: coal 35%, gas 22%, hydro 14%, nuclear 9%, wind 8%, solar 7%, bioenergy/other ~5% of approximately 30,850 TWh generated. Interconnection queue backlogs and insufficient storage buildout remain unresolved, holding Phase 2 (Transmission) and Phase 3 (Balancing and Storage) in the Stressed zone."
+    },
+    "mitigation": {
+      "label": "Mitigation (IEA NZE 2050-aligned)",
+      "description": "Streamlined interconnection permitting reform plus large-scale battery and pumped-hydro storage deployment, consistent with the IEA Net Zero Emissions by 2050 pathway (coal falling to 1% and gas to 3% of generation by 2050; wind rising to 35% and solar to 33%). This is a modelled pathway, not a guaranteed outcome. Only Phase 2 and Phase 3 D/C values are improved in this scenario to isolate the effect of grid and storage investment; other phases are held roughly constant."
+    }
+  },
+  "phase_meta": [
+    {
+      "id": 0,
+      "name": "Fuel and Resource Input",
+      "transparency": "Medium",
+      "transformation": "Coal, gas, and uranium fuel supply plus renewable resource potential (wind, solar, hydro) converted into extractable or harvestable energy inputs for generation.",
+      "bau_note": "Fuel reserves and resource maps are public (IEA, USGS) but site-level extraction contracts are often private. Fossil fuel input still dominates the 2024 mix.",
+      "mitigation_note": "Fossil fuel input share falls as renewable resource harvesting scales toward the NZE 2050 trajectory (wind 35%, solar 33% of generation by 2050)."
+    },
+    {
+      "id": 1,
+      "name": "Generation",
+      "transparency": "High",
+      "transformation": "Fuel and renewable resource inputs converted into electricity by the power plant fleet: thermal (coal, gas, nuclear) and renewables (wind, solar, hydro, bioenergy).",
+      "bau_note": "IEA and national grid operators publish generation-by-source data at high frequency. Coal remained the single largest source in 2024 (35%, approximately 10,587 TWh) for the 50th consecutive year; renewables plus nuclear covered 40% of global generation for the first time.",
+      "mitigation_note": "NZE 2050 pathway shifts the generation mix to wind 35%, solar 33%, hydro 12%, nuclear 12%, with coal falling to 1% and gas to 3%."
+    },
+    {
+      "id": 2,
+      "name": "Transmission",
+      "transparency": "Low-Medium",
+      "transformation": "Generated electricity is stepped up and moved via high-voltage transmission lines and cross-border interconnectors to load centers.",
+      "bau_note": "BOTTLENECK. Interconnection queue backlogs, permitting delays, and cross-border transmission capacity shortfalls documented by IEA Electricity Grids and Secure Energy Transitions analysis are constraints (D) not matched by built transmission capacity (C). Queue data exists per grid operator but is fragmented globally.",
+      "mitigation_note": "Streamlined interconnection permitting reform, grid-enhancing technologies, and HVDC interconnector buildout close the queue backlog, raising balance from 74.1% to an estimated 92.0%."
+    },
+    {
+      "id": 3,
+      "name": "Balancing and Storage",
+      "transparency": "Low-Medium",
+      "transformation": "Frequency response, reserve margins, curtailment management, and battery or pumped-hydro storage balance variable generation against demand in real time.",
+      "bau_note": "BOTTLENECK. Reserve margin and balancing requirements outpace deployed storage and demand-response capacity. Curtailment of solar and wind, a symptom of this gap, is documented by IEA and grid operators (CAISO, ERCOT, National Grid ESO all publish curtailment statistics).",
+      "mitigation_note": "Utility-scale battery storage, demand response and virtual power plant programmes, and pumped-hydro expansion close the balancing gap, raising balance from 74.5% to an estimated 97.8%."
+    },
+    {
+      "id": 4,
+      "name": "Distribution",
+      "transparency": "High",
+      "transformation": "Utility distribution networks step down and deliver power from transmission substations to end consumers.",
+      "bau_note": "Regulated utilities file distribution data with regulators in most jurisdictions. Distribution is one of the strongest phases in the BAU chain.",
+      "mitigation_note": "Distribution balance is held roughly constant in the NZE pathway (92.2% vs 94.1% BAU) since the primary NZE interventions modelled here target transmission and balancing, not distribution."
+    },
+    {
+      "id": 5,
+      "name": "End Use and Demand",
+      "transparency": "Medium-High",
+      "transformation": "Industrial, residential, and commercial consumption of delivered electricity; electrification of transport and heating is raising demand.",
+      "bau_note": "National statistics agencies publish sectoral demand data. Demand growth from electrification adds pressure to Phase 2 and Phase 3.",
+      "mitigation_note": "End-use demand structure is held roughly constant in this analysis to isolate the transmission and storage investment effect (81.5% vs 83.3% BAU, within rounding)."
+    },
+    {
+      "id": 6,
+      "name": "Retirement and Decommissioning",
+      "transparency": "Low-Medium",
+      "transformation": "Retired fossil plant decommissioning (ash ponds, site remediation) and end-of-life renewable asset retirement (wind turbine blades, aging solar panels, batteries).",
+      "bau_note": "Decommissioning liabilities and ash disposal practices are often under-disclosed. This is a documented opacity gap, comparable to gold's Phase 6 vaulting opacity pattern elsewhere in this repository.",
+      "mitigation_note": "Balance improves modestly (83.7% vs 78.0% BAU) as larger renewable-fleet retirement volumes are met with maturing circular economy infrastructure (battery and blade recycling) under the NZE pathway."
+    }
+  ],
+  "phases": {
+    "bau": [
+      {"id": 0, "name": "Fuel and Resource Input", "D": 230, "C": 280, "balance": 82.1, "N": 208, "sustainability": 1.667, "notes": "Coal, gas, uranium fuel supply plus renewable resource potential.", "data_quality": "medium"},
+      {"id": 1, "name": "Generation", "D": 260, "C": 300, "balance": 86.7, "N": 242, "sustainability": 2.0, "notes": "Thermal plus renewable power plant fleet.", "data_quality": "high"},
+      {"id": 2, "name": "Transmission", "D": 290, "C": 215, "balance": 74.1, "N": 185, "sustainability": 1.176, "notes": "BOTTLENECK. High-voltage transmission and interconnection.", "data_quality": "low-medium"},
+      {"id": 3, "name": "Balancing and Storage", "D": 275, "C": 205, "balance": 74.5, "N": 177, "sustainability": 1.25, "notes": "BOTTLENECK. Frequency response, reserve margins, storage.", "data_quality": "low-medium"},
+      {"id": 4, "name": "Distribution", "D": 240, "C": 255, "balance": 94.1, "N": 233, "sustainability": 4.0, "notes": "Utility distribution networks to end consumers.", "data_quality": "high"},
+      {"id": 5, "name": "End Use and Demand", "D": 225, "C": 270, "balance": 83.3, "N": 205, "sustainability": 1.818, "notes": "Industrial, residential, commercial consumption.", "data_quality": "medium-high"},
+      {"id": 6, "name": "Retirement and Decommissioning", "D": 250, "C": 195, "balance": 78.0, "N": 172, "sustainability": 1.538, "notes": "Fossil plant decommissioning and renewable asset retirement.", "data_quality": "low-medium"}
+    ],
+    "mitigation": [
+      {"id": 0, "name": "Fuel and Resource Input", "D": 220, "C": 275, "balance": 80.0, "N": 200, "sustainability": 1.538, "notes": "Renewable resource harvesting share increased.", "data_quality": "medium"},
+      {"id": 1, "name": "Generation", "D": 255, "C": 300, "balance": 85.0, "N": 240, "sustainability": 1.818, "notes": "NZE-aligned generation mix.", "data_quality": "high"},
+      {"id": 2, "name": "Transmission", "D": 250, "C": 230, "balance": 92.0, "N": 232, "sustainability": 3.333, "notes": "Interconnection permitting reform and HVDC buildout applied.", "data_quality": "low-medium"},
+      {"id": 3, "name": "Balancing and Storage", "D": 230, "C": 225, "balance": 97.8, "N": 226, "sustainability": 6.667, "notes": "Utility-scale storage and demand response deployed.", "data_quality": "low-medium"},
+      {"id": 4, "name": "Distribution", "D": 235, "C": 255, "balance": 92.2, "N": 232, "sustainability": 3.333, "notes": "Held roughly constant.", "data_quality": "high"},
+      {"id": 5, "name": "End Use and Demand", "D": 220, "C": 270, "balance": 81.5, "N": 200, "sustainability": 1.667, "notes": "Held roughly constant.", "data_quality": "medium-high"},
+      {"id": 6, "name": "Retirement and Decommissioning", "D": 245, "C": 205, "balance": 83.7, "N": 187, "sustainability": 2.0, "notes": "Improved by maturing circular economy infrastructure.", "data_quality": "low-medium"}
+    ]
+  },
+  "system": {
+    "bau": {
+      "balance": 81.8,
+      "average_N": 203.1,
+      "bottleneck_phase_ids": [2, 3],
+      "interpretation": "The BAU global electricity grid chain scores A+ (81.8% average balance, Good zone). Phase 2 (Transmission, 74.1%) and Phase 3 (Balancing and Storage, 74.5%) are the structural bottlenecks, both in the Stressed zone (61.8-80%). Both are driven by the same underlying pattern documented by IEA: interconnection queue backlogs and permitting delays constrain new transmission capacity (Phase 2), while insufficient storage and demand-response buildout constrains balancing capacity (Phase 3), even as generation-side renewable capacity additions accelerate (approximately 700 GW added in 2024, nearly 80% solar PV). The grid transition is structurally under-permitted and under-financed relative to its generation-side progress."
+    },
+    "mitigation": {
+      "balance": 87.5,
+      "average_N": 216.7,
+      "bottleneck_phase_ids": [],
+      "interpretation": "The mitigation (IEA NZE 2050-aligned) scenario raises chain balance from 81.8% to 87.5% by targeting Phase 2 and Phase 3 alone: streamlined interconnection permitting reform, grid-enhancing technologies, and HVDC interconnector buildout raise Phase 2 balance from 74.1% to 92.0%; utility-scale battery storage, demand response and virtual power plant programmes, and pumped-hydro expansion raise Phase 3 balance from 74.5% to 97.8%. No phase remains below the 80% Coherent floor in this scenario (weakest phase is Phase 0, Fuel and Resource Input, at exactly 80.0%). This scenario is a modelled pathway consistent with IEA NZE 2050 assumptions, not a guaranteed outcome."
+    }
+  },
+  "scenarios": {
+    "baseline": {
+      "label": "BAU baseline (2024), PROVISIONAL",
+      "scores": {
+        "pi": 81.8,
+        "phi": 70.0,
+        "sqrt2": 68.0,
+        "ln2": 75.0,
+        "e": 58.0
+      },
+      "notes": "pi = chain average balance (Coherent zone, >=80). phi = proportional value distribution: transmission and balancing capture disproportionate constraint relative to their share of delivered value (Stressed zone, 61.8-80). sqrt2 = structural overhead: interconnection queue backlogs and permitting delays documented by IEA (Stressed zone). ln2 = growth/transformation: renewable capacity additions are strong (24% YoY solar growth per IEA) but conversion of added capacity into firm, balanced delivered power still lags (Stressed zone, near the Coherent boundary). e = financial abstraction: capacity markets, carbon pricing, and green bonds exist in many jurisdictions but are weakly and inconsistently linked to physical transmission and storage buildout targets (Failure zone by strict phi-derived threshold, <61.8; described qualitatively as the most stressed axis). Mitigation-scenario five-model scores are deferred pending dedicated modelling of financial and market instruments under the NZE pathway; pi alone is known to rise to 87.5 reflecting the improved chain balance."
+    }
+  }
+}

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cocoa Netherlands Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Cocoa Netherlands Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>cocoa_netherlands_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">6</span> / 6
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Port Arrival and EUDR Clearance</td><td>Upstream</td><td>Bagged beans or containerised semi-finished products at sea</td><td>Same commodity cleared through EU customs at Rotterdam/Amsterdam</td><td>EU customs clearance with EUDR deforestation-free due diligence documentation</td><td>1-3 days port clearance</td><td>High</td><td>Tonnes cleared through EU customs with valid EUDR due diligence statement</td><td>metric tonnes</td><td>EUDR documentation burden (100% polygon coverage required by 2025-12-30); phytosanitary inspection risk; vessel scheduling volatility; freight rate volatility</td><td>World-class Rotterdam/Amsterdam port infrastructure; Dutch customs digital clearance system (AGS); established ECA certificate of origin workflow; NVWA pre-notification system</td><td>POPULATED</td><td>Port of Rotterdam Authority publishes annual commodity throughput statistics. NVWA inspection data available. EUDR compliance creates formal documentation trail for all EU cocoa imports.</td></tr>
+<tr><td>1</td><td>Port Warehousing and Quality Inspection</td><td>Upstream</td><td>Cleared cocoa beans or semi-finished in bonded warehouse</td><td>ECA-graded warehouse-receipted cocoa ready for processing or trade</td><td>ECA 300-bean cut test grading + cadmium/lead NVWA sampling + futures market warehousing</td><td>1-4 weeks in bonded storage</td><td>High</td><td>ECA-graded warehouse receipts by grade and weight</td><td>metric tonnes</td><td>Multiple warehouse operators (basis risk); ECA grading complexity; LIFFE futures market timing pressure; cadmium/lead test results can block release</td><td>ECA standardised grading certificates; Amsterdam commodity exchange warehouse receipts; LIFFE/ICE Futures Europe cocoa market; electronic warehouse management systems</td><td>POPULATED</td><td>ECA publishes grading standards. NVWA publishes enforcement actions. LIFFE provides market data. Warehouse operators publish capacity data.</td></tr>
+<tr><td>2</td><td>Industrial Grinding</td><td>Midstream</td><td>ECA-graded cocoa beans from bonded warehouse</td><td>Cocoa liquor + cocoa butter + cocoa powder (semi-finished products)</td><td>Roasting + cracking + winnowing + grinding to liquor + hydraulic pressing to butter/powder</td><td>1-4 weeks per grinding cycle</td><td>High</td><td>Tonnes of semi-finished cocoa products by type (liquor/butter/powder)</td><td>metric tonnes</td><td>Cadmium regulatory limits requiring origin blending (EU 1881/2006); energy price volatility; oligopoly concentration (3 firms &gt;60%); EUDR traceability obligation on input beans</td><td>World-class Amsterdam grinding infrastructure; EU food safety compliance; company traceability systems (BC Cocoa Horizons / Cargill Cocoa Promise); renewable energy adoption programs</td><td>POPULATED</td><td>ICCO publishes grinding data by country. Major processors publish Netherlands volumes in annual reports. EU food safety enforcement records available via NVWA.</td></tr>
+<tr><td>3</td><td>CBE and Specialty Fat Manufacturing</td><td>Midstream</td><td>Cocoa butter (from Phase 2 95%) + shea butter (imported from West Africa 5% weight)</td><td>CBEs (Cocoa Butter Equivalents): shea stearin blended with other permitted vegetable fats; ready for chocolate manufacturing</td><td>Shea butter dry fractionation to extract stearin fraction + blending with cocoa butter and other CBE fats (illipe/sal/palm mid-fraction)</td><td>2-4 weeks per production batch</td><td>High</td><td>Tonnes of CBE products by type</td><td>metric tonnes</td><td>Single-site concentration risk (IOI Loders Croklaan Wormerveer dominant European CBE producer); shea supply chain opacity from West Africa (Phase 4 Export D=210 C=165 balance=64.0%); EU food additive approval requirements for CBEs</td><td>IOI Loders Croklaan 80+ years specialty fats expertise; EU food safety regulatory framework; RSPO certification pathway for vegetable fat sustainability; Dutch chemical processing infrastructure</td><td>POPULATED</td><td>IOI Loders Croklaan publishes product data. EU Chocolate Directive defines 5% CBE limit. Shea input values from TrueValue shea project Phase 4 Export. Phase 3 composite D=265 C=244 uses 95/5 weighted blend formula.</td></tr>
+<tr><td>4</td><td>Dutch Chocolate and Confectionery Manufacturing</td><td>Downstream</td><td>Cocoa liquor + cocoa butter/CBE blend + sugar + milk powder</td><td>Finished chocolate bars, confectionery, cocoa powder products, chocolate coatings</td><td>Chocolate tempering and conching + CBE blending + branding + packaging</td><td>Days to weeks per production run</td><td>Medium</td><td>Retail SKUs and wholesale volumes</td><td>units and metric tonnes</td><td>Retail buyer power (AH/Jumbo/Lidl &gt;75% combined NL grocery share); Tony&#x27;s Chocolonely pricing pressure creating premium-tier benchmarking; CBE sourcing complexity (managing 5% substitution limit); PPWR packaging requirements</td><td>Dutch food innovation culture; consumer sustainability demand (NL #1 EU for certified product purchase intent); Tony&#x27;s Chocolonely transparency benchmark; EU labeling frameworks</td><td>PARTIAL</td><td>Tony&#x27;s publishes full supply chain transparency (Annual FAIR Report). Verkade/Mondelez and conventional manufacturers have less granular public data. Retail market shares from Kantar.</td></tr>
+<tr><td>5</td><td>Domestic Retail and EU Re-export</td><td>Downstream</td><td>Packaged chocolate products or bulk semi-finished in warehouse</td><td>Products sold in Dutch retail OR bulk semi-finished re-exported to Germany/Belgium/Switzerland/UK as inputs to further manufacturing</td><td>Dutch domestic retail sale (branded + private label) OR B2B re-export of semi-finished cocoa products</td><td>Days to weeks per channel</td><td>Medium</td><td>Retail sales value (EUR) and re-export volume (metric tonnes)</td><td>EUR and metric tonnes</td><td>Albert Heijn/Jumbo/Lidl retail oligopoly price compression; Brexit customs friction on UK re-export channel; German buyer price discipline; sustainability label proliferation creating consumer confusion</td><td>Dutch retail logistics efficiency; EU single market access for re-export; established Port of Rotterdam re-export infrastructure; Dutch consumer sustainability literacy (Fairtrade #1 EU)</td><td>PARTIAL</td><td>CBS Netherlands Statistics publishes trade data. Albert Heijn/Jumbo market shares from Kantar. UK export friction from UK government trade statistics.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

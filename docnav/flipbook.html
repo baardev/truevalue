@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>Flipbook Viewer</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { color-scheme: only light; }
+
+  body {
+    min-height: 100vh;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    background: #2b2f36;
+    color: #1f2328;
+    display: flex;
+    flex-direction: column;
+  }
+
+  header.docnav-bar {
+    background: #ffffff;
+    border-bottom: 1px solid #d0d7de;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  header.docnav-bar a {
+    color: #0969da;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  header.docnav-bar a:hover { text-decoration: underline; }
+
+  #file-path {
+    color: #57606a;
+    font-family: "SFMono-Regular", "Cascadia Code", monospace;
+    font-size: 11px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  #raw-link {
+    margin-left: auto;
+    color: #57606a;
+    border: 1px solid #d0d7de;
+    font-size: 11px;
+    text-decoration: none;
+    padding: 3px 10px;
+    border-radius: 6px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  #raw-link:hover { color: #1f2328; border-color: #0969da; }
+
+  #stage {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 12px;
+    min-height: 0;
+  }
+
+  #book-wrap {
+    width: 100%;
+    max-width: 1100px;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 0;
+  }
+
+  #book { box-shadow: 0 20px 60px rgba(0,0,0,0.5); }
+
+  #controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 18px;
+    color: #cbd2d9;
+    font-size: 13px;
+  }
+
+  .ctrl-btn {
+    background: #3a3f47;
+    color: #e6edf3;
+    border: 1px solid #4b5158;
+    border-radius: 6px;
+    padding: 7px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .ctrl-btn:hover { background: #454b54; }
+  .ctrl-btn:disabled { opacity: 0.4; cursor: default; }
+
+  #page-count { min-width: 90px; text-align: center; font-variant-numeric: tabular-nums; }
+
+  #mute-btn { margin-left: 4px; }
+
+  #loading, #error {
+    text-align: center;
+    padding: 60px 20px;
+    font-size: 14px;
+    color: #cbd2d9;
+  }
+  #error { color: #ff8080; }
+
+  #progress-track {
+    width: 260px;
+    height: 4px;
+    background: #454b54;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+  #progress-bar {
+    height: 100%;
+    width: 0%;
+    background: #4f8ef7;
+    transition: width 0.15s ease;
+  }
+</style>
+</head>
+<body>
+
+<header class="docnav-bar">
+  <a href="index.html">&larr; DocNav</a>
+  <span id="file-path"></span>
+  <a id="raw-link" href="#" target="_blank">Raw PDF &#8599;</a>
+</header>
+
+<div id="stage">
+  <div id="loading">
+    <div>Loading PDF&hellip;</div>
+    <div id="progress-track"><div id="progress-bar"></div></div>
+  </div>
+  <div id="book-wrap" style="display:none;">
+    <div id="book"></div>
+  </div>
+  <div id="controls" style="display:none;">
+    <button class="ctrl-btn" id="prev-btn">&larr; Prev</button>
+    <span id="page-count">1 / 1</span>
+    <button class="ctrl-btn" id="next-btn">Next &rarr;</button>
+    <button class="ctrl-btn" id="mute-btn" title="Toggle page-turn sound">&#128266; Sound</button>
+    <button class="ctrl-btn" id="fullscreen-btn" title="Fullscreen">&#9974; Fullscreen</button>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.js"></script>
+<script>
+(function () {
+  const BASE = location.origin + "/";
+  const params = new URLSearchParams(location.search);
+  const pdfPath = params.get("pdf") || "";
+
+  const loadingEl = document.getElementById("loading");
+  const progressBar = document.getElementById("progress-bar");
+  const bookWrap = document.getElementById("book-wrap");
+  const bookEl = document.getElementById("book");
+  const controlsEl = document.getElementById("controls");
+  const pageCountEl = document.getElementById("page-count");
+  const prevBtn = document.getElementById("prev-btn");
+  const nextBtn = document.getElementById("next-btn");
+  const muteBtn = document.getElementById("mute-btn");
+  const fullscreenBtn = document.getElementById("fullscreen-btn");
+
+  function esc(s) {
+    return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+  }
+
+  function showError(message, detail) {
+    loadingEl.innerHTML =
+      '<div id="error">' + esc(message) +
+      (detail ? '<br><small>' + esc(detail) + '</small>' : '') + '</div>';
+  }
+
+  if (!pdfPath) {
+    showError("No PDF specified. Use ?pdf=relative/path/to/file.pdf");
+    return;
+  }
+
+  const pdfUrl = BASE + pdfPath.split("/").map(encodeURIComponent).join("/");
+  document.title = pdfPath.split("/").pop() + " | Flipbook";
+  document.getElementById("file-path").textContent = pdfPath;
+  document.getElementById("raw-link").href = pdfUrl;
+
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
+
+  /* ── Synthesized page-turn sound (no external audio asset needed) ── */
+  let soundOn = true;
+  let audioCtx = null;
+
+  function ensureAudioCtx() {
+    if (!audioCtx) {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      audioCtx = new Ctx();
+    }
+    if (audioCtx.state === "suspended") audioCtx.resume();
+    return audioCtx;
+  }
+
+  function playPageTurnSound() {
+    if (!soundOn) return;
+    try {
+      const ctx = ensureAudioCtx();
+      const duration = 0.28;
+      const bufferSize = Math.floor(ctx.sampleRate * duration);
+      const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+      const data = buffer.getChannelData(0);
+      for (let i = 0; i < bufferSize; i++) {
+        const t = i / bufferSize;
+        const envelope = Math.sin(Math.PI * t) * (1 - t * 0.3);
+        data[i] = (Math.random() * 2 - 1) * envelope;
+      }
+      const noise = ctx.createBufferSource();
+      noise.buffer = buffer;
+
+      const filter = ctx.createBiquadFilter();
+      filter.type = "bandpass";
+      filter.frequency.setValueAtTime(1200, ctx.currentTime);
+      filter.frequency.linearRampToValueAtTime(3500, ctx.currentTime + duration * 0.6);
+      filter.Q.value = 0.7;
+
+      const gain = ctx.createGain();
+      gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+      gain.gain.linearRampToValueAtTime(0.5, ctx.currentTime + 0.02);
+      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + duration);
+
+      noise.connect(filter).connect(gain).connect(ctx.destination);
+      noise.start();
+      noise.stop(ctx.currentTime + duration);
+    } catch (e) {
+      /* Web Audio unavailable; fail silently, animation still works. */
+    }
+  }
+
+  muteBtn.addEventListener("click", function () {
+    soundOn = !soundOn;
+    muteBtn.innerHTML = soundOn ? "&#128266; Sound" : "&#128263; Muted";
+    if (soundOn) ensureAudioCtx();
+  });
+
+  fullscreenBtn.addEventListener("click", function () {
+    const stage = document.getElementById("stage");
+    if (!document.fullscreenElement) {
+      (stage.requestFullscreen || stage.webkitRequestFullscreen || function(){}).call(stage);
+    } else {
+      (document.exitFullscreen || document.webkitExitFullscreen || function(){}).call(document);
+    }
+  });
+
+  /* ── Render PDF pages to images, then hand them to the flip engine ── */
+  const RENDER_SCALE = 1.6;
+
+  async function renderPagesToImages(pdf) {
+    const images = [];
+    const numPages = pdf.numPages;
+    for (let pageNum = 1; pageNum <= numPages; pageNum++) {
+      const page = await pdf.getPage(pageNum);
+      const viewport = page.getViewport({ scale: RENDER_SCALE });
+      const canvas = document.createElement("canvas");
+      canvas.width = viewport.width;
+      canvas.height = viewport.height;
+      const ctx = canvas.getContext("2d");
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+      images.push(canvas.toDataURL("image/jpeg", 0.88));
+      progressBar.style.width = Math.round((pageNum / numPages) * 100) + "%";
+    }
+    return images;
+  }
+
+  pdfjsLib.getDocument(pdfUrl).promise
+    .then(renderPagesToImages)
+    .then(function (images) {
+      loadingEl.style.display = "none";
+      bookWrap.style.display = "flex";
+      controlsEl.style.display = "flex";
+
+      const firstImg = new Image();
+      firstImg.onload = function () {
+        const aspect = firstImg.naturalHeight / firstImg.naturalWidth;
+        const pageWidth = 480;
+        const pageHeight = Math.round(pageWidth * aspect);
+
+        const pageFlip = new St.PageFlip(bookEl, {
+          width: pageWidth,
+          height: pageHeight,
+          size: "stretch",
+          minWidth: 280,
+          maxWidth: 900,
+          minHeight: 360,
+          maxHeight: 1200,
+          maxShadowOpacity: 0.5,
+          showCover: false,
+          mobileScrollSupport: false,
+          useMouseEvents: true
+        });
+
+        pageFlip.loadFromImages(images);
+
+        function updateCount() {
+          pageCountEl.textContent = (pageFlip.getCurrentPageIndex() + 1) + " / " + images.length;
+        }
+        updateCount();
+
+        pageFlip.on("flip", function () {
+          playPageTurnSound();
+          updateCount();
+        });
+
+        prevBtn.addEventListener("click", function () { pageFlip.flipPrev(); });
+        nextBtn.addEventListener("click", function () { pageFlip.flipNext(); });
+
+        window.addEventListener("keydown", function (e) {
+          if (e.key === "ArrowLeft") pageFlip.flipPrev();
+          if (e.key === "ArrowRight") pageFlip.flipNext();
+        });
+      };
+      firstImg.src = images[0];
+    })
+    .catch(function (err) {
+      showError("Could not load PDF.", err.message);
+    });
+})();
+</script>
+</body>
+</html>

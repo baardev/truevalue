@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Plastic Biosphere: Ecological Return Chain (TVPCI-R)</title>
+<style>
+:root { color-scheme: light; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+  background: #f0f4f8; color: #212529; min-height: 100vh; padding: 24px;
+}
+.container { max-width: 1040px; margin: 0 auto; }
+.hero {
+  background: linear-gradient(135deg, #004d40 0%, #00897b 100%);
+  color: #fff; border-radius: 14px; padding: 32px 40px; margin-bottom: 22px;
+}
+.kicker { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #80cbc4; margin-bottom: 8px; }
+h1 { font-size: 26px; font-weight: 300; margin-bottom: 8px; }
+.hero-sub { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.6; max-width: 760px; }
+.kpi-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 18px; }
+.kpi { background: rgba(255,255,255,0.14); border-radius: 8px; padding: 10px 18px; text-align: center; }
+.kpi-val { font-size: 22px; font-weight: 800; line-height: 1; }
+.kpi-label { font-size: 10px; color: rgba(255,255,255,0.72); font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 4px; }
+
+.concept-panel { background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 26px 32px; margin-bottom: 20px; }
+.concept-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 14px; }
+.concept-box { border-radius: 10px; padding: 16px 18px; }
+.concept-box.tvpci  { background: #e0f4fa; border-left: 4px solid #006994; }
+.concept-box.tvpcir { background: #e0f2f1; border-left: 4px solid #00897b; }
+.concept-box.bchain { background: #fce4ec; border-left: 4px solid #c62828; }
+.concept-title { font-size: 13px; font-weight: 800; margin-bottom: 6px; }
+.concept-box.tvpci  .concept-title { color: #006994; }
+.concept-box.tvpcir .concept-title { color: #00695c; }
+.concept-box.bchain .concept-title { color: #c62828; }
+.concept-body { font-size: 12px; color: #495057; line-height: 1.55; }
+.concept-score { font-size: 24px; font-weight: 800; margin-top: 8px; }
+.concept-box.tvpci  .concept-score { color: #006994; }
+.concept-box.tvpcir .concept-score { color: #00695c; }
+.concept-box.bchain .concept-score { color: #c62828; }
+
+.delta-bar-panel { background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 22px 32px; margin-bottom: 20px; }
+.delta-label { font-size: 13px; color: #495057; margin-bottom: 8px; }
+.delta-track { height: 18px; background: #e9ecef; border-radius: 9px; overflow: hidden; margin-bottom: 8px; position: relative; display: flex; }
+.delta-fill-tvpci  { height: 18px; background: #006994; border-radius: 9px 0 0 9px; }
+.delta-fill-tvpcir { height: 18px; background: #00897b; }
+.delta-numbers { display: flex; justify-content: space-between; font-size: 12px; color: #6c757d; }
+.delta-imbalance { display: inline-block; background: #fce4ec; color: #c62828; font-weight: 800; font-size: 14px; padding: 6px 14px; border-radius: 8px; margin-top: 6px; }
+
+.section { background: #fff; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.08); padding: 26px 32px; margin-bottom: 20px; }
+.section-kicker { font-size: 10px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #00897b; margin-bottom: 6px; }
+h2 { font-size: 18px; font-weight: 400; color: #00695c; margin-bottom: 8px; }
+.section-sub { font-size: 13px; color: #6c757d; line-height: 1.6; margin-bottom: 16px; max-width: 760px; }
+p { font-size: 13px; color: #495057; line-height: 1.7; margin-bottom: 10px; }
+
+.phase-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px; }
+.phase-card { border-radius: 10px; padding: 16px 18px; border: 2px solid; }
+.zone-coherent  { background: #e8f5e9; border-color: #4caf50; }
+.zone-stressed  { background: #fff8e1; border-color: #ff9800; }
+.zone-failure   { background: #fff3e0; border-color: #f57c00; }
+.zone-breakdown { background: #fce4ec; border-color: #e53935; }
+.pc-header { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.pc-num { width: 28px; height: 28px; border-radius: 50%; background: #00897b; color: #fff; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.pc-name { font-size: 13px; font-weight: 700; color: #212529; flex: 1; }
+.pc-rp { font-size: 20px; font-weight: 800; }
+.zone-coherent  .pc-rp { color: #2e7d32; }
+.zone-stressed  .pc-rp { color: #e65100; }
+.zone-failure   .pc-rp { color: #bf360c; }
+.zone-breakdown .pc-rp { color: #b71c1c; }
+.pc-zone-label { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+.zone-coherent  .pc-zone-label { color: #2e7d32; }
+.zone-stressed  .pc-zone-label { color: #e65100; }
+.zone-failure   .pc-zone-label { color: #bf360c; }
+.zone-breakdown .pc-zone-label { color: #b71c1c; }
+.pc-omega { font-size: 11px; color: #6c757d; margin-bottom: 6px; }
+.pc-desc { font-size: 12px; color: #495057; line-height: 1.5; }
+.pc-bar-track { height: 6px; background: #e9ecef; border-radius: 3px; margin: 8px 0 4px; }
+.pc-bar-fill { height: 6px; border-radius: 3px; background: #00897b; }
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th { text-align: left; padding: 7px 10px; background: #e0f2f1; color: #00695c; font-weight: 700; font-size: 11px; text-transform: uppercase; letter-spacing: 0.05em; border-bottom: 2px solid #b2dfdb; }
+td { padding: 8px 10px; border-bottom: 1px solid #e9ecef; vertical-align: top; line-height: 1.5; }
+tr:last-child td { border-bottom: none; }
+.rp-ok   { color: #2e7d32; font-weight: 700; }
+.rp-warn { color: #e65100; font-weight: 700; }
+.rp-fail { color: #c62828; font-weight: 700; }
+.prov { font-size: 10px; color: #6c757d; font-style: italic; }
+
+.unified-panel { background: #e8f5e9; border-left: 4px solid #43a047; border-radius: 0 10px 10px 0; padding: 16px 20px; margin-bottom: 16px; }
+.unified-panel h3 { font-size: 14px; font-weight: 700; color: #2e7d32; margin-bottom: 8px; }
+
+.nav { text-align: center; margin-top: 20px; padding-bottom: 8px; }
+.nav a { color: #00695c; text-decoration: none; font-size: 14px; font-weight: 600; margin: 0 10px; }
+.nav a:hover { text-decoration: underline; }
+@media (max-width: 640px) { .concept-grid, .phase-card-grid { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+  <div class="kicker">Plastic Biosphere · Ecological Return Chain · TVPCI-R</div>
+  <h1>🦠 Ecological Return Chain: Corrective Mechanisms</h1>
+  <p class="hero-sub">
+    Models the total corrective C generated by all available natural and human mechanisms responding to plastic accumulation in the biosphere.
+    Includes bacterial degradation (plastisphere communities), human technological remediation (ocean cleanup), and upstream source reduction.
+    TVPCI-R scores are <strong>PROVISIONAL</strong>: derived from published remediation capacity estimates in the absence of standardized global life-cycle accounting for ocean plastic recovery.
+  </p>
+  <div class="kpi-row">
+    <div class="kpi"><div class="kpi-val">69.2</div><div class="kpi-label">TVPCI (Primary Chain)</div></div>
+    <div class="kpi"><div class="kpi-val">33.3</div><div class="kpi-label">TVPCI-R (Return Chain)</div></div>
+    <div class="kpi"><div class="kpi-val">35.5</div><div class="kpi-label">B_chain (Holon Balance)</div></div>
+    <div class="kpi"><div class="kpi-val">+35.9</div><div class="kpi-label">Delta_chain (Imbalance)</div></div>
+  </div>
+</div>
+
+<!-- Concept Panel -->
+<div class="concept-panel">
+  <div class="section-kicker">Framework</div>
+  <h2 style="color:#00695c;">TVPCI, TVPCI-R, and B_chain: The Three Return Scores</h2>
+  <div class="concept-grid">
+    <div class="concept-box tvpci">
+      <div class="concept-title">TVPCI (Primary Chain)</div>
+      <div class="concept-body">The D role in the holon: the primary plastic dispersal chain score measuring how well each phase manages the physical flow of plastic through the environment. Derived as the phase-average N-D-C balance. A high TVPCI means the dispersal chain is well-monitored and partially correctable; a low score means the chain is opaque and uncontrolled.</div>
+      <div class="concept-score">69.2</div>
+    </div>
+    <div class="concept-box tvpcir">
+      <div class="concept-title">TVPCI-R (Return Chain)</div>
+      <div class="concept-body">The C role in the holon: the ecological return chain score measuring how well each phase generates corrective mechanisms — bacterial degradation, human cleanup, upstream reduction — relative to what would be needed to restore balance. TVPCI-R = sum of (omega_p × R_p) across all phases. All R_p scores are PROVISIONAL.</div>
+      <div class="concept-score">33.3</div>
+    </div>
+    <div class="concept-box bchain">
+      <div class="concept-title">B_chain (Holon Balance)</div>
+      <div class="concept-body">The N role in the holon: the emergent balance between primary chain and return chain. B_chain = 100 × exp(-2 × |TVPCI - TVPCI_R| / max(TVPCI, TVPCI_R)). A score of 35.5 is in the Breakdown zone (below 38.2%), indicating severe misalignment: the corrective capacity is less than half of what the accumulation rate demands.</div>
+      <div class="concept-score">35.5</div>
+    </div>
+  </div>
+</div>
+
+<!-- Delta Bar -->
+<div class="delta-bar-panel">
+  <div class="delta-label"><strong>Primary vs. Return Chain Gap</strong> — TVPCI (69.2) vs. TVPCI-R (33.3)</div>
+  <div class="delta-track">
+    <div class="delta-fill-tvpci" style="width:69.2%;"></div>
+    <div class="delta-fill-tvpcir" style="width:33.3%;"></div>
+  </div>
+  <div class="delta-numbers">
+    <span style="color:#006994;font-weight:700;">TVPCI = 69.2 (Primary chain)</span>
+    <span style="color:#00897b;font-weight:700;">TVPCI-R = 33.3 (Return chain)</span>
+  </div>
+  <div><span class="delta-imbalance">Delta_chain = +35.9 — Corrective capacity is 48% of primary chain rate</span></div>
+</div>
+
+<!-- The Unified Corrective C Argument -->
+<div class="section">
+  <div class="section-kicker">Theoretical Framework</div>
+  <h2>Bacteria and Humans as a Unified Corrective C</h2>
+  <div class="unified-panel">
+    <h3>The Core Principle</h3>
+    <p style="margin-bottom:0;">
+      The tholonic model does not distinguish between biological and human corrective responses in the return chain. Both Ideonella sakaiensis and the human ocean cleanup engineer are products of the same parent N system (the biosphere) and operate under the same N-D-C sustainability constraints. When the parent N is stressed by a massive externally-imposed C overload, it generates corrective C through every mechanism available: biological evolution, human technology, and human policy simultaneously. These are additive components of a single corrective capacity, not separate competing tracks.
+    </p>
+  </div>
+  <p>
+    This framing has a direct analytical consequence for the TVPCI-R calculation: the return score at each phase includes all corrective mechanisms regardless of whether they are biological or human in origin. The R_p score for Phase 6 (Biological Uptake) includes both the bacterial degradation rate and any human collection effort at that phase. They are summed, weighted by relative scale.
+  </p>
+  <p>
+    The current TVPCI-R of 33.3 reflects the combined corrective capacity across all mechanisms. The fact that it is far below the primary chain score (69.2) means the combined natural plus human corrective system is generating approximately 48 cents of corrective value for every dollar of accumulation. The race condition between accumulation and correction is currently strongly unfavorable to system recovery.
+  </p>
+  <p>
+    Three types of corrective C are modeled per phase: (1) natural biological correction (bacterial degradation, photodegradation, biological processing); (2) human technological correction (cleanup operations, barriers, collection technology); and (3) human upstream correction (production reduction, EPR, design standards). All three are included in the R_p scoring.
+  </p>
+</div>
+
+<!-- Per-Phase R_p Cards -->
+<div class="section">
+  <div class="section-kicker">Phase Return Scores (R_p) — PROVISIONAL</div>
+  <h2>Per-Phase Ecological Return Scores</h2>
+  <p class="section-sub">Zone thresholds (phi-derived): Coherent: R_p ≥ 80. Stressed: 61.8 ≤ R_p &lt; 80. Failure: 38.2 ≤ R_p &lt; 61.8. Breakdown: R_p &lt; 38.2.</p>
+
+  <div class="phase-card-grid">
+    <div class="phase-card zone-failure">
+      <div class="pc-header">
+        <div class="pc-num">0</div>
+        <div class="pc-name">Polymer Production</div>
+        <div>
+          <div class="pc-rp">42.0</div>
+          <div class="pc-zone-label">Failure (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.05 (low: well-monitored, lowest waste intensity per phase)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:42%;"></div></div>
+      <div class="pc-desc">EPR legislation covers approximately 35% of global production. Recycled content share is below 10%. Chemical recycling capacity is below 1 Mt/year globally. Significant corrective instruments exist (EPR, plastic credits, recyclability standards) but coverage and enforcement are insufficient to move the R_p into Stressed zone. Dominant corrective mechanism: regulatory (human upstream).</div>
+    </div>
+
+    <div class="phase-card zone-breakdown">
+      <div class="pc-header">
+        <div class="pc-num">1</div>
+        <div class="pc-name">Use and Fragmentation</div>
+        <div>
+          <div class="pc-rp">28.0</div>
+          <div class="pc-zone-label">Breakdown (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.10 (high fragmentation volume; most micro-input generation)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:28%;"></div></div>
+      <div class="pc-desc">No viable capture mechanism at fragmentation scale. Beach cleanup removes approximately 150,000 tonnes/year globally, less than 2% of the estimated fragmentation input. Tyre filter technologies (PlanetCare, Cora Ball) cover a small fraction of synthetic textile microfibre release. No remediation exists for in-situ fragmentation of littered plastic. This is the lowest R_p phase for which a corrective mechanism category even exists.</div>
+    </div>
+
+    <div class="phase-card zone-breakdown">
+      <div class="pc-header">
+        <div class="pc-num">2</div>
+        <div class="pc-name">Terrestrial Dispersal</div>
+        <div>
+          <div class="pc-rp">35.0</div>
+          <div class="pc-zone-label">Breakdown (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.12 (very high stock; agricultural exposure; human food chain entry)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:35%;"></div></div>
+      <div class="pc-desc">Advanced wastewater treatment achieves 95-99% microplastic removal, but removed particles concentrate in biosolid sludge that is then applied to agricultural land, redistributing rather than removing the burden. Soil remediation for microplastics is at the earliest research stage; no scalable technology exists. R_p is slightly above Breakdown because regulatory pressure on biosolid management is increasing in EU and North America.</div>
+    </div>
+
+    <div class="phase-card zone-failure">
+      <div class="pc-header">
+        <div class="pc-num">3</div>
+        <div class="pc-name">Freshwater Transport</div>
+        <div>
+          <div class="pc-rp">45.0</div>
+          <div class="pc-zone-label">Failure (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.10 (key ocean pathway; river barriers are the main deployed technology)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:45%;"></div></div>
+      <div class="pc-desc">The Ocean Cleanup Interceptor program has deployed 11 river barrier systems globally as of 2024, removing approximately 1,800 tonnes since 2019. This is approximately 0.04-0.4% of annual river input. R_p is the highest among dispersal phases because: river barriers are technically proven, the top 10 rivers produce 88-95% of total input (concentrated target), and investment is scaling. If 1,000 river barrier systems were deployed (vs. 11 today), R_p could plausibly reach 65-70%.</div>
+    </div>
+
+    <div class="phase-card zone-failure">
+      <div class="pc-header">
+        <div class="pc-num">4</div>
+        <div class="pc-name">Marine Surface Dispersal</div>
+        <div>
+          <div class="pc-rp">52.0</div>
+          <div class="pc-zone-label">Failure (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.18 (highest current intervention investment; gyre concentration point)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:52%;"></div></div>
+      <div class="pc-desc">The Ocean Cleanup System 03 has removed approximately 3,000 tonnes from the North Pacific Gyre (2019-2024). The total ocean surface stock is 268,940 tonnes; at current removal rates, removing the existing stock would take approximately 450 years (ignoring ongoing input). R_p is the highest monitored phase because: technology is deployed, removal is measurable, and the 5 gyres are identifiable targets. Natural photodegradation is active at surface but converts macro to micro rather than removing mass. Investment scaling is the primary R_p lever.</div>
+    </div>
+
+    <div class="phase-card zone-breakdown">
+      <div class="pc-header">
+        <div class="pc-num">5</div>
+        <div class="pc-name">Deep-Sea Sediment</div>
+        <div>
+          <div class="pc-rp">12.0</div>
+          <div class="pc-zone-label">Breakdown (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.20 (largest stock; deepest failure; highest evolutionary stress concentration)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:12%;"></div></div>
+      <div class="pc-desc">The lowest R_p phase. No human remediation technology exists for deep-sea microplastic extraction. Natural biological degradation by benthic organisms (sea cucumbers, polychaetes, deep-sea bacteria including Amobacter and Roseovarius) is documented but functions on decade-to-century timescales. R_p is non-zero only because: (1) deep-sea plastisphere communities are confirmed and evolving, representing an emerging corrective biological C; and (2) monitoring programs are beginning to establish baseline data (Kane et al. 2020). This phase carries the highest omega weight because its stock size and zero-correction combination generate the greatest D-C divergence.</div>
+    </div>
+
+    <div class="phase-card zone-breakdown">
+      <div class="pc-header">
+        <div class="pc-num">6</div>
+        <div class="pc-name">Biological Uptake</div>
+        <div>
+          <div class="pc-rp">38.0</div>
+          <div class="pc-zone-label">Breakdown edge (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.15 (direct ecosystem health impact; plastisphere bacteria most active here)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:38%;"></div></div>
+      <div class="pc-desc">The most tractable Breakdown-zone phase. Natural biological correction is measurable and developing: Ideonella sakaiensis degrades PET at 0.13 mg/cm2/day; Pseudomonas spp. and Bacillus subtilis are documented on plastic surfaces at depth. R_p of 38.0 (just at the Breakdown threshold) reflects: corrective mechanism exists and is confirmed, but operates at orders of magnitude below accumulation rate. Marine protected area expansion (increasing ecosystem resilience) and bacterial engineering (increasing degradation rate) are the two primary R_p levers at this phase. R_p is the highest of the biological phases because the corrective mechanism is already active.</div>
+    </div>
+
+    <div class="phase-card zone-breakdown">
+      <div class="pc-header">
+        <div class="pc-num">7</div>
+        <div class="pc-name">Trophic Transfer</div>
+        <div>
+          <div class="pc-rp">22.0</div>
+          <div class="pc-zone-label">Breakdown (PROV.)</div>
+        </div>
+      </div>
+      <div class="pc-omega">Omega weight: 0.10 (human health endpoint; human awareness generates highest corrective pressure)</div>
+      <div class="pc-bar-track"><div class="pc-bar-fill" style="width:22%;"></div></div>
+      <div class="pc-desc">No operational corrective mechanism for in-situ trophic bioaccumulation. Fecal excretion is documented for some particle sizes (Schwabl et al. 2019) but retention fraction and long-term tissue effects are unknown. R_p is non-zero only because: (1) growing human awareness of tissue contamination generates the most powerful corrective pressure of any phase (political and regulatory response); and (2) upstream source reduction is the only available lever, and this phase's human endpoint is the primary political driver for that reduction. Human corrective capacity here is entirely upstream, not in-phase.</div>
+    </div>
+  </div>
+</div>
+
+<!-- Waste Stream Table -->
+<div class="section">
+  <div class="section-kicker">Waste Streams</div>
+  <h2>Primary Waste Streams by Phase</h2>
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Primary Waste Stream</th><th>Volume / Intensity</th><th>Current Disposal / Fate</th><th>Recovery Potential</th><th>R_p</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0 — Production</td><td>Nurdle pellet loss; off-spec resin</td><td>~230,000 t/year pellet loss (Operation Clean Sweep 2020)</td><td>Environmental dispersal; some collection programs</td><td>Moderate: nurdle collection protocols exist but compliance is low</td><td class="rp-warn">42.0</td></tr>
+      <tr><td>1 — Fragmentation</td><td>Macro fragments to microplastics; tyre wear particles; textile fibres</td><td>~9.5 Mt/year entering water; tyre wear ~0.5-1.5 Mt/year</td><td>Environmental dispersal; marginal beach collection</td><td>Very low: fragmentation is irreversible at scale</td><td class="rp-fail">28.0</td></tr>
+      <tr><td>2 — Terrestrial</td><td>Soil-embedded microplastics from biosolid application and atmospheric deposition</td><td>125,000-850,000 t/year from biosolids; atmospheric deposition: 1,000-10,000 t/year in remote areas</td><td>Soil retention; plant uptake; runoff to freshwater</td><td>Near-zero at current technology; wastewater treatment removes from water but concentrates in sludge</td><td class="rp-fail">35.0</td></tr>
+      <tr><td>3 — Freshwater</td><td>River-borne microplastics; wastewater treatment plant effluent</td><td>0.41-4 Mt/year river input to ocean; WWTP removal at 95-99% (concentrates in sludge)</td><td>River transport to ocean; some interception by barriers</td><td>Low but growing: river barriers are the highest-R_p technology per kg removed</td><td class="rp-warn">45.0</td></tr>
+      <tr><td>4 — Marine Surface</td><td>Gyre-concentrated microplastics; surface films</td><td>268,940 tonnes at surface; 5.25 trillion particles</td><td>Gyre circulation; photodegradation (mass to micro); biofouling (sinking)</td><td>Low: Ocean Cleanup systems operational; technology proven but scale is orders of magnitude short</td><td class="rp-warn">52.0</td></tr>
+      <tr><td>5 — Deep-Sea</td><td>Settled microplastics in sediment columns; submarine canyon accumulations</td><td>11-41 Mt in top 200 m water column; up to 9,200 particles/100 mL in canyon hotspots</td><td>Permanent sediment burial; biological disturbance by benthic organisms</td><td>Near-zero: no technology; deep-sea plastisphere is earliest stage of biological correction</td><td class="rp-fail">12.0</td></tr>
+      <tr><td>6 — Biological</td><td>Microplastics in marine organism tissue; plastic additive leaching in biological media</td><td>700+ species affected; mussel: ~4.6 particles/hr ingestion rate</td><td>Biological retention and excretion; food web transfer; microbial degradation</td><td>Low but non-zero: plastisphere communities documented and evolving; MPA expansion improves resilience</td><td class="rp-fail">38.0</td></tr>
+      <tr><td>7 — Trophic</td><td>Bioaccumulated microplastics and POPs in apex predator and human tissue</td><td>Human blood: 1.6 ug/mL detected; POPs biomagnification: up to 1,000,000x seawater</td><td>Long-term tissue retention; slow fecal excretion; generational transfer</td><td>Zero in situ: only lever is upstream reduction; human awareness is the primary corrective driver</td><td class="rp-fail">22.0</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Priority Circular Economy Interventions -->
+<div class="section">
+  <div class="section-kicker">Priority Interventions</div>
+  <h2>Priority Return Chain Interventions</h2>
+  <table>
+    <thead>
+      <tr><th>Phase</th><th>Intervention</th><th>Description</th><th>Expected R_p Impact</th><th>Bond / Finance Link</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Ph 3</td>
+        <td>River barrier scale-up (1,000 Interceptors)</td>
+        <td>Scale Ocean Cleanup Interceptor program from 11 to 1,000 units targeting the top 1,000 plastic-polluting rivers (covering 99%+ of total river input)</td>
+        <td>Ph 3 R_p: 45 to 65-70 (Failure to Stressed). Removes approximately 90% of tractable river input if fully deployed. Chain TVPCI-R: +3-4 points.</td>
+        <td>Green bond with river microplastic concentration KPI. Use of proceeds: Interceptor capital and operating cost. Issuer: World Bank, regional development banks. Scale: $500M-$2B.</td>
+      </tr>
+      <tr>
+        <td>Ph 4</td>
+        <td>Ocean surface collection fleet expansion</td>
+        <td>Scale Ocean Cleanup surface systems from 1 operational unit to a fleet capable of targeting all 5 major gyres simultaneously, with parallel collection in coastal accumulation zones</td>
+        <td>Ph 4 R_p: 52 to 62-68 (Failure to Stressed). Would require ~50x current capacity to match ongoing input from rivers. Chain TVPCI-R: +2-3 points.</td>
+        <td>Plastic recovery bond with gyre concentration KPI (particles/km2 in North Pacific Gyre as benchmark). Use of proceeds: fleet construction and operations. Issuer: sovereign blue bond or multilateral. Scale: $1-5B.</td>
+      </tr>
+      <tr>
+        <td>Ph 6</td>
+        <td>Plastisphere bacterial engineering program</td>
+        <td>Fund directed evolution and enzyme engineering for marine-condition plastic-degrading bacteria, targeting PET, PE, and PP at ocean surface and deep-sea temperatures and pressures. Consortium model: NIOZ, Yoshida lab, Alper lab, Carbios.</td>
+        <td>Ph 6 R_p: 38 to 48-60 if 10x degradation rate achieved. Most high-leverage single biological intervention. Chain TVPCI-R: +2-4 points over 15-year horizon.</td>
+        <td>Public R&D funding or innovation bond. Use of proceeds: research consortium 10-year program. Issuer: EU Horizon, NSF, DARPA-equivalent. Scale: $200-500M.</td>
+      </tr>
+      <tr>
+        <td>Ph 0-1</td>
+        <td>Global plastics treaty with binding production caps</td>
+        <td>UNEA INC process (ongoing as of 2026) producing a binding treaty with 50% virgin plastic production reduction in high-leak sectors (packaging, single-use) by 2035</td>
+        <td>Ph 0 R_p: 42 to 60-70 (Failure to Stressed) if treaty is implemented with enforcement. Downstream effect on all phases: reduces accumulation rate by 40-50% over 20-30 years, improving all phase balances. Chain TVPCI-R: +8-12 points over 20-year horizon (largest single lever).</td>
+        <td>Sovereign sustainability-linked bond with plastic production reduction KPI. Use of proceeds: EPR enforcement, alternative material development, waste management infrastructure in high-leak countries. Scale: systemic; requires multilateral coordination.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="nav">
+  <a href="/index.html">Home</a>
+  <a href="../index.html">Hub</a>
+  <a href="index.html">Supply Chain</a>
+  <a href="project_context.html">Context</a>
+  <a href="dashboard.html">Dashboard</a>
+</div>
+</div>
+</body>
+</html>

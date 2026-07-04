@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photosynthesis Energy Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Photosynthesis Energy Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>photosynthesis_energy_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">27</span> / 27
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>0</td><td>Spinacia oleracea (spinach) leaf</td><td>Global</td><td>2014-01-01</td><td>leaf_absorptance_PAR</td><td>0.85</td><td>dimensionless (fraction)</td><td>public</td><td>Blankenship 2014 Molecular Mechanisms of Photosynthesis 2nd ed.</td><td>https://doi.org/10.1002/9781118685068</td><td>Fraction of incident PAR 400-700nm absorbed by dark-green leaf. Varies with chlorophyll content.</td></tr>
+<tr><td>2</td><td>0</td><td>Spinacia oleracea (spinach) leaf</td><td>Global</td><td>2014-01-01</td><td>energy_transfer_efficiency_LHCII</td><td>0.95</td><td>dimensionless (fraction)</td><td>public</td><td>Blankenship 2014 Molecular Mechanisms of Photosynthesis 2nd ed.</td><td>https://doi.org/10.1002/9781118685068</td><td>Forster resonance energy transfer efficiency within LHCII antenna to reaction center. &gt;95% under normal conditions.</td></tr>
+<tr><td>3</td><td>0</td><td>Arabidopsis thaliana</td><td>Global</td><td>2011-01-01</td><td>chlorophyll_ab_ratio</td><td>3.1</td><td>mol/mol</td><td>public</td><td>Jansson 1994 Biochim Biophys Acta; Croce &amp; van Amerongen 2011 Nat Chem Biol</td><td>https://doi.org/10.1038/nchembio.648</td><td>Chl a/b ratio ~3:1 in most C3 plants. Higher Chl a in core complexes; Chl b in peripheral antenna.</td></tr>
+<tr><td>4</td><td>0</td><td>Spinacia oleracea leaf</td><td>Global</td><td>2000-01-01</td><td>antenna_size_chl_per_PSII</td><td>230</td><td>Chl molecules per PSII</td><td>public</td><td>Lavergne &amp; Trissl 1995 Biophys J; Blankenship 2014</td><td></td><td>~200-300 Chl molecules per PSII reaction center depending on growth light conditions. Shade-adapted plants have larger antenna.</td></tr>
+<tr><td>5</td><td>1</td><td>Spinacia oleracea leaf (dark-adapted)</td><td>Global</td><td>2000-01-01</td><td>Fv_Fm_max_quantum_yield_PSII</td><td>0.83</td><td>dimensionless</td><td>public</td><td>Maxwell &amp; Johnson 2000 J Exp Bot</td><td>https://doi.org/10.1093/jexbot/51.345.659</td><td>Dark-adapted maximum quantum yield of PSII. Values &gt;0.80 indicate healthy unstressed leaves. Stress reduces Fv/Fm.</td></tr>
+<tr><td>6</td><td>1</td><td>Spinacia oleracea leaf</td><td>Global</td><td>2000-01-01</td><td>O2_evolution_rate_saturating_light</td><td>28</td><td>µmol O2 m-2 s-1</td><td>public</td><td>Maxwell &amp; Johnson 2000 J Exp Bot; Farquhar et al. 1980</td><td>https://doi.org/10.1093/jexbot/51.345.659</td><td>Maximum O2 evolution rate under saturating light at 25°C and 380 ppm CO2. Range 20-40 µmol O2 m-2 s-1.</td></tr>
+<tr><td>7</td><td>1</td><td>Arabidopsis thaliana</td><td>Global</td><td>2011-01-01</td><td>PSII_excitation_energy_eV</td><td>1.82</td><td>eV</td><td>public</td><td>Blankenship 2014 Molecular Mechanisms of Photosynthesis</td><td></td><td>P680 excitation energy. Corresponds to ~680 nm absorption peak. Provides driving force for water oxidation (E0 +0.82 V vs NHE).</td></tr>
+<tr><td>8</td><td>1</td><td>Generic C3 leaf</td><td>Global</td><td>2014-01-01</td><td>protons_released_per_O2</td><td>4</td><td>H+ per O2 evolved</td><td>public</td><td>Blankenship 2014; Renger 2012 Biochim Biophys Acta</td><td></td><td>Stoichiometry: 4 photons absorbed by PSII required per O2; 4 H+ released into lumen per 2 H2O split.</td></tr>
+<tr><td>9</td><td>2</td><td>Spinacia oleracea thylakoid</td><td>Global</td><td>2011-01-01</td><td>cytochrome_b6f_turnover_rate</td><td>150</td><td>e- complex-1 s-1</td><td>public</td><td>Cramer et al. 2011 Biochim Biophys Acta</td><td>https://doi.org/10.1016/j.bbabio.2010.11.004</td><td>Cytochrome b6f turnover ~100-200 s-1 at 25°C. Rate-limiting step in linear electron flow under most conditions.</td></tr>
+<tr><td>10</td><td>2</td><td>Generic thylakoid membrane</td><td>Global</td><td>2003-01-01</td><td>protons_pumped_per_electron_Qcycle</td><td>2</td><td>H+ per e- (via Q-cycle)</td><td>public</td><td>Allen 2003 Science; Cramer et al. 2011</td><td></td><td>Q-cycle doubles proton pumping at cytochrome b6f: 2 H+ per electron passed through. Total 4 H+ per 2 electrons.</td></tr>
+<tr><td>11</td><td>2</td><td>Spinacia oleracea</td><td>Global</td><td>2011-01-01</td><td>pmf_steady_state</td><td>175</td><td>mV</td><td>public</td><td>Kramer et al. 2004 Plant Cell Environ</td><td>https://doi.org/10.1111/j.1365-3040.2004.01321.x</td><td>Proton motive force at steady-state illumination. ~70% from ΔpH component (~120 mV equivalent) ~30% from Δψ (~55 mV).</td></tr>
+<tr><td>12</td><td>3</td><td>Arabidopsis thaliana leaf</td><td>Global</td><td>1994-01-01</td><td>PSI_quantum_yield_Y1_moderate_light</td><td>0.80</td><td>dimensionless</td><td>public</td><td>Klughammer &amp; Schreiber 1994 Planta</td><td>https://doi.org/10.1007/BF00202282</td><td>PSI quantum yield Y(I) at moderate light (~200 µmol photons m-2 s-1). Decreases at high light due to acceptor-side limitation.</td></tr>
+<tr><td>13</td><td>3</td><td>Generic C3 leaf</td><td>Global</td><td>2014-01-01</td><td>PSI_excitation_energy_eV</td><td>1.77</td><td>eV</td><td>public</td><td>Blankenship 2014 Molecular Mechanisms of Photosynthesis</td><td></td><td>P700 excitation energy at ~700 nm absorption peak. Lower energy than P680 but sufficient to reduce ferredoxin (E0 -0.43 V).</td></tr>
+<tr><td>14</td><td>3</td><td>Spinacia oleracea leaf</td><td>Global</td><td>2014-01-01</td><td>NADPH_production_rate_steady_state</td><td>10</td><td>µmol NADPH m-2 s-1</td><td>public</td><td>Farquhar et al. 1980; Raines 2003 Photosynth Res</td><td></td><td>Estimated from Calvin cycle demand. 2 NADPH per CO2 fixed × An ~5 µmol CO2 m-2 s-1 = 10 µmol NADPH m-2 s-1.</td></tr>
+<tr><td>15</td><td>4</td><td>Spinacia oleracea chloroplast</td><td>Global</td><td>2003-01-01</td><td>H_per_ATP_spinach_CF1CF0</td><td>4.67</td><td>H+ per ATP (14/3)</td><td>public</td><td>Allen 2003 Science</td><td>https://doi.org/10.1126/science.1082324</td><td>Spinach CF1CF0 ATP synthase has 14 c-subunits per ring. 14 H+ per rotation / 3 catalytic sites = 4.67 H+ per ATP.</td></tr>
+<tr><td>16</td><td>4</td><td>Generic C3 chloroplast</td><td>Global</td><td>2003-01-01</td><td>ATP_NADPH_ratio_linear_flow</td><td>1.28</td><td>mol ATP per mol NADPH</td><td>public</td><td>Allen 2003 Science; Raines 2003</td><td></td><td>Linear electron flow produces ~1.28 ATP per NADPH. Calvin cycle requires 1.5 ATP per NADPH. Deficit supplemented by cyclic electron flow around PSI.</td></tr>
+<tr><td>17</td><td>4</td><td>Spinacia oleracea</td><td>Global</td><td>2003-01-01</td><td>stroma_pH_dark_vs_light</td><td>0.5</td><td>pH units increase in light</td><td>public</td><td>Kramer et al. 2004 Plant Cell Environ</td><td></td><td>Stroma alkalinizes by ~0.5 pH units on illumination due to H+ pumping into lumen. Activates Calvin cycle enzymes (Rubisco activase etc).</td></tr>
+<tr><td>18</td><td>5</td><td>Spinacia oleracea leaf (25°C 380ppm CO2)</td><td>Global</td><td>1980-01-01</td><td>net_CO2_assimilation_An</td><td>20</td><td>µmol CO2 m-2 s-1</td><td>public</td><td>Farquhar et al. 1980 Planta</td><td>https://doi.org/10.1007/BF00386231</td><td>Representative An for sunlit C3 leaf under saturating light at 25°C ambient CO2. Range 15-25 µmol CO2 m-2 s-1.</td></tr>
+<tr><td>19</td><td>5</td><td>Generic C3 at 25°C 21% O2</td><td>Global</td><td>1980-01-01</td><td>Rubisco_oxygenation_carboxylation_ratio</td><td>0.25</td><td>mol Vo per mol Vc</td><td>public</td><td>Farquhar et al. 1980 Planta; Jordan &amp; Ogren 1981</td><td></td><td>Vo/Vc ~0.25 at 25°C 21% O2 380 ppm CO2. Increases with temperature. Represents ~25% carbon loss via photorespiration.</td></tr>
+<tr><td>20</td><td>5</td><td>Generic C3</td><td>Global</td><td>1980-01-01</td><td>Rubisco_CO2_Km_chloroplast</td><td>9.5</td><td>µM dissolved CO2</td><td>public</td><td>Farquhar et al. 1980; von Caemmerer 2000</td><td></td><td>Michaelis constant for CO2 in chloroplast stroma. At ambient CO2 ~8-10 µM — near Km so Rubisco is substrate-limited.</td></tr>
+<tr><td>21</td><td>5</td><td>Generic C3</td><td>Global</td><td>2000-01-01</td><td>Rubisco_specificity_factor_Sc_o</td><td>80</td><td>mol/mol (dimensionless)</td><td>public</td><td>von Caemmerer 2000 Biochemical Models of Leaf Photosynthesis</td><td></td><td>Selectivity of Rubisco for CO2 vs O2. Sc/o ~80 in most C3 plants. Higher = less photorespiration. C4 plants circumvent via CO2 concentrating mechanism.</td></tr>
+<tr><td>22</td><td>6</td><td>Generic C3 chloroplast</td><td>Global</td><td>2003-01-01</td><td>ATP_consumed_per_CO2_fixed</td><td>3</td><td>mol ATP per mol CO2</td><td>public</td><td>Raines 2003 Photosynth Res; Allen 2003</td><td></td><td>Calvin cycle reduction stoichiometry: 3 ATP + 2 NADPH per CO2 fixed into G3P (net). Deficit in ATP/NADPH ratio from linear flow drives cyclic electron flow.</td></tr>
+<tr><td>23</td><td>6</td><td>Generic C3 chloroplast</td><td>Global</td><td>2003-01-01</td><td>NADPH_consumed_per_CO2_fixed</td><td>2</td><td>mol NADPH per mol CO2</td><td>public</td><td>Raines 2003 Photosynth Res</td><td></td><td>Stoichiometry of GAPDH reaction in Calvin cycle. 2 NADPH per 3-PGA reduced to G3P (per CO2 fixed net).</td></tr>
+<tr><td>24</td><td>6</td><td>Spinacia oleracea</td><td>Global</td><td>2010-01-01</td><td>G3P_export_rate_via_TPT</td><td>4</td><td>µmol triose-P m-2 s-1</td><td>public</td><td>Stitt et al. 2010 Plant Cell Environ</td><td>https://doi.org/10.1111/j.1365-3040.2009.02054.x</td><td>Estimated triose phosphate translocator flux at An ~20 µmol CO2 m-2 s-1. Roughly 1/5 of fixed carbon exported per turn of the cycle.</td></tr>
+<tr><td>25</td><td>7</td><td>Spinacia oleracea leaf</td><td>Global</td><td>2010-01-01</td><td>sucrose_synthesis_rate</td><td>12</td><td>µmol C m-2 s-1</td><td>public</td><td>Stitt et al. 2010 Plant Cell Environ</td><td></td><td>Net sucrose synthesis estimated from export rates and labeling studies. ~60-70% of fixed carbon exported as sucrose in mature spinach leaves.</td></tr>
+<tr><td>26</td><td>7</td><td>Spinacia oleracea leaf</td><td>Global</td><td>2010-01-01</td><td>starch_synthesis_rate</td><td>6</td><td>µmol C m-2 s-1</td><td>public</td><td>Stitt et al. 2010 Plant Cell Environ</td><td></td><td>Starch accumulates in the light at ~30-40% of fixed carbon. Remobilized nocturnally to maintain sucrose export. Stitt et al. 2010.</td></tr>
+<tr><td>27</td><td>7</td><td>Generic C3 leaf</td><td>Global</td><td>2010-01-01</td><td>sucrose_starch_carbon_partition</td><td>0.65</td><td>fraction to sucrose (dimensionless)</td><td>public</td><td>Stitt et al. 2010 Plant Cell Environ</td><td></td><td>Approximately 65% of newly fixed carbon exported as sucrose; 35% as starch under well-lit conditions. Highly regulated by Pi and 3-PGA signals.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

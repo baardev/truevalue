@@ -1,0 +1,136 @@
+{
+  "_meta": {
+    "project": "ammonia_fertilizer_chain",
+    "chain": "ammonia_and_nitrogen_fertilizer_supply_chain",
+    "region": "Global",
+    "generated": "2026-07-02",
+    "source": "Nature Food (2024/2025) ammonia and fertilizer papers; Erisman et al. (2008); green ammonia review literature; docnav/Research/papers/19_ndc-planetary-boundaries-supply-chain.md",
+    "version": "1.0",
+    "scenario_type": "single_scenario"
+  },
+  "entities": {
+    "synthetic": {
+      "name": "Ammonia and Nitrogen Fertilizer Chain",
+      "region": "Global (feedstock: natural gas dominant, coal in parts of China)",
+      "chain_type": "Industrial and agricultural commodity chain, single-scenario baseline"
+    }
+  },
+  "phase_meta": [
+    {"name": "Feedstock (Natural Gas, Coal, or Hydrogen)", "transparency": "High", "transformation": "Fossil hydrocarbon or coal to hydrogen feedstock for synthesis"},
+    {"name": "Haber-Bosch Synthesis (Ammonia)", "transparency": "High at capacity level, inconsistent at emissions level", "transformation": "Hydrogen and atmospheric nitrogen to synthetic ammonia (NH3)"},
+    {"name": "Downstream Conversion (Urea, Ammonium Nitrate, Nitric Acid)", "transparency": "High", "transformation": "Ammonia to stable, transportable nitrogen fertilizer products"},
+    {"name": "Distribution and Storage", "transparency": "Medium-High", "transformation": "Fertilizer product to farm-gate delivery across global trade network"},
+    {"name": "Field Application", "transparency": "Low", "transformation": "Stored fertilizer to nitrogen applied to cropland"},
+    {"name": "Environmental Return (N2O Emissions, Runoff, Leaching)", "transparency": "Very Low", "transformation": "Applied nitrogen to crop uptake, volatilization, runoff, and atmospheric emission"}
+  ],
+  "phases": {
+    "synthetic": [
+      {
+        "id": 0,
+        "name": "Feedstock (Natural Gas, Coal, or Hydrogen)",
+        "D": 260, "C": 270,
+        "balance": 96.3, "N": 255, "sustainability": 5.0,
+        "status": "Excellent",
+        "notes": "Roughly 99% of ammonia synthesis hydrogen is currently fossil-fuel-derived, dominated by natural gas via steam methane reforming, with coal gasification used in some regions, especially China. High transparency: natural gas and coal supply volumes are well tracked by national energy statistics.",
+        "data_quality": "High: national energy statistics and IEA/IFA supply data",
+        "metrics": {
+          "global_ammonia_production_mt_2020": 183,
+          "fossil_derived_hydrogen_share_pct": 99,
+          "agriculture_end_use_share_pct": 70
+        }
+      },
+      {
+        "id": 1,
+        "name": "Haber-Bosch Synthesis (Ammonia)",
+        "D": 300, "C": 245,
+        "balance": 81.7, "N": 222, "sustainability": 1.54,
+        "status": "Good",
+        "notes": "D-heavy imbalance. Century-old, capital-intensive, high-pressure and high-temperature process. Energy intensity 7.7-10.1 kWh per kg NH3. Direct emissions approximately 450-500 Mt CO2e per year globally, about 1.3% of global GHG emissions. High transparency at the plant-capacity level (IFA, national industry data) but emissions-intensity reporting per facility is inconsistent.",
+        "data_quality": "High for capacity, Medium for facility-level emissions intensity",
+        "metrics": {
+          "direct_emissions_mtco2e_per_year": "450-500",
+          "direct_emissions_share_global_ghg_pct": 1.3,
+          "energy_intensity_kwh_per_kg_nh3": "7.7-10.1",
+          "emissions_intensity_typical_tco2_per_tnh3": "2.6-2.9",
+          "emissions_intensity_best_smr_tco2_per_tnh3": "1.6-1.8",
+          "emissions_intensity_coal_tco2_per_tnh3": "3.2-4.5",
+          "global_final_energy_share_pct": "1-2",
+          "annual_energy_use_ej": 8.6,
+          "feedstock_share_of_energy_pct": 40
+        }
+      },
+      {
+        "id": 2,
+        "name": "Downstream Conversion (Urea, Ammonium Nitrate, Nitric Acid)",
+        "D": 255, "C": 260,
+        "balance": 98.1, "N": 253, "sustainability": 6.67,
+        "status": "Excellent",
+        "notes": "Urea, ammonium nitrate, and nitric acid together represent about 91% of nitrogen fertilizer use. This is the stabilization step that converts ammonia into transportable, storable products. High transparency: production volumes tracked by IFA (International Fertilizer Association) and national statistics.",
+        "data_quality": "High: IFA and national production statistics",
+        "metrics": {
+          "urea_an_nitric_acid_share_of_n_fertilizer_pct": 91
+        }
+      },
+      {
+        "id": 3,
+        "name": "Distribution and Storage",
+        "D": 235, "C": 250,
+        "balance": 94.0, "N": 228, "sustainability": 4.0,
+        "status": "Good",
+        "notes": "Global trade and logistics network moving fertilizer from production plants to agricultural regions, including nitrogen-deficient regions that face access and price barriers. Medium-high transparency: trade flows tracked by UN Comtrade and IFA.",
+        "data_quality": "Medium-High: UN Comtrade and IFA trade flow data",
+        "metrics": {}
+      },
+      {
+        "id": 4,
+        "name": "Field Application",
+        "D": 210, "C": 310,
+        "balance": 67.7, "N": 173, "sustainability": 0.91,
+        "status": "Fair",
+        "notes": "Secondary bottleneck. C-heavy imbalance: application rates and timing are largely uncontrolled at the farm level in most of the world, with little real-time constraint (D) matching the volume of nitrogen applied (C). Low transparency: farm-level application data is fragmented and rarely centrally reported.",
+        "data_quality": "Low: farm-level application data fragmented, rarely centrally reported",
+        "metrics": {
+          "global_cropland_nue_2020_pct": 55,
+          "global_cropland_nue_2000_pct": 30,
+          "global_cropland_nue_1960_pct": 80
+        }
+      },
+      {
+        "id": 5,
+        "name": "Environmental Return (N2O Emissions, Runoff, Leaching)",
+        "D": 190, "C": 330,
+        "balance": 57.6, "N": 144, "sustainability": 0.67,
+        "status": "Poor",
+        "notes": "Worst phase in the chain. Failure zone (below the 61.8 stability threshold). Extreme C-heavy imbalance: global cropland nitrogen-use efficiency is only about 55% as of 2020 (recovered from a low of approximately 30% in 2000), meaning roughly 45% of applied nitrogen is lost to the environment as ammonia volatilization, nitrate runoff and leaching (causing eutrophication and algal blooms), and nitrous oxide emissions. This is the textbook C-type biogeochemical-flows planetary boundary transgression described in this repo's Paper 19 (docnav/Research/papers/19_ndc-planetary-boundaries-supply-chain.md): uncontrolled output flows exceeding ecological reabsorption capacity, unconstrained by any effective D-side limiting mechanism at the field-to-environment interface. Very low transparency: diffuse, unmonitored, non-point-source pollution by nature.",
+        "data_quality": "Very Low: diffuse, unmonitored, non-point-source pollution",
+        "metrics": {
+          "nitrogen_loss_share_pct": 45,
+          "use_phase_emissions_mtco2e_per_year": 660,
+          "transport_emissions_mtco2e_per_year": 30,
+          "total_n_linked_ghg_mtco2e_per_year": "1100-1300",
+          "haber_bosch_n_processed_tgn_mid2000s": 100,
+          "n_consumed_in_food_tgn_mid2000s": 17
+        }
+      }
+    ]
+  },
+  "system": {
+    "balance": 82.6,
+    "average_N": 212.5,
+    "bottleneck_phase_ids": [5, 4],
+    "interpretation": "The ammonia and nitrogen fertilizer chain scores 82.6% average balance (Good zone), but this chain-average figure is deceptively high: it masks a severe tail-end structural failure. Phase 5 (Environmental Return, 57.6%) is the only phase in the chain below the 61.8% stability threshold, a Failure-zone result driven by the collapse of global cropland nitrogen-use efficiency (approximately 55% as of 2020, having fallen to a low of approximately 30% in 2000 from an approximately 80% baseline in 1960). Phase 4 (Field Application, 67.7%) is the secondary bottleneck, Stressed zone, well below the chain average. Both phases share the same C-heavy structural signature: uncontrolled output (nitrogen applied, then lost) exceeding the weak constraint layer (D) that would otherwise bound it. This is a textbook C-type biogeochemical-flows planetary boundary transgression per this repo's Paper 19 (docnav/Research/papers/19_ndc-planetary-boundaries-supply-chain.md), distinct from a D-type constraint failure such as climate or freshwater boundary transgression."
+  },
+  "scenarios": {
+    "baseline": {
+      "label": "Current state (2020-2026 baseline, single scenario)",
+      "scores": {
+        "pi": 82.6,
+        "phi": 58.0,
+        "sqrt2": 72.0,
+        "ln2": 65.0,
+        "e": 50.0
+      },
+      "notes": "pi = chain average balance (82.6, Coherent zone), deceptively high given the severe Phase 5 tail-end failure. phi = proportional value distribution (58.0, Failure zone): farmers in nitrogen-deficient regions face access and price barriers while other regions over-apply, so value and physical nitrogen are not proportionally distributed to where they generate the most food output per unit of environmental loss. sqrt2 = structural overhead (72.0, Stressed zone): Haber-Bosch plants are necessarily capital-intensive fixed infrastructure, a moderate but largely irreducible structural cost. ln2 = value transformation (65.0, Stressed zone, just above the Failure boundary): global cereal nitrogen-use efficiency fell from approximately 80% in 1960 to approximately 30% in 2000, then partially recovered to approximately 55% by 2020, a value-transformation process that has never returned to its historical efficiency baseline. e = financial abstraction (50.0, Failure zone, the weakest axis): sustainability-linked agricultural finance and carbon markets for nitrous oxide abatement remain nascent and are rarely tied to measurable nitrogen-use-efficiency outcomes at the farm level. ln2 and e are the standout failure signals: a decades-long value-transformation gap (ln2) that has never been closed by financial instruments capable of pricing the externality (e)."
+    }
+  }
+}

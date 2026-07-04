@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Econ History Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Econ History Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>econ_history_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">10</span> / 10
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>epoch_start<span class="sort-indicator"></span></th>
+<th>epoch_end<span class="sort-indicator"></span></th>
+<th>dominant_paradigm<span class="sort-indicator"></span></th>
+<th>paradigm_state<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>key_text_or_event<span class="sort-indicator"></span></th>
+<th>custodian_class<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Ancient Exchange</td><td>pre-3000 BCE</td><td>600 BCE</td><td>Barter and tribute redistribution</td><td>Gift and tribute economies</td><td>Development of weight-based commodity money</td><td>Millennia</td><td>Low</td><td>Mesopotamian grain accounting and shekel weight standards (c. 3000 BCE)</td><td>Temple priests and tribal elders</td><td>Pre-literate or proto-literate era. Most records are clay tablets and oral transmission. High D due to geographic isolation and agricultural constraint.</td></tr>
+<tr><td>1</td><td>Classical Antiquity</td><td>600 BCE</td><td>400 CE</td><td>Coin-based market economies with commercial law</td><td>Coined money economies</td><td>Adoption of coinage and Roman commercial law</td><td>Centuries</td><td>Low-Medium</td><td>Lydian coinage (c. 600 BCE); Aristotle Politics (350 BCE); Roman commercial law</td><td>State mints and philosophers</td><td>First systematic thought on exchange and value. Aristotle distinguishes use value from exchange value. Roman law formalizes contract and debt.</td></tr>
+<tr><td>2</td><td>Medieval Commercial Revolution</td><td>500 CE</td><td>1500 CE</td><td>Feudal economy with emerging long-distance credit</td><td>Ledger credit and bill of exchange</td><td>Double-entry bookkeeping and deposit banking</td><td>Centuries</td><td>Medium</td><td>Pacioli Summa (1494); Medici Bank (1397); Champagne trade fairs</td><td>Merchant guilds and church</td><td>Usury prohibition shapes credit instrument design. Bill of exchange circumvents interest ban. Deposit banking emerges in Italian city-states.</td></tr>
+<tr><td>3</td><td>Mercantilism and State Finance</td><td>1500</td><td>1776</td><td>Bullion accumulation doctrine and state-managed trade</td><td>Nation-state trade doctrine</td><td>Joint-stock companies and national debt instruments</td><td>Centuries</td><td>Medium</td><td>VOC incorporation (1602); Bank of England (1694); mercantilist treatises</td><td>Mercantilist states and trading companies</td><td>Trade surplus as state objective. Colonial systems extract bullion. National debt as war finance instrument. First rudimentary balance-of-trade statistics.</td></tr>
+<tr><td>4</td><td>Classical Political Economy</td><td>1776</td><td>1871</td><td>Market self-regulation and comparative advantage</td><td>Market-centered paradigm</td><td>Mathematical formalization and marginal utility analysis</td><td>Decades</td><td>High</td><td>Wealth of Nations (1776); Ricardo Principles (1817); Mill Principles (1848)</td><td>Political economists and early universities</td><td>Labor theory of value dominant. Free trade advocacy displaces mercantilism. Political economy becomes an academic discipline. First economic journals.</td></tr>
+<tr><td>5</td><td>Marginalist Revolution</td><td>1871</td><td>1929</td><td>Utility maximization and price equilibrium</td><td>Mathematical equilibrium economics</td><td>Great Depression - model fails to explain persistent unemployment</td><td>Decades</td><td>High</td><td>Jevons Theory of Political Economy (1871); Walras Elements (1874); Marshall Principles (1890)</td><td>University economics departments</td><td>Mathematics enters economics. Marginal utility replaces labor theory of value. Supply-demand equilibrium. Pareto optimum. First PhD programs in economics.</td></tr>
+<tr><td>6</td><td>Keynesian Macro</td><td>1929</td><td>1973</td><td>Aggregate demand management and fiscal stabilization</td><td>Mixed economy macro</td><td>Stagflation - simultaneous inflation and unemployment invalidates IS-LM</td><td>Decades</td><td>High</td><td>General Theory (1936); Bretton Woods (1944); Kuznets national income accounting</td><td>Central banks and governments</td><td>Depression reveals Say&#x27;s Law failure. Fiscal multiplier. National income accounting created. Bretton Woods establishes IMF and World Bank. Mixed economy becomes policy norm.</td></tr>
+<tr><td>7</td><td>Monetarism and Stagflation Response</td><td>1970</td><td>1990</td><td>Price stability and quantity theory of money</td><td>Rules-based monetary policy</td><td>Financialization and global deregulation spread</td><td>Decades</td><td>High</td><td>Friedman monetarism; Lucas critique (1976); Volcker shock (1979-82)</td><td>Central banks and treasury departments</td><td>Stagflation discredits Keynesian discretion. Rational expectations. Rules vs discretion debate. Volcker disinflation. Reagan and Thatcher supply-side programs.</td></tr>
+<tr><td>8</td><td>Neoliberal Consolidation</td><td>1990</td><td>2008</td><td>Efficient markets and financial globalization</td><td>Global neoliberal consensus</td><td>Global Financial Crisis 2008 - efficient market consensus collapses</td><td>Decades</td><td>High</td><td>Washington Consensus (1989); WTO (1995); DSGE models; CDO expansion</td><td>IMF World Bank and economic policy institutes</td><td>Capital account liberalization. DSGE macro models. Financial engineering and derivatives. Emerging market crises. Dot-com and housing bubbles as stress signals.</td></tr>
+<tr><td>9</td><td>Post-Crisis Fragmentation</td><td>2008</td><td>present</td><td>Contested - no settled dominant framework</td><td>Paradigm crisis and methodological pluralism</td><td>Pending - no child N has yet stabilized</td><td>Ongoing</td><td>Medium</td><td>GFC (2008); Piketty Capital (2014); COVID-19 fiscal response (2020); LLM economics</td><td>Distributed and contested</td><td>Models failed to predict 2008. Zero lower bound. Inequality debate. MMT. Complexity economics. Behavioral mainstream. AI in economics. No agreed successor paradigm.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

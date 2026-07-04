@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Global Electricity Grid Supply Chain Ui</title>
+  <style>
+
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+    .container { max-width: 1400px; margin: 0 auto; padding: 32px 20px 40px; }
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+    h1 { margin: 0 0 10px; font-size: 28px; color: #fff; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .subtitle { margin: 0; color: var(--muted); font-size: 14px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    .warn {
+      margin: 16px 24px;
+      padding: 12px 14px;
+      background: rgba(180, 83, 9, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #fcd34d;
+      border-radius: 10px;
+      font-size: 14px;
+      font-family: ui-sans-serif, system-ui, sans-serif;
+    }
+    .pre-wrap {
+      margin: 0;
+      padding: 20px 24px 24px;
+      overflow: auto;
+      max-height: 80vh;
+      font-size: 13px;
+      line-height: 1.5;
+      white-space: pre;
+      color: #dbe4ee;
+    }
+    .table-wrap { overflow: auto; max-height: 75vh; }
+    table { width: 100%; border-collapse: collapse; min-width: 500px; font-family: ui-sans-serif, system-ui, sans-serif; }
+    thead th {
+      position: sticky; top: 0; z-index: 2;
+      background: #172033; color: #f8fafc; text-align: left; font-size: 13px;
+      border-bottom: 1px solid var(--border); padding: 12px 10px;
+    }
+    tbody td {
+      padding: 10px; border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top; color: #dbe4ee; font-size: 13px; line-height: 1.4;
+      word-break: break-word; font-family: ui-monospace, monospace; font-size: 12px;
+    }
+    tbody tr:nth-child(even) { background: var(--row-alt); }
+    tbody tr:hover { background: var(--hover); }
+    .footer {
+      padding: 14px 24px 20px; color: var(--muted); font-size: 12px;
+      font-family: ui-sans-serif, system-ui, sans-serif; border-top: 1px solid var(--border);
+    }
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Global Electricity Grid Supply Chain Ui</h1>
+        <p class="subtitle">Generated from <strong>global_electricity_grid_supply_chain_ui.json</strong> (JSON)</p>
+      </div>
+<pre class="pre-wrap">{
+  &quot;_meta&quot;: {
+    &quot;generated&quot;: &quot;2026-07-02&quot;,
+    &quot;material&quot;: &quot;global_electricity_grid&quot;,
+    &quot;slug&quot;: &quot;global_electricity_grid&quot;,
+    &quot;region&quot;: &quot;Global&quot;,
+    &quot;sources&quot;: [
+      &quot;IEA Global Energy Review 2025: Electricity (iea.org/reports/global-energy-review-2025/electricity)&quot;,
+      &quot;globalelectricity.org (citing IEA data)&quot;,
+      &quot;IEA Electricity Grids and Secure Energy Transitions analysis (interconnection queues, permitting delays, storage and demand-response gaps)&quot;,
+      &quot;IEA World Energy Outlook: STEPS and NZE 2030/2050 scenario shares&quot;,
+      &quot;Cross-reference: frontend/project/grid_ercot_uri (Texas ERCOT Winter Storm Uri failure case study)&quot;
+    ],
+    &quot;note&quot;: &quot;Dual-scenario N-D-C baseline: BAU (business as usual, fossil-heavy 2024 generation mix) vs. Mitigation (IEA Net Zero Emissions 2050-aligned high-renewables pathway with grid and storage investment). D/C/balance/N values are fixed inputs per project specification, not recomputed. Formulas: balance = 100 - (|D-C| / max(D,C)) * 100; N = round(sqrt(D*C) * (balance/100)); sustainability = 100 / (|D-C| + 10), a simplified structural derived metric, not a physical measurement.&quot;,
+    &quot;arithmetic&quot;: {
+      &quot;bau_chain_balance&quot;: &quot;(82.1+86.7+74.1+74.5+94.1+83.3+78.0)/7 = 572.8/7 = 81.8285... rounded to 81.8&quot;,
+      &quot;bau_average_N&quot;: &quot;(208+242+185+177+233+205+172)/7 = 1422/7 = 203.14... rounded to 203.1&quot;,
+      &quot;mitigation_chain_balance&quot;: &quot;(80.0+85.0+92.0+97.8+92.2+81.5+83.7)/7 = 612.2/7 = 87.4571... rounded to 87.5&quot;,
+      &quot;mitigation_average_N&quot;: &quot;(200+240+232+226+232+200+187)/7 = 1517/7 = 216.71... rounded to 216.7&quot;
+    }
+  },
+  &quot;entities&quot;: {
+    &quot;bau&quot;: {
+      &quot;label&quot;: &quot;BAU (Business as Usual)&quot;,
+      &quot;description&quot;: &quot;2024 fossil-heavy global generation mix continued forward without accelerated grid investment: coal 35%, gas 22%, hydro 14%, nuclear 9%, wind 8%, solar 7%, bioenergy/other ~5% of approximately 30,850 TWh generated. Interconnection queue backlogs and insufficient storage buildout remain unresolved, holding Phase 2 (Transmission) and Phase 3 (Balancing and Storage) in the Stressed zone.&quot;
+    },
+    &quot;mitigation&quot;: {
+      &quot;label&quot;: &quot;Mitigation (IEA NZE 2050-aligned)&quot;,
+      &quot;description&quot;: &quot;Streamlined interconnection permitting reform plus large-scale battery and pumped-hydro storage deployment, consistent with the IEA Net Zero Emissions by 2050 pathway (coal falling to 1% and gas to 3% of generation by 2050; wind rising to 35% and solar to 33%). This is a modelled pathway, not a guaranteed outcome. Only Phase 2 and Phase 3 D/C values are improved in this scenario to isolate the effect of grid and storage investment; other phases are held roughly constant.&quot;
+    }
+  },
+  &quot;phase_meta&quot;: [
+    {
+      &quot;id&quot;: 0,
+      &quot;name&quot;: &quot;Fuel and Resource Input&quot;,
+      &quot;transparency&quot;: &quot;Medium&quot;,
+      &quot;transformation&quot;: &quot;Coal, gas, and uranium fuel supply plus renewable resource potential (wind, solar, hydro) converted into extractable or harvestable energy inputs for generation.&quot;,
+      &quot;bau_note&quot;: &quot;Fuel reserves and resource maps are public (IEA, USGS) but site-level extraction contracts are often private. Fossil fuel input still dominates the 2024 mix.&quot;,
+      &quot;mitigation_note&quot;: &quot;Fossil fuel input share falls as renewable resource harvesting scales toward the NZE 2050 trajectory (wind 35%, solar 33% of generation by 2050).&quot;
+    },
+    {
+      &quot;id&quot;: 1,
+      &quot;name&quot;: &quot;Generation&quot;,
+      &quot;transparency&quot;: &quot;High&quot;,
+      &quot;transformation&quot;: &quot;Fuel and renewable resource inputs converted into electricity by the power plant fleet: thermal (coal, gas, nuclear) and renewables (wind, solar, hydro, bioenergy).&quot;,
+      &quot;bau_note&quot;: &quot;IEA and national grid operators publish generation-by-source data at high frequency. Coal remained the single largest source in 2024 (35%, approximately 10,587 TWh) for the 50th consecutive year; renewables plus nuclear covered 40% of global generation for the first time.&quot;,
+      &quot;mitigation_note&quot;: &quot;NZE 2050 pathway shifts the generation mix to wind 35%, solar 33%, hydro 12%, nuclear 12%, with coal falling to 1% and gas to 3%.&quot;
+    },
+    {
+      &quot;id&quot;: 2,
+      &quot;name&quot;: &quot;Transmission&quot;,
+      &quot;transparency&quot;: &quot;Low-Medium&quot;,
+      &quot;transformation&quot;: &quot;Generated electricity is stepped up and moved via high-voltage transmission lines and cross-border interconnectors to load centers.&quot;,
+      &quot;bau_note&quot;: &quot;BOTTLENECK. Interconnection queue backlogs, permitting delays, and cross-border transmission capacity shortfalls documented by IEA Electricity Grids and Secure Energy Transitions analysis are constraints (D) not matched by built transmission capacity (C). Queue data exists per grid operator but is fragmented globally.&quot;,
+      &quot;mitigation_note&quot;: &quot;Streamlined interconnection permitting reform, grid-enhancing technologies, and HVDC interconnector buildout close the queue backlog, raising balance from 74.1% to an estimated 92.0%.&quot;
+    },
+    {
+      &quot;id&quot;: 3,
+      &quot;name&quot;: &quot;Balancing and Storage&quot;,
+      &quot;transparency&quot;: &quot;Low-Medium&quot;,
+      &quot;transformation&quot;: &quot;Frequency response, reserve margins, curtailment management, and battery or pumped-hydro storage balance variable generation against demand in real time.&quot;,
+      &quot;bau_note&quot;: &quot;BOTTLENECK. Reserve margin and balancing requirements outpace deployed storage and demand-response capacity. Curtailment of solar and wind, a symptom of this gap, is documented by IEA and grid operators (CAISO, ERCOT, National Grid ESO all publish curtailment statistics).&quot;,
+      &quot;mitigation_note&quot;: &quot;Utility-scale battery storage, demand response and virtual power plant programmes, and pumped-hydro expansion close the balancing gap, raising balance from 74.5% to an estimated 97.8%.&quot;
+    },
+    {
+      &quot;id&quot;: 4,
+      &quot;name&quot;: &quot;Distribution&quot;,
+      &quot;transparency&quot;: &quot;High&quot;,
+      &quot;transformation&quot;: &quot;Utility distribution networks step down and deliver power from transmission substations to end consumers.&quot;,
+      &quot;bau_note&quot;: &quot;Regulated utilities file distribution data with regulators in most jurisdictions. Distribution is one of the strongest phases in the BAU chain.&quot;,
+      &quot;mitigation_note&quot;: &quot;Distribution balance is held roughly constant in the NZE pathway (92.2% vs 94.1% BAU) since the primary NZE interventions modelled here target transmission and balancing, not distribution.&quot;
+    },
+    {
+      &quot;id&quot;: 5,
+      &quot;name&quot;: &quot;End Use and Demand&quot;,
+      &quot;transparency&quot;: &quot;Medium-High&quot;,
+      &quot;transformation&quot;: &quot;Industrial, residential, and commercial consumption of delivered electricity; electrification of transport and heating is raising demand.&quot;,
+      &quot;bau_note&quot;: &quot;National statistics agencies publish sectoral demand data. Demand growth from electrification adds pressure to Phase 2 and Phase 3.&quot;,
+      &quot;mitigation_note&quot;: &quot;End-use demand structure is held roughly constant in this analysis to isolate the transmission and storage investment effect (81.5% vs 83.3% BAU, within rounding).&quot;
+    },
+    {
+      &quot;id&quot;: 6,
+      &quot;name&quot;: &quot;Retirement and Decommissioning&quot;,
+      &quot;transparency&quot;: &quot;Low-Medium&quot;,
+      &quot;transformation&quot;: &quot;Retired fossil plant decommissioning (ash ponds, site remediation) and end-of-life renewable asset retirement (wind turbine blades, aging solar panels, batteries).&quot;,
+      &quot;bau_note&quot;: &quot;Decommissioning liabilities and ash disposal practices are often under-disclosed. This is a documented opacity gap, comparable to gold&#x27;s Phase 6 vaulting opacity pattern elsewhere in this repository.&quot;,
+      &quot;mitigation_note&quot;: &quot;Balance improves modestly (83.7% vs 78.0% BAU) as larger renewable-fleet retirement volumes are met with maturing circular economy infrastructure (battery and blade recycling) under the NZE pathway.&quot;
+    }
+  ],
+  &quot;phases&quot;: {
+    &quot;bau&quot;: [
+      {
+        &quot;id&quot;: 0,
+        &quot;name&quot;: &quot;Fuel and Resource Input&quot;,
+        &quot;D&quot;: 230,
+        &quot;C&quot;: 280,
+        &quot;balance&quot;: 82.1,
+        &quot;N&quot;: 208,
+        &quot;sustainability&quot;: 1.667,
+        &quot;notes&quot;: &quot;Coal, gas, uranium fuel supply plus renewable resource potential.&quot;,
+        &quot;data_quality&quot;: &quot;medium&quot;
+      },
+      {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Generation&quot;,
+        &quot;D&quot;: 260,
+        &quot;C&quot;: 300,
+        &quot;balance&quot;: 86.7,
+        &quot;N&quot;: 242,
+        &quot;sustainability&quot;: 2.0,
+        &quot;notes&quot;: &quot;Thermal plus renewable power plant fleet.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;
+      },
+      {
+        &quot;id&quot;: 2,
+        &quot;name&quot;: &quot;Transmission&quot;,
+        &quot;D&quot;: 290,
+        &quot;C&quot;: 215,
+        &quot;balance&quot;: 74.1,
+        &quot;N&quot;: 185,
+        &quot;sustainability&quot;: 1.176,
+        &quot;notes&quot;: &quot;BOTTLENECK. High-voltage transmission and interconnection.&quot;,
+        &quot;data_quality&quot;: &quot;low-medium&quot;
+      },
+      {
+        &quot;id&quot;: 3,
+        &quot;name&quot;: &quot;Balancing and Storage&quot;,
+        &quot;D&quot;: 275,
+        &quot;C&quot;: 205,
+        &quot;balance&quot;: 74.5,
+        &quot;N&quot;: 177,
+        &quot;sustainability&quot;: 1.25,
+        &quot;notes&quot;: &quot;BOTTLENECK. Frequency response, reserve margins, storage.&quot;,
+        &quot;data_quality&quot;: &quot;low-medium&quot;
+      },
+      {
+        &quot;id&quot;: 4,
+        &quot;name&quot;: &quot;Distribution&quot;,
+        &quot;D&quot;: 240,
+        &quot;C&quot;: 255,
+        &quot;balance&quot;: 94.1,
+        &quot;N&quot;: 233,
+        &quot;sustainability&quot;: 4.0,
+        &quot;notes&quot;: &quot;Utility distribution networks to end consumers.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;
+      },
+      {
+        &quot;id&quot;: 5,
+        &quot;name&quot;: &quot;End Use and Demand&quot;,
+        &quot;D&quot;: 225,
+        &quot;C&quot;: 270,
+        &quot;balance&quot;: 83.3,
+        &quot;N&quot;: 205,
+        &quot;sustainability&quot;: 1.818,
+        &quot;notes&quot;: &quot;Industrial, residential, commercial consumption.&quot;,
+        &quot;data_quality&quot;: &quot;medium-high&quot;
+      },
+      {
+        &quot;id&quot;: 6,
+        &quot;name&quot;: &quot;Retirement and Decommissioning&quot;,
+        &quot;D&quot;: 250,
+        &quot;C&quot;: 195,
+        &quot;balance&quot;: 78.0,
+        &quot;N&quot;: 172,
+        &quot;sustainability&quot;: 1.538,
+        &quot;notes&quot;: &quot;Fossil plant decommissioning and renewable asset retirement.&quot;,
+        &quot;data_quality&quot;: &quot;low-medium&quot;
+      }
+    ],
+    &quot;mitigation&quot;: [
+      {
+        &quot;id&quot;: 0,
+        &quot;name&quot;: &quot;Fuel and Resource Input&quot;,
+        &quot;D&quot;: 220,
+        &quot;C&quot;: 275,
+        &quot;balance&quot;: 80.0,
+        &quot;N&quot;: 200,
+        &quot;sustainability&quot;: 1.538,
+        &quot;notes&quot;: &quot;Renewable resource harvesting share increased.&quot;,
+        &quot;data_quality&quot;: &quot;medium&quot;
+      },
+      {
+        &quot;id&quot;: 1,
+        &quot;name&quot;: &quot;Generation&quot;,
+        &quot;D&quot;: 255,
+        &quot;C&quot;: 300,
+        &quot;balance&quot;: 85.0,
+        &quot;N&quot;: 240,
+        &quot;sustainability&quot;: 1.818,
+        &quot;notes&quot;: &quot;NZE-aligned generation mix.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;
+      },
+      {
+        &quot;id&quot;: 2,
+        &quot;name&quot;: &quot;Transmission&quot;,
+        &quot;D&quot;: 250,
+        &quot;C&quot;: 230,
+        &quot;balance&quot;: 92.0,
+        &quot;N&quot;: 232,
+        &quot;sustainability&quot;: 3.333,
+        &quot;notes&quot;: &quot;Interconnection permitting reform and HVDC buildout applied.&quot;,
+        &quot;data_quality&quot;: &quot;low-medium&quot;
+      },
+      {
+        &quot;id&quot;: 3,
+        &quot;name&quot;: &quot;Balancing and Storage&quot;,
+        &quot;D&quot;: 230,
+        &quot;C&quot;: 225,
+        &quot;balance&quot;: 97.8,
+        &quot;N&quot;: 226,
+        &quot;sustainability&quot;: 6.667,
+        &quot;notes&quot;: &quot;Utility-scale storage and demand response deployed.&quot;,
+        &quot;data_quality&quot;: &quot;low-medium&quot;
+      },
+      {
+        &quot;id&quot;: 4,
+        &quot;name&quot;: &quot;Distribution&quot;,
+        &quot;D&quot;: 235,
+        &quot;C&quot;: 255,
+        &quot;balance&quot;: 92.2,
+        &quot;N&quot;: 232,
+        &quot;sustainability&quot;: 3.333,
+        &quot;notes&quot;: &quot;Held roughly constant.&quot;,
+        &quot;data_quality&quot;: &quot;high&quot;
+      },
+      {
+        &quot;id&quot;: 5,
+        &quot;name&quot;: &quot;End Use and Demand&quot;,
+        &quot;D&quot;: 220,
+        &quot;C&quot;: 270,
+        &quot;balance&quot;: 81.5,
+        &quot;N&quot;: 200,
+        &quot;sustainability&quot;: 1.667,
+        &quot;notes&quot;: &quot;Held roughly constant.&quot;,
+        &quot;data_quality&quot;: &quot;medium-high&quot;
+      },
+      {
+        &quot;id&quot;: 6,
+        &quot;name&quot;: &quot;Retirement and Decommissioning&quot;,
+        &quot;D&quot;: 245,
+        &quot;C&quot;: 205,
+        &quot;balance&quot;: 83.7,
+        &quot;N&quot;: 187,
+        &quot;sustainability&quot;: 2.0,
+        &quot;notes&quot;: &quot;Improved by maturing circular economy infrastructure.&quot;,
+        &quot;data_quality&quot;: &quot;low-medium&quot;
+      }
+    ]
+  },
+  &quot;system&quot;: {
+    &quot;bau&quot;: {
+      &quot;balance&quot;: 81.8,
+      &quot;average_N&quot;: 203.1,
+      &quot;bottleneck_phase_ids&quot;: [
+        2,
+        3
+      ],
+      &quot;interpretation&quot;: &quot;The BAU global electricity grid chain scores A+ (81.8% average balance, Good zone). Phase 2 (Transmission, 74.1%) and Phase 3 (Balancing and Storage, 74.5%) are the structural bottlenecks, both in the Stressed zone (61.8-80%). Both are driven by the same underlying pattern documented by IEA: interconnection queue backlogs and permitting delays constrain new transmission capacity (Phase 2), while insufficient storage and demand-response buildout constrains balancing capacity (Phase 3), even as generation-side renewable capacity additions accelerate (approximately 700 GW added in 2024, nearly 80% solar PV). The grid transition is structurally under-permitted and under-financed relative to its generation-side progress.&quot;
+    },
+    &quot;mitigation&quot;: {
+      &quot;balance&quot;: 87.5,
+      &quot;average_N&quot;: 216.7,
+      &quot;bottleneck_phase_ids&quot;: [],
+      &quot;interpretation&quot;: &quot;The mitigation (IEA NZE 2050-aligned) scenario raises chain balance from 81.8% to 87.5% by targeting Phase 2 and Phase 3 alone: streamlined interconnection permitting reform, grid-enhancing technologies, and HVDC interconnector buildout raise Phase 2 balance from 74.1% to 92.0%; utility-scale battery storage, demand response and virtual power plant programmes, and pumped-hydro expansion raise Phase 3 balance from 74.5% to 97.8%. No phase remains below the 80% Coherent floor in this scenario (weakest phase is Phase 0, Fuel and Resource Input, at exactly 80.0%). This scenario is a modelled pathway consistent with IEA NZE 2050 assumptions, not a guaranteed outcome.&quot;
+    }
+  },
+  &quot;scenarios&quot;: {
+    &quot;baseline&quot;: {
+      &quot;label&quot;: &quot;BAU baseline (2024), PROVISIONAL&quot;,
+      &quot;scores&quot;: {
+        &quot;pi&quot;: 81.8,
+        &quot;phi&quot;: 70.0,
+        &quot;sqrt2&quot;: 68.0,
+        &quot;ln2&quot;: 75.0,
+        &quot;e&quot;: 58.0
+      },
+      &quot;notes&quot;: &quot;pi = chain average balance (Coherent zone, &gt;=80). phi = proportional value distribution: transmission and balancing capture disproportionate constraint relative to their share of delivered value (Stressed zone, 61.8-80). sqrt2 = structural overhead: interconnection queue backlogs and permitting delays documented by IEA (Stressed zone). ln2 = growth/transformation: renewable capacity additions are strong (24% YoY solar growth per IEA) but conversion of added capacity into firm, balanced delivered power still lags (Stressed zone, near the Coherent boundary). e = financial abstraction: capacity markets, carbon pricing, and green bonds exist in many jurisdictions but are weakly and inconsistently linked to physical transmission and storage buildout targets (Failure zone by strict phi-derived threshold, &lt;61.8; described qualitatively as the most stressed axis). Mitigation-scenario five-model scores are deferred pending dedicated modelling of financial and market instruments under the NZE pathway; pi alone is known to rise to 87.5 reflecting the improved chain balance.&quot;
+    }
+  }
+}</pre>
+      <div class="footer">
+        Pretty-printed view. For list-of-objects with uniform keys, a table is shown instead.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

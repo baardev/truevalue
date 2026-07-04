@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spain Olive Oil Supply Chain Phases</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Spain Olive Oil Supply Chain Phases</h1>
+        <p class="subtitle">CSV viewer generated from <strong>spain_olive_oil_supply_chain_phases.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">8</span> / 8
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>phase_id<span class="sort-indicator"></span></th>
+<th>phase_name<span class="sort-indicator"></span></th>
+<th>phase_category<span class="sort-indicator"></span></th>
+<th>physical_state_in<span class="sort-indicator"></span></th>
+<th>physical_state_out<span class="sort-indicator"></span></th>
+<th>primary_transformation<span class="sort-indicator"></span></th>
+<th>typical_time_scale<span class="sort-indicator"></span></th>
+<th>transparency_level<span class="sort-indicator"></span></th>
+<th>measurable_output<span class="sort-indicator"></span></th>
+<th>output_unit<span class="sort-indicator"></span></th>
+<th>D_parameters<span class="sort-indicator"></span></th>
+<th>C_parameters<span class="sort-indicator"></span></th>
+<th>data_status<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>0</td><td>Cultivation</td><td>Upstream</td><td>Soil + water + sunlight + olive tree stock</td><td>Ripe olives on tree</td><td>Biological growth cycle: pruning + irrigation + integrated pest management + soil management</td><td>Perennial (1 year crop cycle; tree productive life 100-300 years)</td><td>Medium</td><td>Olives produced per hectare</td><td>kg/ha</td><td>Climate stress (drought/heat); fragmented land tenure (380K farms avg 7ha); CAP compliance; labor availability; water rights; alternate bearing cycle</td><td>Cooperative model (Dcoop/Hojiblanca); drip irrigation; PDO-certified varieties; advanced agronomic engineering; 340M tree heritage stock</td><td>POPULATED</td><td>Spain 2.5M ha; 340M trees; 75% in Andalusia. Drought reduced 2022-23 harvest by 48%. CAP provides ~30% of eligible producer income. Traditional vs intensive grove duality (42% with &lt;140 trees/ha; 3% super-intensive &gt;400 trees/ha). Sources: oliveoilsfromspain.org; CaixaBank Research 2022; CDE/Univ Bern blog; Business Insider/Dcoop 2023.</td></tr>
+<tr><td>1</td><td>Harvesting</td><td>Upstream</td><td>Ripe olives on tree</td><td>Harvested olives (freshly detached fruit)</td><td>Mechanical vibration (vibradoras) + net collection + transport to mill. Timing critical: Nov-Jan optimum. Early harvest yields higher quality oil.</td><td>3 months per year (November to January)</td><td>High</td><td>Tonnes of olives harvested per day per grove</td><td>t/day per grove</td><td>Seasonal time window (3 months); weather dependency; labor shortage (15% seasonal worker deficit in 2023); drought reduces fruit attachment force; machinery investment cost</td><td>Advanced vibradoras machinery; Dcoop infrastructure; 75</td><td>000 families in largest cooperative; mechanization replaces hand-harvesting; yield benchmarks (Benito: 8</td><td>000 kg/day good year vs 1</td><td>000 kg/day drought year)</td><td>POPULATED</td><td>1700+ mills handle inflow. World largest mill at Villacarrillo (Jaen) processes 2500 tonnes olives/day. Dcoop: 75K families. Harvest season Nov-Jan. In 2023 seasonal worker shortage 15% (Spanish Ministry of Agriculture). Sources: Business Insider/Dcoop 2023; oliveoilsfromspain.org; Olive Oil Times export data.</td></tr>
+<tr><td>2</td><td>Milling and Processing</td><td>Midstream</td><td>Harvested olives (whole fruit)</td><td>Crude olive oil (extra virgin / virgin / lampante) + alperujo (wet olive paste)</td><td>Cold mechanical extraction: washing + crushing to paste + malaxation + centrifugal decanting. No heat or solvents in EVOO process.</td><td>12-24 hours per batch (time-sensitive: oil quality degrades rapidly if olives stored)</td><td>High</td><td>Litres of olive oil extracted per tonne of olives</td><td>L/t olives</td><td>Quality grading (IOC acidity thresholds); energy intensity (decanters); fast-turnaround requirement (olives degrade within hours); EU quality standards; IOC certification</td><td>Cold extraction technology; Acesur AI Easy Taste quality analyzer (600 samples/day); 1700+ mills with capacity to handle peak harvest flow; Dcoop world largest storage 300K MT; PEF (Pulsed Electric Field) extraction technology at Acesur</td><td>POPULATED</td><td>~20% oil extraction rate from olives (varies by variety and ripeness). Extra virgin: &lt;=0.8% acidity. Spain has 1700+ mills including world&#x27;s largest at Villacarrillo (2500t/day). Acesur (La Espanola brand) uses AI-powered organoleptic analysis (Easy Taste). Solar-powered mills at Acesur. Sources: Deutsche Bank/Acesur 2025; Business Insider/Dcoop 2023; IOC definitions; foodswinesfromspain.com.</td></tr>
+<tr><td>3</td><td>Waste and Byproduct Recovery</td><td>Midstream</td><td>Alperujo (wet olive paste byproduct from milling)</td><td>Pomace oil (crude) + compost/fertilizer + biomass fuel pellets</td><td>Solvent extraction of residual oil from alperujo; composting of dry pulp; biomass conversion for energy generation</td><td>Days to weeks (batch processing)</td><td>Medium</td><td>Tonnes of pomace oil extracted; MWh of biomass energy generated</td><td>t pomace oil/year</td><td>Solvent extraction regulatory compliance; separate pomace oil industry governance (Spain Professional Organization of Olive Pomace Oil recognized 2016); different quality and market positioning from virgin oils</td><td>Circular economy integration: alperujo as fertilizer/biomass for energy/animal feed/compost; pomace oil for food processing and cosmetics; Spain world leader in pomace oil production</td><td>POPULATED</td><td>Alperujo is the main byproduct (olive waste): wet paste ~0.8t per tonne of olives processed. Used as: compost/fertilizer (soil amendment); biomass energy (heating mills); animal feed additive; crude pomace oil via solvent extraction. Spain has dedicated Professional Organization of Olive Pomace Oil. Sources: Olive Oil Times pomace 2016; Business Insider/Dcoop 2023 (alperujo composted for fertilizer or biomass fuel).</td></tr>
+<tr><td>4</td><td>Storage</td><td>Midstream</td><td>Crude olive oil (bulk)</td><td>Stable bottled or bulk olive oil ready for bottling/export</td><td>Temperature-controlled inert storage in large stainless steel tanks (nitrogen-blanketed to prevent oxidation). Oil segregated by quality grade and harvest lot.</td><td>Months to up to 2 years (oil maintains quality under proper storage)</td><td>High</td><td>Tonnes of oil in storage; nitrogen consumption per tonne stored</td><td>t stored / Nm3 N2 per t</td><td>Temperature regulation cost; nitrogen supply; tank maintenance; oil segregation and traceability; fire/explosion risk from oil vapors; tank capacity constraints at peak harvest</td><td>World&#x27;s largest olive oil storage facility (Dcoop: 300K metric tonnes capacity at Antequera); nitrogen blanketing technology; stainless steel tanks; quality preservation for up to 2 years; detailed lot tracking</td><td>POPULATED</td><td>Dcoop maintains the world&#x27;s largest olive oil storage facility: 300,000 metric tonnes capacity at Antequera (equivalent to 1/3 of an oil tanker). Tanks are stainless steel, kept in darkness at constant temperature, nitrogen-blanketed. Oil can be stored up to 2 years. Sources: Business Insider/Dcoop 2023; oliveoilsfromspain.org.</td></tr>
+<tr><td>5</td><td>Packaging and Bottling</td><td>Midstream</td><td>Bulk crude olive oil (large tanks)</td><td>Bottled olive oil (glass/PET/metal) ready for retail or export</td><td>Filtration + blending + filling + sealing + labeling. Both domestic brands (La Espanola/Atasur) and Italian bulk buyers (Salov/Filippo Berio) receive product.</td><td>Days (high-throughput bottling lines)</td><td>Low</td><td>Litres bottled per day; share bottled vs bulk exported</td><td>L/day; % bulk vs bottled</td><td>BOTTLENECK: ~67% of Spanish exports leave as bulk (EUR 3.22/kg avg) vs Italian rebranded at EUR 4.42/kg (EUR 1.20/kg premium gap); fragmented 1500 bottlers; glass cost increase +25% globally; PDO label complexity; lack of coordinated brand strategy; retail price pressure (Tesco own-brand EUR 3.95/L suppressing margins)</td><td>1500+ bottlers; La Espanola (Acesur) and Atasur as Spanish premium brands; PDO/PGI certification framework; recent EU traceability standards (Royal Decree 760/2021); new quality standard requiring computerized bulk oil movement tracking since Oct 2021</td><td>POPULATED</td><td>STRUCTURAL BOTTLENECK: Spain is world&#x27;s largest producer but captures only EUR 3.22/kg average export price vs Italy&#x27;s EUR 4.42/kg because ~67% of exports are bulk. Salov/Filippo Berio and other Italian companies blend and rebrand Spanish bulk oil under Italian-sounding names. This is Spain&#x27;s primary value chain failure. Sources: CaixaBank Research 2022; Sustainable Food Trust 2018; CIHEAM/New Medit 2025; CDE/Univ Bern.</td></tr>
+<tr><td>6</td><td>Bulk Logistics and Export</td><td>Downstream</td><td>Bottled or bulk olive oil (Spain warehouses)</td><td>Olive oil delivered to international buyers (Italy bulk; USA/UK/Germany bottled)</td><td>Road + short-sea shipping (MSC flexibags for bulk; refrigerated containers for bottled). Intermodal in Italy (Rubino RS road+rail). Specialist liquid logistics.</td><td>Days to weeks (Mediterranean bulk shipping 24-48h; transoceanic 3-6 weeks)</td><td>Medium</td><td>Tonnes shipped per mode; cost per tonne; transit time</td><td>t/mode; EUR/t; days</td><td>Red Sea disruptions +10-15 days to Asia (late 2024); container rate inflation (2-3x pre-pandemic levels); glass fragility; specialized flexibag containers required; temperature sensitivity; complex customs and tariff framework</td><td>MSC Liquid Cargo Solutions (flexibag 24,000L per 20ft container); Rubino RS intermodal tank containers (ISO 9001/14001/GMP+); short-sea Spain-Italy corridor; global MSC network 120+ destinations; specialized door-to-door liquid logistics</td><td>POPULATED</td><td>Key bulk logistics operators: MSC Spain (flexibag 24,000L per 20ft container); Rubino RS (Puglia Italy: 80+ year family company, bimodal tank containers, road+rail intermodal, ISO certified). Italy top destination 28.2%. USA now &gt;EUR 1B exports. Short-sea shipping Spain-Italy primary bulk route. Sources: MSC Spain; Rubino RS; Olive Oil Times 2024.</td></tr>
+<tr><td>7</td><td>Trade and International Markets</td><td>Downstream</td><td>Delivered olive oil (bulk or bottled) at destination</td><td>Final sold product at retail or foodservice; price captured by brand owner</td><td>Brand positioning + retail shelf placement + PDO/PGI marketing + consumer conversion. Italian brands dominate premium shelves despite Spanish origin oil.</td><td>Continuous market activity</td><td>Low</td><td>EUR per kg realized at retail vs farmgate; market share by brand</td><td>EUR/kg; market share %</td><td>Italian brand premium capture (Filippo Berio/Salov/Bertolli); historical fraud (extra virgin mislabeling); oligopoly retail (Tesco/Carrefour/REWE hold &gt;50% shelf); US tariffs (25% Oct 2019 to June 2021); EU CBAM emerging costs; retail pricing suppressing producer margins (CaixaBank: retail price does not reflect true production cost)</td><td>Growing consumer demand globally (EIT Food 2024: 61% EU consumers willing to pay 15%+ premium for organic); expanding USA/Asia/Germany markets; Spanish premium brands (La Espanola at 120 countries); PDO designations gaining recognition; IOC global quality standards; record EUR 6B export revenues 2023/24</td><td>POPULATED</td><td>Trade opacity: Italian brands (Filippo Berio/Salov; Bertolli/Deoleo; Monini) package Spanish bulk oil under Italian-sounding names -- noted only in small print. Spain&#x27;s export reached record EUR 6.04B in 2023/24 at EUR 8/kg average (vs EUR 3.22/kg two years prior -- reflects price spike not brand premium). USA market &gt;EUR 1B in 2023/24 for first time. EVOO 69% of Spain&#x27;s export volume. Sources: CaixaBank Research 2022; Sustainable Food Trust 2018; Olive Oil Times 2024; Persistence Market Research 2026.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>

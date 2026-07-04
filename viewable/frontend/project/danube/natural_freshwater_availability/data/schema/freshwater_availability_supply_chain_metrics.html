@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Freshwater Availability Supply Chain Metrics</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --panel: #111827;
+      --panel-2: #1f2937;
+      --text: #e5e7eb;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-2: #0ea5e9;
+      --border: #334155;
+      --row-alt: #0b1220;
+      --hover: #1e293b;
+      --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #020617 0%, #0f172a 100%);
+      color: var(--text);
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 32px 20px 40px;
+    }
+
+    .card {
+      background: rgba(17, 24, 39, 0.92);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .header {
+      padding: 24px 24px 16px;
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(30,41,59,.9), rgba(17,24,39,.95));
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+      color: white;
+    }
+
+    .subtitle {
+      margin: 0;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .controls {
+      padding: 16px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      border-bottom: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.65);
+    }
+
+    .search-box {
+      flex: 1 1 320px;
+      min-width: 240px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #0b1220;
+      color: var(--text);
+      outline: none;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.15);
+    }
+
+    .meta {
+      color: var(--muted);
+      font-size: 14px;
+      white-space: nowrap;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 75vh;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 700px;
+    }
+
+    thead th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #172033;
+      color: #f8fafc;
+      text-align: left;
+      font-size: 14px;
+      letter-spacing: 0.02em;
+      border-bottom: 1px solid var(--border);
+      padding: 14px 12px;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    thead th:hover {
+      background: #1d2940;
+    }
+
+    tbody td {
+      padding: 12px;
+      border-bottom: 1px solid rgba(51, 65, 85, 0.5);
+      vertical-align: top;
+      color: #dbe4ee;
+      font-size: 14px;
+      line-height: 1.4;
+      word-break: break-word;
+    }
+
+    tbody tr:nth-child(even) {
+      background: var(--row-alt);
+    }
+
+    tbody tr:hover {
+      background: var(--hover);
+    }
+
+    .sort-indicator {
+      color: var(--accent);
+      margin-left: 6px;
+      font-size: 12px;
+    }
+
+    .footer {
+      padding: 14px 24px 20px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    @media (max-width: 720px) {
+      h1 {
+        font-size: 22px;
+      }
+
+      .container {
+        padding: 16px 10px 24px;
+      }
+
+      .header, .controls, .footer {
+        padding-left: 14px;
+        padding-right: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="header">
+        <h1>Freshwater Availability Supply Chain Metrics</h1>
+        <p class="subtitle">CSV viewer generated from <strong>freshwater_availability_supply_chain_metrics.csv</strong></p>
+      </div>
+
+      <div class="controls">
+        <div class="search-box">
+          <input type="text" id="searchInput" placeholder="Search all rows...">
+        </div>
+        <div class="meta">
+          Rows shown: <span id="rowCount">16</span> / 16
+        </div>
+      </div>
+
+      <div class="table-wrap">
+        <table id="csvTable">
+          <thead>
+            <tr>
+              <th>record_id<span class="sort-indicator"></span></th>
+<th>phase_id<span class="sort-indicator"></span></th>
+<th>entity<span class="sort-indicator"></span></th>
+<th>country<span class="sort-indicator"></span></th>
+<th>date<span class="sort-indicator"></span></th>
+<th>metric_name<span class="sort-indicator"></span></th>
+<th>metric_value<span class="sort-indicator"></span></th>
+<th>unit<span class="sort-indicator"></span></th>
+<th>source_type<span class="sort-indicator"></span></th>
+<th>source_name<span class="sort-indicator"></span></th>
+<th>url<span class="sort-indicator"></span></th>
+<th>notes<span class="sort-indicator"></span></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>1</td><td>ERA5 Reanalysis</td><td>Danube Basin</td><td>2024-01-01</td><td>mean_annual_precipitation_mm</td><td>800</td><td>mm/yr</td><td>public</td><td>Copernicus/ECMWF ERA5</td><td>https://www.ecmwf.int/en/forecasts/datasets/reanalysis-datasets/era5</td><td>Basin-average mean annual precipitation 1991-2020 climatology</td></tr>
+<tr><td>2</td><td>1</td><td>ERA5 Reanalysis</td><td>Danube Basin</td><td>2024-01-01</td><td>total_precipitation_km3_yr</td><td>641</td><td>km3/yr</td><td>public</td><td>Copernicus/ECMWF ERA5</td><td>https://www.ecmwf.int</td><td>800mm × 801463 km2 = ~641 km3/yr total basin input</td></tr>
+<tr><td>3</td><td>2</td><td>GRDC</td><td>Danube Basin</td><td>2024-01-01</td><td>mean_annual_discharge_m3s</td><td>6500</td><td>m3/s</td><td>public</td><td>Global Runoff Data Centre</td><td>https://www.bafg.de/GRDC</td><td>Long-term mean discharge at Ceatal Izmail (near mouth); GRDC station data</td></tr>
+<tr><td>4</td><td>2</td><td>GRDC</td><td>Danube Basin</td><td>2024-01-01</td><td>mean_annual_runoff_km3</td><td>206</td><td>km3/yr</td><td>public</td><td>Global Runoff Data Centre</td><td>https://www.bafg.de/GRDC</td><td>Annual runoff volume; runoff coefficient ~0.32</td></tr>
+<tr><td>5</td><td>2</td><td>GRDC</td><td>Danube Basin</td><td>2024-01-01</td><td>runoff_coefficient</td><td>0.32</td><td>dimensionless</td><td>public</td><td>Global Runoff Data Centre</td><td>https://www.bafg.de/GRDC</td><td>Runoff / precipitation ratio; 206/641</td></tr>
+<tr><td>6</td><td>3</td><td>GRACE-FO</td><td>Danube Basin</td><td>2024-01-01</td><td>groundwater_storage_km3</td><td>88</td><td>km3</td><td>public</td><td>NASA GRACE-FO</td><td>https://grace.jpl.nasa.gov</td><td>Approximate basin groundwater storage; GRACE-FO TWS minus soil moisture and snow components</td></tr>
+<tr><td>7</td><td>3</td><td>ESDAC</td><td>Danube Basin</td><td>2024-01-01</td><td>floodplain_aquifer_recharge_km3_yr</td><td>12</td><td>km3/yr</td><td>inferred</td><td>European Soil Data Centre (JRC)</td><td>https://esdac.jrc.ec.europa.eu</td><td>Estimated floodplain aquifer annual recharge from river bank filtration and direct infiltration</td></tr>
+<tr><td>8</td><td>4</td><td>AQUASTAT</td><td>Danube Basin</td><td>2024-01-01</td><td>total_annual_renewable_water_km3</td><td>206</td><td>km3/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Total actual renewable freshwater resources; sum of internal flow and external inflow (Danube)</td></tr>
+<tr><td>9</td><td>4</td><td>AQUASTAT</td><td>Danube Basin</td><td>2024-01-01</td><td>per_capita_freshwater_m3_yr</td><td>2543</td><td>m3/person/yr</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>206 km3 / 81 million people; above UN scarcity threshold of 1700 m3/person/yr</td></tr>
+<tr><td>10</td><td>4</td><td>AQUASTAT</td><td>Danube Basin</td><td>2024-01-01</td><td>water_stress_index</td><td>0.17</td><td>dimensionless</td><td>public</td><td>FAO AQUASTAT</td><td>https://www.fao.org/aquastat</td><td>Total abstraction / total renewable resources; 0.17 = low stress nationally; locally higher</td></tr>
+<tr><td>11</td><td>0</td><td>ERA5 Reanalysis</td><td>Danube Basin</td><td>2024-01-01</td><td>precipitable_water_column_mean_kg_m2</td><td>18.5</td><td>kg/m2</td><td>public</td><td>Copernicus/ECMWF ERA5</td><td>https://www.ecmwf.int</td><td>Annual mean total column water vapour over basin; seasonal peak in summer</td></tr>
+<tr><td>12</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2024-01-01</td><td>iron_gate_dam_regulated_flow</td><td>1</td><td>boolean</td><td>public</td><td>ICPDR</td><td>https://www.icpdr.org</td><td>Flow significantly altered by Iron Gate I (1972) and Iron Gate II (1984) dams on Serbia-Romania border</td></tr>
+<tr><td>13</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2021-01-01</td><td>wfd_good_ecological_status_pct</td><td>40</td><td>percent</td><td>public</td><td>ICPDR WFD Implementation Report 2021</td><td>https://www.icpdr.org</td><td>Share of Danube water bodies at good or better ecological status under WFD assessment; 60% still below target</td></tr>
+<tr><td>14</td><td>2</td><td>Bloschl et al.</td><td>Danube Basin</td><td>2019-01-01</td><td>projected_runoff_decline_rcp45_2050_pct</td><td>-15</td><td>percent</td><td>public</td><td>Blöschl G. et al. (2019). Twenty-three unsolved problems in hydrology. Hydrological Sciences Journal 64(10)</td><td>https://doi.org/10.1080/02626667.2019.1620507</td><td>Median projection for Danube runoff reduction by 2050 under RCP 4.5; range -10 to -30%</td></tr>
+<tr><td>15</td><td>2</td><td>ICPDR</td><td>Danube Basin</td><td>2021-01-01</td><td>projected_runoff_decline_rcp85_2050_pct</td><td>-35</td><td>percent</td><td>public</td><td>ICPDR Climate Change Adaptation Strategy for the Danube River Basin (2021)</td><td>https://www.icpdr.org</td><td>Median projection for Danube runoff reduction by 2050 under RCP 8.5; range -20 to -50%; lower basin most affected</td></tr>
+<tr><td>16</td><td>4</td><td>Colloff and Pittock</td><td>Danube Basin (analogous)</td><td>2022-01-01</td><td>env_flow_target_met_pct_analogue</td><td>40</td><td>percent</td><td>inferred</td><td>Colloff M.J. and Pittock J. (2022). Mind the Gap! Water 14(2) 208. DOI: 10.3390/w14020208</td><td>https://doi.org/10.3390/w14020208</td><td>Analogous Murray-Darling result: environmental flows met at ~2% of target wetland sites 2014-2019; estimated 40% for Danube based on ICPDR good ecological status data</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="footer">
+        Click a column header to sort. Use the search box to filter rows.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const searchInput = document.getElementById("searchInput");
+    const table = document.getElementById("csvTable");
+    const tbody = table.querySelector("tbody");
+    const rowCount = document.getElementById("rowCount");
+    const headers = table.querySelectorAll("thead th");
+
+    searchInput.addEventListener("input", function () {
+      const query = this.value.toLowerCase();
+      let visible = 0;
+
+      for (const row of tbody.rows) {
+        const text = row.innerText.toLowerCase();
+        const match = text.includes(query);
+        row.classList.toggle("hidden", !match);
+        if (match) visible++;
+      }
+
+      rowCount.textContent = visible;
+    });
+
+    headers.forEach((header, index) => {
+      header.dataset.direction = "asc";
+
+      header.addEventListener("click", () => {
+        const rows = Array.from(tbody.rows);
+        const currentDirection = header.dataset.direction;
+        const newDirection = currentDirection === "asc" ? "desc" : "asc";
+
+        headers.forEach(h => {
+          h.dataset.direction = "";
+          const indicator = h.querySelector(".sort-indicator");
+          if (indicator) indicator.textContent = "";
+        });
+
+        rows.sort((a, b) => {
+          const aText = a.cells[index]?.innerText.trim() ?? "";
+          const bText = b.cells[index]?.innerText.trim() ?? "";
+
+          const aNum = parseFloat(aText.replace(/,/g, ""));
+          const bNum = parseFloat(bText.replace(/,/g, ""));
+
+          let comparison = 0;
+
+          if (!isNaN(aNum) && !isNaN(bNum)) {
+            comparison = aNum - bNum;
+          } else {
+            comparison = aText.localeCompare(bText, undefined, {
+              numeric: true,
+              sensitivity: "base"
+            });
+          }
+
+          return newDirection === "asc" ? comparison : -comparison;
+        });
+
+        for (const row of rows) {
+          tbody.appendChild(row);
+        }
+
+        header.dataset.direction = newDirection;
+        const indicator = header.querySelector(".sort-indicator");
+        if (indicator) {
+          indicator.textContent = newDirection === "asc" ? "▲" : "▼";
+        }
+      });
+    });
+  </script>
+</body>
+</html>
